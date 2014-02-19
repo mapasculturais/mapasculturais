@@ -1,0 +1,13 @@
+
+#nav-do-painel ul li:nth-child(6),
+
+#estatisticas-do-usuario div:nth-child(5),
+section #atividades,
+ul.menu.logado li.notificacoes,
+
+.staging-hidden
+{
+
+    display:none;
+
+}

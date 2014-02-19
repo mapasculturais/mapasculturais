@@ -1,0 +1,18 @@
+{
+    "autoload": {
+        "psr-0": {"MapasCulturais": "./application/lib/"}
+    },
+    "require": {
+        "slim/slim": "2.2.*",
+        "doctrine/orm": "2.3.*",
+        "doctrine/dbal": "2.3.*",
+        "opauth/openid": "*",
+        "respect/validation": "0.4.*",
+        "smottt/wideimage": "dev-master",
+        "maximebf/debugbar": ">=1.0.0",
+        "kriswallsmith/assetic": "1.2.*@dev",
+        "phpunit/phpunit": "3.7.29",
+        "creof/doctrine2-spatial": "dev-master",
+        "mustache/mustache": "v2.5.1"
+    }
+}
