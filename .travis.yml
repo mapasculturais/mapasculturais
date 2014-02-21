@@ -1,18 +1,24 @@
 language: php
 php:
-    - 5.5
+  - 5.5
 
 install:
-    - cd src/protected; composer update
+  - pecl install apcu
+  - pushd src/protected; composer update; popd
 
 before_script:
-    - psql -c 'create user mapasculturais;' -U postgres
-    - psql -c 'create database mapasculturais owner mapasculturais;' -U postgres
-    - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais
-    # - psql -c 'CREATE EXTENSION postgis_topology;' -U mapasculturais -d mapasculturais
-    - psql -f db/schema.sql -U mapasculturais -d mapasculturais
-    - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
-    - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - psql -c 'create user mapasculturais;' -U postgres
+  - psql -c 'create database mapasculturais owner mapasculturais;' -U postgres
+  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais
+  - psql -f db/schema.sql -U mapasculturais -d mapasculturais
+  - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
+  # - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-    - phpunit tests
+  - phpunit tests
+
+notifications:
+  hipchat:
+    rooms:
+      secure: 6KVjKLIde59VWYmJbXx0okMUEhU9gjcl55X+AdW4q1zLo8/cHNhW9iz4De45CfE0gruBgw14h0hOU8QPxJx/4KwgVoSm9PoJopHmYy7SKmSBCwlcxm6Symw9IYVQo5B/hfZlr+gqtUPT8emiBVzvhnTk6DVjZhJbFg2oyp7s+uA=
