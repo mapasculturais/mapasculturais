@@ -3,7 +3,7 @@ php:
   - 5.5
 
 install:
-  - echo "no" | pecl install apcu-beta
+  - echo "yes" | pecl install apcu-beta
   - pushd src/protected; composer update; popd
 
 before_script:
@@ -12,7 +12,6 @@ before_script:
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais
   - psql -f db/schema.sql -U mapasculturais -d mapasculturais
   - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
-  # - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:

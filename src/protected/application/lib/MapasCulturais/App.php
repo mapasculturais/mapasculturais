@@ -105,7 +105,7 @@ class App extends \Slim\Slim{
      */
     protected $_enqueuedStyles = array();
 
-    protected $_user = -1;
+    public $_user = -1;
 
     protected $_runningUpdates = true;
 

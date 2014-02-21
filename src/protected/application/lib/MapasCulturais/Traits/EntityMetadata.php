@@ -119,6 +119,7 @@ trait EntityMetadata{
     }
 
     protected function canUserViewPrivateData($user){
+        # TODO: verify if superAdmin shouldn't be checked
         if(
                 $user->is('admin') ||
                 $user->id ==

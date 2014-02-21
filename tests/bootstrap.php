@@ -34,10 +34,10 @@ define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
 
 $config = include __DIR__ . '/../src/protected/application/conf/conf-test.php';
 
-$_GET['auth_dev_user_id'] = 61;
 
 // create the App instance
 $app = MapasCulturais\App::i()->init($config);
+$app->_user = $app->repo('User')->findOneBy(['email' => 'Admin@local']);
 $app->register();
 
 abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
