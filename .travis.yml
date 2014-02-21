@@ -3,7 +3,7 @@ php:
   - 5.5
 
 install:
-  - pecl install apcu-beta
+  - echo "no" | pecl install apcu-beta
   - pushd src/protected; composer update; popd
 
 before_script:
