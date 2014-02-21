@@ -3,12 +3,12 @@ php:
     - 5.5
 
 install:
-    - cd src/protected; composer
+    - cd src/protected; composer update
 
 before_script:
     - psql -c 'create user mapasculturais;' -U postgres
     - psql -c 'create database mapasculturais owner mapasculturais;' -U postgres
-    - psql -c 'CREATE EXTENSION postgis;' -U mapasculturais -d mapasculturais
+    - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais
     # - psql -c 'CREATE EXTENSION postgis_topology;' -U mapasculturais -d mapasculturais
     - psql -f db/schema.sql -U mapasculturais -d mapasculturais
     - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
@@ -16,4 +16,3 @@ before_script:
 
 script:
     - phpunit tests
-
