@@ -1,4 +1,5 @@
 <?php
+use \Slim\Log;
 
 $config = include 'conf-base.php';
 
