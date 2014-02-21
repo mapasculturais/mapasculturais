@@ -3,7 +3,7 @@ php:
     - 5.5
 
 install:
-    - cd src/protected; composer update
+    - pushd src/protected; composer update; popd
 
 before_script:
     - psql -c 'create user mapasculturais;' -U postgres
