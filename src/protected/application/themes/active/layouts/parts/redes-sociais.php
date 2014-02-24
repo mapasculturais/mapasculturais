@@ -2,7 +2,7 @@
 	<h3 class="subtitulo">Compartilhamentos</h3>
 	<div class="compartilhamentos">000</div>
 </div>
-<?php if(@!$app->config['slim.debug']): ?>
+
 <div class="bloco">
 	<h3 class="subtitulo">Compartilhar</h3>
 	<div class="fb-share-button botoes-de-compartilhar" data-href="<?php echo $entity->singleUrl; ?>" data-type="button_count"></div>
@@ -23,7 +23,7 @@
 		</script>
 	</div>
 </div>
-<?php endif; ?>
+
 <?php if (is_editable() || $entity->twitter || $entity->facebook || $entity->googleplus): ?>
     <div class="bloco">
         <h3 class="subtitulo">Seguir</h3>
