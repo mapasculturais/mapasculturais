@@ -196,6 +196,7 @@ CREATE TABLE db_update (
 
 CREATE TABLE event (
     id integer NOT NULL,
+    project_id integer,
     name character varying(255) NOT NULL,
     short_description text NOT NULL,
     long_description text,
@@ -1066,7 +1067,8 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_agent_fk FOREIGN KEY (agent_id) REFERENCES agent(id);
-
+ALTER TABLE ONLY event
+    ADD CONSTRAINT project_fk FOREIGN KEY (project_id) REFERENCES project(id);
 
 --
 -- Name: event_project_event_fk; Type: FK CONSTRAINT; Schema: public; Owner: -

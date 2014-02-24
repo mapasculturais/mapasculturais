@@ -112,6 +112,16 @@ class Event extends \MapasCulturais\Entity
     protected $owner;
 
     /**
+     * @var \MapasCulturais\Entities\Project
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * })
+     */
+    protected $project;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
@@ -136,6 +146,13 @@ class Event extends \MapasCulturais\Entity
         if($owner)
             $this->owner = $owner;
     }
+
+    function setProjectId($projectId){
+        $project = App::i()->repo('Project')->find($projectId);
+        if($project)
+            $this->project = $project;
+    }
+
 
     function getAvatar(){
         if(!$this->_avatar)

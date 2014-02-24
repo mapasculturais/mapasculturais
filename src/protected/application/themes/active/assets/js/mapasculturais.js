@@ -587,6 +587,18 @@ MapasCulturais.Search = {
     },
 
     formats: {
+        chooseProject:{
+            selection: function(entity, $selector){
+                return entity.name;
+            },
+
+            noMatches: function(term, $selector){
+                return 'Nenhum projeto encontrado.';
+            },
+
+            onClear: function($selector){
+            }
+        },
         chooseSpace: {
             onSave: function($selector){
                 var entity = $selector.data('entity'),

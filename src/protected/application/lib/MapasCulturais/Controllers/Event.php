@@ -32,4 +32,17 @@ class Event extends EntityController {
         });
         parent::POST_index();
     }
+
+
+    function GET_create() {
+        if(key_exists('projectId', $this->urlData) && is_numeric($this->urlData['projectId'])){
+            $project = $this->repository->find($this->urlData['projectId']);
+            if($project)
+                App::i()->hook('entity(event).new', function() use ($project){
+                    $this->project = $project;
+                });
+        }
+        parent::GET_create();
+    }
+
 }
