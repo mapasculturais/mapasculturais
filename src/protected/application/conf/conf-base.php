@@ -101,9 +101,9 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-            'james-bond'                => array('agent', 'single', array('id' => '007')),
-            'agente/007'                => array('agent', 'single', array('id' => '007')),
-            'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
+            // 'james-bond'                => array('agent', 'single', array('id' => '007')),
+            // 'agente/007'                => array('agent', 'single', array('id' => '007')),
+            // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
             'evento'    => array('event',   'single'),
             'usuario'   => array('user',    'single'),
