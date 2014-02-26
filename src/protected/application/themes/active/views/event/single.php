@@ -422,10 +422,12 @@ add_occurrence_frequencies_to_js();
                             <label style="display:inline;"><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> S </label>
                             <label style="display:inline;"><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> S </label>
                         </div>
+                        <!-- for now we will not support monthly recurrences.
                         <div>
                             <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> dia do mês </label>
                             <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> dia da semana </label>
                         </div>
+                        -->
                     </div>
                 </div>
             </div>
