@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo -u postgres psql -d mapasculturais < $1
+sudo -u postgres psql -d mapasculturais -f "$1"
