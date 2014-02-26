@@ -19,5 +19,6 @@ script:
 
 notifications:
   hipchat:
+    on_success: change
     rooms:
       secure: 6KVjKLIde59VWYmJbXx0okMUEhU9gjcl55X+AdW4q1zLo8/cHNhW9iz4De45CfE0gruBgw14h0hOU8QPxJx/4KwgVoSm9PoJopHmYy7SKmSBCwlcxm6Symw9IYVQo5B/hfZlr+gqtUPT8emiBVzvhnTk6DVjZhJbFg2oyp7s+uA=
