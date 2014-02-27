@@ -119,7 +119,7 @@ class Event extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
      */
-    protected $project;
+    protected $project = null;
 
     /**
      * @var bool
@@ -148,9 +148,12 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProjectId($projectId){
-        $project = App::i()->repo('Project')->find($projectId);
-        if($project)
-            $this->project = $project;
+        if($projectId) {
+            $project = App::i()->repo('Project')->find($projectId);
+        }else{
+            $project = null;
+        }
+        $this->project = $project;
     }
 
 

@@ -99,11 +99,10 @@ add_occurrence_frequencies_to_js();
 		<a class="oficial" href="#">Evento da Prefeitura</a>
     </div>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-    <div class="bloco">
-        <?php if(!is_editable()): ?>
-            <a href="#">Título do Projeto</a>
-        <?php else: ?>
-            <h3 class="subtitulo js-search js-include-editable"
+        <?php if(is_editable()): ?>
+        <div class="bloco">
+            <h3 class="subtitulo">Projeto</h3>
+            <a class="js-search js-include-editable"
                 data-field-name='projectId'
                 data-emptytext="Selecione um projeto"
                 data-search-box-width="400px"
@@ -113,13 +112,20 @@ add_occurrence_frequencies_to_js();
                 data-selection-template="#agent-response-template"
                 data-no-result-template="#agent-response-no-results-template"
                 data-selection-format="chooseProject"
+                data-allow-clear="1"
                 data-auto-open="true"
                 data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
                 title="Selecionar um Projeto">
                 <?php echo $entity->project ? $entity->project->name : ''; ?>
-            </h3>
+            </a>
+        </div>
+        <?php elseif($entity->project): ?>
+        <div class="bloco">
+            <h3 class="subtitulo">Projeto</h3>
+            <span><a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a></span>
+        </div>
         <?php endif; ?>
-    </div>
 </div>
 <article class="col-60 main-content evento">
     <header class="main-content-header">
