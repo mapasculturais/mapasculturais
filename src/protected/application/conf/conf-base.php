@@ -66,7 +66,7 @@ return array(
     'slim.debug' => true,
 
     'slim.middlewares' => array(
-        new \MapasCulturais\Middlewares\ExecutionTime(true, false)
+        //new \MapasCulturais\Middlewares\ExecutionTime(true, false)
     ),
 
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
