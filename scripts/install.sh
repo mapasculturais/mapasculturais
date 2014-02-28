@@ -1,11 +1,16 @@
 #!/bin/bash
 
-sudo -u postgres dropdb mapasculturais
-sudo -u postgres dropuser mapasculturais
+PGUSER=postgres
+DBNAME=mapasculturais
+DBUSER=mapasculturais
+DBPASS=mapasculturais
 
-sudo -u postgres createuser mapasculturais
-sudo -u postgres createdb --owner mapasculturais mapasculturais
+sudo -u ${PGUSER} dropdb ${DBNAME}
+sudo -u ${PGUSER} dropuser ${DBUSER}
 
-sudo -u postgres psql -d mapasculturais -c 'CREATE EXTENSION postgis;'
-sudo -u postgres psql -d mapasculturais -U mapasculturais -f db/schema.sql
-sudo -u postgres psql -d mapasculturais -U mapasculturais -f db/initial-data.sql
+sudo -u ${PGUSER} psql -d postgres -c "CREATE USER ${DBUSER} WITH PASSWORD '${DBPASS}';"
+sudo -u ${PGUSER} createdb --owner ${DBUSER} ${DBNAME}
+
+sudo -u ${PGUSER} psql -d ${DBNAME} -c 'CREATE EXTENSION postgis;'
+sudo -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -f db/schema.sql
+sudo -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -f db/initial-data.sql
