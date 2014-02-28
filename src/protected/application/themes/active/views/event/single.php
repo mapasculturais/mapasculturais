@@ -337,7 +337,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
-<div class="barra-lateral evento col-25">
+<div class="barra-lateral evento barra-direita">
     <div class="setinha"></div>
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity' => $entity)); ?>
@@ -360,7 +360,8 @@ add_occurrence_frequencies_to_js();
         <input id="espaco-do-evento" type="hidden" name="spaceId" placeholder="aqui vai um autocomplete igual do agente relacionado" value="{{space.id}}">
 
         <div class="dono clearfix js-space">
-            <h4 class="js-search-occurrence-space"
+            <label>Espaço:</label><br>
+            <span class="js-search-occurrence-space"
                 data-field-name='spaceId'
                 data-emptytext="Selecione um espaço"
                 data-search-box-width="400px"
@@ -372,9 +373,8 @@ add_occurrence_frequencies_to_js();
                 data-selection-format="chooseSpace"
                 data-auto-open="true"
                 data-value="{{space.id}}"
-                title="Selecionar um espaço"
-                >{{space.name}}</h4>
-            <img src="{{space.avatar.url}}" class="avatar js-space-avatar" />
+                title="Selecione um espaço"
+                >{{space.name}}</span>
         </div>
 
         <!--mostrar se não encontrar o espaço cadastrado
