@@ -16,7 +16,7 @@
     //$app->enqueueScript('vendor', 'angular-sham-spinner' '/vendor/angular-sham-spinner-master/angular-sham.spinner.js', array('angular'));
     //$app->enqueueScript('vendor', 'ngProgress', '/vendor/ngProgress.min.js', array('angular'));
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min', array('spin.js'));
+    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
 ?>
 
 

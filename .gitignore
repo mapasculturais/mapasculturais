@@ -1,12 +1,10 @@
-.idea/
 src/files
-/nbproject/private/
 .project
 .settings
-.phpintel
 db/dump.sql
-src/test.php
 db/arquivos.tar.gz
 src/protected/composer.lock
 src/protected/application/conf/config.php
 src/protected/application/lib/MapasCulturais/DoctrineProxies/*
+src/protected/vendor
+
