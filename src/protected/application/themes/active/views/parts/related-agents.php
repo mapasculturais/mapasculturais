@@ -121,7 +121,7 @@
     </script>
 
     <script type="text/html" id="agent-response-no-results-template">
-        <p>Nenhum agente encontrado com este nome.</p>
+        <p class="mensagem alerta">Aparentemente o agente procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione este agente clicando no botão abaixo.</p>
         <p class="textright bottom">
             <a class="botao adicionar js-add-agent staging-hidden" data-group="{{group}}" data-dialog="#dialog-adicionar-integrante" href="#" data-button-initialized="false" onclick="MapasCulturais.RelatedAgentsEditables.openCreateAgentDialog(this); return false;">
                 adicionar agente

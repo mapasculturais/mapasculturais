@@ -359,7 +359,7 @@ add_occurrence_frequencies_to_js();
         <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
         <input id="espaco-do-evento" type="hidden" name="spaceId" placeholder="aqui vai um autocomplete igual do agente relacionado" value="{{space.id}}">
 
-        <div class="dono clearfix js-space">
+        <div class="clearfix js-space">
             <label>Espaço:</label><br>
             <span class="js-search-occurrence-space"
                 data-field-name='spaceId'
