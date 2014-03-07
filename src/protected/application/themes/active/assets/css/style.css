@@ -214,6 +214,7 @@ tr:first-child th, tr:first-child td { border-top: none; }
 .clear { clear: both; }
 .first { margin-left: 0; }
 .last { margin-right: 0; }
+.oculto { display: none; }
 .sombra { box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
 .url { word-wrap: break-word; word-break: break-all; }
 .mensagem { margin-bottom: 1.5rem; padding: .25rem .75rem; border-radius: 2px; border-style: solid; border-width: 1px; font-size: .75rem; }
@@ -235,15 +236,16 @@ tr:first-child th, tr:first-child td { border-top: none; }
 .botao.principal { color: #fff; background: #f90; border: 1px solid #f90; }
 .botao.principal:hover { border-color: #e48203; }
 .botao.selected, .botao.selected:hover { color: #fff; background-color: #000; border: 1px solid #000; }
-.botao.adicionar, .botao.editar, .botao.download { color: #666; background: #d8d8d8; border: 1px solid #c4c4c4; }
-.botao.adicionar:hover, .botao.editar:hover, .botao.download:hover { color: #333; background: #ddd; border: 1px solid #999; }
+.botao.adicionar, .botao.editar, .botao.download, .botao.excluir { color: #666; background: #d8d8d8; border: 1px solid #c4c4c4; }
+.botao.adicionar:hover, .botao.editar:hover, .botao.download:hover, .botao.excluir:hover { color: #333; background: #ddd; border: 1px solid #999; }
 .botao-grande { padding: .5rem; font-size: .875rem; text-align: center; color: #fff; background: #000; }
 .botao-grande:hover { background: #f90; border-color: #f90; }
-.adicionar:before, .editar:before { display: inline-block; width: 1rem; height: 1rem; font-size: 1rem; font-family: 'ElegantIcons'; vertical-align: top; text-transform: none; font-weight: normal; font-style: none; }
+.adicionar:before, .editar:before, .excluir:before { display: inline-block; width: 1rem; height: 1rem; font-size: 1rem; font-family: 'ElegantIcons'; vertical-align: top; text-transform: none; font-weight: normal; font-style: none; }
 .adicionar:before { content: '\e050'; }
 .editar:before { content: '\6c'; -webkit-transform: matrix(-1, 0, 0, 1, 0, 0); -moz-transform: matrix(-1, 0, 0, 1, 0, 0); -o-transform: matrix(-1, 0, 0, 1, 0, 0); transform: matrix(-1, 0, 0, 1, 0, 0); }
+.excluir:before { content: '\e051'; }
 .botao.editar:before { margin-right: 5px; -webkit-transform: matrix(-1, 0, 0, 1, 0, 0); -moz-transform: matrix(-1, 0, 0, 1, 0, 0); -o-transform: matrix(-1, 0, 0, 1, 0, 0); transform: matrix(-1, 0, 0, 1, 0, 0); line-height: 1.875rem; }
-.botao.adicionar:before, .botao-grande.adicionar:before { margin-right: 5px; }
+.botao.adicionar:before, .botao-grande.adicionar:before, .botao.excluir:before { margin-right: 5px; }
 .botao-de-icone { width: 1.375rem; line-height: 1.375rem !important; font-size: 1rem; font-family: 'ElegantIcons'; font-weight: normal; text-align: center; color: #999; }
 .botao-de-icone:hover, .botao-de-icone.selected { color: #000; }
 .botoes-de-edicao { position: absolute; display: none; padding: .2rem .5rem; border-radius: 2px; background: #ddd; border: 1px solid #999; box-shadow: rgba(0,0,0, .25) 0 1px 2px 0; -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0; }
@@ -629,7 +631,7 @@ table.contratos td { font-size: .75rem; }
 .imagem { width: 60%; height: 20rem; margin-bottom: 1.5rem; background: #ccc; }
 .ficha-spcultura { margin-bottom: 1.5rem; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; font-size: .875rem; color: #888; }
 .servico { margin-bottom: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #ddd; }
-.servico p { margin-bottom: 0; font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; }
+.servico > p, .infos p { margin-bottom: 0; font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; }
 .descricao { margin-bottom: 3rem; }
 .dono { margin: 1.5rem 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eee; font-size: .875rem; }
 .dono .avatar { width: 3rem; height: 3rem; }
@@ -641,12 +643,16 @@ table.contratos td { font-size: .75rem; }
 .icone.icon_plus, .icone.icon_download { margin-right: .5rem; width: 1rem; height: 1rem; }
 .icone.icon_plus:before, .icone.icon_download:before { font-size: 1rem; }
 .icone.icon_plus:before { color: #fff; }
-.infos { float: left; width: 40%; }
+.infos { float: left; width: 40%; margin-bottom: 1.5rem; }
 .mapa { float: right; box-sizing: border-box; -moz-box-sizing: border-box; width: 60%; height: 408px; margin-bottom: 1.5rem; padding-left: 1.5rem; }
 #inscritos { padding-top: 1.5rem; border-top: 1px solid #ccc; }
-.regra { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee; }
-
-
+.regra { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #ddd; }
+.regra header { margin-bottom: .75rem; padding: 0 .5rem; background: #eee; border-radius: 2px; }
+.regra:last-child { margin-bottom: 0; }
+.regra h3 { margin-bottom: 0; font-size: 1rem; }
+.ocorrencia .mapa, .ocultar-mapa { display: none; }
+.toggle-mapa { float: right; font-size: .75rem; color: #666; line-height: 2rem; }
+.toggle-mapa:hover { color: #333; text-decoration: none; }
 
 /* =Painel
 -------------------------------------------------------------- */
@@ -778,7 +784,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 -------------------------------------------------------------- */
 .js-dialog { display: none; margin-top: 15px; padding: 1.5rem; z-index:1000; background: #fff; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
 .js-dialog-content { overflow: auto; height: 80% /*calcular via js e remover essa regra*/; padding-right: 1rem; }
-.js-dialog h2 { margin-right: 3rem; margin-bottom: 0; font-size: 1.5rem; }
+.js-dialog h2 { margin-right: 3rem; margin-bottom: .5rem; font-size: 1.5rem; }
 .js-dialog h3 { font-size: 1rem; line-height: 1.5rem; }
 .js-dialog h4 { font-size: .875rem; line-height: 1.5rem; }
 .js-dialog h5 { font-size: .75rem; line-height: 1.5rem; }
@@ -797,7 +803,10 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .js-dialog .dropdown .submenu-dropdown li:hover { background: #e2e2e2; color: #000; }
 .js-dialog .grupo-de-campos { float: left; width: 20%; min-width: 100px; margin-right: 5%; }
 .js-dialog .icon_check { border: 1px solid #ccc; }
-
+/*ocorrências de eventos*/
+#dialog-event-occurrence .editable { margin-bottom: 1.5rem; }
+.horario-da-ocorrencia { width: 50px; margin-right: 1.5rem; }
+.data-da-ocorrencia { width: 70px; margin-right: 1.5rem; }
 
 /* =Responsive
 -------------------------------------------------------------- */
