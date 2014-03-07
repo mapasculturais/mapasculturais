@@ -20,38 +20,35 @@ add_occurrence_frequencies_to_js();
 ?>
 <script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map', isMapEditable:false}); }); </script>
 
-<style>
-    .mapa{ height:220px;}
-    .avatar{height:30px; margin-bottom:0;}
-</style>
-
-
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
-    <div class="regra" id="event-occurrence-{{id}}" data-item-id="{{id}}" <?php if(is_editable()) echo 'class="li-dos-blocos"'; ?>>
+    <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">        
+        <header class="clearfix">
+            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
+        </header> 
+        <div class="infos">
+            <!--p class="label">Resumo da regra que será exibido pro público.</p-->     
+            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
+            <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
+            <?php if(is_editable()): ?>
+                <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
+            <?php endif; ?>
+            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
+            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}           
+        </div>
+        <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
-        <a href="{{space.singleUrl}}">
-            <img src="{{space.avatar.url}}" class="avatar js-space-avatar" />
-            <h3>{{space.name}}</h3>
-        </a>
-
-        <!--p class="label">Regra  1: Resumo da regra que será exibido pro público.</p-->
-        <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-        <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
-        <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
-        <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-        {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
-        <!--p class="privado"><span class="icone icon_lock"></span><span class="label">Repete:</span> Segunda e quarta</p-->
-
+        <!-- .mapa -->
         <?php if(is_editable()): ?>
-            <div class="botoes">
-                <a class="editar js-open-dialog hltip"
+            <div class="clear">
+                <a class="editar botao js-open-dialog hltip"
                    data-dialog="#dialog-event-occurrence"
                    data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
                    data-dialog-title="Modificar Ocorrência"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='Editar Ocorrência'></a>
-               <a class='icone icon_close js-event-occurrence-item-delete hltip js-remove-item' data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'></a>
+                   href="#" title='Editar Ocorrência'>editar</a>
+               <a class='excluir botao js-event-occurrence-item-delete hltip' data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>excluir</a>
             </div>
         <?php endif; ?>
     </div>
@@ -59,36 +56,25 @@ add_occurrence_frequencies_to_js();
 
 
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
-{{#space}}<div class="clearfix"></div>{{/space}}
-    <div {{^space}}style="float:left;"{{/space}} {{#space}}style="margin-top:60px;"{{/space}} class="regra" id="event-occurrence-{{id}}" data-item-id="{{id}}" <?php if(is_editable()) echo 'class="li-dos-blocos"'; ?>>
+    <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
+        {{#space}}                
+        <header class="clearfix">
+            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
+        </header>
+        {{/space}}
+        <div class="infos">
+            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
+            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
+            <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
+            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
+            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+        </div>
+        <!-- .infos -->
         {{#space}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
-        <a href="{{space.singleUrl}}">
-            <img src="{{space.avatar.url}}" class="avatar js-space-avatar" />
-            <h3>{{space.name}}</h3>
-        </a>
-        <h6>Ocorrências neste espaço:</h6>
+        <!-- .mapa -->
         {{/space}}
-        <!--p class="label">Regra  1: Resumo da regra que será exibido pro público.</p-->
-        <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-        <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
-        <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
-        <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-        {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
-        <!--p class="privado"><span class="icone icon_lock"></span><span class="label">Repete:</span> Segunda e quarta</p-->
-
-
-            <div class="botoes" <?php if(!is_editable()): ?> style="visibility:hidden" <?php endif; ?>>
-                <a class="editar js-open-dialog hltip"
-                   data-dialog="#dialog-event-occurrence"
-                   data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                   data-dialog-title="Modificar Ocorrência"
-                   data-form-action="edit"
-                   data-item="{{serialized}}"
-                   href="#" title='Editar Ocorrência'></a>
-               <a class='icone icon_close js-event-occurrence-item-delete hltip js-remove-item' data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'></a>
-            </div>
-
     </div>
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
@@ -197,101 +183,6 @@ add_occurrence_frequencies_to_js();
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta do evento"><?php echo $entity->shortDescription; ?></span>
             </p>
-            <div class="servico ocorrencia clearfix">
-
-
-                        <div id="dialog-event-occurrence" class="js-dialog" title="Adicionar Ocorrência">
-                            <?php if($this->controller->action == 'create'): ?>
-                                <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
-                            <?php else: ?>
-                                <div class="js-dialog-content"></div>
-                            <?php endif; ?>
-                        </div>
-
-
-
-                        <?php if(is_editable()): ?>
-                            <a class="botao adicionar js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
-                               data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                               data-dialog-title="Adicionar Ocorrência"
-                               data-form-action='insert'
-                               title="Clique para adicionar ocorrências">
-                                Adicionar Ocorrência
-                            </a>
-                        <?php endif; ?>
-
-                <br><br>
-
-                <?php
-
-                //$entity->getMetaLists(array('group'=>'links'));
-                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
-
-                ?>
-
-                <?php if (is_editable() || $occurrences): ?>
-                    <div class="bloco">
-
-                        <!--h3 class="subtitulo">Ocorrências</h3-->
-
-                        <div class="js-event-occurrence info <!--js-slimScroll-->">
-                            <?php
-
-                            $screenFrequencies = getOccurrenceFrequencies();
-                            $mustache = new Mustache_Engine();
-
-                            if ($occurrences) {
-
-                                $spaces = array();
-
-                                usort($occurrences, function($a, $b) {
-                                    return $a->space->id - $b->space->id;
-                                });
-
-                                foreach ($occurrences as $occurrence) {
-
-                                    $templateData = json_decode(json_encode($occurrence));
-                                    $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
-                                    $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
-                                    $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
-                                    $templateData->serialized = json_encode($templateData);
-                                    $templateData->formAction = $occurrence->editUrl;
-
-                                    if (is_editable()) {
-                                        echo $mustache->render($eventOccurrenceItemTemplate, $templateData);
-                                    } else {
-                                        if (!array_key_exists($occurrence->space->id, $spaces))
-                                            $spaces[$occurrence->space->id] = true;
-                                        else
-                                            $templateData->space = null;
-
-                                        echo $mustache->render($eventOccurrenceItemTemplate_VIEW, $templateData);
-                                    }
-
-                                }
-
-                            }
-                            ?>
-                        </div>
-
-
-                        <!--a class="botao adicionar hltip" href="#" title="Uma ocorrência pode ter mais de uma regra, com diferentes combinações de horários e datas. Clique no botão para adicionar uma nova regra.">adicionar regra</a-->
-
-                    </div>
-                <?php endif; ?>
-
-
-                <!--.infos-->
-            </div>
-            <!--.servico.ocorrencia-->
-            <!--div class="servico textright">
-                <a class="botao adicionar hltip" href="#" title="Todo evento pode ter mais de uma ocorrência associada a um espaço diferente. clique para adicionar informações de local e data">adicionar local</a>
-            </div-->
-
-
-
-
-            <!--.servico-->
             <div class="servico">
                 <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
 
@@ -316,6 +207,72 @@ add_occurrence_frequencies_to_js();
                 <p><span class="label">Acessibilidade:</span> tradução em libras/descrição sonora</p>
             </div>
             <!--.servico-->
+            <div class="servico ocorrencia clearfix">                
+                <?php
+                //$entity->getMetaLists(array('group'=>'links'));
+                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
+                ?>
+                <?php if (is_editable() || $occurrences): ?>
+                    <div class="js-event-occurrence">
+                        <?php
+
+                        $screenFrequencies = getOccurrenceFrequencies();
+                        $mustache = new Mustache_Engine();
+
+                        if ($occurrences) {
+
+                            $spaces = array();
+
+                            usort($occurrences, function($a, $b) {
+                                return $a->space->id - $b->space->id;
+                            });
+
+                            foreach ($occurrences as $occurrence) {
+
+                                $templateData = json_decode(json_encode($occurrence));
+                                $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
+                                $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
+                                $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
+                                $templateData->serialized = json_encode($templateData);
+                                $templateData->formAction = $occurrence->editUrl;
+
+                                if (is_editable()) {
+                                    echo $mustache->render($eventOccurrenceItemTemplate, $templateData);
+                                } else {
+                                    if (!array_key_exists($occurrence->space->id, $spaces))
+                                        $spaces[$occurrence->space->id] = true;
+                                    else
+                                        $templateData->space = null;
+
+                                    echo $mustache->render($eventOccurrenceItemTemplate_VIEW, $templateData);
+                                }
+
+                            }
+
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!--.servico.ocorrencia-->
+            <?php if(is_editable()): ?>
+                <div class="textright">
+                    <a class="botao adicionar js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
+                       data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
+                       data-dialog-title="Adicionar Ocorrência"
+                       data-form-action='insert'
+                       title="Clique para adicionar ocorrências">
+                        Adicionar Ocorrência
+                    </a>
+                </div>
+            <?php endif; ?>
+            <div id="dialog-event-occurrence" class="js-dialog" title="Adicionar Ocorrência">
+                <?php if($this->controller->action == 'create'): ?>
+                    <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
+                <?php else: ?>
+                    <div class="js-dialog-content"></div>
+                <?php endif; ?>
+            </div>      
         </div>
         <!--.ficha-spcultura-->
 
@@ -357,7 +314,7 @@ add_occurrence_frequencies_to_js();
     <form action="{{formAction}}" method="POST">
         <div class="mensagem erro escondido"></div>
         <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
-        <input id="espaco-do-evento" type="hidden" name="spaceId" placeholder="aqui vai um autocomplete igual do agente relacionado" value="{{space.id}}">
+        <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
         <div class="clearfix js-space">
             <label>Espaço:</label><br>
@@ -382,72 +339,64 @@ add_occurrence_frequencies_to_js();
             Aparentemente o espaço procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um novo espaço clicando no botão abaixo.
         </div>
         <a class="botao adicionar" href="#">adicionar espaço</a>-->
-        <div class="ocorrencias">
-            <div class="regra">
-            <!--h3>Regra 1: Resumo da regra que será exibido pro público.</h3-->
-                <div class="clearfix">
-                    <div class="grupo-de-campos">
-                        <label for="horario-de-inicio">Horário inicial:</label><br>
-                        <input id="horario-de-inicio" class="js-event-times" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
-                    </div>
-                    <div class="grupo-de-campos">
-                        <label for="horario-de-fim">Horário final:</label><br>
-                        <input id="horario-de-fim" class="js-event-times" type="text" name="endsAt" placeholder="00:00"  value="{{rule.endsAt}}">
-                    </div>
-                    <div class="grupo-de-campos">
-                        <span class="label">Frequência:</span><br>
-                            <select name="frequency">
-                                <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}>uma vez</option>
-                                <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}>todos os dias</option>
-                                <option value="weekly" {{#rule.freq_weekly}}selected="selected"{{/rule.freq_weekly}}>semanal</option>
-                                <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensal</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="grupo-de-campos">
-                        <label for="data-de-inicio">Data inicial:</label><br>
-                        <input class="js-event-dates" readonly="readonly" id="starts-on-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
-                        <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
-                    </div>
-                    <div class="grupo-de-campos">
-                        <label for="data-de-fim">Data final:</label><br>
-                        <input class="js-event-dates" readonly="readonly" id="until-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_until}}">
-                        <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
-                        <!--(Se repetir mostra o campo de data final)-->
-                    </div>
-                    <div>
-                        <span class="label">Repete:</span><br>
-                        <div>
-                            <label style="display:inline;"><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> D </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> S </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> T </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> Q </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> Q </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> S </label>
-                            <label style="display:inline;"><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> S </label>
-                        </div>
-                        <!-- for now we will not support monthly recurrences.
-                        <div>
-                            <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> dia do mês </label>
-                            <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> dia da semana </label>
-                        </div>
-                        -->
-                    </div>
+        <div class="clearfix">
+            <div class="grupo-de-campos">
+                <label for="horario-de-inicio">Horário inicial:</label><br>
+                <input id="horario-de-inicio" class="horario-da-ocorrencia js-event-times" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
+            </div>
+            <div class="grupo-de-campos">
+                <label for="horario-de-fim">Horário final:</label><br>
+                <input id="horario-de-fim" class="horario-da-ocorrencia js-event-times" type="text" name="endsAt" placeholder="00:00"  value="{{rule.endsAt}}">
+            </div>
+            <div class="grupo-de-campos">
+                <span class="label">Frequência:</span><br>
+                    <select name="frequency">
+                        <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}>uma vez</option>
+                        <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}>todos os dias</option>
+                        <option value="weekly" {{#rule.freq_weekly}}selected="selected"{{/rule.freq_weekly}}>semanal</option>
+                        <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensal</option>
+                    </select>
                 </div>
             </div>
-            <!--.regra-->
         </div>
-        <!--.ocorrencia-->
-        <input type="submit" value="enviar">
-<!--        <footer class="clearfix">
-            <p class="mensagem ajuda">Uma ocorrência pode ter mais de uma regra, com diferentes combinações de horários e datas. Clique no botão para adicionar uma nova regra.</p>
-            <div class="alignright">
-                <a class="alignleft botao adicionar" href="#">adicionar regra</a>
-                <input type="submit" value="enviar">
+        <div class="clearfix">
+            <div class="grupo-de-campos">
+                <label for="data-de-inicio">Data inicial:</label><br>
+                <input id="data-de-inicio" class="js-event-dates data-da-ocorrencia" readonly="readonly" id="starts-on-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
+                <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
-        </footer>-->
+            <div class="grupo-de-campos oculto">
+                <label for="data-de-fim">Data final:</label><br>
+                <input id="data-de-fim" class="js-event-dates data-da-ocorrencia" readonly="readonly" id="until-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_until}}">
+                <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
+                <!--(Se repetir mostra o campo de data final)-->
+            </div>
+            <div class="alignleft oculto">
+                <span class="label">Repete:</span><br>
+                <div>
+                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> D </label>
+                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> S </label>
+                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> T </label>
+                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> Q </label>
+                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> Q </label>
+                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> S </label>
+                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> S </label>
+                </div>
+                <!-- for now we will not support monthly recurrences.
+                <div>
+                    <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> dia do mês </label>
+                    <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> dia da semana </label>
+                </div>
+                -->
+            </div>
+        </div>
+        <p class="staging-hidden">
+            <span class="label">Resumo:</span><br>
+            Resumo da regra
+        </p>
+        <footer class="clearfix">
+            <input type="submit" value="enviar">
+        </footer>
     </form>
 </script>
 <?php endif; ?>
