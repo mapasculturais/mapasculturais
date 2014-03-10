@@ -10,7 +10,7 @@ if(is_editable()){
     add_taxonoy_terms_to_js('tag');
 
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-    $app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
+    //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
 
 add_entity_properties_metadata_to_js($entity);

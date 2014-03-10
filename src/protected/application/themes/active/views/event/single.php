@@ -11,7 +11,7 @@ if (is_editable()) {
     $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
-    $app->enqueueStyle('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
+    //$app->enqueueStyle('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
 
 add_map_assets();
