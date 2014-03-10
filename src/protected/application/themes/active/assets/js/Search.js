@@ -5,47 +5,47 @@
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', function($scope, $rootScope, $location, $rison, $window){
         $scope.data = {
             global: {
-                isVerified: true,
-                isCombined: false,
-                viewMode: 'map',
+                // isVerified: true,
+                // isCombined: false,
+                // viewMode: 'map',
                 filterEntity: 'agent',
                 map: {
                     center: null,
                     zoom: null,
-                    locationFilters: {
-                        circle: {
-                            center: null,
-                            radius: null,
-                            isNeighborhood: false
-                        },
-                    },
+                    // locationFilters: {
+                    //     circle: {
+                    //         center: null,
+                    //         radius: null,
+                    //         isNeighborhood: false
+                    //     },
+                    // },
                 },
-                enabled: {
-                    agent: true,
-                    space: false,
-                    event: false
-                }
+                // enabled: {
+                //     agent: true,
+                //     space: false,
+                //     event: false
+                // }
             },
             agent: {
                 keyword: '',
                 areas: [],
                 type: null
             },
-            space: {
-                keyword: '',
-                areas: [],
-                types: [],
-                acessibilidade: false
-            },
-            event: {
-                keyword: '',
-                linguagem: [],
-                between: {
-                    start: null,
-                    end: null
-                },
-                classificacaoEtaria: null
-            }
+            // space: {
+            //     keyword: '',
+            //     areas: [],
+            //     types: [],
+            //     acessibilidade: false
+            // },
+            // event: {
+            //     keyword: '',
+            //     linguagem: [],
+            //     between: {
+            //         start: null,
+            //         end: null
+            //     },
+            //     classificacaoEtaria: null
+            // }
         };
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
