@@ -24,9 +24,32 @@
 
 
 <?php add_map_assets(); ?>
-    <div id="infobox" class="objeto">
+    <div id="infobox">
         <a class="icone icon_close" href="#" onclick="this.parentElement.style.display='none'"></a>
-        <article></article>
+        <article class="objeto"></article>
+        <!--
+        ABAIXO O HTML DOS EVENTOS!!!
+        O LOOP É IGUALZINHO AO LOOP DO RESULTADO DA BUSCA EM LISTA, PORÉM SEM O LOCAL, POIS ESTE JÁ VEM ANTES.
+        QUANDO FOR FAZER A PROGRAMAÇÃO FALAR COM A CÁTIA POIS PRECISO EXPLICAR E VAI PRECISAR ALTERAR O JS!!!!!!!
+        E DEPOIS DE PRONTO NÃO ESQUEÇA DE REMOVER ESSE COMENTÁRIO
+        <p class="espaco-dos-eventos">Eventos encontrados em:<br>
+        <a href="#">Nome do Espaço<br>
+        Rua Fulano de Tal, 200 - CEP 00000-000</a></p>
+        <article class="objeto evento clearfix">
+            <h1><a href="#">Nome do evento</a></h1>
+            <div class="objeto-content clearfix">
+                <a href="#" class="js-single-url">
+                    <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarBig'].url||defaultImageURL}}">
+                </a>
+                <p class="objeto-resumo">descrição curta do evento</p>
+                <div class="objeto-meta">
+                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
+                    <div><span class="label">Horário:</span> <time>00h00</time></div>
+                    <div><span class="label">Classificação:</span> livre</div>
+                </div>
+            </div>
+        </article>
+        -->
     </div>
     <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
 
@@ -58,7 +81,7 @@
             </article>
         </div>
         <header id="header-dos-espacos" class="header-do-objeto clearfix">
-            <h1><span class="icone icon_profile"></span> Espaços</h1>
+            <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>

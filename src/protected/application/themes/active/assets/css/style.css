@@ -573,12 +573,15 @@ body.editable #main-section { margin-top: 136px; }
 
 /* =Mapa
 -------------------------------------------------------------- */
-#mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; right: 0; }
-#infobox { display: none; position: absolute; z-index:123123123123; top: 176px; left: 1.5rem; width: 300px; height: 265px; overflow: auto; padding: 1.5rem; border-radius: 2px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
-#infobox .icon_close { position: absolute; top: .75rem; right: .75rem; }
-#infobox.objeto h1 { font-size: 1.25rem; }
-#infobox .objeto-thumb { position: static; float: left; margin: 0 1.5rem 1.5rem 0; }
-#infobox .objeto-resumo { float: none; margin-right: 0; margin-bottom: 1.5rem; padding: 0; font-size: .875rem; }
+#mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
+#infobox { display: none; position: absolute; z-index: 149; top: 160px; left: 0; bottom: 0; width: 300px; height: 800px;/*remover essa altura e fazer o cálculo da section#main-section via js*/ overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
+#infobox .icon_close { position: absolute; top: .5rem; right: .5rem; }
+#infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
+#infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
+#infobox .objeto { padding: .75rem; }
+#infobox .objeto h1 { font-size: 1.25rem; }
+#infobox .objeto-thumb { position: static; float: left; margin: 0 .75rem 1.5rem 0; width: 4rem; height: 4rem; }
+#infobox .objeto-resumo { float: none; min-height: 4rem; margin-right: 0; margin-bottom: 1.5rem; padding: 0; font-size: .75rem; }
 
 /* =Barra lateral
 -------------------------------------------------------------- */
