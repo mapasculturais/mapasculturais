@@ -97,28 +97,41 @@
 	<nav id="main-nav" class="alignright clearfix">
 		<ul class="menu abas-objetos clearfix">
 			<li id="aba-eventos" ng-class="{'active':eventSearch.showFilters,'disabled':!eventSearch.enabled,'enabled':eventSearch.enabled}" ng-mouseenter="tabOver('event')" ng-mouseleave="tabOut('event')" ng-click="tabClick('event')">
-                <a href="<?php echo $app->createUrl('busca'); ?>" class="icone icon_calendar"></a>
-                <a class="js-filtro">Eventos</a>
+                <a href="<?php echo $app->createUrl('busca'); ?>">
+                	<div class="icone icon_calendar"></div>
+                	<div>Eventos</div>
+                </a>
             </li>
 			<li id="aba-agentes" ng-class="{'active':agentSearch.showFilters,'disabled':!agentSearch.enabled,'enabled':agentSearch.enabled}" ng-mouseenter="searchManager.tabOver('agent')" ng-mouseleave="tabOut('agent')" ng-click="searchManager.tabClick('agent')">
-                <a href="<?php echo $app->createUrl('busca'); ?>" class="icone icon_profile"></a>
-                <a class="js-filtro">Agentes</a>
+                <a href="<?php echo $app->createUrl('busca'); ?>"> 
+	                <div class="icone icon_profile"></div>
+	                <div>Agentes</div>
+                </a>
             </li>
 			<li id="aba-espacos" ng-class="{'active':spaceSearch.showFilters,'disabled':!spaceSearch.enabled,'enabled':spaceSearch.enabled}" ng-mouseenter="searchManager.tabOver('space')" ng-mouseleave="tabOut('space')" ng-click="searchManager.tabClick('space')">
-                <a href="<?php echo $app->createUrl('busca'); ?>#/espacos" class="icone icon_building"></a>
-                <a class="js-filtro">Espaços</a>
+                <a href="<?php echo $app->createUrl('busca'); ?>#/espacos">
+                	<div class="icone icon_building"></div>
+                	<div>Espaços</div>
+                </a>
             </li>
         </ul>
         <!--.menu.abas-objetos-->
         <ul class="menu abas-objetos clearfix">
-			<li id="aba-projetos"><a class="icone icon_document_alt" href="<?php echo $app->createUrl('project'); ?>"></a><a class="js-filtro" href="#filtro-projetos">Projetos</a></li>
+			<li id="aba-projetos"> <!--se estiver na busca de projetos adicionar nessa li class="active enabled"-->
+				<a href="<?php echo $app->createUrl('project'); ?>">
+					<div class="icone icon_document_alt"></div>
+					<div>Projetos</div>
+				</a>
+			</li>
         </ul>
         <!--.menu.abas-objetos-->
         <ul class="menu logado clearfix">
             <?php if($app->user): ?>
 				<li class="notificacoes">
-                    <a href="#" class="icone icon_comment"></a>
-                    <a href="#">Notificações</a>
+                    <a href="#">
+                    	<div class="icone icon_comment"></div>
+                    	<div>Notificações</div>
+                    </a>
 					<ul class="submenu">
 						<li>
 							<div class="setinha"></div>
