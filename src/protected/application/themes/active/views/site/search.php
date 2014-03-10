@@ -9,14 +9,17 @@
     //add_map_icon_marker_assets();
 
     $app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
+    $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
     $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
-    $app->enqueueScript('app', 'busca', '/js/buscanova.js');
-    //$app->enqueueScript('vendor', 'angular-sham-spinner' '/vendor/angular-sham-spinner-master/angular-sham.spinner.js', array('angular'));
-    //$app->enqueueScript('vendor', 'ngProgress', '/vendor/ngProgress.min.js', array('angular'));
+    $app->enqueueScript('app', 'Search', '/js/Search.js');
+
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
     $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+
+
+
 ?>
 
 

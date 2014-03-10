@@ -126,19 +126,20 @@
 		<!--.filtro-->
     </div>
     <!--#filtro-eventos-->
-    <div id="filtro-agentes" class="filtro-objeto clearfix" ng-show="agentSearch.showFilters">
+    <div id="filtro-agentes" class="filtro-objeto clearfix" ng-if="data.global.filterEntity==='agent'">
 		<form class="form-palavra-chave filtro">
 			<label>Palavra-chave</label>
-			<input ng-model="agentSearch.searchInput" data-entity="agent" ng-keyup="searchTermKeyUp($event)" class="campo-de-busca" type="text" name="busca" placeholder="Digite um palavra-chave" />
+			<input ng-model="data.agent.keyword" class="campo-de-busca" type="text" name="busca" placeholder="Digite um palavra-chave" />
 		</form>
 		<!--#busca-->
+        <!--
 		<div class="filtro">
 			<span class="label">Área de Atuação</span>
             <div class="dropdown">
                 <div class="placeholder">Selecione as áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="lista-de-filtro">
-                        <li ng-repeat="area in agentSearch.areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;searchManager.update()">
+                        <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;searchManager.update()">
                             <span>{{area.name}}</span>
                         </li>
                     </ul>
@@ -146,6 +147,7 @@
             </div>
         </div>
 		<!--.filtro-->
+        <!--
 		<div class="filtro">
             <span class="label">Tipo</span>
 			<div id="tipo-de-agente" class="dropdown">
@@ -163,14 +165,17 @@
             </div>
 		</div>
 		<!--.filtro-->
+        <!--
     </div>
     <!--#filtro-agentes-->
+    <!--
     <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="spaceSearch.showFilters">
 		<form class="form-palavra-chave filtro">
 			<label for="palavra-chave-espaco">Palavra-chave</label>
 			<input ng-model="spaceSearch.searchInput" data-entity="space"  ng-keyup="searchTermKeyUp($event)" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Digite um palavra-chave" />
 		</form>
 		<!--#busca-->
+        <!--
 		<div class="filtro">
 			<span class="label">Área de Atuação</span>
 			<div class="dropdown">
@@ -185,6 +190,7 @@
             </div>
 		</div>
 		<!--.filtro-->
+        <!--
 		<div class="filtro">
 			<span class="label">Tipo</span>
 			<div class="dropdown">
@@ -199,6 +205,7 @@
 			</div>
 		</div>
 		<!--.filtro-->
+        <!--
 		<div class="filtro">
 			<span class="icone icon_check" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" ng-class="{'selected':spaceAccessibility}"></span>
 			<span id="label-da-acessibilidade" class="label" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" style="cursor:default">
@@ -208,13 +215,15 @@
 		<!--.filtro-->
     </div>
     <!--#filtro-espacos-->
+    <!--
     <div class="wrap clearfix">
         <div id="filtro-local" class="filtro-geral clearfix" ng-controller="SearchSpatialController">
 			<form id="form-local" method="post" action="#">
 				<label for="proximo-a">Local: </label>
 				<input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
 				<!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
-				<input type="hidden" name="lat" />
+				<!--
+                <input type="hidden" name="lat" />
 				<input type="hidden" name="lng" />
 			</form>
 			  ou
@@ -268,7 +277,7 @@
 				<small style="font-weight:normal; cursor:help;" ng-show="spaceSearch.results.length>0 && spaceSearch.resultsWithoutMarker>0">
 					<span class="hltip  hltip-auto-update" title="{{spaceSearch.results.length-spaceSearch.resultsWithoutMarker}} espaços mostrados no mapa ({{spaceSearch.resultsWithoutMarker}} sem localização)">
 						({{spaceSearch.results.length-spaceSearch.resultsWithoutMarker}} <span class="icone icon_pin_alt"></span>)
-					</span>		
+					</span>
 				</small>
 			</span>
 			<span ng-show="agentSearch.results.length>0&&spaceSearch.results.length>0">
