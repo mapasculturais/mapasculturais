@@ -2,7 +2,7 @@
     "use strict";
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'rison']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', function($scope, $rootScope, $location, $rison){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', function($scope, $rootScope, $location, $rison, $window){
         $scope.data = {
             global: {
                 isVerified: true,
@@ -10,10 +10,7 @@
                 viewMode: 'map',
                 filterEntity: 'agent',
                 map: {
-                    center: {
-                        lat: null,
-                        lng: null
-                    },
+                    center: null,
                     zoom: null,
                     locationFilters: {
                         circle: {
@@ -77,6 +74,21 @@
                 return false;
             }
         }
+
+        angular.element(document).ready(function(){
+            $window.leaflet.map.removeLayer($window.leaflet.marker);
+            $window.leaflet.map.on('zoomend dragend', function(){
+                $scope.data.map = {
+                    center : $window.leaflet.map.getCenter(),
+                    zoom : $window.leaflet.map.getZoom()
+                };
+                $scope.$apply();
+            });
+        });
+
+
+
+
     }]);
 
 
