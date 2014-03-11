@@ -30,6 +30,10 @@ class Site extends \MapasCulturais\Controller {
         $this->render('search');
     }
 
+    function GET_page() {
+        $this->render('page');
+    }
+
     function ALL_permissionDenied(){
         $app = \MapasCulturais\App::i();
         $e = $this->data['exception'];
