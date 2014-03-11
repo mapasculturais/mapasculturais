@@ -1,4 +1,4 @@
-<div class="bloco">
+<div class="bloco staging-hidden">
 	<h3 class="subtitulo">Compartilhamentos</h3>
 	<div class="compartilhamentos">000</div>
 </div>
