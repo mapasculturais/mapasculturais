@@ -1,5 +1,4 @@
 <?php $this->part('panel/part-nav.php');?>
-<!--#nav-do-painel-->
 <div class="main-content">
     <section id="estatisticas-do-usuario">
         <div class="clearfix">Agentes <span class="valor"><?php echo $count->agents;?></span></div>
