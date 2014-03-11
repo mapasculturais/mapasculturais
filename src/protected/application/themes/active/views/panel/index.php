@@ -1,7 +1,8 @@
 <?php $this->part('panel/part-nav.php');?>
 <div class="main-content">
+
 	<p id="boas-vindas-painel">
-		Olá, <strong>nome-de-usuário</strong>, bem-vindo ao painel do SPCultura!
+		Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do SPCultura!
 	</p>
 	<h2>Resumo</h2>
     <section id="estatisticas-do-usuario" class="clearfix">
@@ -10,7 +11,7 @@
         		<span class="alignleft">Eventos</span>
         		<div class="icone icon_calendar alignright"></div>
         	</div>
-        	<div class="clearfix">        		
+        	<div class="clearfix">
         		<a class="valor hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events;?></a>
         		<a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="Adicionar eventos"></a>
         	</div>
@@ -24,7 +25,7 @@
         		<a class="valor hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="Ver meus agentes"><?php echo $count->agents;?></a>
         		<a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="Adicionar agentes"></a>
         	</div>
-        </div>        
+        </div>
         <div class="box">
 	        <div class="clearfix">
 	        	<span class="alignleft">Espaços</span>
@@ -41,10 +42,11 @@
         		<div class="icone icon_document_alt alignright"></div>
         	</div>
         	<div class="clearfix">
-        		<a class="valor hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos">00</a>
+        		<a class="valor hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects;?></a>
         		<a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
         	</div>
         </div>
+
     </section>
     <section id="atividades">
 		<header class="clearfix">

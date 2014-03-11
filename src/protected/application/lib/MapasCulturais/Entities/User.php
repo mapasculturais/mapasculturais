@@ -229,7 +229,7 @@ class User extends \MapasCulturais\Entity
     }
 
     private function getActiveListOf($entityClassName){
-        $query = App::i()->em->createQuery("
+        $dql = "
             SELECT
                 e
             FROM
@@ -240,7 +240,8 @@ class User extends \MapasCulturais\Entity
                 a.user = :user
             ORDER BY
                 e.createTimestamp ASC
-        ");
+        ";
+        $query = App::i()->em->createQuery($dql);
         $query->setParameter('user', $this);
         $entityList = $query->getResult();
         return $entityList;
@@ -252,12 +253,16 @@ class User extends \MapasCulturais\Entity
         return $this->getActiveListOf('MapasCulturais\Entities\\'.$parsedFunctionName);
     }
 
-    public function getSpaces(){return $this->getList(__FUNCTION__);}
-    public function getEvents(){return $this->getList(__FUNCTION__);}
-    public function getProjects(){return $this->getList(__FUNCTION__);}
+    public function getSpaces(){
+        return $this->getList(__FUNCTION__);
+    }
 
-    public function getGravatarUrl($s = 48){
-        return "http://www.gravatar.com/avatar/" . md5($this->email) . "?s=$s";
+    public function getEvents(){
+        return $this->getList(__FUNCTION__);
+    }
+
+    public function getProjects(){
+        return $this->getList(__FUNCTION__);
     }
 
     //============================================================= //
