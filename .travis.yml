@@ -4,7 +4,7 @@ php:
 
 install:
   - echo "yes" | pecl install apcu-beta
-  - pushd src/protected; composer update; popd
+  - pushd src/protected; composer update --prefer-dist; popd
 
 before_script:
   - psql -c 'create user mapasculturais;' -U postgres
