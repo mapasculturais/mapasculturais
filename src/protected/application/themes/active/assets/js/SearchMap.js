@@ -8,19 +8,19 @@
             $scope.map = null;
             $scope.resultLayer = null;
 
-            //$scope.markers = [];
-            $scope.markers = {
-                agent : null,
-                space : null,
-                event : null
-            };
+            $scope.markers = [];
+            // $scope.markers = {
+            //     agent : null,
+            //     space : null,
+            //     event : null
+            // };
 
 
             $rootScope.$on('searchResultsReady', function(ev, results){
                 console.log('ON searchResultsReady', results);
-                if(results.agents) $scope.createMarkers('agent', results.agents);
-                if(results.events) $scope.createMarkers('event', results.events);
-                if(results.spaces) $scope.createMarkers('space', results.spaces);
+                if(results.agent) $scope.createMarkers('agent', results.agent);
+                if(results.event) $scope.createMarkers('event', results.event);
+                if(results.space) $scope.createMarkers('space', results.space);
 
                 $scope.updateMap();
             });
@@ -42,8 +42,8 @@
         $scope.createMarkers = function(entity, results){
             //console.log('process results', results);
 
-            delete searchEntity.markers;
-
+            delete $scope.markers;
+            $scope.markers = [];
             results.forEach(function(item){
                 var icon = '';
                 var label = '';
@@ -53,7 +53,7 @@
 
                 if(true || !window.lmarkers[mi]){
                     if(item.location.latitude == 0 && item.location.longitude == 0){
-                        searchEntity.resultsWithoutMarker++;
+                        //searchEntity.resultsWithoutMarker++;
                         return;
                     }
                     label = item.name
