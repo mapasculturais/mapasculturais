@@ -28,9 +28,10 @@ class Panel extends \MapasCulturais\Controller {
         $count->agents = 0;//App::i()->user->agents->count();
         $count->spaces = 0;//count(App::i()->user->spaces);
         $count->events = 0;//count(App::i()->user->events);
-        foreach($count as $entity=>$c){
+        $count->projects = 0;
+        foreach($count as $entity=>$c)
             $count->$entity = str_pad(count(App::i()->user->$entity),2,'0', STR_PAD_LEFT);
-        }
+        
         $this->render('index', array('count'=>$count));
     }
 
