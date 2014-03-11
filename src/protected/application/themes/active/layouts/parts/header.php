@@ -210,7 +210,12 @@
 				</li>
 				<!--.usuario-->
             <?php else: ?>
-                <li class="entrar"><a class="icone icon_lock" href="<?php echo $app->createUrl('panel') ?>"></a><a>Entrar</a></li>
+                <li class="entrar">
+                	<a href="<?php echo $app->createUrl('panel') ?>">
+                		<div class="icone icon_lock"></div>
+                		<div>Entrar</div>
+                	</a>
+                </li>
             <?php endif; ?>
 		</ul>
 		<!--.menu.logado-->
