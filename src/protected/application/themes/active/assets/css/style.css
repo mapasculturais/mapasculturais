@@ -646,9 +646,8 @@ table.contratos td { font-size: .75rem; }
 .privado .icone { width: 1rem; height: 1rem; }
 .privado h3 .icone { line-height: 1rem; vertical-align: top; }
 .privado .icon_lock:before { font-size: .75rem; color: #ccc; }
-.icone.icon_plus, .icone.icon_download { margin-right: .5rem; width: 1rem; height: 1rem; }
-.icone.icon_plus:before, .icone.icon_download:before { font-size: 1rem; }
-.icone.icon_plus:before { color: #fff; }
+.icone.icon_download { margin-right: .5rem; width: 1rem; height: 1rem; }
+.icone.icon_download:before { font-size: 1rem; }
 .infos { float: left; width: 40%; margin-bottom: 1.5rem; }
 .mapa { float: right; box-sizing: border-box; -moz-box-sizing: border-box; width: 60%; height: 408px; margin-bottom: 1.5rem; padding-left: 1.5rem; }
 #inscritos { padding-top: 1.5rem; border-top: 1px solid #ccc; }
@@ -660,24 +659,30 @@ table.contratos td { font-size: .75rem; }
 .toggle-mapa { float: right; font-size: .75rem; color: #666; line-height: 2rem; }
 .toggle-mapa:hover { color: #333; text-decoration: none; }
 
-/* =Painel
+/* =Painel e Páginas
 -------------------------------------------------------------- */
 nav.barra-esquerda ul { list-style: none; margin: 0 -1.5rem; font-size: .875rem; }
-nav.barra-esquerda a { display: block; padding: .75rem; border-left: transparent 6px solid; }
+nav.barra-esquerda a { display: block; padding: .75rem; border-left: #ccc 6px solid; }
 nav.barra-esquerda a.active { background: #fff; border-left-color: #f90; }
-nav.barra-esquerda a:hover { background: #f90; color: #fff; text-decoration: none; }
+nav.barra-esquerda a:hover { background: #f90; border-left-color: #f90; color: #fff; text-decoration: none; }
 nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
-#estatisticas-do-usuario, #atividades { padding: 1.5rem; }
-#estatisticas-do-usuario { margin: 1.5rem; border-radius: 6px; border: 1px solid #ccc; }
-#estatisticas-do-usuario div { margin-bottom: .75rem; border-bottom: 1px dotted #ccc; }
-.valor { float: right; font-weight: bold; }
+#boas-vindas-painel { border-left: 3px solid #f90; padding: .75rem; background: #f8f8f8; }
+#estatisticas-do-usuario { margin-bottom: 1.5rem; }
+#estatisticas-do-usuario div.box { display: block; float: left; width: 50%; border: .75rem solid #fff; border-radius: 14px; background: #eee; color: #000; }
+#estatisticas-do-usuario div.box:hover { background: #f90; }
+#estatisticas-do-usuario .icone { display: block; font-size: 2rem; margin-bottom: 3rem; }
+#estatisticas-do-usuario .icon_plus { margin-top: 2rem; margin-bottom: 0; background: #ddd; border-radius: 2px; }
+#estatisticas-do-usuario div.box:hover .icon_plus { background: #000; color: #fff}
+#estatisticas-do-usuario div.box:hover .icon_plus:hover { background: #fff; color: #000; }
+.valor { float: left; line-height: 4rem; font-size: 4rem; font-weight: normal; }
+.valor:hover { text-decoration: none; color: #fff; }
+#atividades .dropdown { width: 120px; margin: 11px 0; }
 .atividade { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #ccc; }
 .atividade p { margin-bottom: .75rem; }
 .action { display: inline-block; padding: 0 .5rem; background: #f90; border-radius: 2px; font-size: .75rem; font-weight: normal; }
 .action:hover { text-decoration: none; background: #000; color: #fff; }
 .agente-padrao { float: left; font-size: .75rem; }
 .agente-padrao input { vertical-align: middle; }
-#atividades .dropdown { width: 120px; margin: 11px 0; }
 .header-do-painel .botao.adicionar { float: right; margin: .5rem 0; }
 .lista-sem-thumb .objeto:hover { background: #f4f4f4; }
 .lista-sem-thumb .objeto h1 { font-size: 1rem; }
