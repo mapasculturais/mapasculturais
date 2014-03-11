@@ -36,41 +36,60 @@
 
     var skeletonData = {
             global: {
-                // isVerified: true,
-                // isCombined: false,
-                // viewMode: 'map',
+                isCombined: true,
+                viewMode: 'map',
                 filterEntity: 'agent',
+                locationFilters: {
+                    enabled: null, // circle, address, neighborhood
+                    circle: {
+                        center: {
+                            lat: null,
+                            lng: null
+                        },
+                        radius: null,
+                    },
+                    address: {
+                        text: '',
+                        center: {
+                            lat: null,
+                            lng: null
+                        }
+                    },
+                    neighborhood: {
+                        center: {
+                            lat: null,
+                            lng: null
+                        }
+                    }
+                },
                 map: {
                     zoom: null,
-                    center: { lat: null, lng: null },
-                    // locationFilters: {
-                    //     circle: {
-                    //         center: null,
-                    //         radius: null,
-                    //         isNeighborhood: false
-                    //     },
-                    // },
+                    center: {
+                        lat: null,
+                        lng: null
+                    }
                 },
-                // enabled: {
-                //     agent: true,
-                //     space: false,
-                //     event: false
-                // }
+                enabled: {
+                    agent: true,
+                    space: true,
+                    event: false
+                }
             },
             agent: {
+                isVerified: false,
                 keyword: '',
                 areas: [],
                 type: null
             },
-            // space: {
-            //     keyword: '',
-            //     areas: [],
-            //     types: [],
-            //     acessibilidade: false
-            // },
+            space: {
+                keyword: 'biblioteca',
+                areas: [],
+                types: [],
+                acessibilidade: false
+            },
             // event: {
             //     keyword: '',
-            //     linguagem: [],
+            //     linguagens: [],
             //     between: {
             //         start: null,
             //         end: null
@@ -79,9 +98,9 @@
             // }
         };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'rison']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'rison']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', function($scope, $rootScope, $location, $rison, $window, $timeout){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
         $scope.data = angular.copy(skeletonData);
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
@@ -105,11 +124,13 @@
             if(newValue && newValue !== $rison.stringify(emptyFilter($scope.data))){
                 $scope.data = angular.extend(angular.copy(skeletonData), $rison.parse(newValue));
                 $rootScope.$emit('searchDataChange', $scope.data);
+
             }
         });
 
         $rootScope.$on('searchDataChange', function(ev, data) {
             console.log('searchDataChange emitted', data);
+            SearchService($scope.data);
         });
 
         $scope.getName = function(valores, id){
@@ -130,5 +151,10 @@
                 $scope.$apply();
             });
         });
+
+
+
+
+
     }]);
 })(angular);

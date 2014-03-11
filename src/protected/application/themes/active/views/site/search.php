@@ -12,7 +12,8 @@
     $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
-    $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
+    $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
+    //$app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
     $app->enqueueScript('app', 'Search', '/js/Search.js');
 
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
@@ -51,7 +52,7 @@
         </article>
         -->
     </div>
-    <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
+    <div ng-controller="SearchMapController" id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
 
     </div>
     <div id="lista">
