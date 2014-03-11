@@ -32,10 +32,10 @@ if(is_editable() || $entity->className != $owner->className || $entity->id != $o
             <img src="<?php echo $avatar_url; ?>" class="avatar js-owner-avatar" />
 
 			<p class="descricao-do-agente js-owner-description"><?php echo nl2br($owner->shortDescription); ?></p>
-            <div class="clearfix">
+            <div class="clearfix staging-hidden">
                 <?php if(!is_editable()): ?>
                     <a class="action" href="#">Reportar erro</a>
-				    <a class="action" href="#">Reivindicar propriedade</a>
+                    <a class="action" href="#">Reivindicar propriedade</a>
                 <?php endif; ?>
 			</div>
 		</div>
