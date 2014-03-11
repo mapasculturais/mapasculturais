@@ -41,8 +41,8 @@
                 // viewMode: 'map',
                 filterEntity: 'agent',
                 map: {
-                    center: null,
                     zoom: null,
+                    center: { lat: null, lng: null },
                     // locationFilters: {
                     //     circle: {
                     //         center: null,
@@ -94,13 +94,22 @@
                 console.log('changing location.hash');
                 $location.hash(serialized);
             }
+
+
         }, true);
 
         $rootScope.$on('$locationChangeSuccess', function(){
             var newValue = $location.hash();
-            if(newValue !== $rison.stringify(emptyFilter($scope.data))){
+
+            if(newValue && newValue !== $rison.stringify(emptyFilter($scope.data))){
                 $scope.data = angular.extend(angular.copy(skeletonData), $rison.parse(newValue));
+
+                if($window.leaflet) {
+                    $window.leaflet.map.setZoom($scope.data.global.map.zoom);
+                    $window.leaflet.map.panTo($scope.data.global.map.center);
+                }
             }
+
         });
 
         $scope.getName = function(valores, id){
