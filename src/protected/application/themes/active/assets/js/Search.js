@@ -81,7 +81,7 @@
 
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'rison']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', function($scope, $rootScope, $location, $rison, $window){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', function($scope, $rootScope, $location, $rison, $window, $timeout){
         $scope.data = angular.copy(skeletonData);
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
@@ -91,11 +91,12 @@
             var serialized = $rison.stringify(emptyFilter(newValue));
 
             if($location.hash() !== serialized){
-                console.log('changing location.hash');
                 $location.hash(serialized);
+                $timeout.cancel($scope.timer);
+                $scope.timer = $timeout(function() {
+                    $rootScope.$emit('searchDataChange', $scope.data);
+                }, 1000);
             }
-
-
         }, true);
 
         $rootScope.$on('$locationChangeSuccess', function(){
@@ -103,13 +104,12 @@
 
             if(newValue && newValue !== $rison.stringify(emptyFilter($scope.data))){
                 $scope.data = angular.extend(angular.copy(skeletonData), $rison.parse(newValue));
-
-                if($window.leaflet) {
-                    $window.leaflet.map.setZoom($scope.data.global.map.zoom);
-                    $window.leaflet.map.panTo($scope.data.global.map.center);
-                }
+                $rootScope.$emit('searchDataChange', $scope.data);
             }
+        });
 
+        $rootScope.$on('searchDataChange', function(ev, data) {
+            console.log('searchDataChange emitted', data);
         });
 
         $scope.getName = function(valores, id){
@@ -130,13 +130,5 @@
                 $scope.$apply();
             });
         });
-
-
-
-
     }]);
-
-
-
-
 })(angular);
