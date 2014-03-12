@@ -116,7 +116,7 @@
             </li>
         </ul>
         <!--.menu.abas-objetos-->
-        <ul class="menu abas-objetos clearfix">
+        <ul class="menu abas-objetos clearfix staging-hidden">
 			<li id="aba-projetos"> <!--se estiver na busca de projetos adicionar nessa li class="active enabled"-->
 				<a href="<?php echo $app->createUrl('project'); ?>">
 					<div class="icone icon_document_alt"></div>
