@@ -420,6 +420,11 @@ abstract class EntityController extends \MapasCulturais\Controller{
         App::i()->stop();
     }
 
+
+    public function API_count(){
+        $this->API_find(array('counting' => true));
+    }
+
     /**
      * A generic API findOne method.
      *
@@ -428,7 +433,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $this->API_find(true);
+        $this->API_find(array('findOne' => true));
     }
 
 
@@ -439,11 +444,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * @param boolean $findOne (optional) (default false) set to true to returns only one object
      */
-    public function API_find($findOne = false){
+    public function API_find($options = array()){
         $app = App::i();
+
+        $findOne = key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('counting', $options) ? $options['counting'] : false;
+
         if(class_exists($this->entityClassName)){
             if(@$app->config['app.useApiCache']){
-                $cache_id = $this->id . '::' . md5(serialize($this->data + array('___FINDONE___' => $findOne)));
+                $cache_id = $this->id . '::' . md5(serialize($this->data + array('__OPTIONS__' => $options)));
 
 
                 if($app->cache->contains($cache_id)){
@@ -547,6 +556,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     continue;
 
                 }elseif(strtolower($key) == '@files' && preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $val, $imatch)){
+
+                    if($counting)
+                        continue;
                     // example:
                     // @files=(avatar.smallAvatar,header.header):name,url
 
@@ -628,6 +640,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
             }
 
+            if($counting)
+                $order = '';
+
             if($order){
                 $new_order = array();
                 foreach(explode(',',$order) as $prop){
@@ -659,17 +674,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $dql_where = $dql_where ? $dql_where . ' AND e.status > 0' : 'WHERE e.status > 0';
             }
 
+
+            $selecting = $counting ? 'COUNT(e)' : 'e';
+
             $final_dql = "
                 SELECT
-                    e
+                    $selecting
                 FROM
                     $class e
                     $dql_joins
 
                 $dql_where
 
-
-                $order";
+               $order";
 
             $result[] = "$final_dql";
 
@@ -688,7 +705,11 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $query->setMaxResults($findOne ? 1 : $limit);
             $query->setFirstResult($offset);
 
-            if($findOne){
+            if($counting){
+                $num = $query->getSingleScalarResult();
+                $this->apiItemResponse($num);
+
+            }elseif($findOne){
                 if($r = $query->getOneOrNullResult()){
                     $entity = array();
                     $append_files_cb($entity, $r);
