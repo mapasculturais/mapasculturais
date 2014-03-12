@@ -5,44 +5,101 @@
             var select,
                 numRequests = 0,
                 numSuccessRequests = 0,
-                results = {};
+                results = {},
+                apiParams;
 
+            $rootScope.apiCache = $rootScope.apiCache || {
+                agent: {
+                    params: '',
+                    result: []
+                },
+                space: {
+                    params: '',
+                    result: []
+                },
+                event: {
+                    params: '',
+                    result: []
+                },
+            };
 
-            if(data.global.viewMode === 'map'){
+            if(data.global.viewMode === 'list'){
+                select = 'id,singleUrl,name,type,shortDescription,terms';
+            }else{
                 select = 'id,name,location';
                 page = null;
-            }else{
-                select = 'id,singleUrl,name,type,shortDescription,terms';
             }
 
             if(data.global.enabled.agent){
-                numRequests++;
-                getData('agent', select, data2searchData(data.agent), page).success(function(rs){
-                    console.log('SUCCESS: agent');
-                    numSuccessRequests++;
-                    results.agent = rs;
+                apiParams = JSON.stringify([data2searchData(data.agent),page]);
+
+                if($rootScope.apiCache.agent.params === apiParams){
+                    console.log('CACHED: agent');
+                    results.agent = $rootScope.apiCache.agent.result;
                     endRequest();
-                });
+
+                }else{
+                    numRequests++;
+                    getData('agent', select, data2searchData(data.agent), page).success(function(rs){
+                        console.log('SUCCESS: agent');
+                        numSuccessRequests++;
+                        results.agent = rs;
+
+                        $rootScope.apiCache.agent.result = rs;
+
+                        endRequest();
+                    });
+
+                    $rootScope.apiCache.agent.params = apiParams;
+                }
             }
 
             if(data.global.enabled.event){
-                numRequests++;
-                getData('event', select, data2searchData(data.event), page).success(function(rs){
-                    console.log('SUCCESS: event');
-                    numSuccessRequests++;
-                    results.event = rs;
+                apiParams = JSON.stringify([data2searchData(data.event),page]);
+
+                if($rootScope.apiCache.event.params === apiParams){
+                    console.log('CACHED: event');
+                    results.event = $rootScope.apiCache.event.result;
                     endRequest();
-                });
+
+                }else{
+                    numRequests++;
+                    getData('event', select, data2searchData(data.event), page).success(function(rs){
+                        console.log('SUCCESS: event');
+                        numSuccessRequests++;
+                        results.event = rs;
+
+                        $rootScope.apiCache.event.result = rs;
+
+                        endRequest();
+                    });
+
+                    $rootScope.apiCache.event.params = apiParams;
+                }
             }
 
             if(data.global.enabled.space){
-                numRequests++;
-                getData('space', select, data2searchData(data.space), page).success(function(rs){
-                    console.log('SUCCESS: space');
-                    numSuccessRequests++;
-                    results.space = rs;
+                apiParams = JSON.stringify([data2searchData(data.space),page]);
+
+                if($rootScope.apiCache.space.params === apiParams){
+                    console.log('CACHED: space');
+                    results.space = $rootScope.apiCache.space.result;
                     endRequest();
-                });
+
+                }else{
+                    numRequests++;
+                    getData('space', select, data2searchData(data.space), page).success(function(rs){
+                        console.log('SUCCESS: space');
+                        numSuccessRequests++;
+                        results.space = rs;
+
+                        $rootScope.apiCache.space.result = rs;
+
+                        endRequest();
+                    });
+
+                    $rootScope.apiCache.space.params = apiParams;
+                }
             }
 
             function endRequest(){

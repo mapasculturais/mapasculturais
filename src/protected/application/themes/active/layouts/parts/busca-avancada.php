@@ -238,8 +238,8 @@
 		</div>
 		<!-- #filtro-prefeitura-->
         <div id="busca-combinada" class="filtro-geral">
-            <span class="icone icon_check"  ng-click="toggleCombined()" ng-class="{'selected':combinedSearch}" ></span>
-            <span class="label hltip"  		ng-click="toggleCombined()" style="cursor:default" comentario="Cátia, mudei o cursor para não ficar cursor:text já que registrei o evento de clique também aqui no .label do checkbox"
+            <span class="icone icon_check"  ng-click="data.global.isCombined = !data.global.isCombined " ng-class="{'selected':data.global.isCombined }" ></span>
+            <span class="label hltip"  		ng-click="data.global.isCombined = !data.global.isCombined " style="cursor:default" comentario="Cátia, mudei o cursor para não ficar cursor:text já que registrei o evento de clique também aqui no .label do checkbox"
             	title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
             	Busca Combinada
             </span>

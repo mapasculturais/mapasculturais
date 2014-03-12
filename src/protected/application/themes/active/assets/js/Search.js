@@ -36,7 +36,7 @@
 
     var skeletonData = {
             global: {
-                isCombined: true,
+                isCombined: false,
                 viewMode: 'map',
                 filterEntity: 'agent',
                 locationFilters: {
@@ -71,7 +71,7 @@
                 },
                 enabled: {
                     agent: true,
-                    space: true,
+                    space: false,
                     event: false
                 }
             },
@@ -82,7 +82,7 @@
                 type: null
             },
             space: {
-                keyword: 'biblioteca',
+                keyword: '',
                 areas: [],
                 types: [],
                 acessibilidade: false
@@ -144,7 +144,7 @@
 
         angular.element(document).ready(function(){
             $window.leaflet.map.removeLayer($window.leaflet.marker);
-            $window.leaflet.map.on('zoomend dragend', function(){
+            $window.leaflet.map.on('zoomend moveend', function(){
                 $scope.data.global.map = {
                     center : $window.leaflet.map.getCenter(),
                     zoom : $window.leaflet.map.getZoom()

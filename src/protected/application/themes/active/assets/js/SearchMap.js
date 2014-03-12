@@ -18,6 +18,9 @@
 
             $rootScope.$on('searchResultsReady', function(ev, results){
                 console.log('ON searchResultsReady', results);
+
+                delete $scope.markers;
+                $scope.markers = [];
                 if(results.agent) $scope.createMarkers('agent', results.agent);
                 if(results.event) $scope.createMarkers('event', results.event);
                 if(results.space) $scope.createMarkers('space', results.space);
@@ -39,57 +42,45 @@
 
         };
 
-        $scope.createMarkers = function(entity, results){
-            //console.log('process results', results);
+        $scope.createMarkers = function(entity, results) {
+            results.forEach(function(item) {
+                var marker;
+                var icon = entity;
+                var label = item.name;
 
-            delete $scope.markers;
-            $scope.markers = [];
-            results.forEach(function(item){
-                var icon = '';
-                var label = '';
-                var mi = entity + '-' + item.id;
+                marker = new L.marker(
+                        new L.LatLng(item.location.latitude, item.location.longitude),
+                        window.leaflet.iconOptions[icon]
+                        )
+                        .bindLabel(label)
+                        .on('click', function() {
+                            var listItem = document.querySelector('#' + entity + '-result-' + item.id);
+                            var itemURL = listItem.querySelector(' a.js-single-url');
+                            var infobox = document.querySelector('#infobox');
+                            var infoboxContent = infobox.querySelector('article');
+                            infoboxContent.innerHTML = listItem.innerHTML;
+                            infobox.style.display = 'block';
+                            infobox.className = 'objeto';
+                            infobox.classList.add(searchEntity.cssClass);
 
-                window.lmarkers = window.lmarkers || {};
+                            //itemURL.setAttribute('target', '_blank');
+                            //a.click();
+                        });
 
-                if(true || !window.lmarkers[mi]){
-                    if(!item.location || (item.location.latitude == 0 && item.location.longitude == 0) ) {
-                        //searchEntity.resultsWithoutMarker++;
-                        return;
-                    }
-                    label = item.name
-                    icon = entity;
-                    window.lmarkers[mi] = new L.marker(
-                                new L.LatLng(item.location.latitude,item.location.longitude),
-                                window.leaflet.iconOptions[icon]
-                            )
-                            .bindLabel(label)
-                            .on('click', function(){
-                                var listItem = document.querySelector('#'+entity+'-result-'+item.id);
-                                var itemURL = listItem.querySelector(' a.js-single-url');
-                                var infobox = document.querySelector('#infobox');
-                                var infoboxContent = infobox.querySelector('article');
-                                infoboxContent.innerHTML = listItem.innerHTML;
-                                infobox.style.display = 'block';
-                                infobox.className = 'objeto';
-                                infobox.classList.add(searchEntity.cssClass);
-                                console.log(listItem);
-                                //itemURL.setAttribute('target', '_blank');
-                                //a.click();
-                            });
+                if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
+                    marker.entityType = entity;
+                    $scope.markers.push(marker);
 
-                    window.lmarkers[mi].entityType = entity;
                 }
-                $scope.markers.push(window.lmarkers[mi]);
             });
         };
 
         $scope.updateMap = function(){
+
             if($scope.resultLayer){
                 $scope.resultLayer.clearLayers();
-                $scope.resultLayer.addLayers($scope.markers);
-                //$scope.viewLoading = false;
-            }
 
+            }
             $scope.resultLayer = new L.markerClusterGroup({
                 spiderfyOnMaxZoom: true,
                 showCoverageOnHover: false,
@@ -125,6 +116,8 @@
                     return L.divIcon({ html: cluster.getChildCount(), className: iconClass, iconSize: L.point(40, 40) });
                 }
             });
+
+            $scope.resultLayer.addLayers($scope.markers);
 
             var __c = 0;
             var _addLayer = $scope.resultLayer._addLayer;
