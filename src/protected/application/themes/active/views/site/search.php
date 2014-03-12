@@ -13,7 +13,7 @@
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
     $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
-    //$app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
+    $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
     $app->enqueueScript('app', 'Search', '/js/Search.js');
 
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));

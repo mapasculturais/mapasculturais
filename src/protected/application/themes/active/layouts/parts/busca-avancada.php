@@ -1,6 +1,6 @@
 <div id="busca">
 <div id="busca-avancada" class="clearfix">
-    <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="entity=='event'">
+    <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity==='event'">
 		<form class="form-palavra-chave filtro">
 			<label for="palavra-chave-evento">Palavra-chave</label>
 			<input ng-keyup="searchTermKeyUp($event)" data-entity='event' class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
@@ -11,7 +11,8 @@
 			<a class="tag selected data">00/00/00</a>
 			e
 			<a class="tag data">00/00/00</a>
-			<div id="busca-agenda-dia" class="hasDatepicker">
+			<!-- comentei o datepicker
+            <div id="busca-agenda-dia" class="hasDatepicker">
 				<div class="ui-datepicker-inline ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 					<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
 						<a class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Anterior"><span class="icone arrow_carrot-left ui-icon ui-icon-circle-triangle-w"></span></a>
@@ -80,6 +81,7 @@
 					</table>
 				</div>
 			</div>
+            -->
 		</div>
 		<!--.filtro-->
 		<div class="filtro">
@@ -126,20 +128,19 @@
 		<!--.filtro-->
     </div>
     <!--#filtro-eventos-->
-    <div id="filtro-agentes" class="filtro-objeto clearfix" ng-if="data.global.filterEntity==='agent'">
+    <div id="filtro-agentes" class="filtro-objeto clearfix" ng-show="data.global.filterEntity==='agent'">
 		<form class="form-palavra-chave filtro">
 			<label>Palavra-chave</label>
 			<input ng-model="data.agent.keyword" class="campo-de-busca" type="text" name="busca" placeholder="Digite um palavra-chave" />
 		</form>
 		<!--#busca-->
-        <!--
 		<div class="filtro">
 			<span class="label">Área de Atuação</span>
             <div class="dropdown">
                 <div class="placeholder">Selecione as áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="lista-de-filtro">
-                        <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;searchManager.update()">
+                        <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;">
                             <span>{{area.name}}</span>
                         </li>
                     </ul>
@@ -147,7 +148,6 @@
             </div>
         </div>
 		<!--.filtro-->
-        <!--
 		<div class="filtro">
             <span class="label">Tipo</span>
 			<div id="tipo-de-agente" class="dropdown">
@@ -157,7 +157,7 @@
                     	<li ng-click="selectAgentType();">
                             <span>Todos</span>
                         </li>
-                        <li ng-repeat="type in agentSearch.types" ng-click="selectAgentType($index);">
+                        <li ng-repeat="type in types.agent">
                             <span>{{type.name}}</span>
                         </li>
                     </ul>
@@ -165,24 +165,21 @@
             </div>
 		</div>
 		<!--.filtro-->
-        <!--
     </div>
     <!--#filtro-agentes-->
-    <!--
-    <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="spaceSearch.showFilters">
+    <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity==='space'">
 		<form class="form-palavra-chave filtro">
 			<label for="palavra-chave-espaco">Palavra-chave</label>
-			<input ng-model="spaceSearch.searchInput" data-entity="space"  ng-keyup="searchTermKeyUp($event)" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Digite um palavra-chave" />
+			<input ng-model="data.space.keyword" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Digite um palavra-chave" />
 		</form>
 		<!--#busca-->
-        <!--
 		<div class="filtro">
 			<span class="label">Área de Atuação</span>
 			<div class="dropdown">
                 <div class="placeholder">Selecione as áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="lista-de-filtro">
-                        <li ng-repeat="area in spaceSearch.areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;searchManager.update()">
+                        <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;">
                             <span>{{area.name}}</span>
                         </li>
                     </ul>
@@ -190,14 +187,13 @@
             </div>
 		</div>
 		<!--.filtro-->
-        <!--
 		<div class="filtro">
 			<span class="label">Tipo</span>
 			<div class="dropdown">
                 <div class="placeholder">Selecione os tipos</div>
 				<div class="submenu-dropdown">
                     <ul class="lista-de-filtro">
-                        <li ng-repeat="type in spaceSearch.types" ng-class="{'selected':type.selected}" ng-click="type.selected=!type.selected;searchManager.update()">
+                        <li ng-repeat="type in types.space" ng-class="{'selected':type.selected}" ng-click="type.selected=!type.selected;">
                             <span>{{type.name}}</span>
                         </li>
                     </ul>
@@ -205,7 +201,6 @@
 			</div>
 		</div>
 		<!--.filtro-->
-        <!--
 		<div class="filtro">
 			<span class="icone icon_check" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" ng-class="{'selected':spaceAccessibility}"></span>
 			<span id="label-da-acessibilidade" class="label" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" style="cursor:default">
@@ -215,14 +210,13 @@
 		<!--.filtro-->
     </div>
     <!--#filtro-espacos-->
-    <!--
     <div class="wrap clearfix">
         <div id="filtro-local" class="filtro-geral clearfix" ng-controller="SearchSpatialController">
 			<form id="form-local" method="post" action="#">
 				<label for="proximo-a">Local: </label>
 				<input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
 				<!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
-				<!--
+
                 <input type="hidden" name="lat" />
 				<input type="hidden" name="lng" />
 			</form>

@@ -15,7 +15,7 @@
             assetURL: '<?php echo $assetURL?>',
             request: {
                 controller: '<?php if($this->controller) echo $this->controller->id?>',
-                action: '<?php if($this->controller) echo str_replace($this->controller->id . '/', '', $this->template)?>',
+                action: '<?php if($this->controllxer) echo str_replace($this->controller->id . '/', '', $this->template)?>',
                 id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
             },
             mode: "<?php echo $app->config('mode'); ?>"
@@ -97,19 +97,19 @@
 	<nav id="main-nav" class="alignright clearfix">
 		<ul class="menu abas-objetos clearfix">
 			<li id="aba-eventos" ng-class="{'active':eventSearch.showFilters,'disabled':!eventSearch.enabled,'enabled':eventSearch.enabled}" ng-mouseenter="tabOver('event')" ng-mouseleave="tabOut('event')" ng-click="tabClick('event')">
-                <a href="<?php echo $app->createUrl('busca'); ?>">
+                <a href="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(event:true),filterEntity:event))">
                 	<div class="icone icon_calendar"></div>
                 	<div>Eventos</div>
                 </a>
             </li>
-			<li id="aba-agentes" ng-class="{'active':agentSearch.showFilters,'disabled':!agentSearch.enabled,'enabled':agentSearch.enabled}" ng-mouseenter="searchManager.tabOver('agent')" ng-mouseleave="tabOut('agent')" ng-click="searchManager.tabClick('agent')">
-                <a href="<?php echo $app->createUrl('busca'); ?>"> 
+			<li id="aba-agentes" ng-class="{'active':agentSearch.showFilters,'disabled':!agentSearch.enabled,'enabled':agentSearch.enabled}" ng-mouseenter="searchManager.tabOver('agent')" ng-mouseleave="tabOut('agent')" ng-click="tabClick('agent')">
+                <a href="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(agent:true),filterEntity:agent))">
 	                <div class="icone icon_profile"></div>
 	                <div>Agentes</div>
                 </a>
             </li>
-			<li id="aba-espacos" ng-class="{'active':spaceSearch.showFilters,'disabled':!spaceSearch.enabled,'enabled':spaceSearch.enabled}" ng-mouseenter="searchManager.tabOver('space')" ng-mouseleave="tabOut('space')" ng-click="searchManager.tabClick('space')">
-                <a href="<?php echo $app->createUrl('busca'); ?>#/espacos">
+			<li id="aba-espacos" ng-class="{'active':spaceSearch.showFilters,'disabled':!spaceSearch.enabled,'enabled':spaceSearch.enabled}" ng-mouseenter="searchManager.tabOver('space')" ng-mouseleave="tabOut('space')" ng-click="tabClick('space')">
+                <a href="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(space:true),filterEntity:space))">
                 	<div class="icone icon_building"></div>
                 	<div>Espaços</div>
                 </a>

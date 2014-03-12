@@ -72,7 +72,7 @@
                     searchData.isVerified = 'EQ(true)';
                 }
 
-                if(data.global.locationFilters.enabled){
+                if(data.global.locationFilters && data.global.locationFilters.enabled){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;
                     var radius = 1000;

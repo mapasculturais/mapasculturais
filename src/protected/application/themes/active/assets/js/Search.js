@@ -38,7 +38,7 @@
             global: {
                 isCombined: true,
                 viewMode: 'map',
-                filterEntity: 'agent',
+                filterEntity: 'event',
                 locationFilters: {
                     enabled: null, // circle, address, neighborhood
                     circle: {
@@ -98,12 +98,13 @@
             // }
         };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'rison']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
         $scope.data = angular.copy(skeletonData);
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        $scope.types = MapasCulturais.entityTypes;
 
         $scope.$watch('data', function(newValue, oldValue){
             if(newValue === undefined) return;
@@ -153,7 +154,9 @@
         });
 
 
-
+        $scope.tabClick = function(entity){
+            $scope.data.global.filterEntity = entity;
+        }
 
 
     }]);

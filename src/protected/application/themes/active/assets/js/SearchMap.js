@@ -26,7 +26,7 @@
             });
 
             $rootScope.$on('searchDataChange', function(ev, data){
-                if($scope.map && data.global.map.zoom) {
+                if($scope.map && data.global.map && data.global.map.zoom) {
                     $scope.map.setZoom(data.global.map.zoom);
                     $scope.map.panTo(data.global.map.center);
                 }
@@ -52,7 +52,7 @@
                 window.lmarkers = window.lmarkers || {};
 
                 if(true || !window.lmarkers[mi]){
-                    if(item.location.latitude == 0 && item.location.longitude == 0){
+                    if(!item.location || (item.location.latitude == 0 && item.location.longitude == 0) ) {
                         //searchEntity.resultsWithoutMarker++;
                         return;
                     }
