@@ -96,14 +96,14 @@
     </nav>
 	<nav id="main-nav" class="alignright clearfix">
 		<ul class="menu abas-objetos clearfix">
-			<li id="aba-eventos" ng-class="{'active':eventSearch.showFilters,'disabled':!eventSearch.enabled,'enabled':eventSearch.enabled}" ng-mouseenter="tabOver('event')" ng-mouseleave="tabOut('event')" ng-click="tabClick('event')">
+			<li id="aba-eventos" class="staging-hidden" ng-class="{'active':eventSearch.showFilters,'disabled':!eventSearch.enabled,'enabled':eventSearch.enabled}" ng-mouseenter="tabOver('event')" ng-mouseleave="tabOut('event')" ng-click="tabClick('event')">
                 <a href="<?php echo $app->createUrl('busca'); ?>">
                 	<div class="icone icon_calendar"></div>
                 	<div>Eventos</div>
                 </a>
             </li>
 			<li id="aba-agentes" ng-class="{'active':agentSearch.showFilters,'disabled':!agentSearch.enabled,'enabled':agentSearch.enabled}" ng-mouseenter="searchManager.tabOver('agent')" ng-mouseleave="tabOut('agent')" ng-click="searchManager.tabClick('agent')">
-                <a href="<?php echo $app->createUrl('busca'); ?>"> 
+                <a href="<?php echo $app->createUrl('busca'); ?>">
 	                <div class="icone icon_profile"></div>
 	                <div>Agentes</div>
                 </a>
@@ -116,7 +116,7 @@
             </li>
         </ul>
         <!--.menu.abas-objetos-->
-        <ul class="menu abas-objetos clearfix">
+        <ul class="menu abas-objetos clearfix staging-hidden">
 			<li id="aba-projetos"> <!--se estiver na busca de projetos adicionar nessa li class="active enabled"-->
 				<a href="<?php echo $app->createUrl('project'); ?>">
 					<div class="icone icon_document_alt"></div>
