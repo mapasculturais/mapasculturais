@@ -38,7 +38,7 @@
             global: {
                 isCombined: true,
                 viewMode: 'map',
-                filterEntity: 'event',
+                filterEntity: 'agent',
                 locationFilters: {
                     enabled: null, // circle, address, neighborhood
                     circle: {
