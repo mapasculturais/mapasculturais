@@ -60,14 +60,16 @@
                         layer = e.layer;
 
                     if (type === 'circle') {
-
-                        $scope.searchManager.filterLocation = {
-                            radius : parseInt(layer._mRadius),
-                            lat : layer._latlng.lat,
-                            lng : layer._latlng.lng
+                        $scope.data.locationFilters = {
+                            enabled : 'circle',
+                            circle : {
+                                center : {
+                                    lat: layer._latlng.lat,
+                                    lng: layer._latlng.lng
+                                },
+                                radius: parseInt(layer._mRadius),
+                            }
                         };
-
-                        $scope.searchManager.update();
                     }
 
 
@@ -99,13 +101,16 @@
                     var circle = L.circle(e.latlng, radius).addTo(map.drawnItems);
 
 
-                    $scope.searchManager.filterLocation = {
-                        radius : 1000,
-                        lat : map.getCenter().lat,
-                        lng : map.getCenter().lng
+                    $scope.data.locationFilters = {
+                        enabled : 'neighborhood',
+                        neighborhood : {
+                            center : {
+                                lat: map.getCenter().lat,
+                                lng: map.getCenter().lng
+                            },
+                        }
                     };
 
-                    $scope.searchManager.update();
 
                     window.leaflet.locationMarker = marker;
                     window.leaflet.locationCircle = circle;
