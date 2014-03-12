@@ -20,7 +20,7 @@
 			</div>
 		</form>
 		<p>Você também pode participar colaborando com suas próprias informações, preenchendo seu perfil de agente (artistas ou gestores) e assim obter vantagens como, por exemplo, se candidatar facilmente em editais da prefeitura, além de poder disponibilizar seus eventos na agenda, divulgar seu espaço ou projeto. Para isso, é necessário ter uma conta no SPCultura, clicando no botão abaixo.</p>
-		<p class="textcenter"><a class="botao-grande" href="#">Colabore com o SP Cultura</a></p>
+		<p class="textcenter"><a class="botao-grande" href="<?php echo $app->createUrl('panel') ?>">Colabore com o SP Cultura</a></p>
 	</div>
 	<div class="ver-mais"><a class="hltip icone arrow_carrot-down" href="#capa-eventos" title="Saiba mais"></a></div>
 </section>
@@ -58,7 +58,12 @@
 		</div>
     </div>
     <div class="box">
-		<div class="destaque-provisorio">
+		<div class="destaque-aleatorio">
+			<a class="destaque-content" href="#">
+				<h3>destaque</h3>
+				<h2>Título da entidade</h2>
+				<p>Descrição curta Casamentiss faiz malandris se pirulitá. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.</p>
+			</a>
 			<img src="<?php echo $assetURL?>/img/gemeos.jpg" />
 		</div>
 		<a class="botao-grande" href="<?php echo $app->createUrl('event') ?>">Ver Todos Eventos</a>
@@ -100,7 +105,12 @@
 		</div>
     </div>
     <div class="box">
-		<div class="destaque-provisorio">
+		<div class="destaque-aleatorio">
+			<a class="destaque-content" href="#">
+				<h3>destaque</h3>
+				<h2>Título da entidade</h2>
+				<p>Descrição curta Casamentiss faiz malandris se pirulitá. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.</p>
+			</a>
 			<img src="<?php echo $assetURL?>/img/bale.jpg" />
 		</div>
 		<a class="botao-grande" href="<?php echo $app->createUrl('agent') ?>">Ver Todos Agentes</a>
@@ -142,7 +152,12 @@
 		</div>
     </div>
     <div class="box">
-		<div class="destaque-provisorio">
+		<div class="destaque-aleatorio">
+			<a class="destaque-content" href="#">
+				<h3>destaque</h3>
+				<h2>Título da entidade</h2>
+				<p>Descrição curta Casamentiss faiz malandris se pirulitá. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.</p>
+			</a>
 			<img src="<?php echo $assetURL?>/img/biblioteca.jpg" />
 		</div>
 		<a class="botao-grande" href="<?php echo $app->createUrl('space') ?>">Ver Todos Espaços</a>
@@ -184,7 +199,12 @@
 		</div>
 	</div>
     <div class="box">
-		<div class="destaque-provisorio">
+		<div class="destaque-aleatorio">
+			<a class="destaque-content" href="#">
+				<h3>destaque</h3>
+				<h2>Título da entidade</h2>
+				<p>Descrição curta Casamentiss faiz malandris se pirulitá. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.</p>
+			</a>
 			<img src="<?php echo $assetURL?>/img/oficina.jpg" />
 		</div>
 		<a class="botao-grande" href="<?php echo $app->createUrl('project')?>">Ver Todos Projetos</a>
