@@ -119,11 +119,23 @@
                 }
 
                 if(entityData.areas && entityData.areas.length){
-                    searchData['term:area'] = 'IN(' + entityData.areas + ')';
+                    var selectedAreas = entityData.areas.map(function(e){
+                        return MapasCulturais.taxonomyTerms.area[e];
+                    });
+
+                    searchData['term:area'] = 'IN(' + selectedAreas  + ')';
                 }
 
                 if(entityData.linguagens && entityData.linguagens.length){
-                    searchData['term:linguagem'] = 'IN(' + entityData.linguagens + ')';
+                    var selectedLinguagens = entityData.areas.map(function(e){
+                        return MapasCulturais.taxonomyTerms.linguagem[e];
+                    });
+
+                    searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
+                }
+
+                if(entityData.type){
+                    searchData['type'] = 'IN(' + entityData.type + ')';
                 }
 
                 if(entityData.isVerified){
