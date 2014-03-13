@@ -1,6 +1,10 @@
 (function(angular) {
     var app = angular.module('SearchService', []);
     app.factory('SearchService', ['$http', '$rootScope', function($http, $rootScope){
+
+        //TODO RELOCATE THIS VARIABLE
+        var neighborhoodRadius = 2000;
+
         return function(data){
             var select,
                 numRequests = 0,
@@ -132,7 +136,7 @@
                 if(data.global.locationFilters && data.global.locationFilters.enabled){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;
-                    var radius = 1000;
+                    var radius = neighborhoodRadius;
                     if(data.global.locationFilters[type].radius)
                         radius = data.global.locationFilters[type].radius;
 

@@ -158,22 +158,9 @@
             }
         };
 
-        angular.element(document).ready(function(){
-            $window.leaflet.map.removeLayer($window.leaflet.marker);
-            $window.leaflet.map.on('zoomend moveend', function(){
-                $scope.data.global.map = {
-                    center : $window.leaflet.map.getCenter(),
-                    zoom : $window.leaflet.map.getZoom()
-                };
-                $scope.$apply();
-            });
-        });
-
-
         $scope.tabClick = function(entity){
             $scope.data.global.filterEntity = entity;
         };
-
 
     }]);
 })(angular);

@@ -221,9 +221,9 @@
 				<input type="hidden" name="lng" />
 			</form>
 			  ou
-			<a class="hltip proximo-a-mim botao principal" href="#" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
+			<a class="hltip proximo-a-mim botao principal" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
               ou
-            <a class="hltip botao principal" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
+            <a class="hltip botao principal" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
 		</div>
 		<!--#filtro-local-->
         <!--
@@ -297,7 +297,7 @@
 		<a class="tag tag-espaco" href="#" ng-repeat="area in spaceSearch.areas | filter:isSelected" ng-click="area.selected=false; searchManager.update();">{{area.name}}</a>
 		<a class="tag tag-espaco" href="#" ng-show="spaceAccessibility" ng-click="spaceAccessibility=false;searchManager.update()">Acessibilidade</a>
 		<a class="tag" href="#" ng-show="filterVerified" ng-click="filterVerified=false;searchManager.update()">Resultados da SMC</a>
-        <a class="tag" href="#" ng-show="searchManager.filterLocation" ng-click="searchManager.filterLocation=false;searchManager.update()">Área Delimitada</a>
+        <a class="tag" ng-show="data.global.locationFilters.enabled.length>0" ng-click="data.global.locationFilters=null">Área Delimitada</a>
 		<a class="tag remover-tudo" href="#" ng-click="cleanAllFilters()" ng-show="agentSearch.hasFilters()|| spaceSearch.hasFilters()||filterVerified||searchManager.filterLocation">Remover todos filtros</a>
 	</div>
     <!--#filtros-selecionados-->
