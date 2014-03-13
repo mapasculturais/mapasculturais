@@ -163,6 +163,14 @@
             }
         };
 
+        $scope.hasFilter = function() {
+            return !angular.equals(_diffFilter($scope.data.agent, skeletonData.agent), {});
+        };
+
+        $scope.cleanAllFilters = function () {
+            $scope.data.agent = angular.copy(skeletonData.agent);
+        };
+
         $scope.tabClick = function(entity){
             $scope.data.global.filterEntity = entity;
         };

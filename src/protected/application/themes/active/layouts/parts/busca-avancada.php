@@ -286,16 +286,16 @@
       </div>
       <!--#resultados-->
       <div id="filtros-selecionados">
-        <a class="tag tag-agente" href="#" ng-bind="agentSearch.searchTerm" ng-show="agentSearch.searchTerm" ng-click="agentResults=[];agentSearch.searchTerm='';agentSearch.searchInput='';searchManager.update();"></a>
+        <a class="tag tag-agente" ng-if="data.agent.keyword!==''" ng-click="data.agent.keyword=''">{{ data.agent.keyword }}</a>
         <a class="tag tag-espaco" href="#" ng-bind="spaceSearch.searchTerm" ng-show="spaceSearch.searchTerm" ng-click="spaceResults=[];spaceSearch.searchTerm='';spaceSearch.searchInput='';searchManager.update();"></a>
-        <a class="tag tag-agente" href="#" ng-repeat="type in agentSearch.types | filter:isSelected" ng-click="type.selected=false; searchManager.update();">{{type.name}}</a>
-        <a class="tag tag-espaco" href="#" ng-repeat="type in spaceSearch.types | filter:isSelected" ng-click="type.selected=false; searchManager.update();">{{type.name}}</a>
-        <a class="tag tag-agente" href="#" ng-repeat="area in agentSearch.areas | filter:isSelected" ng-click="area.selected=false; searchManager.update();">{{area.name}}</a>
-        <a class="tag tag-espaco" href="#" ng-repeat="area in spaceSearch.areas | filter:isSelected" ng-click="area.selected=false; searchManager.update();">{{area.name}}</a>
-        <a class="tag tag-espaco" href="#" ng-show="spaceAccessibility" ng-click="spaceAccessibility=false;searchManager.update()">Acessibilidade</a>
+        <a class="tag tag-agente" ng-if="data.agent.type!==null" ng-click="data.agent.type=null">{{ getName(types.agent, data.agent.type) }}</a>
+        <a class="tag tag-espaco" ng-repeat="type in spaceSearch.types | filter:isSelected" ng-click="type.selected=false; searchManager.update();">{{type.name}}</a>
+        <a class="tag tag-agente" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{getName(areas, areaId)}}</a>
+        <a class="tag tag-espaco" ng-repeat="area in spaceSearch.areas | filter:isSelected" ng-click="area.selected=false; searchManager.update();">{{area.name}}</a>
+        <a class="tag tag-espaco" ng-show="spaceAccessibility" ng-click="spaceAccessibility=false;searchManager.update()">Acessibilidade</a>
         <a class="tag" href="#" ng-show="filterVerified" ng-click="filterVerified=false;searchManager.update()">Resultados da SMC</a>
         <a class="tag" ng-show="data.global.locationFilters.enabled.length>0" ng-click="data.global.locationFilters=null">Área Delimitada</a>
-        <a class="tag remover-tudo" href="#" ng-click="cleanAllFilters()" ng-show="agentSearch.hasFilters()|| spaceSearch.hasFilters()||filterVerified||searchManager.filterLocation">Remover todos filtros</a>
+        <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
     </div>
     <!--#filtros-selecionados-->
     <div id="ferramentas">
