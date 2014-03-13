@@ -60,7 +60,7 @@
             event: {
                 keyword: '',
                 linguagens: [],
-                from: '2014-02-28',
+                from: null,
                 to: null,
                 classificacaoEtaria: null
             }
