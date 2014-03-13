@@ -2,10 +2,6 @@
     var app = angular.module('SearchSpatial', ['ng-mapasculturais', 'SearchService', 'angularSpinner']);
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', 'SearchService', "$rootScope", function($window, $scope, $location, SearchService, $rootScope) {
 
-        //TODO RELOCATE THIS VARIABLE
-        $scope.neighborhoodRadius = 2000;
-
-
         angular.element(window).load(function() {
             var map = window.leaflet.map;
 
@@ -96,13 +92,14 @@
 
 
             map.on('locationfound', function(e) {
-                var radius = e.accuracy / 2;
+                var radius = e.accuracy / 2,
+                    neighborhoodRadius = $scope.data.global.locationFilters.neighborhood.radius;
 
                 var marker = L.marker(e.latlng).addTo(map)
-                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + $scope.neighborhoodRadius/1000 + "KM deste ponto. <a href='#' onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
+                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a href='#' onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
                     .openPopup();
 
-                var circle = L.circle(e.latlng, $scope.neighborhoodRadius).addTo(map.drawnItems);
+                var circle = L.circle(e.latlng, neighborhoodRadius).addTo(map.drawnItems);
 
 
                 $scope.data.global.locationFilters = {
@@ -112,6 +109,7 @@
                             lat: map.getCenter().lat,
                             lng: map.getCenter().lng
                         },
+                        radius : neighborhoodRadius
                     }
                 };
                 $scope.$apply();

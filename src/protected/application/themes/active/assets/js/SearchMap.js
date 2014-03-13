@@ -12,7 +12,7 @@
             angular.element(document).ready(function(){
                 $scope.map = $window.leaflet.map;
                 $scope.map.removeLayer($window.leaflet.marker);
-                $scope.map.on('zoomend dragend', function(){
+                $scope.map.on('zoomend moveend', function(){
                     $scope.data.global.map = {
                         center : $window.leaflet.map.getCenter(),
                         zoom : $window.leaflet.map.getZoom()
@@ -49,27 +49,29 @@
         $scope.createMarkers = function(entity, results) {
             results.forEach(function(item) {
                 var marker;
-                var icon = entity;
-                var label = item.name;
+
+                //TEMPORARY PATCH FOR EVENTS... WITHOUT LOCATION
+                if(!item.location) return;
 
                 marker = new L.marker(
-                        new L.LatLng(item.location.latitude, item.location.longitude),
-                        window.leaflet.iconOptions[icon]
-                        )
-                        .bindLabel(label)
-                        .on('click', function() {
-                            var listItem = document.querySelector('#' + entity + '-result-' + item.id);
-                            var itemURL = listItem.querySelector(' a.js-single-url');
-                            var infobox = document.querySelector('#infobox');
-                            var infoboxContent = infobox.querySelector('article');
-                            infoboxContent.innerHTML = listItem.innerHTML;
-                            infobox.style.display = 'block';
-                            infobox.className = 'objeto';
-                            infobox.classList.add(searchEntity.cssClass);
+                    new L.LatLng(item.location.latitude, item.location.longitude),
+                    window.leaflet.iconOptions[entity]
+                )
+                .bindLabel(item.name)
+                .on('click', function() {
+                    console.log(document.querySelector('#' + entity + '-result-' + item.id))
+                    var listItem = document.querySelector('#' + entity + '-result-' + item.id);
+                    var itemURL = listItem.querySelector(' a.js-single-url');
+                    var infobox = document.querySelector('#infobox');
+                    var infoboxContent = infobox.querySelector('article');
+                    infoboxContent.innerHTML = listItem.innerHTML;
+                    infobox.style.display = 'block';
+                    infobox.className = 'objeto';
+                    infobox.classList.add(searchEntity.cssClass);
 
-                            //itemURL.setAttribute('target', '_blank');
-                            //a.click();
-                        });
+                    //itemURL.setAttribute('target', '_blank');
+                    //a.click();
+                });
 
                 if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
                     marker.entityType = entity;

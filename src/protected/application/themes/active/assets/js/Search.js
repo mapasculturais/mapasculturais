@@ -15,18 +15,19 @@
                         },
                         radius: null,
                     },
+                    neighborhood: {
+                        center: {
+                            lat: null,
+                            lng: null
+                        },
+                        radius: 2000
+                    },
                     address: {
                         text: '',
                         center: {
                             lat: null,
                             lng: null
-                        }
-                    },
-                    neighborhood: {
-                        center: {
-                            lat: null,
-                            lng: null
-                        }
+                        },
                     }
                 },
                 map: {
@@ -46,23 +47,25 @@
                 isVerified: false,
                 keyword: '',
                 areas: [],
-                type: null
+                type: null,
+                id: null
             },
             space: {
                 keyword: '',
                 areas: [],
                 types: [],
-                acessibilidade: false
+                acessibilidade: false,
+                id: null
             },
-            // event: {
-            //     keyword: '',
-            //     linguagens: [],
-            //     between: {
-            //         start: null,
-            //         end: null
-            //     },
-            //     classificacaoEtaria: null
-            // }
+            event: {
+                keyword: '',
+                linguagens: [],
+                between: {
+                    start: null,
+                    end: null
+                },
+                classificacaoEtaria: null
+            }
         };
 
     var diffFilter = function (input) {
