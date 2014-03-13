@@ -394,6 +394,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
         App::i()->stop();
     }
 
+    protected function apiResponse($data){
+        if(is_array($data))
+            $this->apiArrayResponse($data);
+        else
+            $this->apiItemResponse($data);
+    }
+
     /**
      * Outputs an API Array Respose
      *
@@ -420,12 +427,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
         App::i()->stop();
     }
 
-
-    public function API_count(){
-        $total = $this->apyQuery(array('counting' => true));
-        $this->apiItemResponse($total);
-    }
-
     /**
      * A generic API findOne method.
      *
@@ -434,13 +435,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $entity = $this->apyQuery(array('findOne' => true));
+        $entity = $this->apiQuery(array('findOne' => true));
         $this->apiItemResponse($entity);
     }
 
     public function API_find(){
         $data = $this->apiQuery();
-        $this->apiArrayResponse($data);
+        $this->apiResponse($data);
     }
 
 
@@ -448,9 +449,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $app = App::i();
 
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
-        $counting = key_exists('counting', $options) ? $options['counting'] : false;
         $qdata =    key_exists('data', $options) ? $options['data'] : $this->getData;
 
+        $counting = key_exists('@count', $qdata);
+
+        if($counting)
+            unset($qdata['@count']);
 
         if(class_exists($this->entityClassName)){
             if(@$app->config['app.useApiCache']){
@@ -724,7 +728,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $entity = null;
                 }
                 return $entity;
-                $this->apiItemResponse($entity);
             }else{
                 $rs = $query->getResult();
 
@@ -742,7 +745,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $result[] = $entity;
                 }
                 return $result;
-                $this->apiArrayResponse($result);
             }
         }
     }

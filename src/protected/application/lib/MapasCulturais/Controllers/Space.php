@@ -40,9 +40,9 @@ class Space extends EntityController {
             $data = $this->getData;
             $data['id'] = 'IN(' . implode(',', $ids) .')';
             unset($data['@from'], $data['@to']);
-            $this->apiArrayResponse($this->apiQuery(array('data' => $data)));
+            $this->apiResponse($this->apiQuery(array('data' => $data)));
         }else{
-            $this->apiArrayResponse(array());
+            $this->apiResponse(array());
         }
     }
 }
