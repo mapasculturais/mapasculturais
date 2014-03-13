@@ -422,7 +422,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
 
     public function API_count(){
-        $this->API_find(array('counting' => true));
+        $total = $this->apyQuery(array('counting' => true));
+        $this->apiItemResponse($total);
     }
 
     /**
@@ -433,22 +434,23 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $this->API_find(array('findOne' => true));
+        $entity = $this->apyQuery(array('findOne' => true));
+        $this->apiItemResponse($entity);
+    }
+
+    public function API_find(){
+        $data = $this->apiQuery();
+        $this->apiArrayResponse($data);
     }
 
 
-    /**
-     * A generic API find method.
-     *
-     * This action finds entities by the requested params and send the result to the API Responder.
-     *
-     * @param boolean $findOne (optional) (default false) set to true to returns only one object
-     */
-    public function API_find($options = array()){
+    public function apiQuery($options = array()){
         $app = App::i();
 
-        $findOne = key_exists('findOne', $options) ? $options['findOne'] : false;
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
         $counting = key_exists('counting', $options) ? $options['counting'] : false;
+        $qdata =    key_exists('data', $options) ? $options['data'] : $this->getData;
+
 
         if(class_exists($this->entityClassName)){
             if(@$app->config['app.useApiCache']){
@@ -481,7 +483,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $app->cache->save($cache_id, $cache, $lifetime);
                 });
             }
-            if(!$this->getData)
+            if(!$qdata)
                 $this->apiErrorResponse('no data');
 
             $class = $this->entityClassName;
@@ -532,7 +534,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $page = null;
 
             $dqls = array();
-            foreach($this->getData as $key => $val){
+            foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
@@ -707,7 +709,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             if($counting){
                 $num = $query->getSingleScalarResult();
-                $this->apiItemResponse($num);
+                return $num;
 
             }elseif($findOne){
                 if($r = $query->getOneOrNullResult()){
@@ -721,6 +723,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 }else{
                     $entity = null;
                 }
+                return $entity;
                 $this->apiItemResponse($entity);
             }else{
                 $rs = $query->getResult();
@@ -738,7 +741,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     }
                     $result[] = $entity;
                 }
-
+                return $result;
                 $this->apiArrayResponse($result);
             }
         }
