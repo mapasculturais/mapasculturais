@@ -172,8 +172,52 @@
         };
 
         $scope.tabClick = function(entity){
-            $scope.data.global.filterEntity = entity;
+            var g = $scope.data.global;
+            if(!g.isCombined) {
+                g.filterEntity = entity;
+            }else{
+                // combined search click:
+                if(g.enabled[entity]){
+                    // if the entity is already enabled and it's the last one enabled, avoid disabling
+                    if(Object.keys(g.enabled).filter(function(e){if(g.enabled[e]) return e}).length==1){
+                        return;
+                    }else{
+                        g.enabled[entity] = false;
+                    }
+                }else{
+                    g.enabled[entity] = true;
+                }
+            }
         };
+
+        $scope.tabOver = function(entity){
+            if($scope.data.global.isCombined){
+                $scope.data.global.filterEntity = entity;
+            }
+        };
+
+        $scope.toggleCombined = function () {
+            var g = $scope.data.global;
+            if(!g.isCombined) {
+                g.isCombined = true;
+                g.enabled = {
+                    agent : true,
+                    space : true,
+                    event : true
+                };
+            }else{
+                g.isCombined = false;
+                if(Object.keys(g.enabled).length > 1){
+                    g.enabled = {
+                        agent : false,
+                        space : false,
+                        event : false
+                    };
+                    g.enabled[g.filterEntity] = true;
+                }
+            }
+        };
+
 
     }]);
 })(angular);

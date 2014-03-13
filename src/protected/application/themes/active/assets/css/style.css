@@ -496,6 +496,7 @@ body.editable #main-section { margin-top: 136px; }
 .filtro-geral label, #filtro-prefeitura label { display: none; }
 #filtro-local { width: 50%; }
 #filtro-prefeitura, #busca-combinada { width: 25%; }
+#busca-combinada span {cursor:default;}
 #filtro-prefeitura { padding: 0 .5rem; border-right: 2px solid #eee; border-left: 2px solid #eee; }
 #filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
 /* filtro local*/

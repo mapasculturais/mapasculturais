@@ -235,16 +235,15 @@
         </div>
         <!-- #filtro-prefeitura-->
         <div id="busca-combinada" class="filtro-geral">
-            <span class="icone icon_check"  ng-click="data.global.isCombined = !data.global.isCombined " ng-class="{'selected':data.global.isCombined }" ></span>
-            <span class="label hltip"       ng-click="data.global.isCombined = !data.global.isCombined " style="cursor:default" comentario="Cátia, mudei o cursor para não ficar cursor:text já que registrei o evento de clique também aqui no .label do checkbox"
-            title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
-            Busca Combinada
+            <span class="icone icon_check"  ng-click="toggleCombined()" ng-class="{'selected':data.global.isCombined }" ></span>
+            <span class="label hltip"       ng-click="toggleCombined()" title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
+                Busca Combinada
+            </span>
         </span>
         <!---<input ng-model="combinedSearch" type="checkbox"/> <label style="display: inline-block;">Busca Combinada (Bó, o html correto tá comentado)</label>-->
     </div>
 </div>
 <!--.wrap-->
-</div>
 <!--#busca-avancada-->
 <div id="header-dos-resultados" class="clearfix">
     <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
