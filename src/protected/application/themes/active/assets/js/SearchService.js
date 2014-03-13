@@ -41,7 +41,7 @@
 
                 }else{
                     numRequests++;
-                    getData('agent', select, data2searchData(data.agent), page).success(function(rs){
+                    apiFind('agent', select, data2searchData(data.agent), page).success(function(rs){
                         console.log('SUCCESS: agent');
                         numSuccessRequests++;
                         results.agent = rs;
@@ -65,7 +65,7 @@
 
                 }else{
                     numRequests++;
-                    getData('event', select, data2searchData(data.event), page).success(function(rs){
+                    apiFind('space', select, data2searchData(data.event), page, 'findByEvents').success(function(rs){
                         console.log('SUCCESS: event');
                         numSuccessRequests++;
                         results.event = rs;
@@ -89,7 +89,7 @@
 
                 }else{
                     numRequests++;
-                    getData('space', select, data2searchData(data.space), page).success(function(rs){
+                    apiFind('space', select, data2searchData(data.space), page).success(function(rs){
                         console.log('SUCCESS: space');
                         numSuccessRequests++;
                         results.space = rs;
@@ -137,10 +137,17 @@
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
 
+                if(entityData.from)
+                    searchData['@from'] = entityData.from;
+
+                if(entityData.to)
+                    searchData['@to'] = entityData.to;
+
                 return searchData;
             };
 
-            function getData(entity, select, searchData, page) {
+            function apiFind(entity, select, searchData, page, method) {
+                method = method || 'find';
                 searchData['@select'] = select;
                 searchData['@order'] = 'name ASC';
 
@@ -149,8 +156,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/find/?'+querystring, data:searchData});
-                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/find/?'+querystring, data:searchData});
+                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + method + '/?'+querystring, data:searchData});
             };
         };
 

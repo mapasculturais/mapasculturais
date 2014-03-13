@@ -49,7 +49,7 @@
         $scope.createMarkers = function(entity, results) {
             results.forEach(function(item) {
                 var marker;
-
+                console.log(entity);
                 //TEMPORARY PATCH FOR EVENTS... WITHOUT LOCATION
                 if(!item.location) return;
 

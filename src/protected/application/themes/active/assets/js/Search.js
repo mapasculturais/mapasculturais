@@ -60,10 +60,8 @@
             event: {
                 keyword: '',
                 linguagens: [],
-                between: {
-                    start: null,
-                    end: null
-                },
+                from: '2014-02-28',
+                to: null,
                 classificacaoEtaria: null
             }
         };
