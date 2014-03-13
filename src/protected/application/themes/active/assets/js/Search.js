@@ -115,7 +115,6 @@
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
         MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
-        console.log($scope.types);
 
         $scope.dataChange = function(newValue, oldValue){
             newValue = $scope.data;
@@ -162,9 +161,7 @@
             } else {
                 array.push(id);
             }
-            console.log($scope.data.agent.areas);
         };
-
 
         $scope.tabClick = function(entity){
             $scope.data.global.filterEntity = entity;
