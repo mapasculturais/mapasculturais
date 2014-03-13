@@ -140,7 +140,7 @@
                 <div class="placeholder">Selecione as áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="lista-de-filtro">
-                        <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;">
+                        <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.agent.areas, area.id)}" ng-click="toggleSelection(data.agent.areas, area.id)">
                             <span>{{area.name}}</span>
                         </li>
                     </ul>
@@ -151,13 +151,10 @@
 		<div class="filtro">
             <span class="label">Tipo</span>
 			<div id="tipo-de-agente" class="dropdown">
-                <div class="placeholder">{{(agentSearch.types[agentSearch.types.selected]) && (agentSearch.types[agentSearch.types.selected].name)||'Todos'}}&nbsp;</div>
+                <div class="placeholder">{{getName(types.agent, data.agent.type)}}&nbsp;</div>
                 <div class="submenu-dropdown">
                     <ul>
-                    	<li ng-click="selectAgentType();">
-                            <span>Todos</span>
-                        </li>
-                        <li ng-repeat="type in types.agent">
+                        <li ng-repeat="type in types.agent" ng-click="data.agent.type = type.id">
                             <span>{{type.name}}</span>
                         </li>
                     </ul>

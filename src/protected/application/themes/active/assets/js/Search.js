@@ -89,25 +89,17 @@
 
         if(typeof input === 'undefined' || typeof skeleton === 'undefined' || input === skeleton) return;
 
-        if(!angular.isObject(input)) {
+        if(!angular.isObject(input)|| angular.isArray(skeleton)) {
             return input;
         }
 
         var output = {};
-        if(angular.isArray(skeleton)) {
-            output = [];
-        }
 
         angular.forEach(input, function(value, key){
             var currVal = _diffFilter(value, skeleton[key]);
 
             if(isEmpty(currVal)) return;
-
-            if(angular.isArray(output)) {
-                this.push(currVal);
-            } else {
-                this[key] = currVal;
-            }
+            this[key] = currVal;
         }, output);
 
         return output;
@@ -121,9 +113,11 @@
         $scope.data.global.enabled.agent = true;
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
 
-        $scope.$watch('data', function(newValue, oldValue){
+        $scope.dataChange = function(newValue, oldValue){
+            newValue = $scope.data;
             if(newValue === undefined) return;
             var serialized = $rison.stringify(diffFilter(newValue));
 
@@ -134,7 +128,8 @@
                     $rootScope.$emit('searchDataChange', $scope.data);
                 }, 1000);
             }
-        }, true);
+        };
+        $scope.$watch('data', $scope.dataChange, true);
 
         $rootScope.$on('$locationChangeSuccess', function(){
             var newValue = $location.hash();
@@ -152,10 +147,19 @@
         });
 
         $scope.getName = function(valores, id){
-            try{
-                return valores.filter(function(e){if(e.id === id) return true;})[0].name;
-            }catch(e){
-                return false;
+            return valores.filter(function(e){if(e.id === id) return true;})[0].name;
+        };
+
+        $scope.isSelected = function(array, id){
+            return (array.indexOf(id) !== -1);
+        };
+
+        $scope.toggleSelection = function(array, id){
+            var index = array.indexOf(id);
+            if(index !== -1){
+                array.splice(index, 1);
+            } else {
+                array.push(id);
             }
         };
 
