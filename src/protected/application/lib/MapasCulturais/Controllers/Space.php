@@ -29,6 +29,21 @@ class Space extends EntityController {
         parent::GET_create();
     }
 
+    function API_findByEvents(){
+        $date_from = key_exists('@from', $this->getData) ? $this->getData['@from'] : date("Y-m-d");
+        $date_to = key_exists('@to', $this->getData) ? $this->getData['@to'] : $date_from;
 
+        $spaces = $this->repository->findByEventsInDateInterval($date_from, $date_to);
+
+        $ids = array_map(function($e){ return $e->id; }, $spaces);
+        if($ids){
+            $data = $this->getData;
+            $data['id'] = 'IN(' . implode(',', $ids) .')';
+            unset($data['@from'], $data['@to']);
+            $this->apiArrayResponse($this->apiQuery(array('data' => $data)));
+        }else{
+            $this->apiArrayResponse(array());
+        }
+    }
 }
 
