@@ -1,44 +1,11 @@
 (function(angular){
     "use strict";
 
-    var emptyFilter = function (input, levels) {
-        // return a filtered object without nulls
-        if(levels === undefined) levels = 4;
-        if(levels === 0) return angular.copy(input);
-        var output = {};
-        if(angular.isArray(input)) {
-            output = [];
-        }
-
-        var currVal;
-        angular.forEach(input, function(value, key){
-            if(typeof value === 'undefined' ||
-               value === null ||
-               value === '') {
-                return;
-            }
-
-            if(angular.isObject(value)) {
-                currVal = emptyFilter(value, levels - 1);
-            } else {
-                currVal = value;
-            }
-
-            if(angular.isArray(output)) {
-                this.push(currVal);
-            } else {
-                this[key] = currVal;
-            }
-        }, output);
-
-        return output;
-    };
-
     var skeletonData = {
             global: {
                 isCombined: false,
                 viewMode: 'map',
-                filterEntity: 'agent',
+                filterEntity: null,
                 locationFilters: {
                     enabled: null, // circle, address, neighborhood
                     circle: {
@@ -70,7 +37,7 @@
                     }
                 },
                 enabled: {
-                    agent: true,
+                    agent: false,
                     space: false,
                     event: false
                 }
@@ -98,17 +65,66 @@
             // }
         };
 
+    var diffFilter = function (input) {
+        return _diffFilter(input, skeletonData);
+    };
+
+    var isEmpty = function (value) {
+        if(typeof value === 'undefined' ||
+           value === null) return true;
+
+        if(angular.isObject(value)) {
+            if(angular.equals(value, {}) ||
+               angular.equals(value, []))
+                return true;
+        }
+
+        return false;
+    };
+
+    var _diffFilter = function (input, skeleton) {
+        // returns the difference from the input structure and skeleton
+        // don't include nulls
+
+        if(typeof input === 'undefined' || typeof skeleton === 'undefined' || input === skeleton) return;
+
+        if(!angular.isObject(input)) {
+            return input;
+        }
+
+        var output = {};
+        if(angular.isArray(skeleton)) {
+            output = [];
+        }
+
+        angular.forEach(input, function(value, key){
+            var currVal = _diffFilter(value, skeleton[key]);
+
+            if(isEmpty(currVal)) return;
+
+            if(angular.isArray(output)) {
+                this.push(currVal);
+            } else {
+                this[key] = currVal;
+            }
+        }, output);
+
+        return output;
+    };
+
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
         $scope.data = angular.copy(skeletonData);
+        $scope.data.global.filterEntity = 'agent';
+        $scope.data.global.enabled.agent = true;
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
         $scope.types = MapasCulturais.entityTypes;
 
         $scope.$watch('data', function(newValue, oldValue){
             if(newValue === undefined) return;
-            var serialized = $rison.stringify(emptyFilter(newValue));
+            var serialized = $rison.stringify(diffFilter(newValue));
 
             if($location.hash() !== serialized){
                 $location.hash(serialized);
@@ -122,7 +138,7 @@
         $rootScope.$on('$locationChangeSuccess', function(){
             var newValue = $location.hash();
 
-            if(newValue && newValue !== $rison.stringify(emptyFilter($scope.data))){
+            if(newValue && newValue !== $rison.stringify(diffFilter($scope.data))){
                 $scope.data = angular.extend(angular.copy(skeletonData), $rison.parse(newValue));
                 $rootScope.$emit('searchDataChange', $scope.data);
 
@@ -156,7 +172,7 @@
 
         $scope.tabClick = function(entity){
             $scope.data.global.filterEntity = entity;
-        }
+        };
 
 
     }]);
