@@ -1,9 +1,15 @@
 
 (function(angular) {
-    var app = angular.module('SearchMap', ['ng-mapasculturais']);
-    app.controller('SearchMapController', ['$window', '$scope', '$rootScope', function($window, $scope, $rootScope) {
+    var app = angular.module('SearchMap', ['ng-mapasculturais', 'FindOneService']);
+    app.controller('SearchMapController', ['$window', '$scope', '$rootScope', 'FindOneService', function($window, $scope, $rootScope, FindOneService) {
 
         $scope.init = function (){
+
+            if($scope.data.global.map && $scope.data.global.map.zoom){
+                MapasCulturais.mapCenter = $scope.data.global.map.center;
+            }else{
+                MapasCulturais.mapCenter = null;
+            }
 
             $scope.map = null;
             $scope.resultLayer = null;
@@ -12,6 +18,11 @@
             angular.element(document).ready(function(){
                 $scope.map = $window.leaflet.map;
                 $scope.map.removeLayer($window.leaflet.marker);
+
+                $scope.map.on('load', function(){
+                    $scope.setMapView();
+                });
+
                 $scope.map.on('zoomend moveend', function(){
                     $scope.data.global.map = {
                         center : $window.leaflet.map.getCenter(),
@@ -19,8 +30,14 @@
                     };
                     $scope.$apply();
                 });
+
                 $scope.updateMap();
+                $scope.setMapView();
+                if($scope.data.global.openEntity && $scope.data.global.openEntity.id){
+                    FindOneService($scope.data);
+                }
             });
+
 
 
             $rootScope.$on('searchResultsReady', function(ev, results){
@@ -36,14 +53,17 @@
             });
 
             $rootScope.$on('searchDataChange', function(ev, data){
-                if($scope.map && data.global.map && data.global.map.zoom) {
-                    $scope.map.setZoom(data.global.map.zoom);
-                    $scope.map.panTo(data.global.map.center);
-                }
+                $scope.setMapView();
             });
 
+        };
 
-
+        $scope.setMapView = function(){
+            console.log('SET MAP VIEW', $scope.data.global.map);
+            if($scope.map && $scope.data.global.map && $scope.data.global.map.zoom) {
+                $scope.map.setZoom($scope.data.global.map.zoom);
+                $scope.map.panTo($scope.data.global.map.center);
+            }
         };
 
         $scope.createMarkers = function(entity, results) {
@@ -58,21 +78,21 @@
                 ).bindLabel(
                     item.name
                 ).on('click', function() {
-                    //console.log(document.querySelector('#' + entity + '-result-' + item.id))
-                    //var listItem = document.querySelector('#' + entity + '-result-' + item.id);
-                    //var itemURL = listItem.querySelector(' a.js-single-url');
+
                     var infobox = document.querySelector('#infobox');
                     var infoboxContent = infobox.querySelector('article');
-                    infoboxContent.innerHTML = '<h1>' + item.name + '</h1>';//listItem.innerHTML;
-                    infobox.style.display = 'block';
-                    infobox.className = 'objeto';
-                    //infobox.classList.add(searchEntity.cssClass);
 
                     $scope.data.global.openEntity = {
                         id: item.id,
                         type: entity
                     };
+
+                    $scope.openEntity = {};
+                    $scope.openEntity[entity] = {name: item.name};
+
                     $scope.$apply();
+
+                    FindOneService($scope.data);
                 });
 
                 if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
@@ -171,20 +191,6 @@
 
         };
 
-        $scope.cleanAllFilters = function (){
-            $scope.searchManager.getEnabledEntities().forEach(function(entity){
-                $scope.searchManager.entities[entity].clearResults();
-                $scope.searchManager.entities[entity].cleanFilters();
-            });
-            $scope.filterVerified = false;
-
-            // remove as layers de localização
-            $scope.searchManager.filterLocation = false;
-            window.leaflet.map.drawnItems.clearLayers();
-            if(window.leaflet.locationMarker) { window.leaflet.map.removeLayer(window.leaflet.locationMarker);}
-
-            $scope.searchManager.update();
-        };
 
         $scope.init();
 

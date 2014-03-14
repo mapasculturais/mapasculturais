@@ -12,6 +12,7 @@
     $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
+    $app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
     $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
     $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
     $app->enqueueScript('app', 'Search', '/js/Search.js');
@@ -25,9 +26,54 @@
 
 
 <?php add_map_assets(); ?>
-    <div id="infobox">
-        <a class="icone icon_close" href="#" onclick="this.parentElement.style.display='none'"></a>
-        <article class="objeto"></article>
+    <div id="infobox" style="display:block" ng-show="data.global.openEntity.id>0">
+
+        <a class="icone icon_close" ng-click="data.global.openEntity=null"></a>
+
+        <article class="objeto agente clearfix" ng-if="openEntity.agent">
+            <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
+            <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarBig'].url||defaultImageURL}}">
+            <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
+            <div class="objeto-meta">
+                <div><span class="label">Tipo:</span> <a href="#">{{openEntity.agent.type.name}}</a></div>
+                <div>
+                    <span class="label">Áreas de atuação:</span>
+                        <span ng-repeat="area in openEntity.agent.terms.area">
+                            <a href="#">{{area}}</a>{{$last ? '' : ', '}}
+                        </span>
+                </div>
+            </div>
+
+        </article>
+
+        <article class="objeto espaco clearfix" ng-if="openEntity.space">
+            <article class="objeto espaco clearfix">
+                <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
+                <div class="objeto-content clearfix">
+                    <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
+                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarBig'].url||defaultImageURL}}">
+                    </a>
+                    <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
+                    <div class="objeto-meta">
+                        <div><span class="label">Tipo:</span> <a ng-click="data.space.types.push(openEntity.space.type.id)">{{openEntity.space.type.name}}</a></div>
+                        <div>
+                            <span class="label">Área de atuação:</span>
+                            <span ng-repeat="area in openEntity.space.terms.area">
+                                <a>{{area}}</a>{{$last ? '' : ', '}}
+                            </span>
+                        </div>
+                        <div><span class="label">Local:</span>{{openEntity.space.metadata.endereco}}</div>
+                        <div><span class="label">Acessibilidade:</span>{{openEntity.space.metadata.acessibilidade}}</div>
+                    </div>
+                </div>
+            </article>
+        </article>
+
+        <article class="objeto evento clearfix" ng-if="openEntity.event">
+            <h1>{{openEntity.event.name}}</h1>
+            evento
+            <img class="objeto-thumb" ng-src="{{openEntity.event['@files:avatar.avatarBig'].url||defaultImageURL}}">
+        </article>
         <!--
         ABAIXO O HTML DOS EVENTOS!!!
         O LOOP É IGUALZINHO AO LOOP DO RESULTADO DA BUSCA EM LISTA, PORÉM SEM O LOCAL, POIS ESTE JÁ VEM ANTES.
