@@ -125,6 +125,7 @@
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
+        $scope.defaultImageURL = MapasCulturais.defaultAvatarURL;
         $scope.getName = function(valores, id){
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
         };
@@ -276,11 +277,15 @@
         $scope.numEvents = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
-            console.log('================= ', results);
+            console.log('================= SEARCH READY ', results);
             $scope.numAgents = results.agent;
             $scope.numSpaces = results.space;
             $scope.numEvents = results.event;
         });
 
+        $rootScope.$on('findOneResultReady', function(ev, result){
+            console.log('================= FIND ONE READY', result);
+            $scope.openEntity = result;
+        });
     }]);
 })(angular);
