@@ -177,7 +177,7 @@
                 // combined search click:
                 if(g.enabled[entity]){
                     // if the entity is already enabled and it's the last one enabled, avoid disabling
-                    if(Object.keys(g.enabled).filter(function(e){if(g.enabled[e]) return e}).length==1){
+                    if(Object.keys(g.enabled).filter(function(e){if(g.enabled[e]) return e;}).length==1){
                         return;
                     }else{
                         g.enabled[entity] = false;
@@ -188,7 +188,7 @@
             }else{
                 g.filterEntity = entity;
                 angular.forEach(g.enabled, function(value, key) {
-                    g.enabled[key] = (key===entity)
+                    g.enabled[key] = (key===entity);
                 });
             }
         };
