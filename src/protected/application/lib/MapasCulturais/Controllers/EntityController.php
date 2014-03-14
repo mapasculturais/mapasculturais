@@ -487,7 +487,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $app->cache->save($cache_id, $cache, $lifetime);
                 });
             }
-            if(!$qdata)
+            if(!$qdata && !$counting)
                 $this->apiErrorResponse('no data');
 
             $class = $this->entityClassName;

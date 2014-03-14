@@ -6,8 +6,10 @@
             var select,
                 numRequests = 0,
                 numSuccessRequests = 0,
+                numCountRequests = 0,
+                numCountSuccessRequests = 0,
                 results = {},
-                apiParams;
+                countResults = {};
 
             $rootScope.apiCache = $rootScope.apiCache || {
                 agent: {
@@ -22,6 +24,18 @@
                     params: '',
                     result: []
                 },
+                agentCount: {
+                    params: '',
+                    num: 0
+                },
+                spaceCount: {
+                    params: '',
+                    num: 0
+                },
+                eventCount: {
+                    params: '',
+                    num: 0
+                }
             };
 
             if(data.global.viewMode === 'list'){
@@ -31,81 +45,75 @@
                 page = null;
             }
 
+
             if(data.global.enabled.agent){
-                apiParams = JSON.stringify([data2searchData(data.agent),page]);
-
-                if($rootScope.apiCache.agent.params === apiParams){
-                    console.log('CACHED: agent');
-                    results.agent = $rootScope.apiCache.agent.result;
-                    endRequest();
-
-                }else{
-                    numRequests++;
-                    apiFind('agent', select, data2searchData(data.agent), page).success(function(rs){
-                        console.log('SUCCESS: agent');
-                        numSuccessRequests++;
-                        results.agent = rs;
-
-                        $rootScope.apiCache.agent.result = rs;
-
-                        endRequest();
-                    });
-
-                    $rootScope.apiCache.agent.params = apiParams;
-                }
+                callApi('agent');
             }
 
             if(data.global.enabled.event){
-                apiParams = JSON.stringify([data2searchData(data.event),page]);
-
-                if($rootScope.apiCache.event.params === apiParams){
-                    console.log('CACHED: event');
-                    results.event = $rootScope.apiCache.event.result;
-                    endRequest();
-
-                }else{
-                    numRequests++;
-                    apiFind('space', select, data2searchData(data.event), page, 'findByEvents').success(function(rs){
-                        console.log('SUCCESS: event');
-                        numSuccessRequests++;
-                        results.event = rs;
-
-                        $rootScope.apiCache.event.result = rs;
-
-                        endRequest();
-                    });
-
-                    $rootScope.apiCache.event.params = apiParams;
-                }
+                callApi('event');
             }
 
             if(data.global.enabled.space){
-                apiParams = JSON.stringify([data2searchData(data.space),page]);
+                callApi('space');
+            }
 
-                if($rootScope.apiCache.space.params === apiParams){
-                    console.log('CACHED: space');
-                    results.space = $rootScope.apiCache.space.result;
+            function callApi(entity){
+                var sData = data2searchData(data[entity]),
+                    apiCountParams = JSON.stringify(sData),
+                    apiParams = JSON.stringify([sData,page]),
+                    requestEntity = entity === 'event' ? 'space' : entity,
+                    requestAction = entity === 'event' ? 'findByEvents' : 'find';
+
+                if($rootScope.apiCache[entity + 'Count'].params === apiCountParams){
+                    console.log('COUNT CACHED: ' + entity);
+                    countResults[entity] = $rootScope.apiCache[entity + 'Count'].num;
+                    endCountRequest();
+                }else{
+                    numCountRequests++;
+                    apiCount(requestEntity, sData, requestAction).success(function(rs){
+                        console.log('COUNT SUCCESS: ' + entity);
+                        numCountSuccessRequests++;
+                        countResults[entity] = rs;
+
+                        $rootScope.apiCache[entity + 'Count'].num = rs;
+
+                        endCountRequest();
+                    });
+
+                    $rootScope.apiCache[entity + 'Count'].params = apiCountParams;
+                }
+
+                if($rootScope.apiCache[entity].params === apiParams){
+                    console.log('CACHED: ' + entity);
+                    results[entity] = $rootScope.apiCache[entity].result;
                     endRequest();
 
                 }else{
                     numRequests++;
-                    apiFind('space', select, data2searchData(data.space), page).success(function(rs){
-                        console.log('SUCCESS: space');
+                    apiFind(requestEntity, select, sData, page, requestAction).success(function(rs){
+                        console.log('SUCCESS: ' + entity);
                         numSuccessRequests++;
-                        results.space = rs;
+                        results[entity] = rs;
 
-                        $rootScope.apiCache.space.result = rs;
+                        $rootScope.apiCache[entity].result = rs;
 
                         endRequest();
                     });
 
-                    $rootScope.apiCache.space.params = apiParams;
+                    $rootScope.apiCache[entity].params = apiParams;
                 }
             }
 
             function endRequest(){
-                if(numSuccessRequests == numRequests){
+                if(numSuccessRequests === numRequests){
                     $rootScope.$emit('searchResultsReady', results);
+                }
+            }
+
+            function endCountRequest(){
+                if(numCountSuccessRequests === numCountRequests){
+                    $rootScope.$emit('searchCountResultsReady', countResults);
                 }
             }
 
@@ -158,17 +166,31 @@
                 return searchData;
             };
 
-            function apiFind(entity, select, searchData, page, method) {
-                method = method || 'find';
+            function apiFind(entity, select, searchData, page, action) {
+                action = action || 'find';
                 searchData['@select'] = select;
                 searchData['@order'] = 'name ASC';
-
+                delete searchData['@count'];
                 var querystring = "";
 
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + method + '/?'+querystring, data:searchData});
+                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+
+                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+            };
+
+            function apiCount(entity, searchData, action) {
+
+                action = action || 'find';
+                var querystring = "";
+
+                for(var att in searchData) {
+                    querystring += "&"+att+"="+searchData[att];
+                }
+                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             };
         };
 

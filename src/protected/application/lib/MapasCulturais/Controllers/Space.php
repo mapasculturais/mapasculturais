@@ -36,13 +36,14 @@ class Space extends EntityController {
         $spaces = $this->repository->findByEventsInDateInterval($date_from, $date_to);
 
         $ids = array_map(function($e){ return $e->id; }, $spaces);
+        $data = $this->getData;
+        
         if($ids){
-            $data = $this->getData;
             $data['id'] = 'IN(' . implode(',', $ids) .')';
             unset($data['@from'], $data['@to']);
             $this->apiResponse($this->apiQuery(array('data' => $data)));
         }else{
-            $this->apiResponse(array());
+            $this->apiResponse(key_exists('@count', $data) ? 0 : array());
         }
     }
 }

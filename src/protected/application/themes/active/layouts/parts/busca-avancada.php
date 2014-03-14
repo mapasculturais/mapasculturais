@@ -245,7 +245,7 @@
 </div>
 <!--.wrap-->
 <!--#busca-avancada-->
-<div id="header-dos-resultados" class="clearfix">
+<div id="header-dos-resultados" class="clearfix"> agentes: {{numAgents}} espaços: {{numSpaces}} eventos: {{numEvents}}
     <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
     <div id="resultados">
         <span ng-show="viewLoading" style="display:inline">

@@ -27,7 +27,7 @@
                         center: {
                             lat: null,
                             lng: null
-                        },
+                        }
                     }
                 },
                 map: {
@@ -218,6 +218,16 @@
             }
         };
 
+        $scope.numAgents = 0;
+        $scope.numSpaces = 0;
+        $scope.numEvents = 0;
+
+        $rootScope.$on('searchCountResultsReady', function(ev, results){
+            console.log('================= ', results);
+            $scope.numAgents = results.agent;
+            $scope.numSpaces = results.space;
+            $scope.numEvents = results.event;
+        });
 
     }]);
 })(angular);
