@@ -7,6 +7,10 @@
             isCombined: false,
             viewMode: 'map',
             filterEntity: null,
+            openEntity: {
+                id: null,
+                type: null
+            },
             locationFilters: {
                 enabled: null, // circle, address, neighborhood
                 circle: {
@@ -48,16 +52,14 @@
             keyword: '',
             areas: [],
             type: null,
-            isVerified: false,
-            id: null
+            isVerified: false
         },
         space: {
             keyword: '',
             areas: [],
             types: [],
             acessibilidade: false,
-            isVerified: false,
-            id: null
+            isVerified: false
         },
         event: {
             keyword: '',
