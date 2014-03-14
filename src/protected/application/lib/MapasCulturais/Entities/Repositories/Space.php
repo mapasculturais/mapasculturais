@@ -5,7 +5,10 @@ use Doctrine\ORM\EntityRepository;
 
 
 class Space extends EntityRepository{
-    public function findByEventsInDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
+        if(!$event_ids)
+            return array();
+        
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -32,6 +35,8 @@ class Space extends EntityRepository{
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
 
+        $dql_event_ids = $event_ids ? 'AND eo.event_id IN (' . implode(',', $event_ids) . ')' : '';
+
         $strNativeQuery = "
             SELECT
                 e.*
@@ -39,7 +44,7 @@ class Space extends EntityRepository{
                 space e
             JOIN
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.space_id = e.id
+                ON eo.space_id = e.id $dql_event_ids
 
             $dql_limit $dql_offset
 
