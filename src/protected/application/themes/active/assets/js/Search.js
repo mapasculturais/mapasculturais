@@ -257,7 +257,7 @@
         $scope.location = $location;
 
         $rootScope.$on('searchDataChange', function(ev, data) {
-            console.log('searchDataChange emitted', data);
+            console.log('ON searchDataChange', data);
             SearchService(data);
         });
 
