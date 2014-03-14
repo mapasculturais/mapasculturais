@@ -435,21 +435,52 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $entity = $this->apiQuery(array('findOne' => true));
-        $this->apiItemResponse($entity);
+        $cache_id = $this->getApiCacheId($this->getData, array('findOne' => true));
+
+        if(!$this->apiCacheResponse($cache_id)){
+            $entity = $this->apiQuery($this->getData, array('findOne' => true));
+            $this->apiItemResponse($entity);
+        }
     }
 
     public function API_find(){
-        $data = $this->apiQuery();
-        $this->apiResponse($data);
+        $cache_id = $this->getApiCacheId($this->getData);
+
+        if(!$this->apiCacheResponse($cache_id)){
+            $data = $this->apiQuery($this->getData);
+            $this->apiResponse($data);
+        }
     }
 
+    public function getApiCacheId($qdata, $options = array()){
+        return $this->id . '::' . md5(serialize($qdata + array('__OPTIONS__' => $options)));
+    }
 
-    public function apiQuery($options = array()){
+    public function apiCacheExists($cache_id){
+        if(!@$app->config['app.useApiCache'])
+            return false;
+
+        return $app->cache->contains($cache_id);
+    }
+
+    public function apiCacheResponse($cache_id){
+        if($this->apiCacheExists($cache_id)){
+            $cache = $app->cache->fetch($cache_id);
+
+            $app->contentType($cache['contentType']);
+            echo $cache['output'];
+
+            App::i()->stop();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function apiQuery($qdata, $options = array()){
         $app = App::i();
 
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
-        $qdata =    key_exists('data', $options) ? $options['data'] : $this->getData;
 
         $counting = key_exists('@count', $qdata);
 
@@ -458,20 +489,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         if(class_exists($this->entityClassName)){
             if(@$app->config['app.useApiCache']){
-                $cache_id = $this->id . '::' . md5(serialize($this->data + array('__OPTIONS__' => $options)));
-
-
-                if($app->cache->contains($cache_id)){
-                    if(@$app->config['app.log.apiCache'])
-                        $app->log->info(">>>>> API CACHE : $cache_id \n================================");
-
-                    $cache = $app->cache->fetch($cache_id);
-
-                    $app->contentType($cache['contentType']);
-                    echo $cache['output'];
-
-                    App::i()->stop();
-                }
+                $cache_id = $this->getApiCacheId($qdata, $options);
 
                 $app->hook('api.response:after', function($var1, $var2, $var3, $var4) use($app, $cache_id){
 

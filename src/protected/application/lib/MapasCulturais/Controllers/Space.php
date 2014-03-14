@@ -41,7 +41,8 @@ class Space extends EntityController {
             $query_data['@to']
         );
 
-        $event_data = array('data' => array('@select' => 'id') + $query_data);
+        $event_data = array('@select' => 'id') + $query_data;
+        unset($event_data['@count']);
         $events = $eventController->apiQuery($event_data);
 
         $event_ids = array_map(function ($e){ return $e['id']; }, $events);
@@ -54,7 +55,7 @@ class Space extends EntityController {
                 if($key[0] === '@')
                     $space_data[$key] = $val;
 
-            $this->apiResponse($this->apiQuery(array('data' => $space_data)));
+            $this->apiResponse($this->apiQuery($space_data));
         }else{
             $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
         }
