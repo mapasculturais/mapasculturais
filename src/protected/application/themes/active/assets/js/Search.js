@@ -238,9 +238,13 @@
             if($location.hash() !== serialized){
                 $location.hash(serialized);
                 $timeout.cancel($scope.timer);
-                $scope.timer = $timeout(function() {
+                if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
                     $rootScope.$emit('searchDataChange', $scope.data);
-                }, 1000);
+                } else {
+                    $scope.timer = $timeout(function() {
+                        $rootScope.$emit('searchDataChange', $scope.data);
+                    }, 1000);
+                }
             }
         };
 
