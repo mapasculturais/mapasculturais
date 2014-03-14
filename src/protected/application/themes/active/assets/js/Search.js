@@ -171,7 +171,9 @@
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
 
-            return ctx.has || $scope.data.global.isVerified;
+            return ctx.has ||
+                   $scope.data.global.isVerified ||
+                   $scope.data.global.locationFilters.enabled !== null;
         };
 
         $scope.cleanAllFilters = function () {
@@ -180,6 +182,11 @@
                 $scope.data[key] = angular.copy(skeletonData[key]);
             });
             $scope.data.global.isVerified = false;
+            $scope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
+        };
+
+        $scope.cleanLocationFilters = function() {
+            $scope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
         };
 
         $scope.tabClick = function(entity){

@@ -293,7 +293,7 @@
         <a class="tag tag-espaco" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId) }}</a>
         <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade=false">Acessibilidade</a>
         <a class="tag" ng-if="data.global.isVerified" ng-click="data.global.isVerified=false">Resultados da SMC</a>
-        <a class="tag" ng-if="data.global.locationFilters.enabled.length>0" ng-click="data.global.locationFilters=null">Área Delimitada</a>
+        <a class="tag" ng-if="data.global.locationFilters.enabled==='circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
         <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
     </div>
     <!--#filtros-selecionados-->
