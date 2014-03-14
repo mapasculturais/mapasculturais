@@ -189,7 +189,7 @@
     <!--.filtro-->
     <div class="filtro">
         <span class="icone icon_check" ng-click="data.space.acessibilidade=!data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
-        <span id="label-da-acessibilidade" class="label" ng-click="data.space.acessibilidade=!data.space.acessibilidade">
+        <span id="label-da-acessibilidade" class="label">
             Acessibilidade
         </span>
     </div>
@@ -224,8 +224,8 @@
         </div>
         <!-- #filtro-prefeitura-->
         <div id="busca-combinada" class="filtro-geral">
-            <span class="icone icon_check"  ng-click="toggleCombined()" ng-class="{'selected':data.global.isCombined }" ></span>
-            <span class="label hltip"       ng-click="toggleCombined()" title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
+            <span class="icone icon_check" ng-click="toggleCombined()" ng-class="{'selected':data.global.isCombined }" ></span>
+            <span class="label hltip" title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
                 Busca Combinada
             </span>
         </span>
