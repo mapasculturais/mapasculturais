@@ -220,7 +220,7 @@
         </form>-->
         <!-- #form-projeto-->
         <div id="filtro-prefeitura" class="filtro-geral">
-            <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="data.global.isVerified=!data.global.isVerified">Resultados da SMC</a>
+            <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
         </div>
         <!-- #filtro-prefeitura-->
         <div id="busca-combinada" class="filtro-geral">
@@ -288,7 +288,7 @@
 
         <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade=false">Acessibilidade</a>
 
-        <a class="tag" ng-if="data.global.isVerified" ng-click="data.global.isVerified=false">Resultados da SMC</a>
+        <a class="tag" ng-if="data.global.isVerified" ng-click="toggleVerified()">Resultados da SMC</a>
         <a class="tag" ng-if="data.global.locationFilters.enabled==='circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
         <a class="tag" ng-if="data.global.locationFilters.enabled==='neighborhood'" ng-click="cleanLocationFilters()">Próximo a mim</a>
 

@@ -45,10 +45,10 @@
                 }
             },
             agent: {
-                isVerified: false,
                 keyword: '',
                 areas: [],
                 type: null,
+                isVerified: false,
                 id: null
             },
             space: {
@@ -56,6 +56,7 @@
                 areas: [],
                 types: [],
                 acessibilidade: false,
+                isVerified: false,
                 id: null
             },
             event: {
@@ -63,7 +64,8 @@
                 linguagens: [],
                 from: null,
                 to: null,
-                classificacaoEtaria: null
+                classificacaoEtaria: null,
+                isVerified: false,
             }
         };
 
@@ -106,53 +108,20 @@
         return output;
     };
 
+    var deepExtend = function (skeleton, extension) {
+        angular.forEach(extension, function(value, key){
+            if(angular.isObject(value) && !angular.isArray(value)) {
+                deepExtend(skeleton[key], value);
+                delete extension[key];
+            }
+        });
+        angular.extend(skeleton, extension);
+        return skeleton;
+    };
+
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
-        $scope.data = angular.copy(skeletonData);
-
-        $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
-        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
-        MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
-        $scope.types = MapasCulturais.entityTypes;
-
-        $scope.dataChange = function(newValue, oldValue){
-            if(newValue === undefined) return;
-            var serialized = $rison.stringify(diffFilter(newValue));
-
-            if($location.hash() !== serialized){
-                $location.hash(serialized);
-                $timeout.cancel($scope.timer);
-                $scope.timer = $timeout(function() {
-                    $rootScope.$emit('searchDataChange', $scope.data);
-                }, 1000);
-            }
-        };
-        $scope.$watch('data', $scope.dataChange, true);
-
-        $scope.parseHash = function(){
-            var newValue = $location.hash();
-
-            if(newValue && newValue !== $rison.stringify(diffFilter($scope.data))){
-                $scope.data = angular.extend(angular.copy(skeletonData), $rison.parse(newValue));
-                $rootScope.$emit('searchDataChange', $scope.data);
-
-            }
-        };
-        $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
-
-        if($location.hash() === 'null') {
-            $scope.data.global.filterEntity = 'agent';
-            $scope.data.global.enabled.agent = true;
-        } else {
-            $scope.parseHash();
-        }
-
-        $rootScope.$on('searchDataChange', function(ev, data) {
-            console.log('searchDataChange emitted', data);
-            SearchService($scope.data);
-        });
-
         $scope.getName = function(valores, id){
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
         };
@@ -168,6 +137,12 @@
             } else {
                 array.push(id);
             }
+        };
+
+        $scope.toggleVerified = function () {
+            angular.forEach($scope.data, function(value, key) {
+                $scope.data[key].isVerified = !$scope.data[key].isVerified;
+            });
         };
 
         $scope.hasFilter = function() {
@@ -239,6 +214,50 @@
                 });
             }
         };
+
+        $scope.parseHash = function(){
+            var newValue = $location.hash();
+
+            if(newValue && newValue !== $rison.stringify(diffFilter($scope.data))){
+                $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
+                $rootScope.$emit('searchDataChange', $scope.data);
+            }
+        };
+
+        $scope.dataChange = function(newValue, oldValue){
+            if(newValue === undefined) return;
+            var serialized = $rison.stringify(diffFilter(newValue));
+
+            if($location.hash() !== serialized){
+                $location.hash(serialized);
+                $timeout.cancel($scope.timer);
+                $scope.timer = $timeout(function() {
+                    $rootScope.$emit('searchDataChange', $scope.data);
+                }, 1000);
+            }
+        };
+
+        $scope.data = angular.copy(skeletonData);
+
+        $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
+        $scope.types = MapasCulturais.entityTypes;
+
+        $rootScope.$on('searchDataChange', function(ev, data) {
+            console.log('searchDataChange emitted', data);
+            SearchService(data);
+        });
+
+        $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
+
+        if($location.hash() === '') {
+            $scope.tabClick('agent');
+        } else {
+            $scope.parseHash();
+        }
+
+        $scope.$watch('data', $scope.dataChange, true);
 
         $scope.numAgents = 0;
         $scope.numSpaces = 0;
