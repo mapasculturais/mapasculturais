@@ -62,8 +62,8 @@
             event: {
                 keyword: '',
                 linguagens: [],
-                from: null,
-                to: null,
+                from: '2010-01-01',
+                to: '2014-10-10',
                 classificacaoEtaria: null,
                 isVerified: false,
             }
