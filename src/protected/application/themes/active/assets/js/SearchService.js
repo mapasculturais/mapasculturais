@@ -146,6 +146,10 @@
                     searchData.type = 'IN(' + entityData.type + ')';
                 }
 
+                if(entityData.acessibilidade){
+                    searchData.acessibilidade = 'EQ(true)';
+                }
+
                 if(entityData.isVerified){
                     searchData.isVerified = 'EQ(true)';
                 }
