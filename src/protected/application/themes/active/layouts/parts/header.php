@@ -97,19 +97,19 @@
 	<nav id="main-nav" class="alignright clearfix">
 		<ul class="menu abas-objetos clearfix">
 			<li id="aba-eventos" ng-class="{'active':data.global.filterEntity==='event','disabled':!data.global.enabled.event,'enabled':data.global.enabled.event}" ng-mouseenter="tabOver('event')" ng-click="tabClick('event')">
-                <a hrefFORA="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(event:true),filterEntity:event))">
+                <a href="<?php if($this->controller->action !== 'search') echo $app->createUrl('busca').'##(global:(enabled:(event:true),filterEntity:event))'; ?>">
                 	<div class="icone icon_calendar"></div>
                 	<div>Eventos</div>
                 </a>
             </li>
 			<li id="aba-agentes" ng-class="{'active':data.global.filterEntity==='agent','disabled':!data.global.enabled.agent,'enabled':data.global.enabled.agent}" ng-mouseenter="tabOver('agent')" ng-click="tabClick('agent')">
-                <a hrefFORA="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(agent:true),filterEntity:agent))">
+                <a href="<?php if($this->controller->action !== 'search') echo $app->createUrl('busca').'##(global:(enabled:(agent:true),filterEntity:agent))'; ?>">
 	                <div class="icone icon_profile"></div>
 	                <div>Agentes</div>
                 </a>
             </li>
 			<li id="aba-espacos" ng-class="{'active':data.global.filterEntity==='space','disabled':!data.global.enabled.space,'enabled':data.global.enabled.space}" ng-mouseenter="tabOver('space')" ng-click="tabClick('space')">
-                <a hrefFORA="<?php echo $app->createUrl('busca'); ?>##(global:(enabled:(space:true),filterEntity:space))">
+                <a href="<?php if($this->controller->action !== 'search') echo $app->createUrl('busca').'##(global:(enabled:(space:true),filterEntity:space))'; ?>">
                 	<div class="icone icon_building"></div>
                 	<div>Espaços</div>
                 </a>
