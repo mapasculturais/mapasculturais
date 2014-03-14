@@ -3,6 +3,7 @@
 
     var skeletonData = {
             global: {
+                isVerified: false,
                 isCombined: false,
                 viewMode: 'map',
                 filterEntity: null,
@@ -164,11 +165,21 @@
         };
 
         $scope.hasFilter = function() {
-            return !angular.equals(_diffFilter($scope.data.agent, skeletonData.agent), {});
+            var ctx = {has: false};
+            angular.forEach($scope.data, function(value, key) {
+                if(key === 'global') return;
+                this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
+            }, ctx);
+
+            return ctx.has || $scope.data.global.isVerified;
         };
 
         $scope.cleanAllFilters = function () {
-            $scope.data.agent = angular.copy(skeletonData.agent);
+            angular.forEach($scope.data, function(value, key) {
+                if(key === 'global') return;
+                $scope.data[key] = angular.copy(skeletonData[key]);
+            });
+            $scope.data.global.isVerified = false;
         };
 
         $scope.tabClick = function(entity){

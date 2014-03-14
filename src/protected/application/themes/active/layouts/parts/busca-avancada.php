@@ -176,7 +176,7 @@
             <div class="placeholder">Selecione as áreas</div>
             <div class="submenu-dropdown">
                 <ul class="lista-de-filtro">
-                    <li ng-repeat="area in areas" ng-class="{'selected':area.selected}" ng-click="area.selected=!area.selected;">
+                    <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.space.areas, area.id)}" ng-click="toggleSelection(data.space.areas, area.id)">
                         <span>{{area.name}}</span>
                     </li>
                 </ul>
@@ -190,7 +190,7 @@
             <div class="placeholder">Selecione os tipos</div>
             <div class="submenu-dropdown">
                 <ul class="lista-de-filtro">
-                    <li ng-repeat="type in types.space" ng-class="{'selected':type.selected}" ng-click="type.selected=!type.selected;">
+                    <li ng-repeat="type in types.space" ng-class="{'selected':isSelected(data.space.types, type.id)}" ng-click="toggleSelection(data.space.types, type.id)">
                         <span>{{type.name}}</span>
                     </li>
                 </ul>
@@ -199,8 +199,8 @@
     </div>
     <!--.filtro-->
     <div class="filtro">
-        <span class="icone icon_check" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" ng-class="{'selected':spaceAccessibility}"></span>
-        <span id="label-da-acessibilidade" class="label" ng-click="spaceAccessibility=!spaceAccessibility;searchManager.update();" style="cursor:default">
+        <span class="icone icon_check" ng-click="data.space.acessibilidade=!data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
+        <span id="label-da-acessibilidade" class="label" ng-click="data.space.acessibilidade=!data.space.acessibilidade">
             Acessibilidade
         </span>
     </div>
@@ -231,7 +231,7 @@
         </form>-->
         <!-- #form-projeto-->
         <div id="filtro-prefeitura" class="filtro-geral">
-            <a class="hltip botao principal selected" href="#" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="filterVerified=!filterVerified; searchManager.update();">Resultados da SMC</a>
+            <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="data.global.isVerified=!data.global.isVerified">Resultados da SMC</a>
         </div>
         <!-- #filtro-prefeitura-->
         <div id="busca-combinada" class="filtro-geral">
@@ -286,14 +286,14 @@
       <!--#resultados-->
       <div id="filtros-selecionados">
         <a class="tag tag-agente" ng-if="data.agent.keyword!==''" ng-click="data.agent.keyword=''">{{ data.agent.keyword }}</a>
-        <a class="tag tag-espaco" href="#" ng-bind="spaceSearch.searchTerm" ng-show="spaceSearch.searchTerm" ng-click="spaceResults=[];spaceSearch.searchTerm='';spaceSearch.searchInput='';searchManager.update();"></a>
+        <a class="tag tag-espaco" ng-if="data.space.keyword!==''" ng-click="data.space.keyword=''">{{ data.space.keyword }}</a>
         <a class="tag tag-agente" ng-if="data.agent.type!==null" ng-click="data.agent.type=null">{{ getName(types.agent, data.agent.type) }}</a>
-        <a class="tag tag-espaco" ng-repeat="type in spaceSearch.types | filter:isSelected" ng-click="type.selected=false; searchManager.update();">{{type.name}}</a>
-        <a class="tag tag-agente" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{getName(areas, areaId)}}</a>
-        <a class="tag tag-espaco" ng-repeat="area in spaceSearch.areas | filter:isSelected" ng-click="area.selected=false; searchManager.update();">{{area.name}}</a>
-        <a class="tag tag-espaco" ng-show="spaceAccessibility" ng-click="spaceAccessibility=false;searchManager.update()">Acessibilidade</a>
-        <a class="tag" href="#" ng-show="filterVerified" ng-click="filterVerified=false;searchManager.update()">Resultados da SMC</a>
-        <a class="tag" ng-show="data.global.locationFilters.enabled.length>0" ng-click="data.global.locationFilters=null">Área Delimitada</a>
+        <a class="tag tag-espaco" ng-repeat="typeId in data.space.types" ng-click="toggleSelection(data.space.types, typeId)">{{ getName(types.space, typeId) }}</a>
+        <a class="tag tag-agente" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId) }}</a>
+        <a class="tag tag-espaco" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId) }}</a>
+        <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade=false">Acessibilidade</a>
+        <a class="tag" ng-if="data.global.isVerified" ng-click="data.global.isVerified=false">Resultados da SMC</a>
+        <a class="tag" ng-if="data.global.locationFilters.enabled.length>0" ng-click="data.global.locationFilters=null">Área Delimitada</a>
         <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
     </div>
     <!--#filtros-selecionados-->
