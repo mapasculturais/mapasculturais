@@ -2,72 +2,72 @@
     "use strict";
 
     var skeletonData = {
-            global: {
-                isVerified: false,
-                isCombined: false,
-                viewMode: 'map',
-                filterEntity: null,
-                locationFilters: {
-                    enabled: null, // circle, address, neighborhood
-                    circle: {
-                        center: {
-                            lat: null,
-                            lng: null
-                        },
-                        radius: null,
+        global: {
+            isVerified: false,
+            isCombined: false,
+            viewMode: 'map',
+            filterEntity: null,
+            locationFilters: {
+                enabled: null, // circle, address, neighborhood
+                circle: {
+                    center: {
+                        lat: null,
+                        lng: null
                     },
-                    neighborhood: {
-                        center: {
-                            lat: null,
-                            lng: null
-                        },
-                        radius: 2000
-                    },
-                    address: {
-                        text: '',
-                        center: {
-                            lat: null,
-                            lng: null
-                        }
-                    }
+                    radius: null
                 },
-                map: {
-                    zoom: null,
+                neighborhood: {
+                    center: {
+                        lat: null,
+                        lng: null
+                    },
+                    radius: 2000
+                },
+                address: {
+                    text: '',
                     center: {
                         lat: null,
                         lng: null
                     }
-                },
-                enabled: {
-                    agent: false,
-                    space: false,
-                    event: false
                 }
             },
-            agent: {
-                keyword: '',
-                areas: [],
-                type: null,
-                isVerified: false,
-                id: null
+            map: {
+                zoom: null,
+                center: {
+                    lat: null,
+                    lng: null
+                }
             },
-            space: {
-                keyword: '',
-                areas: [],
-                types: [],
-                acessibilidade: false,
-                isVerified: false,
-                id: null
-            },
-            event: {
-                keyword: '',
-                linguagens: [],
-                from: '2010-01-01',
-                to: '2014-10-10',
-                classificacaoEtaria: null,
-                isVerified: false,
+            enabled: {
+                agent: false,
+                space: false,
+                event: false
             }
-        };
+        },
+        agent: {
+            keyword: '',
+            areas: [],
+            type: null,
+            isVerified: false,
+            id: null
+        },
+        space: {
+            keyword: '',
+            areas: [],
+            types: [],
+            acessibilidade: false,
+            isVerified: false,
+            id: null
+        },
+        event: {
+            keyword: '',
+            linguagens: [],
+            from: '2010-01-01',
+            to: '2014-10-10',
+            classificacaoEtaria: null,
+            isVerified: false
+        }
+    };
 
     var diffFilter = function (input) {
         return _diffFilter(input, skeletonData);
