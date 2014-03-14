@@ -9,6 +9,16 @@
             map.addLayer(drawnItems);
             window.leaflet.map.drawnItems = drawnItems;
 
+
+            if($scope.data.global.locationFilters.enabled){
+                var lf = $scope.data.global.locationFilters;
+                (new L.Circle(
+                    new L.LatLng(lf[lf.enabled].center.lat, lf[lf.enabled].center.lng),
+                    lf[lf.enabled].radius
+                ).addTo(map.drawnItems));
+            }
+
+
             L.drawLocal.draw.handlers.circle.tooltip.start = 'Clique e arraste para desenhar o círculo';
             L.drawLocal.draw.handlers.circle.tooltip.end = 'Solte o mouse para finalizar o desenho';
             L.drawLocal.draw.toolbar.actions.title = 'Cancelar desenho';
@@ -87,8 +97,6 @@
 
             //ESCONDE O CONTROLE PARA POSTERIORMENTE USAR O BOTÃO (NÃO CONSEGUI SETAR OS EVENTOS DO DRAW CIRCLE SEM ESTE CONTROLE
             document.querySelector('.leaflet-draw-draw-circle').style.display = 'none';
-
-
 
 
             map.on('locationfound', function(e) {
