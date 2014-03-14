@@ -218,9 +218,9 @@
             <input type="hidden" name="lng" />
         </form>
         ou
-        <a class="hltip proximo-a-mim botao principal" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
+        <a class="hltip proximo-a-mim botao principal" ng-class="{'selected':data.global.locationFilters.enabled==='neighborhood'}" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
         ou
-        <a class="hltip botao principal" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
+        <a class="hltip botao principal" ng-class="{'selected':data.global.locationFilters.enabled==='circle'}" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
     </div>
     <!--#filtro-local-->
         <!--
@@ -294,6 +294,7 @@
         <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade=false">Acessibilidade</a>
         <a class="tag" ng-if="data.global.isVerified" ng-click="data.global.isVerified=false">Resultados da SMC</a>
         <a class="tag" ng-if="data.global.locationFilters.enabled==='circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
+        <a class="tag" ng-if="data.global.locationFilters.enabled==='neighborhood'" ng-click="cleanLocationFilters()">Próximo a mim</a>
         <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
     </div>
     <!--#filtros-selecionados-->
