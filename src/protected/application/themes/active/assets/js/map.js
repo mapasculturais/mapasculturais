@@ -107,7 +107,12 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             var locateMeControl = initializerOptions.locateMeControl ? true : false;
 
-            options.center = mapCenter;
+            if(initializerOptions.mapCenter){
+                options.center = new L.LatLng( initializerOptions.mapCenter.lat, initializerOptions.mapCenter.lng);
+            }else{
+                options.center = mapCenter;
+            }
+
             options.zoom = defaultZoom;
             options.zoomControl = false;
             options.minZoom = 3;

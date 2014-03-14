@@ -1,6 +1,6 @@
 //Inicia o mapa para a busca e configura o timeout do scroll
 jQuery(document).ready(function() {
-    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true});
+    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
 
     var timeout;
     $(window).scroll(function() {
