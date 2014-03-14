@@ -158,6 +158,13 @@
 
             $scope.resultLayer.addTo($scope.map);
 
+            $scope.resultLayer.on('clusterclick', function (a) {
+                if(a.layer._childCount <= 6)
+                    a.layer.spiderfy();
+                else{
+                    a.layer.zoomToBounds();
+                }
+            });
 
 
         };
