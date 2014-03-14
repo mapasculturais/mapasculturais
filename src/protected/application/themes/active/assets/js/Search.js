@@ -114,6 +114,7 @@
         $scope.data.global.enabled.agent = true;
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
         MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
 

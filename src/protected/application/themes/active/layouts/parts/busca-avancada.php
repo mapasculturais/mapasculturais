@@ -3,7 +3,7 @@
         <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity==='event'">
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
-                <input ng-keyup="searchTermKeyUp($event)" data-entity='event' class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
+                <input ng-model="data.event.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
             </form>
             <!--#busca-->
             <div class="filtro">
@@ -90,20 +90,9 @@
             <div class="placeholder">Selecione as linguagens</div>
             <div class="submenu-dropdown">
                 <ul class="lista-de-filtro select">
-                    <li>artes circenses</li>
-                    <li>cultura digital</li>
-                    <li class="selected">música</li>
-                    <li>artes integradas</li>
-                    <li>cultura tradicional</li>
-                    <li>rádio</li>
-                    <li>artes visuais</li>
-                    <li>dança</li>
-                    <li>teatro</li>
-                    <li>audiovisual</li>
-                    <li>hip hop</li>
-                    <li>cultura indígena</li>
-                    <li>livre e literatura</li>
-                    <li>outros</li>
+                    <li ng-repeat="linguagem in linguagens" ng-class="{'selected':isSelected(data.event.linguagens, linguagem.id)}" ng-click="toggleSelection(data.event.linguagens, linguagem.id)">
+                        <span>{{linguagem.name}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -285,16 +274,24 @@
       </div>
       <!--#resultados-->
       <div id="filtros-selecionados">
+        <a class="tag tag-evento" ng-if="data.event.keyword!==''" ng-click="data.event.keyword=''">{{ data.event.keyword }}</a>
         <a class="tag tag-agente" ng-if="data.agent.keyword!==''" ng-click="data.agent.keyword=''">{{ data.agent.keyword }}</a>
         <a class="tag tag-espaco" ng-if="data.space.keyword!==''" ng-click="data.space.keyword=''">{{ data.space.keyword }}</a>
+
         <a class="tag tag-agente" ng-if="data.agent.type!==null" ng-click="data.agent.type=null">{{ getName(types.agent, data.agent.type) }}</a>
         <a class="tag tag-espaco" ng-repeat="typeId in data.space.types" ng-click="toggleSelection(data.space.types, typeId)">{{ getName(types.space, typeId) }}</a>
+
+        <a class="tag tag-evento" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId) }}</a>
+
         <a class="tag tag-agente" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId) }}</a>
         <a class="tag tag-espaco" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId) }}</a>
+
         <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade=false">Acessibilidade</a>
+
         <a class="tag" ng-if="data.global.isVerified" ng-click="data.global.isVerified=false">Resultados da SMC</a>
         <a class="tag" ng-if="data.global.locationFilters.enabled==='circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
         <a class="tag" ng-if="data.global.locationFilters.enabled==='neighborhood'" ng-click="cleanLocationFilters()">Próximo a mim</a>
+
         <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
     </div>
     <!--#filtros-selecionados-->

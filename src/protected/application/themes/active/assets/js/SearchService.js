@@ -135,7 +135,7 @@
                 }
 
                 if(entityData.linguagens && entityData.linguagens.length){
-                    var selectedLinguagens = entityData.areas.map(function(e){
+                    var selectedLinguagens = entityData.linguagens.map(function(e){
                         return MapasCulturais.taxonomyTerms.linguagem[e];
                     });
 
