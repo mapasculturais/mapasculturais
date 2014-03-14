@@ -15,7 +15,7 @@
             assetURL: '<?php echo $assetURL?>',
             request: {
                 controller: '<?php if($this->controller) echo $this->controller->id?>',
-                action: '<?php if($this->controllxer) echo str_replace($this->controller->id . '/', '', $this->template)?>',
+                action: '<?php if($this->controller) echo str_replace($this->controller->id . '/', '', $this->template)?>',
                 id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
             },
             mode: "<?php echo $app->config('mode'); ?>"
