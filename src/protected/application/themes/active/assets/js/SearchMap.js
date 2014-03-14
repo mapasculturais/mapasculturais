@@ -55,22 +55,25 @@
 
                 marker = new L.marker(
                     new L.LatLng(item.location.latitude, item.location.longitude),
-                    window.leaflet.iconOptions[entity]
-                )
-                .bindLabel(item.name)
-                .on('click', function() {
-                    console.log(document.querySelector('#' + entity + '-result-' + item.id))
-                    var listItem = document.querySelector('#' + entity + '-result-' + item.id);
-                    var itemURL = listItem.querySelector(' a.js-single-url');
+                    $window.leaflet.iconOptions[entity]
+                ).bindLabel(
+                    item.name
+                ).on('click', function() {
+                    //console.log(document.querySelector('#' + entity + '-result-' + item.id))
+                    //var listItem = document.querySelector('#' + entity + '-result-' + item.id);
+                    //var itemURL = listItem.querySelector(' a.js-single-url');
                     var infobox = document.querySelector('#infobox');
                     var infoboxContent = infobox.querySelector('article');
-                    infoboxContent.innerHTML = listItem.innerHTML;
+                    infoboxContent.innerHTML = '<h1>' + item.name + '</h1>';//listItem.innerHTML;
                     infobox.style.display = 'block';
                     infobox.className = 'objeto';
-                    infobox.classList.add(searchEntity.cssClass);
+                    //infobox.classList.add(searchEntity.cssClass);
 
-                    //itemURL.setAttribute('target', '_blank');
-                    //a.click();
+                    $scope.data.global.openEntity = {
+                        id: item.id,
+                        type: entity
+                    };
+                    $scope.$apply();
                 });
 
                 if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
