@@ -173,9 +173,7 @@
 
         $scope.tabClick = function(entity){
             var g = $scope.data.global;
-            if(!g.isCombined) {
-                g.filterEntity = entity;
-            }else{
+            if(g.isCombined) {
                 // combined search click:
                 if(g.enabled[entity]){
                     // if the entity is already enabled and it's the last one enabled, avoid disabling
@@ -187,6 +185,11 @@
                 }else{
                     g.enabled[entity] = true;
                 }
+            }else{
+                g.filterEntity = entity;
+                angular.forEach(g.enabled, function(value, key) {
+                    g.enabled[key] = (key===entity)
+                });
             }
         };
 
@@ -198,23 +201,18 @@
 
         $scope.toggleCombined = function () {
             var g = $scope.data.global;
-            if(!g.isCombined) {
-                g.isCombined = true;
-                g.enabled = {
-                    agent : true,
-                    space : true,
-                    event : true
-                };
-            }else{
+            if(g.isCombined) {
                 g.isCombined = false;
                 if(Object.keys(g.enabled).length > 1){
-                    g.enabled = {
-                        agent : false,
-                        space : false,
-                        event : false
-                    };
-                    g.enabled[g.filterEntity] = true;
+                    angular.forEach(g.enabled, function(value, key) {
+                        g.enabled[key] = key===g.filterEntity;
+                    });
                 }
+            }else{
+                g.isCombined = true;
+                angular.forEach(g.enabled, function(value, key) {
+                    g.enabled[key] = true;
+                });
             }
         };
 
