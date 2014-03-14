@@ -243,7 +243,7 @@
                 } else {
                     $scope.timer = $timeout(function() {
                         $rootScope.$emit('searchDataChange', $scope.data);
-                    }, 1000);
+                    }, 200);
                 }
             }
         };
