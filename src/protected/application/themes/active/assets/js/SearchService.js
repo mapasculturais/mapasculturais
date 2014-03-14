@@ -143,14 +143,14 @@
                 }
 
                 if(entityData.type){
-                    searchData['type'] = 'IN(' + entityData.type + ')';
+                    searchData.type = 'IN(' + entityData.type + ')';
                 }
 
                 if(entityData.isVerified){
                     searchData.isVerified = 'EQ(true)';
                 }
 
-                if(data.global.locationFilters && data.global.locationFilters.enabled){
+                if(data.global.locationFilters.enabled !== null){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;
                     var radius = data.global.locationFilters[type].radius;
@@ -164,7 +164,7 @@
                     searchData['@to'] = entityData.to;
 
                 return searchData;
-            };
+            }
 
             function apiFind(entity, select, searchData, page, action) {
                 action = action || 'find';
@@ -179,7 +179,7 @@
                 console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
 
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
-            };
+            }
 
             function apiCount(entity, searchData, action) {
 
@@ -191,7 +191,7 @@
                 }
                 console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
-            };
+            }
         };
 
 
