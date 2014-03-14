@@ -219,8 +219,12 @@
 
         $scope.parseHash = function(){
             var newValue = $location.hash();
+            if(newValue === '') {
+                $scope.tabClick('agent');
+                return;
+            }
 
-            if(newValue && newValue !== $rison.stringify(diffFilter($scope.data))){
+            if(newValue !== $rison.stringify(diffFilter($scope.data))){
                 $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
                 $rootScope.$emit('searchDataChange', $scope.data);
             }
@@ -245,6 +249,7 @@
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
         MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
+        $scope.location = $location;
 
         $rootScope.$on('searchDataChange', function(ev, data) {
             console.log('searchDataChange emitted', data);
