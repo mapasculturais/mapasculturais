@@ -110,8 +110,6 @@
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
         $scope.data = angular.copy(skeletonData);
-        $scope.data.global.filterEntity = 'agent';
-        $scope.data.global.enabled.agent = true;
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
@@ -119,7 +117,6 @@
         $scope.types = MapasCulturais.entityTypes;
 
         $scope.dataChange = function(newValue, oldValue){
-            newValue = $scope.data;
             if(newValue === undefined) return;
             var serialized = $rison.stringify(diffFilter(newValue));
 
@@ -133,7 +130,7 @@
         };
         $scope.$watch('data', $scope.dataChange, true);
 
-        $rootScope.$on('$locationChangeSuccess', function(){
+        $scope.parseHash = function(){
             var newValue = $location.hash();
 
             if(newValue && newValue !== $rison.stringify(diffFilter($scope.data))){
@@ -141,7 +138,15 @@
                 $rootScope.$emit('searchDataChange', $scope.data);
 
             }
-        });
+        };
+        $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
+
+        if($location.hash() === 'null') {
+            $scope.data.global.filterEntity = 'agent';
+            $scope.data.global.enabled.agent = true;
+        } else {
+            $scope.parseHash();
+        }
 
         $rootScope.$on('searchDataChange', function(ev, data) {
             console.log('searchDataChange emitted', data);
