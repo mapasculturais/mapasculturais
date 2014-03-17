@@ -18,6 +18,7 @@
             angular.element(document).ready(function(){
                 $scope.map = $window.leaflet.map;
                 $scope.map.removeLayer($window.leaflet.marker);
+                $scope.map.invalidateSize();
 
                 $scope.map.on('load', function(){
                     $scope.setMapView();
@@ -41,8 +42,6 @@
 
 
             $rootScope.$on('searchResultsReady', function(ev, results){
-                console.log('ON searchResultsReady', results);
-
                 delete $scope.markers;
                 $scope.markers = [];
                 if(results.agent) $scope.createMarkers('agent', results.agent);
@@ -59,7 +58,6 @@
         };
 
         $scope.setMapView = function(){
-            console.log('SET MAP VIEW', $scope.data.global.map);
             if($scope.map && $scope.data.global.map && $scope.data.global.map.zoom) {
                 $scope.map.setZoom($scope.data.global.map.zoom);
                 $scope.map.panTo($scope.data.global.map.center);
@@ -104,18 +102,15 @@
         };
 
         $scope.updateMap = function(){
-
             if($scope.resultLayer){
                 $scope.resultLayer.clearLayers();
 
                 //remove drawing if more than one
                 if($scope.map.drawnItems){
-                    if(!$scope.data.global.locationFilters || !('enabled' in $scope.data.global.locationFilters) )  {
-                        console.log('CLEARING DRAWING LAYER');
+                    if(!$scope.data.global.locationFilters.enabled)  {
                         $scope.map.drawnItems.clearLayers();
                         if(window.leaflet.locationMarker) { $scope.map.removeLayer(window.leaflet.locationMarker);}
                     }else if(Object.keys($scope.map.drawnItems._layers).length > 1) {
-                        console.log('KEEPING THE LAST DRAWN ITEM');
                         var lastLayer = $scope.map.drawnItems.getLayers().pop();
                         $scope.map.drawnItems.clearLayers();
                         $scope.map.drawnItems.addLayer(lastLayer);
