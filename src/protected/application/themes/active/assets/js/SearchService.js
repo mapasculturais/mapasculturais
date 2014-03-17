@@ -161,12 +161,12 @@
                 }
 
                 if(entityData.type){
-                    searchData.type = 'EQ(' + entityData.type + ')';
-                }
+                    searchData.type = 'EQ(' + entityData.type + ')';
+                }
 
-                if(entityData.types && entityData.types.length){
-                    searchData.type = 'IN(' + entityData.types + ')';
-                }
+                if(entityData.types && entityData.types.length){
+                    searchData.type = 'IN(' + entityData.types + ')';
+                }
 
                 if(entityData.acessibilidade){
                     searchData.acessibilidade = 'EQ(true)';
