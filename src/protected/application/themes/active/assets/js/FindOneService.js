@@ -1,9 +1,12 @@
 (function(angular) {
+    "use strict";
+
     var app = angular.module('FindOneService', []);
     app.factory('FindOneService', ['$http', '$rootScope', function($http, $rootScope){
         return function(data){
             var select = 'id,singleUrl,name,type,shortDescription,terms',
                 requestAction = 'findOne',
+                page=null,
                 result = {},
                 sData = {},
                 entity;

@@ -1,6 +1,6 @@
 (function(angular) {
-    var app = angular.module('SearchSpatial', ['ng-mapasculturais', 'SearchService', 'angularSpinner']);
-    app.controller('SearchSpatialController', ['$window', '$scope', '$location', 'SearchService', "$rootScope", function($window, $scope, $location, SearchService, $rootScope) {
+    var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
+    app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", function($window, $scope, $location, $rootScope) {
 
         angular.element(window).load(function() {
             var map = window.leaflet.map;

@@ -1,17 +1,17 @@
 (function(angular) {
-    var app = angular.module('SearchService', []);
-    app.factory('SearchService', ['$http', '$rootScope', function($http, $rootScope){
+    "use strict";
 
-        return function(data){
-            var select,
-                numRequests = 0,
-                numSuccessRequests = 0,
-                numCountRequests = 0,
-                numCountSuccessRequests = 0,
-                results = {},
-                countResults = {};
-
-            $rootScope.apiCache = $rootScope.apiCache || {
+    var app = angular.module('SearchService', ['angularSpinner']);
+    app.factory('searchService', ['$http', '$rootScope', function($http, $rootScope){
+        var select,
+            numRequests = 0,
+            numSuccessRequests = 0,
+            numCountRequests = 0,
+            numCountSuccessRequests = 0,
+            page = null,
+            results = {},
+            countResults = {},
+            apiCache = {
                 agent: {
                     params: '',
                     result: []
@@ -37,6 +37,9 @@
                     num: 0
                 }
             };
+
+        $rootScope.$on('searchDataChange', function(ev, data) {
+            console.log('RECEIVE searchservice');
 
             if(data.global.viewMode === 'list'){
                 select = 'id,singleUrl,name,type,shortDescription,terms';
@@ -65,9 +68,9 @@
                     requestEntity = entity === 'event' ? 'space' : entity,
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
 
-                if($rootScope.apiCache[entity + 'Count'].params === apiCountParams){
+                if(apiCache[entity + 'Count'].params === apiCountParams){
                     console.log('COUNT CACHED: ' + entity);
-                    countResults[entity] = $rootScope.apiCache[entity + 'Count'].num;
+                    countResults[entity] = apiCache[entity + 'Count'].num;
                     endCountRequest();
                 }else{
                     numCountRequests++;
@@ -76,17 +79,17 @@
                         numCountSuccessRequests++;
                         countResults[entity] = rs;
 
-                        $rootScope.apiCache[entity + 'Count'].num = rs;
+                        apiCache[entity + 'Count'].num = rs;
 
                         endCountRequest();
                     });
 
-                    $rootScope.apiCache[entity + 'Count'].params = apiCountParams;
+                    apiCache[entity + 'Count'].params = apiCountParams;
                 }
 
-                if($rootScope.apiCache[entity].params === apiParams){
+                if(apiCache[entity].params === apiParams){
                     console.log('CACHED: ' + entity);
-                    results[entity] = $rootScope.apiCache[entity].result;
+                    results[entity] = apiCache[entity].result;
                     endRequest();
 
                 }else{
@@ -96,12 +99,12 @@
                         numSuccessRequests++;
                         results[entity] = rs;
 
-                        $rootScope.apiCache[entity].result = rs;
+                        apiCache[entity].result = rs;
 
                         endRequest();
                     });
 
-                    $rootScope.apiCache[entity].params = apiParams;
+                    apiCache[entity].params = apiParams;
                 }
             }
 
@@ -196,10 +199,9 @@
                 console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
-        };
+        });
 
-
-
+        return 'done';
     }]);
 
 })(angular);

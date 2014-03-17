@@ -124,7 +124,7 @@
 
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'SearchService', function($scope, $rootScope, $location, $rison, $window, $timeout, SearchService){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $rison, $window, $timeout, searchService){
         $scope.defaultImageURL = MapasCulturais.defaultAvatarURL;
         $scope.getName = function(valores, id){
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
@@ -259,7 +259,6 @@
 
         $rootScope.$on('searchDataChange', function(ev, data) {
             console.log('ON searchDataChange', data);
-            SearchService(data);
         });
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
