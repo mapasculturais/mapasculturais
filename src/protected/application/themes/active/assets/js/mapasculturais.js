@@ -31,6 +31,32 @@ $(function(){
 
         });
     }
+
+
+    if($('body.controller-event.entity').length){
+        //Mostra o mapa dos espaços nos eventos
+        $('.toggle-mapa').click(function() {
+            var $map = $(this).closest('.regra').find('.mapa');
+            MapasCulturais.reenableScrollWheelZoom = false;
+            if($map.is(':visible')){
+                $map.slideUp('fast');
+                $(this).parent().find('.ver-mapa').show();
+                $(this).parent().find('.ocultar-mapa').hide();
+
+            }else{
+                $map.slideDown('fast', function(){
+                    $map.data('leaflet-map').invalidateSize();
+                    $map.data('leaflet-map').scrollWheelZoom.disable();
+                });
+                $(this).parent().find('.ver-mapa').hide();
+                $(this).parent().find('.ocultar-mapa').show();
+            }
+
+            return false;
+        });
+
+        return false;
+    }
 });
 
 

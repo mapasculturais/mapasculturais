@@ -107,13 +107,14 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 maxZoom: 18
             });
             var map = new L.Map(id, options).addLayer(openStreetMap);
-
+            $(this).data('leaflet-map', map);
             var timeout;
             $(window).scroll(function() {
                 map.scrollWheelZoom.disable();
                 clearTimeout(timeout);
                 timeout = setTimeout(function() {
-                    map.scrollWheelZoom.enable();
+                    if(!MapasCulturais.reenableScrollWheelZoom)
+                        map.scrollWheelZoom.enable();
                 }, 400);
             });
 
