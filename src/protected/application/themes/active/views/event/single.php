@@ -21,20 +21,20 @@ add_occurrence_frequencies_to_js();
 <script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map', isMapEditable:false}); }); </script>
 
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
-    <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">        
+    <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
-        </header> 
+        </header>
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->     
+            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}           
+            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
         </div>
         <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -57,7 +57,7 @@ add_occurrence_frequencies_to_js();
 
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
-        {{#space}}                
+        {{#space}}
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
@@ -207,7 +207,7 @@ add_occurrence_frequencies_to_js();
                 <p><span class="label">Acessibilidade:</span> tradução em libras/descrição sonora</p>
             </div>
             <!--.servico-->
-            <div class="servico ocorrencia clearfix">                
+            <div class="servico ocorrencia clearfix">
                 <?php
                 //$entity->getMetaLists(array('group'=>'links'));
                 $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
@@ -272,7 +272,7 @@ add_occurrence_frequencies_to_js();
                 <?php else: ?>
                     <div class="js-dialog-content"></div>
                 <?php endif; ?>
-            </div>      
+            </div>
         </div>
         <!--.ficha-spcultura-->
 
@@ -350,11 +350,13 @@ add_occurrence_frequencies_to_js();
             </div>
             <div class="grupo-de-campos">
                 <span class="label">Frequência:</span><br>
-                    <select name="frequency">
+                    <select name="frequency" class="js-select-frequency">
                         <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}>uma vez</option>
                         <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}>todos os dias</option>
                         <option value="weekly" {{#rule.freq_weekly}}selected="selected"{{/rule.freq_weekly}}>semanal</option>
+                        <!-- for now we will not support monthly recurrences.
                         <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensal</option>
+                        -->
                     </select>
                 </div>
             </div>
@@ -362,16 +364,16 @@ add_occurrence_frequencies_to_js();
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="data-de-inicio">Data inicial:</label><br>
-                <input id="data-de-inicio" class="js-event-dates data-da-ocorrencia" readonly="readonly" id="starts-on-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
+                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
                 <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
-            <div class="grupo-de-campos oculto">
+            <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
                 <label for="data-de-fim">Data final:</label><br>
-                <input id="data-de-fim" class="js-event-dates data-da-ocorrencia" readonly="readonly" id="until-{{id}}-visible" type="text" placeholder="00/00/0000" value="{{rule.screen_until}}">
+                <input id="until-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
                 <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
                 <!--(Se repetir mostra o campo de data final)-->
             </div>
-            <div class="alignleft oculto">
+            <div class="alignleft js-freq-hide js-weekly">
                 <span class="label">Repete:</span><br>
                 <div>
                     <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> D </label>

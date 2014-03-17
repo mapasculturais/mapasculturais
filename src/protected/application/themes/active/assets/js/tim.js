@@ -226,14 +226,6 @@ var hl;
             return false;
         });
 
-        //Mostra o mapa dos espaços nos eventos
-        $('.toggle-mapa').click(function() {
-            $(this).closest('.regra').find('.mapa').slideToggle();
-            $(this).parent().find('.ver-mapa').toggle();
-            $(this).parent().find('.ocultar-mapa').toggle();
-            return false;
-        });
-
 
         var hideSharetimeout;
 

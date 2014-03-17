@@ -94,6 +94,12 @@ MapasCulturais.EventOccurrenceManager = {
             },
             dataType:  'json'
         });
+
+        $(selector).find('.js-select-frequency').change(function(){
+            $(selector).find('.js-freq-hide').hide();
+            $(selector).find('.js-freq-hide.js-' + $(this).val()).show();
+        });
+        $(selector).find('.js-select-frequency').change();
     }
 };
 
@@ -109,7 +115,7 @@ MapasCulturais.EventDates = {
             $(this).datepicker({
                 dateFormat: $(this).data('date-format') ? $(this).data('date-format') : 'dd/mm/yy',
                 altFormat: $(this).data('alt-format') ? $(this).data('alt-format') : 'yy-mm-dd',
-                altField: altFieldSelector,
+                altField: altFieldSelector
             });
         });
     }

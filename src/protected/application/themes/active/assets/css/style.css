@@ -260,6 +260,7 @@ tr th { text-align: left; }
 .abas li.active a, .abas li:hover a { color: #000; }
 /*Tags*/
 .tags { border: 1px solid #000; margin-bottom: 1.5rem; padding: .75rem; border-radius: 2px; }
+
 .tag { display: inline-block; margin-right: 3px; margin-bottom: .75rem; padding: 0 .5rem; background-color: #fff; border-radius: 2px; font-family: "Open Sans", Arial, Helvetica, sans-serif; font-size: .7rem; line-height: 1.5rem; font-weight: normal; color: #999; text-transform: uppercase; -webkit-transition: all .3s; transition: all .3s; cursor: pointer; }
 .tag:hover { color: #000; text-decoration: none; }
 .tag.selected { background-color: #000; color: #fff; padding-right: .3rem; }
