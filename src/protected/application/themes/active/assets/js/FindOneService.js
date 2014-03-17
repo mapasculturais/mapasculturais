@@ -27,6 +27,7 @@
             function apiFindOne(entity, select, searchData, page, action) {
                 action = action || 'find';
                 searchData['@select'] = select;
+                searchData['@files'] = '(avatar.avatarBig):url';
                 var querystring = "";
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];

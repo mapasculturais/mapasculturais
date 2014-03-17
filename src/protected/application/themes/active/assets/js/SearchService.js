@@ -4,6 +4,7 @@
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', function($http, $rootScope){
         var page = null,
+
             apiCache = {
                 agent: {
                     params: '',
@@ -35,21 +36,11 @@
             console.log('RECEIVE searchservice');
 
             var results = {},
-                select,
                 numRequests = 0,
                 numSuccessRequests = 0,
                 numCountRequests = 0,
                 numCountSuccessRequests = 0,
                 countResults = {};
-
-console.log(data.global.viewMode);
-
-            if(data.global.viewMode === 'list'){
-                select = 'id,singleUrl,name,type,shortDescription,terms';
-            }else{
-                select = 'id,name,location';
-                page = null;
-            }
 
 
             if(data.global.enabled.agent){
@@ -97,7 +88,7 @@ console.log(data.global.viewMode);
 
                 }else{
                     numRequests++;
-                    apiFind(requestEntity, select, sData, page, requestAction).success(function(rs){
+                    apiFind(requestEntity, sData, page, requestAction).success(function(rs){
                         console.log('SUCCESS: ' + entity);
                         numSuccessRequests++;
                         results[entity] = rs;
@@ -176,9 +167,19 @@ console.log(data.global.viewMode);
                 return searchData;
             }
 
-            function apiFind(entity, select, searchData, page, action) {
+            function apiFind(entity, searchData, page, action) {
+                if(data.global.viewMode === 'list'){
+                    searchData['@select'] = 'id,singleUrl,name,type,shortDescription,terms';
+                    searchData['@files'] = '(avatar.avatarBig):url';
+                    if(page) {
+                        searchData['@page'] = page;
+                        searchData['@limit'] = '50';
+                    }
+                }else{
+                    searchData['@select'] = 'id,name,location';
+                }
+
                 action = action || 'find';
-                searchData['@select'] = select;
                 searchData['@order'] = 'name ASC';
                 delete searchData['@count'];
                 var querystring = "";
