@@ -3,14 +3,7 @@
 
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', function($http, $rootScope){
-        var select,
-            numRequests = 0,
-            numSuccessRequests = 0,
-            numCountRequests = 0,
-            numCountSuccessRequests = 0,
-            page = null,
-            results = {},
-            countResults = {},
+        var page = null,
             apiCache = {
                 agent: {
                     params: '',
@@ -40,6 +33,16 @@
 
         $rootScope.$on('searchDataChange', function(ev, data) {
             console.log('RECEIVE searchservice');
+
+            var results = {},
+                select,
+                numRequests = 0,
+                numSuccessRequests = 0,
+                numCountRequests = 0,
+                numCountSuccessRequests = 0,
+                countResults = {};
+
+console.log(data.global.viewMode);
 
             if(data.global.viewMode === 'list'){
                 select = 'id,singleUrl,name,type,shortDescription,terms';
