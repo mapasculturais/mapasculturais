@@ -2,9 +2,10 @@
     "use strict";
 
     var app = angular.module('SearchService', ['angularSpinner']);
-    app.factory('searchService', ['$http', '$rootScope', function($http, $rootScope){
+    app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
         var page = null,
-
+            activeRequests= 0,
+            canceler = null,
             apiCache = {
                 agent: {
                     params: '',
@@ -32,9 +33,9 @@
                 }
             };
 
-        $rootScope.$on('searchDataChange', function(ev, data) {
-            console.log('RECEIVE searchservice');
+        $rootScope.spinnerCount = $rootScope.spinnerCount || 0;
 
+        $rootScope.$on('searchDataChange', function(ev, data) {
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -42,6 +43,16 @@
                 numCountSuccessRequests = 0,
                 countResults = {};
 
+            console.log('RECEIVE searchservice');
+
+            // cancel all active requests
+            if(canceler){
+                canceler.resolve();
+                $rootScope.spinnerCount -= activeRequests;
+                activeRequests = 0;
+            }
+
+            canceler = $q.defer();
 
             if(data.global.enabled.agent){
                 callApi('agent');
@@ -68,9 +79,14 @@
                     endCountRequest();
                 }else{
                     numCountRequests++;
+                    activeRequests++;
+                    $rootScope.spinnerCount ++ ;
                     apiCount(requestEntity, sData, requestAction).success(function(rs){
                         console.log('COUNT SUCCESS: ' + entity);
                         numCountSuccessRequests++;
+                        activeRequests--;
+                        $rootScope.spinnerCount--;
+
                         countResults[entity] = rs;
 
                         apiCache[entity + 'Count'].num = rs;
@@ -88,9 +104,14 @@
 
                 }else{
                     numRequests++;
+                    activeRequests++;
+                    $rootScope.spinnerCount++;
                     apiFind(requestEntity, sData, page, requestAction).success(function(rs){
                         console.log('SUCCESS: ' + entity);
                         numSuccessRequests++;
+                        activeRequests--;
+                        $rootScope.spinnerCount--;
+
                         results[entity] = rs;
 
                         apiCache[entity].result = rs;
@@ -140,8 +161,12 @@
                 }
 
                 if(entityData.type){
-                    searchData.type = 'IN(' + entityData.type + ')';
-                }
+                    searchData.type = 'EQ(' + entityData.type + ')';
+                }
+
+                if(entityData.types && entityData.types.length){
+                    searchData.type = 'IN(' + entityData.types + ')';
+                }
 
                 if(entityData.acessibilidade){
                     searchData.acessibilidade = 'EQ(true)';
@@ -187,9 +212,8 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
 
-                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
             function apiCount(entity, searchData, action) {
@@ -200,8 +224,8 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
-                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+
+                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         });
 

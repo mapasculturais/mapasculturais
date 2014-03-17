@@ -237,7 +237,7 @@
 <div id="header-dos-resultados" class="clearfix"> agentes: {{numAgents}} espaços: {{numSpaces}} eventos: {{numEvents}}
     <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
     <div id="resultados">
-        <span ng-show="viewLoading" style="display:inline">
+        <span ng-show="spinnerCount > 0" style="display:inline">
             <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>
             <span style="margin-left:35px">obtendo resultados...</span>
         </span>
