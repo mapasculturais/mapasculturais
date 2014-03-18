@@ -198,6 +198,7 @@
 <!--#filtro-espacos-->
 <div class="wrap clearfix">
     <div id="filtro-local" class="filtro-geral clearfix" ng-controller="SearchSpatialController">
+        <span class="staging-hidden">
         <form id="form-local" method="post" action="#">
             <label for="proximo-a">Local: </label>
             <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
@@ -207,6 +208,7 @@
             <input type="hidden" name="lng" />
         </form>
         ou
+        </span>
         <a class="hltip proximo-a-mim botao principal" ng-class="{'selected':data.global.locationFilters.enabled==='neighborhood'}" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
         ou
         <a class="hltip botao principal" ng-class="{'selected':data.global.locationFilters.enabled==='circle'}" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
