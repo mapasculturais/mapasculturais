@@ -52,7 +52,7 @@ class Space extends EntityController {
         if($space_ids){
             $space_data = array('id' => 'IN(' . implode(',', $space_ids) .')');
             foreach($query_data as $key => $val)
-                if($key[0] === '@')
+                if($key[0] === '@' || $key == '_geoLocation')
                     $space_data[$key] = $val;
 
             $this->apiResponse($this->apiQuery($space_data));
