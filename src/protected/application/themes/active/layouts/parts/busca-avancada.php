@@ -234,9 +234,16 @@
 </div>
 <!--.wrap-->
 <!--#busca-avancada-->
-<div id="header-dos-resultados" class="clearfix"> agentes: {{numAgents}} espaços: {{numSpaces}} eventos: {{numEvents}}
+<div id="header-dos-resultados" class="clearfix">
     <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
     <div id="resultados">
+        <span ng-if="!spinnerCount">
+            <span ng-if="numAgents">{{numAgents}} agentes</span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
+            <span ng-if="numSpaces">{{numSpaces}} espaços</span><span ng-if="numSpaces && numEvents">,</span>
+            <span ng-if="numEvents">{{numEvents}} eventos</span>
+            <span ng-if="!numAgents && !numSpaces && !numEvents">Nenhum resultado encontrado</span>
+        </span>
+
         <span ng-show="spinnerCount > 0" style="display:inline">
             <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>
             <span style="margin-left:35px">obtendo resultados...</span>

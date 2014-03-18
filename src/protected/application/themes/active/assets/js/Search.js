@@ -327,9 +327,9 @@
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             console.log('================= SEARCH READY ', results);
-            $scope.numAgents = results.agent;
-            $scope.numSpaces = results.space;
-            $scope.numEvents = results.event;
+            $scope.numAgents = parseInt(results.agent);
+            $scope.numSpaces = parseInt(results.space);
+            $scope.numEvents = parseInt(results.event);
         });
 
         $rootScope.$on('findOneResultReady', function(ev, result){
