@@ -11,6 +11,8 @@
                 sData = {},
                 entity;
 
+            $rootScope.spinnerCount++;
+
             entity = data.global.openEntity.type;
             sData.id = 'EQ(' + data.global.openEntity.id + ')';
 
@@ -21,6 +23,7 @@
             });
 
             function endRequest(){
+                $rootScope.spinnerCount--;
                 $rootScope.$emit('findOneResultReady', result);
             }
 
