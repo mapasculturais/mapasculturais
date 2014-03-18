@@ -159,7 +159,7 @@
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        <div id="lista-dos-eventos" class="lista">
-            
+        <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-if="events">
+
         </div>
     </div>
