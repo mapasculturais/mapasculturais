@@ -85,7 +85,7 @@
 <!--fim do facebook-->
 <?php endif; ?>
 <?php $app->applyHook('mapasculturais.body:before'); ?>
-<header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode!!=='list'}">
+<header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode!=='list'}">
     <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL?>/img/logo-spcultura.png" /></a></h1>
     <nav id="about-nav" class="alignright clearfix">
         <ul id="menu-secundario">
