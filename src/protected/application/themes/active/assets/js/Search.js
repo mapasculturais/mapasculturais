@@ -143,6 +143,16 @@
             }
         };
 
+
+        $scope.switchView = function (mode) {
+            $scope.data.global.viewMode = mode;
+            if(mode === 'map') {
+                //temporary fixes to tim.js' adjustHeader()
+                $window.scrollTo(0,1);
+                $window.scrollTo(0,0);
+            }
+        };
+
         $scope.toggleVerified = function () {
             angular.forEach($scope.data, function(value, key) {
                 $scope.data[key].isVerified = !$scope.data[key].isVerified;

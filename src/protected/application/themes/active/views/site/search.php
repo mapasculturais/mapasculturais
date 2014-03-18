@@ -26,7 +26,7 @@
 
 
 <?php add_map_assets(); ?>
-    <div id="infobox" style="display:block" ng-show="data.global.openEntity.id>0">
+    <div id="infobox" style="display:block" ng-show="data.global.openEntity.id>0 && data.global.viewMode==='map'">
 
         <a class="icone icon_close" ng-click="data.global.openEntity=null"></a>
 
@@ -98,10 +98,10 @@
         </article>
         -->
     </div>
-    <div ng-controller="SearchMapController" id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
+    <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
 
     </div>
-    <div id="lista">
+    <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         <header id="header-dos-agentes" class="header-do-objeto clearfix">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>

@@ -1,4 +1,4 @@
-<div id="busca">
+<div id="busca" ng-class="{'sombra':data.global.viewMode!=='list'}">
     <div id="busca-avancada" class="clearfix">
         <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity==='event'">
             <form class="form-palavra-chave filtro">
@@ -301,8 +301,8 @@
             <form id="compartilhar-url"><div class="setinha"></div><label for="url-da-busca">Compartilhar esse resultado: </label><input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" /><a href="#" class="icone social_twitter"></a><a href="#" class="icone social_facebook"></a><a href="#" class="icone social_googleplus"></a></form>
         </div>
         <div id="views" class="clearfix">
-            <a class="hltip botao-de-icone icone icon_menu-square_alt js-open-view" data-target="div#lista" href="#" title="Ver resultados em lista"></a>
-            <a class="hltip botao-de-icone icone icon_map js-open-view selected" data-target="div#mapa" href="#" title="Ver resultados no mapa"></a>
+            <a class="hltip botao-de-icone icone icon_menu-square_alt" ng-click="switchView('list')" ng-class="{'selected':data.global.viewMode==='list'}" title="Ver resultados em lista"></a>
+            <a class="hltip botao-de-icone icone icon_map selected"  ng-click="switchView('map')"  ng-class="{'selected':data.global.viewMode==='map'}" title="Ver resultados no mapa"></a>
         </div>
     </div>
     <!--#ferramentas-->
