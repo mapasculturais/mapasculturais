@@ -31,7 +31,9 @@
                     params: '',
                     num: 0
                 }
-            };
+            },
+            lastEmitedResult = 'null',
+            lastEmitedCountResult = 'null';
 
         $rootScope.spinnerCount = $rootScope.spinnerCount || 0;
 
@@ -42,8 +44,6 @@
                 numCountRequests = 0,
                 numCountSuccessRequests = 0,
                 countResults = {};
-
-            console.log('RECEIVE searchservice');
 
             // cancel all active requests
             if(canceler){
@@ -66,6 +66,9 @@
                 callApi('space');
             }
 
+            endCountRequest();
+            endRequest();
+
             function callApi(entity){
                 var sData = data2searchData(data[entity]),
                     apiCountParams = JSON.stringify(sData),
@@ -74,15 +77,13 @@
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
 
                 if(apiCache[entity + 'Count'].params === apiCountParams){
-                    console.log('COUNT CACHED: ' + entity);
                     countResults[entity] = apiCache[entity + 'Count'].num;
-                    endCountRequest();
+
                 }else{
                     numCountRequests++;
                     activeRequests++;
                     $rootScope.spinnerCount ++ ;
                     apiCount(requestEntity, sData, requestAction).success(function(rs){
-                        console.log('COUNT SUCCESS: ' + entity);
                         numCountSuccessRequests++;
                         activeRequests--;
                         $rootScope.spinnerCount--;
@@ -98,16 +99,13 @@
                 }
 
                 if(apiCache[entity].params === apiParams){
-                    console.log('CACHED: ' + entity);
                     results[entity] = apiCache[entity].result;
-                    endRequest();
 
                 }else{
                     numRequests++;
                     activeRequests++;
                     $rootScope.spinnerCount++;
                     apiFind(requestEntity, sData, page, requestAction).success(function(rs){
-                        console.log('SUCCESS: ' + entity);
                         numSuccessRequests++;
                         activeRequests--;
                         $rootScope.spinnerCount--;
@@ -124,13 +122,14 @@
             }
 
             function endRequest(){
-                if(numSuccessRequests === numRequests){
+                if(numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
+                    lastEmitedResult = JSON.stringify(results);
                     $rootScope.$emit('searchResultsReady', results);
                 }
             }
 
             function endCountRequest(){
-                if(numCountSuccessRequests === numCountRequests){
+                if(numCountSuccessRequests === numCountRequests && lastEmitedCountResult !== JSON.stringify(countResults)){
                     $rootScope.$emit('searchCountResultsReady', countResults);
                 }
             }
@@ -212,7 +211,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-
+                console.log({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
@@ -224,7 +223,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-
+                console.log({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         });
