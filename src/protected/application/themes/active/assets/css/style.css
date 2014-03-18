@@ -560,16 +560,21 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #lista { display: none; }
 .lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
+.lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #eee; font-size: .75rem; }
+.lista header p { margin-bottom: 0; }
 #agenda.lista { padding: 0; }
 .objeto { margin-bottom: 5px; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; -webkit-transition: all .3s; transition: all .3s;}
+#agenda.lista .objeto { background: #eee; }
 .objeto:hover { background: #fff; }
+#agenda.lista .objeto:hover { background: #f8f8f8; }
 .objeto h1 { margin-bottom: .75rem; padding-bottom: .75rem; line-height: 1.5rem; border-bottom: 1px solid #eee; }
 .lista .objeto h1 { font-size: 1.25rem; }
 .objeto-content { position: relative; min-height: 6rem; }
 .objeto-thumb { position: absolute; top: 0; left: 0; width: 6rem; height: 6rem; background: #ccc; }
-.objeto-resumo { float: left; min-height: 6rem; margin-right: 24rem; margin-bottom: 0; padding: 0 1.5rem 0 7.5rem; }
+.objeto-resumo { float: left; min-height: 6rem; margin-right: 24rem; margin-bottom: 0; padding: 0 1.5rem 0 7.5rem; font-size: .875rem; }
 .lista .objeto-meta { float: right; box-sizing: border-box; -moz-box-sizing: border-box; width: 24rem; min-height: 6rem; margin-left: -24rem; padding-left: 1.5rem; border-left: 1px solid #eee; }
-#agenda.lista .objeto-meta { left: 16.5rem; }
+#agenda.lista .objeto-meta { width: 16.5rem; }
+#agenda.lista .objeto-resumo { margin-right: 16.5rem; }
 .objeto-meta div { font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; }
 .evento:hover h1 a, .evento .objeto-meta a { color: #aebf3a; }
 .agente:hover h1 a, .agente .objeto-meta a { color: #1dabc6; }
