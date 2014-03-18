@@ -122,9 +122,18 @@
         return skeleton;
     };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $rison, $window, $timeout, searchService){
+        $rootScope.resetPagination = function(){
+            $rootScope.pagination = {
+                agent: 1,
+                space: 1,
+                event: 1
+            };
+        }
+        $rootScope.resetPagination();
+
         $scope.defaultImageURL = MapasCulturais.defaultAvatarURL;
         $scope.getName = function(valores, id){
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
@@ -280,6 +289,37 @@
         }
 
         $scope.$watch('data', $scope.dataChange, true);
+
+        $scope.agents = [];
+        $scope.spaces = [];
+        $scope.events = [];
+
+
+        $rootScope.$on('searchResultsReady', function(ev, results){
+            console.log(results);
+            if(results.paginating){
+                $scope.agents = $scope.agents.concat(results.agent ? results.agent : []);
+                $scope.events = $scope.events.concat(results.event ? results.event : []);
+                $scope.spaces = $scope.spaces.concat(results.space ? results.space : []);
+
+                $scope.isPaginating = false;
+            }else{
+                $scope.agents = results.agent ? results.agent : [];
+                $scope.events = results.event ? results.event : [];
+                $scope.spaces = results.space ? results.space : [];
+            }
+        });
+
+        var infiniteScrollTimeout = null;
+
+        $scope.addMore = function(entity){
+            if($scope.isPaginating)
+                return;
+            $scope.isPaginating = true;
+            $rootScope.pagination[entity]++;
+            $rootScope.$emit('resultPagination', $scope.data);
+        };
+
 
         $scope.numAgents = 0;
         $scope.numSpaces = 0;

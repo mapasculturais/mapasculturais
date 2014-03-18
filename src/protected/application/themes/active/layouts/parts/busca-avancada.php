@@ -302,7 +302,7 @@
         </div>
         <div id="views" class="clearfix">
             <a class="hltip botao-de-icone icone icon_menu-square_alt" ng-click="switchView('list')" ng-class="{'selected':data.global.viewMode==='list'}" title="Ver resultados em lista"></a>
-            <a class="hltip botao-de-icone icone icon_map selected"  ng-click="switchView('map')"  ng-class="{'selected':data.global.viewMode==='map'}" title="Ver resultados no mapa"></a>
+            <a class="hltip botao-de-icone icone icon_map"  ng-click="switchView('map')"  ng-class="{'selected':data.global.viewMode==='map'}" title="Ver resultados no mapa"></a>
         </div>
     </div>
     <!--#ferramentas-->

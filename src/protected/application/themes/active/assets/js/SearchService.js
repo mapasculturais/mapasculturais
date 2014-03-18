@@ -3,8 +3,7 @@
 
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
-        var page = null,
-            activeRequests= 0,
+        var activeRequests= 0,
             canceler = null,
             apiCache = {
                 agent: {
@@ -37,14 +36,22 @@
 
         $rootScope.spinnerCount = $rootScope.spinnerCount || 0;
 
-        $rootScope.$on('searchDataChange', function(ev, data) {
+        $rootScope.$on('searchDataChange', search);
+        $rootScope.$on('resultPagination', search);
+
+        function search (ev, data){
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
                 numCountRequests = 0,
                 numCountSuccessRequests = 0,
-                countResults = {};
+                countResults = {},
+                paginating = ev.name === 'resultPagination';
 
+
+            if(!paginating)
+                $rootScope.resetPagination();
+            
             // cancel all active requests
             if(canceler){
                 canceler.resolve();
@@ -70,9 +77,10 @@
             endRequest();
 
             function callApi(entity){
+
                 var sData = data2searchData(data[entity]),
                     apiCountParams = JSON.stringify(sData),
-                    apiParams = JSON.stringify([sData,page]),
+                    apiParams = JSON.stringify([sData,$rootScope.pagination[entity]]),
                     requestEntity = entity === 'event' ? 'space' : entity,
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
 
@@ -105,7 +113,7 @@
                     numRequests++;
                     activeRequests++;
                     $rootScope.spinnerCount++;
-                    apiFind(requestEntity, sData, page, requestAction).success(function(rs){
+                    apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs){
                         numSuccessRequests++;
                         activeRequests--;
                         $rootScope.spinnerCount--;
@@ -124,6 +132,7 @@
             function endRequest(){
                 if(numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
                     lastEmitedResult = JSON.stringify(results);
+                    results.paginating = paginating;
                     $rootScope.$emit('searchResultsReady', results);
                 }
             }
@@ -168,7 +177,7 @@
                 }
 
                 if(entityData.acessibilidade){
-                    searchData.acessibilidade = 'EQ(true)';
+                    searchData.acessibilidade = 'EQ(Sim)';
                 }
 
                 if(entityData.isVerified){
@@ -197,7 +206,7 @@
                     searchData['@files'] = '(avatar.avatarBig):url';
                     if(page) {
                         searchData['@page'] = page;
-                        searchData['@limit'] = '50';
+                        searchData['@limit'] = '10';
                     }
                 }else{
                     searchData['@select'] = 'id,name,location';
@@ -226,7 +235,7 @@
                 console.log({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
-        });
+        }
 
         return 'done';
     }]);

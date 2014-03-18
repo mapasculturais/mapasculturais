@@ -10,6 +10,7 @@
 
     $app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
     $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
+    $app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
     $app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
@@ -19,8 +20,6 @@
 
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
     $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
-
-
 
 ?>
 
@@ -102,13 +101,14 @@
 
     </div>
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
-        <header id="header-dos-agentes" class="header-do-objeto clearfix">
+        <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-if="agents">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        <div id="lista-dos-agentes" class="lista">
-            <article class="objeto agente clearfix" ng-repeat="agent in agentSearch.results" id="agent-result-{{agent.id}}">
+
+        <div id="lista-dos-agentes" class="lista" infinite-scroll="addMore('agent')" ng-if="agents">
+            <article class="objeto agente clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
                 <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
@@ -127,13 +127,13 @@
                 </div>
             </article>
         </div>
-        <header id="header-dos-espacos" class="header-do-objeto clearfix">
+        <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-if="spaces">
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        <div id="lista-dos-espacos" class="lista">
-            <article class="objeto espaco clearfix" ng-repeat="space in spaceSearch.results" id="space-result-{{space.id}}">
+        <div id="lista-dos-espacos" class="lista" infinite-scroll="addMore('space')" ng-if="spaces">
+            <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
