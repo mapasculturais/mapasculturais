@@ -367,7 +367,7 @@ add_occurrence_frequencies_to_js();
                 <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
                 <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
-            <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
+            <div class="grupo-de-campos">
                 <label for="data-de-fim">Data final:</label><br>
                 <input id="until-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
                 <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
