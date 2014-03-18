@@ -542,15 +542,16 @@ body.editable #main-section { margin-top: 136px; }
 #url-da-busca { width: 70%; margin-bottom: 0; }
 #views { float: left; width: auto; margin-left: .75rem; padding-left:.75rem; border-left: 2px solid #d3d3d3; }
 /* header do objeto*/
-.header-do-objeto { position: relative; margin-bottom: 5px; padding: .75rem 4.5rem .75rem .75rem; background: #fff; }
-.header-do-objeto h1 { float: left; width: auto; margin-bottom: 0; }
-.header-do-objeto .arrow_carrot-down { position: absolute; top: 0; right: 0; width: 4.5rem; height: 4.5rem; line-height: 4.5rem; font-size: 4rem; text-align: center; }
+.header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem 3rem .5625rem .5625rem; background: #fff; }
+.header-do-objeto h1 { float: left; width: auto; height: 1.875rem; margin-bottom: 0; font-size: 1.5rem; line-height: 1.875rem; }
+.header-do-objeto h1 .icone { width: 1.5rem; height: 1.875rem; line-height: 1.875rem; font-size: 1.5rem; }
+.header-do-objeto .arrow_carrot-down { position: absolute; top: 0; right: 0; width: 3rem; height: 3rem; line-height: 3rem; font-size: 2rem; text-align: center; }
 .header-do-objeto .icone { vertical-align: initial; }
-.header-do-objeto .botao.adicionar, .header-do-objeto .botao.adicionar:hover { float: right; margin: .5rem 1.5rem; color: #fff; background: #000; border: 1px solid #000; }
-#header-dos-eventos { border-left: 4.5rem solid #b3b921; }
-#header-dos-agentes { border-left: 4.5rem solid #1dabc6; }
-#header-dos-espacos { border-left: 4.5rem solid #e83f96; }
-#header-dos-projetos { border-left: 4.5rem solid #cc0033; }
+.header-do-objeto .botao.adicionar, .header-do-objeto .botao.adicionar:hover { float: right; margin: -1px 1.5rem; color: #fff; background: #000; border: 1px solid #000; }
+#header-dos-eventos { border-left: 3rem solid #b3b921; }
+#header-dos-agentes { border-left: 3rem solid #1dabc6; }
+#header-dos-espacos { border-left: 3rem solid #e83f96; }
+#header-dos-projetos { border-left: 3rem solid #cc0033; }
 #header-dos-eventos .arrow_carrot-down { background: #b3b921; }
 #header-dos-agentes .arrow_carrot-down { background: #1dabc6; }
 #header-dos-espacos .arrow_carrot-down { background: #e83f96; }
@@ -559,7 +560,8 @@ body.editable #main-section { margin-top: 136px; }
 
 /* =Listas
 -------------------------------------------------------------- */
-.lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 4.5rem; padding: 0 4.5rem; }
+
+.lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
 #agenda.lista { padding: 0; }
 .objeto { margin-bottom: 5px; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; -webkit-transition: all .3s; transition: all .3s;}
 .objeto:hover { background: #fff; }

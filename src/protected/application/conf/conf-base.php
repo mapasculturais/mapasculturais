@@ -20,7 +20,7 @@ return array(
 
     'app.defaultApiOutput' => 'json',
 
-    'app.registerCache.enabled' => false,
+    'app.registerCache.enabled' => true,
 
     'app.registerCache.lifeTime' => 5 * 60,
 
@@ -36,7 +36,7 @@ return array(
 
     'app.dbUpdatesDisabled' => false,
 
-    'app.useApiCache' => false,
+    'app.useApiCache' => true,
 
     'app.useObjectCache' => true,
 

@@ -13,6 +13,7 @@ before_script:
   - psql -f db/schema.sql -U mapasculturais -d mapasculturais
   - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - php /home/travis/.phpenv/versions/5.5.9/bin/composer.phar self-update
 
 script:
   - phpunit tests
