@@ -260,8 +260,8 @@ tr th { text-align: left; }
 .abas li.active a, .abas li:hover a { color: #000; }
 /*Tags*/
 .tags { border: 1px solid #000; margin-bottom: 1.5rem; padding: .75rem; border-radius: 2px; }
-.tag { display: inline-block; margin-right: 3px; margin-bottom: .75rem; padding: 0 .5rem; background-color: #fff; border-radius: 2px; font-family: "Open Sans", Arial, Helvetica, sans-serif; font-size: .7rem; line-height: 1.5rem; font-weight: normal; color: #999; text-transform: uppercase; -webkit-transition: all .3s; transition: all .3s; }
-.tag:hover { color: #000; text-decoration: none; }
+.tag { display: inline-block; margin-right: 3px; margin-bottom: .75rem; padding: 0 .5rem; background-color: #fff; border-radius: 2px; font-family: "Open Sans", Arial, Helvetica, sans-serif; font-size: .7rem; line-height: 1.5rem; font-weight: normal; color: #000; text-transform: uppercase; -webkit-transition: all .3s; transition: all .3s; cursor: pointer; }
+.tag:hover { color: #fff; background: #000; text-decoration: none; }
 .tag.selected { background-color: #000; color: #fff; padding-right: .3rem; }
 .tag.selected:after { content: '\4d'; width: 1rem; height: 1rem; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
 .tag-evento { background-color: #b3b921; }
@@ -560,8 +560,10 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #lista { display: none; }
 .lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
-.lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #eee; font-size: .75rem; }
-.lista header p { margin-bottom: 0; }
+.lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #e2e2e2; font-size: .75rem; }
+.lista header p { margin-bottom: 0; line-height: 2rem; }
+.lista header .tag { margin: 0; }
+.lista header .tag:after { content: '\e023'; display: inline-block; width: 1rem; height: 1rem; margin-top: -4px; margin-left: .5rem; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
 #agenda.lista { padding: 0; }
 .objeto { margin-bottom: 5px; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; -webkit-transition: all .3s; transition: all .3s;}
 #agenda.lista .objeto { background: #eee; }

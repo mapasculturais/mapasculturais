@@ -151,8 +151,8 @@ $ids = array_map(function($e){
 	<div id="agenda" class="aba-content lista">
         <header class="clearfix">
             <p class="alignleft">
-                XX eventos nos próximos 6 meses.<br>
-                Filtrar eventos por data <a class="tag">Início</a> <a class="tag">Fim</a>
+                <strong>XX</strong> eventos entre <a class="tag">00/00/00</a> e <a class="tag">00/00/00</a>
+                <!-- a ideia é que clicando nesses 'a' abra o datepicker, por padrão a data inicial é hoje e a data final 6 meses a partir de hoje-->
             </p>
 
             <a class="botao adicionar alignright" href="#">adicionar evento</a>
