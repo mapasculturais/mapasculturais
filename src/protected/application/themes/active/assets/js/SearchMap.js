@@ -18,7 +18,6 @@
             angular.element(document).ready(function(){
                 $scope.map = $window.leaflet.map;
                 $scope.map.removeLayer($window.leaflet.marker);
-                $scope.map.invalidateSize();
 
                 $scope.map.on('load', function(){
                     $scope.setMapView();
@@ -52,6 +51,7 @@
             });
 
             $rootScope.$on('searchDataChange', function(ev, data){
+                $scope.map.invalidateSize();
                 $scope.setMapView();
             });
 
