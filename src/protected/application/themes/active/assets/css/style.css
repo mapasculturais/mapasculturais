@@ -361,7 +361,7 @@ h1 .icone { width: 2rem; height: 2rem; margin-right: .75rem; font-size: 2rem; li
 
 /* Abas dos objetos */
 .abas-objetos li { -webkit-transition: all .3s; transition: all .3s; }
-.abas-objetos li.active:after { content: "\42"; position: absolute; right: 0; left: 0; width: 100%; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 42px; text-align: center; text-transform: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.abas-objetos li.active:after { content: "\42"; position: absolute; right: 0; left: 0; width: 100%; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 30px; line-height: 1rem; text-align: center; text-transform: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 #aba-eventos:hover, #aba-eventos.active { border-top: 6px solid #b3b921; color: #b3b921;}
 #aba-agentes:hover, #aba-agentes.active { border-top: 6px solid #1dabc6; color: #1dabc6; }
 #aba-espacos:hover, #aba-espacos.active { border-top: 6px solid #e83f96; color: #e83f96; }
@@ -484,7 +484,7 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #main-header .busca-main-header { position: relative; z-index:152; }
 #main-header #busca { position: relative; z-index:151; }
-#busca-avancada { background-color: #e2e2e2; font-size: .875rem; }
+#busca-avancada { display: none; background-color: #e2e2e2; font-size: .875rem; }
 #busca-avancada .wrap { position: relative; padding: .75rem; }
 #busca-avancada input { margin-bottom: 0; border: none; }
 #busca-avancada label { font-family: "aleo", serif; }
@@ -494,9 +494,10 @@ body.editable #main-section { margin-top: 136px; }
 .filtro-geral { float: left; box-sizing: border-box; -moz-box-sizing: border-box; margin: 0; font-family: "aleo", serif; color: #000; text-align: center; }
 .filtro-geral input[type="text"] { width: 215px; }
 .filtro-geral label, #filtro-prefeitura label { display: none; }
-#filtro-local { width: 50%; }
-#filtro-prefeitura, #busca-combinada { width: 25%; }
-#filtro-prefeitura { padding: 0 .5rem; border-right: 2px solid #eee; border-left: 2px solid #eee; }
+#filtro-local { position: absolute; z-index: 200; top: 66px; left: .75rem; background: #fff; border-radius: 2px; padding: .75rem; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
+#filtro-local input { margin-bottom: 0; }
+#filtro-prefeitura { float: left; padding-left: .75rem; border-left: 2px solid #d3d3d3; }
+#busca-combinada { float: right; margin-right: .75rem; padding-right:.75rem; border-right: 2px solid #d3d3d3; }
 #filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
 /* filtro local*/
 #form-local, .proximo-a-mim { display: inline-block; }
@@ -524,14 +525,14 @@ body.editable #main-section { margin-top: 136px; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
-#filtros-selecionados { margin-left: 262px; margin-right: 106px; padding: 0 .75rem; border-right: 2px solid #d3d3d3; border-left: 2px solid #d3d3d3; }
+#filtros-selecionados { margin-left: .75rem !important; margin-right: 106px; padding: 0 .75rem; border-left: 2px solid #d3d3d3; border-right: 2px solid #d3d3d3; }
 #filtros-selecionados .tag { margin-bottom: 0; }
 #filtros-selecionados .tag:after { content: "\4d"; display: inline-block; width: 1rem; height: 1rem; margin-top: -3px; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
 #filtros-selecionados .remover-tudo { color: #fff; background: #000; padding-right: .3rem; }
 #header-dos-resultados .botao-de-icone { float: right; }
 #header-dos-resultados .botao-de-icone.active { text-decoration: none; background-color: #000; }
 #header-dos-resultados .icon_map { margin-right: 5px; }
-#ferramentas { position: absolute; top: .75rem; right: .75rem; }
+#ferramentas { float: right; }
 #compartilhar { position: relative; float: left; }
 #compartilhar-url { position: absolute; z-index: 100; display: none; top: 2.25rem; right: -24px; width: 400px; padding: .75rem; background: #fff; border-radius: 2px; box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3); -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3); }
 #compartilhar-url .setinha { right: 28px; top: -16px; border-color: transparent transparent #fff transparent; }

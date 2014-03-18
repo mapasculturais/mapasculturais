@@ -48,6 +48,20 @@
         </article>
         -->
     </div>
+    <div id="filtro-local" class="filtro-geral clearfix" ng-controller="SearchSpatialController">
+        <form id="form-local" method="post" action="#">
+            <label for="proximo-a">Local: </label>
+            <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
+            <!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
+            <input type="hidden" name="lat" />
+            <input type="hidden" name="lng" />
+        </form>
+          ou
+        <a class="hltip proximo-a-mim botao principal" href="#" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim.">Próximo a mim</a>
+          ou
+        <a class="hltip botao principal" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">Delimitar uma área</a>
+    </div>
+    <!--#filtro-local-->
     <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
 
     </div>
