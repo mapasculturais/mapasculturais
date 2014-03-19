@@ -489,18 +489,15 @@ body.editable #main-section { margin-top: 136px; }
 #busca-avancada input { margin-bottom: 0; border: none; }
 #busca-avancada label { font-family: "aleo", serif; }
 #busca-avancada .campo-de-busca { width: 180px; }
-
-
-.filtro-geral { float: left; box-sizing: border-box; -moz-box-sizing: border-box; margin: 0; font-family: "aleo", serif; color: #000; text-align: center; }
-.filtro-geral input[type="text"] { width: 215px; }
-.filtro-geral label, #filtro-prefeitura label { display: none; }
-#filtro-local { position: absolute; z-index: 200; top: 66px; left: .75rem; background: #fff; border-radius: 2px; padding: .75rem; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
-#filtro-local input { margin-bottom: 0; }
-#filtro-prefeitura { float: left; padding-left: .75rem; border-left: 2px solid #d3d3d3; }
-#busca-combinada { float: right; margin-right: .75rem; padding-right:.75rem; border-right: 2px solid #d3d3d3; }
-#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
-/* filtro local*/
-#form-local, .proximo-a-mim { display: inline-block; }
+/*filtro local*/
+#filtro-local { position: absolute; z-index: 200; top: 66px; left: .75rem; height: 1.875rem; padding: .75rem; background: #eee; border-radius: 2px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); font-family: "aleo", serif; color: #000; }
+#filtro-local label { display: none; }
+#filtro-local input[type="text"] { width: 215px; margin-bottom: 0; }
+#form-local { display: inline-block; vertical-align: top; }
+#proximo-a-mim { background: #000 url(../img/icon-localizacao.png) center no-repeat; }
+#circulo { background: #000 url(../img/icon-circulo.png) center no-repeat; }
+.botoes-do-mapa { display: inline-block; width: 1.875rem; height: 1.875rem; border-radius: 2px; }
+.botoes-do-mapa:hover { background-color: #f90 !important; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
 /* filtros dos objetos*/
 .filtro-objeto { position: relative; clear: both; padding: .75rem 0; color: #000; font-size: .875rem; }
 #filtro-eventos { background: #b3b921; }
@@ -525,6 +522,9 @@ body.editable #main-section { margin-top: 136px; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
+#filtro-prefeitura { float: left; padding-left: .75rem; border-left: 2px solid #d3d3d3; }
+#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
+#busca-combinada { float: right; margin-right: .75rem; padding-right:.75rem; border-right: 2px solid #d3d3d3; }
 #filtros-selecionados { margin-left: .75rem !important; margin-right: 106px; padding: 0 .75rem; border-left: 2px solid #d3d3d3; border-right: 2px solid #d3d3d3; }
 #filtros-selecionados .tag { margin-bottom: 0; }
 #filtros-selecionados .tag:after { content: "\4d"; display: inline-block; width: 1rem; height: 1rem; margin-top: -3px; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
