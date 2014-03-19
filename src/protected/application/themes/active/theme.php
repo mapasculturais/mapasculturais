@@ -63,9 +63,12 @@ function add_map_assets(){
         $app->enqueueStyle( 'vendor', 'leaflet-draw',            '/vendor/leaflet/lib/leaflet-plugins/Leaflet.draw-0.2.3/dist/leaflet.draw.css',                               array('leaflet'));
         $app->enqueueScript('vendor', 'leaflet-draw',            '/vendor/leaflet/lib/leaflet-plugins/Leaflet.draw-0.2.3/dist/leaflet.draw.js',                                array('leaflet'));
 
-    //Leaflet Plugins (Google and its API js)
-        $app->enqueueScript('vendor',  'google-maps-api',        'http://maps.google.com/maps/api/js?v=3.2&sensor=false');
-        $app->enqueueScript('vendor',  'leaflet-google-tile',    '/vendor/leaflet/lib/leaflet-plugins/leaflet-plugins-master/layer/tile/Google.js',          array('google-maps-api', 'leaflet'));
+     //Google Maps API. In dev mode, test internet connection to avoid waiting for host timeout when working without connection
+    if($app->config('mode') === 'development' && @fsockopen("maps.google.com", 80))
+      $app->enqueueScript('vendor',  'google-maps-api',        'http://maps.google.com/maps/api/js?v=3.2&sensor=false');
+
+    //Leaflet Plugins (Google)false');
+        $app->enqueueScript('vendor',  'leaflet-google-tile',    '/vendor/leaflet/lib/leaflet-plugins/leaflet-plugins-master/layer/tile/Google.js',          array('leaflet'));
     //Pure CSS Tooltips (Hint - https://github.com/chinchang/hint.css)
         //$app->enqueueStyle('vendor', 'hint', 'http://cdn.jsdelivr.net/hint.css/1.3.0/hint.min.css');
     //Mapa das Singles
