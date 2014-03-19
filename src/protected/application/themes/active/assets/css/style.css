@@ -517,10 +517,11 @@ body.editable #main-section { margin-top: 136px; }
 .filtro .dropdown .submenu-dropdown:before { color: #fff; }
 .filtro .dropdown .submenu-dropdown li:hover { background: #eee; color: #000; }
 .lista-de-filtro { margin-bottom: 0; list-style-type: none; }
-.lista-de-filtro li { cursor: pointer; margin-bottom: .5rem; padding: 0 2px; }
-.lista-de-filtro li:before { display: inline-block; content: '\4e'; margin-right: .75rem; padding: 2px; background: #e2e2e2; vertical-align: text-bottom; -webkit-font-smoothing: antialiased; font: normal .875rem/.875rem 'ElegantIcons'; text-align: center; color: #fff; border-radius: 2px; }
+.lista-de-filtro li { cursor: pointer; margin-bottom: .5rem; padding: 0 2px; line-height: 1.5rem; }
+.lista-de-filtro li:before { display: inline-block; content: '\4e'; margin: .325rem .75rem .325rem 0; padding: 2px; background: #e2e2e2; -webkit-font-smoothing: antialiased; font: normal .75rem/.75rem 'ElegantIcons'; text-align: center; color: #fff; border-radius: 2px; }
 .lista-de-filtro li:hover:before { color: #000; background: #fff; }
 .lista-de-filtro li.selected:before { color: #fff; background: #000; }
+.lista-de-filtro li span { display: inline-block; width: 80%; vertical-align: top; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
