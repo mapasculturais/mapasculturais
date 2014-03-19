@@ -369,10 +369,16 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
 
             // activate google service
-            var geocoder = new google.maps.Geocoder();
+
+            var geocoder = null;
+            if(typeof google !== 'undefined') geocoder =  new google.maps.Geocoder();
 
             // callback to handle google geolocation result
             function geocode_callback(results, status) {
+                if(typeof google === 'undefined'){
+                    console.log('Mapas Culturais: Google Maps API não encontrada.');
+                    return false;
+                }
                 if (status == google.maps.GeocoderStatus.OK) {
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.mb, location.nb);
@@ -414,30 +420,36 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             }
 
 
-            var googleSatelite = new L.Google();
+            var camadasBase = {};
+            camadasBase['OpenStreetMap'] = openStreetMap;
 
-            var googleMapa = new L.Google();
-            googleMapa._type = 'ROADMAP';
-            googleMapa.options.maxZoom = 23;
+            if(typeof google !== 'undefined') {
+                var googleSatelite = new L.Google();
 
-            var googleHibrido = new L.Google();
-            googleHibrido._type = 'HYBRID';
+                var googleMapa = new L.Google();
+                googleMapa._type = 'ROADMAP';
+                googleMapa.options.maxZoom = 23;
 
-            var googleRelevo = new L.Google();
-            googleRelevo._type = 'TERRAIN';
-            googleRelevo.options.maxZoom = 15;
+                var googleHibrido = new L.Google();
+                googleHibrido._type = 'HYBRID';
+
+                var googleRelevo = new L.Google();
+                googleRelevo._type = 'TERRAIN';
+                googleRelevo.options.maxZoom = 15;
 
 
-            /*Criação do Mapa*/
+                /*Criação do Mapa*/
+                var camadasGoogle = {
+                    "Google Satélite": googleHibrido,
+                    "Google Mapa": googleMapa,
+                    "Google Satélite Puro": googleSatelite,
+                    "Google Relevo": googleRelevo
+                };
 
-            var camadasBase = {
-                "OpenStreetMap": openStreetMap,
-                "Google Satélite": googleHibrido,
-                "Google Mapa": googleMapa,
-                "Google Satélite Puro": googleSatelite,
-                "Google Relevo": googleRelevo
-            };
-
+                for ( var key in camadasGoogle) {
+                    camadasBase[key] = camadasGoogle[key];
+                };
+            }
 
 
 
