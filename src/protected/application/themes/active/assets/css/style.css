@@ -260,8 +260,8 @@ tr th { text-align: left; }
 .abas li.active a, .abas li:hover a { color: #000; }
 /*Tags*/
 .tags { border: 1px solid #000; margin-bottom: 1.5rem; padding: .75rem; border-radius: 2px; }
-.tag { display: inline-block; margin-right: 3px; margin-bottom: .75rem; padding: 0 .5rem; background-color: #fff; border-radius: 2px; font-family: "Open Sans", Arial, Helvetica, sans-serif; font-size: .7rem; line-height: 1.5rem; font-weight: normal; color: #999; text-transform: uppercase; -webkit-transition: all .3s; transition: all .3s; }
-.tag:hover { color: #000; text-decoration: none; }
+.tag { display: inline-block; margin-right: 3px; margin-bottom: .75rem; padding: 0 .5rem; background-color: #fff; border-radius: 2px; font-family: "Open Sans", Arial, Helvetica, sans-serif; font-size: .7rem; line-height: 1.5rem; font-weight: normal; color: #000; text-transform: uppercase; -webkit-transition: all .3s; transition: all .3s; cursor: pointer; }
+.tag:hover { color: #fff; background: #000; text-decoration: none; }
 .tag.selected { background-color: #000; color: #fff; padding-right: .3rem; }
 .tag.selected:after { content: '\4d'; width: 1rem; height: 1rem; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
 .tag-evento { background-color: #b3b921; }
@@ -515,10 +515,11 @@ body.editable #main-section { margin-top: 136px; }
 .filtro .dropdown .submenu-dropdown:before { color: #fff; }
 .filtro .dropdown .submenu-dropdown li:hover { background: #eee; color: #000; }
 .lista-de-filtro { margin-bottom: 0; list-style-type: none; }
-.lista-de-filtro li { cursor: pointer; margin-bottom: .5rem; padding: 0 2px; }
-.lista-de-filtro li:before { display: inline-block; content: '\4e'; margin-right: .75rem; padding: 2px; background: #e2e2e2; vertical-align: text-bottom; -webkit-font-smoothing: antialiased; font: normal .875rem/.875rem 'ElegantIcons'; text-align: center; color: #fff; border-radius: 2px; }
+.lista-de-filtro li { cursor: pointer; margin-bottom: .5rem; padding: 0 2px; line-height: 1.5rem; }
+.lista-de-filtro li:before { display: inline-block; content: '\4e'; margin: .325rem .75rem .325rem 0; padding: 2px; background: #e2e2e2; -webkit-font-smoothing: antialiased; font: normal .75rem/.75rem 'ElegantIcons'; text-align: center; color: #fff; border-radius: 2px; }
 .lista-de-filtro li:hover:before { color: #000; background: #fff; }
 .lista-de-filtro li.selected:before { color: #fff; background: #000; }
+.lista-de-filtro li span { display: inline-block; width: 80%; vertical-align: top; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
@@ -561,16 +562,23 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #lista { display: none; }
 .lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
+.lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #e2e2e2; font-size: .75rem; }
+.lista header p { margin-bottom: 0; line-height: 2rem; }
+.lista header .tag { margin: 0; }
+.lista header .tag:after { content: '\e023'; display: inline-block; width: 1rem; height: 1rem; margin-top: -4px; margin-left: .5rem; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
 #agenda.lista { padding: 0; }
 .objeto { margin-bottom: 5px; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; -webkit-transition: all .3s; transition: all .3s;}
+#agenda.lista .objeto { background: #eee; }
 .objeto:hover { background: #fff; }
+#agenda.lista .objeto:hover { background: #f8f8f8; }
 .objeto h1 { margin-bottom: .75rem; padding-bottom: .75rem; line-height: 1.5rem; border-bottom: 1px solid #eee; }
 .lista .objeto h1 { font-size: 1.25rem; }
 .objeto-content { position: relative; min-height: 6rem; }
 .objeto-thumb { position: absolute; top: 0; left: 0; width: 6rem; height: 6rem; background: #ccc; }
-.objeto-resumo { float: left; min-height: 6rem; margin-right: 24rem; margin-bottom: 0; padding: 0 1.5rem 0 7.5rem; }
+.objeto-resumo { float: left; min-height: 6rem; margin-right: 24rem; margin-bottom: 0; padding: 0 1.5rem 0 7.5rem; font-size: .875rem; }
 .lista .objeto-meta { float: right; box-sizing: border-box; -moz-box-sizing: border-box; width: 24rem; min-height: 6rem; margin-left: -24rem; padding-left: 1.5rem; border-left: 1px solid #eee; }
-#agenda.lista .objeto-meta { left: 16.5rem; }
+#agenda.lista .objeto-meta { width: 16.5rem; }
+#agenda.lista .objeto-resumo { margin-right: 16.5rem; }
 .objeto-meta div { font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; }
 .evento:hover h1 a, .evento .objeto-meta a { color: #aebf3a; }
 .agente:hover h1 a, .agente .objeto-meta a { color: #1dabc6; }
@@ -702,12 +710,12 @@ nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
 
 /* =Editor
 -------------------------------------------------------------- */
-#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 250px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 370px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
 #editable-entity .mensagem { display: none; margin-bottom: 0; }
 #editable-entity .controles { position: absolute; top: .25rem; right: .75rem; width: 360px; text-align: right; }
 #logo-spcultura-peq { display: none; position: absolute; left: .75rem; margin-bottom: 0; line-height: 2rem; }
 #logo-spcultura-peq img { display: block; height: 2.2rem; width: auto; }
-#funcao-do-agente { background: #fff; text-align: left; }
+#funcao-do-agente { width: 135px; background: #fff; text-align: left; }
 #funcao-do-agente .submenu-dropdown { background: #fff; }
 #funcao-do-agente .submenu-dropdown:before { color: #fff; }
 #funcao-do-agente .submenu-dropdown li:hover { background: #eee; color: #000; }
