@@ -74,7 +74,7 @@
             </article>
         </article>
 
-        <div ng-if="openEntity.event">
+        <div class="staging-hidden" ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
                 <a href="{{openEntity.event.space.singleUrl}}">openEntity.event.space.name<br>
                     openEntity.event.space.address</a></p>
