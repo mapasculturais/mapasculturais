@@ -122,9 +122,10 @@
         return skeleton;
     };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $rison, $window, $timeout, searchService){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService){
+
         $rootScope.resetPagination = function(){
             $rootScope.pagination = {
                 agent: 1,
@@ -290,6 +291,7 @@
 
         $scope.$watch('data', $scope.dataChange, true);
 
+
         $scope.agents = [];
         $scope.spaces = [];
         $scope.events = [];
@@ -336,5 +338,47 @@
             console.log('================= FIND ONE READY', result);
             $scope.openEntity = result;
         });
+
+        var formatDate = function(date){
+            var d = date ? new Date(date + ' 12:00') : new Date();
+            return d.toLocaleString('pt-BR',{ day: '2-digit', month:'2-digit', year:'numeric' });
+        };
+
+        $scope.dateOptions = {
+            dateFormat: 'dd/mm/yy'
+        };
+
+        $scope.$watch('data.event.from', function(){
+            if(new Date($scope.data.event.from) > new Date($scope.data.event.to))
+                $scope.data.event.to = $scope.data.event.from;
+        });
+
+        $scope.$watch('data.event.to', function(newValue, oldValue){
+            if(new Date($scope.data.event.to) < new Date($scope.data.event.from))
+                $scope.data.event.from = $scope.data.event.to;
+        });
+
+
+       $scope.showEventDateFilter = function(){
+            var from = $scope.data.event.from,
+                to = $scope.data.event.to;
+
+            return from && to && (formatDate(from) !== formatDate() || from !== to );
+        };
+
+        $scope.eventDateFilter = function(){
+            var from = $scope.data.event.from,
+                to = $scope.data.event.to;
+
+            if(from === to)
+                return formatDate(from);
+            else
+                return 'de ' + formatDate(from) + ' a ' + formatDate(to);
+        };
+
+        $scope.cleanEventDateFilters = function(){
+            $scope.data.event.from = null;
+            $scope.data.event.to = null;
+        }
     }]);
 })(angular);

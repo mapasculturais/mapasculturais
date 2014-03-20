@@ -197,13 +197,6 @@ var hl;
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({ height: 'initial', maxHeight: 192});
         });
 
-		//Abre date-picker pode apagar depois
-		$('.tag.data').click(function() {
-            $('.hasDatepicker').toggle();
-            return false;
-        });
-
-
         var hideSharetimeout;
 
         //Compartilhar URLs

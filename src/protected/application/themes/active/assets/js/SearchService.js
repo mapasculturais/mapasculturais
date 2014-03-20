@@ -6,17 +6,33 @@
         var activeRequests= 0,
             canceler = null,
             apiCache = {
-                agent: {
-                    params: '',
-                    result: []
+                list:{
+                    agent: {
+                        params: '',
+                        result: []
+                    },
+                    space: {
+                        params: '',
+                        result: []
+                    },
+                    event: {
+                        params: '',
+                        result: []
+                    },
                 },
-                space: {
-                    params: '',
-                    result: []
-                },
-                event: {
-                    params: '',
-                    result: []
+                map:{
+                    agent: {
+                        params: '',
+                        result: []
+                    },
+                    space: {
+                        params: '',
+                        result: []
+                    },
+                    event: {
+                        params: '',
+                        result: []
+                    },
                 },
                 agentCount: {
                     params: '',
@@ -51,7 +67,7 @@
 
             if(!paginating)
                 $rootScope.resetPagination();
-            
+
             // cancel all active requests
             if(canceler){
                 canceler.resolve();
@@ -106,8 +122,8 @@
                     apiCache[entity + 'Count'].params = apiCountParams;
                 }
 
-                if(apiCache[entity].params === apiParams){
-                    results[entity] = apiCache[entity].result;
+                if(apiCache[data.global.viewMode][entity].params === apiParams){
+                    results[entity] = apiCache[data.global.viewMode][entity].result;
 
                 }else{
                     numRequests++;
@@ -120,12 +136,12 @@
 
                         results[entity] = rs;
 
-                        apiCache[entity].result = rs;
+                        apiCache[data.global.viewMode][entity].result = rs;
 
                         endRequest();
                     });
 
-                    apiCache[entity].params = apiParams;
+                    apiCache[data.global.viewMode][entity].params = apiParams;
                 }
             }
 
