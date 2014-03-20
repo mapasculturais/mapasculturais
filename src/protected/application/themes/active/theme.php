@@ -125,7 +125,7 @@ function add_entity_types_to_js($entity){
         ?>
 <script type="text/javascript">
 MapasCulturais.entityTypes = MapasCulturais.entityTypes || {};
-MapasCulturais.entityTypes.<?php echo $controller->id ?> = <?php echo json_encode($controller->types); ?>
+MapasCulturais.entityTypes.<?php echo $controller->id ?> = <?php echo json_encode($types); ?>
 </script>
         <?php
     });
