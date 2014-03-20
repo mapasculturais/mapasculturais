@@ -247,4 +247,6 @@
         </div>
         <!--#header-dos-resultados-->
     </div>
-    <!--#busca-->
+    <!--#busca-avancada-->
+</div>
+<!--#busca-->
