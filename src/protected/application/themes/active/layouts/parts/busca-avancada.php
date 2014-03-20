@@ -8,8 +8,8 @@
             <!--#busca-->
             <div class="filtro">
                 <label>Intervalo entre</label>
-                <input class="tag data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" readonly="readonly" style="width:75px"/> e
-                <input class="tag data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" readonly="readonly" style="width:75px"/>
+                <input class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> e
+                <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" />
             </div>
             <!--.filtro-->
             <div class="filtro">
