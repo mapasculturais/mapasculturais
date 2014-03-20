@@ -484,13 +484,13 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #main-header .busca-main-header { position: relative; z-index:152; }
 #main-header #busca { position: relative; z-index:151; }
-#busca-avancada { display: none; background-color: #e2e2e2; font-size: .875rem; }
+#busca-avancada { background-color: #e2e2e2; font-size: .875rem; }
 #busca-avancada .wrap { position: relative; padding: .75rem; }
 #busca-avancada input { margin-bottom: 0; border: none; }
 #busca-avancada label { font-family: "aleo", serif; }
 #busca-avancada .campo-de-busca { width: 180px; }
 /*filtro local*/
-#filtro-local { position: absolute; z-index: 200; top: 66px; left: .75rem; height: 1.875rem; padding: .75rem; background: #eee; border-radius: 2px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); font-family: "aleo", serif; color: #000; }
+#filtro-local { position: absolute; z-index: 200; top: 300px; left: .75rem; height: 1.875rem; padding: .75rem; background: #eee; border-radius: 2px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); font-family: "aleo", serif; color: #000; }
 #filtro-local label { display: none; }
 #filtro-local input[type="text"] { width: 215px; margin-bottom: 0; }
 #form-local { display: inline-block; vertical-align: top; }

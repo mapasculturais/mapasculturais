@@ -84,7 +84,7 @@
 
 
                 //ESCONDE O CONTROLE PARA POSTERIORMENTE USAR O BOTÃO (NÃO CONSEGUI SETAR OS EVENTOS DO DRAW CIRCLE SEM ESTE CONTROLE
-                document.querySelector('.leaflet-draw-draw-circle').style.display = 'none';
+                //document.querySelector('.leaflet-draw-draw-circle').style.display = 'none';
 
 
 
