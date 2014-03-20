@@ -67,7 +67,7 @@
             linguagens: [],
             from: null,
             to: null,
-            classificacaoEtaria: null,
+            classificacaoEtaria: [],
             isVerified: false
         }
     };
@@ -273,6 +273,8 @@
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
+
         MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
         $scope.location = $location;

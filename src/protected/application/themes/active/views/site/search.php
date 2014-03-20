@@ -1,4 +1,5 @@
 <?php
+
     $this->layout = 'interna';
 
     add_taxonoy_terms_to_js('area');
@@ -6,7 +7,7 @@
     add_entity_types_to_js('MapasCulturais\Entities\Space');
     add_entity_types_to_js('MapasCulturais\Entities\Agent');
 
-    //add_map_icon_marker_assets();
+//    $app = \MapasCulturais\App::i();
 
     $app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
     $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
@@ -26,6 +27,18 @@
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 
     $app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+
+    $app->hook('mapasculturais.scripts', function() use($app){
+
+        $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+
+        ?>
+<script type="text/javascript">
+MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
+</script>
+        <?php
+    });
+
 
 ?>
 

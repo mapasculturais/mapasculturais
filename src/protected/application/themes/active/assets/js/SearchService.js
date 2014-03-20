@@ -192,6 +192,13 @@
                     searchData.type = 'IN(' + entityData.types + ')';
                 }
 
+                if(entityData.classificacaoEtaria && entityData.classificacaoEtaria.length){
+                    var selectedClassificacoesEtarias = entityData.classificacaoEtaria.map(function(e){
+                        return MapasCulturais.classificacoesEtarias[e];
+                    });
+                    searchData.classificacaoEtaria = 'IN(' + selectedClassificacoesEtarias + ')';
+                }
+
                 if(entityData.acessibilidade){
                     searchData.acessibilidade = 'EQ(Sim)';
                 }

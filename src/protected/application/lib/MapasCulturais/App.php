@@ -1526,7 +1526,6 @@ class App extends \Slim\Slim{
 
     }
 
-
     /**
      * Returns an array with the Metadata Definitions of the given entity object or class name.
      *
@@ -1542,6 +1541,21 @@ class App extends \Slim\Slim{
 
         $key = $entity::usesTypes() && $type ? "{$entity}:{$type}" : $entity;
         return key_exists($key, $this->_register['entity_metadata_definitions']) ? $this->_register['entity_metadata_definitions'][$key] : array();
+    }
+
+    /**
+     * Return a metada definition
+     * @param string $metakey
+     * @param string $entity
+     * @param int $type
+     * @return \MapasCulturais\Definitions\Metadata
+     */
+    function getRegisteredMetadataByMetakey($metakey, $entity, $type = null){
+        if(is_object($entity))
+            $entity = $entity->getClassName();
+        $metas = $this->getRegisteredMetadata($entity, $type);
+        return key_exists($metakey, $metas) ? $metas[$metakey] : null;
+
     }
 
     /**

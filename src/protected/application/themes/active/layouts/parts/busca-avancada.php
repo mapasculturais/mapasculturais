@@ -29,15 +29,12 @@
             <div class="filtro">
                 <span class="label">Classificação</span>
                 <div id="classificacao" class="dropdown">
-                    <div class="placeholder">Livre</div>
+                    <div class="placeholder">Selecione a classificação</div>
                     <div class="submenu-dropdown">
-                        <ul>
-                            <li>18 anos</li>
-                            <li>16 anos</li>
-                            <li>14 anos</li>
-                            <li>12 anos</li>
-                            <li>10 anos</li>
-                            <li>Livre</li>
+                        <ul class="lista-de-filtro select">
+                            <li ng-repeat="classificacao in classificacoes" ng-class="{'selected':isSelected(data.event.classificacaoEtaria, classificacao.id)}" ng-click="toggleSelection(data.event.classificacaoEtaria, classificacao.id)">
+                                <span>{{classificacao.name}}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
