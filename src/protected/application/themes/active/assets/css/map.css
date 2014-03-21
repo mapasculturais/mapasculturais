@@ -2,12 +2,12 @@
 .leaflet-container { font-family: "Open Sans", Arial, Helvetica, sans-serif; }
 /*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top, .leaflet-bottom { z-index: 122; }
-
+.leaflet-left { left: 404px; }
 /*Fix Map top em tela cheia*/
 .leaflet-container:-webkit-full-screen { top: 0 !important; }
 
 /*controles de layers, zoom, fullscreen, localize-me*/
-.leaflet-control-layers, .leaflet-bar { -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; -moz-box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); box-shadow: 0 2px 2px 0 rgba(0,0,0,.15); }
+.leaflet-control-layers, .leaflet-bar { -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.3); -webkitbox-shadow: 0 2px 6px rgba(0,0,0,0.3); box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 .leaflet-control-layers { background-color: #000; color: #fff; }
 .leaflet-control-layers-expanded { padding: .75rem; background-color: #f90; }
 .leaflet-control-layers-toggle { width: 32px; height: 32px; background-image: url(../img/layers.png); }
@@ -28,7 +28,7 @@
 .leaflet-draw-toolbar .leaflet-draw-draw-circle { background-image: url(../img/icon-circulo.png); background-position: center; }
 .leaflet-draw-tooltip { background: #000; font-family: "Open Sans"; }
 .leaflet-draw-tooltip:before { border-right-color: #000; }
-.leaflet-draw-actions { left: 34px; box-shadow: 0 1px 5px rgba(0,0,0,0.65); }
+.leaflet-draw-actions { left: 34px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 .leaflet-draw-actions a { background-color: #000; border-left-color: #fff; font-family: "Open Sans"; font-size: .75rem; font-weight: bold; }
 .leaflet-draw-actions a:hover { background-color: #f90; text-decoration: none; }
 .leaflet-draw-actions li:last-child a { -webkit-border-radius: 0 2px 2px 0; border-radius: 0 2px 2px 0; }

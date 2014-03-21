@@ -129,9 +129,9 @@
 
 
 
-            $scope.drawCircle = function() {
-                document.querySelector('.leaflet-draw-draw-circle').click();
-            };
+            //$scope.drawCircle = function() {
+            //    document.querySelector('.leaflet-draw-draw-circle').click();
+            //};
 
             $scope.filterNeighborhood = function (){
                 window.leaflet.map.locate({setView : true, maxZoom:16});

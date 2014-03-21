@@ -57,7 +57,7 @@
             <input type="hidden" name="lng" />
         </form>
         <a id ="proximo-a-mim" class="hltip botoes-do-mapa" href="#" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
-        <a id="circulo" class="hltip botoes-do-mapa" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada"></a>
+        <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
     <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
