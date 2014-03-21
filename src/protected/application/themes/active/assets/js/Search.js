@@ -164,11 +164,17 @@
             }
         };
 
-        $scope.toggleVerified = function () {
-            angular.forEach($scope.data, function(value, key) {
-                $scope.data[key].isVerified = !$scope.data[key].isVerified;
-            });
+        $scope.toggleVerified = function (entity) {
+
+                $scope.data[entity].isVerified = !$scope.data[entity].isVerified;
         };
+
+        $scope.showFilters = function(entity){
+            if($scope.data.global.viewMode === 'map')
+                return $scope.data.global.enabled[entity];
+            else
+                return $scope.data.global.filterEntity === entity;
+        }
 
         $scope.hasFilter = function() {
             var ctx = {has: false};
@@ -197,30 +203,7 @@
 
         $scope.tabClick = function(entity){
             var g = $scope.data.global;
-            if(g.isCombined) {
-                // combined search click:
-                if(g.enabled[entity]){
-                    // if the entity is already enabled and it's the last one enabled, avoid disabling
-                    if(Object.keys(g.enabled).filter(function(e){if(g.enabled[e]) return e;}).length==1){
-                        return;
-                    }else{
-                        g.enabled[entity] = false;
-                    }
-                }else{
-                    g.enabled[entity] = true;
-                }
-            }else{
-                g.filterEntity = entity;
-                angular.forEach(g.enabled, function(value, key) {
-                    g.enabled[key] = (key===entity);
-                });
-            }
-        };
-
-        $scope.tabOver = function(entity){
-            if($scope.data.global.isCombined){
-                $scope.data.global.filterEntity = entity;
-            }
+            g.filterEntity = entity;
         };
 
         $scope.toggleCombined = function () {

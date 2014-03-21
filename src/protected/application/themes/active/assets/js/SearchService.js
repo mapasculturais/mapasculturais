@@ -77,16 +77,20 @@
 
             canceler = $q.defer();
 
-            if(data.global.enabled.agent){
-                callApi('agent');
-            }
+            if(data.global.viewMode === 'map'){
+                if(data.global.enabled.agent){
+                    callApi('agent');
+                }
 
-            if(data.global.enabled.event){
-                callApi('event');
-            }
+                if(data.global.enabled.event){
+                    callApi('event');
+                }
 
-            if(data.global.enabled.space){
-                callApi('space');
+                if(data.global.enabled.space){
+                    callApi('space');
+                }
+            }else{
+                callApi(data.global.filterEntity);
             }
 
             endCountRequest();

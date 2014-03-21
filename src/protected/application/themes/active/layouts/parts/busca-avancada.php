@@ -41,7 +41,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+                <a class="hltip botao principal" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('event')">Resultados da SMC</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -81,7 +81,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+                <a class="hltip botao principal" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('agent')">Resultados da SMC</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -128,7 +128,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+                <a class="hltip botao principal" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('space')">Resultados da SMC</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -141,7 +141,6 @@
                     <span ng-if="numAgents">{{numAgents}} agentes</span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
                     <span ng-if="numSpaces">{{numSpaces}} espaços</span><span ng-if="numSpaces && numEvents">,</span>
                     <span ng-if="numEvents">{{numEvents}} eventos</span>
-                    <span ng-if="!numAgents && !numSpaces && !numEvents">Nenhum resultado encontrado</span>
                 </span>
 
                 <span ng-show="spinnerCount > 0" style="display:inline">
@@ -174,32 +173,37 @@
                             </span>
                         </small>
                     </span>
-                    <span ng-show="combinedSearch && agentSearch.results.length == 0 && spaceSearch.results.length == 0">Nenhum resultado encontrado</span>
-                    <span ng-show="!combinedSearch && agentSearch.enabled && agentSearch.results.length == 0">Nenhum resultado encontrado</span>
-                    <span ng-show="!combinedSearch && spaceSearch.enabled && spaceSearch.results.length == 0">Nenhum resultado encontrado</span>
+                    <span ng-show="(!events || !showFilters('event')) && (!agents || !showFilters('agent')) && (!spaces || !showFilters('space'))">Nenhum resultado encontrado</span>
                 </span>
             </div>
             <!--#resultados-->
             <div id="filtros-selecionados">
-                <a class="tag tag-evento" ng-if="data.event.keyword !== ''" ng-click="data.event.keyword = ''">{{ data.event.keyword}}</a>
-                <a class="tag tag-agente" ng-if="data.agent.keyword !== ''" ng-click="data.agent.keyword = ''">{{ data.agent.keyword}}</a>
-                <a class="tag tag-espaco" ng-if="data.space.keyword !== ''" ng-click="data.space.keyword = ''">{{ data.space.keyword}}</a>
+                <a class="tag tag-evento" ng-if="data.event.keyword !== '' && showFilters('event')" ng-click="data.event.keyword = ''">{{ data.event.keyword}}</a>
+                <a class="tag tag-agente" ng-if="data.agent.keyword !== '' && showFilters('agent')" ng-click="data.agent.keyword = ''">{{ data.agent.keyword}}</a>
+                <a class="tag tag-espaco" ng-if="data.space.keyword !== '' && showFilters('space')" ng-click="data.space.keyword = ''">{{ data.space.keyword}}</a>
 
                 <a class="tag tag-agente" ng-if="data.agent.type !== null" ng-click="data.agent.type = null">{{ getName(types.agent, data.agent.type)}}</a>
                 <a class="tag tag-espaco" ng-repeat="typeId in data.space.types" ng-click="toggleSelection(data.space.types, typeId)">{{ getName(types.space, typeId)}}</a>
 
-                <a class="tag tag-evento" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
+                <a class="tag tag-evento" ng-if="showFilters('event')" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
 
-                <a class="tag tag-agente" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
-                <a class="tag tag-espaco" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
+                <a class="tag tag-agente" ng-if="showFilters('agent')" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
+                <a class="tag tag-espaco" ng-if="showFilters('space')" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
 
-                <a class="tag tag-espaco" ng-if="data.space.acessibilidade" ng-click="data.space.acessibilidade = false">Acessibilidade</a>
+                <a class="tag tag-espaco" ng-if="showFilters('space') && data.space.acessibilidade" ng-click="data.space.acessibilidade = !data.space.acessibilidade">acessibilidade</a>
 
-                <a class="tag" ng-if="data.global.isVerified" ng-click="toggleVerified()">Resultados da SMC</a>
+
+                <a class="tag tag-espaco" ng-if="data.space.acessibilidade && showFilters('event')" ng-click="data.space.acessibilidade = false">Acessibilidade</a>
+
+                <a class="tag tag-evento" ng-if="data.event.isVerified && showFilters('event')" ng-click="toggleVerified('event')">SMC</a>
+                <a class="tag tag-agente" ng-if="data.agent.isVerified && showFilters('agent')" ng-click="toggleVerified('agent')">SMC</a>
+                <a class="tag tag-espaco" ng-if="data.space.isVerified && showFilters('space')" ng-click="toggleVerified('space')">SMC</a>
+
                 <a class="tag" ng-if="data.global.locationFilters.enabled === 'circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
                 <a class="tag" ng-if="data.global.locationFilters.enabled === 'neighborhood'" ng-click="cleanLocationFilters()">Próximo a mim</a>
                 <a class="tag" ng-if="data.global.locationFilters.enabled === 'address'" ng-click="cleanLocationFilters()">{{data.global.locationFilters.address.text}}</a>
-                <a class="tag" ng-if="showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
+
+                <a class="tag tag-evento" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
 
                 <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>
             </div>

@@ -29,7 +29,6 @@
     $app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
 
     $app->hook('mapasculturais.scripts', function() use($app){
-
         $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
 
         ?>
@@ -131,7 +130,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         </article>
         -->
     </div>
-    <div id="filtro-local" class="clearfix" ng-controller="SearchSpatialController">
+    <div id="filtro-local" class="clearfix" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post" action="#">
             <label for="proximo-a">Local: </label>
             <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
@@ -143,10 +142,10 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
-    <div id="camadas-de-entidades">
-        <a class="hltip botoes-do-mapa icone icon_calendar" href="#" title="Mostrar eventos"></a>
-        <a class="hltip botoes-do-mapa icone icon_profile active" href="#" title="Ocultar agentes"></a>
-        <a class="hltip botoes-do-mapa icone icon_building" href="#" title="Mostrar espaços"></a>
+    <div id="camadas-de-entidades" ng-show="data.global.viewMode ==='map'">
+        <a class="hltip botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="Mostrar eventos"></a>
+        <a class="hltip botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="Ocultar agentes"></a>
+        <a class="hltip botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="Mostrar espaços"></a>
     </div>
     <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div>
@@ -157,7 +156,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
 
-        <div id="lista-dos-agentes" class="lista" infinite-scroll="addMore('agent')" ng-if="agents">
+        <div id="lista-dos-agentes" class="lista" infinite-scroll="addMore('agent')" ng-show="data.global.filterEntity == 'agent'">
             <article class="objeto agente clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
                 <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
                 <div class="objeto-content clearfix">
@@ -182,7 +181,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        <div id="lista-dos-espacos" class="lista" infinite-scroll="addMore('space')" ng-if="spaces">
+        <div id="lista-dos-espacos" class="lista" infinite-scroll="addMore('space')" ng-show="data.global.filterEntity == 'space'">
             <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
@@ -209,7 +208,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-if="events">
+        <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-show="data.global.filterEntity == 'event'">
 
         </div>
     </div>
