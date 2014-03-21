@@ -106,13 +106,13 @@
 
             map.on('locationfound', function(e) {
                 var radius = e.accuracy / 2,
-                    neighborhoodRadius = $scope.data.global.locationFilters.neighborhood.radius;
+                    neighborhoodRadius = $scope.defaultLocationRadius;
 
                 var marker = L.marker(e.latlng).addTo(map)
                     .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a href='#' onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
                     .openPopup();
 
-                var circle = L.circle(e.latlng, neighborhoodRadius).addTo(map.drawnItems);
+                var circle = L.circle(e.latlng, $scope.defaultLocationRadius).addTo(map.drawnItems);
 
 
                 $scope.data.global.locationFilters = {
@@ -122,22 +122,17 @@
                             lat: map.getCenter().lat,
                             lng: map.getCenter().lng
                         },
-                        radius : neighborhoodRadius
+                        radius : $scope.defaultLocationRadius
                     }
                 };
                 $scope.$apply();
 
-
+                if(window.leaflet.locationMarker) {
+                    window.leaflet.map.removeLayer(window.leaflet.locationMarker);
+                    window.leaflet.map.removeLayer(window.leaflet.locationCircle);
+                }
                 window.leaflet.locationMarker = marker;
                 window.leaflet.locationCircle = circle;
-
-                document.querySelector('.leaflet-draw-draw-circle').addEventListener('click', function(){
-                    if(window.leaflet.locationMarker) {
-                        window.leaflet.map.removeLayer(window.leaflet.locationMarker);
-                        window.leaflet.map.removeLayer(window.leaflet.locationCircle);
-                    }
-                }, false);
-
 
             });
 
@@ -184,17 +179,19 @@
             }
             geocoder.geocode({'address': addressString}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    leaflet.map.drawnItems.clearLayers();
+                    
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
                     
                     console.log(foundLocation);
                     window.leaflet.map.setView(foundLocation, 13);
+                    
+                    if(window.leaflet.locationMarker) {
+                        window.leaflet.map.removeLayer(window.leaflet.locationMarker);
+                        window.leaflet.map.removeLayer(window.leaflet.locationCircle);
+                    }
                     window.leaflet.locationMarker = new L.marker(foundLocation).addTo(window.leaflet.map);
-                    
-                    var addressRadius = $scope.data.global.locationFilters.address.radius;
-                    
-                    window.leaflet.locationCircle = L.circle(foundLocation, addressRadius)
+                    window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius)
                             .addTo(window.leaflet.map.drawnItems);
             
                     $scope.data.global.locationFilters = {
@@ -204,11 +201,10 @@
                                 lat: location.lat(),
                                 lng: location.lat()
                             },
-                            radius : addressRadius
+                            radius : $scope.defaultLocationRadius
                         }
                     };
                     $scope.$apply();
-
 
                 }
             });

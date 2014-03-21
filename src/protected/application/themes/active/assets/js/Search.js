@@ -1,6 +1,8 @@
 (function(angular){
     "use strict";
-
+    
+    var defaultLocationRadius = 2000;
+    
     var skeletonData = {
         global: {
             isVerified: false,
@@ -25,7 +27,7 @@
                         lat: null,
                         lng: null
                     },
-                    radius: 2000
+                    radius: defaultLocationRadius
                 },
                 address: {
                     text: '',
@@ -33,7 +35,7 @@
                         lat: null,
                         lng: null
                     },
-                    radius: 2000
+                    radius: defaultLocationRadius
                 }
             },
             map: {
@@ -126,7 +128,9 @@
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService){
-
+        
+        $scope.defaultLocationRadius = defaultLocationRadius;
+        
         $rootScope.resetPagination = function(){
             $rootScope.pagination = {
                 agent: 1,
