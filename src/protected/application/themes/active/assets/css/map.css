@@ -43,10 +43,11 @@
 .leaflet-label-right:before, .leaflet-label-left:after { content: ""; }
 
 /*cluster*/
+.leaflet-cluster.cluster-event { background-image: url("../img/agrupador-evento.png"); }
 .leaflet-cluster.cluster-agent { background-image: url("../img/agrupador-agente.png"); }
 .leaflet-cluster.cluster-space { background-image: url("../img/agrupador-espaco.png"); }
 .leaflet-cluster.cluster-space.cluster-agent { background-image: url("../img/agrupador-combinado.png"); }
-.leaflet-cluster { width: 36px !important; height: 42px !important; line-height: 35px; text-align: center; color: #000; background-size: 36px 42px; background-repeat: no-repeat; }
+.leaflet-cluster { font-size: 9px; text-indent: -1px; width: 36px !important; height: 42px !important; line-height: 35px; text-align: center; color: #000; background-size: 36px 42px; background-repeat: no-repeat; }
 
 /*svgs das subprefeituras e localização aproximada*/
 .leaflet-container g path { stroke: #f90; fill: #f90; stroke-opacity: 0.8; stroke-width: 2px; }

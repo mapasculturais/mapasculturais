@@ -494,13 +494,25 @@ body.editable #main-section { margin-top: 136px; }
 #filtro-local { position: absolute; z-index: 10; top: 114px; left: .75rem; height: 1.875rem; }
 #filtro-local label { display: none; }
 #filtro-local input[type="text"] { width: 350px; margin-right: 6px; margin-bottom: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: none; }
-#filtro-local input[type="text"]:focus { border: 1px solid #000; } 
+#filtro-local input[type="text"]:focus { border: 1px solid #000; }
 #form-local { display: inline-block; vertical-align: top; }
 .botoes-do-mapa { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); background-color: #000; color: #fff; text-align: center; }
 .botoes-do-mapa:hover, .botoes-do-mapa.active { background-color: #f90 !important; }
 #proximo-a-mim { background: #000 url(../img/icon-localizacao.png) center no-repeat; }
 /*camadas de entidades*/
 #camadas-de-entidades { position: absolute; z-index: 10; top: 116px; right: .75rem; height: 1.875rem; }
+
+
+.filtro-geral { float: left; box-sizing: border-box; -moz-box-sizing: border-box; margin: 0; font-family: "aleo", serif; color: #000; text-align: center; }
+.filtro-geral input[type="text"] { width: 215px; }
+.filtro-geral label, #filtro-prefeitura label { display: none; }
+#filtro-local { width: 50%; }
+#filtro-prefeitura, #busca-combinada { width: 25%; }
+#busca-combinada span {cursor:default;}
+#filtro-prefeitura { padding: 0 .5rem; border-right: 2px solid #eee; border-left: 2px solid #eee; }
+#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
+/* filtro local*/
+#form-local, .proximo-a-mim { display: inline-block; }
 
 /* filtros dos objetos*/
 .filtro-objeto { position: relative; clear: both; padding: .75rem 0; color: #000; font-size: .875rem; }
@@ -566,7 +578,7 @@ body.editable #main-section { margin-top: 136px; }
 
 /* =Listas
 -------------------------------------------------------------- */
-#lista { display: none; }
+
 .lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
 .lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #e2e2e2; font-size: .75rem; }
 .lista header p { margin-bottom: 0; line-height: 2rem; }
@@ -594,7 +606,7 @@ body.editable #main-section { margin-top: 136px; }
 -------------------------------------------------------------- */
 #mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
 #infobox { display: none; position: absolute; z-index: 149; top: 160px; left: 0; bottom: 0; width: 300px; height: 800px;/*remover essa altura e fazer o cálculo da section#main-section via js*/ overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
-#infobox .icon_close { position: absolute; top: .5rem; right: .5rem; }
+#infobox .icon_close { position: absolute; top: .5rem; right: .5rem; cursor:pointer; }
 #infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
 #infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
 #infobox .objeto { padding: .75rem; }
@@ -837,7 +849,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 /*ocorrências de eventos*/
 #dialog-event-occurrence .editable { margin-bottom: 1.5rem; }
 .horario-da-ocorrencia { width: 50px; margin-right: 1.5rem; }
-.data-da-ocorrencia { width: 70px; margin-right: 1.5rem; }
+.data-da-ocorrencia { width: 81px; margin-right: 1.5rem; }
 
 /* =Responsive
 -------------------------------------------------------------- */
@@ -883,3 +895,13 @@ ul.abas { display: none; }
 
 
 .js-registration-action.selected { cursor: default !important; }
+
+
+.animate-show, .animate-hide {
+    -webkit-transition:all linear 1s;
+    -moz-transition:all linear 1s;
+    -ms-transition:all linear 1s;
+    -o-transition:all linear 1s;
+    transition:all linear 1s;
+
+}

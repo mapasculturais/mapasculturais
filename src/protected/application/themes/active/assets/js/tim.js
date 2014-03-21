@@ -42,7 +42,7 @@ var hl;
 //                $busca.css({position: 'fixed', top: buscaTop, zIndex: 123});
 
 
-                $('#lista').css('margin-top', headerHeight + headerDosResultadosHeight);
+                //$('#lista').css('margin-top', headerHeight + headerDosResultadosHeight);
 
                 if($mapa.is(':visible')){
                     $busca.addClass('sombra');
@@ -107,29 +107,6 @@ var hl;
         // animações do scroll
         $(window).scroll(adjustHeader).resize(adjustHeader);
         adjustHeader();
-        // visões da busca
-        $('.js-open-view').click(function(){
-
-            var target = $(this).data('target');
-            var $targetToOpen = $(target);
-
-            //esconde o infobox no modo lista
-            if ( target == 'div#lista'){ $('#infobox').hide(); }
-            //mostra o infobox no modo mapa caso possua conteúdo
-            else if ( $('#infobox article').children().length ){ $('#infobox').show('slow'); }
-
-            $('.js-open-view').each(function(){
-                var $targetToClose = $($(this).data('target'));
-
-                if(!$targetToClose.is($targetToOpen) && $targetToClose.is(':visible'))
-                    $targetToClose.fadeOut(150);
-            }).removeClass('selected');
-
-            $targetToOpen.fadeIn(150, function(){
-                adjustHeader();
-            });
-            $(this).addClass('selected');
-        });
 
 		$('ul.abas').each(function(){
 			// For each set of tabs, we want to keep track of
@@ -219,13 +196,6 @@ var hl;
 
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({ height: 'initial', maxHeight: 192});
         });
-
-		//Abre date-picker pode apagar depois
-		$('.tag.data').click(function() {
-            $('.hasDatepicker').toggle();
-            return false;
-        });
-
 
         var hideSharetimeout;
 

@@ -18,6 +18,9 @@ return array(
                 '14 anos' => '14 anos',
                 '12 anos' => '12 anos',
                 '10 anos' => '10 anos'
+            ),
+            'validations' => array(
+                'required' => "A classificação etária é obrigatória."
             )
         ),
         'preco' => array(

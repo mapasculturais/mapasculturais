@@ -128,7 +128,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     protected $_startsAt;
 
     function setStartsAt($value) {
-        $this->_startsAt = self::convert($value, 'H:i');
+        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getStartsAt() {
@@ -144,7 +144,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     protected $_endsAt;
 
     function setEndsAt($value) {
-        $this->_endsAt = self::convert($value, 'H:i');
+        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
     }
 
     function getEndsAt() {
@@ -238,8 +238,8 @@ class EventOccurrence extends \MapasCulturais\Entity
         $value = (array) $value;
         $this->_rule = json_encode($value);
 
-        $this->startsAt = @$value['startsAt'];
-        $this->endsAt = @$value['endsAt'];
+        $this->startsAt = @$value['startsOn'] . ' ' . @$value['startsAt'];
+        $this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
         $this->startsOn = @$value['startsOn'];
         $this->until = @$value['until'] ? $value['until'] : null;

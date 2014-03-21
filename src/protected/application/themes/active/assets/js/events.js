@@ -96,8 +96,12 @@ MapasCulturais.EventOccurrenceManager = {
         });
 
         $(selector).find('.js-select-frequency').change(function(){
-            $(selector).find('.js-freq-hide').hide();
+            alert('asdasdasd');
+            $(selector).find('.js-freq-hide').not('.js-' + $(this).val())
+                .hide()
+                .find('input').not('[type=checkbox]').val('');
             $(selector).find('.js-freq-hide.js-' + $(this).val()).show();
+            $(selector).find('.js-freq-hide').not('.js-' + $(this).val()).find('input[type=checkbox]').attr('checked', false);
         });
         $(selector).find('.js-select-frequency').change();
     }
