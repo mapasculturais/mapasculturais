@@ -124,6 +124,10 @@
             </div>
 		</div>
 		<!--.filtro-->
+        <div id="filtro-prefeitura" class="filtro">
+            <a class="hltip botao principal" href="#" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="filterVerified=!filterVerified; searchManager.update();">Resultados da SMC</a>
+        </div>
+        <!-- #filtro-prefeitura-->
     </div>
     <!--#filtro-eventos-->
     <div id="filtro-agentes" class="filtro-objeto clearfix" ng-show="agentSearch.showFilters">
@@ -163,6 +167,10 @@
             </div>
 		</div>
 		<!--.filtro-->
+        <div id="filtro-prefeitura" class="filtro">
+            <a class="hltip botao principal" href="#" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="filterVerified=!filterVerified; searchManager.update();">Resultados da SMC</a>
+        </div>
+        <!-- #filtro-prefeitura-->
     </div>
     <!--#filtro-agentes-->
     <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="spaceSearch.showFilters">
@@ -206,6 +214,10 @@
 			</span>
 		</div>
 		<!--.filtro-->
+        <div id="filtro-prefeitura" class="filtro">
+            <a class="hltip botao principal" href="#" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="filterVerified=!filterVerified; searchManager.update();">Resultados da SMC</a>
+        </div>
+        <!-- #filtro-prefeitura-->
     </div>
     <!--#filtro-espacos-->
 </div>
@@ -249,10 +261,7 @@
 		</span>
 	</div>
     <!--#resultados-->
-    <div id="filtro-prefeitura">
-        <a class="hltip botao principal" href="#" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="filterVerified=!filterVerified; searchManager.update();">Resultados da SMC</a>
-	</div>
-	<!-- #filtro-prefeitura-->
+    
     
 	<div id="filtros-selecionados">		
         <a class="tag tag-agente" href="#" ng-bind="agentSearch.searchTerm" ng-show="agentSearch.searchTerm" ng-click="agentResults=[];agentSearch.searchTerm='';agentSearch.searchInput='';searchManager.update();"></a>
@@ -279,21 +288,14 @@
 		</div>
     </div>
     <!--#ferramentas-->
-    <div id="busca-combinada">
+    <!--<div id="busca-combinada">
         <span class="icone icon_check"  ng-click="toggleCombined()" ng-class="{'selected':combinedSearch}" ></span>
         <span class="label hltip"  		ng-click="toggleCombined()" style="cursor:default" comentario="Cátia, mudei o cursor para não ficar cursor:text já que registrei o evento de clique também aqui no .label do checkbox"
         	title="Nesse modo é possível combinar agentes e espaços no mesmo resultado de busca">
         	Busca Combinada
         </span>
-        <!---<input ng-model="combinedSearch" type="checkbox"/> <label style="display: inline-block;">Busca Combinada (Bó, o html correto tá comentado)</label>-->
-    </div>
-    <div id="busca-combinada">
-        <span class="icone icon_check"></span>
-        <span class="label hltip" title="Selecione para exibir os filtros">
-        	Filtrar Resultados
-        </span>
-        <!---<input ng-model="combinedSearch" type="checkbox"/> <label style="display: inline-block;">Busca Combinada (Bó, o html correto tá comentado)</label>-->
-    </div>
+        <input ng-model="combinedSearch" type="checkbox"/> <label style="display: inline-block;">Busca Combinada (Bó, o html correto tá comentado)</label>
+    </div>-->
 </div>
 <!--#header-dos-resultados-->
 </div>

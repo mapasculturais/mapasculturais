@@ -489,9 +489,9 @@ body.editable #main-section { margin-top: 136px; }
 #busca-avancada .wrap { position: relative; padding: .75rem; }
 #busca-avancada input { margin-bottom: 0; border: none; }
 #busca-avancada label { font-family: "aleo", serif; }
-#busca-avancada .campo-de-busca { width: 180px; }
+#busca-avancada .campo-de-busca { width: 100%; }
 /*filtro local*/
-#filtro-local { position: absolute; z-index: 200; top: 122px; left: .75rem; height: 1.875rem; }
+#filtro-local { position: absolute; z-index: 200; top: 114px; left: .75rem; height: 1.875rem; }
 #filtro-local label { display: none; }
 #filtro-local input[type="text"] { width: 350px; margin-right: 6px; margin-bottom: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: none; }
 #filtro-local input[type="text"]:focus { border: 1px solid #000; } 
@@ -506,12 +506,13 @@ body.editable #main-section { margin-top: 136px; }
 #filtro-espacos { background: #e83f96; }
 #filtro-projetos { background: #cc0033; }
 .filtro-objeto .icon_close { position: absolute; right: .75rem; top: .75rem; width: 1.5rem; height: 1.5rem; line-height: 2.5rem; font-size: 1.5rem; }
-.filtro { float: left; box-sizing: border-box; -moz-box-sizing: border-box; width: 25%; padding: 0 .75rem; border-left: 1px dotted #000; }
+.filtro { float: left; box-sizing: border-box; -moz-box-sizing: border-box; width: 20%; padding: 0 .75rem; border-left: 1px dotted #000; }
 .filtro:first-child { border: none; }
-.filtro .label { font-family: "aleo", serif; }
+.filtro .label, .filtro label { display: none; }
+#label-da-acessibilidade { display: inline; font-weight: normal; }
 .filtro .tags { margin-bottom: 0; height: 144px; }
 .filtro .tag { margin-bottom: 0; }
-.filtro .dropdown { width: 180px; }
+.filtro .dropdown { width: 100%; }
 .filtro .dropdown, .filtro .dropdown .submenu-dropdown { background: #fff; }
 .filtro .dropdown .submenu-dropdown:before { color: #fff; }
 .filtro .dropdown .submenu-dropdown li:hover { background: #eee; color: #000; }
@@ -521,11 +522,12 @@ body.editable #main-section { margin-top: 136px; }
 .lista-de-filtro li:hover:before { color: #000; background: #fff; }
 .lista-de-filtro li.selected:before { color: #fff; background: #000; }
 .lista-de-filtro li span { display: inline-block; width: 80%; vertical-align: top; }
+#filtro-prefeitura { float: right; text-align: center; }
+#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
-#filtro-prefeitura { float: left; padding-left: .75rem; border-left: 2px solid #d3d3d3; }
-#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
+
 #busca-combinada { float: right; margin-right: .75rem; padding-right:.75rem; border-right: 2px solid #d3d3d3; }
 #filtros-selecionados { margin-left: .75rem !important; margin-right: 106px; padding: 0 .75rem; border-left: 2px solid #d3d3d3; border-right: 2px solid #d3d3d3; }
 #filtros-selecionados .tag { margin-bottom: 0; }
