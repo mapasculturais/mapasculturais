@@ -362,7 +362,7 @@ input.data { width: 75px; }
 
 /* Abas dos objetos */
 .abas-objetos li { -webkit-transition: all .3s; transition: all .3s; }
-.abas-objetos li.active:after { content: "\42"; position: absolute; right: 0; left: 0; width: 100%; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 30px; line-height: 1rem; text-align: center; text-transform: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.abas-objetos li.active:after { content: "\42"; position: absolute; right: 0; left: 0; width: 100%; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 34px; line-height: 18px; text-align: center; text-transform: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 #aba-eventos:hover, #aba-eventos.active { border-top: 6px solid #b3b921; color: #b3b921;}
 #aba-agentes:hover, #aba-agentes.active { border-top: 6px solid #1dabc6; color: #1dabc6; }
 #aba-espacos:hover, #aba-espacos.active { border-top: 6px solid #e83f96; color: #e83f96; }
