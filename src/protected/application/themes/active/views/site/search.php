@@ -48,7 +48,7 @@
         </article>
         -->
     </div>
-    <div id="filtro-local" class="filtro-geral clearfix" ng-controller="SearchSpatialController">
+    <div id="filtro-local" class="clearfix" ng-controller="SearchSpatialController">
         <form id="form-local" method="post" action="#">
             <label for="proximo-a">Local: </label>
             <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
@@ -60,6 +60,11 @@
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
+    <div id="camadas-de-entidades">
+        <a class="hltip botoes-do-mapa icone icon_calendar" href="#" title="Ocultar eventos"></a>
+        <a class="hltip botoes-do-mapa icone icon_profile active" href="#" title="Mostrar agentes"></a>
+        <a class="hltip botoes-do-mapa icone icon_building" href="#" title="Mostrar espaços"></a>
+    </div>
     <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
 
     </div>

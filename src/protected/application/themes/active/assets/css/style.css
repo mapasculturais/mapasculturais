@@ -496,9 +496,12 @@ body.editable #main-section { margin-top: 136px; }
 #filtro-local input[type="text"] { width: 350px; margin-right: 6px; margin-bottom: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: none; }
 #filtro-local input[type="text"]:focus { border: 1px solid #000; } 
 #form-local { display: inline-block; vertical-align: top; }
+.botoes-do-mapa { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); background-color: #000; color: #fff; text-align: center; }
+.botoes-do-mapa:hover, .botoes-do-mapa.active { background-color: #f90 !important; }
 #proximo-a-mim { background: #000 url(../img/icon-localizacao.png) center no-repeat; }
-.botoes-do-mapa { display: inline-block; width: 32px; height: 32px; border-radius: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-.botoes-do-mapa:hover { background-color: #f90 !important; }
+/*camadas de entidades*/
+#camadas-de-entidades { position: absolute; z-index: 10; top: 116px; right: .75rem; height: 1.875rem; }
+
 /* filtros dos objetos*/
 .filtro-objeto { position: relative; clear: both; padding: .75rem 0; color: #000; font-size: .875rem; }
 #filtro-eventos { background: #b3b921; }
@@ -840,12 +843,6 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 -------------------------------------------------------------- */
 @media screen and (min-width: 1588px) {
 .objeto-capa { width: 50%; padding: 6rem 25%; }
-}
-@media screen and (min-width: 1689px) {
-.filtro-geral { width: 32%; }
-}
-@media screen and (min-width: 1368px) {
-.filtro-geral input[type="text"] { width: 195px; }
 }
 @media screen and (max-width: 1408px) and (min-width: 1056px) {
 .barra-esquerda, .barra-direita { width: 20%; }

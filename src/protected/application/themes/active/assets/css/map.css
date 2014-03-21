@@ -2,7 +2,7 @@
 .leaflet-container { font-family: "Open Sans", Arial, Helvetica, sans-serif; }
 /*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top, .leaflet-bottom { z-index: 122; }
-.leaflet-left { left: 404px; }
+.leaflet-top { left: 404px; right: 110px; }
 /*Fix Map top em tela cheia*/
 .leaflet-container:-webkit-full-screen { top: 0 !important; }
 
