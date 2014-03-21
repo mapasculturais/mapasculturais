@@ -371,7 +371,8 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             // activate google service
 
             var geocoder = null;
-            if(typeof google !== 'undefined') geocoder =  new google.maps.Geocoder();
+            if(typeof google !== 'undefined')
+                geocoder =  new google.maps.Geocoder();
 
             // callback to handle google geolocation result
             function geocode_callback(results, status) {
@@ -381,7 +382,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 }
                 if (status == google.maps.GeocoderStatus.OK) {
                     var location = results[0].geometry.location;
-                    var foundLocation = new L.latLng(location.mb, location.nb);
+                    var foundLocation = new L.latLng(location.lat(), location.lng());
                     map.setView(foundLocation, 15);
                     marker.setLatLng(foundLocation);
                 }
