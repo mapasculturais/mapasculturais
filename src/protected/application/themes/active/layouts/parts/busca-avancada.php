@@ -126,7 +126,7 @@
                 <span class="staging-hidden">
                     <form id="form-local" method="post" action="#">
                         <label for="proximo-a">Local: </label>
-                        <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
+                        <input ng-model="data.global.locationFilters.address.text" id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
                         <!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
 
                         <input type="hidden" name="lat" />
@@ -225,6 +225,7 @@
                 <a class="tag" ng-if="data.global.isVerified" ng-click="toggleVerified()">Resultados da SMC</a>
                 <a class="tag" ng-if="data.global.locationFilters.enabled === 'circle'" ng-click="cleanLocationFilters()">Área Delimitada</a>
                 <a class="tag" ng-if="data.global.locationFilters.enabled === 'neighborhood'" ng-click="cleanLocationFilters()">Próximo a mim</a>
+                <a class="tag" ng-if="data.global.locationFilters.enabled === 'address'" ng-click="cleanLocationFilters()">{{data.global.locationFilters.address.text}}</a>
                 <a class="tag" ng-if="showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
 
                 <a class="tag remover-tudo" ng-if="hasFilter()" ng-click="cleanAllFilters()">Remover todos filtros</a>

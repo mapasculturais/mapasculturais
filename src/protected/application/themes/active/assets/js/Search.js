@@ -32,7 +32,8 @@
                     center: {
                         lat: null,
                         lng: null
-                    }
+                    },
+                    radius: 2000
                 }
             },
             map: {

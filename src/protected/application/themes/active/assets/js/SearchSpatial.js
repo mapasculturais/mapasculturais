@@ -96,7 +96,7 @@
 
 
             //ESCONDE O CONTROLE PARA POSTERIORMENTE USAR O BOTÃO (NÃO CONSEGUI SETAR OS EVENTOS DO DRAW CIRCLE SEM ESTE CONTROLE
-            document.querySelector('.leaflet-draw-draw-circle').style.display = 'none';
+//            document.querySelector('.leaflet-draw-draw-circle').style.display = 'none';
 
 
             map.on('locationfound', function(e) {
@@ -143,8 +143,6 @@
         });
 
 
-
-
         $scope.drawCircle = function() {
             document.querySelector('.leaflet-draw-draw-circle').click();
         };
@@ -152,6 +150,53 @@
         $scope.filterNeighborhood = function (){
             window.leaflet.map.locate({setView : true, maxZoom:13});
         };
+        
+
+        var geocoder = null;
+        if(typeof google !== 'undefined')
+            geocoder =  new google.maps.Geocoder();
+
+        // callback to handle google geolocation result
+        function geocode_callback(results, status) {
+            if(typeof google === 'undefined'){
+                console.log('Mapas Culturais: Google Maps API não encontrada.');
+                return false;
+            }
+            if (status == google.maps.GeocoderStatus.OK) {
+                var location = results[0].geometry.location;
+                var foundLocation = new L.latLng(location.lat(), location.lng());
+                map.setView(foundLocation, 15);
+                marker.setLatLng(foundLocation);
+            }
+        }
+
+        function filterAddress () {
+            var geocoder = null;
+            var addressString = $scope.data.global.locationFilters.address.text + ', Brasil';
+            
+            if (!google){
+                console.log('Mapas Culturais: Não foi possível acessar a API do Google Maps');
+                return;
+            }else{
+                geocoder = new google.maps.Geocoder();
+            }
+            geocoder.geocode({'address': addressString}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var location = results[0].geometry.location;
+                    var foundLocation = new L.latLng(location.lat(), location.lng());
+                    window.leaflet.map.setView(foundLocation, 15);
+                    window.leaflet.marker.setLatLng(foundLocation).addTo(window.leaflet.map);
+                    
+                    $scope.data.global.locationFilters.enabled = 'address';
+                    $scope.data.global.locationFilters.address.center.lat = location.lat();
+                    $scope.data.global.locationFilters.address.center.lng = location.lng();
+                    
+                }
+            });
+        };
+        $rootScope.$on('searchDataChange', function(){
+            filterAddress();
+        });
 
 
     }]);
