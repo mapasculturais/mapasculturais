@@ -1,6 +1,6 @@
 (function(angular) {
     var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
-    app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", function($window, $scope, $location, $rootScope) {
+    app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
         angular.element(window).load(function() {
             var map = window.leaflet.map;
@@ -184,9 +184,14 @@
                 if (status == google.maps.GeocoderStatus.OK) {
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
-                    window.leaflet.map.setView(foundLocation, 15);
+                    window.leaflet.map.setView(foundLocation, 13);
                     window.leaflet.marker.setLatLng(foundLocation).addTo(window.leaflet.map);
                     
+                    
+                    var circle = L.circle(foundLocation, $scope.data.global.locationFilters.address.radius)
+                            .addTo(window.leaflet.map.drawnItems);
+                    
+
                     $scope.data.global.locationFilters.enabled = 'address';
                     $scope.data.global.locationFilters.address.center.lat = location.lat();
                     $scope.data.global.locationFilters.address.center.lng = location.lng();
@@ -194,10 +199,14 @@
                 }
             });
         };
-        $rootScope.$on('searchDataChange', function(){
-            filterAddress();
+        
+        $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
+            if(newValue.length === 0) return;
+            $timeout.cancel($scope.timer2);
+            $scope.timer2 = $timeout(function() {
+                filterAddress();
+            }, 500);
         });
-
 
     }]);
 })(angular);
