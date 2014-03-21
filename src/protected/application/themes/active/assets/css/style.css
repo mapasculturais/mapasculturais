@@ -502,18 +502,6 @@ body.editable #main-section { margin-top: 136px; }
 /*camadas de entidades*/
 #camadas-de-entidades { position: absolute; z-index: 10; top: 116px; right: .75rem; height: 1.875rem; }
 
-
-.filtro-geral { float: left; box-sizing: border-box; -moz-box-sizing: border-box; margin: 0; font-family: "aleo", serif; color: #000; text-align: center; }
-.filtro-geral input[type="text"] { width: 215px; }
-.filtro-geral label, #filtro-prefeitura label { display: none; }
-#filtro-local { width: 50%; }
-#filtro-prefeitura, #busca-combinada { width: 25%; }
-#busca-combinada span {cursor:default;}
-#filtro-prefeitura { padding: 0 .5rem; border-right: 2px solid #eee; border-left: 2px solid #eee; }
-#filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
-/* filtro local*/
-#form-local, .proximo-a-mim { display: inline-block; }
-
 /* filtros dos objetos*/
 .filtro-objeto { position: relative; clear: both; padding: .75rem 0; color: #000; font-size: .875rem; }
 #filtro-eventos { background: #b3b921; }

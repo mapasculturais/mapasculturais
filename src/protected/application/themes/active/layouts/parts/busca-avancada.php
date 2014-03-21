@@ -40,10 +40,9 @@
                 </div>
             </div>
             <!--.filtro-->
-
             <div id="filtro-prefeitura" class="filtro">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
-            </div>
+                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+            </div>
             <!-- div#filtro-prefeitura -->
         </div>
         <!--#filtro-eventos-->
@@ -81,10 +80,9 @@
                 </div>
             </div>
             <!--.filtro-->
-
             <div id="filtro-prefeitura" class="filtro">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
-            </div>
+                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+            </div>
             <!-- div#filtro-prefeitura -->
         </div>
         <!--#filtro-agentes-->
@@ -129,10 +127,9 @@
                 </span>
             </div>
             <!--.filtro-->
-
             <div id="filtro-prefeitura" class="filtro">
-                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
-            </div>
+                <a class="hltip botao principal" ng-class="{'selected':data.global.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified()">Resultados da SMC</a>
+            </div>
             <!-- div#filtro-prefeitura -->
         </div>
         <!--#filtro-espacos-->
