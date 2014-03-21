@@ -2,9 +2,9 @@
     var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
-        angular.element(window).load(function() {
+        angular.element(document).ready(function() {
             var map = window.leaflet.map;
-
+            map.invalidateSize();
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
             window.leaflet.map.drawnItems = drawnItems;
@@ -16,6 +16,10 @@
                     new L.LatLng(lf[lf.enabled].center.lat, lf[lf.enabled].center.lng),
                     lf[lf.enabled].radius
                 ).addTo(map.drawnItems));
+                
+                if($scope.data.global.locationFilters.enabled == 'address'){
+                    filterAddress ();
+                }        
             }
 
 
@@ -180,26 +184,38 @@
             }
             geocoder.geocode({'address': addressString}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
+                    leaflet.map.drawnItems.clearLayers();
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
+                    
+                    console.log(foundLocation);
                     window.leaflet.map.setView(foundLocation, 13);
-                    window.leaflet.marker.setLatLng(foundLocation).addTo(window.leaflet.map);
-
-
-                    var circle = L.circle(foundLocation, $scope.data.global.locationFilters.address.radius)
+                    window.leaflet.locationMarker = new L.marker(foundLocation).addTo(window.leaflet.map);
+                    
+                    var addressRadius = $scope.data.global.locationFilters.address.radius;
+                    
+                    window.leaflet.locationCircle = L.circle(foundLocation, addressRadius)
                             .addTo(window.leaflet.map.drawnItems);
+            
+                    $scope.data.global.locationFilters = {
+                        enabled : 'address',
+                        address : {
+                            center : {
+                                lat: location.lat(),
+                                lng: location.lat()
+                            },
+                            radius : addressRadius
+                        }
+                    };
+                    $scope.$apply();
 
-
-                    $scope.data.global.locationFilters.enabled = 'address';
-                    $scope.data.global.locationFilters.address.center.lat = location.lat();
-                    $scope.data.global.locationFilters.address.center.lng = location.lng();
 
                 }
             });
         };
 
         $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
-            if(newValue.length === 0) return;
+            if(!newValue) return;
             $timeout.cancel($scope.timer2);
             $scope.timer2 = $timeout(function() {
                 filterAddress();

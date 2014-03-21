@@ -131,9 +131,9 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         -->
     </div>
     <div id="filtro-local" class="clearfix" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
-        <form id="form-local" method="post" action="#">
+        <form id="form-local" method="post">
             <label for="proximo-a">Local: </label>
-            <input id="endereco" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
+            <input id="endereco" ng-model="data.global.locationFilters.address.text" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
             <!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
             <input type="hidden" name="lat" />
             <input type="hidden" name="lng" />
