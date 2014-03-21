@@ -61,8 +61,8 @@
     </div>
     <!--#filtro-local-->
     <div id="camadas-de-entidades">
-        <a class="hltip botoes-do-mapa icone icon_calendar" href="#" title="Ocultar eventos"></a>
-        <a class="hltip botoes-do-mapa icone icon_profile active" href="#" title="Mostrar agentes"></a>
+        <a class="hltip botoes-do-mapa icone icon_calendar" href="#" title="Mostrar eventos"></a>
+        <a class="hltip botoes-do-mapa icone icon_profile active" href="#" title="Ocultar agentes"></a>
         <a class="hltip botoes-do-mapa icone icon_building" href="#" title="Mostrar espaços"></a>
     </div>
     <div id="mapa" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
