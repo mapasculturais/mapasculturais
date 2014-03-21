@@ -286,6 +286,7 @@ h1 .icone { width: 2rem; height: 2rem; margin-right: .75rem; font-size: 2rem; li
 .social_googleplus { color: #dd4b39 !important; }
 .screen-reader, .escondido { display: none; }
 /* Date picker*/
+input.data { width: 75px; }
 .ui-datepicker { border: 1px solid #ccc; background: #eee; box-shadow: 0 1px 2px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
 .ui-datepicker .ui-datepicker-header { padding: 0 .5rem; line-height: 2.5rem; background: #e2e2e2; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { display: block; width: 24px; height: 24px; font-size: 32px; cursor: pointer; }
@@ -564,8 +565,7 @@ body.editable #main-section { margin-top: 136px; }
 .lista { box-sizing: border-box; -moz-box-sizing: border-box; margin-bottom: 3rem; padding: 0 3rem; }
 .lista header { margin-bottom: 3rem; padding: .75rem; border-radius: 2px; background: #e2e2e2; font-size: .75rem; }
 .lista header p { margin-bottom: 0; line-height: 2rem; }
-.lista header .tag { margin: 0; }
-.lista header .tag:after { content: '\e023'; display: inline-block; width: 1rem; height: 1rem; margin-top: -4px; margin-left: .5rem; font-size: 1rem; line-height: 1rem; font-family: 'ElegantIcons'; vertical-align: middle; text-transform: none; }
+.lista header .data { width: 77px; margin: 0; }
 #agenda.lista { padding: 0; }
 .objeto { margin-bottom: 5px; padding: 1.5rem; background: #f8f8f8; border-radius: 2px; -webkit-transition: all .3s; transition: all .3s;}
 #agenda.lista .objeto { background: #eee; }
