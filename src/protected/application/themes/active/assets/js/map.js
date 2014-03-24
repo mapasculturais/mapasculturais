@@ -487,8 +487,9 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
         $('.js-leaflet-control').each(function(){
             var $control = $(this);
+            $control.addClass('leaflet-control');
             $('.leaflet-control-container').each(function(){
-                $(this).append($control);
+                $(this).find($control.data('leaflet-target')).append($control);
             });
         });
     //});
