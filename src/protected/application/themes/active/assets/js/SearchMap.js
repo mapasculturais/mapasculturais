@@ -24,7 +24,6 @@
                 });
                 
                 $scope.map.on('drag zoomstart', function(){
-                    console.log('aqui');
                     $window.$timout.cancel($window.dataTimeout);
                 });
 

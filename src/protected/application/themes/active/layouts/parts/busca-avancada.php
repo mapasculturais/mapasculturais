@@ -173,7 +173,7 @@
                             </span>
                         </small>
                     </span>
-                    <span ng-show="(events.length === 0 || !showFilters('event')) && (agents.length === 0 || !showFilters('agent')) && (spaces.length === 0 || !showFilters('space'))">Nenhum resultado encontrado</span>
+                    <span ng-show="spinnerCount===0 && (events.length === 0 || !showFilters('event')) && (agents.length === 0 || !showFilters('agent')) && (spaces.length === 0 || !showFilters('space'))">Nenhum resultado encontrado</span>
                 </span>
             </div>
             <!--#resultados-->

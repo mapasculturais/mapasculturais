@@ -206,24 +206,24 @@
         };
 
         $scope.tabClick = function(entity){
+            console.log(entity);
             var g = $scope.data.global;
             g.filterEntity = entity;
-        };
+            if(g.viewMode === 'map'){
+                var n = 0;
+                for(var e in g.enabled)
+                    if(g.enabled[e])
+                        n++;
 
-        $scope.toggleCombined = function () {
-            var g = $scope.data.global;
-            if(g.isCombined) {
-                g.isCombined = false;
-                if(Object.keys(g.enabled).length > 1){
-                    angular.forEach(g.enabled, function(value, key) {
-                        g.enabled[key] = key===g.filterEntity;
-                    });
+                if(n===0 || n === 1 && !g.enabled[entity]){
+                    for(var e in g.enabled)
+                        if(e === entity)
+                            g.enabled[e] = true;
+                        else
+                            g.enabled[e] = false;
+                }else if(n > 1 && !g.enabled[entity]){
+                    g.enabled[entity] = true;
                 }
-            }else{
-                g.isCombined = true;
-                angular.forEach(g.enabled, function(value, key) {
-                    g.enabled[key] = true;
-                });
             }
         };
 
