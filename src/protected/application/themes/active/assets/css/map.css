@@ -1,8 +1,9 @@
 #map { width: 100%; height: 100%; }
-.leaflet-container { font-family: "Open Sans", Arial, Helvetica, sans-serif; }
+.leaflet-container { font: 1rem/1.5rem "Open Sans", Arial, Helvetica, sans-serif; }
+.leaflet-container a { color: #fff; }
 /*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top, .leaflet-bottom { z-index: 122; }
-.leaflet-top { left: 404px; right: 110px; }
+.leaflet-top { padding-left: 404px; padding-right: 115px; }
 /*Fix Map top em tela cheia*/
 .leaflet-container:-webkit-full-screen { top: 0 !important; }
 
@@ -12,7 +13,7 @@
 .leaflet-control-layers-expanded { padding: .75rem; background-color: #f90; }
 .leaflet-control-layers-toggle { width: 32px; height: 32px; background-image: url(../img/layers.png); }
 .leaflet-control-layers-separator { margin: .75rem 0; border-top: 1px solid #fff; }
-.leaflet-control-layers-list label { margin-bottom: .75rem; }
+.leaflet-control-layers-list label { margin-bottom: .75rem; font-size: .75rem; }
 .leaflet-control-layers-list label:hover { color: #fff; }
 .leaflet-bar a { background-color: #000; color: #fff; width: 32px; height: 32px; }
 .leaflet-bar a:hover { background-color: #f90; color: #fff; width: 32px; height: 32px; }
