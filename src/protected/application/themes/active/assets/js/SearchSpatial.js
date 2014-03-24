@@ -8,7 +8,7 @@
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
             window.leaflet.map.drawnItems = drawnItems;
-
+            
 
             if($scope.data.global.locationFilters.enabled){
                 var lf = $scope.data.global.locationFilters;
@@ -197,6 +197,7 @@
                     $scope.data.global.locationFilters = {
                         enabled : 'address',
                         address : {
+                            text : $scope.data.global.locationFilters.address.text,
                             center : {
                                 lat: location.lat(),
                                 lng: location.lat()
