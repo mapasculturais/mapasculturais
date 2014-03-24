@@ -200,7 +200,7 @@
                             text : $scope.data.global.locationFilters.address.text,
                             center : {
                                 lat: location.lat(),
-                                lng: location.lat()
+                                lng: location.lng()
                             },
                             radius : $scope.defaultLocationRadius
                         }
@@ -212,7 +212,10 @@
         };
 
         $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
-            if(!newValue) return;
+            if(!newValue || !newValue.trim()) {
+                $scope.data.global.locationFilters.enabled = null;
+                return;
+            }
             $timeout.cancel($scope.timer2);
             $scope.timer2 = $timeout(function() {
                 filterAddress();
