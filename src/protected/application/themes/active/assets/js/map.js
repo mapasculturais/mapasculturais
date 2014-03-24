@@ -3,7 +3,6 @@ MapasCulturais.Map = {};
 MapasCulturais.Map.initialize = function(initializerOptions) {
 
 
-
     MapasCulturais.Map.iconOptions = {
         agent: {icon: L.icon({
                 iconUrl: MapasCulturais.assetURL + '/img/pin-agente.png',
@@ -485,6 +484,13 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
         });
 
+
+        $('.js-leaflet-control').each(function(){
+            var $control = $(this);
+            $('.leaflet-control-container').each(function(){
+                $(this).append($control);
+            });
+        });
     //});
 }
 

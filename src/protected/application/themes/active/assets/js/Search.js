@@ -243,16 +243,18 @@
         $scope.dataChange = function(newValue, oldValue){
             if(newValue === undefined) return;
             var serialized = $rison.stringify(diffFilter(newValue));
-
+            $window.$timout = $timeout;
             if($location.hash() !== serialized){
-                $location.hash(serialized);
                 $timeout.cancel($scope.timer);
                 if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
+                    $location.hash(serialized);
                     $rootScope.$emit('searchDataChange', $scope.data);
                 } else {
                     $scope.timer = $timeout(function() {
+                        $location.hash(serialized);
                         $rootScope.$emit('searchDataChange', $scope.data);
                     }, 500);
+                    $window.dataTimeout = $scope.timer;
                 }
             }
         };

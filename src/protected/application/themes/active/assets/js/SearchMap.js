@@ -22,6 +22,11 @@
                 $scope.map.on('load', function(){
                     $scope.setMapView();
                 });
+                
+                $scope.map.on('drag zoomstart', function(){
+                    console.log('aqui');
+                    $window.$timout.cancel($window.dataTimeout);
+                });
 
                 $scope.map.on('zoomend moveend', function(){
                     $scope.data.global.map = {

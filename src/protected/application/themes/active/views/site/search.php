@@ -130,7 +130,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         </article>
         -->
     </div>
-    <div id="filtro-local" class="clearfix" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
+    <div id="filtro-local" class="clearfix js-leaflet-control" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post">
             <label for="proximo-a">Local: </label>
             <input id="endereco" ng-model="data.global.locationFilters.address.text" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
@@ -142,7 +142,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
-    <div id="camadas-de-entidades" ng-show="data.global.viewMode ==='map'">
+    <div id="camadas-de-entidades" class="js-leaflet-control" ng-show="data.global.viewMode ==='map'">
         <a class="hltip botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="Mostrar eventos"></a>
         <a class="hltip botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="Ocultar agentes"></a>
         <a class="hltip botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="Mostrar espaços"></a>
