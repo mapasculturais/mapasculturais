@@ -43,8 +43,20 @@
                 }
             });
 
-
-
+            $rootScope.$on('searchCountResultsReady', function(ev, results){
+                //remove drawing if more than one
+                if(leaflet.map.drawnItems){
+                    if(!$scope.data.global.locationFilters.enabled)  {
+                        leaflet.map.drawnItems.clearLayers();
+                        if(window.leaflet.locationMarker) { leaflet.map.removeLayer(window.leaflet.locationMarker);}
+                    }else if(Object.keys(leaflet.map.drawnItems._layers).length > 1) {
+                        var lastLayer = $scope.map.drawnItems.getLayers().pop();
+                        leaflet.map.drawnItems.clearLayers();
+                        leaflet.map.drawnItems.addLayer(lastLayer);
+                    }
+                }
+            });
+            
             $rootScope.$on('searchResultsReady', function(ev, results){
                 delete $scope.markers;
                 $scope.markers = [];
@@ -110,17 +122,7 @@
             if($scope.resultLayer){
                 $scope.resultLayer.clearLayers();
 
-                //remove drawing if more than one
-                if($scope.map.drawnItems){
-                    if(!$scope.data.global.locationFilters.enabled)  {
-                        $scope.map.drawnItems.clearLayers();
-                        if(window.leaflet.locationMarker) { $scope.map.removeLayer(window.leaflet.locationMarker);}
-                    }else if(Object.keys($scope.map.drawnItems._layers).length > 1) {
-                        var lastLayer = $scope.map.drawnItems.getLayers().pop();
-                        $scope.map.drawnItems.clearLayers();
-                        $scope.map.drawnItems.addLayer(lastLayer);
-                    }
-                }
+
 
             }
             $scope.resultLayer = new L.markerClusterGroup({
