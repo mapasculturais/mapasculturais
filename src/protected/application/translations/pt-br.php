@@ -16,5 +16,19 @@ return array(
 
     'project registration' => "Inscritos",
     'This agent is already registered in this project.' => 'Este agente já está inscrito neste projeto.',
-    'the registration form is required' => 'A ficha de inscrição é requerida.'
+    'the registration form is required' => 'A ficha de inscrição é requerida.',
+    
+    'January' => 'Janeiro',
+    'February' => 'Fevereiro',
+    'March' => 'Março',
+    'April' => 'Abril',
+    'May' => 'Maio',
+    'June' => 'Junho',
+    'July' => 'Julho',
+    'August' => 'Agosto',
+    'September' => 'Setembro',
+    'October' => 'Outubro',
+    'November' => 'Novembro',
+    'December' => 'Dezembro'
+    
 );
