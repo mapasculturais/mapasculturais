@@ -180,7 +180,8 @@
             };
 
             $scope.resultLayer.addTo($scope.map);
-
+            $rootScope.resultLayer = $scope.resultLayer;
+            
             $scope.resultLayer.on('clusterclick', function (a) {
                 if(a.layer._childCount <= 6)
                     a.layer.spiderfy();

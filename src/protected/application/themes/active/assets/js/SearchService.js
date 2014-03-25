@@ -61,7 +61,6 @@
         };
         
         function search (ev, data){
-            console.log("SEARCH SERVICE CALL");
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -76,7 +75,6 @@
 
             // cancel all active requests
             if(canceler){
-                console.log('cancelando');
                 canceler.resolve();
                 $rootScope.spinnerCount -= activeRequests;
                 activeRequests = 0;
@@ -108,13 +106,11 @@
             endRequest();
 
             function callApi(entity){
-
                 var sData = data2searchData(data[entity]),
                     apiCountParams = JSON.stringify(sData),
-                    apiParams = JSON.stringify([sData,$rootScope.pagination[entity]]),
+                    apiParams = JSON.stringify([sData,data.global.locationFilters,data.global.isVerified,$rootScope.pagination[entity]]),
                     requestEntity = entity === 'event' ? 'space' : entity,
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
-
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
                     
                 if(apiCache[entity + 'Count'].params === apiCountParams){
@@ -132,13 +128,10 @@
                         countResults[entity] = rs;
 
                         apiCache[entity + 'Count'].num = rs;
-
+                        apiCache[entity + 'Count'].params = apiCountParams;
                         endCountRequest();
                     });
-
-                    apiCache[entity + 'Count'].params = apiCountParams;
                 }
-
                 if(apiCache[data.global.viewMode][entity].params === apiParams){
                     results[entity] = apiCache[data.global.viewMode][entity].result;
 
@@ -154,11 +147,12 @@
                         results[entity] = rs;
 
                         apiCache[data.global.viewMode][entity].result = rs;
+                        apiCache[data.global.viewMode][entity].params = apiParams;
 
                         endRequest();
                     });
 
-                    apiCache[data.global.viewMode][entity].params = apiParams;
+                    
                 }
             }
 
@@ -223,7 +217,6 @@
                 if(entityData.isVerified){
                     searchData.isVerified = 'EQ(true)';
                 }
-
                 if(data.global.locationFilters.enabled !== null){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;

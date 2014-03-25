@@ -1,9 +1,11 @@
 (function(angular) {
     var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
+        
+        var map = null;
 
         angular.element(document).ready(function() {
-            var map = window.leaflet.map;
+            map = window.leaflet.map;
             map.invalidateSize();
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
@@ -183,7 +185,6 @@
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
                     
-                    console.log(foundLocation);
                     window.leaflet.map.setView(foundLocation, 13);
                     
                     if(window.leaflet.locationMarker) {
@@ -212,8 +213,13 @@
         };
 
         $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
+            if(angular.isUndefined(newValue) || newValue == oldValue){
+                return;
+            }
+            //if(newValue === '' || newValue === oldValue) return;
             if(!newValue || !newValue.trim()) {
                 $scope.data.global.locationFilters.enabled = null;
+                map.fitBounds($rootScope.resultLayer.getBounds());
                 return;
             }
             $timeout.cancel($scope.timer2);

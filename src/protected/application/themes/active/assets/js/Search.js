@@ -291,7 +291,6 @@
             $rootScope.isPaginating = false;
             
             if(results.paginating){
-                console.log( "CONCAT API RESULT" );
                 $scope.agents = $scope.agents.concat(results.agent ? results.agent : []);
                 $scope.events = $scope.events.concat(results.event ? results.event : []);
                 $scope.spaces = $scope.spaces.concat(results.space ? results.space : []);
@@ -313,10 +312,7 @@
             
             if($rootScope.isPaginating)
                 return;
-            console.log(entity, $rootScope.pagination[entity]);
             $rootScope.pagination[entity]++;
-            console.log(entity, $rootScope.pagination[entity]);
-            console.log('getMore');
             $rootScope.$emit('resultPagination', $scope.data);
         };
 
