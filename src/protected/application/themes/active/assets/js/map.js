@@ -488,10 +488,36 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
         $('.js-leaflet-control').each(function(){
             var $control = $(this);
             $control.addClass('leaflet-control');
+            $control.on('click dblclick mousedown', function(e){
+                e.stopPropagation();
+            });
             $('.leaflet-control-container').each(function(){
                 $(this).find($control.data('leaflet-target')).append($control);
             });
         });
+
+
+        //Exemplo de como passar um hipertexto para o innerHTML de um controle
+        // $('#filtro-local').hide();
+
+        // var LocationFilters = L.Control.extend({
+        //     options: {
+        //         position: 'topleft',
+        //     },
+
+        //     onAdd: function (map) {
+        //         this._map = map;
+
+        //         var className = 'leaflet-hax',
+        //             container = L.DomUtil.create('div', className);
+        //         container.innerHTML = $('#filtro-local').html();
+        //         L.DomEvent.disableClickPropagation(container);
+        //         return container;
+        //     },
+        // });
+
+        // leaflet.map.addControl(new LocationFilters());
+
     //});
 }
 
