@@ -285,12 +285,16 @@
 
 
         $rootScope.$on('searchResultsReady', function(ev, results){
+            if($scope.data.global.viewMode !== 'list')
+                return;
+            
+            $rootScope.isPaginating = false;
+            
             if(results.paginating){
+                console.log( "CONCAT API RESULT" );
                 $scope.agents = $scope.agents.concat(results.agent ? results.agent : []);
                 $scope.events = $scope.events.concat(results.event ? results.event : []);
                 $scope.spaces = $scope.spaces.concat(results.space ? results.space : []);
-
-                $scope.isPaginating = false;
             }else{
                 $scope.agents = results.agent ? results.agent : [];
                 $scope.events = results.event ? results.event : [];
@@ -301,10 +305,18 @@
         var infiniteScrollTimeout = null;
 
         $scope.addMore = function(entity){
-            if($scope.isPaginating || $scope.data.global.viewMode !== 'list')
+            if($scope.data.global.viewMode !== 'list')
                 return;
-            $scope.isPaginating = true;
+            
+            if(entity !== $scope.data.global.filterEntity)
+                return;
+            
+            if($rootScope.isPaginating)
+                return;
+            console.log(entity, $rootScope.pagination[entity]);
             $rootScope.pagination[entity]++;
+            console.log(entity, $rootScope.pagination[entity]);
+            console.log('getMore');
             $rootScope.$emit('resultPagination', $scope.data);
         };
 

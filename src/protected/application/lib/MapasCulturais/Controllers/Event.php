@@ -87,7 +87,9 @@ class Event extends EntityController {
             
             foreach($occurrences[$e->id] as $occ){
                 $month = $app->txt($occ->startsOn->format('F'));
-                $occurrences_readable[$e->id][] = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
+                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
+                if(!in_array($str, $occurrences_readable[$e->id]))
+                    $occurrences_readable[$e->id][] = $str;
             }
         }
         

@@ -61,7 +61,7 @@
         };
         
         function search (ev, data){
-            console.log("AQUI");
+            console.log("SEARCH SERVICE CALL");
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -81,7 +81,11 @@
                 $rootScope.spinnerCount -= activeRequests;
                 activeRequests = 0;
             }
-
+            
+            if(data.global.viewMode === 'list'){
+                $rootScope.isPaginating = true;
+            }
+            
             canceler = $q.defer();
 
             if(data.global.viewMode === 'map'){

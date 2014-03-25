@@ -49,7 +49,8 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'space' => array(
             'required' => 'Espaço é obrigatório'
-         ),
+         )
+            
     );
 
     function validateFrequency($value) {
