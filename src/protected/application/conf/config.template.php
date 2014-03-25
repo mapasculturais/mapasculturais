@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+init_set('display_errors', 1);
+
 $config = include 'conf-base.php';
 
 return array_merge($config,

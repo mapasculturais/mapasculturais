@@ -233,7 +233,7 @@ tr th { text-align: left; }
 .botao { height: 1.875rem; padding: 0 .5rem; font-size: .75rem; line-height: 1.875rem; }
 .botao.principal { color: #fff; background: #f90; border: 1px solid #f90; }
 .botao.principal:hover { border-color: #e48203; }
-.botao.selected, .botao.selected:hover { color: #fff; background-color: #000; border: 1px solid #000; }
+.botao.selected, .botao.selected:hover { background-color: #f90 !important; border: 1px solid #f90 !important; }
 .botao.adicionar, .botao.editar, .botao.download, .botao.excluir { color: #666; background: #d8d8d8; border: 1px solid #c4c4c4; }
 .botao.adicionar:hover, .botao.editar:hover, .botao.download:hover, .botao.excluir:hover { color: #333; background: #ddd; border: 1px solid #999; }
 .botao-grande { padding: .5rem; font-size: .875rem; text-align: center; color: #fff; background: #000; }
@@ -287,7 +287,7 @@ h1 .icone { width: 2rem; height: 2rem; margin-right: .75rem; font-size: 2rem; li
 .screen-reader, .escondido { display: none; }
 /* Date picker*/
 input.data { width: 75px; }
-.ui-datepicker { border: 1px solid #ccc; background: #eee; box-shadow: 0 1px 2px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
+.ui-datepicker { display: none; border: 1px solid #ccc; background: #eee; box-shadow: 0 1px 2px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
 .ui-datepicker .ui-datepicker-header { padding: 0 .5rem; line-height: 2.5rem; background: #e2e2e2; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { display: block; width: 24px; height: 24px; font-size: 32px; cursor: pointer; }
 .ui-datepicker .ui-datepicker-prev { float: left; }
@@ -498,7 +498,8 @@ body.editable #main-section { margin-top: 136px; }
 #form-local { display: inline-block; vertical-align: top; }
 .botoes-do-mapa { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); background-color: #000; color: #fff; text-align: center; }
 #proximo-a-mim { background: #000 url(../img/icon-localizacao.png) center no-repeat; }
-#proximo-a-mim:hover,.botoes-do-mapa:hover, .botoes-do-mapa.active { background-color: #f90; }
+#proximo-a-mim:hover { background-color: #f90; }
+.botoes-do-mapa.active { background-color: #f90; }
 
 /*camadas de entidades*/
 #camadas-de-entidades { position: absolute; z-index: 150; right: 0rem; height: 1.875rem; }
@@ -527,7 +528,8 @@ body.editable #main-section { margin-top: 136px; }
 .lista-de-filtro li.selected:before { color: #fff; background: #000; }
 .lista-de-filtro li span { display: inline-block; width: 80%; vertical-align: top; }
 .filtro-prefeitura { float: right; text-align: center; }
-.filtro-prefeitura .botao.principal { background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
+.filtro-prefeitura .botao { color: #fff; background-color: #000; background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
+.filtro-prefeitura .botao:hover { background-color: #f90; border-color: #f90; }
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
