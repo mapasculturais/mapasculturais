@@ -53,8 +53,8 @@
 .leaflet-cluster { font-size: 9px; text-indent: -1px; width: 36px !important; height: 42px !important; line-height: 35px; text-align: center; color: #000; background-size: 36px 42px; background-repeat: no-repeat; }
 
 /*svgs das subprefeituras e localização aproximada*/
-.leaflet-container g path { stroke: #f90; fill: #f90; stroke-opacity: 0.8; stroke-width: 2px; }
-.leaflet-container g path:hover{fill-opacity:.4; cursor: default;}
+.leaflet-container g path { stroke: #f90; fill-opacity:0.2; fill: #f90; stroke-opacity: 0.4; stroke-width: 2px; }
+.leaflet-container g path:hover{fill-opacity:0.15; stroke-opacity: 0.5; cursor: default;}
 
 /*não sei o que são todos os estilos abaixo, precisamos conferir se são mesmo usados*/
 
