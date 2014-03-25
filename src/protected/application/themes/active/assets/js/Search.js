@@ -160,7 +160,7 @@
 
 
         $scope.switchView = function (mode) {
-            $scope.data.global.viewMode = mode;
+            $rootScope.data.global.viewMode = mode;
             if(mode === 'map') {
                 //temporary fixes to tim.js' adjustHeader()
                 $window.scrollTo(0,1);
@@ -170,43 +170,43 @@
 
         $scope.toggleVerified = function (entity) {
 
-                $scope.data[entity].isVerified = !$scope.data[entity].isVerified;
+                $rootScope.data[entity].isVerified = !$rootScope.data[entity].isVerified;
         };
 
         $scope.showFilters = function(entity){
-            if($scope.data.global.viewMode === 'map')
-                return $scope.data.global.enabled[entity];
+            if($rootScope.data.global.viewMode === 'map')
+                return $rootScope.data.global.enabled[entity];
             else
-                return $scope.data.global.filterEntity === entity;
+                return $rootScope.data.global.filterEntity === entity;
         }
 
         $scope.hasFilter = function() {
             var ctx = {has: false};
-            angular.forEach($scope.data, function(value, key) {
+            angular.forEach($rootScope.data, function(value, key) {
                 if(key === 'global') return;
-                this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
+                this.has = this.has || !angular.equals(_diffFilter($rootScope.data[key], skeletonData[key]), {});
             }, ctx);
 
             return ctx.has ||
-                   $scope.data.global.isVerified ||
-                   $scope.data.global.locationFilters.enabled !== null;
+                   $rootScope.data.global.isVerified ||
+                   $rootScope.data.global.locationFilters.enabled !== null;
         };
 
         $scope.cleanAllFilters = function () {
-            angular.forEach($scope.data, function(value, key) {
+            angular.forEach($rootScope.data, function(value, key) {
                 if(key === 'global') return;
-                $scope.data[key] = angular.copy(skeletonData[key]);
+                $rootScope.data[key] = angular.copy(skeletonData[key]);
             });
-            $scope.data.global.isVerified = false;
-            $scope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
+            $rootScope.data.global.isVerified = false;
+            $rootScope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
         };
 
         $scope.cleanLocationFilters = function() {
-            $scope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
+            $rootScope.data.global.locationFilters = angular.copy(skeletonData.global.locationFilters);
         };
 
         $scope.tabClick = function(entity){
-            var g = $scope.data.global;
+            var g = $rootScope.data.global;
             g.filterEntity = entity;
             if(g.viewMode === 'map'){
                 var n = 0;
@@ -233,13 +233,13 @@
                 return;
             }
 
-            if(newValue !== $rison.stringify(diffFilter($scope.data))){
-                $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
-                $rootScope.$emit('searchDataChange', $scope.data);
+            if(newValue !== $rison.stringify(diffFilter($rootScope.data))){
+                $rootScope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
+                $rootScope.$emit('searchDataChange', $rootScope.data);
             }
         };
 
-        $scope.dataChange = function(newValue, oldValue){
+        $rootScope.dataChange = function(newValue, oldValue){
             if(newValue === undefined) return;
             var serialized = $rison.stringify(diffFilter(newValue));
             $window.$timout = $timeout;
@@ -247,18 +247,18 @@
                 $timeout.cancel($scope.timer);
                 if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
                     $location.hash(serialized);
-                    $rootScope.$emit('searchDataChange', $scope.data);
+                    $rootScope.$emit('searchDataChange', $rootScope.data);
                 } else {
                     $scope.timer = $timeout(function() {
                         $location.hash(serialized);
-                        $rootScope.$emit('searchDataChange', $scope.data);
+                        $rootScope.$emit('searchDataChange', $rootScope.data);
                     }, 500);
                     $window.dataTimeout = $scope.timer;
                 }
             }
         };
 
-        $scope.data = angular.copy(skeletonData);
+        $rootScope.data = angular.copy(skeletonData);
 
         $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
@@ -276,7 +276,7 @@
             $scope.parseHash();
         }
 
-        $scope.$watch('data', $scope.dataChange, true);
+        $rootScope.$watch('data', $rootScope.dataChange, true);
 
 
         $scope.agents = [];
@@ -285,7 +285,7 @@
 
 
         $rootScope.$on('searchResultsReady', function(ev, results){
-            if($scope.data.global.viewMode !== 'list')
+            if($rootScope.data.global.viewMode !== 'list')
                 return;
             
             $rootScope.isPaginating = false;
@@ -304,16 +304,16 @@
         var infiniteScrollTimeout = null;
 
         $scope.addMore = function(entity){
-            if($scope.data.global.viewMode !== 'list')
+            if($rootScope.data.global.viewMode !== 'list')
                 return;
             
-            if(entity !== $scope.data.global.filterEntity)
+            if(entity !== $rootScope.data.global.filterEntity)
                 return;
             
             if($rootScope.isPaginating)
                 return;
             $rootScope.pagination[entity]++;
-            $rootScope.$emit('resultPagination', $scope.data);
+            $rootScope.$emit('resultPagination', $rootScope.data);
         };
 
 
@@ -340,27 +340,27 @@
             dateFormat: 'dd/mm/yy'
         };
 
-        $scope.$watch('data.event.from', function(){
-            if(new Date($scope.data.event.from) > new Date($scope.data.event.to))
-                $scope.data.event.to = $scope.data.event.from;
+        $rootScope.$watch('data.event.from', function(){
+            if(new Date($rootScope.data.event.from) > new Date($rootScope.data.event.to))
+                $rootScope.data.event.to = $rootScope.data.event.from;
         });
 
-        $scope.$watch('data.event.to', function(newValue, oldValue){
-            if(new Date($scope.data.event.to) < new Date($scope.data.event.from))
-                $scope.data.event.from = $scope.data.event.to;
+        $rootScope.$watch('data.event.to', function(newValue, oldValue){
+            if(new Date($rootScope.data.event.to) < new Date($rootScope.data.event.from))
+                $rootScope.data.event.from = $rootScope.data.event.to;
         });
 
 
        $scope.showEventDateFilter = function(){
-            var from = $scope.data.event.from,
-                to = $scope.data.event.to;
+            var from = $rootScope.data.event.from,
+                to = $rootScope.data.event.to;
 
             return from && to && (formatDate(from) !== formatDate() || from !== to );
         };
 
         $scope.eventDateFilter = function(){
-            var from = $scope.data.event.from,
-                to = $scope.data.event.to;
+            var from = $rootScope.data.event.from,
+                to = $rootScope.data.event.to;
 
             if(from === to)
                 return formatDate(from);
@@ -369,8 +369,8 @@
         };
 
         $scope.cleanEventDateFilters = function(){
-            $scope.data.event.from = null;
-            $scope.data.event.to = null;
+            $rootScope.data.event.from = null;
+            $rootScope.data.event.to = null;
         }
     }]);
 })(angular);

@@ -5,8 +5,8 @@
 
         $scope.init = function (){
 
-            if($scope.data.global.map && $scope.data.global.map.zoom){
-                MapasCulturais.mapCenter = $scope.data.global.map.center;
+            if($rootScope.data.global.map && $rootScope.data.global.map.zoom){
+                MapasCulturais.mapCenter = $rootScope.data.global.map.center;
             }else{
                 MapasCulturais.mapCenter = null;
             }
@@ -28,24 +28,24 @@
                 });
 
                 $scope.map.on('zoomend moveend', function(){
-                    $scope.data.global.map = {
+                    $rootScope.data.global.map = {
                         center : $window.leaflet.map.getCenter(),
                         zoom : $window.leaflet.map.getZoom()
                     };
-                    $scope.$apply();
+                    
                 });
 
                 $scope.updateMap();
                 $scope.setMapView();
-                if($scope.data.global.openEntity && $scope.data.global.openEntity.id){
-                    FindOneService($scope.data);
+                if($rootScope.data.global.openEntity && $rootScope.data.global.openEntity.id){
+                    FindOneService($rootScope.data);
                 }
             });
 
             $rootScope.$on('searchCountResultsReady', function(ev, results){
                 //remove drawing if more than one
                 if(leaflet.map.drawnItems){
-                    if(!$scope.data.global.locationFilters.enabled)  {
+                    if(!$rootScope.data.global.locationFilters.enabled)  {
                         leaflet.map.drawnItems.clearLayers();
                         if(window.leaflet.locationMarker) { leaflet.map.removeLayer(window.leaflet.locationMarker);}
                     }else if(Object.keys(leaflet.map.drawnItems._layers).length > 1) {
@@ -74,9 +74,9 @@
         };
 
         $scope.setMapView = function(){
-            if($scope.map && $scope.data.global.map && $scope.data.global.map.zoom) {
-                $scope.map.setZoom($scope.data.global.map.zoom);
-                $scope.map.panTo($scope.data.global.map.center);
+            if($scope.map && $rootScope.data.global.map && $rootScope.data.global.map.zoom) {
+                $scope.map.setZoom($rootScope.data.global.map.zoom);
+                $scope.map.panTo($rootScope.data.global.map.center);
             }
         };
 
@@ -96,7 +96,7 @@
                     var infobox = document.querySelector('#infobox');
                     var infoboxContent = infobox.querySelector('article');
 
-                    $scope.data.global.openEntity = {
+                    $rootScope.data.global.openEntity = {
                         id: item.id,
                         type: entity
                     };
@@ -104,9 +104,9 @@
                     $scope.openEntity = {};
                     $scope.openEntity[entity] = {name: item.name};
 
-                    $scope.$apply();
+                    
 
-                    FindOneService($scope.data);
+                    FindOneService($rootScope.data);
                 });
 
                 if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
