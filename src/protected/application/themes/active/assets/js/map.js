@@ -39,7 +39,16 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
                 shadowAnchor: [6, 3], // the same for the shadow
                 popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-        })}
+        })},
+        location: {icon: L.icon({
+                iconUrl: MapasCulturais.assetURL + '/img/marker-icon.png',
+                shadowUrl: MapasCulturais.assetURL + '/img/pin-sombra.png',
+                iconSize: [35, 43], // size of the icon
+                shadowSize: [40, 16], // size of the shadow
+                iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
+                shadowAnchor: [6, 3], // the same for the shadow
+                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        })},
     };
 
     if(initializerOptions.exportToGlobalScope){
