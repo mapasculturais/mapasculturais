@@ -350,7 +350,7 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
         // don't run dbUpdates anymore
-        // $this->_dbUpdates();
+         $this->_dbUpdates();
 
         return $this;
     }
@@ -526,8 +526,7 @@ class App extends \Slim\Slim{
 
         if($this->cache->contains(__METHOD__)){
             $executed_updates = $this->cache->fetch(__METHOD__);
-            $this->log->info('DB UPDATE > executed updates in cache');
-            $this->log->debug('DB UPDATE > ' . print_r($executed_updates,true));
+            
         }else{
             $executed_updates = array();
 
@@ -546,6 +545,7 @@ class App extends \Slim\Slim{
             if(!in_array($name, $executed_updates)){
                 $this->disableObjectCache();
                 $new_updates = true;
+                $this->log->info("DB UPDATE > '$name' executed");
                 if($function() !== false){
                     $up = new Entities\DbUpdate();
                     $up->name = $name;
