@@ -206,7 +206,6 @@
         };
 
         $scope.tabClick = function(entity){
-            console.log(entity);
             var g = $scope.data.global;
             g.filterEntity = entity;
             if(g.viewMode === 'map'){
@@ -269,10 +268,6 @@
         $scope.types = MapasCulturais.entityTypes;
         $scope.location = $location;
 
-        $rootScope.$on('searchDataChange', function(ev, data) {
-            console.log('ON searchDataChange', data);
-        });
-
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 
         if($location.hash() === '') {
@@ -290,7 +285,6 @@
 
 
         $rootScope.$on('searchResultsReady', function(ev, results){
-            console.log(results);
             if(results.paginating){
                 $scope.agents = $scope.agents.concat(results.agent ? results.agent : []);
                 $scope.events = $scope.events.concat(results.event ? results.event : []);
@@ -307,7 +301,7 @@
         var infiniteScrollTimeout = null;
 
         $scope.addMore = function(entity){
-            if($scope.isPaginating)
+            if($scope.isPaginating || $scope.data.global.viewMode !== 'list')
                 return;
             $scope.isPaginating = true;
             $rootScope.pagination[entity]++;
@@ -320,14 +314,12 @@
         $scope.numEvents = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
-            console.log('================= SEARCH READY ', results);
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
             $scope.numEvents = parseInt(results.event);
         });
 
         $rootScope.$on('findOneResultReady', function(ev, result){
-            console.log('================= FIND ONE READY', result);
             $scope.openEntity = result;
         });
 

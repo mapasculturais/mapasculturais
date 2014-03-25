@@ -8,6 +8,9 @@ use MapasCulturais\App;
 
 class CachedRepository extends EntityRepository{
     function find($id, $lockMode = LockMode::NONE, $lockVersion = null) {
+        if(!$id)
+            return null;
+        
         $app = App::i();
 
         $cache_id = $this->getClassName() . "::{$id}";

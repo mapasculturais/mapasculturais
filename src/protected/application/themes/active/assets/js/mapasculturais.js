@@ -412,7 +412,6 @@ MapasCulturais.Search = {
     limit: 10,
 
     init : function(selector){
-        console.log($(selector));
         if( $(selector).length === 0 || $(selector).hasClass('select2-offscreen')) return false;
 
         $(selector).each(function(){

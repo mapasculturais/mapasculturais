@@ -230,6 +230,8 @@ add_occurrence_frequencies_to_js();
                             foreach ($occurrences as $occurrence) {
 
                                 $templateData = json_decode(json_encode($occurrence));
+                                if(!is_object($templateData->rule))
+                                    $templateData->rule = new stdclass;
                                 $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
                                 $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
                                 $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';

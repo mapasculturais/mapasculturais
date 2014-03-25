@@ -88,19 +88,24 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
 
         <div class="staging-hidden" ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
-                <a href="{{openEntity.event.space.singleUrl}}">openEntity.event.space.name<br>
-                    openEntity.event.space.address</a></p>
+                <a href="{{openEntity.event.space.singleUrl}}">{{openEntity.event.space.name}}<br>
+                    {{openEntity.event.space.endereco}}</a></p>
 
-            <article class="objeto evento clearfix" >
-                <h1><a href="{{openEntity.event.singleUrl}}">{{openEntity.event.name}}</a></h1>
+            <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
+                <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
-                    <a href="{{openEntity.event.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{openEntity.event['@files:avatar.avatarBig'].url||defaultImageURL}}">
+                    <a href="{{event.singleUrl}}" class="js-single-url">
+                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarBig'].url||defaultImageURL}}">
                     </a>
-                    <p class="objeto-resumo">{{openEntity.event.shortDescription}}</p>
+                    <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                        <div><span class="label">Horário:</span> <time>00h00</time></div>
+                        <div>
+                            <span class="label">Linguagem:</span> 
+                            <span ng-repeat="linguagem in event.terms.linguagem">
+                                <a>{{linguagem}}</a>{{$last ? '' : ', '}}
+                            </span>
+                        </div>
+                        <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
                         <div><span class="label">Classificação:</span> livre</div>
                     </div>
                 </div>

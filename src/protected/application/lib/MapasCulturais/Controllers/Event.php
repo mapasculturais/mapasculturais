@@ -44,5 +44,73 @@ class Event extends EntityController {
         }
         parent::GET_create();
     }
+    
+    function API_findBySpace(){
+        if(!key_exists('spaceId', $this->data)){
+            $this->errorJson('spaceId is required');
+            return;
+        }
+        
+        $query_data = $this->getData;
+
+        $spaceId = $query_data['spaceId'];
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+
+        unset(
+            $query_data['@from'],
+            $query_data['@to'],
+            $query_data['spaceId']
+        );
+        
+        $app = App::i();
+        $space = $app->repo('Space')->find($spaceId);
+        
+        if(!$space){
+            $this->errorJson('space not found');
+            return;
+        }
+        
+        $occurrences = array();
+        $occurrences_readable = array();
+        
+        $events = $app->repo('Event')->findBySpace($space, $date_from, $date_to);
+        
+        $event_ids = array_map(function($e) { 
+            return $e->id; 
+            
+        }, $events);
+        
+        foreach($events as $e){
+            $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
+            $occurrences_readable[$e->id] = array();
+            
+            foreach($occurrences[$e->id] as $occ){
+                $month = $app->txt($occ->startsOn->format('F'));
+                $occurrences_readable[$e->id][] = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
+            }
+        }
+        
+        if($event_ids){
+            $event_data = array('id' => 'IN(' . implode(',', $event_ids) .')');
+            
+            foreach($query_data as $key => $val)
+                if($key[0] === '@' || $key == '_geoLocation')
+                    $event_data[$key] = $val;
+            
+            $result = $this->apiQuery($event_data);
+            
+            if(is_array($result)){
+                foreach($result as $k => $e){
+                    $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : array();
+                    $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : array();
+                }
+            }
+            
+            $this->apiResponse($result);
+        }else{
+            $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
+        }
+    }
 
 }

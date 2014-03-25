@@ -55,7 +55,13 @@
         $rootScope.$on('searchDataChange', search);
         $rootScope.$on('resultPagination', search);
 
+        $rootScope.searchArgs = {
+            list: {},
+            map: {}
+        };
+        
         function search (ev, data){
+            console.log("AQUI");
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -70,6 +76,7 @@
 
             // cancel all active requests
             if(canceler){
+                console.log('cancelando');
                 canceler.resolve();
                 $rootScope.spinnerCount -= activeRequests;
                 activeRequests = 0;
@@ -104,6 +111,8 @@
                     requestEntity = entity === 'event' ? 'space' : entity,
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
 
+                $rootScope.searchArgs[data.global.viewMode][entity] = sData;
+                    
                 if(apiCache[entity + 'Count'].params === apiCountParams){
                     countResults[entity] = apiCache[entity + 'Count'].num;
 
@@ -247,7 +256,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+                console.log("API SEARCH >> ", {url: entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
@@ -259,7 +268,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+                console.log("API COUNT >> ", {url: entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         }

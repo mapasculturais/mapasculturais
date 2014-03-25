@@ -96,7 +96,6 @@ MapasCulturais.EventOccurrenceManager = {
         });
 
         $(selector).find('.js-select-frequency').change(function(){
-            alert('asdasdasd');
             $(selector).find('.js-freq-hide').not('.js-' + $(this).val())
                 .hide()
                 .find('input').not('[type=checkbox]').val('');

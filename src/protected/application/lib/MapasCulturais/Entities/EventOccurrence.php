@@ -324,6 +324,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'endsAt' => $this->endsAt,
             'frequency' => $this->frequency,
             'separation' =>  $this->separation,
+            'recurrences' => $this->getRecurrences(),
             'count' =>  $this->count,
             'until' =>  $this->until,
             'space' => $this->space ? array('id' => $this->space->id, 'name' => $this->space->name, 'singleUrl' => $this->space->singleUrl, 'shortDescription' => $this->space->shortDescription, 'avatar' => $this->space->avatar, 'location'=>$this->space->location) : null,

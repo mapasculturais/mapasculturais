@@ -53,6 +53,15 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
      * })
      */
     protected $eventOccurrence;
+    
+    function jsonSerialize() {
+        return array(
+            'id' => $this->id,
+            'month' => $this->month,
+            'day' => $this->day,
+            'week' => $this->week
+        );
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

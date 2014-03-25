@@ -9,22 +9,49 @@
                 page=null,
                 result = {},
                 sData = {},
-                entity;
+                entity,
+                numRequests = 1;
 
             $rootScope.spinnerCount++;
 
             entity = data.global.openEntity.type;
             sData.id = 'EQ(' + data.global.openEntity.id + ')';
-
-            apiFindOne(entity, select, sData, page, requestAction).success(function(rs){
-                console.log('FIND ONE: ' + entity);
-                result[entity] = rs;
-                endRequest();
-            });
+            
+            
+            
+            if(entity === 'event'){
+                result[entity] = {
+                    space: {},
+                    events: {}
+                };
+                
+                $rootScope.spinnerCount++;
+                numRequests++;
+            }
+            if(entity === 'event'){
+                select += ',endereco';
+                apiFindOne('space', select, sData, page, requestAction).success(function(rs){
+                    result[entity].space = rs;
+                    endRequest();
+                });
+                apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
+                    result[entity].events = rs;
+                    endRequest();
+                });;
+            }else{
+                apiFindOne(entity, select, sData, page, requestAction).success(function(rs){
+                    result[entity] = rs;
+                    endRequest();
+                });
+            }
 
             function endRequest(){
+                numRequests--;
                 $rootScope.spinnerCount--;
-                $rootScope.$emit('findOneResultReady', result);
+                if(numRequests === 0){
+                    console.log('EMITINDO >>> ', result);
+                    $rootScope.$emit('findOneResultReady', result);
+                }
             }
 
             function apiFindOne(entity, select, searchData, page, action) {
@@ -35,7 +62,20 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+                console.log('API FIND ONE >> ', {url: entity + '/' + action + '/?'+querystring, data:searchData});
+                return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+            }
+
+            function apiSpaceEvents(spaceId, searchData) {
+                var action = 'findBySpace';
+                searchData['spaceId'] = spaceId;
+                searchData['@select'] = select + ',classificacaoEtaria';
+                searchData['@files'] = '(avatar.avatarBig):url';
+                var querystring = "";
+                for(var att in searchData) {
+                    querystring += "&"+att+"="+searchData[att];
+                }
+                console.log('API SPACE EVENTS >> ', {url: entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
         };

@@ -198,7 +198,7 @@ class Event extends \MapasCulturais\Entity
 
         $strNativeQuery = "
             SELECT
-                MD5(CONCAT(starts_on, starts_at, id)) as id,
+                nextval('occurrence_id_seq'::regclass) as id,
                 starts_on, until, starts_at, ends_at
             FROM
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
@@ -257,7 +257,7 @@ class Event extends \MapasCulturais\Entity
 
         $strNativeQuery = "
             SELECT
-                MD5(CONCAT(starts_on, starts_at, id)) as id,
+                nextval('occurrence_id_seq'::regclass) as id,
                 starts_on, until, starts_at, ends_at
             FROM
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
