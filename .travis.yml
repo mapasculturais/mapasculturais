@@ -6,6 +6,7 @@ before_install:
   - php /home/travis/.phpenv/versions/5.5.9/bin/composer.phar self-update
 
 install:
+  - composer self-update && composer --version
   - echo "yes" | pecl install apcu-beta
   - php /home/travis/.phpenv/versions/5.5.9/bin/composer.phar self-update
   - pushd src/protected; composer update --prefer-dist; popd
