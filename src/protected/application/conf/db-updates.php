@@ -1,5 +1,24 @@
 <?php
 return array(
+    'create-occurrence_id_seq' => function (){
+        $app = \MapasCulturais\App::i();
+        $em = $app->em;
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $q = $em->createNativeQuery("
+            CREATE SEQUENCE occurrence_id_seq
+                START WITH 100000
+                INCREMENT BY 1
+                MINVALUE 100000
+                NO MAXVALUE
+                CACHE 1
+                CYCLE;", $rsm);
+        
+        
+        $q->execute();
+        
+        return true;
+    },
+            
     'remove agents and spaces with error - 2014-02-07' => function(){
         $spaces = $this->em->createQuery("SELECT e FROM MapasCulturais\Entities\Space e WHERE LOWER(TRIM(e.name)) LIKE 'erro%'")->getResult();
         $num_spaces = count($spaces);
