@@ -138,7 +138,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <input type="hidden" name="lat" />
             <input type="hidden" name="lng" />
         </form>
-        <a id ="proximo-a-mim" class="hltip botoes-do-mapa" href="#" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
+        <a id ="proximo-a-mim" class="hltip botoes-do-mapa" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
