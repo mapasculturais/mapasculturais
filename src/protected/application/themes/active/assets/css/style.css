@@ -491,7 +491,7 @@ body.editable #main-section { margin-top: 136px; }
 #busca-avancada label { font-family: "aleo", serif; }
 #busca-avancada .campo-de-busca { width: 100%; }
 /*filtro local*/
-#filtro-local { position: absolute; z-index: 150; top: 10px; left: .75rem; height: 1.875rem; }
+#filtro-local { position: absolute; z-index: 150; left: 0rem; height: 1.875rem; }
 #filtro-local label { display: none; }
 #filtro-local input[type="text"] { width: 350px; margin-right: 6px; margin-bottom: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: none; }
 #filtro-local input[type="text"]:focus { border: 1px solid #000; }
@@ -501,7 +501,7 @@ body.editable #main-section { margin-top: 136px; }
 #proximo-a-mim:hover,.botoes-do-mapa:hover, .botoes-do-mapa.active { background-color: #f90; }
 
 /*camadas de entidades*/
-#camadas-de-entidades { position: absolute; z-index: 150; top: 10px; right: .75rem; height: 1.875rem; }
+#camadas-de-entidades { position: absolute; z-index: 150; right: 0rem; height: 1.875rem; }
 
 /* filtros dos objetos*/
 .filtro-objeto { position: relative; clear: both; padding: .75rem 0; color: #000; font-size: .875rem; }
