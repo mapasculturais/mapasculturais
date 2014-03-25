@@ -3,7 +3,7 @@
 .leaflet-container a { color: #fff; }
 /*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top, .leaflet-bottom { z-index: 122; }
-.leaflet-top { padding-left: 404px; padding-right: 115px; }
+.leaflet-top { padding-left: 414px; padding-right: 115px; }
 /*Fix Map top em tela cheia*/
 .leaflet-container:-webkit-full-screen { top: 0 !important; }
 
