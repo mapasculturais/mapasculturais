@@ -190,6 +190,7 @@ function add_metalist_manager($object, $metalist_group, $metalist_action, $respo
         'add_description' => $add_description_input
     ));
 }
+
 /*
 MapasCulturais\App::i()->hook('controller(agent).render(single)', function(&$template){
     $template = 'edit';
