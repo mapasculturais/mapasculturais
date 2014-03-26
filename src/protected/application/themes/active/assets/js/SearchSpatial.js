@@ -12,14 +12,14 @@
             window.leaflet.map.drawnItems = drawnItems;
             
 
-            if($rootScope.data.global.locationFilters.enabled){
-                var lf = $rootScope.data.global.locationFilters;
+            if($scope.data.global.locationFilters.enabled){
+                var lf = $scope.data.global.locationFilters;
                 (new L.Circle(
                     new L.LatLng(lf[lf.enabled].center.lat, lf[lf.enabled].center.lng),
                     lf[lf.enabled].radius
                 ).addTo(map.drawnItems));
                 
-                if($rootScope.data.global.locationFilters.enabled == 'address'){
+                if($scope.data.global.locationFilters.enabled == 'address'){
                     filterAddress ();
                 }        
             }
@@ -75,7 +75,7 @@
                     layer = e.layer;
 
                 if (type === 'circle') {
-                    $rootScope.data.global.locationFilters = {
+                    $scope.data.global.locationFilters = {
                         enabled : 'circle',
                         circle : {
                             center : {
@@ -85,7 +85,7 @@
                             radius: parseInt(layer._mRadius),
                         }
                     };
-                    
+                    $scope.$apply();
                 }
 
 
@@ -117,7 +117,7 @@
                 var circle = L.circle(e.latlng, $scope.defaultLocationRadius).addTo(map.drawnItems);
 
 
-                $rootScope.data.global.locationFilters = {
+                $scope.data.global.locationFilters = {
                     enabled : 'neighborhood',
                     neighborhood : {
                         center : {
@@ -127,7 +127,7 @@
                         radius : $scope.defaultLocationRadius
                     }
                 };
-                
+                $scope.$apply();
 
                 if(window.leaflet.locationMarker) {
                     window.leaflet.map.removeLayer(window.leaflet.locationMarker);
@@ -171,7 +171,7 @@
 
         function filterAddress () {
             var geocoder = null;
-            var addressString = $rootScope.data.global.locationFilters.address.text + ', Brasil';
+            var addressString = $scope.data.global.locationFilters.address.text + ', Brasil';
 
             if (!google){
                 console.log('Mapas Culturais: Não foi possível acessar a API do Google Maps');
@@ -195,10 +195,10 @@
                     window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius)
                             .addTo(window.leaflet.map.drawnItems);
             
-                    $rootScope.data.global.locationFilters = {
+                    $scope.data.global.locationFilters = {
                         enabled : 'address',
                         address : {
-                            text : $rootScope.data.global.locationFilters.address.text,
+                            text : $scope.data.global.locationFilters.address.text,
                             center : {
                                 lat: location.lat(),
                                 lng: location.lng()
@@ -206,19 +206,19 @@
                             radius : $scope.defaultLocationRadius
                         }
                     };
-                    
+                    $scope.$apply();
 
                 }
             });
         };
 
-        $rootScope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
+        $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
             if(angular.isUndefined(newValue) || newValue == oldValue){
                 return;
             }
             //if(newValue === '' || newValue === oldValue) return;
             if(!newValue || !newValue.trim()) {
-                $rootScope.data.global.locationFilters.enabled = null;
+                $scope.data.global.locationFilters.enabled = null;
                 map.fitBounds($rootScope.resultLayer.getBounds());
                 return;
             }
