@@ -197,22 +197,43 @@ var hl;
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({ height: 'initial', maxHeight: 192});
         });
 
-        var hideSharetimeout;
-
+        // var hideSharetimeout;
+        //
         //Compartilhar URLs
-        $('#compartilhar a').hover(function() {
-            $('form#compartilhar-url').show()
-        }, function() {
-            clearTimeout(hideSharetimeout);
-            hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
-        });
+        // $('#compartilhar a').hover(function() {
+        //     $('form#compartilhar-url').show()
+        // }, function() {
+        //     clearTimeout(hideSharetimeout);
+        //     hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
+        // });
 
-        $('form#compartilhar-url').hover(function() {
-            clearTimeout(hideSharetimeout);
-        }, function() {
-            hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
-        });
+        // $('form#compartilhar-url').hover(function() {
+        //     clearTimeout(hideSharetimeout);
+        // }, function() {
+        //     hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
+        // });
 
+        $('#compartilhar a.social_share').click(function(){
+            if($('form#compartilhar-url').is(':hidden')){
+                $('form#compartilhar-url').show();
+                var $input = $('form#compartilhar-url input');
+                $input.on('focus click', function() { 
+                    window.setTimeout (function(){ 
+                       $input.select(); 
+                    },0);
+                }).focus();
+                //$input.focus();
+                event.stopPropagation();
+            }else{
+                $('form#compartilhar-url').hide();
+            }
+        });
+        $('html').on('click',function(event) {
+            //console.log($(event.target))
+            if(!$(event.target).parents('#compartilhar').length) {
+                $('form#compartilhar-url').hide();
+            }
+        });        
 
         //Scroll da Home ////////////////////////////////////////////////////
 

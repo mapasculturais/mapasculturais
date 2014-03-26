@@ -210,8 +210,16 @@
             <!--#filtros-selecionados-->
             <div id="ferramentas">
                 <div id="compartilhar">
-                    <a class="botao-de-icone icone social_share" href="#"></a>
-                    <form id="compartilhar-url"><div class="setinha"></div><label for="url-da-busca">Compartilhar esse resultado: </label><input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" /><a href="#" class="icone social_twitter"></a><a href="#" class="icone social_facebook"></a><a href="#" class="icone social_googleplus"></a></form>
+                    <a class="botao-de-icone icone social_share"></a>
+                    <form id="compartilhar-url">
+                        <div class="setinha"></div>
+                        <label for="url-da-busca">Compartilhar esse resultado: </label>
+                        <input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" />
+                        <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icone social_twitter"></a>
+                        <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_facebook"></a>
+                        <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_googleplus"></a>
+                        <span class="info">Você também pode copiar o endereço do seu navegador</span>
+                    </form>
                 </div>
                 <div id="views" class="clearfix">
                     <a class="hltip botao-de-icone icone icon_menu-square_alt" ng-click="switchView('list')" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
