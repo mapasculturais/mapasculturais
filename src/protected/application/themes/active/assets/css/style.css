@@ -548,7 +548,8 @@ body.editable #main-section { margin-top: 136px; }
 #compartilhar-url .setinha { right: 28px; top: -16px; border-color: transparent transparent #fff transparent; }
 #compartilhar-url .icone { width: 1.5rem; height: 1.5rem; margin-left: .75rem; font-size: 1.5rem; }
 #compartilhar-url .icone:hover { color: #000; }
-#url-da-busca { width: 70%; margin-bottom: 0; }
+#compartilhar-url .info {font-weight: normal; font-size: .7rem; color: #666;}
+#url-da-busca { width: 70%; margin-bottom: 0; border:1px solid #ccc; cursor:default; }
 #views { float: left; width: auto; margin-left: .75rem; padding-left:.75rem; border-left: 2px solid #d3d3d3; }
 /* header do objeto*/
 .header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem 3rem .5625rem .5625rem; background: #fff; }
