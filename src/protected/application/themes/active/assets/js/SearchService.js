@@ -19,6 +19,10 @@
                         params: '',
                         result: []
                     },
+                    project: {
+                        params: '',
+                        result: []
+                    }
                 },
                 map:{
                     agent: {
@@ -43,6 +47,10 @@
                     num: 0
                 },
                 eventCount: {
+                    params: '',
+                    num: 0
+                },
+                projectCount: {
                     params: '',
                     num: 0
                 }

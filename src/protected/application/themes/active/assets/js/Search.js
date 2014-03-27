@@ -1,8 +1,10 @@
 (function(angular){
     "use strict";
-    
+
+    window.apply = null;
+
     var defaultLocationRadius = 2000;
-    
+
     var skeletonData = {
         global: {
             isVerified: false,
@@ -72,6 +74,12 @@
             to: null,
             classificacaoEtaria: [],
             isVerified: false
+        },
+        project: {
+            keyword: '',
+            linguagens: [],
+            types: [],
+            isVerified: false
         }
     };
 
@@ -128,14 +136,14 @@
     var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService){
-        
         $scope.defaultLocationRadius = defaultLocationRadius;
-        
+
         $rootScope.resetPagination = function(){
             $rootScope.pagination = {
                 agent: 1,
                 space: 1,
-                event: 1
+                event: 1,
+                project: 1
             };
         }
         $rootScope.resetPagination();
@@ -208,6 +216,9 @@
         $scope.tabClick = function(entity){
             var g = $scope.data.global;
             g.filterEntity = entity;
+            if(entity === 'project')
+                g.viewMode = 'list';
+
             if(g.viewMode === 'map'){
                 var n = 0;
                 for(var e in g.enabled)
@@ -278,26 +289,28 @@
 
         $scope.$watch('data', $scope.dataChange, true);
 
-
         $scope.agents = [];
         $scope.spaces = [];
         $scope.events = [];
+        $scope.projects = [];
 
 
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
                 return;
-            
+
             $rootScope.isPaginating = false;
-            
+
             if(results.paginating){
                 $scope.agents = $scope.agents.concat(results.agent ? results.agent : []);
                 $scope.events = $scope.events.concat(results.event ? results.event : []);
                 $scope.spaces = $scope.spaces.concat(results.space ? results.space : []);
+                $scope.projects = $scope.projects.concat(results.project ? results.project : []);
             }else{
                 $scope.agents = results.agent ? results.agent : [];
                 $scope.events = results.event ? results.event : [];
                 $scope.spaces = results.space ? results.space : [];
+                $scope.projects = results.project ? results.project : [];
             }
         });
 
@@ -306,10 +319,10 @@
         $scope.addMore = function(entity){
             if($scope.data.global.viewMode !== 'list')
                 return;
-            
+
             if(entity !== $scope.data.global.filterEntity)
                 return;
-            
+
             if($rootScope.isPaginating)
                 return;
             $rootScope.pagination[entity]++;
@@ -320,11 +333,13 @@
         $scope.numAgents = 0;
         $scope.numSpaces = 0;
         $scope.numEvents = 0;
+        $scope.numProjects = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
             $scope.numEvents = parseInt(results.event);
+            $scope.numProjects = parseInt(results.project);
         });
 
         $rootScope.$on('findOneResultReady', function(ev, result){

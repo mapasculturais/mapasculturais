@@ -1,5 +1,45 @@
 <div id="busca" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <div id="busca-avancada" class="clearfix">
+
+        <div id="filtro-projetos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'project'">
+            <form class="form-palavra-chave filtro">
+                <label for="palavra-chave-evento">Palavra-chave</label>
+                <input ng-model="data.project.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
+            </form>
+            <!--#busca-->
+            <div class="filtro">
+                <span class="label">Tipo</span>
+                <div class="dropdown">
+                    <div class="placeholder">Selecione os tipos</div>
+                    <div class="submenu-dropdown">
+                        <ul class="lista-de-filtro">
+                            <li ng-repeat="type in types.project" ng-class="{'selected':isSelected(data.project.types, type.id)}" ng-click="toggleSelection(data.project.types, type.id)">
+                                <span>{{type.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--.filtro-->
+            <div class="filtro">
+                <span class="icone icon_check"></span><span id="label-das-inscricoes" class="label">Inscrições Abertas</span>
+            </div>
+            <!--.filtro-->
+            <form id="form-agente" class="filtro">
+                <label for="nome-do-agente">Agente</label>
+                <input class="autocomplete" name="nome-do-agente" type="text" placeholder="Agente" />
+                <a class="botao principal" href="#">Listar agentes</a>
+            </form>
+            <!-- #form-projeto-->
+            <form id="form-espaco" class="filtro">
+                <label for="nome-do-espaco">Espaço</label>
+                <input class="autocomplete" name="nome-do-espaco" type="text" placeholder="Espaço" />
+                <a class="botao principal" href="#">Listar espaços</a>
+            </form>
+            <!-- #form-projeto-->
+        </div>
+        <!--#filtro-projetos-->
+
         <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'event'">
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
@@ -140,7 +180,8 @@
                 <span ng-if="!spinnerCount">
                     <span ng-if="numAgents">{{numAgents}} agentes</span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
                     <span ng-if="numSpaces">{{numSpaces}} espaços</span><span ng-if="numSpaces && numEvents">,</span>
-                    <span ng-if="numEvents">{{numEvents}} eventos</span>
+                    <span ng-if="numEvents">{{numEvents}} eventos</span><span ng-if="(numAgents || numSpaces) && numEvents">,</span>
+                    <span ng-if="numProjects">{{numProjects}} projetos</span>
                 </span>
 
                 <span ng-show="spinnerCount > 0" style="display:inline">
@@ -173,7 +214,7 @@
                             </span>
                         </small>
                     </span>
-                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('space'))">Nenhum resultado encontrado</span>
+                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('project')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
                 </span>
             </div>
             <!--#resultados-->
@@ -181,11 +222,14 @@
                 <a class="tag tag-evento" ng-if="showFilters('event') && data.event.keyword !== ''" ng-click="data.event.keyword = ''">{{ data.event.keyword}}</a>
                 <a class="tag tag-agente" ng-if="showFilters('agent') && data.agent.keyword !== ''" ng-click="data.agent.keyword = ''">{{ data.agent.keyword}}</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space') && data.space.keyword !== ''" ng-click="data.space.keyword = ''">{{ data.space.keyword}}</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project') && data.project.keyword !== ''" ng-click="data.project.keyword = ''">{{ data.project.keyword}}</a>
 
                 <a class="tag tag-agente" ng-if="showFilters('agent') && data.agent.type !== null" ng-click="data.agent.type = null">{{ getName(types.agent, data.agent.type)}}</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space')" ng-repeat="typeId in data.space.types" ng-click="toggleSelection(data.space.types, typeId)">{{ getName(types.space, typeId)}}</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project')" ng-repeat="typeId in data.project.types" ng-click="toggleSelection(data.project.types, typeId)">{{ getName(types.project, typeId)}}</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event')" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project')" ng-repeat="linguagemId in data.project.linguagens" ng-click="toggleSelection(data.project.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
 
                 <a class="tag tag-agente" ng-if="showFilters('agent')" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space')" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
@@ -198,6 +242,7 @@
                 <a class="tag tag-evento" ng-if="showFilters('event') && data.event.isVerified" ng-click="toggleVerified('event')">SMC</a>
                 <a class="tag tag-agente" ng-if="showFilters('agent') && data.agent.isVerified" ng-click="toggleVerified('agent')">SMC</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space') && data.space.isVerified" ng-click="toggleVerified('space')">SMC</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project') && data.space.isVerified" ng-click="toggleVerified('project')">SMC</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
 
@@ -221,7 +266,7 @@
                         <span class="info">Você também pode copiar o endereço do seu navegador</span>
                     </form>
                 </div>
-                <div id="views" class="clearfix">
+                <div id="views" class="clearfix" ng-if="!showFilters('project')">
                     <a class="hltip botao-de-icone icone icon_menu-square_alt" ng-click="switchView('list')" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
                     <a class="hltip botao-de-icone icone icon_map"  ng-click="switchView('map')"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
                 </div>
