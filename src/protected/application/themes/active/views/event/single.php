@@ -81,9 +81,7 @@ add_occurrence_frequencies_to_js();
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <div class="barra-esquerda barra-lateral evento">
 	<div class="setinha"></div>
-    <div class="bloco">
-		<a class="oficial" href="#">Evento da Prefeitura</a>
-    </div>
+    <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         <?php if(is_editable()): ?>
         <div class="bloco">
