@@ -22,7 +22,7 @@
                 $scope.map.on('load', function(){
                     $scope.setMapView();
                 });
-                
+
                 $scope.map.on('drag zoomstart', function(){
                     $window.$timout.cancel($window.dataTimeout);
                 });
@@ -55,7 +55,7 @@
                     }
                 }
             });
-            
+
             $rootScope.$on('searchResultsReady', function(ev, results){
                 delete $scope.markers;
                 $scope.markers = [];
@@ -181,7 +181,7 @@
 
             $scope.resultLayer.addTo($scope.map);
             $rootScope.resultLayer = $scope.resultLayer;
-            
+
             $scope.resultLayer.on('clusterclick', function (a) {
                 if(a.layer._childCount <= 6)
                     a.layer.spiderfy();

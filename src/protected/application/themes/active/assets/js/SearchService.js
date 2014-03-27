@@ -59,7 +59,7 @@
             list: {},
             map: {}
         };
-        
+
         function search (ev, data){
             var results = {},
                 numRequests = 0,
@@ -79,11 +79,11 @@
                 $rootScope.spinnerCount -= activeRequests;
                 activeRequests = 0;
             }
-            
+
             if(data.global.viewMode === 'list'){
                 $rootScope.isPaginating = true;
             }
-            
+
             canceler = $q.defer();
 
             if(data.global.viewMode === 'map'){
@@ -112,7 +112,7 @@
                     requestEntity = entity === 'event' ? 'space' : entity,
                     requestAction = entity === 'event' ? 'findByEvents' : 'find';
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
-                    
+
                 if(apiCache[entity + 'Count'].params === apiCountParams){
                     countResults[entity] = apiCache[entity + 'Count'].num;
 
@@ -152,7 +152,7 @@
                         endRequest();
                     });
 
-                    
+
                 }
             }
 
