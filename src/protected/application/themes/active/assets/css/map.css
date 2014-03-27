@@ -1,6 +1,6 @@
 #map { width: 100%; height: 100%; }
-.leaflet-container { font: 1rem/1.5rem "Open Sans", Arial, Helvetica, sans-serif; }
-.leaflet-container a { color: #fff; }
+#camadas-de-entidades { font: 1rem/1.5rem "Open Sans", Arial, Helvetica, sans-serif; }
+#camadas-de-entidades a { color: #fff; }
 /*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top, .leaflet-bottom { z-index: 122; }
 
