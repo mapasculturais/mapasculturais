@@ -1,7 +1,7 @@
 (function(angular) {
     var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
-        
+
         var map = null;
 
         angular.element(document).ready(function() {
@@ -10,7 +10,7 @@
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
             window.leaflet.map.drawnItems = drawnItems;
-            
+
 
             if($scope.data.global.locationFilters.enabled){
                 var lf = $scope.data.global.locationFilters;
@@ -18,10 +18,10 @@
                     new L.LatLng(lf[lf.enabled].center.lat, lf[lf.enabled].center.lng),
                     lf[lf.enabled].radius
                 ).addTo(map.drawnItems));
-                
+
                 if($scope.data.global.locationFilters.enabled == 'address'){
                     filterAddress ();
-                }        
+                }
             }
 
 
@@ -60,9 +60,9 @@
                     rectangle: false,
                     marker: false,
                     polyline: false,
-                    circleasd: {
+                    circle: {
                         shapeOptions: {
-                            color: '#662d91',
+                            color: '#f90',
                         }
                     }
                 },
@@ -107,6 +107,7 @@
 
 
             map.on('locationfound', function(e) {
+                $window.$timout.cancel($window.dataTimeout);
                 var radius = e.accuracy / 2,
                     neighborhoodRadius = $scope.defaultLocationRadius;
 
@@ -181,12 +182,12 @@
             }
             geocoder.geocode({'address': addressString}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    
+                    $window.$timout.cancel($window.dataTimeout);
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
-                    
+
                     window.leaflet.map.setView(foundLocation, 13);
-                    
+
                     if(window.leaflet.locationMarker) {
                         window.leaflet.map.removeLayer(window.leaflet.locationMarker);
                         window.leaflet.map.removeLayer(window.leaflet.locationCircle);
@@ -194,7 +195,7 @@
                     window.leaflet.locationMarker = new L.marker(foundLocation, $window.leaflet.iconOptions['location']).addTo(window.leaflet.map);
                     window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius)
                             .addTo(window.leaflet.map.drawnItems);
-            
+
                     $scope.data.global.locationFilters = {
                         enabled : 'address',
                         address : {
@@ -213,19 +214,25 @@
         };
 
         $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
-            if(angular.isUndefined(newValue) || newValue == oldValue){
+            console.log('new value type', typeof newValue, newValue);
+            console.log('odl value type', typeof oldValue, oldValue);
+            if(!newValue && !oldValue || newValue == oldValue){
                 return;
             }
+            console.log('depois new value type', typeof newValue, newValue);
+            console.log('depois old value type', typeof oldValue, oldValue);
             //if(newValue === '' || newValue === oldValue) return;
             if(!newValue || !newValue.trim()) {
                 $scope.data.global.locationFilters.enabled = null;
-                map.fitBounds($rootScope.resultLayer.getBounds());
+                console.log('BOUNDS',$rootScope.resultLayer.getBounds());
+                if($rootScope.resultLayer.getBounds()._northEast)
+                    map.fitBounds($rootScope.resultLayer.getBounds());
                 return;
             }
             $timeout.cancel($scope.timer2);
             $scope.timer2 = $timeout(function() {
                 filterAddress();
-            }, 500);
+            }, 1000);
         });
 
     }]);

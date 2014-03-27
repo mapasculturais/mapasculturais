@@ -12,6 +12,7 @@
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $baseURL?>',
+            vectorLayersURL : "<?php echo $baseURL.$app->config['vectorLayersPath']; ?>",
             assetURL: '<?php echo $assetURL?>',
             request: {
                 controller: '<?php if($this->controller) echo $this->controller->id?>',

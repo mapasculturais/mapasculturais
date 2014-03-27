@@ -334,7 +334,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
 
             var subprefs = new lvector.PRWSF({
-                url: "http://mapasculturais.local/geojson",
+                url: MapasCulturais.vectorLayersURL,
                 geotable: '"sp_subprefeitura"',
                 fields: "gid,nome",
                 //where: 'true',
@@ -343,16 +343,18 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 srid: 4326,
                 showAll: true,
                 mouseoverEvent: function(feature, event) {
-                    feature.vectors[0].bindLabel('<b style="text-transform: capitalize;">' + feature.properties.nome.toLowerCase() + '</b>');
+                    var labelText = feature.properties.nome ? feature.properties.nome : feature.properties.nome_distr;
+                    feature.vectors[0].bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
+                    map.showLabel(feature.vectors[0].label.setLatLng(feature.vectors[0].getCenter()));
                 },
                 singlePopup: true,
                 symbology: {
                     type: "single",
                     vectorOptions: {
-                        fillColor: "#FF20D9",
+                        fillColor: "rgba(255,255,0,0.8)",
                         fillOpacity: 0.2,
                         weight: 1.0,
-                        color: "#FF20D9",
+                        color: "rgba(255,255,0,0.8)",
                         opacity: 1
                             //clickable: true
                     }
@@ -460,30 +462,51 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 };
             }
 
-
-
-            var controleVetoresTeste = {};
-
+            var regioes = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+            var subprefeituras = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+            var distritos = {onAdd:function(map){return;}, onRemove:function(map){return;}};
 
             /*Controles*/
             (new L.Control.FullScreen({position: 'bottomright', title: 'Tela Cheia'})).addTo(map);
             (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
-            (new L.Control.Layers(camadasBase, {controleVetoresTeste: 'asd'})).addTo(map);
-
-
-
-            $('.leaflet-control-layers-overlays').on('click', function(event) {
-                event.preventDefault();
-                $checkbox = $('.leaflet-control-layers-overlays input'); //tá dando pau, tem que fabricar outro controle de toggle
-                if ($checkbox.attr('checked')) {
-                    subprefs.setMap(null);
-                    $checkbox.removeAttr('checked');
-                } else {
-                    subprefs.setMap(map);
-                    $checkbox.attr('checked', true);
+            var layersControl = new L.Control.Layers(
+                camadasBase,
+                {
+                    '<span class="js-sp-geo" data-geot="regiao" data-fds="gid,nome">Regiões</span>': regioes,
+                    '<span class="js-sp-geo" data-geot="subprefeitura" data-fds="gid,nome">Subprefeituras</span>': subprefeituras,
+                    '<span class="js-sp-geo" data-geot="distrito" data-fds="gid,nome_distr">Distritos</span>': distritos
                 }
+            );
+            layersControl.addTo(map)
+
+
+
+            $('.js-sp-geo').each(function(){
+                var $checkbox = $(this).parents('label').find('input:checkbox');
+                //$checkbox.prop('type', 'radio');
+                //$checkbox.prop('name', 'geo');
+                //$checkbox.val($(this).data('geot'));
+                $(this).on('click', function(event) {
+                    event.preventDefault();
+                    $('.js-sp-geo').not(this).each(function(){
+                        $(this).parents('label').find('input:checkbox').prop('checked', false);
+                    });
+                    subprefs.setMap(null);
+                    //$checkbox = $(this).parents('label').find('input'); //tá dando pau, tem que fabricar outro controle de toggle
+                    if ($checkbox.prop('checked')) {
+                        $checkbox.prop('checked', false);
+                    } else {
+                        subprefs.options.geotable = '"sp_'+$(this).data('geot')+'"';
+                        subprefs.options.fields = $(this).data('fds');
+                        subprefs.setMap(map);
+                        $checkbox.prop('checked', true);
+                    }
+                });
             });
-            $('.leaflet-control-layers-overlays span').html(' Mostrar Subprefeituras');
+
+
+
+
 
             if (initializerOptions.exportToGlobalScope) {
                 window.leaflet.map = map;
@@ -497,14 +520,14 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
         $('.js-leaflet-control').each(function(){
             var $control = $(this);
             $control.addClass('leaflet-control');
-            $control.on('click dblclick mousedown', function(e){
-                e.stopPropagation();
-            });
             $('.leaflet-control-container').each(function(){
                 $(this).find($control.data('leaflet-target')).append($control);
             });
         });
 
+        $('#endereco').on('click dblclick mousedown', function(e){
+            e.stopPropagation();
+        });
 
         //Exemplo de como passar um hipertexto para o innerHTML de um controle
         // $('#filtro-local').hide();

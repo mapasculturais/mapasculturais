@@ -7,6 +7,8 @@ return array(
     // sempre colocar a barra no final da url
     'base.url' => 'http://'.(array_key_exists('SERVER_NAME' , $_SERVER) ? ($_SERVER['SERVER_NAME'].dirname($_SERVER['SCRIPT_NAME']) ) : 'mapasculturais.local'),
 
+    'vectorLayersPath' => 'geojson',
+
     // development, staging, production
     'app.mode' => 'staging',
 
