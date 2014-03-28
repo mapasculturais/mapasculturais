@@ -67,6 +67,7 @@
             });
 
             $rootScope.$on('searchDataChange', function(ev, data){
+                if(!$scope.map) return;
                 $scope.map.invalidateSize();
                 $scope.setMapView();
             });
