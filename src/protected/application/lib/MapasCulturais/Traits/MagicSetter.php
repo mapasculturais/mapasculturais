@@ -24,6 +24,8 @@ trait MagicSetter{
             $this->$name = $value;
             return true;
 
+        }else if($this->usesMetadata()){
+            return $this->__metadata__set($name, $value);
         }
     }
 

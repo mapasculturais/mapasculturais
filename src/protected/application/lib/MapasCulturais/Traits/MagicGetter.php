@@ -17,14 +17,18 @@ trait MagicGetter{
 
         if(method_exists($this, 'get' . $name)){
             $getter = 'get' . $name;
-
             $result = $this->$getter();
-
             return $result;
+
         }else if($name[0] !== '_' && property_exists($this, $name)){
             return $this->$name;
+
+        }else if($this->usesMetadata()){
+            return $this->__metadata__get($name);
+
         }else{
             return null;
+            
         }
     }
 

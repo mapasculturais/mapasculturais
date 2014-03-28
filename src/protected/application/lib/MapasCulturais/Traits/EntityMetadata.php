@@ -62,16 +62,13 @@ trait EntityMetadata{
      *
      * @return mixed The metadata value.
      */
-    function __get($name){
+    function __metadata__get($name){
         $this->_initMetadataArrays();
 
         if($this->getRegisteredMetadata($name)){
-            $result = $this->getMetadata($name);
-        }else{
-            $result = $this->_magic_getter($name);
+            return $this->getMetadata($name);
         }
 
-        return $result;
     }
 
 
@@ -79,13 +76,13 @@ trait EntityMetadata{
      * This magic setter sets the metadata value if the property name is a key of some metadata, or pass to MagicSetter trait
      * otherwise.
      */
-    function __set($name, $value){
+    function __metadata__set($name, $value){
         $this->_initMetadataArrays();
 
-        if($this->getRegisteredMetadata($name))
+        if($this->getRegisteredMetadata($name)){
             $this->setMetadata($name, $value);
-        else
-            $this->_magic_setter($name, $value);
+            return true;
+        }
     }
 
     /**
