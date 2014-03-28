@@ -217,7 +217,6 @@ add_map_assets();
             $date_to = new DateTime('+180 days');
             $events = !$entity->id ? array() : $app->repo('Event')->findBySpace($entity, $date_from, $date_to);
             ?>
-            <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create')?>">adicionar evento</a>
 
             <?php foreach($events as $event): ?>
                 <article class="objeto evento clearfix">
