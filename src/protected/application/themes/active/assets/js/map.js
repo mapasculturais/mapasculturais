@@ -484,12 +484,10 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             $('.js-sp-geo').each(function(){
                 var $checkbox = $(this).parents('label').find('input:checkbox');
-                //$checkbox.prop('type', 'radio');
-                //$checkbox.prop('name', 'geo');
-                //$checkbox.val($(this).data('geot'));
+                var geotable = $(this).data('geot');
                 $(this).on('click', function(event) {
                     event.preventDefault();
-                    $('.js-sp-geo').not(this).each(function(){
+                    $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
                         $(this).parents('label').find('input:checkbox').prop('checked', false);
                     });
                     subprefs.setMap(null);
