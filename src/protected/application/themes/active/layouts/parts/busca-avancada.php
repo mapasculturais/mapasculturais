@@ -214,7 +214,7 @@
                             </span>
                         </small>
                     </span>
-                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('project')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
                 </span>
             </div>
             <!--#resultados-->
