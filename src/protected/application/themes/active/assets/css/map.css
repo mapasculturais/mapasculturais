@@ -52,12 +52,24 @@
 .leaflet-cluster.cluster-space.cluster-agent { background-image: url("../img/agrupador-combinado.png"); }
 .leaflet-cluster { font-size: 9px; text-indent: -1px; width: 36px !important; height: 42px !important; line-height: 35px; text-align: center; color: #000; background-size: 36px 42px; background-repeat: no-repeat; }
 
-/*svgs das subprefeituras e localização aproximada*/
-FORA.leaflet-container g path { stroke: #f90; fill-opacity:0.25; fill: #f90; stroke-opacity: 0.4; stroke-width: 2px; }
-FORA.leaflet-container g path:hover{fill-opacity:0.15; stroke-opacity: .4;  stroke-width: 5px; cursor: default;}
 
-/*não sei o que são todos os estilos abaixo, precisamos conferir se são mesmo usados*/
+.vetorial-padrao { stroke: #f90; fill-opacity:0.25; fill: #f90; stroke-opacity: 0.4; stroke-width: 2px; }
+.vetorial-padrao:hover{fill-opacity:0.15; stroke-opacity: .4;  stroke-width: 5px; cursor: default;}
+
+.vetorial-sp { stroke: #F33; fill-opacity:0.25; fill: #F99; stroke-opacity: 0.4; stroke-width: 2px; }
+.vetorial-sp:hover{fill-opacity:0.15; stroke-opacity: .4; cursor: default;}
+
+
 
 .marker-circle-icon { border-radius: 50%; background-color: rgba(0,0,255, 0.0); border: 1px dotted rgba(0,0,255, 0.0); }
 .subpref-content { text-transform: capitalize; }
 
+body.infobox-open #filtro-local {
+	left: 320px;
+}
+body.infobox-open .leaflet-draw {
+	margin-left: 731px !important;
+}
+#filtro-local, .leaflet-draw, body.infobox-open #filtro-local, body.infobox-open .leaflet-draw {
+	transition: all .3s;
+}
