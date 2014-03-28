@@ -13,6 +13,8 @@
     </div>
     <div>
         <a class="action" href="<?php echo $entity->editUrl; ?>">editar</a>
-        <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        <?php if(!$entity->isUserProfile): ?>
+            <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        <?php endif; ?>
     </div>
 </article>
