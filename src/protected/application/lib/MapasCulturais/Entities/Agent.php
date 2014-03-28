@@ -220,6 +220,14 @@ class Agent extends \MapasCulturais\Entity
             return $this->genericPermissionVerification($user);
     }
 
+    protected function canUserRemove($user){
+        
+        if($this->isUserProfile)
+            return false;
+        else
+            return parent::canUserRemove($user);
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
