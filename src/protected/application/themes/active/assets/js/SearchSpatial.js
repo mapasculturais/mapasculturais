@@ -6,6 +6,7 @@
 
         angular.element(document).ready(function() {
             map = window.leaflet.map;
+            if(!map) return;
             map.invalidateSize();
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
