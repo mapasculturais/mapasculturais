@@ -286,7 +286,7 @@ h1 .icone { width: 2rem; height: 2rem; margin-right: .75rem; font-size: 2rem; li
 .social_googleplus { color: #dd4b39 !important; }
 .screen-reader, .escondido { display: none; }
 /* Date picker*/
-input.data { width: 75px; }
+input.data { width:76px; }
 .ui-datepicker { display: none; border: 1px solid #ccc; background: #eee; box-shadow: 0 1px 2px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
 .ui-datepicker .ui-datepicker-header { padding: 0 .5rem; line-height: 2.5rem; background: #e2e2e2; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { display: block; width: 24px; height: 24px; font-size: 32px; cursor: pointer; }

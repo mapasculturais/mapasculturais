@@ -1,13 +1,13 @@
 <?php
 
 error_reporting(E_ALL);
-init_set('display_errors', 1);
+ini_set('display_errors', 1);
 
 $config = include 'conf-base.php';
 
 return array_merge($config,
     array(
-        'base.url' => 'http://localhost:8000/',
+        'base.url' => 'http://mapasculturais.local/',
         // development, staging, production
         'app.mode' => 'development',
         'app.fakeAuthentication' => true

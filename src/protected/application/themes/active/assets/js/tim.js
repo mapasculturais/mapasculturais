@@ -42,7 +42,7 @@ var hl;
 //                $busca.css({position: 'fixed', top: buscaTop, zIndex: 123});
 
 
-                //$('#lista').css('margin-top', headerHeight + headerDosResultadosHeight);
+                $('#lista').css('margin-top', headerHeight + headerDosResultadosHeight);
 
                 if($mapa.is(':visible')){
                     $busca.addClass('sombra');
@@ -60,6 +60,7 @@ var hl;
                     $busca.removeClass('sombra');
                 else
                     $busca.addClass('sombra');
+
 
                 $('body').css('min-height', $(window).height() + headerHeight - headerDosResultadosHeight - 30);
 
@@ -234,17 +235,17 @@ var hl;
                 $('form#compartilhar-url').hide();
             }
         });
-        
+
         //Botão de busca da home
         $('#filtro-da-capa .submenu-dropdown li').click(function(){
-            var url_template = $(this).data('searh-url-template') ? 
+            var url_template = $(this).data('searh-url-template') ?
                         $(this).data('searh-url-template') : $("#filtro-da-capa").data('searh-url-template');
-            
+
             var params = {
                 entity: $(this).data('entity'),
                 keyword: $('#campo-de-busca').val()
             };
-            
+
             document.location = Mustache.render(url_template, params);
         });
 

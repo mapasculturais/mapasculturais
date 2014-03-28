@@ -215,17 +215,12 @@
         };
 
         $scope.$watch('data.global.locationFilters.address.text', function(newValue, oldValue){
-            console.log('new value type', typeof newValue, newValue);
-            console.log('odl value type', typeof oldValue, oldValue);
             if(!newValue && !oldValue || newValue == oldValue){
                 return;
             }
-            console.log('depois new value type', typeof newValue, newValue);
-            console.log('depois old value type', typeof oldValue, oldValue);
             //if(newValue === '' || newValue === oldValue) return;
             if(!newValue || !newValue.trim()) {
                 $scope.data.global.locationFilters.enabled = null;
-                console.log('BOUNDS',$rootScope.resultLayer.getBounds());
                 if($rootScope.resultLayer.getBounds()._northEast)
                     map.fitBounds($rootScope.resultLayer.getBounds());
                 return;

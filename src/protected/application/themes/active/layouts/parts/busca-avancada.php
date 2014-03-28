@@ -215,7 +215,7 @@
                             </span>
                         </small>
                     </span>
-                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('project')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
                 </span>
             </div>
             <!--#resultados-->
@@ -260,8 +260,8 @@
                         <label for="url-da-busca">Compartilhar esse resultado: </label>
                         <input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" />
                         <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icone social_twitter"></a>
-                        <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_facebook"></a>
-                        <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_googleplus"></a>
+                        <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_facebook"></a>
+                        <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_googleplus"></a>
                         <span class="info">Você também pode copiar o endereço do seu navegador</span>
                     </form>
                 </div>

@@ -130,7 +130,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
     </div>
     <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div>
-    <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" style="margin-top:184px;">
+    <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'project'">
             <div class="clearfix">
                 <h1><span class="icone icon_document_alt"></span> Projetos</h1>
