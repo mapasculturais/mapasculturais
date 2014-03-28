@@ -714,11 +714,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             $result[] = "$final_dql";
 
-            $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL <<<<<<<<<<<<<<<<");
-            $app->log->debug($final_dql);
+            if(@$app->config['app.log.apiDql']){
+                $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL <<<<<<<<<<<<<<<<");
+                $app->log->debug($final_dql);
 
-            $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL PARAMS <<<<<<<<<<<<<<<<");
-//            $app->log->debug(print_r($this->_apiFindParamList,true));
+                $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL PARAMS <<<<<<<<<<<<<<<<");
+//              $app->log->debug(print_r($this->_apiFindParamList,true));
+            }
 
 
             if($page && $limit)
