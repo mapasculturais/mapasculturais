@@ -69,15 +69,12 @@
 
         </style>
     </head>
-    <body<?php if ($this->controller->action == 'search') echo ' ng-app="search" ng-controller="SearchController"'; ?> class="<?php
-    if ($this->controller)
-        echo "controller-{$this->controller->id} action-{$this->controller->action} ";
-    if (isset($entity))
-        echo 'entity ';
-    ?>">
-                                                                                                                           <?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
-            <!--sham-spinner text="Loading..."></sham-spinner-->
+    <body <?php if ($this->controller->action == 'search') echo 'ng-app="search" ng-controller="SearchController"'; ?>
+	    class="<?php if ($this->controller) echo "controller-{$this->controller->id} action-{$this->controller->action} ";
+	    	if (isset($entity)) echo 'entity ';?>
+	    " ng-class="{'infobox-open': data.global.openEntity.id>0 && data.global.viewMode==='map'}">
 
+		<?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
             <!--facebook compartilhar-->
             <div id="fb-root"></div>
             <script>(function(d, s, id) {
@@ -91,7 +88,9 @@
                 }(document, 'script', 'facebook-jssdk'));</script>
             <!--fim do facebook-->
         <?php endif; ?>
+
         <?php $app->applyHook('mapasculturais.body:before'); ?>
+
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">

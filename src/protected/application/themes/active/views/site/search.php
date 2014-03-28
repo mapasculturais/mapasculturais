@@ -110,29 +110,6 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                 </div>
             </article>
         </div>
-        <!--
-        ABAIXO O HTML DOS EVENTOS!!!
-        O LOOP É IGUALZINHO AO LOOP DO RESULTADO DA BUSCA EM LISTA, PORÉM SEM O LOCAL, POIS ESTE JÁ VEM ANTES.
-        QUANDO FOR FAZER A PROGRAMAÇÃO FALAR COM A CÁTIA POIS PRECISO EXPLICAR E VAI PRECISAR ALTERAR O JS!!!!!!!
-        E DEPOIS DE PRONTO NÃO ESQUEÇA DE REMOVER ESSE COMENTÁRIO
-        <p class="espaco-dos-eventos">Eventos encontrados em:<br>
-        <a href="#">Nome do Espaço<br>
-        Rua Fulano de Tal, 200 - CEP 00000-000</a></p>
-        <article class="objeto evento clearfix">
-            <h1><a href="#">Nome do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <a href="#" class="js-single-url">
-                    <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarBig'].url||defaultImageURL}}">
-                </a>
-                <p class="objeto-resumo">descrição curta do evento</p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        -->
     </div>
     <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post">
@@ -142,7 +119,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <input type="hidden" name="lat" />
             <input type="hidden" name="lng" />
         </form>
-        <a id ="proximo-a-mim" class="hltip botoes-do-mapa" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
+        <a id ="proximo-a-mim" class="control-infobox-open hltip botoes-do-mapa" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->

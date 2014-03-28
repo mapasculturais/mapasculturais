@@ -61,3 +61,12 @@ FORA.leaflet-container g path:hover{fill-opacity:0.15; stroke-opacity: .4;  stro
 .marker-circle-icon { border-radius: 50%; background-color: rgba(0,0,255, 0.0); border: 1px dotted rgba(0,0,255, 0.0); }
 .subpref-content { text-transform: capitalize; }
 
+body.infobox-open #filtro-local {
+	left: 320px;
+}
+body.infobox-open .leaflet-draw {
+	margin-left: 731px !important;
+}
+#filtro-local, .leaflet-draw, body.infobox-open #filtro-local, body.infobox-open .leaflet-draw {
+	transition: all .3s;
+}
