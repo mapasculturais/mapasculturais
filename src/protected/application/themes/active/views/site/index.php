@@ -157,7 +157,7 @@ if($project)
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('event') ?>">Ver Todos Eventos</a>
+        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(enabled:(event:!t),filterEntity:event))">Ver Todos Eventos de Hoje</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
     </div>
 </article>
@@ -260,7 +260,7 @@ if($project)
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('space') ?>">Ver Todos Espaços</a>
+        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(enabled:(space:!t),filterEntity:space))">Ver Todos Espaços</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar Espaços</a>
     </div>
 </article>
@@ -312,7 +312,7 @@ if($project)
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('project') ?>">Ver Todos Projetos</a>
+        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(filterEntity:project,viewMode:list))">Ver Todos Projetos</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar Projetos</a>
     </div>
 </article>
