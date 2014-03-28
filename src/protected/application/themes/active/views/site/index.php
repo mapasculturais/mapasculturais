@@ -47,23 +47,23 @@ $project_types = $app->getRegisteredEntityTypes($class_project);
  */
 function findOneVerifiedEntityWithImages($entity_class){
     $app = \MapasCulturais\App::i();
-    
+
     $file_class = 'MapasCulturais\Entities\File';
-    
+
     $dql = "
      SELECT
         DISTINCT f.objectId as id
      FROM
         $file_class f
         JOIN $entity_class e WITH e.id = f.objectId
-     WHERE 
+     WHERE
         e.status > 0 AND
         e.isVerified = TRUE AND
         f.objectType = '$entity_class' AND
         f.group = 'gallery'
     ";
-    
-    
+
+
     $ids = $app->em->createQuery($dql)->getScalarResult();
     if($ids){
         $id = $ids[array_rand($ids)]['id'];
@@ -100,14 +100,14 @@ if($project)
         <p>O SP Cultura é a <a href="#capa-desenvolvedores">plataforma livre</a>, gratuita e colaborativa de mapeamento da cultura paulistana da Secretaria Municipal de Cultura de São Paulo onde você pode consultar <a href="#capa-eventos">agenda de eventos</a>, <a href="#capa-agentes">perfis de agentes culturais</a>, páginas com informações dos <a href="#capa-espacos">espaços culturais</a> ou dos <a href="#capa-projetos">projetos</a>, como editais em andamento.</p>
         <form id="form-de-busca-geral" class="clearfix">
             <input id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave" />
-            <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:{{keyword}}))">
+            <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
                 <div class="placeholder"><span class="icone icon_search"></span> Buscar</div>
                 <div class="submenu-dropdown">
                     <ul>
                         <li id="filtro-de-eventos"  data-entity="event"><span class="icone icon_calendar"></span> Eventos</li>
                         <li id="filtro-de-agentes"  data-entity="agent"><span class="icone icon_profile"></span> Agentes</li>
                         <li id="filtro-de-espacos"  data-entity="space"><span class="icone icon_building"></span> Espaços</li>
-                        <li id="filtro-de-projetos" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:{{keyword}}))"><span class="icone icon_document_alt"></span> Projetos</li>
+                        <li id="filtro-de-projetos" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icone icon_document_alt"></span> Projetos</li>
                     </ul>
                 </div>
             </div>
