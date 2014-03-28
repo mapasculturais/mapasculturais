@@ -4,12 +4,40 @@
         <meta charset="UTF-8" />
         <title>SP Cultura -
             <?php
-            echo isset($entity) ? $entity->getTitle() :
+            $title = isset($entity) ? $entity->getTitle() :
                     $app->getReadableName($this->controller->id) . ' - ' .
-                    $app->getReadableName($this->controller->action)
-            ;
+                    $app->getReadableName($this->controller->action);
+            echo $title;
             ?>
         </title>
+
+
+
+
+<!-- for Google -->
+<!-- <meta name="description" content="Mapas Culturais" />
+<meta name="keywords" content="Mapas Culturais" />
+
+<meta name="author" content="Mapas Culturais" />
+<meta name="copyright" content="" />
+<meta name="application-name" content="Mapas Culturais" />
+ -->
+<!-- for Facebook -->
+<!-- <meta property="og:title" content="<?php echo $title;?>" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="" />
+<meta property="og:url" content="" />
+<meta property="og:description" content="Mapas Culturais" />
+ -->
+<!-- for Twitter -->
+<!-- <meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="" />
+<meta name="twitter:description" content="Mapas Culturais" />
+<meta name="twitter:image" content="" />
+ -->
+
+
+
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <script type="text/javascript">
             var MapasCulturais = {

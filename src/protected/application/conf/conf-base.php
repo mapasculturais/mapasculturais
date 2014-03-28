@@ -153,6 +153,7 @@ return array(
                 'delete'    => 'Apagando',
                 'edit'      => 'Editando',
                 'create'    => 'Criando novo',
+                'search'    => 'Busca'
         )
     )
 );
