@@ -238,6 +238,13 @@
                 if(entityData.to)
                     searchData['@to'] = entityData.to;
 
+                // project registration is open?
+                if(entityData.ropen){
+                    searchData.registrationFrom = 'LTE(2014-03-28)';
+                    searchData.registrationTo   = 'GTE(2014-03-28)';
+                }
+
+
                 return searchData;
             }
 

@@ -22,7 +22,8 @@
             </div>
             <!--.filtro-->
             <div class="filtro">
-                <span class="icone icon_check"></span><span id="label-das-inscricoes" class="label">Inscrições Abertas</span>
+                <span class="icone icon_check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
+                <span class="label show-label">Inscrições Abertas</span>
             </div>
             <!--.filtro-->
             <form id="form-agente" class="filtro">
@@ -162,7 +163,7 @@
             <!--.filtro-->
             <div class="filtro">
                 <span class="icone icon_check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
-                <span id="label-da-acessibilidade" class="label">
+                <span class="label show-label">
                     Acessibilidade
                 </span>
             </div>
@@ -229,15 +230,13 @@
                 <a class="tag tag-projeto" ng-if="showFilters('project')" ng-repeat="typeId in data.project.types" ng-click="toggleSelection(data.project.types, typeId)">{{ getName(types.project, typeId)}}</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event')" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
-                <a class="tag tag-projeto" ng-if="showFilters('project')" ng-repeat="linguagemId in data.project.linguagens" ng-click="toggleSelection(data.project.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
 
                 <a class="tag tag-agente" ng-if="showFilters('agent')" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space')" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
 
                 <a class="tag tag-espaco" ng-if="showFilters('space') && data.space.acessibilidade" ng-click="data.space.acessibilidade = !data.space.acessibilidade">acessibilidade</a>
 
-
-                <a class="tag tag-espaco" ng-if="showFilters('event') && data.space.acessibilidade" ng-click="data.space.acessibilidade = false">Acessibilidade</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project') && data.project.ropen" ng-click="data.project.ropen = !data.project.ropen">inscrições abertas</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event') && data.event.isVerified" ng-click="toggleVerified('event')">SMC</a>
                 <a class="tag tag-agente" ng-if="showFilters('agent') && data.agent.isVerified" ng-click="toggleVerified('agent')">SMC</a>

@@ -514,7 +514,7 @@ body.editable #main-section { margin-top: 136px; }
 .filtro { float: left; box-sizing: border-box; -moz-box-sizing: border-box; width: 20%; padding: 0 .75rem; border-left: 1px dotted #000; line-height: 2rem; }
 .filtro:first-child { border: none; }
 .filtro .label, .filtro label { display: none; }
-#label-da-acessibilidade { display: inline; font-weight: normal; font-size: .75rem; }
+.filtro .show-label { display: inline; font-weight: normal; font-size: .75rem; }
 .filtro .tags { margin-bottom: 0; height: 144px; }
 .filtro .tag { margin-bottom: 0; }
 .filtro .dropdown { width: 100%; }

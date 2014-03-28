@@ -79,7 +79,9 @@
             keyword: '',
             linguagens: [],
             types: [],
-            isVerified: false
+            isVerified: false,
+            // registration open
+            ropen: false
         }
     };
 
