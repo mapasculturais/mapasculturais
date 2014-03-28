@@ -16,7 +16,8 @@
                 var lf = $scope.data.global.locationFilters;
                 (new L.Circle(
                     new L.LatLng(lf[lf.enabled].center.lat, lf[lf.enabled].center.lng),
-                    lf[lf.enabled].radius
+                    lf[lf.enabled].radius,
+                    {className : 'vetorial-padrao'}
                 ).addTo(map.drawnItems));
 
                 if($scope.data.global.locationFilters.enabled == 'address'){
@@ -62,7 +63,7 @@
                     polyline: false,
                     circle: {
                         shapeOptions: {
-                            color: '#f90',
+                            className : 'vetorial-padrao'
                         }
                     }
                 },
@@ -115,7 +116,7 @@
                     .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a href='#' onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
                     .openPopup();
 
-                var circle = L.circle(e.latlng, $scope.defaultLocationRadius).addTo(map.drawnItems);
+                var circle = L.circle(e.latlng, $scope.defaultLocationRadius, {className : 'vetorial-padrao'}).addTo(map.drawnItems);
 
 
                 $scope.data.global.locationFilters = {
@@ -193,7 +194,7 @@
                         window.leaflet.map.removeLayer(window.leaflet.locationCircle);
                     }
                     window.leaflet.locationMarker = new L.marker(foundLocation, $window.leaflet.iconOptions['location']).addTo(window.leaflet.map);
-                    window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius)
+                    window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius, {className : 'vetorial-padrao'})
                             .addTo(window.leaflet.map.drawnItems);
 
                     $scope.data.global.locationFilters = {

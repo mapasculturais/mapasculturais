@@ -351,12 +351,13 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 symbology: {
                     type: "single",
                     vectorOptions: {
-                        fillColor: "rgba(255,255,0,0.8)",
-                        fillOpacity: 0.2,
-                        weight: 1.0,
-                        color: "rgba(255,255,0,0.8)",
-                        opacity: 1
-                            //clickable: true
+                        // fillColor: "rgba(255,255,0,0.8)",
+                        // fillOpacity: 0.2,
+                        // weight: 1.0,
+                        // color: "rgba(255,255,0,0.8)",
+                        // opacity: 1
+                        //     //clickable: true
+                        className : 'vetorial-sp'
                     }
                 }
             });
