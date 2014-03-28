@@ -1,6 +1,6 @@
 <?php
-//die(var_dump($_SERVER));
-if (file_exists($_SERVER['SCRIPT_FILENAME']) && $_SERVER['SCRIPT_NAME'] != '/index.php') {
+
+if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRIPT_NAME'],-4)) !== '.php') {
     $filename = $_SERVER['SCRIPT_FILENAME'];
 
     $expires = 60 * 5;
@@ -22,8 +22,11 @@ if (file_exists($_SERVER['SCRIPT_FILENAME']) && $_SERVER['SCRIPT_NAME'] != '/ind
 
     echo file_get_contents($_SERVER['SCRIPT_FILENAME']);
     die;  // serve the requested resource as-is.
-} else {
+} else if($_SERVER['SCRIPT_NAME'] === '/index.php') {
     chdir($_SERVER['DOCUMENT_ROOT']);
     include_once 'index.php';
+}else{
+    return false;
 }
+
 
