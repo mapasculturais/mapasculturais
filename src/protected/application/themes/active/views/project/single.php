@@ -155,9 +155,9 @@ $ids = array_map(function($e){
                 <!-- a ideia é que clicando nesses 'a' abra o datepicker, por padrão a data inicial é hoje e a data final 6 meses a partir de hoje-->
             </p>
 
-            <a class="botao adicionar alignright" href="#">adicionar evento</a>
+            <!--a class="botao adicionar alignright" href="#">adicionar evento</a-->
         </header>
-        
+
 		<article class="objeto evento clearfix">
             <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
             <div class="objeto-content clearfix">

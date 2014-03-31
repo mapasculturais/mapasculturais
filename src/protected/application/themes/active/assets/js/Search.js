@@ -155,6 +155,10 @@
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
         };
 
+        $scope.getId = function(valores, name){
+            return valores.filter(function(e){if(e.name === name) return true;})[0].id;
+        };
+
         $scope.isSelected = function(array, id){
             return (array.indexOf(id) !== -1);
         };
@@ -277,7 +281,7 @@
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
         $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
-        MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
+        MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
         $scope.location = $location;
 
