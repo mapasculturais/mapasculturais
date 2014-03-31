@@ -173,19 +173,25 @@ var hl;
 			position: 'right',
 			distance: '0px',
 			color: '#000',
-			height: '144px'
+			height: '144px',
+            alwaysVisible: true,
+            railVisible: true
 		});
         $('.submenu-dropdown .lista-de-filtro').slimScroll({
 			position: 'right',
 			distance: '3px',
 			color: '#000',
-			height: '222px'
+			height: '222px',
+            alwaysVisible: true,
+            railVisible: true
 		});
 		$('.notificacoes .submenu ul').slimScroll({
 			position: 'right',
 			distance: '0px',
 			color: '#000',
-			height: '316px'
+			height: '316px',
+            alwaysVisible: true,
+            railVisible: true
 		});
         $('.js-slimScroll').each(function(){
             $(this).slimScroll({
