@@ -44,13 +44,13 @@ class Event extends EntityController {
         }
         parent::GET_create();
     }
-    
+
     function API_findBySpace(){
         if(!key_exists('spaceId', $this->data)){
             $this->errorJson('spaceId is required');
             return;
         }
-        
+
         $query_data = $this->getData;
 
         $spaceId = $query_data['spaceId'];
@@ -62,29 +62,29 @@ class Event extends EntityController {
             $query_data['@to'],
             $query_data['spaceId']
         );
-        
+
         $app = App::i();
         $space = $app->repo('Space')->find($spaceId);
-        
+
         if(!$space){
             $this->errorJson('space not found');
             return;
         }
-        
+
         $occurrences = array();
         $occurrences_readable = array();
-        
+
         $events = $app->repo('Event')->findBySpace($space, $date_from, $date_to);
-        
-        $event_ids = array_map(function($e) { 
-            return $e->id; 
-            
+
+        $event_ids = array_map(function($e) {
+            return $e->id;
+
         }, $events);
-        
+
         foreach($events as $e){
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
             $occurrences_readable[$e->id] = array();
-            
+
             foreach($occurrences[$e->id] as $occ){
                 $month = $app->txt($occ->startsOn->format('F'));
                 $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
@@ -92,27 +92,121 @@ class Event extends EntityController {
                     $occurrences_readable[$e->id][] = $str;
             }
         }
-        
+
         if($event_ids){
             $event_data = array('id' => 'IN(' . implode(',', $event_ids) .')');
-            
+
             foreach($query_data as $key => $val)
                 if($key[0] === '@' || $key == '_geoLocation')
                     $event_data[$key] = $val;
-            
+
             $result = $this->apiQuery($event_data);
-            
+
             if(is_array($result)){
                 foreach($result as $k => $e){
                     $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : array();
                     $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : array();
                 }
             }
-            
+
             $this->apiResponse($result);
         }else{
             $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
         }
     }
 
+
+    function API_findByLocation(){
+        $app = App::i();
+
+        $query_data = $this->getData;
+
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+
+        unset(
+            $query_data['@from'],
+            $query_data['@to']
+        );
+
+        if(key_exists('_geoLocation', $query_data)){
+            $space_controller = App::i()->controller('space');
+
+            $space_data = array(
+                '@select' => 'id',
+                '_geoLocation' => $this->data['_geoLocation']
+            );
+
+            $space_ids = array_map(
+                function($e){
+                    return $e['id'];
+
+                },
+                $space_controller->apiQuery($space_data)
+            );
+            $events = $this->repository->findBySpace($space_ids, $date_from, $date_to);
+
+            unset($query_data['_geoLocation']);
+        }else{
+            $events = $this->repository->findByDateInterval($date_from, $date_to);
+        }
+
+        $event_ids = array_map(function($e) {
+            return $e->id;
+        }, $events);
+
+        $result_occurrences = array();
+
+        foreach($events as $evt){
+            $e = array();
+
+            $e['spaces'] = array();
+            $e['occurrences'] = array();
+            $e['occurrencesReadable'] = array();
+
+            $occurrences = $evt->findOccurrences($date_from, $date_to);
+
+            foreach($occurrences as $occ){
+                $space_id = $occ->spaceId;
+
+                if(!key_exists($space_id, $e['spaces']))
+                    $e['spaces'][$space_id] = $app->repo('Space')->find($space_id);
+
+
+                if(!key_exists($space_id, $e['occurrences']))
+                    $e['occurrences'][$space_id] = array();
+
+                if(!key_exists($space_id, $e['occurrencesReadable']))
+                    $e['occurrencesReadable'][$space_id] = array();
+
+                $e['occurrences'][$space_id][] = $occ;
+
+                $month = $app->txt($occ->startsOn->format('F'));
+                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
+
+                if(!in_array($str, $e['occurrencesReadable'][$space_id]))
+                    $e['occurrencesReadable'][$space_id][] = $str;
+            }
+
+            $result_occurrences[$evt->id] = $e;
+        }
+
+        if($event_ids){
+            $query_data['id'] = 'IN(' . implode(',', $event_ids) .')';
+            // @TODO: verificar se o @select tem o id
+            $result = $this->apiQuery($query_data);
+
+
+            if(is_array($result)){
+                foreach($result as $k => $r){
+                    $result[$k] = array_merge($result_occurrences[$r['id']], $r);
+                }
+            }
+
+            $this->apiResponse($result);
+        }else{
+
+            $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
+        }
+    }
 }

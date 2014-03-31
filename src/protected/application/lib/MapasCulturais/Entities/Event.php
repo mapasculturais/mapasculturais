@@ -246,6 +246,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
+        $rsm->addFieldResult('e', 'space_id', 'spaceId');
 
         $dql_limit = $dql_offset = '';
 
@@ -258,7 +259,7 @@ class Event extends \MapasCulturais\Entity
         $strNativeQuery = "
             SELECT
                 nextval('occurrence_id_seq'::regclass) as id,
-                starts_on, until, starts_at, ends_at
+                starts_on, until, starts_at, ends_at, space_id
             FROM
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
                 WHERE eo.event_id = :event_id

@@ -1,12 +1,23 @@
 <?php
 namespace MapasCulturais\Entities\Repositories;
 
-use Doctrine\ORM\EntityRepository;
+class Event extends CachedRepository{
+
+    public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
+        if($space instanceof \MapasCulturais\Entities\Space)
+            $ids = $space->id;
+
+        elseif($space && is_array($space) && $space[0] instanceof \MapasCulturais\Entities\Space)
+            $ids = array_map(function($e){ return $e->id; }, $space);
+
+        elseif($space && is_array($space) && is_numeric ($space[0]))
+            $ids = $space;
+
+        else
+            $ids = '0';
 
 
-class Event extends EntityRepository{
 
-    public function findBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -40,7 +51,7 @@ class Event extends EntityRepository{
                 event e
             JOIN
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.event_id = e.id AND eo.space_id = :space_id
+                ON eo.event_id = e.id AND eo.space_id IN (:space_ids)
 
             $dql_limit $dql_offset
 
@@ -52,7 +63,7 @@ class Event extends EntityRepository{
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to,
-            'space_id' => $space->id
+            'space_ids' => $ids
         ));
 
         return $query->getResult();

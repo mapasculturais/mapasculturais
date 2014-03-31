@@ -50,7 +50,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         'space' => array(
             'required' => 'Espaço é obrigatório'
          )
-            
+
     );
 
     function validateFrequency($value) {
@@ -216,6 +216,13 @@ class EventOccurrence extends \MapasCulturais\Entity
     protected $space;
 
 
+    /**
+     * @var spaceId
+     *
+     * @ORM\Column(name="space_id", type="integer", nullable=false)
+     */
+    protected $spaceId;
+
     function getRecurrences() {
         if ($this->id) {
             return App::i()->repo('EventOccurrenceRecurrence')->findBy(['eventOccurrence'=> $this]);
@@ -328,6 +335,8 @@ class EventOccurrence extends \MapasCulturais\Entity
             'recurrences' => $this->getRecurrences(),
             'count' =>  $this->count,
             'until' =>  $this->until,
+            'spaceId' =>  $this->spaceId,
+
             'space' => $this->space ? array('id' => $this->space->id, 'name' => $this->space->name, 'singleUrl' => $this->space->singleUrl, 'shortDescription' => $this->space->shortDescription, 'avatar' => $this->space->avatar, 'location'=>$this->space->location) : null,
             'event' => $this->event ? array('id' => $this->event->id, 'name' => $this->event->name, 'shortDescription' => $this->event->shortDescription, 'avatar' => $this->space->avatar) : null,
             'editUrl' => $this->editUrl,

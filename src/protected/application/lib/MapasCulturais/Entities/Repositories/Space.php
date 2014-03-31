@@ -1,14 +1,11 @@
 <?php
 namespace MapasCulturais\Entities\Repositories;
 
-use Doctrine\ORM\EntityRepository;
-
-
-class Space extends EntityRepository{
+class Space extends CachedRepository{
     public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
             return array();
-        
+
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -61,4 +58,4 @@ class Space extends EntityRepository{
         return $query->getResult();
     }
 
-    }
+}

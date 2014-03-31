@@ -85,7 +85,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             </article>
         </article>
 
-        <div class="staging-hidden" ng-if="openEntity.event">
+        <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
                 <a href="{{openEntity.event.space.singleUrl}}">{{openEntity.event.space.name}}<br>
                     {{openEntity.event.space.endereco}}</a></p>
@@ -221,6 +221,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
+        
         <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-show="data.global.filterEntity == 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
                 <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>

@@ -117,8 +117,20 @@
                 var sData = data2searchData(data[entity]),
                     apiCountParams = JSON.stringify(sData),
                     apiParams = JSON.stringify([sData,data.global.locationFilters,data.global.isVerified,$rootScope.pagination[entity]]),
-                    requestEntity = entity === 'event' ? 'space' : entity,
-                    requestAction = entity === 'event' ? 'findByEvents' : 'find';
+                    requestEntity = entity,
+                    requestAction = 'find';
+
+
+                if(entity === 'event'){
+                    if(data.global.viewMode === 'list'){
+                        requestAction = 'findByLocation';
+                    }else{
+                        requestEntity = 'space' ;
+                        requestAction = 'findByEvents';
+                    }
+
+                }
+
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
                 if(apiCache[entity + 'Count'].params === apiCountParams){
