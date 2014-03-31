@@ -155,6 +155,10 @@
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
         };
 
+        $scope.getId = function(valores, name){
+            return valores.filter(function(e){if(e.name === name) return true;})[0].id;
+        };
+
         $scope.isSelected = function(array, id){
             return (array.indexOf(id) !== -1);
         };

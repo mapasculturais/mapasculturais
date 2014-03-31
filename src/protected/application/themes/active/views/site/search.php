@@ -52,11 +52,11 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarBig'].url||defaultImageURL}}">
             <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
             <div class="objeto-meta">
-                <div><span class="label">Tipo:</span> <a href="#">{{openEntity.agent.type.name}}</a></div>
+                <div><span class="label">Tipo:</span> <a ng-click="data.agent.type=openEntity.agent.type.id">{{openEntity.agent.type.name}}</a></div>
                 <div>
                     <span class="label">Áreas de atuação:</span>
                         <span ng-repeat="area in openEntity.agent.terms.area">
-                            <a href="#">{{area}}</a>{{$last ? '' : ', '}}
+                            <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                         </span>
                 </div>
             </div>
@@ -71,11 +71,11 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                     </a>
                     <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div><span class="label">Tipo:</span> <a ng-click="data.space.types.push(openEntity.space.type.id)">{{openEntity.space.type.name}}</a></div>
+                        <div><span class="label">Tipo:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, openEntity.space.type.name))">{{openEntity.space.type.name}}</a></div>
                         <div>
                             <span class="label">Área de atuação:</span>
                             <span ng-repeat="area in openEntity.space.terms.area">
-                                <a>{{area}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                         <div><span class="label">Local:</span>{{openEntity.space.metadata.endereco}}</div>
@@ -101,11 +101,11 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                         <div>
                             <span class="label">Linguagem:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
-                                <a>{{linguagem}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                         <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
-                        <div><span class="label">Classificação:</span> livre</div>
+                        <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
                     </div>
                 </div>
             </article>
