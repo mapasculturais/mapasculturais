@@ -277,7 +277,7 @@
         $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
         $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
-        MapasCulturais.entityTypes.agent.push({id:null, name: 'Todos'});
+        MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
         $scope.types = MapasCulturais.entityTypes;
         $scope.location = $location;
 
