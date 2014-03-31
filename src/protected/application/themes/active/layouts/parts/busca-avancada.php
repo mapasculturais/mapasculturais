@@ -230,6 +230,7 @@
                 <a class="tag tag-projeto" ng-if="showFilters('project')" ng-repeat="typeId in data.project.types" ng-click="toggleSelection(data.project.types, typeId)">{{ getName(types.project, typeId)}}</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event')" ng-repeat="linguagemId in data.event.linguagens" ng-click="toggleSelection(data.event.linguagens, linguagemId)">{{ getName(linguagens, linguagemId)}}</a>
+                <a class="tag tag-evento" ng-if="showFilters('event')" ng-repeat="clasificacaoId in data.event.classificacaoEtaria" ng-click="toggleSelection(data.event.classificacaoEtaria, clasificacaoId)">{{ getName(classificacoes, clasificacaoId)}}</a>
 
                 <a class="tag tag-agente" ng-if="showFilters('agent')" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space')" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
