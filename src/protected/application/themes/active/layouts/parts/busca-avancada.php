@@ -23,7 +23,7 @@
             <!--.filtro-->
             <div class="filtro">
                 <span class="icone icon_check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
-                <span class="label show-label">Inscrições Abertas</span>
+                <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">Inscrições Abertas</span>
             </div>
             <!--.filtro-->
             <form id="form-agente" class="filtro staging-hidden">
@@ -163,9 +163,7 @@
             <!--.filtro-->
             <div class="filtro">
                 <span class="icone icon_check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
-                <span class="label show-label">
-                    Acessibilidade
-                </span>
+                <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
