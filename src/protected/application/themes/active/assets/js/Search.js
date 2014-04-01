@@ -393,5 +393,15 @@
             $scope.data.event.from = null;
             $scope.data.event.to = null;
         }
+
+        $scope.readableProjectRegistrationDates = function(project){
+            if(!project.registrationFrom)
+                return false;
+
+            var from = moment(project.registrationFrom).format('DD/MM/YYYY');
+            var to = moment(project.registrationTo).format('DD/MM/YYYY');
+
+            return from !== to ? from + ' - ' + to : from;
+        };
     }]);
 })(angular);

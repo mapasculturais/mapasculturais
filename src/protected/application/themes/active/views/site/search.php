@@ -20,6 +20,8 @@
     $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
     $app->enqueueScript('app', 'Search', '/js/Search.js');
 
+    $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
     $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
 
@@ -41,8 +43,6 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
 
 
 ?>
-
-
 <?php add_map_assets(); ?>
     <div id="infobox" style="display:block" ng-show="data.global.openEntity.id>0 && data.global.viewMode==='map'">
         <a class="icone icon_close" ng-click="data.global.openEntity=null"></a>
@@ -150,13 +150,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                     </p>
                     <div class="objeto-meta">
                         <div><span class="label">Tipo:</span> <a href="#">{{project.type.name}}</a></div>
-                        <div>
-                            <span class="label">Linguagens:</span>
-                            <span ng-repeat="linguagem in project.terms.linguagens">
-                                <a href="#">{{linguagem}}</a>{{$last ? '' : ', '}}
-                            </span>
-                            <div><span class="label">Inscrições:</span> 00/00/00 - 00/00/00</div>
-                        </div>
+                        <div ng-if="readableProjectRegistrationDates(project)"><span class="label">Inscrições:</span> {{readableProjectRegistrationDates(project)}}</div>
                     </div>
                 </div>
             </article>
@@ -221,7 +215,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
             <a class="icone arrow_carrot-down" href="#"></a>
         </header>
-        
+
         <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-show="data.global.filterEntity == 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
                 <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
@@ -238,7 +232,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                             </span>
                         </div>
                         <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
-                        <div><span class="label">Classificação:</span> livre</div>
+                        <div><span class="label">Classificação:</span> {{event.classificacaoEtaria}}</div>
                     </div>
                 </div>
             </article>

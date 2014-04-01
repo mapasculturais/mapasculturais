@@ -252,8 +252,9 @@
 
                 // project registration is open?
                 if(entityData.ropen){
-                    searchData.registrationFrom = 'LTE(2014-03-28)';
-                    searchData.registrationTo   = 'GTE(2014-03-28)';
+                    var today = moment().format('YYYY-MM-DD');
+                    searchData.registrationFrom = 'LTE(' + today + ')';
+                    searchData.registrationTo   = 'GTE(' + today + ')';
                 }
 
 
@@ -263,6 +264,11 @@
             function apiFind(entity, searchData, page, action) {
                 if(data.global.viewMode === 'list'){
                     searchData['@select'] = 'id,singleUrl,name,type,shortDescription,terms';
+                    if(entity === 'project')
+                        searchData['@select'] += ',registrationFrom,registrationTo';
+                    else if(entity === 'event')
+                        searchData['@select'] += ',classificacaoEtaria';
+
                     searchData['@files'] = '(avatar.avatarBig):url';
                     if(page) {
                         searchData['@page'] = page;
@@ -280,7 +286,6 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log("API SEARCH >> ", {url: entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
