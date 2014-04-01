@@ -48,7 +48,7 @@ add_occurrence_frequencies_to_js();
                    data-form-action="edit"
                    data-item="{{serialized}}"
                    href="#" title='Editar Ocorrência'>editar</a>
-               <a class='excluir botao js-event-occurrence-item-delete hltip' data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>excluir</a>
+               <a class='excluir botao js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>excluir</a>
             </div>
         <?php endif; ?>
     </div>
