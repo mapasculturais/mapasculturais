@@ -34,13 +34,13 @@ return array(
 
     'app.log.translations' => true,
 
+    'app.log.apiCache' => false,
+
     'app.debugbar' => false,
 
     'app.dbUpdatesDisabled' => false,
 
     'app.useApiCache' => true,
-
-    'app.useObjectCache' => true,
 
     'app.apiCache.lifetime' => 10 * 60,
 

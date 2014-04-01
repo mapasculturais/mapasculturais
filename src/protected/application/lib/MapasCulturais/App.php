@@ -109,8 +109,6 @@ class App extends \Slim\Slim{
 
     protected $_runningUpdates = true;
 
-    protected $_objectCacheEnabled = true;
-
     /**
      * The Application Registry.
      *
@@ -350,7 +348,7 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
         // don't run dbUpdates anymore
-         $this->_dbUpdates();
+        $this->_dbUpdates();
 
         return $this;
     }
@@ -498,22 +496,6 @@ class App extends \Slim\Slim{
         echo $scripts;
     }
 
-    function disableObjectCache(){
-        $this->_objectCacheEnabled = false;
-    }
-
-    function enableObjectCache(){
-        $this->_objectCacheEnabled = true;
-    }
-
-    function objectCacheEnabled(){
-        return key_exists('app.useObjectCache', $this->_config) && $this->_config['app.useObjectCache'] && $this->_objectCacheEnabled;
-    }
-
-    function objectCacheTimeout(){
-        return key_exists('app.objectCache.lifetime', $this->_config) ? $this->_config['app.objectCache.lifetime'] : 24 * 3600;
-    }
-
     public function isRunningUpdates(){
         return $this->_runningUpdates;
     }
@@ -526,7 +508,7 @@ class App extends \Slim\Slim{
 
         if($this->cache->contains(__METHOD__)){
             $executed_updates = $this->cache->fetch(__METHOD__);
-            
+
         }else{
             $executed_updates = array();
 
@@ -543,7 +525,6 @@ class App extends \Slim\Slim{
 
         foreach($updates as $name => $function){
             if(!in_array($name, $executed_updates)){
-                $this->disableObjectCache();
                 $new_updates = true;
                 $this->log->info("DB UPDATE > '$name' executed");
                 if($function() !== false){

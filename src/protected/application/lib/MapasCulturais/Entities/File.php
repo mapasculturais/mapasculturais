@@ -347,15 +347,15 @@ class File extends \MapasCulturais\Entity
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
     /** @ORM\PostPersist */
-    public function postPersist($args = null){ parent::postPersist($args); App::i()->cache->delete($this->getClassName() . '::' . $this->id); }
+    public function postPersist($args = null){ parent::postPersist($args); }
 
     /** @ORM\PreRemove */
     public function preRemove($args = null){ parent::preRemove($args); }
     /** @ORM\PostRemove */
-    public function postRemove($args = null){ parent::postRemove($args); App::i()->cache->delete($this->getClassName() . '::' . $this->id); }
+    public function postRemove($args = null){ parent::postRemove($args); }
 
     /** @ORM\PreUpdate */
     public function preUpdate($args = null){ parent::preUpdate($args); }
     /** @ORM\PostUpdate */
-    public function postUpdate($args = null){ parent::postUpdate($args); App::i()->cache->delete($this->getClassName() . '::' . $this->id); }
+    public function postUpdate($args = null){ parent::postUpdate($args); }
 }

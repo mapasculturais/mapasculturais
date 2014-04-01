@@ -10,20 +10,13 @@ class CachedRepository extends EntityRepository{
     function find($id, $lockMode = LockMode::NONE, $lockVersion = null) {
         if(!$id)
             return null;
+
+
+        $query = $this->_em->createQuery('SELECT e FROM ' . $this->getClassName() . ' e WHERE e.id = :id');
+        $query->setParameter('id', $id);
+        $query->useResultCache(true);
+        $query->setResultCacheLifetime(5 * 60);
         
-        $app = App::i();
-
-        $cache_id = $this->getClassName() . "::{$id}";
-
-        if($lockMode === LockMode::NONE && $lockVersion === null && $app->objectCacheEnabled() && $app->cache && $app->cache->contains($cache_id)){
-            $result = $app->cache->fetch($cache_id);
-        }else{
-            $result = parent::find($id, $lockMode, $lockVersion);
-
-            if($lockMode === LockMode::NONE && $lockVersion === null && $app->cache)
-                $app->cache->save($cache_id, $result, $app->objectCacheTimeout());
-
-        }
-        return $result;
+        return $query->getOneOrNullResult();
     }
 }

@@ -170,28 +170,20 @@ trait EntityMetadata{
 
             $class = $this->getClassName();
 
-            $cache_id = "$this:metadata";
-
-            if($app->objectCacheEnabled() && $app->cache->contains($cache_id)){
-                self::$_metadata[$this->__metadata__tmpId] = $app->cache->fetch($cache_id);
-
+            if(class_exists($class.'Meta')){
+                $metadata_entity_class = $class.'Meta';
+                $repo = $app->repo($metadata_entity_class);
+                $result = $repo->findBy(array('owner' => $this));
             }else{
-                if(class_exists($class.'Meta')){
-                    $metadata_entity_class = $class.'Meta';
-                    $repo = $app->repo($metadata_entity_class);
-                    $result = $repo->findBy(array('owner' => $this));
-                }else{
-                    $metadata_entity_class = '\MapasCulturais\Entities\Metadata';
-                    $repo = $app->repo($metadata_entity_class);
-                    $result = $repo->findBy(array('ownerId' => $this->id, 'ownerType' => $class));
-                }
-
-                foreach($result as $meta)
-                    self::$_metadata[$this->__metadata__tmpId][trim($meta->key)] = $meta;
-
-                $app->cache->save($cache_id, self::$_metadata[$this->__metadata__tmpId], $app->objectCacheTimeout());
-
+                $metadata_entity_class = '\MapasCulturais\Entities\Metadata';
+                $repo = $app->repo($metadata_entity_class);
+                $result = $repo->findBy(array('ownerId' => $this->id, 'ownerType' => $class));
             }
+
+            foreach($result as $meta)
+                self::$_metadata[$this->__metadata__tmpId][trim($meta->key)] = $meta;
+
+
         }
 
         if($meta_key){
@@ -209,11 +201,6 @@ trait EntityMetadata{
                     $result[$key] = $obj->value;
             return $result;
         }
-    }
-
-    function clearMetadataCache(){
-        $cache_id = "$this:metadata";
-        App::i()->cache->delete($cache_id);
     }
 
     /**
@@ -305,8 +292,6 @@ trait EntityMetadata{
      * @see \MapasCulturais\Entity::save()
      */
     public function saveMetadata(){
-        App::i()->log->info("\nSAVE METADATA ============= BEGIN\n");
-        App::i()->log->info($this->__metadata__tmpId);
         $this->_initMetadataArrays();
 
         App::i()->log->info(print_r(self::$_changedMetadata, true));
@@ -316,12 +301,5 @@ trait EntityMetadata{
             $saved = true;
             self::$_metadata[$this->__metadata__tmpId][$meta_key]->save(true);
         }
-
-        if($saved){
-            $cache_id = "$this:metadata";
-
-            App::i()->cache->delete($cache_id);
-        }
-        App::i()->log->info("\nSAVE METADATA ============= END\n");
     }
 }

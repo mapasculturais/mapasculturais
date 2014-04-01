@@ -112,7 +112,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Space
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -123,7 +123,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Space[] Chield spaces
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY")
      */
     protected $children;
 
@@ -133,7 +133,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })

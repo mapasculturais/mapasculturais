@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Entities\Repositories;
 
+use Doctrine\ORM\EntityRepository;
 class Event extends CachedRepository{
 
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){

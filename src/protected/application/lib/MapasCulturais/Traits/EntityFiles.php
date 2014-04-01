@@ -31,19 +31,10 @@ trait EntityFiles{
     function getFiles($group = null){
         $app = App::i();
 
-        $cache_id = "{$this->className}:{$this->id}:" . __FUNCTION__ . ($group ? "({$group})" : '');
-
-        if($app->objectCacheEnabled() && $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
-        }
-
         if($group)
             $result = $app->repo('File')->findByGroup($this, $group);
         else
             $result = $app->repo('File')->findByOwnerGroupedByGroup($this);
-
-        if($app->objectCacheEnabled())
-            $app->cache->save($cache_id, $result, $app->objectCacheTimeout());
 
         return $result;
     }
@@ -56,34 +47,10 @@ trait EntityFiles{
     function getFile($group){
         $app = App::i();
 
-        $cache_id = "{$this->className}:{$this->id}:" . __FUNCTION__ . ($group ? "({$group})" : '');
-
-        if($app->cache->contains($cache_id))
-            return $app->cache->fetch($cache_id);
-
         $result = $app->repo('File')->findOneByGroup($this, $group);
-
-        if($app->objectCacheEnabled())
-            $app->cache->save($cache_id, $result, $app->objectCacheTimeout());
 
         return $result;
     }
-
-    function clearFilesCache(){
-        $app = App::i();
-        $class_name = $this->className;
-
-        $app->cache->delete("{$class_name}:{$this->id}:getFile");
-        $app->cache->delete("{$class_name}:{$this->id}:getFiles");
-
-        $groups = $app->getRegisteredFileGroupsByEntity($this);
-
-        foreach($groups as $g){
-            $app->cache->delete("{$class_name}:{$this->id}:getFile({$g->name})");
-            $app->cache->delete("{$class_name}:{$this->id}:getFiles({$g->name})");
-        }
-    }
-
 
     /**
      * This entity uses files

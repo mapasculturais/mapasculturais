@@ -25,14 +25,6 @@ trait EntityAgentRelation {
         if(!$this->id)
             return array();
 
-        $app = App::i();
-
-        $cache_id = "{$this->className}:{$this->id}:RELATED_AGENTS";
-
-        if($app->objectCacheEnabled() && $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
-        }
-
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
             return array();
@@ -61,17 +53,7 @@ trait EntityAgentRelation {
 
         $result = $query->getResult();
 
-        if($app->objectCacheEnabled())
-            $app->cache->save($cache_id, $result, $app->objectCacheTimeout());
-
-
         return $result;
-    }
-
-    function clearAgentRelationCache(){
-        $cache_id = "{$this->className}:{$this->id}:RELATED_AGENTS";
-        App::i()->cache->delete($cache_id);
-
     }
 
     /**
@@ -149,8 +131,6 @@ trait EntityAgentRelation {
         if($has_control)
             $this->addControlToRelatedAgent($agent);
 
-        $this->clearAgentRelationCache();
-
         return $relation;
     }
 
@@ -165,8 +145,7 @@ trait EntityAgentRelation {
 
             $relation->delete(true);
 
-            $this->clearAgentRelationCache();
-        }
+       }
     }
 
     function setRelatedAgentControl($agent, $control){
@@ -193,8 +172,6 @@ trait EntityAgentRelation {
         $q->execute();
 
         $em->flush();
-
-        $this->clearAgentRelationCache();
     }
 
     protected function canUserCreateAgentRelation($user){

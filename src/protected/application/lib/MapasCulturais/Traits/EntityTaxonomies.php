@@ -135,13 +135,6 @@ trait EntityTaxonomies{
                 $this->addTerm($slug, $term);
             }
         }
-
-
-
-        $class = $this->getClassName();
-        $cache_id = "{$this->className}:{$this->id}:taxonomyTerms";
-
-        $app->cache->delete($cache_id);
     }
 
     /**
@@ -218,43 +211,36 @@ trait EntityTaxonomies{
     function getTaxonomyTerms($taxonomy_slug = null){
         $app = App::i();
         $class = $this->getClassName();
-        $cache_id = "{$this->className}:{$this->id}:taxonomyTerms";
-
+        
         $result = array();
 
         $taxonomies = $app->getRegisteredTaxonomies($this);
         foreach($taxonomies as $tax)
             $result[$tax->slug] = array();
 
-        if($app->cache->contains($cache_id)){
-            $terms = $app->cache->fetch($cache_id);
-        }else{
 
-            if(!$this->id)
-                return $result;
+        if(!$this->id)
+            return $result;
 
 
-            $query = $app->em->createQuery("
-                SELECT
-                    t
-                FROM
-                    \MapasCulturais\Entities\Term t
-                    LEFT JOIN t.relations tr
-                WHERE
-                    tr.objectType = :class AND
-                    tr.objectId = :oid
-                ORDER BY
-                    t.term ASC");
+        $query = $app->em->createQuery("
+            SELECT
+                t
+            FROM
+                \MapasCulturais\Entities\Term t
+                LEFT JOIN t.relations tr
+            WHERE
+                tr.objectType = :class AND
+                tr.objectId = :oid
+            ORDER BY
+                t.term ASC");
 
-            $query->setParameters(array(
-                'class' => $class,
-                'oid' => $this->id
-            ));
+        $query->setParameters(array(
+            'class' => $class,
+            'oid' => $this->id
+        ));
 
-           $terms = $query->getResult();
-
-           $app->cache->save($cache_id, $terms, $app->objectCacheTimeout());
-        }
+        $terms = $query->getResult();
 
         if($terms){
 

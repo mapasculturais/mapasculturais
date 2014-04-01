@@ -128,7 +128,6 @@ abstract class Entity implements \JsonSerializable{
             return false;
     }
 
-
     function dump(){
         echo '<pre>';
         \Doctrine\Common\Util\Debug::dump($this);
@@ -280,25 +279,6 @@ abstract class Entity implements \JsonSerializable{
             $data[$key] = $value;
         }
         return $data;
-    }
-
-    function clearCache(){
-        App::i()->cache->delete("{$this}:ownerUserId");
-
-        if($this->usesFiles())
-            $this->clearFilesCache();
-
-        if($this->usesMetalists())
-            $this->clearMetalistsCache();
-
-        if($this->usesTaxonomies())
-            $this->clearTaxonomiesCache();
-
-        if($this->usesMetadata())
-            $this->clearMetadataCache();
-
-        if($this->usesAgentRelation())
-            $this->clearAgentRelationCache();
     }
 
     public function getSingleUrl(){
@@ -628,8 +608,6 @@ abstract class Entity implements \JsonSerializable{
 
         $app = App::i();
 
-        $app->disableObjectCache();
-
         if($this->usesFiles()){
             foreach($this->files as $files){
                 if(is_array($files)){
@@ -672,7 +650,6 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity.remove:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
-        $this->clearCache();
     }
 
     /**
@@ -690,8 +667,6 @@ abstract class Entity implements \JsonSerializable{
         $this->checkPermission('modify');
 
         $app = App::i();
-
-        $app->disableObjectCache();
 
         $hook_class_path = $this->getHookClassPath();
         $app->applyHookBoundTo($this, 'entity.update:before', $args);
@@ -729,8 +704,6 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
         $app->applyHookBoundTo($this, 'entity.save:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
-
-        $this->clearCache();
 
     }
 

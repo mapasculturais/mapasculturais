@@ -656,8 +656,10 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
-                if($selector.data('value'))
+                if($selector.data('value')){
                     searchParams.id = '!in('+$selector.data('value')+')';
+                    alert('aqui');
+                }
 
                 //if(!MapasCulturais.cookies.get('mapasculturais.adm'))
                 //    searchParams.owner = 'in(@me.spaces)';

@@ -14,6 +14,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\CachedRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Agent extends \MapasCulturais\Entity
@@ -221,7 +222,7 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserRemove($user){
-        
+
         if($this->isUserProfile)
             return false;
         else
