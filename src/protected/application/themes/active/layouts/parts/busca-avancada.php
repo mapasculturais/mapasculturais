@@ -26,13 +26,13 @@
                 <span class="label show-label">Inscrições Abertas</span>
             </div>
             <!--.filtro-->
-            <form id="form-agente" class="filtro">
+            <form id="form-agente" class="filtro staging-hidden">
                 <label for="nome-do-agente">Agente</label>
                 <input class="autocomplete" name="nome-do-agente" type="text" placeholder="Agente" />
                 <a class="botao principal" href="#">Listar agentes</a>
             </form>
             <!-- #form-projeto-->
-            <form id="form-espaco" class="filtro">
+            <form id="form-espaco" class="filtro staging-hidden">
                 <label for="nome-do-espaco">Espaço</label>
                 <input class="autocomplete" name="nome-do-espaco" type="text" placeholder="Espaço" />
                 <a class="botao principal" href="#">Listar espaços</a>

@@ -150,7 +150,7 @@
                     </li>
                 </ul>
                 <!--.menu.abas-objetos-->
-                <ul class="menu abas-objetos clearfix staging-hidden">
+                <ul class="menu abas-objetos clearfix">
                     <li id="aba-projetos"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
                         <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                             <div class="icone icon_document_alt"></div>
