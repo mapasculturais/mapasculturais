@@ -79,7 +79,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                             </span>
                         </div>
                         <div><span class="label">Local:</span>{{openEntity.space.metadata.endereco}}</div>
-                        <div><span class="label">Acessibilidade:</span>{{openEntity.space.metadata.acessibilidade}}</div>
+                        <div><span class="label">Acessibilidade:</span> {{openEntity.space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>
             </article>
@@ -166,7 +166,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'agent'">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
-            <a class="icone arrow_carrot-down" href="#"></a>
+            <a class="icone arrow_carrot-down"></a>
         </header>
 
         <div id="lista-dos-agentes" class="lista" infinite-scroll="addMore('agent')" ng-if="data.global.filterEntity == 'agent'">
@@ -178,11 +178,11 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                     </a>
                     <p class="objeto-resumo">{{agent.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div><span class="label">Tipo:</span> <a href="#">{{agent.type.name}}</a></div>
+                        <div><span class="label">Tipo:</span> <a ng-click="data.agent.type=agent.type.id">{{agent.type.name}}</a></div>
                         <div>
                             <span class="label">Área de atuação:</span>
                             <span ng-repeat="area in agent.terms.area">
-                                <a href="#">{{area}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                     </div>
@@ -192,7 +192,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'space'">
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
-            <a class="icone arrow_carrot-down" href="#"></a>
+            <a class="icone arrow_carrot-down"></a>
         </header>
         <div id="lista-dos-espacos" class="lista" infinite-scroll="addMore('space')" ng-if="data.global.filterEntity == 'space'">
             <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
@@ -203,15 +203,15 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                     </a>
                     <p class="objeto-resumo">{{space.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div><span class="label">Tipo:</span> <a href="#">{{space.type.name}}</a></div>
+                        <div><span class="label">Tipo:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, space.type.name))">{{space.type.name}}</a></div>
                         <div>
                             <span class="label">Área de atuação:</span>
                             <span ng-repeat="area in space.terms.area">
-                                <a href="#">{{area}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                         <div><span class="label">Local:</span>{{space.metadata.endereco}}</div>
-                        <div><span class="label">Acessibilidade:</span>{{space.metadata.acessibilidade}}</div>
+                        <div><span class="label">Acessibilidade:</span> {{space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>
             </article>
@@ -219,9 +219,9 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
         <header id="header-dos-eventos" class="header-do-objeto clearfix"  ng-if="data.global.filterEntity == 'event'">
             <h1><span class="icone icon_calendar"></span> Eventos</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
-            <a class="icone arrow_carrot-down" href="#"></a>
+            <a class="icone arrow_carrot-down"></a>
         </header>
-        
+
         <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-show="data.global.filterEntity == 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
                 <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
@@ -238,7 +238,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                             </span>
                         </div>
                         <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
-                        <div><span class="label">Classificação:</span> livre</div>
+                        <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
                     </div>
                 </div>
             </article>
