@@ -135,7 +135,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <div class="clearfix">
                 <h1><span class="icone icon_document_alt"></span> Projetos</h1>
                 <a class="botao adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
-                <a class="icone arrow_carrot-down" href="#"></a>
+                <a class="icone arrow_carrot-down"></a>
             </div>
         </header>
         <div id="lista-dos-projetos" class="lista" infinite-scroll="addMore('agent')" ng-if="data.global.filterEntity == 'project'">
