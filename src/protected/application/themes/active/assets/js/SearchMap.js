@@ -57,6 +57,7 @@
             });
 
             $rootScope.$on('searchResultsReady', function(ev, results){
+                if($scope.data.global.viewMode === 'list') return;
                 delete $scope.markers;
                 $scope.markers = [];
                 if(results.agent) $scope.createMarkers('agent', results.agent);
@@ -85,7 +86,10 @@
             results.forEach(function(item) {
                 var marker;
                 //TEMPORARY PATCH FOR EVENTS... WITHOUT LOCATION
-                if(!item.location) return;
+                if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
+                    $scope.resultsNotInMap[entity]++;
+                    return;
+                }
 
                 marker = new L.marker(
                     new L.LatLng(item.location.latitude, item.location.longitude),
@@ -110,11 +114,11 @@
                     FindOneService($scope.data);
                 });
 
-                if (item.location && (item.location.latitude !== 0 && item.location.longitude !== 0)) {
-                    marker.entityType = entity;
-                    $scope.markers.push(marker);
 
-                }
+                marker.entityType = entity;
+                $scope.markers.push(marker);
+
+
             });
         };
 
