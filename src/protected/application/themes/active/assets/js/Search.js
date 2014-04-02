@@ -341,13 +341,12 @@
         $scope.numEvents = 0;
         $scope.numProjects = 0;
 
-        $scope.resultsNotInMap = {agent: 0, space: 0, event: 0 };
-
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
             $scope.numEvents = parseInt(results.event);
             $scope.numProjects = parseInt(results.project);
+            $scope.resultsNotInMap = {agent: 0, space: 0, event: 0};
         });
 
         $rootScope.$on('findOneResultReady', function(ev, result){

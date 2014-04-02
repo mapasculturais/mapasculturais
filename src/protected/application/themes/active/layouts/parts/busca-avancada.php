@@ -177,7 +177,7 @@
             <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
             <div id="resultados">
                 <span ng-if="!spinnerCount">
-                    <span ng-if="numAgents">{{numAgents}} agentes ({{resultsNotInMap.agent}} fora do mapa)</span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
+                    <span ng-if="numAgents">{{numAgents}} agentes <small ng-if="resultsNotInMap.agent">({{resultsNotInMap.agent}} fora do mapa)</small></span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
                     <span ng-if="numSpaces">{{numSpaces}} espaços</span><span ng-if="numSpaces && numEvents">,</span>
                     <span ng-if="numEvents">{{numEvents}} eventos</span><span ng-if="(numAgents || numSpaces) && numEvents">,</span>
                     <span ng-if="numProjects">{{numProjects}} projetos</span>
