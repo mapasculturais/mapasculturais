@@ -100,7 +100,7 @@
     <body <?php if ($this->controller->action == 'search') echo 'ng-app="search" ng-controller="SearchController"'; ?>
 	    class="<?php if ($this->controller) echo "controller-{$this->controller->id} action-{$this->controller->action} ";
 	    	if (isset($entity)) echo 'entity ';?>
-	    " ng-class="{'infobox-open': data.global.openEntity.id>0 && data.global.viewMode==='map'}">
+	    " ng-class="{'infobox-open': data.global.openEntity.id>0 && data.global.viewMode==='map' && data.global.openEntity.type === data.global.filterEntity}">
 
 		<?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
             <!--facebook compartilhar-->
@@ -237,7 +237,14 @@
                             </a>
                             <ul class="submenu">
                                 <div class="setinha"></div>
-                                <li><a href="<?php echo $app->createUrl('panel') ?>">Painel</a></li>
+                                <li><a href="<?php echo $app->createUrl('panel');?>"><span class="icone icon_house"></span> Painel</a></li>
+                                    <ul class="third-level">
+                                        <li><a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a></li>
+                                        <li><a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a></li>
+                                        <li><a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a></li>
+                                        <li><a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a></li>
+                                        <li><a href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
+                                    </ul>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
                             </ul>
