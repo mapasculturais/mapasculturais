@@ -23,9 +23,43 @@ return array(
                 'required' => "A classificação etária é obrigatória."
             )
         ),
+
+        'telefonePublico' => array(
+            'label' => 'Mais Informações',
+            'type' => 'string',
+            'validations' => array(
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
+            )
+        ),
+
         'preco' => array(
             'label' => 'Preço'
         ),
+
+        'duracao' => array(
+            'label' => 'Duração'
+        ),
+
+        'traducaoLibras' => array(
+            'label' => 'Tradução para LIBRAS',
+            'type' => 'select',
+            'options' => array(
+                '' => 'Não Informado',
+                'Sim' => 'Sim',
+                'Não' => 'Não'
+            )
+        ),
+
+        'descricaoSonora' => array(
+            'label' => 'Descrição sonora',
+            'type' => 'select',
+            'options' => array(
+                '' => 'Não Informado',
+                'Sim' => 'Sim',
+                'Não' => 'Não'
+            )
+        ),
+
         'site' => array(
             'label' => 'Site',
             'validations' => array(

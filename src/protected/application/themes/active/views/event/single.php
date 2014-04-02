@@ -182,7 +182,10 @@ add_occurrence_frequencies_to_js();
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta do evento"><?php echo $entity->shortDescription; ?></span>
             </p>
             <div class="servico">
-                <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
+
+                <?php if (is_editable() || $entity->registrationInfo): ?>
+                    <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
+                <?php endif; ?>
 
                 <?php if (is_editable() || $entity->classificacaoEtaria): ?>
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
@@ -200,9 +203,29 @@ add_occurrence_frequencies_to_js();
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
                 <?php endif; ?>
-                <p><span class="label">Mais Informações:</span> (000) 0000-0000</p>
-                <p><span class="label">Duração:</span> 000min</p>
-                <p><span class="label">Acessibilidade:</span> tradução em libras/descrição sonora</p>
+
+                <?php if(is_editable() || $entity->telefonePublico): ?>
+                    <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
+                <?php endif; ?>
+
+                <?php if (is_editable() || $entity->duracao): ?>
+                    <p><span class="label">Duração: </span><span class="js-editable" data-edit="duracao" data-original-title="Duração" data-emptytext="000min"><?php echo $entity->duracao; ?></span></p>
+                <?php endif; ?>
+
+                <?php if(is_editable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
+                    <br>
+                    <p>
+                        <span class="label">Acessibilidade:</span>
+
+                        <?php if(is_editable() || $entity->traducaoLibras): ?>
+                            <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
+                        <?php endif; ?>
+
+                        <?php if(is_editable() || $entity->descricaoSonora): ?>
+                            <p><span class="label">Descrição Sonora: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                        <?php endif; ?>
+                    </p>
+                <?php endif; ?>
             </div>
             <!--.servico-->
             <div class="servico ocorrencia clearfix">
