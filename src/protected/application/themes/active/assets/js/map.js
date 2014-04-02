@@ -495,7 +495,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     if ($checkbox.prop('checked')) {
                         $checkbox.prop('checked', false);
                     } else {
-                        subprefs.options.geotable = '"sp_'+$(this).data('geot')+'"';
+                        subprefs.options.geotable = '"sp_'+geotable+'"';
                         subprefs.options.fields = $(this).data('fds');
                         subprefs.setMap(map);
                         $checkbox.prop('checked', true);
