@@ -177,44 +177,27 @@
             <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
             <div id="resultados">
                 <span ng-if="!spinnerCount">
-                    <span ng-if="numAgents">{{numAgents}} agentes <small ng-if="resultsNotInMap.agent">({{resultsNotInMap.agent}} fora do mapa)</small></span><span ng-if="numAgents && (numSpaces || numEvents)">,</span>
-                    <span ng-if="numSpaces">{{numSpaces}} espaços</span><span ng-if="numSpaces && numEvents">,</span>
-                    <span ng-if="numEvents">{{numEvents}} eventos</span><span ng-if="(numAgents || numSpaces) && numEvents">,</span>
-                    <span ng-if="numProjects">{{numProjects}} projetos</span>
-                </span>
-
-                <span ng-show="spinnerCount > 0" style="display:inline">
-                    <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>
-                    <span style="margin-left:35px">obtendo resultados...</span>
-                </span>
-                <span ng-style="{visibility: viewLoading && 'hidden' || 'visible'}">
-                    <!--<strong>00</strong> eventos, -->
-                    <span ng-show="agentSearch.results.length > 0">
-                        <strong>{{numberFixedLength(agentSearch.results.length, 2) || '00'}}</strong> agente<span ng-show="agentSearch.results.length > 1">s</span>
-                        <small style="font-weight:normal; cursor:help;" ng-show="agentSearch.results.length > 0 && agentSearch.resultsWithoutMarker > 0">
-                            <span class="hltip hltip-auto-update" title="{{agentSearch.results.length - agentSearch.resultsWithoutMarker}} agentes mostrados no mapa ({{agentSearch.resultsWithoutMarker}} sem localização)">
-                                ({{agentSearch.results.length - agentSearch.resultsWithoutMarker}} <span class="icone icon_pin_alt"></span>)
-                        </small>
+                    <span ng-if="numAgents-resultsNotInMap.agent">{{numAgents-resultsNotInMap.agent}} agente<span ng-show="numAgents-resultsNotInMap.agent!==1">s</span>
+                        <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} agentes sem localização">
+                            ({{resultsNotInMap.agent}})
+                        </span>
                     </span>
-                    <span ng-show="combinedSearch && agentSearch.results.length > 0 && spaceSearch.results.length > 0">,</span>
-                    <span ng-show="spaceSearch.results.length > 0">
-                        <strong>{{numberFixedLength(spaceSearch.results.length, 2) || '00'}}</strong> espaço<span ng-show="spaceSearch.results.length > 1">s</span>
-                        <small style="font-weight:normal; cursor:help;" ng-show="spaceSearch.results.length > 0 && spaceSearch.resultsWithoutMarker > 0">
-                            <span class="hltip  hltip-auto-update" title="{{spaceSearch.results.length - spaceSearch.resultsWithoutMarker}} espaços mostrados no mapa ({{spaceSearch.resultsWithoutMarker}} sem localização)">
-                                ({{spaceSearch.results.length - spaceSearch.resultsWithoutMarker}} <span class="icone icon_pin_alt"></span>)
-                            </span>
-                        </small>
+                    <!--,--><span ng-if="numAgents-resultsNotInMap.agent && (numSpaces-resultsNotInMap.space || numEvents-resultsNotInMap.event)">,</span>
+                    <span ng-if="numSpaces-resultsNotInMap.space">{{numSpaces-resultsNotInMap.space}} espaço<span ng-show="numSpaces-resultsNotInMap.space!==1">s</span>
+                        <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} espaços sem localização">
+                            ({{resultsNotInMap.space}})
+                        </span>
                     </span>
-                    <span ng-show="agentSearch.results.length > 0 && spaceSearch.results.length > 0">
-                        <strong>. Total: {{numberFixedLength(agentSearch.results.length + spaceSearch.results.length, 2) || '00'}}</strong>
-                        <small style="font-weight:normal; cursor:help;" ng-show="(agentSearch.results.length > 0 && agentSearch.resultsWithoutMarker > 0) || (spaceSearch.results.length > 0 && spaceSearch.resultsWithoutMarker > 0)">
-                            <span  class="hltip  hltip-auto-update" title="{{(agentSearch.results.length - agentSearch.resultsWithoutMarker) + (spaceSearch.results.length - spaceSearch.resultsWithoutMarker)}} agentes e espaços mostrados no mapa ({{agentSearch.resultsWithoutMarker + spaceSearch.resultsWithoutMarker}} sem localização)">
-                                ({{(agentSearch.results.length - agentSearch.resultsWithoutMarker) + (spaceSearch.results.length - spaceSearch.resultsWithoutMarker)}}<span class="icone icon_pin_alt"></span>)
-                            </span>
-                        </small>
+                    <!--,--><span ng-if="numSpaces-resultsNotInMap.space && numEvents-resultsNotInMap.event">,</span>
+                    <span ng-if="numEvents-resultsNotInMap.event">{{numEvents-resultsNotInMap.event}} evento<span ng-show="numEvents-resultsNotInMap.event!==1">s</span>
+                        <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
+                            ({{resultsNotInMap.event}})
+                        </span>
                     </span>
-                    <span ng-show="spinnerCount===0 && (numEvents === 0 || !showFilters('event')) && (numAgents === 0 || !showFilters('agent')) && (numSpaces === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                    <!--,--><span ng-if="(numAgents-resultsNotInMap.agent || numSpaces-resultsNotInMap.space) && numEvents-resultsNotInMap.event">,</span>
+                    <span ng-if="numProjects">{{numProjects}} projeto<span ng-show="numProjects!==1">s</span> </span>
                 </span>
+                <span ng-show="spinnerCount===0 && (numEvents-resultsNotInMap.event === 0 || !showFilters('event')) && (numAgents-resultsNotInMap.agent === 0 || !showFilters('agent')) && (numSpaces-resultsNotInMap.space === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
             </div>
             <!--#resultados-->
             <div id="filtros-selecionados">

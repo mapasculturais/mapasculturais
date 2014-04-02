@@ -85,9 +85,8 @@
         $scope.createMarkers = function(entity, results) {
             results.forEach(function(item) {
                 var marker;
-                //TEMPORARY PATCH FOR EVENTS... WITHOUT LOCATION
+
                 if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
-                    $scope.resultsNotInMap[entity]++;
                     return;
                 }
 
