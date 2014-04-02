@@ -89,41 +89,6 @@ class User extends \MapasCulturais\Entity
     protected $agents;
 
 
-    function getEnabledAgents(){
-        return $this->_getAgentByStatus(Agent::STATUS_ENABLED);
-
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Agent::STATUS_ENABLED));
-//        return $this->agents->matching($criteria);
-    }
-    function getTrashedAgents(){
-        return $this->_getAgentByStatus(Agent::STATUS_TRASH);
-
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Agent::STATUS_TRASH));
-//        return $this->agents->matching($criteria);
-    }
-    function getDisabledAgents(){
-        return $this->_getAgentByStatus(Agent::STATUS_DISABLED);
-
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Agent::STATUS_DISABLED));
-//        return $this->agents->matching($criteria);
-    }
-    function getInvitedAgents(){
-        return $this->_getAgentByStatus(Agent::STATUS_INVITED);
-
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Agent::STATUS_INVITED));
-//        return $this->agents->matching($criteria);
-    }
-    function getRelatedAgents(){
-        return $this->_getAgentByStatus(Agent::STATUS_RELATED);
-
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Agent::STATUS_RELATED));
-//        return $this->agents->matching($criteria);
-    }
-
-    private function _getAgentByStatus($status){
-        return App::i()->repo('Agent')->findBy(array('user' => $this, 'status' => $status));
-    }
-
     public function __construct() {
         parent::__construct();
 
@@ -228,7 +193,7 @@ class User extends \MapasCulturais\Entity
         return is_null($user) || $user->is('guest');
     }
 
-    private function getActiveListOf($entityClassName){
+    protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
         $dql = "
             SELECT
                 e
@@ -236,33 +201,79 @@ class User extends \MapasCulturais\Entity
                 $entityClassName e
                 JOIN e.owner a
             WHERE
-                e.status > 0 AND
+                e.status $status_operator :status AND
                 a.user = :user
             ORDER BY
                 e.createTimestamp ASC
         ";
         $query = App::i()->em->createQuery($dql);
+
         $query->setParameter('user', $this);
+        $query->setParameter('status', $status);
+
         $entityList = $query->getResult();
         return $entityList;
     }
 
-    private function getList($functionName){
-        //transforms string getSpaces into Space; getEvents into Event ...
-        $parsedFunctionName = substr($functionName, 3, strlen($functionName)-4);
-        return $this->getActiveListOf('MapasCulturais\Entities\\'.$parsedFunctionName);
+    private function _getAgentsByStatus($status){
+        return App::i()->repo('Agent')->findBy(array('user' => $this, 'status' => $status));
+    }
+
+    function getEnabledAgents(){
+        return $this->_getAgentsByStatus(Agent::STATUS_ENABLED);
+    }
+    function getTrashedAgents(){
+        return $this->_getAgentsByStatus(Agent::STATUS_TRASH);
+    }
+    function getDisabledAgents(){
+        return $this->_getAgentsByStatus(Agent::STATUS_DISABLED);
+    }
+    function getInvitedAgents(){
+        return $this->_getAgentsByStatus(Agent::STATUS_INVITED);
+    }
+    function getRelatedAgents(){
+        return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
     public function getSpaces(){
-        return $this->getList(__FUNCTION__);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }
+    function getEnabledSpaces(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ENABLED, '=');
+    }
+    function getTrashedSpaces(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_TRASH, '=');
+    }
+    function getDisabledSpaces(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
+    }
+
 
     public function getEvents(){
-        return $this->getList(__FUNCTION__);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event');
+    }
+    function getEnabledEvents(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ENABLED, '=');
+    }
+    function getTrashedEvents(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_TRASH, '=');
+    }
+    function getDisabledEvents(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
 
+
     public function getProjects(){
-        return $this->getList(__FUNCTION__);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
+    }
+    function getEnabledProjects(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ENABLED, '=');
+    }
+    function getTrashedProjects(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_TRASH, '=');
+    }
+    function getDisabledProjects(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 
     //============================================================= //

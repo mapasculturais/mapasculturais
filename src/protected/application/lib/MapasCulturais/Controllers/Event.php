@@ -14,7 +14,8 @@ class Event extends EntityController {
         \MapasCulturais\Traits\ControllerTypes,
         \MapasCulturais\Traits\ControllerMetaLists,
         \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable;
+        \MapasCulturais\Traits\ControllerVerifiable,
+        \MapasCulturais\Traits\ControllerSoftDelete;
 
     /**
      * Creates a new Event

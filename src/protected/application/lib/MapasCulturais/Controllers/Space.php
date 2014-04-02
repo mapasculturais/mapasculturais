@@ -15,7 +15,8 @@ class Space extends EntityController {
         \MapasCulturais\Traits\ControllerUploads,
         \MapasCulturais\Traits\ControllerMetaLists,
         \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable;
+        \MapasCulturais\Traits\ControllerVerifiable,
+        \MapasCulturais\Traits\ControllerSoftDelete;
 
 
     function GET_create() {

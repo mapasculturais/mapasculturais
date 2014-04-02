@@ -31,8 +31,25 @@ class Panel extends \MapasCulturais\Controller {
         $count->projects = 0;
         foreach($count as $entity=>$c)
             $count->$entity = str_pad(count(App::i()->user->$entity),2,'0', STR_PAD_LEFT);
-        
+
         $this->render('index', array('count'=>$count));
+    }
+
+    protected function _getUser(){
+        $app = App::i();
+        $user = null;
+        if($app->user->is('admin') && key_exists('userId', $this->data)){
+            $user = $app->repo('User')->find($this->data['userId']);
+
+
+        }elseif($app->user->is('admin') && key_exists('agentId', $this->data)){
+            $agent = $app->repo('Agent')->find($this->data['agentId']);
+            $user = $agent->user;
+        }
+        if(!$user)
+            $user = $app->user;
+
+        return $user;
     }
 
     /**
@@ -48,9 +65,9 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_agents(){
         $this->requireAuthentication();
-        $entityList = App::i()->user->agents;
+        $user = $this->_getUser();
 
-        $this->render('agents', array('entityList' => $entityList));
+        $this->render('agents', array('user' => $user));
     }
 
 
@@ -67,7 +84,9 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_spaces(){
         $this->requireAuthentication();
-        $this->render('spaces',   array('entityList' => App::i()->user->spaces));
+        $user = $this->_getUser();
+
+        $this->render('spaces', array('user' => $user));
     }
 
     /**
@@ -83,7 +102,9 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_events(){
         $this->requireAuthentication();
-        $this->render('events',   array('entityList' => App::i()->user->events));
+        $user = $this->_getUser();
+
+        $this->render('events', array('user' => $user));
     }
 
     /**
@@ -99,7 +120,9 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_projects(){
         $this->requireAuthentication();
-        $this->render('projects', array('entityList' => App::i()->user->projects));
+        $user = $this->_getUser();
+
+        $this->render('projects', array('user' => $user));
     }
 
     /**
@@ -115,8 +138,9 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_contracts(){
         $this->requireAuthentication();
-        $entityList = App::i()->user->contracts;
-        $this->render('contracts', array('entityList' => $entityList));
+        $user = $this->_getUser();
+
+        $this->render('contracts', array('user' => $user));
     }
 
 }

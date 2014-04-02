@@ -21,7 +21,8 @@ class Event extends \MapasCulturais\Entity
         \MapasCulturais\Traits\EntityMetaLists,
         \MapasCulturais\Traits\EntityTaxonomies,
         \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityVerifiable;
+        \MapasCulturais\Traits\EntityVerifiable,
+        \MapasCulturais\Traits\EntitySoftDelete;
 
 
 

@@ -25,8 +25,22 @@ trait EntitySoftDelete{
 
     }
 
+    function undelete($flush = false){
+        $this->checkPermission('undelete');
+
+        $entity_class = $this->getClassName();
+
+        //muda o status para 2, temporariamente
+        $this->status = $entity_class::STATUS_ENABLED;
+
+        $this->save($flush);
+    }
+
     function destroy($flush = false){
         parent::delete($flush);
     }
 
+    function getUndeleteUrl(){
+        return App::i()->createUrl($this->controllerId, 'undelete', array($this->id));
+    }
 }

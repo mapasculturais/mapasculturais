@@ -11,7 +11,7 @@ $this->part('panel/part-nav.php');
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
-        <?php foreach($app->user->enabledAgents as $entity): ?>
+        <?php foreach($user->enabledAgents as $entity): ?>
             <?php $this->part('panel/part-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>

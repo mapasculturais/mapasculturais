@@ -8,6 +8,11 @@
 	</div>
     <div>
         <a class="action" href="<?php echo $entity->editUrl; ?>">editar</a>
-        <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        
+        <?php if($entity->status === \MapasCulturais\Entities\Event::STATUS_ENABLED): ?>
+            <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        <?php else: ?>
+            <a class="action" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
+        <?php endif; ?>
     </div>
 </article>

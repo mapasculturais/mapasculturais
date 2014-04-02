@@ -8,10 +8,15 @@
 	<div class="objeto-meta">
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
 		<div><span class="label">Inscrições:</span> 00/00/00</div>
-		<div><span class="label">Organização:</span> Nome do owner</div>			
+		<div><span class="label">Organização:</span> Nome do owner</div>
 	</div>
     <div>
         <a class="action" href="<?php echo $entity->editUrl; ?>">editar</a>
-        <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        
+        <?php if($entity->status === \MapasCulturais\Entities\Project::STATUS_ENABLED): ?>
+            <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+        <?php else: ?>
+            <a class="action" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
+        <?php endif; ?>
     </div>
 </article>

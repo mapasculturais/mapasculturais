@@ -60,6 +60,7 @@ use \MapasCulturais\App;
 abstract class Controller{
     use Traits\MagicGetter,
         Traits\MagicSetter,
+        Traits\MagicCallers,
         Traits\Singleton;
 
 

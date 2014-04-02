@@ -15,7 +15,8 @@ class Project extends EntityController {
         \MapasCulturais\Traits\ControllerTypes,
         \MapasCulturais\Traits\ControllerMetaLists,
         \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable;
+        \MapasCulturais\Traits\ControllerVerifiable,
+        \MapasCulturais\Traits\ControllerSoftDelete;
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){

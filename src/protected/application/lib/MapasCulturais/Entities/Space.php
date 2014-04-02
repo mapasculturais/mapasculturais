@@ -23,7 +23,8 @@ class Space extends \MapasCulturais\Entity
         \MapasCulturais\Traits\EntityTaxonomies,
         \MapasCulturais\Traits\EntityAgentRelation,
         \MapasCulturais\Traits\EntityNested,
-        \MapasCulturais\Traits\EntityVerifiable;
+        \MapasCulturais\Traits\EntityVerifiable,
+        \MapasCulturais\Traits\EntitySoftDelete;
 
 
     protected static $validations = array(

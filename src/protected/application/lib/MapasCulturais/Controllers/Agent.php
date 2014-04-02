@@ -15,7 +15,8 @@ class Agent extends EntityController {
         \MapasCulturais\Traits\ControllerTypes,
         \MapasCulturais\Traits\ControllerMetaLists,
         \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable;
+        \MapasCulturais\Traits\ControllerVerifiable,
+        \MapasCulturais\Traits\ControllerSoftDelete;
 
     function POST_single(){
         App::i()->hook('entity(agent).update:before', function() {
