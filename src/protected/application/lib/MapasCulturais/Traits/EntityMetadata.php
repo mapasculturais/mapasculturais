@@ -294,12 +294,10 @@ trait EntityMetadata{
     public function saveMetadata(){
         $this->_initMetadataArrays();
 
-        App::i()->log->info(print_r(self::$_changedMetadata, true));
         $saved = false;
         foreach(self::$_changedMetadata[$this->__metadata__tmpId] as $meta_key){
-            App::i()->log->info(print_r($meta_key, true));
             $saved = true;
-            self::$_metadata[$this->__metadata__tmpId][$meta_key]->save(true);
+            self::$_metadata[$this->__metadata__tmpId][$meta_key]->save();
         }
     }
 }

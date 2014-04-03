@@ -313,14 +313,17 @@ abstract class Entity implements \JsonSerializable{
     public function save($flush = false){
         App::i()->em->persist($this);
 
-        if($this->usesMetadata())
-            $this->saveMetadata();
-
-        if($this->usesTaxonomies())
-            $this->saveTerms();
-
         if($flush)
             App::i()->em->flush();
+
+        if($this->usesMetadata()){
+            $this->saveMetadata();
+            App::i()->em->flush();
+        }
+        if($this->usesTaxonomies()){
+            $this->saveTerms();
+            App::i()->em->flush();
+        }
     }
 
     /**

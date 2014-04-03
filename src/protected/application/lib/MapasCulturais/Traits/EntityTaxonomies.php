@@ -167,7 +167,7 @@ trait EntityTaxonomies{
                 $tr->objectType = $this->getClassName();
                 $tr->objectId = $this->id;
 
-                $tr->save(true);
+                $tr->save();
                 return true;
 
             // else if the term does not exists but the taxonomy definition allow insertion, create de term and the association
@@ -189,7 +189,7 @@ trait EntityTaxonomies{
                 $tr->objectType = $this->getClassName();
                 $tr->objectId = $this->id;
 
-                $tr->save(true);
+                $tr->save();
                 return true;
 
             // else if the term not exists and the taxonomy definition not allow insertion, return false
@@ -211,7 +211,7 @@ trait EntityTaxonomies{
     function getTaxonomyTerms($taxonomy_slug = null){
         $app = App::i();
         $class = $this->getClassName();
-        
+
         $result = array();
 
         $taxonomies = $app->getRegisteredTaxonomies($this);
