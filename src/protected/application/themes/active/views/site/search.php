@@ -131,14 +131,14 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
     <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div>
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
-        <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'project'">
+        <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
                 <h1><span class="icone icon_document_alt"></span> Projetos</h1>
                 <a class="botao adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
                 <a class="icone arrow_carrot-down"></a>
             </div>
         </header>
-        <div id="lista-dos-projetos" class="lista" infinite-scroll="addMore('agent')" ng-if="data.global.filterEntity == 'project'">
+        <div id="lista-dos-projetos" class="lista" infinite-scroll="data.global.filterEntity === 'project' && addMore('agent')" ng-show="data.global.filterEntity === 'project'">
             <article class="objeto projeto clearfix"  ng-repeat="project in projects" id="agent-result-{{project.id}}">
                 <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
@@ -157,13 +157,13 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
             <!--.objeto-->
         </div>
 
-        <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'agent'">
+        <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'agent'">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
             <a class="icone arrow_carrot-down"></a>
         </header>
 
-        <div id="lista-dos-agentes" class="lista" infinite-scroll="addMore('agent')" ng-if="data.global.filterEntity == 'agent'">
+        <div id="lista-dos-agentes" class="lista" infinite-scroll="data.global.filterEntity === 'agent' && addMore('agent')" ng-show="data.global.filterEntity === 'agent'">
             <article class="objeto agente clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
                 <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
                 <div class="objeto-content clearfix">
@@ -183,12 +183,12 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                 </div>
             </article>
         </div>
-        <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-if="data.global.filterEntity == 'space'">
+        <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'space'">
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
             <a class="icone arrow_carrot-down"></a>
         </header>
-        <div id="lista-dos-espacos" class="lista" infinite-scroll="addMore('space')" ng-if="data.global.filterEntity == 'space'">
+        <div id="lista-dos-espacos" class="lista" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
             <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
@@ -210,13 +210,13 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                 </div>
             </article>
         </div>
-        <header id="header-dos-eventos" class="header-do-objeto clearfix"  ng-if="data.global.filterEntity == 'event'">
+        <header id="header-dos-eventos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'event'">
             <h1><span class="icone icon_calendar"></span> Eventos</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
             <a class="icone arrow_carrot-down"></a>
         </header>
 
-        <div id="lista-dos-eventos" class="lista" infinite-scroll="addMore('event')" ng-show="data.global.filterEntity == 'event'">
+        <div id="lista-dos-eventos" class="lista" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
                 <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
