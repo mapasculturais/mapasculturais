@@ -100,7 +100,7 @@
     <body <?php if ($this->controller->action == 'search') echo 'ng-app="search" ng-controller="SearchController"'; ?>
 	    class="<?php if ($this->controller) echo "controller-{$this->controller->id} action-{$this->controller->action} ";
 	    	if (isset($entity)) echo 'entity ';?>
-	    " ng-class="{'infobox-open': data.global.openEntity.id>0 && data.global.viewMode==='map' && data.global.openEntity.type === data.global.filterEntity}">
+	    " ng-class="{'infobox-open': showInfobox()}">
 
 		<?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
             <!--facebook compartilhar-->

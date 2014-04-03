@@ -177,6 +177,9 @@
                 $scope.data[entity].isVerified = !$scope.data[entity].isVerified;
         };
 
+        $scope.showInfobox = function (){
+            return $scope.data.global.openEntity.id>0 && $scope.data.global.viewMode==='map' && $scope.data.global.enabled[$scope.data.global.openEntity.type];
+        };
         $scope.showFilters = function(entity){
             if($scope.data.global.viewMode === 'map')
                 return $scope.data.global.enabled[entity];
