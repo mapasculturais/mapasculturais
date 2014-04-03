@@ -220,7 +220,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
-        if($this->status > 0 || ($app->user && ($app->user->is('admin') || $app->user->id === $entity->ownerUser->id)))
+        if($entity->status > 0 || ($app->user && ($app->user->is('admin') || $app->user->id === $entity->ownerUser->id)))
             $this->render('single', array('entity' => $entity));
         else
             $app->pass();
