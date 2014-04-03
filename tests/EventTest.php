@@ -38,9 +38,13 @@ use MapasCulturais\Entities\Space;
 //     24  25  26  27  28  29  30
 
 class EventTest extends MapasCulturais_TestCase{
+
+    protected $eventName;
+
     function createEvent() {
+        $this->eventName = 'Test Event ' . uniqid();
         $event = new Event;
-        $event->name = 'Test Event';
+        $event->name = $this->eventName;
         $event->shortDescription = 'Test Event Description';
         $event->ownerId = $this->app->user->profile->id;
         $event->save(true);
@@ -60,11 +64,11 @@ class EventTest extends MapasCulturais_TestCase{
     function testEvent(){
         $event = $this->createEvent();
 
-        $event2 = $this->app->repo('Event')->findOneBy(array('name' => 'Test Event'));
+        $event2 = $this->app->repo('Event')->findOneBy(array('name' => $this->eventName));
 
         $this->assertEquals($event, $event2);
 
-        $events = $this->app->repo('Event')->findBy(array('name' => 'Test Event'));
+        $events = $this->app->repo('Event')->findBy(array('name' => $this->eventName));
 
         $this->assertEquals(1,count($events));
     }

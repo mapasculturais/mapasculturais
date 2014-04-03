@@ -29,12 +29,12 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
 
         $agent = new Agent($user);
         $agent->isUserProfile = true;
-        $agent->name = 'Namealess';
+        $agent->name = 'Nameless';
         $agent->save(true);
 
         $agentFound = $app->repo('Agent')->findOneBy(array('id'=>$agent->id));
 
-        $this->assertEquals($agentFound->name, 'Namealess');
+        $this->assertEquals($agentFound->name, 'Nameless');
         $this->assertEquals($agentFound->user->id, $user->id);
 
 
@@ -47,8 +47,8 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
 
 
         $event = new Event;
-        $event->name = 'Test Event 123';
-        $event->shortDescription = 'Test Event 123 Description';
+        $event->name = 'Test 123 Event';
+        $event->shortDescription = 'Test 123 Event Description';
         $event->ownerId = $user->profile->id;
         $event->save(true);
 
@@ -68,4 +68,24 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
 
     }
 
+    function testURLs(){
+        $app = \MapasCulturais\App::i();
+        $urls = [
+            'api/agent/find/?&@select=id,name,location&@order=name%20ASC',
+            'api/space/find/?&@select=id,name,location&@order=name%20ASC',
+
+            'api/space/find/?&_geoLocation=GEONEAR(-46.65618896484375,-23.619361679019544,12782)&@select=id,name,location&@order=name%20ASC',
+
+            'api/space/findByEvents/?&@select=id,name,location&@order=name%20ASC',
+
+            'api/agent/find/?&@select=id,singleUrl,name,type,shortDescription,terms&@files=(avatar.avatarBig):url&@page=1&@limit=10&@order=name%20ASC',
+            'api/space/find/?&@select=id,singleUrl,name,type,shortDescription,terms&@files=(avatar.avatarBig):url&@page=1&@limit=10&@order=name%20ASC',
+            'api/event/findByLocation/?&@select=id,singleUrl,name,type,shortDescription,terms,classificacaoEtaria&@files=(avatar.avatarBig):url&@page=1&@limit=10&@order=name%20ASC',
+
+            'api/project/find/?&@select=id,singleUrl,name,type,shortDescription,terms,registrationFrom,registrationTo&@files=(avatar.avatarBig):url&@page=1&@limit=10&@order=name%20ASC'
+        ];
+        foreach($urls as $url){
+            $this->assertNotEmpty(file_get_contents($app->config['site.url'].$url));
+        }
+    }
 }
