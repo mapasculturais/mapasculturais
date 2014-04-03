@@ -135,9 +135,9 @@
         return skeleton;
     };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'FindOneService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService){
         $scope.defaultLocationRadius = defaultLocationRadius;
 
         $rootScope.resetPagination = function(){
@@ -169,16 +169,6 @@
                 array.splice(index, 1);
             } else {
                 array.push(id);
-            }
-        };
-
-
-        $scope.switchView = function (mode) {
-            $scope.data.global.viewMode = mode;
-            if(mode === 'map') {
-                //temporary fixes to tim.js' adjustHeader()
-                $window.scrollTo(0,1);
-                $window.scrollTo(0,0);
             }
         };
 
@@ -273,6 +263,8 @@
                     $window.dataTimeout = $scope.timer;
                 }
             }
+            $window.scrollTo(0, $window.scrollY+1);
+            $window.scrollTo(0, $window.scrollY-1);
         };
 
         $scope.data = angular.copy(skeletonData);
@@ -335,6 +327,13 @@
             $rootScope.$emit('resultPagination', $scope.data);
         };
 
+        $scope.numResults = function (num, entity){
+            if($scope.data.global.viewMode === 'map' && $scope.resultsNotInMap && $scope.resultsNotInMap[entity]){
+                return num - $scope.resultsNotInMap[entity];
+            }else{
+                return num;
+            }
+        }
 
         $scope.numAgents = 0;
         $scope.numSpaces = 0;

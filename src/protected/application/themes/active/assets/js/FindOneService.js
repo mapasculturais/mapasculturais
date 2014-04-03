@@ -4,6 +4,8 @@
     var app = angular.module('FindOneService', []);
     app.factory('FindOneService', ['$http', '$rootScope', function($http, $rootScope){
         return function(data){
+
+            if(data.global.viewMode === 'list') return;
             var select = 'id,singleUrl,name,type,shortDescription,terms',
                 requestAction = 'findOne',
                 page=null,
@@ -16,15 +18,15 @@
 
             entity = data.global.openEntity.type;
             sData.id = 'EQ(' + data.global.openEntity.id + ')';
-            
-            
-            
+
+
+
             if(entity === 'event'){
                 result[entity] = {
                     space: {},
                     events: {}
                 };
-                
+
                 $rootScope.spinnerCount++;
                 numRequests++;
             }

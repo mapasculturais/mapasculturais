@@ -37,9 +37,7 @@
 
                 $scope.updateMap();
                 $scope.setMapView();
-                if($scope.data.global.openEntity && $scope.data.global.openEntity.id){
-                    FindOneService($scope.data);
-                }
+
             });
 
             $rootScope.$on('searchCountResultsReady', function(ev, results){
@@ -65,6 +63,10 @@
                 if(results.space) $scope.createMarkers('space', results.space);
 
                 $scope.updateMap();
+
+                if($scope.data.global.openEntity && $scope.data.global.openEntity.id){
+                    FindOneService($scope.data);
+                }
             });
 
             $rootScope.$on('searchDataChange', function(ev, data){

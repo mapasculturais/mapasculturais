@@ -181,27 +181,27 @@
                     <span style="margin-left:35px">obtendo resultados...</span>
                 </span>
                 <span ng-if="!spinnerCount">
-                    <span ng-if="numAgents-resultsNotInMap.agent">{{numAgents-resultsNotInMap.agent}} agente<span ng-show="numAgents-resultsNotInMap.agent!==1">s</span>
+                    <span ng-if="numResults(numAgents, 'agent')">{{numResults(numAgents, 'agent')}} agente<span ng-show="numResults(numAgents, 'agent')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} agentes sem localização">
                             ({{resultsNotInMap.agent}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="numAgents-resultsNotInMap.agent && (numSpaces-resultsNotInMap.space || numEvents-resultsNotInMap.event)">,</span>
-                    <span ng-if="numSpaces-resultsNotInMap.space">{{numSpaces-resultsNotInMap.space}} espaço<span ng-show="numSpaces-resultsNotInMap.space!==1">s</span>
+                    <!--,--><span ng-if="numResults(numAgents, 'agent') && (numResults(numSpaces, 'space') || numResults(numEvents, 'event'))">,</span>
+                    <span ng-if="numResults(numSpaces, 'space')">{{numResults(numSpaces, 'space')}} espaço<span ng-show="numResults(numSpaces, 'space')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} espaços sem localização">
                             ({{resultsNotInMap.space}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="numSpaces-resultsNotInMap.space && numEvents-resultsNotInMap.event">,</span>
-                    <span ng-if="numEvents-resultsNotInMap.event">{{numEvents-resultsNotInMap.event}} evento<span ng-show="numEvents-resultsNotInMap.event!==1">s</span>
+                    <!--,--><span ng-if="numResults(numSpaces, 'space') && numResults(numEvents, 'event')">,</span>
+                    <span ng-if="numResults(numEvents, 'event')">{{numResults(numEvents, 'event')}} evento<span ng-show="numResults(numEvents, 'event')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
                             ({{resultsNotInMap.event}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="(numAgents-resultsNotInMap.agent || numSpaces-resultsNotInMap.space) && numEvents-resultsNotInMap.event">,</span>
+                    <!--,--><span ng-if="(numResults(numAgents, 'agent') || numResults(numSpaces, 'space')) && numResults(numEvents, 'event')">,</span>
                     <span ng-if="numProjects">{{numProjects}} projeto<span ng-show="numProjects!==1">s</span> </span>
                 </span>
-                <span ng-show="spinnerCount===0 && (numEvents-resultsNotInMap.event === 0 || !showFilters('event')) && (numAgents-resultsNotInMap.agent === 0 || !showFilters('agent')) && (numSpaces-resultsNotInMap.space === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                <span ng-show="spinnerCount===0 && (numResults(numEvents, 'event') === 0 || !showFilters('event')) && (numResults(numAgents, 'agent') === 0 || !showFilters('agent')) && (numResults(numSpaces, 'space') === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
             </div>
             <!--#resultados-->
             <div id="filtros-selecionados">
@@ -252,8 +252,8 @@
                     </form>
                 </div>
                 <div id="views" class="clearfix" ng-if="!showFilters('project')">
-                    <a class="hltip botao-de-icone icone icon_menu-square_alt" ng-click="switchView('list')" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
-                    <a class="hltip botao-de-icone icone icon_map"  ng-click="switchView('map')"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
+                    <a class="hltip botao-de-icone icone icon_menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
+                    <a class="hltip botao-de-icone icone icon_map"              ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
                 </div>
             </div>
             <!--#ferramentas-->
