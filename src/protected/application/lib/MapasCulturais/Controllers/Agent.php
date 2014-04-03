@@ -18,13 +18,6 @@ class Agent extends EntityController {
         \MapasCulturais\Traits\ControllerVerifiable,
         \MapasCulturais\Traits\ControllerSoftDelete;
 
-    function POST_single(){
-        App::i()->hook('entity(agent).update:before', function() {
-            $this->status = \MapasCulturais\Entities\Agent::STATUS_ENABLED;
-        });
-        parent::POST_single();
-    }
-
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();
         $app = App::i();
