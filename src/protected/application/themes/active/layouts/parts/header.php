@@ -243,7 +243,7 @@
                                         <li><a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a></li>
                                         <li><a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a></li>
                                         <li><a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
+                                        <li><a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
                                     </ul>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
