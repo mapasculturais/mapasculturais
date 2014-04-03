@@ -352,8 +352,7 @@
         });
 
         var formatDate = function(date){
-            var d = date ? new Date(date + ' 12:00') : new Date();
-            return d.toLocaleString('pt-BR',{ day: '2-digit', month:'2-digit', year:'numeric' });
+            return moment(date).format('DD/MM/YYYY');
         };
 
         $scope.dateOptions = {
