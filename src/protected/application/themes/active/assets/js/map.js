@@ -125,7 +125,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             options.zoomControl = false;
             options.minZoom = 3;
             var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contribuidores OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
+                attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
                 maxZoom: 18
             });
             var map = new L.Map(id, options).addLayer(openStreetMap);
