@@ -176,6 +176,10 @@
         <div id="header-dos-resultados" class="clearfix">
             <style>#resultados{width:auto; float:left; position:static;} #filtros-selecionados{float:left; margin-left: auto;}</style>
             <div id="resultados">
+                <span ng-show="spinnerCount > 0" style="display:inline">
+                    <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>
+                    <span style="margin-left:35px">obtendo resultados...</span>
+                </span>
                 <span ng-if="!spinnerCount">
                     <span ng-if="numAgents-resultsNotInMap.agent">{{numAgents-resultsNotInMap.agent}} agente<span ng-show="numAgents-resultsNotInMap.agent!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} agentes sem localização">
