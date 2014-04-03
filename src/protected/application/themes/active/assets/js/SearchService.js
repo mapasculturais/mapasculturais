@@ -176,10 +176,39 @@
                 }
             }
 
+            function countAndRemoveResultsNotInMap(entity, results){
+                results[entity].forEach(function(item, index) {
+                    if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
+                        $rootScope.resultsNotInMap[entity]++;
+                        //delete results[entity][index];
+                    }
+                });
+            }
+
             function endRequest(){
                 if(numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
+
+                    if(data.global.viewMode === 'map') {
+                        console.log('apagando', $rootScope.resultsNotInMap, results);
+                        $rootScope.resultsNotInMap = {agent: 0, space: 0, event: 0};
+                        if(results.agent) {
+                            countAndRemoveResultsNotInMap('agent', results);
+                           //$rootScope.numAgentsInMap = parseInt(results.agent) - $rootScope.resultsNotInMap.agent;
+                        }
+                        if(results.space) {
+                            countAndRemoveResultsNotInMap('space', results);
+                            //$rootScope.numSpacesInMap = parseInt(results.space) - $rootScope.resultsNotInMap.space;
+                        }
+                        if(results.event) {
+                            countAndRemoveResultsNotInMap('event', results);
+                            //$rootScope.numEventsInMap = parseInt(results.event) - $rootScope.resultsNotInMap.event;
+                        }
+                    }
+
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
+                    console.log(results);
+
                     $rootScope.$emit('searchResultsReady', results);
                 }
             }
