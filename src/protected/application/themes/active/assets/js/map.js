@@ -152,7 +152,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             map.addLayer(marker);
 
 
-            var circle = new L.Circle(mapCenter, defaultMaxCircleRadius, {weight: defaultCircleStrokeWeight});
+            var circle = new L.Circle(mapCenter, defaultMaxCircleRadius, {className : 'vetorial-padrao'});
             circle.addTo(map);
 
             var circleIcon = L.divIcon({
