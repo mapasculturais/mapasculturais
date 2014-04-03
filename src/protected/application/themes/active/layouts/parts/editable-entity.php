@@ -59,7 +59,7 @@
             <!-- se estiver na página comum e logado mostrar:-->
             <a href="<?php echo $entity->editUrl ?>" class="botao principal">Editar</a>
 
-            <?php if ($entity->canUser('remove') && $entity->status > 0): ?>]
+            <?php if ($entity->canUser('remove') && $entity->status > 0): ?>
                 <a href="<?php echo $entity->deleteUrl ?>" class="botao selected">Excluir</a>
             <?php elseif ($entity->canUser('undelete') && $entity->status < 0): ?>
                 <a href="<?php echo $entity->undeleteUrl ?>" class="botao selected">Recuperar</a>
