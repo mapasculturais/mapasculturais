@@ -737,19 +737,30 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $query->setMaxResults($findOne ? 1 : $limit);
             $query->setFirstResult($offset);
 
+            $processEntity = function($r) use($append_files_cb, $select){
+                $entity = array();
+                $append_files_cb($entity, $r);
+                foreach($select as $i=> $prop){
+                    $prop = trim($prop);
+                    try{
+                        $prop_value = $r->$prop;
+                        if(is_object($prop_value) && $prop_value instanceof \Doctrine\Common\Collections\Collection)
+                            $prop_value = $prop_value->toArray();
+
+                        $entity[$prop] = $prop_value;
+                    }  catch (\Exception $e){
+                    }
+                }
+                return $entity;
+            };
+
             if($counting){
                 $num = $query->getSingleScalarResult();
                 return $num;
 
             }elseif($findOne){
                 if($r = $query->getOneOrNullResult()){
-                    $entity = array();
-                    $append_files_cb($entity, $r);
-
-                    foreach($select as $prop){
-                        $prop = trim($prop);
-                        $entity[$prop] = $r->$prop;
-                    }
+                    $entity = $processEntity($r);
                 }else{
                     $entity = null;
                 }
@@ -759,16 +770,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 $result = array();
                 foreach($rs as $r){
-                    $entity = array();
-                    $append_files_cb($entity, $r);
-                    foreach($select as $i=> $prop){
-                        $prop = trim($prop);
-                        try{
-                            $entity[$prop] = $r->$prop;
-                        }  catch (\Exception $e){
-                        }
-                    }
-                    $result[] = $entity;
+                    $result[] = $processEntity($r);
                 }
                 return $result;
             }
