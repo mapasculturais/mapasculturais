@@ -497,7 +497,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     subprefs.setMap(null);
                     //$checkbox = $(this).parents('label').find('input'); //tá dando pau, tem que fabricar outro controle de toggle
                     if ($checkbox.prop('checked')) {
-                        //$checkbox.prop('checked', false);
+                        $checkbox.prop('checked', false);
                     } else {
                         subprefs.options.geotable = '"sp_'+geotable+'"';
                         subprefs.options.fields = $(this).data('fds');
