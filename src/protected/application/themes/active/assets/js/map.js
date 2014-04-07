@@ -363,6 +363,11 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
 
 
+            // subprefs._globalPointer._processFeatures = function(data){
+            //     alert('aqui sim')
+            // };
+
+
             $('#buttonSubprefs').click(function() {
                 subprefs.setMap(map);
             });
@@ -481,7 +486,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             layersControl.addTo(map)
 
 
-
             $('.js-sp-geo').each(function(){
                 var $checkbox = $(this).parents('label').find('input:checkbox');
                 var geotable = $(this).data('geot');
@@ -493,18 +497,47 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     subprefs.setMap(null);
                     //$checkbox = $(this).parents('label').find('input'); //tá dando pau, tem que fabricar outro controle de toggle
                     if ($checkbox.prop('checked')) {
-                        $checkbox.prop('checked', false);
+                        //$checkbox.prop('checked', false);
                     } else {
                         subprefs.options.geotable = '"sp_'+geotable+'"';
                         subprefs.options.fields = $(this).data('fds');
                         subprefs.setMap(map);
-                        $checkbox.prop('checked', true);
+                        //$checkbox.prop('checked', true);
                     }
                 });
             });
 
+            subprefs._makeJsonpRequest = function(url){
+                console.log('LOADING VECTOR FROM ',url);
+                console.log(subprefs._globalPointer);
+                $('#resultados span[ng-if="!spinnerCount"]').hide();
+                $('#resultados span[ng-show="spinnerCount > 0"]').removeClass('ng-hide');
+                $.ajax({
+                    url: url,
+                    dataType: 'jsonp',
+                    //jsonpCallback: myCallback,
+                    cache: true,
+                    success: function(data) {
+                        console.log('VECTOR LOADED ', data);
+                        //console.log(subprefs._globalPointer)
+                        subprefs._processFeatures(data);
+                        $('#resultados span[ng-if="!spinnerCount"]').show();
+                        $('#resultados span[ng-show="spinnerCount > 0"]').addClass('ng-hide');
 
+                        $('.js-sp-geo').each(function(){
+                            var $checkbox = $(this).parents('label').find('input:checkbox');
+                            var geotable = $(this).data('geot');
+                            if(subprefs.options.geotable !== '"sp_'+$(this).data('geot')+'"'){
+                                $checkbox.prop('checked', false);
+                            }else{
+                                $checkbox.prop('checked', true);
+                            }
+                        });
 
+                    }
+                });
+
+            };
 
 
             if (initializerOptions.exportToGlobalScope) {
