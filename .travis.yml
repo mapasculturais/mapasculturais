@@ -27,6 +27,7 @@ before_script:
   - psql -f db/sp-shapefile-sql/sp_subprefeitura.sql -U mapasculturais -d mapasculturais
 
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - php -S 0.0.0.0:8000 -t src
 
 script:
   - phpunit tests
