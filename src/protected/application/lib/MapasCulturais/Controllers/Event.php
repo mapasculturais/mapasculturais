@@ -165,29 +165,29 @@ class Event extends EntityController {
             $e['occurrences'] = array();
             $e['occurrencesReadable'] = array();
 
-            $occurrences = $evt->findOccurrences($date_from, $date_to);
-
-            foreach($occurrences as $occ){
-                $space_id = $occ->spaceId;
-
-                if(!key_exists($space_id, $e['spaces']))
-                    $e['spaces'][$space_id] = $app->repo('Space')->find($space_id);
-
-
-                if(!key_exists($space_id, $e['occurrences']))
-                    $e['occurrences'][$space_id] = array();
-
-                if(!key_exists($space_id, $e['occurrencesReadable']))
-                    $e['occurrencesReadable'][$space_id] = array();
-
-                $e['occurrences'][$space_id][] = $occ;
-
-                $month = $app->txt($occ->startsOn->format('F'));
-                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
-
-                if(!in_array($str, $e['occurrencesReadable'][$space_id]))
-                    $e['occurrencesReadable'][$space_id][] = $str;
-            }
+//            $occurrences = $evt->findOccurrences($date_from, $date_to);
+//
+//            foreach($occurrences as $occ){
+//                $space_id = $occ->spaceId;
+//
+//                if(!key_exists($space_id, $e['spaces']))
+//                    $e['spaces'][$space_id] = $app->repo('Space')->find($space_id);
+//
+//
+//                if(!key_exists($space_id, $e['occurrences']))
+//                    $e['occurrences'][$space_id] = array();
+//
+//                if(!key_exists($space_id, $e['occurrencesReadable']))
+//                    $e['occurrencesReadable'][$space_id] = array();
+//
+//                $e['occurrences'][$space_id][] = $occ;
+//
+//                $month = $app->txt($occ->startsOn->format('F'));
+//                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
+//
+//                if(!in_array($str, $e['occurrencesReadable'][$space_id]))
+//                    $e['occurrencesReadable'][$space_id][] = $str;
+//            }
 
             $result_occurrences[$evt->id] = $e;
         }

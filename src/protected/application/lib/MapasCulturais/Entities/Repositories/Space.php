@@ -43,6 +43,8 @@ class Space extends CachedRepository{
                 recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
                 ON eo.space_id = e.id $dql_event_ids
 
+            WHERE e.status > 0
+
             $dql_limit $dql_offset
 
             ORDER BY
