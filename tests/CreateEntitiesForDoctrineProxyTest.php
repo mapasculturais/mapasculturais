@@ -84,6 +84,7 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
 
             'api/project/find/?&@select=id,singleUrl,name,type,shortDescription,terms,registrationFrom,registrationTo&@files=(avatar.avatarBig):url&@page=1&@limit=10&@order=name%20ASC'
         ];
+        if(@fsockopen($app->config['site.url']))
         foreach($urls as $url){
             $this->assertNotEmpty(file_get_contents($app->config['site.url'].$url));
         }
