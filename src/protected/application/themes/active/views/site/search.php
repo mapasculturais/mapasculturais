@@ -45,7 +45,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
 ?>
 <?php add_map_assets(); ?>
     <div id="infobox" style="display:block" ng-show="showInfobox()">
-        <a class="icone icon_close" ng-click="data.global.openEntity=null"></a>
+        <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
