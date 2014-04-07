@@ -45,7 +45,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
 ?>
 <?php add_map_assets(); ?>
     <div id="infobox" style="display:block" ng-show="showInfobox()">
-        <a class="icone icon_close" ng-click="data.global.openEntity=null"></a>
+        <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
@@ -124,9 +124,9 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
     </div>
     <!--#filtro-local-->
     <div id="camadas-de-entidades" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
-        <a class="hltip botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="Mostrar eventos"></a>
-        <a class="hltip botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="Ocultar agentes"></a>
-        <a class="hltip botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="Mostrar espaços"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} espaços"></a>
     </div>
     <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div>

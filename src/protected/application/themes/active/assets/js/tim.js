@@ -412,7 +412,7 @@ var hl;
          */
         tip:{
             init: function(){
-                $(document.body).on('mouseenter', ".hltip",function(e){
+                $(document.body).on('mouseenter, click', ".hltip",function(e){
                     var tip = $(this).data('tip');
                     var $this = $(this);
                     var _left = $(this).offset().left + $this.outerWidth(true)/2 + $(document).scrollLeft();

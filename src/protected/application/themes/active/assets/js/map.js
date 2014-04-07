@@ -338,7 +338,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 geotable: '"sp_subprefeitura"',
                 fields: "gid,nome",
                 //where: 'true',
-                geomFieldName: "ST_Simplify(the_geom,0.00001)",
+                geomFieldName: "ST_SimplifyPreserveTopology(the_geom,0.001)",
                 uniqueField: "gid",
                 srid: 4326,
                 showAll: true,
