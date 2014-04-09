@@ -255,27 +255,6 @@ return array(
 			]
 	},
 	{
-		"name": "Largo São Bento",
-		"events":
-			[
-				{ "hour": "18:40", "name": "Sarau Di Favela" },
-				{ "hour": "20:20", "name": "DBS" },
-				{ "hour": "22:00", "name": "Sarau da Cooperifa" },
-				{ "hour": "23:40", "name": "Sarau da Cooperifa" },
-				{ "hour": "00:20", "name": "Kamau" },
-				{ "hour": "02:00", "name": "Sarau Suburbano convicto" },
-				{ "hour": "05:40", "name": "ZÁfrica Brasil" },
-				{ "hour": "06:20", "name": "Sarau dos Umbigos" },
-				{ "hour": "08:00", "name": "Grupo MPA" },
-				{ "hour": "09:40", "name": "Slam a Guilhermina" },
-				{ "hour": "11:20", "name": "Crônica Mendes" },
-				{ "hour": "13:00", "name": "Banda Nhocuné Soul" },
-				{ "hour": "14:40", "name": "Zinho Trindade" },
-				{ "hour": "16:20", "name": "Grupo Linha Dura" },
-				{ "hour": "18:00", "name": "Sandrão RZO" }
-			]
-	},
-	{
 		"name": "Cine Olido | Sessão Trash do Comodoro",
 		"events":
 			[
@@ -349,7 +328,7 @@ return array(
 
 
                 $rule = '{
-                    "spaceId":"' . 1 . '",
+                    "spaceId":"' . $space->id . '",
                     "startsAt": "' . $edata->hour . '",
                     "endsAt": "' . $edata->hour . '",
                     "frequency": "daily",
