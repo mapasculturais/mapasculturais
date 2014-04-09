@@ -51,7 +51,7 @@ return array(
         7 =>  array( 'name' => "Ciclo"),
         8 =>  array( 'name' => "Programa"),
         9 =>  array( 'name' => "Edital"),
-        10 => array( 'name' =>  "Concurso")
+        10 => array( 'name' => "Concurso")
     )
     /* EXEMPLOS DE METADADOS:
 

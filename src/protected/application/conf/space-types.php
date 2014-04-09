@@ -223,7 +223,14 @@ return array(
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
                 124 => array( 'name' => 'Rádio Comunitária' )
             )
-        )
+        ),
+
+        'Virada Cultural' => array(
+            'range' => array(500,600),
+            'items' => array(
+                501 => array( 'name' => 'Palco' ),
+            )
+        ),
     )
     /* EXEMPLOS DE METADADOS:
 

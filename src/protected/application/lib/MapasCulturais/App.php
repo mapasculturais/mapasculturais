@@ -347,6 +347,9 @@ class App extends \Slim\Slim{
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
+
+        $app->register();
+
         // don't run dbUpdates anymore
         $this->_dbUpdates();
 

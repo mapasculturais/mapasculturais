@@ -18,6 +18,7 @@ return array(
             'MapasCulturais\Entities\Agent'
         ),
         'restricted_terms' => array(
+            'Virada Cultural',
             'Antropologia',
             'Arqueologia',
             'Arquitetura-Urbanismo',

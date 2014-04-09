@@ -31,7 +31,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         'endsAt' => array(
             'required' => 'Hora final é obrigatória',
             '$value instanceof \DateTime' => 'Hora final inválida',
-            '$value > $this->startsAt' => 'A hora final deve ser depois da hora inicial'
+            '$value >= $this->startsAt' => 'A hora final deve ser depois da hora inicial'
          ),
         'frequency' => array(
             'required' => 'Frequência é obrigatória',
@@ -42,7 +42,7 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'until' => array(
             '$value instanceof \DateTime' => 'Data final inválida',
-            '$value > $this->startsOn' => 'Data final antes da inicial'
+            '$value >= $this->startsOn' => 'Data final antes da inicial'
          ),
         'event' => array(
             'required' => 'Evento é obrigatório'
@@ -204,6 +204,13 @@ class EventOccurrence extends \MapasCulturais\Entity
      * })
      */
     protected $event;
+
+    /**
+     * @var eventId
+     *
+     * @ORM\Column(name="event_id", type="integer", nullable=false)
+     */
+    protected $eventId;
 
     /**
      * @var \MapasCulturais\Entities\Space

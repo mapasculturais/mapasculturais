@@ -52,5 +52,3 @@ $config = include __DIR__.'/conf/config.php';
 
 // create the App instance
 $app = App::i()->init($config);
-
-$app->register();
