@@ -344,8 +344,8 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 showAll: true,
                 mouseoverEvent: function(feature, event) {
                     var labelText = feature.properties.nome ? feature.properties.nome : feature.properties.nome_distr;
-                    feature.vectors[0].bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
-                    map.showLabel(feature.vectors[0].label.setLatLng(feature.vectors[0].getCenter()));
+                    feature.vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
+                    map.showLabel(feature.vector.label.setLatLng(feature.vector.getCenter()));
                 },
                 singlePopup: true,
                 symbology: {
