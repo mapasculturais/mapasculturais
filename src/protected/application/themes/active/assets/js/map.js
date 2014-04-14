@@ -488,8 +488,9 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             $('.js-sp-geo').each(function(){
                 var $checkbox = $(this).parents('label').find('input:checkbox');
-                var geotable = $(this).data('geot');
+
                 $(this).on('click', function(event) {
+                    var geotable = $(this).data('geot');
                     event.preventDefault();
                     $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
                         $(this).parents('label').find('input:checkbox').prop('checked', false);
@@ -504,6 +505,11 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                         subprefs.setMap(map);
                         //$checkbox.prop('checked', true);
                     }
+                });
+                $checkbox.on('click', function(event){
+                    event.preventDefault();
+                    $(this).prop('checked', false);
+                    $(this).parents('label').find('.js-sp-geo').trigger('click');
                 });
             });
 
