@@ -344,8 +344,8 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 showAll: true,
                 mouseoverEvent: function(feature, event) {
                     var labelText = feature.properties.nome ? feature.properties.nome : feature.properties.nome_distr;
-                    feature.vectors[0].bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
-                    map.showLabel(feature.vectors[0].label.setLatLng(feature.vectors[0].getCenter()));
+                    feature.vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
+                    map.showLabel(feature.vector.label.setLatLng(feature.vector.getCenter()));
                 },
                 singlePopup: true,
                 symbology: {
@@ -361,6 +361,11 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     }
                 }
             });
+
+
+            // subprefs._globalPointer._processFeatures = function(data){
+            //     alert('aqui sim')
+            // };
 
 
             $('#buttonSubprefs').click(function() {
@@ -481,11 +486,11 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             layersControl.addTo(map)
 
 
-
             $('.js-sp-geo').each(function(){
                 var $checkbox = $(this).parents('label').find('input:checkbox');
-                var geotable = $(this).data('geot');
+
                 $(this).on('click', function(event) {
+                    var geotable = $(this).data('geot');
                     event.preventDefault();
                     $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
                         $(this).parents('label').find('input:checkbox').prop('checked', false);
@@ -498,13 +503,47 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                         subprefs.options.geotable = '"sp_'+geotable+'"';
                         subprefs.options.fields = $(this).data('fds');
                         subprefs.setMap(map);
-                        $checkbox.prop('checked', true);
+                        //$checkbox.prop('checked', true);
                     }
+                });
+                $checkbox.on('click', function(event){
+                    event.preventDefault();
+                    $(this).prop('checked', false);
+                    $(this).parents('label').find('.js-sp-geo').trigger('click');
                 });
             });
 
+            subprefs._makeJsonpRequest = function(url){
+                console.log('LOADING VECTOR FROM ',url);
+                console.log(subprefs._globalPointer);
+                $('#resultados span[ng-if="!spinnerCount"]').hide();
+                $('#resultados span[ng-show="spinnerCount > 0"]').removeClass('ng-hide');
+                $.ajax({
+                    url: url,
+                    dataType: 'jsonp',
+                    //jsonpCallback: myCallback,
+                    cache: true,
+                    success: function(data) {
+                        console.log('VECTOR LOADED ', data);
+                        //console.log(subprefs._globalPointer)
+                        subprefs._processFeatures(data);
+                        $('#resultados span[ng-if="!spinnerCount"]').show();
+                        $('#resultados span[ng-show="spinnerCount > 0"]').addClass('ng-hide');
 
+                        $('.js-sp-geo').each(function(){
+                            var $checkbox = $(this).parents('label').find('input:checkbox');
+                            var geotable = $(this).data('geot');
+                            if(subprefs.options.geotable !== '"sp_'+$(this).data('geot')+'"'){
+                                $checkbox.prop('checked', false);
+                            }else{
+                                $checkbox.prop('checked', true);
+                            }
+                        });
 
+                    }
+                });
+
+            };
 
 
             if (initializerOptions.exportToGlobalScope) {

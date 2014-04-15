@@ -412,7 +412,7 @@ var hl;
          */
         tip:{
             init: function(){
-                $(document.body).on('mouseenter, click', ".hltip",function(e){
+                $(document.body).on('mouseenter click', ".hltip",function(e){
                     var tip = $(this).data('tip');
                     var $this = $(this);
                     var _left = $(this).offset().left + $this.outerWidth(true)/2 + $(document).scrollLeft();
@@ -474,8 +474,9 @@ var hl;
                     }
                 });
 
-                $(document.body).on('mouseleave', ".hltip", function(e){
-                    $(this).data('tip').fadeOut('fast');
+                $(document.body).on('mouseleave mouseup', ".hltip", function(e){
+                    if($(this).data('tip'))
+                        $(this).data('tip').fadeOut('fast');
 
                 });
             }
