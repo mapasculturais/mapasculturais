@@ -179,9 +179,16 @@ add_occurrence_frequencies_to_js();
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <p>
+                <?php if (!is_editable() || $entity->subTitle): ?>
+                    <span class="label">Sub-Título:</span><br>
+                <?php endif; ?>
                 <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->subTitle; ?></span>
             </p>
             <p>
+                <?php if (!is_editable() || $entity->shortDescription): ?>
+                    <span class="label">Descrição Curta:</span><br>
+                <?php endif; ?>
+
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
             <div class="servico">
@@ -232,6 +239,7 @@ add_occurrence_frequencies_to_js();
             </div>
             <!--.servico-->
             <div class="servico ocorrencia clearfix">
+                <h6>Este evento ocorre em:</h6>
                 <?php
                 //$entity->getMetaLists(array('group'=>'links'));
                 $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
