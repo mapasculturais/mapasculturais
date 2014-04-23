@@ -4,6 +4,10 @@
  */
 return array(
     'metadata' => array(
+        'subTitle' => array(
+            'label' => 'Sub-Título',
+            'type' => 'text'
+        ),
         'registrationInfo' => array(
             'label' => 'Inscrições',
             'type' => 'text'
