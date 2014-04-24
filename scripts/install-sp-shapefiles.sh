@@ -2,6 +2,8 @@
 
 tar xC /tmp -f ../db/sp-shapefile-sql.tar.xz
 
+export PGPASSWORD=mapasculturais
+
 sudo -u postgres psql -U mapasculturais -d mapasculturais -h 127.0.0.1 -c "DROP table IF EXISTS sp_regiao;"
 sudo -u postgres psql -U mapasculturais -d mapasculturais -h 127.0.0.1 -f /tmp/sp-shapefile-sql/sp_regiao.sql
 
@@ -11,7 +13,9 @@ sudo -u postgres psql -U mapasculturais -d mapasculturais -h 127.0.0.1 -f /tmp/s
 sudo -u postgres psql -U mapasculturais -d mapasculturais -h 127.0.0.1 -c "DROP table IF EXISTS sp_subprefeitura;"
 sudo -u postgres psql -U mapasculturais -d mapasculturais -h 127.0.0.1 -f /tmp/sp-shapefile-sql/sp_subprefeitura.sql
 
-read -p "Mapas Culturais: Delete temporary /tmp/sp-shapefiles-sql/ files? (Y/n) 
+unset PGPASSWORD
+
+read -p "MAPAS CULTURAIS: Delete temporary /tmp/sp-shapefiles-sql/ files? (Y/n)
 " -n 1 -r
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Nn]$ ]]
