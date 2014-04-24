@@ -14,6 +14,8 @@ if (is_editable()) {
     //$app->enqueueStyle('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
 
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+
 add_map_assets();
 
 add_occurrence_frequencies_to_js();
@@ -29,7 +31,7 @@ add_occurrence_frequencies_to_js();
         <div class="infos">
             <!--p class="label">Resumo da regra que será exibido pro público.</p-->
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
+            <p><span class="label">Duração:</span> {{rule.duration}}</p>
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
@@ -66,7 +68,7 @@ add_occurrence_frequencies_to_js();
         <div class="infos">
             <!--p class="label">Resumo da regra que será exibido pro público.</p-->
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Horário final:</span> {{rule.endsAt}}</p>
+            <p><span class="label">Duração:</span> {{rule.duration}}</p>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
             {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
         </div>
@@ -376,11 +378,11 @@ add_occurrence_frequencies_to_js();
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="horario-de-inicio">Horário inicial:</label><br>
-                <input id="horario-de-inicio" class="horario-da-ocorrencia js-event-times" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
+                <input id="horario-de-inicio" class="horario-da-ocorrencia js-event-time" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <label for="horario-de-fim">Horário final:</label><br>
-                <input id="horario-de-fim" class="horario-da-ocorrencia js-event-times" type="text" name="endsAt" placeholder="00:00"  value="{{rule.endsAt}}">
+                <label for="duracao">Duração:</label><br>
+                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="00h00"  value="{{rule.duration}}">
             </div>
             <div class="grupo-de-campos">
                 <span class="label">Frequência:</span><br>

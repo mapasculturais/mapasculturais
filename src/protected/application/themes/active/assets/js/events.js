@@ -22,7 +22,8 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     MapasCulturais.EventDates.init('.js-event-dates');
 
 
-    $dialog.find('form').find('.js-event-times').mask('00:00');
+    $dialog.find('form').find('.js-event-time').mask('00:00');
+    $dialog.find('form').find('.js-event-duration').mask('00h00');
 };
 
 
@@ -43,6 +44,16 @@ MapasCulturais.EventOccurrenceManager = {
     },
     init : function(selector) {
         $(selector).ajaxForm({
+            beforeSubmit: function(formData, $form, options) {
+                return true;
+                //console.log(formData);
+                //console.log($form);
+                //formData.endsAt = formData.duration;
+                var startDateTime = moment($form[0].startsOn.value + ' ' + $form[0].startsAt.value);
+                alert(startDateTime);
+                alert($form[0].duration.value.replace('h', ':'));
+                return false;
+            },
             success: function (response, statusText, xhr, $form)  {
                 $form.find('.erro').not('.mensagem').remove();
                 if(response.error){

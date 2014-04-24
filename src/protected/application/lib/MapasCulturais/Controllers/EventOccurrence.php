@@ -59,7 +59,9 @@ class EventOccurrence extends EntityController {
         $occurrence = $this->requestedEntity;
         $postData = $this->postData;
         unset($postData['eventId']);
+
         $occurrence->rule = $postData;
+
 
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);
