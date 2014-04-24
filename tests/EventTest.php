@@ -215,7 +215,7 @@ class EventTest extends MapasCulturais_TestCase{
         $occurrence->event = $event;
         $occurrence->space = $space;
 
-        $rule = '{"spaceId":"31","startsAt":"12:31","endsAt":"12:32","frequency":"weekly","startsOn":"2014-02-10","until":"2014-02-19","day":{"1":"on","3":"on"},"monthly":"week"}';
+        $rule = '{"spaceId":"31","startsAt":"12:31","duration":"00h01","frequency":"weekly","startsOn":"2014-02-10","until":"2014-02-19","day":{"1":"on","3":"on"},"monthly":"week"}';
         $occurrence->rule = json_decode($rule);
 
         $this->assertEmpty($occurrence->validationErrors, print_r($occurrence->validationErrors, true));
