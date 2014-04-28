@@ -94,7 +94,7 @@ add_map_assets();
 	<div id="sobre" class="aba-content">
 		<div class="ficha-spcultura">
 			<p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom"><?php echo $entity->shortDescription; ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
 			</p>
             <div class="servico">
 

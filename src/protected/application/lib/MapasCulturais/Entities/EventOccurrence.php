@@ -28,10 +28,10 @@ class EventOccurrence extends \MapasCulturais\Entity
             'required' => 'Hora de inicio é obrigatória',
             '$value instanceof \DateTime' => 'Hora de inicio inválida',
          ),
-        'endsAt' => array(
-            'required' => 'Hora final é obrigatória',
-            '$value instanceof \DateTime' => 'Hora final inválida',
-            '$value >= $this->startsAt' => 'A hora final deve ser depois da hora inicial'
+        'duration' => array(
+            //'required' => 'A duração é obrigatória',
+            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida',
+            '$value->h > 0 || $value->i > 0' => 'A duração não pode ser zero'
          ),
         'frequency' => array(
             'required' => 'Frequência é obrigatória',
@@ -152,6 +152,13 @@ class EventOccurrence extends \MapasCulturais\Entity
         return $this->_endsAt;
     }
 
+    function getDuration() {
+        $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
+        $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
+        $interval = $endsAtCopy->diff($startsAtCopy);
+        return $interval;
+    }
+
     /**
      * @var frequency
      *
@@ -251,14 +258,27 @@ class EventOccurrence extends \MapasCulturais\Entity
             return;
         }
         $value = (array) $value;
-        $this->_rule = json_encode($value);
 
         $this->startsAt = @$value['startsOn'] . ' ' . @$value['startsAt'];
-        $this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
+        //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
+
+        if($value['duration']){
+            @list($hours, $minutes) = explode('h', $value['duration']);
+            $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
+            if(!$minutes) $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
+            else $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
+            $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
+        }else{
+            //$this->endsAt = null; // don't attributing causes the duration to be 1 minute
+        }
+
 
         $this->startsOn = @$value['startsOn'];
         $this->until = @$value['until'] ? $value['until'] : null;
         $this->frequency = @$value['frequency'];
+
+        $this->_rule = json_encode($value);
 
         if ($this->validationErrors) {
             return;
@@ -337,6 +357,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'startsAt' => $this->startsAt,
             'endsOn' => $this->endsOn,
             'endsAt' => $this->endsAt,
+            'duration' => $this->duration,
             'frequency' => $this->frequency,
             'separation' =>  $this->separation,
             'recurrences' => $this->getRecurrences(),

@@ -612,27 +612,6 @@ ALTER TABLE ONLY role ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclas
 
 
 --
--- Name: gid; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sp_distrito ALTER COLUMN gid SET DEFAULT nextval('sp_distrito_gid_seq'::regclass);
-
-
---
--- Name: gid; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sp_regiao ALTER COLUMN gid SET DEFAULT nextval('sp_regiao_gid_seq'::regclass);
-
-
---
--- Name: gid; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sp_subprefeitura ALTER COLUMN gid SET DEFAULT nextval('sp_subprefeitura_gid_seq'::regclass);
-
-
---
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -783,30 +762,6 @@ ALTER TABLE ONLY role
 
 
 --
--- Name: sp_distrito_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY sp_distrito
-    ADD CONSTRAINT sp_distrito_pkey PRIMARY KEY (gid);
-
-
---
--- Name: sp_regiao_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY sp_regiao
-    ADD CONSTRAINT sp_regiao_pkey PRIMARY KEY (gid);
-
-
---
--- Name: sp_subprefeitura_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY sp_subprefeitura
-    ADD CONSTRAINT sp_subprefeitura_pkey PRIMARY KEY (gid);
-
-
---
 -- Name: space_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
@@ -872,27 +827,6 @@ CREATE INDEX comment_idx ON comment USING btree (object_type, object_id);
 --
 
 CREATE INDEX contract_idx ON contract USING btree (object_id, object_type, agent_id);
-
-
---
--- Name: sp_distrito_the_geom_gist; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX sp_distrito_the_geom_gist ON sp_distrito USING gist (the_geom);
-
-
---
--- Name: sp_regiao_the_geom_gist; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX sp_regiao_the_geom_gist ON sp_regiao USING gist (the_geom);
-
-
---
--- Name: sp_subprefeitura_the_geom_gist; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX sp_subprefeitura_the_geom_gist ON sp_subprefeitura USING gist (the_geom);
 
 
 --
