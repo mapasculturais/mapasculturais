@@ -116,24 +116,8 @@ class App extends \Slim\Slim{
      *
      * @var type
      */
-    public $_register = array(
-        'controllers' => array(),
-        'controllers-by-class' => array(),
-        'controllers_default_actions' => array(),
-        'controllers_view_dirs' => array(),
-        'entity_type_groups' => array(),
-        'entity_types' => array(),
-        'entity_metadata_definitions' => array(),
-        'file_groups' => array(),
-        'metalist_groups' => array(),
-        'taxonomies' => array(
-            'by-id' => array(),
-            'by-slug' => array(),
-            'by-entity' => array(),
-        ),
-        'api_outputs' => array(),
-        'image_transformations' => array()
-    );
+    public $_register = array();
+
 
 
     /**
@@ -348,7 +332,7 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
 
-        $app->register();
+        $this->register();
 
         // don't run dbUpdates anymore
         $this->_dbUpdates();
@@ -548,6 +532,25 @@ class App extends \Slim\Slim{
     }
 
     public function register(){
+
+        $this->_register = array(
+            'controllers' => array(),
+            'controllers-by-class' => array(),
+            'controllers_default_actions' => array(),
+            'controllers_view_dirs' => array(),
+            'entity_type_groups' => array(),
+            'entity_types' => array(),
+            'entity_metadata_definitions' => array(),
+            'file_groups' => array(),
+            'metalist_groups' => array(),
+            'taxonomies' => array(
+                'by-id' => array(),
+                'by-slug' => array(),
+                'by-entity' => array(),
+            ),
+            'api_outputs' => array(),
+            'image_transformations' => array()
+        );
 
         if(@$this->_config['app.registerCache.enabled'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
