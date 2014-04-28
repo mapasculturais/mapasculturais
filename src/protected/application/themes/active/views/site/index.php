@@ -90,6 +90,11 @@ if($project)
     $project_img_url = $project->files['gallery'][array_rand($project->files['gallery'])]->transform('galleryFull')->url;
 
 
+$url_search_agents = $app->createUrl('site', 'search')."##(global:(enabled:(agent:!t),filterEntity:agent))";
+$url_search_spaces = $app->createUrl('site', 'search')."##(global:(enabled:(space:!t),filterEntity:space))";
+$url_search_events = $app->createUrl('site', 'search')."##(global:(enabled:(event:!t),filterEntity:event))";
+$url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";
+
 ?>
 <section id="capa-marca-dagua">
 
@@ -97,7 +102,7 @@ if($project)
 <section id="capa-intro" class="js-page-menu-item objeto-capa clearfix fundo-laranja">
     <div class="box">
         <h1>Bem-vind@!</h1>
-        <p>O SP Cultura é a <a href="#capa-desenvolvedores">plataforma livre</a>, gratuita e colaborativa de mapeamento da cultura paulistana da Secretaria Municipal de Cultura de São Paulo onde você pode consultar <a href="#capa-eventos">agenda de eventos</a>, <a href="#capa-agentes">perfis de agentes culturais</a>, páginas com informações dos <a href="#capa-espacos">espaços culturais</a> ou dos <a href="#capa-projetos">projetos</a>, como editais em andamento.</p>
+        <p>O SP Cultura é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria Municipal de Cultura de São Paulo sobre o cenário cultural paulistano. Agora ficou mais fácil saber onde tem um show, um espaço cultural, um festival. Você também pode colaborar na gestão da cultura da cidade: faça seu perfil de agente cultural. Será possível a partir daí participar com mais facilidade de editais da prefeitura, além de poder divulgar seus <a href="<?php echo $url_search_events; ?>">eventos</a>, <a href="<?php echo $url_search_spaces; ?>">espaços</a> ou <a href="<?php echo $url_search_projects; ?>">projetos</a>.</p>
         <form id="form-de-busca-geral" class="clearfix">
             <input id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave" />
             <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
@@ -131,9 +136,7 @@ if($project)
                 <div class="label-das-estatisticas">eventos da SMC</div>
             </div>
         </div>
-        <p>
-            Casamentiss faiz malandris se pirulitá, Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.
-        </p>
+        <p>Você pode pesquisar eventos culturais da cidade nos campos de busca combinada que auxiliam a sua procura. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.</p>
         <h4>Encontre eventos por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#event-terms">Linguagem</a></li>
@@ -157,7 +160,7 @@ if($project)
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(enabled:(event:!t),filterEntity:event))">Ver Todos Eventos de Hoje</a>
+        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos de Hoje</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
     </div>
 </article>
@@ -176,9 +179,7 @@ if($project)
                 <div class="label-das-estatisticas">agentes da SMC</div>
             </div>
         </div>
-        <p>
-            Casamentiss faiz malandris se pirulitá, Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.
-        </p>
+        <p>Você pode colaborar na gestão da cultura da cidade com suas próprias informações, preenchendo seu perfil de agente. Aqui estão artistas, gestores e produtores, uma rede de atores envolvidos na cena cultural paulistana. Como usuário, você pode cadastrar um ou mais agentes, além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.</p>
         <h4>Encontre agentes por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#agent-terms">Área de atuação</a></li>
@@ -208,7 +209,7 @@ if($project)
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(enabled:(agent:!t),filterEntity:agent))">Ver Todos Agentes</a>
+        <a class="botao-grande" href="<?php echo $url_search_agents ?>">Ver Todos Agentes</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar Agentes</a>
     </div>
 </article>
@@ -227,9 +228,7 @@ if($project)
                 <div class="label-das-estatisticas">espaços da SMC</div>
             </div>
         </div>
-        <p>
-            Casamentiss faiz malandris se pirulitá, Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.
-        </p>
+        <p>Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Aproveite e cadastre os espaços onde desenvolve suas atividades artísticas e culturais na cidade.</p>
         <h4>Encontre espaços por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#space-terms">Área de atuação</a></li>
@@ -260,7 +259,7 @@ if($project)
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(enabled:(space:!t),filterEntity:space))">Ver Todos Espaços</a>
+        <a class="botao-grande" href="<?php echo $url_search_spaces ?>">Ver Todos Espaços</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar Espaços</a>
     </div>
 </article>
@@ -279,9 +278,7 @@ if($project)
                 <div class="label-das-estatisticas">projetos da SMC</div>
             </div>
         </div>
-        <p>
-            Casamentiss faiz malandris se pirulitá, Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Ispecialista im mé intende tudis nuam golada, vinho, uiski, carirí, rum da jamaikis, só num pode ser mijis.
-        </p>
+        <p>Reúne projetos culturais de todos os tipos. Você encontra leis de fomento, mostras, convocatórias e editais informados pela Secretaria Municipal de Cultura, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos na plataforma.</p>
         <h4>Encontre projetos por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#project-terms">Linguagem</a></li>
@@ -312,7 +309,7 @@ if($project)
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $app->createUrl('site', 'search') ?>##(global:(filterEntity:project,viewMode:list))">Ver Todos Projetos</a>
+        <a class="botao-grande" href="<?php echo $url_search_projects ?>">Ver Todos Projetos</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar Projetos</a>
     </div>
 </article>
