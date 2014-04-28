@@ -250,10 +250,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->repo()->find($this->urlData['id']);
 
-        $entity->checkPermission('modify');
-
         if(!$entity)
             $app->pass();
+
+        $entity->checkPermission('modify');
 
         $this->render('edit', array('entity' => $entity));
     }
