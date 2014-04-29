@@ -227,7 +227,7 @@ add_occurrence_frequencies_to_js();
                 <?php if(is_editable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                     <br>
                     <p>
-                        <span class="label">Acessibilidade:</span>
+                        <span>Acessibilidade:</span>
 
                         <?php if(is_editable() || $entity->traducaoLibras): ?>
                             <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
