@@ -1,6 +1,7 @@
 <?php if($this->controller->action === 'create'): ?>
     <span class='js-dialog-disabled' data-message='Para subir arquivos você primeiro deve salvar.'></span>
 <?php else: ?>
+
 <form class="js-ajax-upload"
       data-action="<?php echo $response_action ?>"
       data-target="<?php echo $response_target ?>"
@@ -16,4 +17,15 @@
 
     <input type="submit"/>
 </form>
+<style>
+    .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+    .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+    .percent { position:absolute; display:inline-block; top:0px; left:48%; }
+</style>
+<div class="js-ajax-upload-progress">
+    <div class="progress">
+        <div class="bar"></div >
+        <div class="percent">0%</div >
+    </div>
+</div>
 <?php endif; ?>

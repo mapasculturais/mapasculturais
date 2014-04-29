@@ -10,6 +10,7 @@ return array(
     'Event' => 'Evento',
     'Project' => 'Projeto',
     'no files uploaded' => 'nenhum arquivo foi enviado',
+    'The uploaded file is not a valid image.' => 'O arquivo enviado não é uma válida.',
 
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
@@ -17,7 +18,7 @@ return array(
     'project registration' => "Inscritos",
     'This agent is already registered in this project.' => 'Este agente já está inscrito neste projeto.',
     'the registration form is required' => 'A ficha de inscrição é requerida.',
-    
+
     'January' => 'Janeiro',
     'February' => 'Fevereiro',
     'March' => 'Março',
@@ -29,6 +30,8 @@ return array(
     'September' => 'Setembro',
     'October' => 'Outubro',
     'November' => 'Novembro',
-    'December' => 'Dezembro'
-    
+    'December' => 'Dezembro',
+
+
+
 );

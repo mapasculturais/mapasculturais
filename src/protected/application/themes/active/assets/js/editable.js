@@ -368,11 +368,27 @@ MapasCulturais.Editables = {
 MapasCulturais.AjaxUploader = {
     animationTime: 100,
     init: function() {
+        var bar = $('.js-ajax-upload-progress .bar');
+        var percent = $('.js-ajax-upload-progress .percent');
         // bind form using 'ajaxForm'
         $('.js-ajax-upload').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
-            //beforeSubmit:  showRequest,  // pre-submit callback
+            beforeSend: function() {
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                $('.js-ajax-upload-progress').show('slow');
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
             success: function (response, statusText, xhr, $form)  {
+
+                var percentVal = '100%';
+                bar.width(percentVal)
+                percent.html(percentVal);
 
                 if(response.error){
                     var group = $form.data('group');
