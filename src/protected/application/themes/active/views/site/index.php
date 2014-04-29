@@ -24,12 +24,10 @@ $num_verified_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e
 
 
 $event_linguagens = array_values($app->getRegisteredTaxonomy($class_event, 'linguagem')->restrictedTerms);
-$project_linguagens = array_values($app->getRegisteredTaxonomy($class_project, 'linguagem')->restrictedTerms);
 $agent_areas = array_values($app->getRegisteredTaxonomy($class_agent, 'area')->restrictedTerms);
 $space_areas = array_values($app->getRegisteredTaxonomy($class_space, 'area')->restrictedTerms);
 
 sort($event_linguagens);
-sort($project_linguagens);
 sort($agent_areas);
 sort($space_areas);
 
@@ -281,15 +279,9 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
         <p>Reúne projetos culturais de todos os tipos. Você encontra leis de fomento, mostras, convocatórias e editais informados pela Secretaria Municipal de Cultura, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos na plataforma.</p>
         <h4>Encontre projetos por</h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#project-terms">Linguagem</a></li>
-            <li><a href="#project-types">Tipo</a></li>
+            <li class="active"><a href="#project-types">Tipo</a></li>
         </ul>
-        <div id="project-terms" class="tags">
-            <?php foreach ($project_linguagens as $i => $t): ?>
-                <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(project:(linguagens:!(<?php echo $i ?>)),global:(enabled:(project:!t),filterEntity:project,viewMode:list))"><?php echo $t ?></a>
-            <?php endforeach; ?>
-        </div>
-        <div id="project-types">
+        <div id="project-types"  class="tags">
             <?php foreach ($project_types as $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(project:(types:!(<?php echo $t->id ?>)),global:(enabled:(project:!t),filterEntity:project,viewMode:list))"><?php echo $t->name ?></a>
             <?php endforeach; ?>

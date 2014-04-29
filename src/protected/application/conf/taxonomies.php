@@ -75,7 +75,6 @@ return array(
     3 => array(
         'slug' => 'linguagem',
         'entities' => array(
-            'MapasCulturais\Entities\Project',
             'MapasCulturais\Entities\Event'
         ),
 
@@ -84,13 +83,18 @@ return array(
             'Artes Integradas',
             'Artes Visuais',
             'Audiovisual',
+            'Cinema',
             'Cultura Digital',
             'Cultura Indígena',
             'Cultura Tradicional',
+            'Curso ou Oficina',
             'Dança',
+            'Exposição',
             'Hip Hop',
             'Livre e Literatura',
-            'Música',
+            'Música Popular',
+            'Música Erudita',
+            'Palestra, Debate ou Encontro',
             'Rádio',
             'Teatro',
             'Outros'
