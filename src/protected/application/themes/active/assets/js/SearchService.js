@@ -180,7 +180,6 @@
                 results[entity].forEach(function(item, index) {
                     if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
                         $rootScope.resultsNotInMap[entity]++;
-                        //delete results[entity][index];
                     }
                 });
             }
@@ -189,25 +188,20 @@
                 if(numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
 
                     if(data.global.viewMode === 'map') {
-                        console.log('apagando', $rootScope.resultsNotInMap, results);
                         $rootScope.resultsNotInMap = {agent: 0, space: 0, event: 0};
                         if(results.agent) {
                             countAndRemoveResultsNotInMap('agent', results);
-                           //$rootScope.numAgentsInMap = parseInt(results.agent) - $rootScope.resultsNotInMap.agent;
                         }
                         if(results.space) {
                             countAndRemoveResultsNotInMap('space', results);
-                            //$rootScope.numSpacesInMap = parseInt(results.space) - $rootScope.resultsNotInMap.space;
                         }
                         if(results.event) {
                             countAndRemoveResultsNotInMap('event', results);
-                            //$rootScope.numEventsInMap = parseInt(results.event) - $rootScope.resultsNotInMap.event;
                         }
                     }
 
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
-                    console.log(results);
 
                     $rootScope.$emit('searchResultsReady', results);
                 }
@@ -223,9 +217,7 @@
                 var searchData = {};
 
                 if(entityData.keyword){
-                    //searchData.'OR()'
                     searchData.name = 'ILIKE(*' + entityData.keyword.replace(' ', '*') + '*)';
-                    //searchData['term:tag'] = 'IN(' + entityData.keyword.replace(' ', ',') + ')';
                 }
 
                 if(entityData.areas && entityData.areas.length){
@@ -326,7 +318,6 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log("API COUNT >> ", {url: entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
                 return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         }

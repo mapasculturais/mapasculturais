@@ -86,7 +86,6 @@ jQuery(function(){
         $('.js-verified').click(function(){
             var verify = $(this).data('verify-url');
             var removeVerification = $(this).data('remove-verification-url');
-            console.log(verify, removeVerification);
             if($('.js-verified').hasClass('inactive')){
                 $.getJSON(verify, function(r){
                     if(r && !r.error){
@@ -395,11 +394,9 @@ MapasCulturais.AjaxUploader = {
                     case 'set-content':
 
                         var html = Mustache.render(template, response[group]);
-                        console.log(template, response, html);
                         $target.html(html);
                     break;
                     case 'a-href':
-                        console.log($target, response, response[group].url);
                         try{
                             $target.attr('href', response[group].url);
                         }catch (e){}
@@ -477,7 +474,6 @@ MapasCulturais.MetalistManager = {
                     }
 
                     var parsedURL = purl($linkField.val());
-                    //console.log(parsedURL);
                     if (parsedURL.attr('host').indexOf('youtube') == -1 && parsedURL.attr('host').indexOf('vimeo')  == -1){
                         $errorTag.html('Insira uma url de um vídeo do YouTube ou do Vimeo.').show();
 
@@ -569,7 +565,6 @@ MapasCulturais.RelatedAgentsEditables = {
 
     openCreateAgentDialog : function(buttonElement){
         MapasCulturais.Modal.open(buttonElement.dataset.dialog);
-        //console.log($(buttonElement).parents('.select2-search'))
         var $editableName = $(buttonElement.dataset.dialog).find('.js-related-editable[data-related-edit="agent[name]"]');
         $editableName.editable('setValue',
             $(buttonElement).parents('#select2-drop').find('.select2-input').val()
@@ -585,7 +580,6 @@ MapasCulturais.RelatedAgentsEditables = {
 
 
         var $dialog = $($(selector).data('dialog'));
-        //console.log('d',$dialog);
         var $textInput = $dialog.find('input:text');
         var $submitButton = $dialog.find('input:submit');
 
@@ -636,7 +630,6 @@ MapasCulturais.RelatedAgentsEditables = {
                         hasControl: hasControl
                     },
                     function(response) {
-                        console.log(response);
                         if (response.error) {
                             if ($input.hasClass('on'))
                                 $input.removeClass('on').html('Não');
@@ -646,7 +639,6 @@ MapasCulturais.RelatedAgentsEditables = {
                     }
                 );
 
-                console.log('Edit Agent: '+ $(this).parents('.avatar').data('id')+'. Has Control: ' + $(this).hasClass('on')+'. Parent Agent ID: '+MapasCulturais.request.id);
             });
 
             $(this).on('click', '.js-remove-agent', function(){
@@ -656,7 +648,6 @@ MapasCulturais.RelatedAgentsEditables = {
                         MapasCulturais.baseURL + MapasCulturais.request.controller + '/removeAgentRelation/id:' + MapasCulturais.request.id,
                         {agentId: $agent.data('id'), group: $agent.parents('.js-related-group').data('related-group')},
                         function(response){
-                            console.log(response);
                             if(!response.error)
                                 if($agent.parents('.js-related-group').find('.avatar').length == 0){
                                     $agent.parents('.js-related-group').remove();
@@ -665,7 +656,6 @@ MapasCulturais.RelatedAgentsEditables = {
                                 }
                         }
                     );
-                    console.log('Removed Related Agent whose ID is '+ $agent.data('id'));
                 }
             });
         });
@@ -697,7 +687,6 @@ MapasCulturais.RelatedAgentsEditables = {
                         MapasCulturais.Modal.open('#ajax-response-errors');
                     }else{
                         var $agent = MapasCulturais.Search.renderTemplate($('#agent-response-template').text(), response);
-                        console.log($agent, $dialog.data('group-element'));
                         $dialog.data('group-element').append($agent);
                         $dialog.find('.js-close').click();
                     }
@@ -727,7 +716,6 @@ MapasCulturais.RelatedAgents = {
         var $group = $('[data-related-group="' + group + '"] .js-relatedAgentsContainer');
         MapasCulturais.Search.processEntity(agent);
         var html = Mustache.render(template, agent);
-        console.log(template, agent);
         $group.append(html);
         MapasCulturais.RelatedAgentsEditables.init('[data-related-group="' + group + '"]');
     },

@@ -255,7 +255,6 @@ MapasCulturais.MetaListUpdateDialog = function ($caller){
     }
 
     $form.find('script[type="js-response-template"]').text(responseTemplate);
-    //console.log(responseTemplate);
 
     //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
     if(group == 'videos') {
@@ -332,7 +331,6 @@ MapasCulturais.Video = {
         var $container = $element.parent();
         if($element.find('.js-remove-item').length){
             $element.find('.js-remove-item').data('remove-callback', function(){
-                console.log(video_id, $container.find('>li').length,  $('iframe#video_display').data('open-video'));
                 if($('iframe#video_display').data('open-video') == video_id)
                     $('iframe#video_display').attr('src', '');
 
@@ -348,8 +346,6 @@ MapasCulturais.Video = {
 
     },
     setTitle : function(videoData, $element){
-        //$Element should be .js-metalist-form input.js-metalist-title
-        //console.log(videoData);
         $element.val(videoData.videoTitle);
     },
     getAndSetVideoData : function (videoURL, $element, callback){
@@ -444,10 +440,6 @@ MapasCulturais.Search = {
                             return searchParams;
                         },
                         results: function (data, page) {
-                            //console.log('results function, data.length: '+ data.length+', page '+page)
-
-                            //var more = (page * 10) < data.length; // whether or not there are more results available
-
                             var more = data.length == MapasCulturais.Search.limit;
 
                             // notice we return the value of more so Select2 knows if more results can be loaded
@@ -456,7 +448,6 @@ MapasCulturais.Search = {
                     },
                     formatResult: function(entity){
                         var format = $selector.data('selection-format');
-                        console.log('formatResult >>>', format, entity);
                         if(MapasCulturais.Search.formats[format] && MapasCulturais.Search.formats[format].result)
                             return MapasCulturais.Search.formats[format].result(entity, $selector);
                         else
@@ -465,13 +456,11 @@ MapasCulturais.Search = {
 
                     formatSelection: function(entity){
                         var format = $selector.data('selection-format');
-                        console.log('formatSelection >>>', format, entity);
                         return MapasCulturais.Search.formats[format].selection(entity, $selector);
                     }, // omitted for brevity, see the source of this page
 
                     formatNoMatches: function(term){
                         var format = $selector.data('selection-format');
-                        console.log('formatNoMatches >>>', format, term);
                         return MapasCulturais.Search.formats[format].noMatches(term, $selector);
                     },
                     escapeMarkup: function (m) { return m; }, // we do not want to escape markup since we are displaying html in results
@@ -573,7 +562,6 @@ MapasCulturais.Search = {
         };
 
         entity.thumbnail = function(){
-             //console.log(entity.files);
             if(this.files && this.files.avatar && this.files.avatar.files && this.files.avatar.files['avatarSmall'])
                 return this.files.avatar.files['avatarSmall'].url;
             else
@@ -588,7 +576,6 @@ MapasCulturais.Search = {
     },
 
     getEntityThumbnail : function (entity, thumbName){
-        //console.log(entity.files);
         if(!entity.files || entity.files.length == 0 || !entity.files[thumbName] || entity.files[thumbName].length == 0)
             return '';
         else{
@@ -658,7 +645,6 @@ MapasCulturais.Search = {
             ajaxData: function(searchParams, $selector){
                 if($selector.data('value')){
                     searchParams.id = '!in('+$selector.data('value')+')';
-                    alert('aqui');
                 }
 
                 //if(!MapasCulturais.cookies.get('mapasculturais.adm'))
@@ -713,7 +699,6 @@ MapasCulturais.Search = {
                         function(){ return $(this).data('id'); }
                 ).toArray());
 
-                console.log(excludedIds);
 
                 if ( excludedIds.length > 0)
                     searchParams.id = '!in('+excludedIds.toString()+')';

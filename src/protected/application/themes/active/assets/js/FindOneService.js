@@ -51,7 +51,6 @@
                 numRequests--;
                 $rootScope.spinnerCount--;
                 if(numRequests === 0){
-                    console.log('EMITINDO >>> ', result);
                     $rootScope.$emit('findOneResultReady', result);
                 }
             }
@@ -64,7 +63,6 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log('API FIND ONE >> ', {url: entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
@@ -77,7 +75,6 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                console.log('API SPACE EVENTS >> ', {url: entity + '/' + action + '/?'+querystring, data:searchData});
                 return $http({method: 'GET', url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
         };

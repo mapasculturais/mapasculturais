@@ -172,7 +172,7 @@
             var _addLayer = $scope.resultLayer._addLayer;
 
             $scope.resultLayer._addLayer = function(layer, zoom){
-                var r = _addLayer.apply(this,[layer, zoom]);// console.log(layer, zoom, __c++)
+                var r = _addLayer.apply(this,[layer, zoom]);
 
                 var p = layer.__parent;
 

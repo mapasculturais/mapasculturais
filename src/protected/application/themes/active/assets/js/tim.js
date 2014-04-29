@@ -144,31 +144,6 @@ var hl;
 			});
 		});
 
-		//abas da busca avançada
-//		$('ul.abas-objetos .js-filtro').click(function(e){
-//
-//            $('ul.abas-objetos > li').removeClass('active');
-//            //$('ul.abas-objetos .js-filtro').removeClass('arrow_carrot-up').addClass('arrow_carrot-down');
-//            var $filterDiv = $($(this).attr('href'));
-//                $('.filtro-objeto').not($filterDiv).hide();
-//                $filterDiv.toggle();
-//
-//            if ($filterDiv.is(':visible')) {
-//                $(this).parent().addClass('active');
-//                //$(this).addClass('arrow_carrot-up').removeClass('arrow_carrot-down');
-//
-//            }
-//            $(window).scroll();
-//            e.preventDefault();
-//
-//		});
-
-
-        //if($('header.header-do-objeto').length)
-            // gambis para deixar a aba da pagina atual aberta por padrao
-        //    $('li#aba-' + $('header.header-do-objeto').attr('id').replace('header-dos-', '') + ' .js-filtro').data('onload', true).click();
-
-		//scroll das divs
 		$('.tags div').slimScroll({
 			position: 'right',
 			distance: '0px',
@@ -204,22 +179,6 @@ var hl;
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({ height: 'initial', maxHeight: 192});
         });
 
-        // var hideSharetimeout;
-        //
-        //Compartilhar URLs
-        // $('#compartilhar a').hover(function() {
-        //     $('form#compartilhar-url').show()
-        // }, function() {
-        //     clearTimeout(hideSharetimeout);
-        //     hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
-        // });
-
-        // $('form#compartilhar-url').hover(function() {
-        //     clearTimeout(hideSharetimeout);
-        // }, function() {
-        //     hideSharetimeout = setTimeout("$('form#compartilhar-url').hide();", 1000);
-        // });
-
         $('#compartilhar a.social_share').click(function(){
             if($('form#compartilhar-url').is(':hidden')){
                 $('form#compartilhar-url').show();
@@ -236,7 +195,6 @@ var hl;
             }
         });
         $('html').on('click',function(event) {
-            //console.log($(event.target))
             if(!$(event.target).parents('#compartilhar').length) {
                 $('form#compartilhar-url').hide();
             }

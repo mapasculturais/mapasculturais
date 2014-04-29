@@ -166,8 +166,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 //se for só visualização, não tem editable, não seta valor
                 if (isEditable)
                     $dataTarget.editable('setValue', [e.latlng.lng, e.latlng.lat]);
-                //console.log('Position set on marker move position: '+e.latlng);
-                //console.log('Map Target: '+$dataTarget);
 
             });
 
@@ -215,54 +213,30 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
 
             map.on('locationerror', function(e) {
-                console.log(e.message);
+                /** @TODO feedback pro usuario **/
+                // console.log(e.message);
             });
 
-            //map.on('dragstart', function (e) {marker.dragging.disable();});
-            //map.on('dragend',   function (e) {marker.dragging.enable();});
 
             marker.on('drag', function(e) {
-                //console.log(e.target.getLatLng());
                 circle.setLatLng(e.target.getLatLng());
-            });
-            marker.on('dragend', function(e) {
-                //console.log(e.target.getLatLng());
             });
 
             map.on('click', function(e) {
-                //var position = isPrecise ? marker.getLatLng() : circle.getLatLng();
-                //map.getCenter();
 
                 //se for só visualização, não edição
                 if (isEditable)
                     marker.setLatLng(e.latlng);
             });
 
-            // map.on('viewreset', function(){
-            //     var max = map.getMaxZoom(),
-            //         zoom = map.getZoom(),
-            //         diff = max - zoom,
-            //         table = [2, 1, 0.5];
-            //     var result =  (diff < table.length) ? table[diff] : 0.5;
-            //     console.log(diff)
-            //     circle.setRadius(defaultMaxCircleRadius*diff);
-
-            // })
-
             var $dataPrecisionRadios = $('input[name="' + id + '-precisionOption"]');
             $dataPrecisionRadios.each(function() {
-                //precisionChange = function(){
                 $(this).on('change', function() {
-                    //editable.hide('save');
 
                     var editable = $('#' + id + '-precisionOption').data('editable');
-                    //console.log(editable);
                     editable.setValue(this.value);
                     isPrecise = (this.value == dataPrecisionTrueValue);
                     changePrecision(this.value, isPrecise, map, marker, circle, $dataTarget);
-                    //editable.$element.triggerHandler('changePrecision');
-                    //editable.$element.triggerHandler('changePrecision');
-
                 });
             });
 
@@ -272,27 +246,15 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     return;
 
                 editable.input.$input.on('change', function(ev) {
-
                     editable.setValue(this.value);
                     editable.hide('save');
                     editable.$element.triggerHandler('changePrecision');
-
-                    //console.log(editable);
-                    //editable.on('save', function(ev){
-                    //editable('setValue', 'precise');
-                    //editable.hide('save');
-                    //console.log($(this).input.$input.val());
-                    //console.log("change", ev, arguments);
                 });
 
-
             });
-            //$dataPrecisionOption.on("shown", function(){ alert('editable shown');  });
-            //$dataPrecisionOption.on("hidden", function(){ alert('editable hidden');  });
-            //$dataPrecisionOption.on("cancel", function(){ alert('editable cancel');  });
+
             $dataPrecisionOption.on("changePrecision", function() {
                 var editable = $(this).data('editable');
-                //alert('editable changePrecision');
                 var v = editable.input.$input.val();
                 isPrecise = (v == dataPrecisionTrueValue);
                 changePrecision(v, isPrecise, map, marker, circle, $dataTarget);
@@ -300,12 +262,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             $('#buttonLocateMe').click(function() {
                 map.locate({setView: true, maxZoom: defaultLocateMaxZoom});
-                //map.setZoom(18);
-            });
-
-
-            $dataTarget.on('change', function() {
-                console.log($(this));
             });
 
             L.Polygon.prototype.getCenter = function() {
@@ -363,10 +319,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
 
 
-            // subprefs._globalPointer._processFeatures = function(data){
-            //     alert('aqui sim')
-            // };
-
 
             $('#buttonSubprefs').click(function() {
                 subprefs.setMap(map);
@@ -393,7 +345,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             // callback to handle google geolocation result
             function geocode_callback(results, status) {
                 if(typeof google === 'undefined'){
-                    console.log('Mapas Culturais: Google Maps API não encontrada.');
                     return false;
                 }
                 if (status == google.maps.GeocoderStatus.OK) {
@@ -483,7 +434,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     '<span class="js-sp-geo" data-geot="distrito" data-fds="gid,nome_distr">Distritos</span>': distritos
                 }
             );
-            layersControl.addTo(map)
+            layersControl.addTo(map);
 
 
             $('.js-sp-geo').each(function(){
@@ -496,14 +447,12 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                         $(this).parents('label').find('input:checkbox').prop('checked', false);
                     });
                     subprefs.setMap(null);
-                    //$checkbox = $(this).parents('label').find('input'); //tá dando pau, tem que fabricar outro controle de toggle
                     if ($checkbox.prop('checked')) {
                         $checkbox.prop('checked', false);
                     } else {
                         subprefs.options.geotable = '"sp_'+geotable+'"';
                         subprefs.options.fields = $(this).data('fds');
                         subprefs.setMap(map);
-                        //$checkbox.prop('checked', true);
                     }
                 });
                 $checkbox.on('click', function(event){
@@ -514,8 +463,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
 
             subprefs._makeJsonpRequest = function(url){
-                console.log('LOADING VECTOR FROM ',url);
-                console.log(subprefs._globalPointer);
                 $('#resultados span[ng-if="!spinnerCount"]').hide();
                 $('#resultados span[ng-show="spinnerCount > 0"]').removeClass('ng-hide');
                 $.ajax({
@@ -524,8 +471,6 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                     //jsonpCallback: myCallback,
                     cache: true,
                     success: function(data) {
-                        console.log('VECTOR LOADED ', data);
-                        //console.log(subprefs._globalPointer)
                         subprefs._processFeatures(data);
                         $('#resultados span[ng-if="!spinnerCount"]').show();
                         $('#resultados span[ng-show="spinnerCount > 0"]').addClass('ng-hide');
@@ -567,27 +512,5 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             e.stopPropagation();
         });
 
-        //Exemplo de como passar um hipertexto para o innerHTML de um controle
-        // $('#filtro-local').hide();
-
-        // var LocationFilters = L.Control.extend({
-        //     options: {
-        //         position: 'topleft',
-        //     },
-
-        //     onAdd: function (map) {
-        //         this._map = map;
-
-        //         var className = 'leaflet-hax',
-        //             container = L.DomUtil.create('div', className);
-        //         container.innerHTML = $('#filtro-local').html();
-        //         L.DomEvent.disableClickPropagation(container);
-        //         return container;
-        //     },
-        // });
-
-        // leaflet.map.addControl(new LocationFilters());
-
-    //});
 }
 

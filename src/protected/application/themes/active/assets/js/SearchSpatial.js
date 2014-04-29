@@ -142,7 +142,8 @@
             });
 
             map.on('locationerror', function(e) {
-                console.log(e.message);
+                /* @TODO mensagem de erro para o usuário */
+//                console.log(e.message);
             });
 
 
@@ -161,7 +162,6 @@
         // callback to handle google geolocation result
         function geocode_callback(results, status) {
             if(typeof google === 'undefined'){
-                console.log('Mapas Culturais: Google Maps API não encontrada.');
                 return false;
             }
             if (status == google.maps.GeocoderStatus.OK) {
@@ -177,7 +177,6 @@
             var addressString = $scope.data.global.locationFilters.address.text + ', Brasil';
 
             if (!google){
-                console.log('Mapas Culturais: Não foi possível acessar a API do Google Maps');
                 return;
             }else{
                 geocoder = new google.maps.Geocoder();

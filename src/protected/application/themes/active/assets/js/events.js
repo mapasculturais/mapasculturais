@@ -44,16 +44,6 @@ MapasCulturais.EventOccurrenceManager = {
     },
     init : function(selector) {
         $(selector).ajaxForm({
-            beforeSubmit: function(formData, $form, options) {
-                return true;
-                //console.log(formData);
-                //console.log($form);
-                //formData.endsAt = formData.duration;
-                var startDateTime = moment($form[0].startsOn.value + ' ' + $form[0].startsAt.value);
-                alert(startDateTime);
-                alert($form[0].duration.value.replace('h', ':'));
-                return false;
-            },
             success: function (response, statusText, xhr, $form)  {
                 $form.find('.erro').not('.mensagem').remove();
                 if(response.error){
@@ -85,7 +75,6 @@ MapasCulturais.EventOccurrenceManager = {
                 var $renderedData = $(Mustache.render(template, response));
                 var $editBtn = $renderedData.find('.js-open-dialog');
                 $editBtn.data('item', response);
-                console.log('response', response);
                 if(isEditing){
                     $('#event-occurrence-'+response.id).replaceWith($renderedData);
                 }else{
@@ -123,7 +112,6 @@ MapasCulturais.EventDates = {
             var fieldSelector = '#'+$(this).attr('id');
             var altFieldSelector = $(this).data('alt-field') ? $(this).data('alt-field') : fieldSelector.replace('-visible', '');
             if($(altFieldSelector).length == 0){
-                console.log('EventDates could not find alternative visible field element. Exiting');
                 return;
             }
             $(this).datepicker({
