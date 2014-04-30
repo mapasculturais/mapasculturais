@@ -240,6 +240,14 @@ $app->hook('entity(agent).file(avatar).load', function() {
 $app->hook('entity(space).file(avatar).load', function() {
     $this->transform('avatarSmall');
     $this->transform('resultadoBusca');
+    $this->transform('viradaSmall');
+    $this->transform('viradaBig');
+});
+
+
+$app->hook('entity(event).file(avatar).load', function() {
+    $this->transform('viradaSmall');
+    $this->transform('viradaBig');
 });
 
 // sempre que insere uma imagem cria o avatarSmall
