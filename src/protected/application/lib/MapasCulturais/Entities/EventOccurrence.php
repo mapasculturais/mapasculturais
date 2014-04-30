@@ -30,8 +30,7 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'duration' => array(
             //'required' => 'A duração é obrigatória',
-            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida',
-            '$value->h > 0 || $value->i > 0' => 'A duração não pode ser zero'
+            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida'
          ),
         'frequency' => array(
             'required' => 'Frequência é obrigatória',
@@ -157,6 +156,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
         $interval = $endsAtCopy->diff($startsAtCopy);
         return $interval;
+
     }
 
     /**
@@ -265,12 +265,16 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($value['duration']){
             @list($hours, $minutes) = explode('h', $value['duration']);
             $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
-            if(!$minutes) $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
-            else $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+
+            if(!$minutes)
+                $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
+            else
+                $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+
             $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
             $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
         }else{
-            //$this->endsAt = null; // don't attributing causes the duration to be 1 minute
+            $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
 
 
