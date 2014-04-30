@@ -225,10 +225,10 @@ return array(
             )
         ),
 
-        'Virada Cultural' => array(
+        'Temporário' => array(
             'range' => array(500,600),
             'items' => array(
-                501 => array( 'name' => 'Palco' ),
+                501 => array( 'name' => 'Palco de Rua' ),
             )
         ),
     )
