@@ -204,6 +204,7 @@ MapasCulturais.Modal = {
         this.$bg.css({opacity:0, height:$('body').height()}).show().animate({opacity:this.cssBgOpacity},this.time);
 
         $dialog.find('div.mensagem.erro').html('').hide();
+        $dialog.find('.js-ajax-upload-progress').hide();
 //        if($dialog.find('form').length)
 //            $dialog.find('form').get(0).reset();
         $dialog.css(this.cssInit).show().animate(this.cssFinal, MapasCulturais.Modal.time, function(){
