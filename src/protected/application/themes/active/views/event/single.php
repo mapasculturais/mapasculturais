@@ -187,11 +187,19 @@ add_occurrence_frequencies_to_js();
                 <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->subTitle; ?></span>
             </p>
             <p>
+                <?php
+                    /*Agente padrão da Giovanna editando atrações da Virada*/
+                    if($entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
+                        $shortDescriptionLabel = 'Sinopse';
+                    }else{
+                        $shortDescriptionLabel = 'Descrição Curta';
+                    }
+                ?>
                 <?php if (!is_editable() || $entity->shortDescription): ?>
-                    <span class="label">Descrição Curta:</span><br>
+                    <span class="label"><?php echo $shortDescriptionLabel;?>:</span><br>
                 <?php endif; ?>
 
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="<?php echo $shortDescriptionLabel;?>" data-emptytext="Insira uma <?php echo strtolower($shortDescriptionLabel);?> para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
             <div class="servico">
 
@@ -200,6 +208,12 @@ add_occurrence_frequencies_to_js();
                 <?php endif; ?>
 
                 <?php if (is_editable() || $entity->classificacaoEtaria): ?>
+                    <?php
+                    /*Agente padrão da Giovanna editando atrações da Virada*/
+                    if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
+                        $entity->classificacaoEtaria = 'Livre';
+                    }
+                    ?>
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                 <?php endif; ?>
 
