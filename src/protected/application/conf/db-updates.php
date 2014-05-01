@@ -2,7 +2,7 @@
 use MapasCulturais\App;
 
 return array(
-    'importa programação virada cultural' => function(){
+    'importa programação virada cultural - sesc' => function(){
         $csv_to_array = function ($filename='', $delimiter=','){
             if(!file_exists($filename) || !is_readable($filename))
                 return FALSE;
@@ -51,8 +51,8 @@ return array(
             $space_errado->save();
         }
 
-        $spaces = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/virada-espacos.csv'));
-        $events = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/virada-eventos.csv'));
+        $spaces = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/sesc-espacos.csv'));
+        $events = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/sesc-eventos.csv'));
 
 
         $create_event = function($space, $event_data, $subtitle = '') use($mapeamento_areas, $created_events, $area_definition, $agent, $project){
@@ -71,6 +71,8 @@ return array(
             $event->shortDescription = array_key_exists('Sinopse (até 350 caracteres)', $event_data) ?
                     $event_data['Sinopse (até 350 caracteres)'] : '';
 
+            $event->classificacaoEtaria = 'Livre';
+
             if(array_key_exists('Preço ou ingresso', $event_data))
                 $event->preco = $event_data['Preço ou ingresso'];
 
@@ -81,7 +83,7 @@ return array(
             if(in_array($term, $area_definition->restrictedTerms) || in_array(strtolower($term), $area_definition->restrictedTerms)){
                 $event->terms['area'] = array($term);
             }elseif(array_key_exists($term, $mapeamento_areas)){
-                $event->terms['area'] = array($mapeamento_areas[$term]);
+                $event->terms['area'] = $mapeamento_areas[$term];
             }else{
                 $event->terms['area'] = array('Outros');
             }
@@ -115,6 +117,8 @@ return array(
                 "startsOn": "' . $startsOn . '",
                 "until": "' . $startsOn . '"
             }';
+
+            $this->log->info(print_r($rule, true));
 
             $eoccurrence->rule = json_decode($rule);
             $eoccurrence->save(true);
