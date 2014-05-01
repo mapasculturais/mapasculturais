@@ -488,7 +488,7 @@ class App extends \Slim\Slim{
     }
 
     protected function _dbUpdates(){
-        if(@$this->config['app.dbUpdatesDisabled'])
+        if(!isset($_GET['_execute_db_update']) || @$this->config['app.dbUpdatesDisabled'])
             return ;
 
         $this->_runningUpdates = true;
