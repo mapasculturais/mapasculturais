@@ -2,7 +2,7 @@
 use MapasCulturais\App;
 
 return array(
-    'importa programação virada cultural - sesc' => function(){
+    'importa programação virada cultural - estado' => function(){
         $csv_to_array = function ($filename='', $delimiter=','){
             if(!file_exists($filename) || !is_readable($filename))
                 return FALSE;
@@ -24,7 +24,6 @@ return array(
         };
 
         $area_definition = $this->getRegisteredTaxonomy('MapasCulturais\Entities\Event', 'linguagem');
-
 
         $mapeamento_areas = array(
             'Exposições' => array('Artes Visuais'),
@@ -51,8 +50,8 @@ return array(
             $space_errado->save();
         }
 
-        $spaces = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/sesc-espacos.csv'));
-        $events = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/sesc-eventos.csv'));
+        $spaces = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/estado-espacos.csv'));
+        $events = $csv_to_array(realpath(__DIR__ . '/../../../../tmp/estado-eventos.csv'));
 
 
         $create_event = function($space, $event_data, $subtitle = '') use($mapeamento_areas, $created_events, $area_definition, $agent, $project){
@@ -128,6 +127,7 @@ return array(
         foreach($spaces as $space_data){
             $space = new \MapasCulturais\Entities\Space;
             $space->owner = $agent;
+
             $space->name = $space_data['Local/Palco'];
             $space->type = 501;
             $space->terms['area'] = array('Outros');
