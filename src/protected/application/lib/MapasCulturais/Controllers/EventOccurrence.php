@@ -62,6 +62,9 @@ class EventOccurrence extends EntityController {
 
         $occurrence->rule = $postData;
 
+        if (@$this->postData['spaceId']) {
+            $occurrence->space = App::i()->repo('Space')->find($this->postData['spaceId']);
+        }
 
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);

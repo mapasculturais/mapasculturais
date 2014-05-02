@@ -501,12 +501,16 @@ MapasCulturais.Search = {
             $selector.on('save',function(){
                 try{
                     MapasCulturais.Search.formats[format].onSave($selector);
-                }catch(e){}
+                }catch(e){
+                    console.log("EXECEPTION: ", e.message);
+                }
             });
             $selector.on('hidden',function(){
                 try{
                     MapasCulturais.Search.formats[format].onHidden($selector);
-                }catch(e){}
+                }catch(e){
+                    console.log("EXECEPTION: ", e.message);
+                }
             });
 
         });
@@ -616,7 +620,7 @@ MapasCulturais.Search = {
             onSave: function($selector){
                 var entity = $selector.data('entity'),
                     avatarUrl = MapasCulturais.defaultAvatarURL,
-                    shortDescription = entity.shortDescription.replace("\n",'<br/>');
+                    shortDescription = entity.shortDescription ? entity.shortDescription.replace("\n",'<br/>') : '';
 
                 $selector.data('value', entity.id);
 
@@ -626,6 +630,7 @@ MapasCulturais.Search = {
 
                 $selector.parents('.js-space').find('.js-space-avatar').attr('src', avatarUrl);
                 $selector.parents('.js-space').find('.js-space-description').html(shortDescription);
+                
                 $selector.parents('form').find('input[name="spaceId"]').val(entity.id);
             },
             onHidden : function ($selector) {
