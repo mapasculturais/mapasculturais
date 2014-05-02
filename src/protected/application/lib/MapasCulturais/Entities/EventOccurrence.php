@@ -152,11 +152,14 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDuration() {
-        $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
-        $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
-        $interval = $endsAtCopy->diff($startsAtCopy);
-        return $interval;
-
+        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
+            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
+            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
+            $interval = $endsAtCopy->diff($startsAtCopy);
+            return $interval;
+        }else{
+            return null;
+        }
     }
 
     /**
