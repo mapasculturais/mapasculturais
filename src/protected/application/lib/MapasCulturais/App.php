@@ -107,7 +107,7 @@ class App extends \Slim\Slim{
 
     public $_user = -1;
 
-    protected $_runningUpdates = true;
+    protected $_runningUpdates = false;
 
     /**
      * The Application Registry.

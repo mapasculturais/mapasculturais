@@ -2,6 +2,7 @@
 namespace MapasCulturais;
 
 use Respect\Validation\Validator as v;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The base class for all entities used in MapasCulturais.
@@ -158,6 +159,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function canUser($action, $userOrAgent = null){
+
         if(App::i()->isRunningUpdates())
             return true;
 
