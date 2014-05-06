@@ -373,25 +373,15 @@ abstract class Controller{
 
         if(!$app->user){
             if($app->request->isAjax()){
-                $this->errorJson($app->txt('This action requires authentication.'));
-                $app->stop();
+                $app->halt(401, $app->txt('This action requires authentication'));
             }else{
                 $app->applyHookBoundTo($this, 'controller.requireAuthentication');
                 $app->applyHookBoundTo($this, 'controller(' . $this->id . ').requireAuthentication');
 
                 $app->auth->setRedirectPath($app->request->getPathInfo());
-                $app->redirect($app->controller('auth')->createUrl(''));
+                $app->redirect($app->controller('auth')->createUrl(''), 401);
             }
         }
     }
-
-    // ============= ACTIONS =============== //
-
-
-
-
-
-    // ========== API ============ //
-
 
 }

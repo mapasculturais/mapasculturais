@@ -33,14 +33,4 @@ class Site extends \MapasCulturais\Controller {
     function GET_page() {
         $this->render('page');
     }
-
-    function ALL_permissionDenied(){
-        $app = \MapasCulturais\App::i();
-        $e = $this->data['exception'];
-//        $e = new \Exception;
-        if($app->request->isAjax())
-            $this->errorJson (array($app->txt('Permission Denied'), $e->getMessage()));
-        else
-            $this->render('permission-denied', array('exception' => $e));
-    }
 }

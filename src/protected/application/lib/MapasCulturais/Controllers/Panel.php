@@ -52,6 +52,11 @@ class Panel extends \MapasCulturais\Controller {
         return $user;
     }
 
+    function GET_requireAuth(){
+        $this->requireAuthentication();
+        $this->render('require-authentication');
+    }
+
     /**
      * Render the agent list of the user panel.
      *
