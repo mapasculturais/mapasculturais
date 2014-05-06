@@ -126,7 +126,8 @@ class View extends \Slim\View {
         $baseURL = $app->baseUrl;
         $assetURL = $app->assetUrl;
 
-        extract($this->data);
+        foreach($this->data->keys() as $k)
+            $$k = $this->data->get($k);
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;
@@ -182,7 +183,11 @@ class View extends \Slim\View {
         $baseURL = $app->baseUrl;
         $assetURL = $app->assetUrl;
 
-        extract($data);
+        if(is_array($data))
+            extract($data);
+        elseif($data instanceof \Slim\Helper\Set)
+            foreach($this->data->keys() as $k)
+                $$k = $this->data->get($k);
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;
