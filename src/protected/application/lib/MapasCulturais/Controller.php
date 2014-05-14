@@ -371,27 +371,11 @@ abstract class Controller{
     public function requireAuthentication(){
         $app = App::i();
 
-        if(!$app->user){
-            if($app->request->isAjax()){
-                $this->errorJson($app->txt('This action requires authentication.'));
-                $app->stop();
-            }else{
-                $app->applyHookBoundTo($this, 'controller.requireAuthentication');
-                $app->applyHookBoundTo($this, 'controller(' . $this->id . ').requireAuthentication');
+        if($app->user->is('guest')){
+            $app->applyHookBoundTo($this, "controller.requireAuthentication");
+            $app->applyHookBoundTo($this, "controller({$this->id}).requireAuthentication");
 
-                $app->auth->setRedirectPath($app->request->getPathInfo());
-                $app->redirect($app->controller('auth')->createUrl(''));
-            }
+            $app->auth->requireAuthentication();
         }
     }
-
-    // ============= ACTIONS =============== //
-
-
-
-
-
-    // ========== API ============ //
-
-
 }
