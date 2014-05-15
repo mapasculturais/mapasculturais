@@ -16,7 +16,10 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
 
         $opauth = new \Opauth(array(
             'Strategy' => array(
-                'url' => $config['login_url']
+                'OpenID' => array(
+                    'identifier_form' => THEMES_PATH . 'active/views/auth-form.php',
+                    'url' => $config['login_url']
+                )
             ),
             'security_salt' => $config['salt'],
             'security_timeout' => $config['timeout'],
@@ -33,8 +36,8 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             $app->redirect($this->createUrl('openid'));
         });
 
-        $openid_cb = function () use($app, $opauth, $config){
-            $_POST['openid_url'] = $config['url'];
+        $openid_cb = function () use($opauth, $config){
+            $_POST['openid_url'] = $config['login_url'];
             $opauth->run();
         };
 
@@ -58,12 +61,6 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     }
 
     public function _requireAuthentication() {
-        ;
-    }
-
-
-
-    public function requireAuthentication() {
         $app = App::i();
 
         if($app->request->isAjax()){
@@ -92,12 +89,9 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
                     $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site','');
 
         unset($_SESSION['mapasculturais.auth.redirect_path']);
-
+        die($path);
         return $path;
     }
-
-
-
 
     /**
      * Returns the Opauth authentication response or null if the user not tried to authenticate

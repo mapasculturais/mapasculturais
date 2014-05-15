@@ -2,8 +2,7 @@
 namespace MapasCulturais;
 
 abstract class AuthProvider {
-    use Traits\Singleton,
-        Traits\MagicGetter,
+    use Traits\MagicGetter,
         Traits\MagicSetter;
 
     protected $_config = array();
@@ -12,7 +11,7 @@ abstract class AuthProvider {
 
     private $_guestUser = null;
 
-    protected final function __construct($config = array()) {
+    final function __construct(array $config = array()) {
         $this->_config = $config;
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();

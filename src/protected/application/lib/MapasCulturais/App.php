@@ -271,19 +271,10 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
 
         // =============== OPAUTH ============== //
-        if(key_exists('app.fakeAuthentication', $config) && $config['app.fakeAuthentication']){
-            $this->_auth = new AuthDev();
+        $auth_class_name = $config['auth.provider'][0] === '\\' ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
 
-        }else{
-            $this->_auth = new Auth( array(
-                'Strategy' => $config['opauth.strategies'],
-                'security_salt' => $config['opauth.security_salt'],
-                'security_timeout' => $config['opauth.security_timeout'],
-                'path' => '/auth/',
-                'callback_url' => '/auth/response/'
-            ), false );
+        $this->_auth = new $auth_class_name($config['auth.config']);
 
-        }
 
         $this->_auth->setCookies();
 

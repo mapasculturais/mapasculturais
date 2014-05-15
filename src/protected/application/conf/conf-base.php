@@ -84,6 +84,16 @@ return array(
         'password'  => 'mapasculturais',
         'host'      => 'localhost',
     ),
+
+    // if authprovider namespace is outside MapasCulturais\AuthProvider set the full namespace with the initial slash ex: \Full\Name\Space\AuthProvider
+    'auth.provider' => 'OpauthOpenId',
+    'auth.config' => array(
+        'login_url' => 'https://www.google.com/accounts/o8/id',
+        'logout_url' => '',
+        'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
+        'timeout' => '24 hours'
+    ),
+
     'opauth.OpenID.logoutUrl' => '',
     'opauth.strategies' => array(
         'OpenID' => array(
