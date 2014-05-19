@@ -28,8 +28,10 @@ class Event extends EntityController {
      * </code>
      */
     function POST_index(){
-        App::i()->hook('entity(event).insert:before', function() {
-            $this->owner = App::i()->user->profile;
+        $app = App::i();
+
+        $app->hook('entity(event).insert:before', function() use($app){
+            $this->owner = $app->user->profile;
         });
         parent::POST_index();
     }

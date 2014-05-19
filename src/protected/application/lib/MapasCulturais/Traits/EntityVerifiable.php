@@ -27,7 +27,7 @@ trait EntityVerifiable{
     protected function canUserVerify($user = null){
         $user = is_null($user) ? App::i()->user : $user;
 
-        if(is_null($user))
+        if($user->is('guest'))
             return false;
 
         return $user->is('admin') || $this->canUser('modify') && $user->is('staff');

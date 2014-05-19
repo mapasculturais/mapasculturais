@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read \Slim\Log $log Slim Logger
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
- * @property-read \MapasCulturais\Auth $auth The Authentication Manager Component.
+ * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
  * @property-read \MapasCulturais\View $view The MapasCulturais View object
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
@@ -105,8 +105,6 @@ class App extends \Slim\Slim{
      */
     protected $_enqueuedStyles = array();
 
-    public $_user = -1;
-
     protected $_runningUpdates = false;
 
     /**
@@ -117,6 +115,8 @@ class App extends \Slim\Slim{
      * @var type
      */
     public $_register = array();
+
+    protected $_registerLocked = true;
 
 
 
@@ -270,15 +270,6 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
 
-        // =============== OPAUTH ============== //
-        $auth_class_name = $config['auth.provider'][0] === '\\' ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
-
-        $this->_auth = new $auth_class_name($config['auth.config']);
-
-
-        $this->_auth->setCookies();
-
-        // ===================================== //
 
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
@@ -324,6 +315,17 @@ class App extends \Slim\Slim{
 
 
         $this->register();
+
+                // =============== AUTH ============== //
+        $auth_class_name = $config['auth.provider'][0] === '\\' ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
+
+        $this->_auth = new $auth_class_name($config['auth.config']);
+
+
+        $this->_auth->setCookies();
+
+        // ===================================== //
+
 
         // don't run dbUpdates anymore
         $this->_dbUpdates();
@@ -526,6 +528,7 @@ class App extends \Slim\Slim{
 
         $this->_register = array(
             'controllers' => array(),
+            'auth_providers' => array(),
             'controllers-by-class' => array(),
             'controllers_default_actions' => array(),
             'controllers_view_dirs' => array(),
@@ -546,6 +549,8 @@ class App extends \Slim\Slim{
         if(@$this->_config['app.registerCache.enabled'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
         }else{
+            $this->registerAuthProvider('OpenID');
+
             $this->registerController('site',    'MapasCulturais\Controllers\Site');
             $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
             $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
@@ -777,6 +782,8 @@ class App extends \Slim\Slim{
 
             $this->cache->save('mapasculturais.register', $this->_register, $this->_config['app.registerCache.lifeTime']);
         }
+
+        $this->applyHook('app.register');
     }
 
 
@@ -1045,12 +1052,7 @@ class App extends \Slim\Slim{
      * @return \MapasCulturais\Entities\User
      */
     public function getUser(){
-        if($this->_user !== -1)
-            return $this->_user;
-
-        $this->_user = $this->auth->getAuthenticatedUser();
-
-        return $this->_user;
+        return $this->auth->getAuthenticatedUser();
     }
 
     /**
@@ -1172,6 +1174,15 @@ class App extends \Slim\Slim{
         $api_output_id = array_search($api_output, $this->_register['api_outputs']);
 
         return $api_output_id ? $api_output_id : null;
+    }
+
+    public function registerAuthProvider($name){
+        $nextId = count($this->_register['auth_providers']) + 1;
+        $this->_register['auth_providers'][$nextId] = strtolower($name);
+    }
+
+    public function getRegisteredAuthProviderId($name){
+        return array_search(strtolower($name), $this->_register['auth_providers']);
     }
 
     /**

@@ -2,7 +2,8 @@
 namespace MapasCulturais;
 
 abstract class AuthProvider {
-    use Traits\MagicGetter,
+    use Traits\MagicCallers,
+        Traits\MagicGetter,
         Traits\MagicSetter;
 
     protected $_config = array();
@@ -36,7 +37,7 @@ abstract class AuthProvider {
         $this->_requireAuthentication();
     }
 
-    protected final function _setAuthenticatedUser(Entities\User $user){
+    protected final function _setAuthenticatedUser(Entities\User $user = null){
         App::i()->applyHookBoundTo($this, 'auth.login', array($user));
         $this->_authenticatedUser = $user;
     }

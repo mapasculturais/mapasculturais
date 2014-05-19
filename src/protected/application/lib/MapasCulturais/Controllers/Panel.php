@@ -24,13 +24,17 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_index(){
         $this->requireAuthentication();
+
+        $app = App::i();
+
         $count = new \stdClass();
-        $count->agents = 0;//App::i()->user->agents->count();
-        $count->spaces = 0;//count(App::i()->user->spaces);
-        $count->events = 0;//count(App::i()->user->events);
+        $count->agents = 0;
+        $count->spaces = 0;
+        $count->events = 0;
         $count->projects = 0;
+
         foreach($count as $entity=>$c)
-            $count->$entity = str_pad(count(App::i()->user->$entity),2,'0', STR_PAD_LEFT);
+            $count->$entity = str_pad(count($app->user->$entity),2,'0', STR_PAD_LEFT);
 
         $this->render('index', array('count'=>$count));
     }

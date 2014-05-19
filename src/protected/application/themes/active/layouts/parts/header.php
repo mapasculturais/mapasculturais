@@ -160,7 +160,7 @@
                 </ul>
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
-                    <?php if ($app->user): ?>
+                    <?php if ($app->auth->isUserAuthenticated()): ?>
                         <li class="notificacoes">
                             <a href="#">
                                 <div class="icone icon_comment"></div>

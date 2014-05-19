@@ -1,6 +1,6 @@
 <?php
 if(is_editable() || $entity->className != $owner->className || $entity->id != $owner->id):
-    if($this->controller->id == 'agent' && ($app->user && !$app->user->is('admin')))
+    if($this->controller->id == 'agent' && !$app->user->is('admin'))
         return;
     $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar-padrao.png";
 

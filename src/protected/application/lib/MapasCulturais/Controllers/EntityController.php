@@ -220,7 +220,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
-        if($entity->status > 0 || ($app->user && ($app->user->is('admin') || $app->user->id === $entity->ownerUser->id)))
+        if($entity->status > 0 || $app->user->is('admin') || $app->user->id === $entity->ownerUser->id)
             $this->render('single', array('entity' => $entity));
         else
             $app->pass();
@@ -919,7 +919,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 //foreach($value as $p)
                     //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r(array($p->id, $p->name),true) . "<<<<<<<<< <<<<<<<<<<<<<");
             }elseif(trim($value) === '@profile'){
-                $value = ($app->user && $app->user->profile) ? $app->user->profile : null;
+                $value = $app->user->profile ? $app->user->profile : null;
 
             }elseif(preg_match('#@(\w+)[ ]*:[ ]*(\d+)#i', trim($value), $matches)){
                 $_repo = $app->repo($matches[1]);

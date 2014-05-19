@@ -57,7 +57,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     }
 
     public function _cleanUserSession() {
-        ;
+        unset($_SESSION['opauth']);
     }
 
     public function _requireAuthentication() {
@@ -84,12 +84,12 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
      * Returns the URL to redirect after authentication
      * @return string
      */
-    public function _getRedirectPath(){
+    public function getRedirectPath(){
         $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
                     $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site','');
 
         unset($_SESSION['mapasculturais.auth.redirect_path']);
-        die($path);
+        
         return $path;
     }
 
@@ -151,7 +151,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             */
             if (empty($response['auth']) || empty($response['timestamp']) || empty($response['signature']) || empty($response['auth']['provider']) || empty($response['auth']['uid'])) {
                 $app->flash('auth error', 'Invalid auth response: Missing key auth response components.');
-            } elseif (!$this->validate(sha1(print_r($response['auth'], true)), $response['timestamp'], $response['signature'], $reason)) {
+            } elseif (!$this->opauth->validate(sha1(print_r($response['auth'], true)), $response['timestamp'], $response['signature'], $reason)) {
                 $app->flash('auth error', "Invalid auth response: {$reason}");
             } else {
                 $valid = true;
@@ -166,9 +166,9 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         $user = null;
         if($this->_validateResponse()){
             $app = App::i();
-            $response = $this->getResponse();
+            $response = $this->_getResponse();
             $auth_uid = $response['auth']['uid'];
-            $auth_provider = $this->providers[$response['auth']['provider']];
+            $auth_provider = $app->getRegisteredAuthProviderId('OpenId');
             $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
 
             return $user;
@@ -187,14 +187,20 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         // se autenticou
         if($this->_validateResponse()){
             // e ainda não existe um usuário no sistema
-            if(!$this->_getAuthenticatedUser()){
-                $response = $this->getResponse();
+            $user = $this->_getAuthenticatedUser();
+            if(!$user){
+                $response = $this->_getResponse();
 
                 App::i()->repo('user')->createByAuthResponse($response);
+
+                $user = $this->_getAuthenticatedUser();
             }
+            $this->_setAuthenticatedUser($user);
+
             App::i()->applyHook('auth.successful');
             return true;
         } else {
+            $this->_setAuthenticatedUser();
             App::i()->applyHook('auth.failed');
             return false;
         }

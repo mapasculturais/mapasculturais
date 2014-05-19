@@ -3,7 +3,6 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Criteria;
 use MapasCulturais\App;
 
 
@@ -17,8 +16,6 @@ use MapasCulturais\App;
  */
 class User extends \MapasCulturais\Entity
 {
-    const PROVIDER_OPEN_ID = 1;
-
     const STATUS_ENABLED = 1;
 
 
@@ -37,7 +34,7 @@ class User extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="auth_provider", type="smallint", nullable=false)
      */
-    protected $authProvider = self::PROVIDER_OPEN_ID;
+    protected $authProvider;
 
     /**
      * @var string
@@ -98,6 +95,10 @@ class User extends \MapasCulturais\Entity
 
     function getOwnerUser(){
         return $this;
+    }
+
+    function setAuthProvider($provider_name){
+        $this->authProvider = App::i()->getRegisteredAuthProviderId($provider_name);
     }
 
     public function getProfile(){

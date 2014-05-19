@@ -18,8 +18,6 @@ return array(
 
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
 
-    'app.fakeAuthentication' => false,
-
     'app.defaultApiOutput' => 'json',
 
     'app.registerCache.enabled' => true,
@@ -86,6 +84,7 @@ return array(
     ),
 
     // if authprovider namespace is outside MapasCulturais\AuthProvider set the full namespace with the initial slash ex: \Full\Name\Space\AuthProvider
+    /*
     'auth.provider' => 'OpauthOpenId',
     'auth.config' => array(
         'login_url' => 'https://www.google.com/accounts/o8/id',
@@ -93,19 +92,10 @@ return array(
         'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
         'timeout' => '24 hours'
     ),
+    */
 
-    'opauth.OpenID.logoutUrl' => '',
-    'opauth.strategies' => array(
-        'OpenID' => array(
-            'identifier_form' => __DIR__.'/../views/auth-form.php',
-            'url' => 'https://www.google.com/accounts/o8/id',
-        )
-    ),
-
-    'opauth.security_timeout' => '120 minutes',
-
-    // change this
-    'opauth.security_salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
+    'auth.provider' => 'Fake',
+    'auth.config' => array(),
 
     //
     'routes' => array(

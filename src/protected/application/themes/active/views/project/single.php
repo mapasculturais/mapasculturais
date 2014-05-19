@@ -271,7 +271,7 @@ $ids = array_map(function($e){
 
                 <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>'); ?>
         <?php endif; ?>
-        <?php if($app->user && !$app->user->is('guest') && $entity->isRegistrationOpen() && !is_editable()): ?>
+        <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !is_editable()): ?>
             <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
 
             <div id="dialog-registration-form" class="js-dialog" title="Inscrição">

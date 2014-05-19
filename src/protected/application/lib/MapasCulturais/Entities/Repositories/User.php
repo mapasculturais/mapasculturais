@@ -27,9 +27,9 @@ class User extends CachedRepository{
         $this->_isCreating = true;
         $app = \MapasCulturais\App::i();
 
-
          // cria o usuário
         $user = new Entity;
+        $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
         $user->email = $response['auth']['info']['email'];
         $this->_em->persist($user);
@@ -49,6 +49,8 @@ class User extends CachedRepository{
 
         $app->em->flush();
         $this->_isCreating = false;
+
+        return $user;
     }
 
     public function isCreating(){
