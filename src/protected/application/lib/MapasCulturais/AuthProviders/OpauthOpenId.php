@@ -7,14 +7,17 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     protected $opauth;
 
     protected function _init() {
+        $app = App::i();
+
         $config = array_merge(array(
             'timeout' => '24 hours',
             'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
-            'login_url' => 'https://www.google.com/accounts/o8/id'
+            'login_url' => 'https://www.google.com/accounts/o8/id',
+            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $app->createUrl('auth'))
 
         ), $this->_config);
 
-        $opauth = new \Opauth(array(
+        $opauth_config = array(
             'Strategy' => array(
                 'OpenID' => array(
                     'identifier_form' => THEMES_PATH . 'active/views/auth-form.php',
@@ -23,13 +26,13 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             ),
             'security_salt' => $config['salt'],
             'security_timeout' => $config['timeout'],
-            'path' => '/auth/',
-            'callback_url' => '/auth/response/'
-        ), false );
+            'path' => $config['path'],
+            'callback_url' => $app->createUrl('auth','response')
+        );
+        
+        $opauth = new \Opauth($opauth_config, false );
 
         $this->opauth = $opauth;
-
-        $app = App::i();
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
@@ -89,7 +92,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
                     $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site','');
 
         unset($_SESSION['mapasculturais.auth.redirect_path']);
-        
+
         return $path;
     }
 

@@ -5,7 +5,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 return array(
     // sempre colocar a barra no final da url
-    'base.url' => 'http://'.(array_key_exists('SERVER_NAME' , $_SERVER) ? ($_SERVER['SERVER_NAME'].dirname($_SERVER['SCRIPT_NAME']) ) : 'mapasculturais.local'),
+    'base.url' => 'http://'.(array_key_exists('SERVER_NAME' , $_SERVER) ? ($_SERVER['SERVER_NAME'].dirname($_SERVER['SCRIPT_NAME']) ) : 'mapasculturais.local') . '/',
 
     'vectorLayersPath' => 'geojson',
 
@@ -84,7 +84,7 @@ return array(
     ),
 
     // if authprovider namespace is outside MapasCulturais\AuthProvider set the full namespace with the initial slash ex: \Full\Name\Space\AuthProvider
-    /*
+    //*
     'auth.provider' => 'OpauthOpenId',
     'auth.config' => array(
         'login_url' => 'https://www.google.com/accounts/o8/id',
@@ -92,10 +92,12 @@ return array(
         'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
         'timeout' => '24 hours'
     ),
-    */
+    // */
 
+    /*
     'auth.provider' => 'Fake',
     'auth.config' => array(),
+    // */
 
     //
     'routes' => array(
