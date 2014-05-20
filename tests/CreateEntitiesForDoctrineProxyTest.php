@@ -1,4 +1,5 @@
 <?php
+/*
 require_once __DIR__.'/bootstrap.php';
 
 use MapasCulturais\App;
@@ -90,3 +91,4 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
         }
     }
 }
+*/

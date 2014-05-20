@@ -12,6 +12,17 @@ return array_merge($config,
         'slim.log.enabled' => true,
         'slim.debug' => true,
         'auth.provider' => 'Test',
-        'auth.config' => array()
+        'auth.config' => array(),
+
+        'userIds' => array(
+            'superAdmin' => 1,
+//            'admin' => 2,
+//            'staff' => 3,
+//            'normal' => 4,
+
+            'admin' => 85,
+            'staff' => 67,
+            'normal' => 61,
+        )
     )
 );

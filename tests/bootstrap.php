@@ -37,7 +37,6 @@ $config = include __DIR__ . '/../src/protected/application/conf/conf-test.php';
 
 // create the App instance
 $app = MapasCulturais\App::i()->init($config);
-$app->_user = $app->repo('User')->findOneBy(['email' => 'Admin@local']);
 $app->register();
 
 abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
@@ -54,6 +53,20 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $this->backupStaticAttributes = false;
 
         parent::__construct($name, $data, $dataName);
+    }
+
+    public function __set($name, $value) {
+        if($name === 'user')
+            $this->setUserId ($value);
+    }
+
+    public function setUserId($user_id = null){
+        if(key_exists($user_id, $this->app->config['userIds']))
+            $this->app->auth->authenticatedUser = $this->app->repo('User')->find($this->app->config['userIds'][$user_id]);
+        else if(is_numeric($user_id))
+            $this->app->auth->authenticatedUser = $this->app->repo('User')->find($user_id);
+        else
+            $this->app->auth->logout();
     }
 
     // Initialize our own copy of the slim application

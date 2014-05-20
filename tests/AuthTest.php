@@ -6,38 +6,83 @@ require_once __DIR__.'/bootstrap.php';
  * @author rafael
  */
 class AuthTest extends MapasCulturais_TestCase{
-    function testLogin(){
+    function testAuthentication(){
+        $this->user = null;
+
         $app = $this->app;
 
-        $this->assertTrue($app->user->is('guest'), 'user must be guest');
+        // guest user
+        $this->assertFalse($app->auth->isUserAuthenticated(), 'Asserting that the user is not authenticated.');
+        $this->assertTrue($app->user->is('guest'), 'Asserting that the user is guest.');
 
-//        $this->assertfalse($app->auth->isUserAuthenticated()), 'user must )';
+        // superadmin
+
+        $user = $app->repo('User')->find(1);
+
+        $app->auth->authenticatedUser = $user;
+
+        $this->assertTrue($app->auth->isUserAuthenticated(), 'Asserting that the user is authenticated.');
+        $this->assertFalse($app->user->is('guest'), 'Asserting that the user is not guest.');
+        $this->assertTrue($app->user->is('admin'), 'Asserting that the user is admin.');
+        $this->assertTrue($app->user->is('superAdmin'), 'Asserting that the user is superAdmin.');
+
+        $app->auth->logout();
+
+        // guest user
+        $this->assertFalse($app->auth->isUserAuthenticated(), 'Asserting that the user is not authenticated.');
+        $this->assertTrue($app->user->is('guest'), 'Asserting that the user is guest.');
+    }
+
+    function testSuperAdminAuthentication(){
+        $this->user = $this->app->config['userIds']['superAdmin'];
+        $this->assertTrue($this->app->user->is('superAdmin'), 'Asserting that the user is super admin.');
+    }
+
+    function testAdminAuthentication(){
+        $this->user = $this->app->config['userIds']['admin'];
+        $this->assertTrue($this->app->user->is('admin'), 'Asserting that the user is admin.');
+        $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
+    }
+
+    function testNormalAuthentication(){
+        $this->user = $this->app->config['userIds']['normal'];
+        $this->assertFalse($this->app->user->is('guest'), 'Asserting that the user is not guest.');
+        $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
+        $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
+    }
+
+    function testStaffAuthentication(){
+        $this->user = $this->app->config['userIds']['staff'];
+        $this->assertTrue($this->app->user->is('staff'), 'Asserting that the user is staff.');
+        $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
+        $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
     }
 
     function testRequireAuthentication(){
+        $this->user = null;
+
         $app = $this->app;
-        $this->assertEquals('200', $app->response->status(), ' [' . __LINE__ . '] response status code must be 200');
+        $this->assertEquals('200', $app->response->status(), 'Asserting response status code is 200');
 
         try{
             $app->auth->requireAuthentication();
         }  catch (\Exception $e){}
 
-        $this->assertEquals('401', $app->response->status(), ' [' . __LINE__ . '] response status code must be 401');
+        $this->assertEquals('401', $app->response->status(), 'Asserting response status code is 401');
 
 
         $app->response->status(200);
-        $this->assertEquals('200', $app->response->status(), ' [' . __LINE__ . '] response status code must be 200');
+        $this->assertEquals('200', $app->response->status(), 'Asserting response status code is 200');
 
         try{
             $app->controller("space")->requireAuthentication();
         }  catch (\Exception $e){}
 
 
-        $this->assertEquals('401', $app->response->status(), ' [' . __LINE__ . '] response status code must be 401');
+        $this->assertEquals('401', $app->response->status(), 'Asserting response status code is 401');
 
         $app->response->status(200);
-        $this->assertEquals('200', $app->response->status(), ' [' . __LINE__ . '] response status code must be 200');
-
+        $this->assertEquals('200', $app->response->status(), 'Asserting response status code is 200');
 
     }
 }

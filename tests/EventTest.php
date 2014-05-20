@@ -62,6 +62,8 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEvent(){
+        $this->user = 1;
+
         $event = $this->createEvent();
 
         $event2 = $this->app->repo('Event')->findOneBy(array('name' => $this->eventName));
@@ -85,6 +87,8 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_single(){
+        $this->user = 1;
+
         $event = $this->createEvent();
         $space = $this->createSpace();
 
@@ -116,6 +120,8 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_daily(){
+        $this->user = 1;
+
         $event = $this->createEvent();
         $space = $this->createSpace();
 
@@ -156,6 +162,8 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_weekly(){
+        $this->user = 1;
+
         $event = $this->createEvent();
         $space = $this->createSpace();
 
@@ -207,6 +215,8 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventRules(){
+        $this->user = 1;
+
         $event = $this->createEvent();
         $space = $this->createSpace();
 
