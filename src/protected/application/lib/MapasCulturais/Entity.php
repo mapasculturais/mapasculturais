@@ -87,7 +87,6 @@ abstract class Entity implements \JsonSerializable{
 
         $hook_class_path = $this->getHookClassPath();
 
-        App::i()->applyHookBoundTo($this, 'entity.new');
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
 
     }
@@ -513,7 +512,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function postLoad($args = null){
         $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, 'entity.load', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').load', $args);
     }
 
@@ -532,11 +530,11 @@ abstract class Entity implements \JsonSerializable{
         $this->checkPermission('create');
 
         $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, 'entity.insert:before', $args);
-        App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
 
-        App::i()->applyHookBoundTo($this, 'entity.save:before', $args);
-        App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
     }
 
     /**
@@ -560,9 +558,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
 
-        $app->applyHookBoundTo($this, 'entity.insert:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:after', $args);
-        $app->applyHookBoundTo($this, 'entity.save:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
     }
 
@@ -603,7 +599,6 @@ abstract class Entity implements \JsonSerializable{
                 $tr->delete();
         }
 
-        $app->applyHookBoundTo($this, 'entity.remove:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
     }
 
@@ -620,7 +615,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
 
-        $app->applyHookBoundTo($this, 'entity.remove:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
     }
 
@@ -641,9 +635,7 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $hook_class_path = $this->getHookClassPath();
-        $app->applyHookBoundTo($this, 'entity.update:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:before', $args);
-        $app->applyHookBoundTo($this, 'entity.save:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
 
@@ -672,9 +664,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
 
-        $app->applyHookBoundTo($this, 'entity.update:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
-        $app->applyHookBoundTo($this, 'entity.save:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
 
     }

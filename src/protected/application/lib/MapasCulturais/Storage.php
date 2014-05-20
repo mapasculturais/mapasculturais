@@ -49,7 +49,6 @@ abstract class Storage{
 
         $app->applyHookBoundTo($this, 'storage.add:before', array('file' => $file));
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.add(' . $owner->getHookClassPath() . '):before', array('file' => $file));
             $app->applyHookBoundTo($this, 'storage.add(' . $owner->getHookClassPath() . ':' . $file->group . '):before', array('file' => $file));
         }
 
@@ -57,7 +56,6 @@ abstract class Storage{
 
         $app->applyHookBoundTo($this, 'storage.add:after', array('file' => $file, 'result' => &$result));
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.add(' . $owner->getHookClassPath() . '):after', array('file' => $file, 'result' => &$result));
             $app->applyHookBoundTo($this, 'storage.add(' . $owner->getHookClassPath() . ':' . $file->group . '):after', array('file' => $file, 'result' => &$result));
         }
 
@@ -84,7 +82,6 @@ abstract class Storage{
 
         $app->applyHookBoundTo($this, 'storage.remove:before', array('file' => $file));
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.remove(' . $owner->getHookClassPath() . '):before', array('file' => $file));
             $app->applyHookBoundTo($this, 'storage.remove(' . $owner->getHookClassPath() . ':' . $file->group . '):before', array('file' => $file));
         }
 
@@ -92,7 +89,6 @@ abstract class Storage{
 
         $app->applyHookBoundTo($this, 'storage.remove:after', array('file' => $file, 'result' => &$result));
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.remove(' . $owner->getHookClassPath() . '):after', array('file' => $file, 'result' => &$result));
             $app->applyHookBoundTo($this, 'storage.remove(' . $owner->getHookClassPath() . ':' . $file->group . '):after', array('file' => $file, 'result' => &$result));
         }
         return $result;
@@ -118,7 +114,6 @@ abstract class Storage{
         $app->applyHookBoundTo($this, 'storage.url', array('file' => $file, 'url' => &$result));
 
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.url(' . $owner->getHookClassPath() . ')', array('file' => $file, 'url' => &$result));
             $app->applyHookBoundTo($this, 'storage.url(' . $owner->getHookClassPath() . ':' . $file->group . ')', array('file' => $file, 'url' => &$result));
         }
         return $result;
@@ -144,7 +139,6 @@ abstract class Storage{
         $app->applyHookBoundTo($this, 'storage.path', array('file' => $file, 'path' => &$result));
 
         if($owner){
-            $app->applyHookBoundTo($this, 'storage.path(' . $owner->getHookClassPath() . ')', array('file' => $file, 'path' => &$result));
             $app->applyHookBoundTo($this, 'storage.path(' . $owner->getHookClassPath() . ':' . $file->group . ')', array('file' => $file, 'path' => &$result));
         }
         return $result;

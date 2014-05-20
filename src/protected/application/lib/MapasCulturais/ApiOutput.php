@@ -26,7 +26,6 @@ abstract class ApiOutput{
 
         $hook_data = array('data' => $data);
 
-        $app->applyHookBoundTo($this, "api.response.error:before", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).error:before", $hook_data);
 
         $app->contentType($this->contentType);
@@ -54,10 +53,6 @@ abstract class ApiOutput{
             'plural_object_name' => $plural_object_name
         );
 
-        $app->applyHookBoundTo($this, "api.response:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.item:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.item({$singular_object_name}):before", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item({$singular_object_name}):before", $hook_data);
 
         $app->contentType($this->contentType);
@@ -68,10 +63,6 @@ abstract class ApiOutput{
 
         $hook_data['output'] = $output;
 
-        $app->applyHookBoundTo($this, "api.response:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.item:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.item({$singular_object_name}):after", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item({$singular_object_name}):after", $hook_data);
 
         echo $output;
@@ -88,10 +79,6 @@ abstract class ApiOutput{
             'plural_object_name' => $plural_object_name
         );
 
-        $app->applyHookBoundTo($this, "api.response:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.array:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array:before", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.array({$plural_object_name}):before", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array({$plural_object_name}):before", $hook_data);
 
         $app->contentType($this->contentType);
@@ -102,10 +89,6 @@ abstract class ApiOutput{
 
         $hook_data['output'] = $output;
 
-        $app->applyHookBoundTo($this, "api.response:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.array:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array:after", $hook_data);
-        $app->applyHookBoundTo($this, "api.response.array({$plural_object_name}):after", $hook_data);
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array({$plural_object_name}):after", $hook_data);
 
         echo $output;

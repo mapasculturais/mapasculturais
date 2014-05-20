@@ -126,7 +126,8 @@ class View extends \Slim\View {
         $baseURL = $app->baseUrl;
         $assetURL = $app->assetUrl;
 
-        extract($this->data);
+        foreach($this->data->keys() as $k)
+            $$k = $this->data->get($k);
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;
@@ -135,7 +136,6 @@ class View extends \Slim\View {
 
         $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
 
-        $app->applyHookBoundTo($this, 'view.render:before', array('template' => $template_name));
         $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', array('template' => $template_name));
 
         $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
@@ -153,7 +153,6 @@ class View extends \Slim\View {
 
         $html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.render:after', array('template' => $template_name, 'html' => &$html));
         $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):after', array('template' => $template_name, 'html' => &$html));
 
         return $html;
@@ -182,7 +181,11 @@ class View extends \Slim\View {
         $baseURL = $app->baseUrl;
         $assetURL = $app->assetUrl;
 
-        extract($data);
+        if(is_array($data))
+            extract($data);
+        elseif($data instanceof \Slim\Helper\Set)
+            foreach($this->data->keys() as $k)
+                $$k = $this->data->get($k);
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;
@@ -191,7 +194,6 @@ class View extends \Slim\View {
 
         $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
 
-        $app->applyHookBoundTo($this, 'view.partial:before', array('template' => $template_name));
         $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):before', array('template' => $template_name));
 
         ob_start(function($output){
@@ -202,7 +204,6 @@ class View extends \Slim\View {
 
         $html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.partial:after', array('template' => $template_name, 'html' => &$html));
         $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):after', array('template' => $template_name, 'html' => &$html));
 
         return $html;
