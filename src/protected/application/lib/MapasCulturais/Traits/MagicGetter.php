@@ -15,7 +15,9 @@ trait MagicGetter{
      */
     public function __get($name){
 
-        if(method_exists($this, 'get' . $name)){
+        if(property_exists($this, 'container') && $val = $this->container[$name]){
+            return $val;
+        }elseif(method_exists($this, 'get' . $name)){
             $getter = 'get' . $name;
             $result = $this->$getter();
             return $result;
@@ -28,7 +30,7 @@ trait MagicGetter{
 
         }else{
             return null;
-            
+
         }
     }
 
