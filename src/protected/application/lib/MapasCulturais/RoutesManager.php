@@ -106,7 +106,7 @@ class RoutesManager{
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-                    $this->callAction($app->controller('site'), 'permissionDenied', array('exception' => $e), $api_call);
+                    $app->halt(403, $app->txt('Permission Denied'));
                 }
             }else{
                 $app->pass();

@@ -357,7 +357,13 @@ MapasCulturais.Editables = {
                 },
                 error : function(response){
                     $submitButton.data('clicked',false);
-                    MapasCulturais.Messages.error('Um erro inesperado aconteceu.');
+                    if(response.status === 401)
+                        MapasCulturais.auth.require(function(){
+                            $submitButton.click();
+                        });
+                    else{
+                        MapasCulturais.Messages.error('Um erro inesperado aconteceu.');
+                    }
                 }
             });
         });

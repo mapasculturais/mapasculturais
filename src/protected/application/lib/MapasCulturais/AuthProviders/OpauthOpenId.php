@@ -29,7 +29,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             'path' => $config['path'],
             'callback_url' => $app->createUrl('auth','response')
         );
-        
+
         $opauth = new \Opauth($opauth_config, false );
 
         $this->opauth = $opauth;
@@ -67,11 +67,10 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         $app = App::i();
 
         if($app->request->isAjax()){
-            $this->errorJson($app->txt('This action requires authentication.'));
-            $app->stop();
+            $app->halt(401, $app->txt('This action requires authentication'));
         }else{
             $this->_setRedirectPath($app->request->getPathInfo());
-            $app->redirect($app->controller('auth')->createUrl(''));
+            $app->redirect($app->controller('auth')->createUrl(''), 401);
         }
     }
 

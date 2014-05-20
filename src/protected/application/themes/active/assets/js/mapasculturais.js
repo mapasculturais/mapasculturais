@@ -59,6 +59,22 @@ $(function(){
     }
 });
 
+MapasCulturais.auth = {
+    cb: null,
+    require: function(cb){
+        MapasCulturais.auth.cb = cb;
+        $('#require-authentication').attr('src',MapasCulturais.baseURL + 'panel/requireAuth').fadeIn();
+    },
+
+    finish: function(){
+        if(MapasCulturais.auth.cb){
+            MapasCulturais.auth.cb();
+        }
+
+        MapasCulturais.auth.cb = null;
+        $('#require-authentication').fadeOut();
+    }
+}
 
 MapasCulturais.TemplateManager = {
     templates: {},
@@ -630,7 +646,7 @@ MapasCulturais.Search = {
 
                 $selector.parents('.js-space').find('.js-space-avatar').attr('src', avatarUrl);
                 $selector.parents('.js-space').find('.js-space-description').html(shortDescription);
-                
+
                 $selector.parents('form').find('input[name="spaceId"]').val(entity.id);
             },
             onHidden : function ($selector) {
