@@ -34,25 +34,26 @@ class AuthTest extends MapasCulturais_TestCase{
     }
 
     function testSuperAdminAuthentication(){
-        $this->user = $this->app->config['userIds']['superAdmin'];
+        $this->user = 'superAdmin';
         $this->assertTrue($this->app->user->is('superAdmin'), 'Asserting that the user is super admin.');
     }
 
     function testAdminAuthentication(){
-        $this->user = $this->app->config['userIds']['admin'];
+        $this->user = 'admin';
         $this->assertTrue($this->app->user->is('admin'), 'Asserting that the user is admin.');
         $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
     }
 
     function testNormalAuthentication(){
-        $this->user = $this->app->config['userIds']['normal'];
+        $this->user = 'normal';
         $this->assertFalse($this->app->user->is('guest'), 'Asserting that the user is not guest.');
+        $this->assertFalse($this->app->user->is('staff'), 'Asserting that the user is not admin.');
         $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
         $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
     }
 
     function testStaffAuthentication(){
-        $this->user = $this->app->config['userIds']['staff'];
+        $this->user = 'staff';
         $this->assertTrue($this->app->user->is('staff'), 'Asserting that the user is staff.');
         $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
         $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
