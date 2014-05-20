@@ -131,7 +131,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function genericPermissionVerification($user){
-        if(is_null($user))
+        if($user->is('guest'))
             return false;
 
         if($user->is('admin'))
@@ -152,7 +152,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function canUserRemove($user){
-        if($user && $user->is('admin') || $this->getOwnerUser()->id == $user->id)
+        if($user->is('admin') || $this->getOwnerUser()->id == $user->id)
             return true;
 
         return false;
