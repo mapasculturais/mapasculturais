@@ -967,6 +967,8 @@ class App extends \Slim\Slim{
     function applyHook($name, $hookArg = null) {
 		if(is_null($hookArg))
             $hookArg = array();
+        else if(!is_array($hookArg))
+            $hookArg = array($hookArg);
 
 		if($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
@@ -987,6 +989,8 @@ class App extends \Slim\Slim{
     function applyHookBoundTo($target_object, $name, $hookArg = null) {
         if(is_null($hookArg))
             $hookArg = array();
+        else if(!is_array($hookArg))
+            $hookArg = array($hookArg);
 
         if($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
