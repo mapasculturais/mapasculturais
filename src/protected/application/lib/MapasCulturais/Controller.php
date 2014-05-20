@@ -262,31 +262,14 @@ abstract class Controller{
         }
 
         if($call_method || $call_hook){
-            $app->applyHookBoundTo($this, "{$method}(*):before", $arguments);
-            $app->applyHookBoundTo($this, "{$method}({$this->id}):before", $arguments);
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
-
-            // if is an api call not
-            if($ALL_hook) {
-                $app->applyHookBoundTo($this, "ALL(*):before", $arguments);
-                $app->applyHookBoundTo($this, "ALL({$this->id}):before", $arguments);
-                $app->applyHookBoundTo($this, $ALL_hook . ':before', $arguments);
-            }
 
             if($call_method)
                 call_user_func_array($call_method, $arguments);
             else
                 $app->applyHookBoundTo($this, $call_hook, $arguments);
 
-            $app->applyHookBoundTo($this, "{$method}(*):after", $arguments);
-            $app->applyHookBoundTo($this, "{$method}({$this->id}):after", $arguments);
             $app->applyHookBoundTo($this, $hook . ':after', $arguments);
-
-            if($ALL_hook){
-                $app->applyHookBoundTo($this, "ALL(*):after", $arguments);
-                $app->applyHookBoundTo($this, "ALL({$this->id}):after", $arguments);
-                $app->applyHookBoundTo($this, $ALL_hook . ':after', $arguments);
-            }
         // else pass to 404?
         }else{
             $app->pass();
@@ -302,9 +285,6 @@ abstract class Controller{
      */
     public function render($template, $data = array()){
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller.render', array('template' => &$template, 'data' => &$data));
-        $app->applyHookBoundTo($this, 'controller.render(' . $template . ')', array('template' => &$template, 'data' => &$data));
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render', array('template' => &$template, 'data' => &$data));
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', array('template' => &$template, 'data' => &$data));
 
         $template = $this->id . '/' . $template;
@@ -320,9 +300,6 @@ abstract class Controller{
      */
     public function partial($template, $data = array()){
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller.partial', array('template' => &$template, 'data' => &$data));
-        $app->applyHookBoundTo($this, 'controller.partial(' . $template . ')', array('template' => &$template, 'data' => &$data));
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial', array('template' => &$template, 'data' => &$data));
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', array('template' => &$template, 'data' => &$data));
 
         $template = $this->id . '/' . $template;
@@ -372,7 +349,6 @@ abstract class Controller{
         $app = App::i();
 
         if($app->user->is('guest')){
-            $app->applyHookBoundTo($this, "controller.requireAuthentication");
             $app->applyHookBoundTo($this, "controller({$this->id}).requireAuthentication");
 
             $app->auth->requireAuthentication();

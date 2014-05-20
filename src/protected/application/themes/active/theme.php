@@ -8,7 +8,7 @@ function is_editable() {
     return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
 }
 
-$app->hook('view.render:before', function() use($app) {
+$app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');
 
 //    if(is_editable()){
@@ -195,7 +195,7 @@ function add_metalist_manager($object, $metalist_group, $metalist_action, $respo
  */
 
 
-$agentHookCallback = function() use ($app) {
+$app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
 
     $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
     $rsm->addScalarResult('nome', 'nome');
@@ -216,82 +216,29 @@ $agentHookCallback = function() use ($app) {
     $strNativeQuery = 'SELECT nome_distr AS nome FROM "sp_distrito" ' . $whereContains;
     $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
     $this->sp_distrito = $query->getOneOrNullResult()['nome'];
-};
-
-
-$app->hook('post(agent.single):after', function() {
-
-});
-
-$app->hook('entity(agent).update:before', $agentHookCallback);
-
-$app->hook('entity(agent).insert:before', $agentHookCallback);
-
-$app->hook('entity(space).update:before', $agentHookCallback);
-
-$app->hook('entity(space).insert:before', $agentHookCallback);
-
-//// altera as imagens atuais
-$app->hook('entity(agent).file(avatar).load', function() {
-    if (!$this->transform('avatarBig')->path)
-        ;
-});
-
-$app->hook('entity(space).file(avatar).load', function() {
-    $this->transform('avatarSmall');
-    $this->transform('resultadoBusca');
-    $this->transform('viradaSmall');
-    $this->transform('viradaBig');
-});
-
-
-$app->hook('entity(event).file(avatar).load', function() {
-    $this->transform('viradaSmall');
-    $this->transform('viradaBig');
 });
 
 // sempre que insere uma imagem cria o avatarSmall
-$app->hook('entity(agent).file(avatar).insert:after', function() {
+$app->hook('entity(<<*>>).file(avatar).insert:after', function() {
     $this->transform('avatarSmall');
     $this->transform('avatarBig');
 });
 
-$app->hook('entity(space).file(avatar).insert:after', function() {
-    $this->transform('avatarSmall');
-    $this->transform('avatarBig');
-});
-
-App::i()->hook('entity(event).file(avatar).insert:after', function() {
-    $this->transform('avatarSmall');
-    $this->transform('avatarBig');
-});
-
-App::i()->hook('entity(project).file(avatar).insert:after', function() {
-    $this->transform('avatarSmall');
-    $this->transform('avatarBig');
-});
-
-
-$app->hook('entity(space).file(header).insert:after', function() {
+$app->hook('entity(<<*>>).file(header).insert:after', function() {
     $this->transform('header');
 });
 
-$app->hook('entity(agent).file(header).insert:after', function() {
-    $this->transform('header');
-});
-
-$app->hook('entity(event).file(header).insert:after', function() {
-    $this->transform('header');
-});
-
-
-$app->hook('entity(project).file(header).insert:after', function() {
-    $this->transform('header');
-});
-
-$app->hook('entity.file(gallery).insert:after', function() {
+$app->hook('entity(<<*>>).file(gallery).insert:after', function() {
     $this->transform('galleryThumb');
     $this->transform('galleryFull');
+});
+
+$app->hook('entity(event).load', function() {
+    $this->type = 1;
+});
+
+$app->hook('entity(event).save:before', function() {
+    $this->type = 1;
 });
 
 if (key_exists('opauth.OpenID.logoutUrl', $app->config) && $app->config['opauth.OpenID.logoutUrl']) {
@@ -310,11 +257,4 @@ if (key_exists('opauth.OpenID.logoutUrl', $app->config) && $app->config['opauth.
 }
 
 
-$app->hook('entity(event).load', function() {
-    $this->type = 1;
-});
-
-
-$app->hook('entity(event).save:before', function() {
-    $this->type = 1;
-});
+//die(Var_dump($app));

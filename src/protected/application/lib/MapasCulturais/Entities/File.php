@@ -278,7 +278,6 @@ class File extends \MapasCulturais\Entity
     /** @ORM\PostLoad */
     public function _postLoad($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').load', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').load', $args);
     }
 
@@ -287,13 +286,11 @@ class File extends \MapasCulturais\Entity
         App::i()->storage->add($this);
 
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').insert:before', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').insert:after', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
 
         $this->owner->clearFilesCache();
@@ -306,7 +303,6 @@ class File extends \MapasCulturais\Entity
             $f->delete(true);
 
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').remove:before', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before', $args);
     }
     /** @ORM\PostRemove */
@@ -314,7 +310,6 @@ class File extends \MapasCulturais\Entity
         App::i()->storage->remove($this);
 
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').remove:after', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
 
         $this->owner->clearFilesCache();
@@ -323,13 +318,11 @@ class File extends \MapasCulturais\Entity
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').update:before', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before', $args);
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity.file(' . $this->group . ').update:after', $args);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after', $args);
 
         $this->owner->clearFilesCache();
