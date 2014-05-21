@@ -1046,7 +1046,7 @@ class App extends \Slim\Slim{
 		$hook = '#^' . preg_quote($hook) . '$#i';
 
 		foreach ($replaces as $uid => $matches) {
-			$regex = str_replace('*', '[a-z0-9\.\/\\\]*', $matches[1]);
+			$regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
 
 			$hook = str_replace($uid, '(' . $regex . ')', $hook);
 		}
