@@ -15,14 +15,14 @@ return array_merge($config,
         'auth.config' => array(),
 
         'userIds' => array(
-            'superAdmin' => 1,
+            'superAdmin' => array(1,2),
 //            'admin' => 2,
 //            'staff' => 3,
 //            'normal' => 4,
 
-            'admin' => 85,
-            'staff' => 67,
-            'normal' => 61,
+            'admin' => array(3,4),
+            'staff' => array(5,6),
+            'normal' => array(7,8),
         )
     )
 );

@@ -27,17 +27,18 @@ class PermissionsTest extends MapasCulturais_TestCase{
         return $entity;
     }
 
-    function getRandomEntity($_class, $where){
+    function getRandomEntity($_class, $where = null){
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $_class;
 
-        $where = "AND $where";
+        $where = $where ? "AND $where" : '';
         if($_class === 'User')
             return $this->app->em->createQuery("SELECT e FROM $classname e WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
         else if($_class === 'Agent')
             return $this->app->em->createQuery("SELECT e FROM $classname e JOIN e.user u WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
         else
             return $this->app->em->createQuery("SELECT e FROM $classname e JOIN e.owner a JOIN a.user u WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
+
     }
 
     function assertPermissionDenied($callable, $msg = ''){
@@ -45,7 +46,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         try{
             $callable = \Closure::bind($callable, $this);
 			$callable();
-        } catch (Exception $ex) {
+        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
             $exception = $ex;
         }
 
@@ -58,7 +59,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         try{
             $callable = \Closure::bind($callable, $this);
 			$callable();
-        } catch (Exception $ex) {
+        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
             $exception = $ex;
         }
 
@@ -79,7 +80,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
             $this->assertPermissionDenied(function() use ($class){
                 $entity = $this->getNewEntity($class);
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that the guest user cannot create $plural.");
         }
 
@@ -92,7 +93,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         foreach($this->entities as $class => $plural){
             $this->assertPermissionGranted(function() use ($class){
                 $entity = $this->getNewEntity($class);
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a super admin user can create $plural.");
         }
 
@@ -113,7 +114,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 }else
                     $entity->ownerId = $another_user->profile->id;
 
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a normal user cannot create $plural to another user.");
         }
 
@@ -131,10 +132,73 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 else
                     $entity->ownerId = $another_user->profile->id;
 
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a super admin user can create $plural to another user.");
         }
     }
+
+
+
+    function testCanUserModify(){
+        /*
+         * Asserting thar guest users cannot modify entities
+         */
+
+        $this->user = null;
+
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class){
+                $entity = $this->getRandomEntity($class);
+                $entity->shortDescription = "modificado " . uniqid();
+                $entity->save(true);
+            }, "Asserting that guest user cannot modify $plural");
+        }
+
+
+        foreach(['normal', 'staff'] as $role){
+            $this->user = $role;
+            /*
+             * Asserting thar normal and staff users cannot modify entities of other user
+             */
+            foreach($this->entities as $class => $plural){
+                $this->assertPermissionDenied(function() use ($class){
+                    $entity = $this->getRandomEntity($class, "u.id != " . $this->app->user->id);
+                    $entity->shortDescription = "modificado " . uniqid();
+                    $entity->save(true);
+                }, "Asserting that $role user cannot modify $plural of other user");
+            }
+
+
+            /*
+             * Asserting thar normal and staff users can modify their own entities
+             */
+            foreach($this->entities as $class => $plural){
+                $this->assertPermissionGranted(function() use ($class){
+                    $entity = $this->getRandomEntity($class, "u.id = " . $this->app->user->id);
+                    $entity->shortDescription = "modificado " . uniqid();
+                    $entity->save(true);
+                }, "Asserting that $role user can modify their own $plural");
+            }
+        }
+
+        foreach(['admin', 'superAdmin'] as $role){
+            $this->user = $role;
+            /*
+             * Asserting thar admin and super admin users can modify entities of other user
+             */
+            foreach($this->entities as $class => $plural){
+                $this->assertPermissionGranted(function() use ($class){
+                    $entity = $this->getRandomEntity($class, "u.id != " . $this->app->user->id);
+                    $entity->shortDescription = "modificado " . uniqid();
+                    $entity->save(true);
+                }, "Asserting that $role user cannot modify $plural of other user");
+            }
+        }
+
+
+    }
+
+    function testCanUserRemove(){ }
 
     function testCanUserVerifyEntity(){
         $app = $this->app;
@@ -149,7 +213,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($class){
                 $entity = $this->getRandomEntity('Agent', 'e.isVerified = false');
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a guest user cannot verify $plural.");
         }
 
@@ -157,13 +221,16 @@ class PermissionsTest extends MapasCulturais_TestCase{
         /*
          * Asserting that normal users cannot verify entities
          */
+
         $this->user = 'normal';
 
         foreach($this->entities as $class => $plural){
             $this->assertPermissionDenied(function() use ($class, $app){
-                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity = $this->getNewEntity($class);
+                $entity->save(true);
+
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a normal user cannot verify their own $plural.");
         }
 
@@ -171,7 +238,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($class, $app){
                 $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a normal user cannot verify $plural of other user.");
         }
 
@@ -186,15 +253,17 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($class, $app){
                 $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a staff user cannot verify $plural of other user.");
         }
 
         foreach($this->entities as $class => $plural){
             $this->assertPermissionGranted(function() use ($class, $app){
-                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity = $this->getNewEntity($class);
+                $entity->save(true);
+
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a staff user can verify their own $plural.");
         }
 
@@ -209,28 +278,20 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($class, $app){
                 $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a admin user can verify $plural of other user.");
         }
 
         foreach($this->entities as $class => $plural){
             $this->assertPermissionGranted(function() use ($class, $app){
-                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity = $this->getNewEntity($class);
+                $entity->save(true);
+
                 $entity->verify();
-                $entity->save();
+                $entity->save(true);
             }, "Asserting that a staff user can verify their own $plural.");
         }
     }
-
-    function testCanUserModify(){
-        /*
-         * Asserting thar guest users cannot modify entities
-         */
-
-
-    }
-
-    function testCanUserRemove(){ }
 
     function testCanUserViewPrivateData(){ }
 
@@ -259,7 +320,116 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testCanUserAddRemoveRole(){
-        // add role
-        // remove role
+        $roles = ['staff', 'admin', 'superAdmin'];
+
+        /*
+         * Guest user cannot add or remove roles
+         */
+        $this->user = null;
+
+        foreach($roles as $role){
+            $this->assertPermissionDenied(function() use($role){
+                $user = $this->getUser('normal', 1);
+                $user->addRole($role);
+            }, "Asserting that guest user cannot add the role $role to a user");
+        }
+
+        foreach($roles as $role){
+            $this->assertPermissionDenied(function() use($role){
+                $user = $this->getUser($role, 1);
+                $user->removeRole($role);
+            }, "Asserting that guest user cannot remove the role $role of a user");
+        }
+
+
+        /*
+         * Normal user cannot add or remove roles
+         */
+        $this->user = 'normal';
+
+        foreach($roles as $role){
+            $this->assertPermissionDenied(function() use($role){
+                $user = $this->getUser('normal', 1);
+                $user->addRole($role);
+            }, "Asserting that normal user cannot add the role $role to a user");
+        }
+
+        foreach($roles as $role){
+            $this->assertPermissionDenied(function() use($role){
+                $user = $this->getUser($role, 1);
+                $user->removeRole($role);
+            }, "Asserting that normal user cannot remove the role $role of a user");
+        }
+
+
+        /*
+         * Admin user can add and remove role staff
+         */
+        $this->user = 'admin';
+
+        foreach($roles as $role){
+            $this->resetTransactions();
+
+            switch ($role) {
+                case 'staff':
+                    $assertion = 'assertPermissionGranted';
+                    $can = 'can';
+                break;
+
+                default:
+                    $assertion = 'assertPermissionDenied';
+                    $can = 'cannot';
+                break;
+            }
+
+            $this->$assertion(function() use($role){
+                $user = $this->getUser('normal', 1);
+                $user->addRole($role);
+            }, "Asserting that admin user $can add the role $role to a user");
+        }
+
+        foreach($roles as $role){
+            $this->resetTransactions();
+
+            switch ($role) {
+                case 'staff':
+                    $assertion = 'assertPermissionGranted';
+                    $can = 'can';
+                break;
+
+                default:
+                    $assertion = 'assertPermissionDenied';
+                    $can = 'cannot';
+                break;
+            }
+
+            $this->$assertion(function() use($role){
+                $user = $this->getUser($role, 1);
+                $user->removeRole($role);
+            }, "Asserting that admin user $can remove the role $role of a user");
+        }
+
+        /*
+         * Admin user can add and remove role staff
+         */
+        $this->user = 'superAdmin';
+
+        foreach($roles as $role){
+            $this->resetTransactions();
+
+            $this->assertPermissionGranted(function() use($role){
+                $user = $this->getUser('normal', 1);
+                $user->addRole($role);
+            }, "Asserting that super admin user can add the role $role to a user");
+        }
+
+        foreach($roles as $role){
+            $this->resetTransactions();
+
+            $this->assertPermissionGranted(function() use($role){
+                $user = $this->getUser($role, 1);
+                $user->removeRole($role);
+            }, "Asserting that super admin user can remove the role $role of a user");
+        }
     }
 }
