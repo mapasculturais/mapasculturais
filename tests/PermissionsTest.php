@@ -6,6 +6,13 @@ require_once __DIR__.'/bootstrap.php';
  * @author rafael
  */
 class PermissionsTest extends MapasCulturais_TestCase{
+    protected $entities = [
+        'Agent' => 'agents',
+        'Space' => 'spaces',
+        'Event' => 'events',
+        'Project' => 'projects'
+    ];
+
     function getNewEntity($class){
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
@@ -20,99 +27,74 @@ class PermissionsTest extends MapasCulturais_TestCase{
         return $entity;
     }
 
-    function getRandomEntity($class, $where){
+    function getRandomEntity($_class, $where){
         $app = MapasCulturais\App::i();
-        $classname = 'MapasCulturais\Entities\\' . $class;
+        $classname = 'MapasCulturais\Entities\\' . $_class;
 
         $where = "AND $where";
+        if($_class === 'User')
+            return $this->app->em->createQuery("SELECT e FROM $classname e WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
+        else if($_class === 'Agent')
+            return $this->app->em->createQuery("SELECT e FROM $classname e JOIN e.user u WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
+        else
+            return $this->app->em->createQuery("SELECT e FROM $classname e JOIN e.owner a JOIN a.user u WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
+    }
 
-        return $this->app->em->createQuery("SELECT e FROM $classname e WHERE e.status > 0 $where")->setMaxResults(1)->getOneOrNullResult();
+    function assertPermissionDenied($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+			$callable();
+        } catch (Exception $ex) {
+            $exception = $ex;
+        }
+
+        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $exception, $msg);
+    }
+
+
+    function assertPermissionGranted($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+			$callable();
+        } catch (Exception $ex) {
+            $exception = $ex;
+        }
+
+        $this->assertEmpty($exception, $msg);
     }
 
     function testCanUserCreate(){
+        $app = MapasCulturais\App::i();
+
         /*
          * Guest users cant create entities.
          */
         $this->user = null;
 
-        // Spaces
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Space');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that the guest user cannot create spaces.');
+        foreach($this->entities as $class => $plural){
+            if($class === 'Agent')
+                continue;
 
-//        // Agents
-//        $ex = null;
-//        try{
-//            $entity = $this->getNewEntity('Agent');
-//            $entity->save();
-//        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-//
-//        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that the guest user cannot create agents.');
-
-        // Project
-        $ex = null;
-        try{
-           $entity = $this->getNewEntity('Project');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that the guest user cannot create projects.');
-
-        // Event
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Event');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that the guest user cannot create agents.');
-
-
+            $this->assertPermissionDenied(function() use ($class){
+                $entity = $this->getNewEntity($class);
+                $entity->save();
+            }, "Asserting that the guest user cannot create $plural.");
+        }
 
         /*
          * Super Admins can create entities
          */
         $this->user = 'superAdmin';
 
-        // Spaces
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Space');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
 
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create spaces.');
-
-        // Agents
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Agent');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create agents.');
-
-        // Project
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Project');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create projects.');
-
-        // Event
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Event');
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create events.');
-
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionGranted(function() use ($class){
+                $entity = $this->getNewEntity($class);
+                $entity->save();
+            }, "Asserting that a super admin user can create $plural.");
+        }
 
 
         /*
@@ -120,93 +102,38 @@ class PermissionsTest extends MapasCulturais_TestCase{
          */
         $this->user = 'normal';
 
-        $another_user = $this->app->repo('User')->find(1);
+        $another_user = $this->getRandomEntity('User', 'e.id != ' . $app->user->id);
 
-        // Spaces
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Space');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $another_user){
+                $entity = $this->getNewEntity($class);
 
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot create spaces to another user.');
+                if($class === 'Agent'){
+                    $entity->user = $another_user;
+                }else
+                    $entity->ownerId = $another_user->profile->id;
 
-        // Agents
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Agent');
-            $entity->ownerId = $another_user->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot create agents to another user.');
-
-        // Project
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Project');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot create projects to another user.');
-
-        // Event
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Event');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot create events to another user.');
-
+                $entity->save();
+            }, "Asserting that a normal user cannot create $plural to another user.");
+        }
 
         /*
          * Super Admins can create entities to another users
          */
         $this->user = 'superAdmin';
 
-        // Spaces
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Space');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionGranted(function() use ($class, $another_user){
+                $entity = $this->getNewEntity($class);
 
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create spaces to another user.');
+                if($class === 'Agent')
+                    $entity->user = $another_user;
+                else
+                    $entity->ownerId = $another_user->profile->id;
 
-        // Agents
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Agent');
-            $entity->ownerId = $another_user->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create agents to another user.');
-
-        // Project
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Project');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create projects to another user.');
-
-        // Event
-        $ex = null;
-        try{
-            $entity = $this->getNewEntity('Event');
-            $entity->ownerId = $another_user->profile->id;
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a superAdmin user can create events to another user.');
+                $entity->save();
+            }, "Asserting that a super admin user can create $plural to another user.");
+        }
     }
 
     function testCanUserVerifyEntity(){
@@ -218,41 +145,35 @@ class PermissionsTest extends MapasCulturais_TestCase{
          * Asserting that guest users cannot verify entities
          */
 
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false');
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class){
+                $entity = $this->getRandomEntity('Agent', 'e.isVerified = false');
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a guest user cannot verify $plural.");
+        }
 
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a guest user cannot verify entities.');
 
         /*
          * Asserting that normal users cannot verify entities
          */
-
         $this->user = 'normal';
 
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $app){
+                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a normal user cannot verify their own $plural.");
+        }
 
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot verify entities of another user.');
-
-
-
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId = ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a normal user cannot verify their own entities.');
-
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $app){
+                $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a normal user cannot verify $plural of other user.");
+        }
 
 
         /*
@@ -261,51 +182,84 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
         $this->user = 'staff';
 
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $app){
+                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a staff user cannot verify $plural of other user.");
+        }
 
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $ex, 'Asserting that a staff user cannot verify entities of another user.');
-
-        // Space
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId = ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
-
-        $this->assertEmpty($ex, 'Asserting that a staff user can verify their own entities.');
-
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionGranted(function() use ($class, $app){
+                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a staff user can verify their own $plural.");
+        }
 
 
         /*
-         * Asserting that staff users can verify entities
+         * Asserting that admin users can verify entities
          */
 
         $this->user = 'admin';
 
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionGranted(function() use ($class, $app){
+                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a admin user can verify $plural of other user.");
+        }
 
-        $this->assertEmpty($ex, 'Asserting that a admin user can verify entities of another user.');
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionGranted(function() use ($class, $app){
+                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id = ' . $app->user->id);
+                $entity->verify();
+                $entity->save();
+            }, "Asserting that a staff user can verify their own $plural.");
+        }
+    }
 
-        // Space
-        $ex = null;
-        try{
-            $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId = ' . $app->user->id);
-            $entity->verify();
-            $entity->save();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) { }
+    function testCanUserModify(){
+        /*
+         * Asserting thar guest users cannot modify entities
+         */
 
-        $this->assertEmpty($ex, 'Asserting that a admin user can verify their own entities.');
 
+    }
+
+    function testCanUserRemove(){ }
+
+    function testCanUserViewPrivateData(){ }
+
+    function testAgentRelationsPermission(){
+        // create agent relation without control
+
+        // create agent relation withcontrol
+
+        // remove agent relation without control
+
+        // remove agent relation with control
+    }
+
+    function testProjectRegistrationPermissions(){
+        // approve registration
+
+        // reject registration
+    }
+
+    function testFilesPermissions(){
+
+    }
+
+    function testMetalistPermissions(){
+
+    }
+
+    function testCanUserAddRemoveRole(){
+        // add role
+        // remove role
     }
 }
