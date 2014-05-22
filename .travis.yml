@@ -12,7 +12,7 @@ before_script:
   - psql -c 'create database mapasculturais owner mapasculturais;' -U postgres
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais
   - psql -f db/schema.sql -U mapasculturais -d mapasculturais
-  - psql -f db/initial-data.sql -U mapasculturais -d mapasculturais
+  - psql -f db/test-data.sql -U mapasculturais -d mapasculturais
 
   - tar xC db -f db/sp-shapefile-sql.tar.xz
   - psql -c "DROP table IF EXISTS sp_regiao;" -U mapasculturais -d mapasculturais
