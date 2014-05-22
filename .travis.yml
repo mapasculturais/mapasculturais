@@ -1,6 +1,8 @@
 language: php
 php:
   - 5.5
+matrix:
+  fast_finish: true
 
 install:
   - composer self-update && composer --version
