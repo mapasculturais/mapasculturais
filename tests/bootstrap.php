@@ -61,12 +61,19 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
 
     public function setUserId($user_id = null){
-        if(key_exists($user_id, $this->app->config['userIds']))
-            $this->app->auth->authenticatedUser = $this->app->repo('User')->find($this->app->config['userIds'][$user_id]);
-        else if(is_numeric($user_id))
-            $this->app->auth->authenticatedUser = $this->app->repo('User')->find($user_id);
+        if(!is_null($user_id))
+            $this->app->auth->authenticatedUser = $this->getUser($user_id);
         else
             $this->app->auth->logout();
+    }
+
+    public function getUser($user_id = null, $index = 0){
+
+        if(key_exists($user_id, $this->app->config['userIds'])){
+            return $this->app->repo('User')->find($this->app->config['userIds'][$user_id][$index]);
+        }else{
+            return $this->app->repo('User')->find($user_id);
+        }
     }
 
     // Initialize our own copy of the slim application
@@ -82,6 +89,10 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
 
         parent::tearDown();
 
+    }
+    function resetTransactions(){
+        $this->app->em->rollback();
+        $this->app->em->beginTransaction();
     }
 
     // Abstract way to make a request to SlimPHP, this allows us to mock the

@@ -312,18 +312,25 @@ abstract class Entity implements \JsonSerializable{
      * @param boolean $flush Flushes to the Database
      */
     public function save($flush = false){
-        App::i()->em->persist($this);
+        $app = App::i();
+
+        if($app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW)
+            $this->checkPermission('create');
+        else
+            $this->checkPermission('modify');
+
+        $app->em->persist($this);
 
         if($flush)
-            App::i()->em->flush();
+            $app->em->flush();
 
         if($this->usesMetadata()){
             $this->saveMetadata();
-            App::i()->em->flush();
+            $app->em->flush();
         }
         if($this->usesTaxonomies()){
             $this->saveTerms();
-            App::i()->em->flush();
+            $app->em->flush();
         }
     }
 
@@ -527,8 +534,6 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).save:before**
      */
     public function prePersist($args = null){
-        $this->checkPermission('create');
-
         $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
@@ -630,8 +635,6 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).save:before**
      */
     public function preUpdate($args = null){
-        $this->checkPermission('modify');
-
         $app = App::i();
 
         $hook_class_path = $this->getHookClassPath();
