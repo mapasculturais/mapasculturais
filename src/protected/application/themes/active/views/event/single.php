@@ -234,10 +234,6 @@ add_occurrence_frequencies_to_js();
                     <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                 <?php endif; ?>
 
-                <?php if (is_editable() || $entity->duracao): ?>
-                    <p><span class="label">Duração: </span><span class="js-editable" data-edit="duracao" data-original-title="Duração" data-emptytext="000min"><?php echo $entity->duracao; ?></span></p>
-                <?php endif; ?>
-
                 <?php if(is_editable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                     <br>
                     <p>

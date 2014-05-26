@@ -40,10 +40,6 @@ return array(
             'label' => 'Preço'
         ),
 
-        'duracao' => array(
-            'label' => 'Duração'
-        ),
-
         'traducaoLibras' => array(
             'label' => 'Tradução para LIBRAS',
             'type' => 'select',
