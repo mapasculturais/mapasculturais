@@ -191,7 +191,6 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     public function processResponse(){
         // se autenticou
         if($this->_validateResponse()){
-            die('ok');
             // e ainda não existe um usuário no sistema
             $user = $this->_getAuthenticatedUser();
             if(!$user){
