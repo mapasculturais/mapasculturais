@@ -1057,6 +1057,50 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
+        
+    public function getMaxUploadSize(){
+        $MB = 1024;
+        $GB = $MB * 1024;
+        
+        $convertToKB = function($size) use($MB, $GB){
+            switch(strtolower(substr($size, -1))){
+                case 'k';
+                    $size = (int) $size;
+                break;
+            
+                case 'm':
+                    $size = $size * $MB;
+                break;
+            
+                case 'g':
+                    $size = $size * $GB;
+                break;
+            }
+            
+            return $size;
+        };
+        
+        $max_upload = $convertToKB(ini_get('upload_max_filesize'));
+        $max_post = $convertToKB(ini_get('post_max_size'));
+        $memory_limit = $convertToKB(ini_get('memory_limit'));
+        
+        $result = min($max_upload, $max_post, $memory_limit);
+        
+        if($result < $MB){
+            $result .= ' KB';            
+        }else if($result < $GB){
+            $result = number_format($result / $MB, 0) . ' MB';
+        }else{
+            $result = $result / $GB;
+            $formated = number_format($result, 1);
+            if( $formated == (int) $result )
+                $result = intval($result) . ' GB';
+            else
+                $result = $formated . ' GB';
+        }
+        
+        return $result;
+    }
 
     public function getProjectRegistrationAgentRelationGroupName(){
         return key_exists('app.projectRegistrationAgentRelationGroupName', $this->_config) ?

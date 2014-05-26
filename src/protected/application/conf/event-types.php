@@ -40,10 +40,6 @@ return array(
             'label' => 'Preço'
         ),
 
-        'duracao' => array(
-            'label' => 'Duração'
-        ),
-
         'traducaoLibras' => array(
             'label' => 'Tradução para LIBRAS',
             'type' => 'select',
@@ -55,7 +51,7 @@ return array(
         ),
 
         'descricaoSonora' => array(
-            'label' => 'Descrição sonora',
+            'label' => 'Áudio descrição',
             'type' => 'select',
             'options' => array(
                 '' => 'Não Informado',
