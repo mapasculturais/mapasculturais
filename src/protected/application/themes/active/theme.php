@@ -240,21 +240,3 @@ $app->hook('entity(event).load', function() {
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
 });
-
-if (key_exists('opauth.OpenID.logoutUrl', $app->config) && $app->config['opauth.OpenID.logoutUrl']) {
-    $app->hook('auth.logout', function() {
-        $_SESSION['openid.logout'] = true;
-    });
-
-    if (key_exists('openid.logout', $_SESSION)) {
-
-        unset($_SESSION['openid.logout']);
-        $app->hook('mapasculturais.body:before', function() use ($app) {
-            $url = $app->config['opauth.OpenID.logoutUrl'];
-            $app->redirect($url);
-        });
-    }
-}
-
-
-//die(Var_dump($app));

@@ -24,10 +24,12 @@ abstract class AuthProvider {
     abstract function _cleanUserSession();
 
     final function logout(){
-        App::i()->applyHookBoundTo($this, 'auth.logout', array($this->_authenticatedUser));
+        App::i()->applyHookBoundTo($this, 'auth.logout:before', array($this->_authenticatedUser));
 
         $this->_authenticatedUser = null;
         $this->_cleanUserSession();
+        
+        App::i()->applyHookBoundTo($this, 'auth.logout:after');
     }
 
     abstract function _requireAuthentication();

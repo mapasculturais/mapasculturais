@@ -87,8 +87,8 @@ return array(
     //*
     'auth.provider' => 'OpauthOpenId',
     'auth.config' => array(
-        'login_url' => 'https://www.google.com/accounts/o8/id',
-        'logout_url' => '',
+        'login_url' => 'http://id.mapasculturais.hacklab.com.br',
+        'logout_url' => 'id.mapasculturais.hacklab.com.br/accounts/logout/',
         'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
         'timeout' => '24 hours'
     ),

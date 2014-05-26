@@ -33,20 +33,23 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         $opauth = new \Opauth($opauth_config, false );
 
         $this->opauth = $opauth;
+        
+        if($config['logout_url']){
+            $app->hook('auth.logout:after', function() use($app, $config){
+                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
+            });
+        }
+        
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $app->redirect($this->createUrl('openid'));
         });
 
-        $openid_cb = function () use($opauth, $config){
+        $app->hook('<<GET|POST>>(auth.openid)', function () use($opauth, $config){
             $_POST['openid_url'] = $config['login_url'];
             $opauth->run();
-        };
-
-        $app->hook('GET(auth.openid)', $openid_cb);
-
-        $app->hook('POST(auth.openid)', $openid_cb);
+        });
 
         $app->hook('GET(auth.response)', function () use($app){
             $app->auth->processResponse();
@@ -188,6 +191,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     public function processResponse(){
         // se autenticou
         if($this->_validateResponse()){
+            die('ok');
             // e ainda não existe um usuário no sistema
             $user = $this->_getAuthenticatedUser();
             if(!$user){
