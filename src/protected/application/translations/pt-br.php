@@ -10,7 +10,7 @@ return array(
     'Event' => 'Evento',
     'Project' => 'Projeto',
     'no files uploaded' => 'nenhum arquivo foi enviado',
-    'The uploaded file is not a valid image.' => 'O arquivo enviado não é uma válida.',
+    'The uploaded file is not a valid image.' => 'O arquivo enviado não é uma imagem válida.',
 
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
