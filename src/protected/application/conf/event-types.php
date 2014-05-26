@@ -51,7 +51,7 @@ return array(
         ),
 
         'descricaoSonora' => array(
-            'label' => 'Descrição sonora',
+            'label' => 'Áudio descrição',
             'type' => 'select',
             'options' => array(
                 '' => 'Não Informado',
