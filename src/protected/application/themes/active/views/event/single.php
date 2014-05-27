@@ -11,7 +11,6 @@ if (is_editable()) {
     $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
-    //$app->enqueueStyle('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
@@ -135,15 +134,15 @@ add_occurrence_frequencies_to_js();
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
-                    <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
-                    <?php endif; ?>
-                    <?php if (is_editable()): ?>
-                        <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                        <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
-                            <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-                        </div>
-                    <?php endif; ?>
+                <div class="avatar">
+                    <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                <?php endif; ?>
+                <?php if (is_editable()): ?>
+                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
+                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                        <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                    </div>
+                <?php endif; ?>
                 </div>
                 <!--.avatar-->
 
@@ -151,6 +150,11 @@ add_occurrence_frequencies_to_js();
                 <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
                 <div class="objeto-meta">
                     <div>
+                        <p>
+                            <?php if (is_editable() || $entity->subTitle): ?>
+                                <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                            <?php endif; ?>
+                        </p>
                         <span class="label">Linguagens: </span>
                         <?php if (is_editable()): ?>
                             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode(', ', $entity->terms['linguagem']) ?></span>
@@ -181,25 +185,10 @@ add_occurrence_frequencies_to_js();
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <p>
-                <?php if (!is_editable() || $entity->subTitle): ?>
-                    <span class="label">Sub-Título:</span><br>
+                <?php if (is_editable() || $entity->shortDescription): ?>
+                    <span class="label">Descrição Curta:</span><br>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
                 <?php endif; ?>
-                <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->subTitle; ?></span>
-            </p>
-            <p>
-                <?php
-                    /*Agente padrão da Giovanna editando atrações da Virada*/
-                    if($entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                        $shortDescriptionLabel = 'Sinopse';
-                    }else{
-                        $shortDescriptionLabel = 'Descrição Curta';
-                    }
-                ?>
-                <?php if (!is_editable() || $entity->shortDescription): ?>
-                    <span class="label"><?php echo $shortDescriptionLabel;?>:</span><br>
-                <?php endif; ?>
-
-                <span class="js-editable" data-edit="shortDescription" data-original-title="<?php echo $shortDescriptionLabel;?>" data-emptytext="Insira uma <?php echo strtolower($shortDescriptionLabel);?> para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
             <div class="servico">
 
