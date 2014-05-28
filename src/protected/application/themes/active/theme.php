@@ -220,16 +220,16 @@ $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($
 });
 
 // sempre que insere uma imagem cria o avatarSmall
-$app->hook('entity(<<*>>).file(avatar).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
     $this->transform('avatarSmall');
     $this->transform('avatarBig');
 });
 
-$app->hook('entity(<<*>>).file(header).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
     $this->transform('header');
 });
 
-$app->hook('entity(<<*>>).file(gallery).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
     $this->transform('galleryThumb');
     $this->transform('galleryFull');
 });
