@@ -8,7 +8,12 @@ use MapasCulturais\App;
 
 /**
  * User
- *
+ * 
+ * @property-read \MapasCulturais\Entities\Agent[] $agents Active Agents
+ * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
+ * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
+ * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * 
  * @ORM\Table(name="usr")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\User")
