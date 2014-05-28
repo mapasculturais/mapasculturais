@@ -15,7 +15,8 @@ use MapasCulturais\App;
  */
 class Space extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityTypes,
+    use \MapasCulturais\Traits\EntityOwnerAgent,
+        \MapasCulturais\Traits\EntityTypes,
         \MapasCulturais\Traits\EntityMetadata,
         \MapasCulturais\Traits\EntityFiles,
         \MapasCulturais\Traits\EntityMetaLists,
@@ -159,24 +160,6 @@ class Space extends \MapasCulturais\Entity
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
         parent::__construct();
-    }
-
-    /**
-     * Returns the owner of this space
-     * @return \MapasCulturais\Entities\Agent
-     */
-    function getOwner(){
-
-        if(!$this->id) return App::i()->user->profile;
-
-        return $this->owner;
-    }
-
-
-    function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->owner = $owner;
     }
 
     function getAvatar(){

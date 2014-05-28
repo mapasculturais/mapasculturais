@@ -14,7 +14,8 @@ use MapasCulturais\App;
  */
 class Project extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityTypes,
+    use \MapasCulturais\Traits\EntityOwnerAgent,
+        \MapasCulturais\Traits\EntityTypes,
         \MapasCulturais\Traits\EntityMetadata,
         \MapasCulturais\Traits\EntityFiles,
         \MapasCulturais\Traits\EntityMetaLists,
@@ -147,30 +148,11 @@ class Project extends \MapasCulturais\Entity
      */
     protected $isVerified = false;
 
-
-    /**
-     * Returns the owner of this project
-     * @return \MapasCulturais\Entities\Agent
-     */
-    function getOwner(){
-
-        if(!$this->id) return App::i()->user->profile;
-
-        return $this->owner;
-    }
-
-
     function getAvatar(){
         if(!$this->_avatar)
             $this->_avatar = $this->getFile('avatar');
 
         return $this->_avatar;
-    }
-
-    function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->owner = $owner;
     }
 
     function setRegistrationFrom($date){
