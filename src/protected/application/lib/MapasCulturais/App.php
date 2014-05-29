@@ -209,7 +209,13 @@ class App extends \Slim\Slim{
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
+        
+        $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
+        $classLoader->register();
+        
         $driver = new AnnotationDriver(new AnnotationReader());
+        
+        $driver->addPaths(array(__DIR__ . '/Entities/'));
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -880,9 +886,9 @@ class App extends \Slim\Slim{
         return $filename;
     }
 
-    /**********************************************
+    /*     * ********************************************
      * Hooks System
-     **********************************************/
+     * ******************************************** */
 
     /**
      * Clear hook listeners
@@ -894,23 +900,22 @@ class App extends \Slim\Slim{
      * @param  string   $name   A hook name (Optional)
      */
     public function clearHooks($name = null) {
-        if(is_null($name)){
+        if (is_null($name)) {
             $this->_hooks = array();
             $this->_excludeHooks = array();
-        }else{
+        } else {
             $hooks = $this->_getHookCallables($name);
-            foreach($this->_excludeHooks as $hook => $cb){
-                if(in_array($cb, $hooks))
+            foreach ($this->_excludeHooks as $hook => $cb) {
+                if (in_array($cb, $hooks))
                     unset($this->_excludeHooks[$hook]);
             }
 
-            foreach($this->_hooks as $hook => $cbs){
-                foreach($cbs as $i => $cb)
+            foreach ($this->_hooks as $hook => $cbs) {
+                foreach ($cbs as $i => $cb)
                     unset($this->_hooks[$hook][$i]);
             }
         }
     }
-
 
     /**
      * Get hook listeners
@@ -934,30 +939,29 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook($name, $callable, $priority = 10) {
-		$_hooks = explode(',', $name);
-		foreach($_hooks as $hook){
-			if(trim($hook)[0] === '-'){
-				$hook = $this->_compileHook($hook);
-				if(!key_exists($hook, $this->_excludeHooks))
-					$this->_excludeHooks[$hook] = array();
+        $_hooks = explode(',', $name);
+        foreach ($_hooks as $hook) {
+            if (trim($hook)[0] === '-') {
+                $hook = $this->_compileHook($hook);
+                if (!key_exists($hook, $this->_excludeHooks))
+                    $this->_excludeHooks[$hook] = array();
 
-				$this->_excludeHooks[$hook][] = $callable;
-			}else{
-				$hook = $this->_compileHook($hook);
+                $this->_excludeHooks[$hook][] = $callable;
+            }else {
+                $hook = $this->_compileHook($hook);
 
-				if(!key_exists($hook, $this->_hooks))
-					$this->_hooks[$hook] = array();
+                if (!key_exists($hook, $this->_hooks))
+                    $this->_hooks[$hook] = array();
 
-				if(!key_exists($priority, $this->_hooks[$hook]))
-					$this->_hooks[$hook][$priority] = array();
+                if (!key_exists($priority, $this->_hooks[$hook]))
+                    $this->_hooks[$hook][$priority] = array();
 
-				$this->_hooks[$hook][$priority][] = $callable;
+                $this->_hooks[$hook][$priority][] = $callable;
 
-				ksort($this->_hooks[$hook]);
-			}
-		}
-	}
-
+                ksort($this->_hooks[$hook]);
+            }
+        }
+    }
 
     /**
      * Invoke hook
@@ -965,19 +969,19 @@ class App extends \Slim\Slim{
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
      */
     function applyHook($name, $hookArg = null) {
-		if(is_null($hookArg))
+        if (is_null($hookArg))
             $hookArg = array();
-        else if(!is_array($hookArg))
+        else if (!is_array($hookArg))
             $hookArg = array($hookArg);
 
-		if($this->config['app.log.hook'])
+        if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
 
-		$callables = $this->_getHookCallables($name);
-		foreach ($callables as $callable) {
-			call_user_func_array($callable, $hookArg);
-		}
-	}
+        $callables = $this->_getHookCallables($name);
+        foreach ($callables as $callable) {
+            call_user_func_array($callable, $hookArg);
+        }
+    }
 
     /**
      * Invoke hook biding callbacks to the target object
@@ -987,72 +991,69 @@ class App extends \Slim\Slim{
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
      */
     function applyHookBoundTo($target_object, $name, $hookArg = null) {
-        if(is_null($hookArg))
+        if (is_null($hookArg))
             $hookArg = array();
-        else if(!is_array($hookArg))
+        else if (!is_array($hookArg))
             $hookArg = array($hookArg);
 
-        if($this->config['app.log.hook'])
+        if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
 
-		$callables = $this->_getHookCallables($name);
-		foreach ($callables as $callable) {
-			$callable = \Closure::bind($callable, $target_object);
-			call_user_func_array($callable, $hookArg);
-		}
-	}
+        $callables = $this->_getHookCallables($name);
+        foreach ($callables as $callable) {
+            $callable = \Closure::bind($callable, $target_object);
+            call_user_func_array($callable, $hookArg);
+        }
+    }
 
+    function _getHookCallables($name) {
+        $exclude_list = array();
+        $result = array();
 
+        foreach ($this->_excludeHooks as $hook => $callables) {
+            if (preg_match($hook, $name))
+                $exclude_list = array_merge($callables);
+        }
 
-	function _getHookCallables($name){
-		$exclude_list = array();
-		$result = array();
+        foreach ($this->_hooks as $hook => $_callables) {
+            if (preg_match($hook, $name)) {
+                foreach ($_callables as $callables) {
+                    foreach ($callables as $callable) {
+                        if (!in_array($callable, $exclude_list))
+                            $result[] = $callable;
+                    }
+                }
+            }
+        }
 
-		foreach($this->_excludeHooks as $hook => $callables){
-			if(preg_match($hook, $name))
-				$exclude_list = array_merge($callables);
-		}
+        return $result;
+    }
 
-		foreach($this->_hooks as $hook => $_callables){
-			if(preg_match($hook, $name)){
-				foreach($_callables as $callables){
-					foreach ($callables as $callable) {
-						if(!in_array($callable, $exclude_list))
-							$result[] = $callable;
-					}
-				}
-			}
-		}
+    protected function _compileHook($hook) {
+        $hook = trim($hook);
 
-		return $result;
-	}
+        if ($hook[0] === '-')
+            $hook = substr($hook, 1);
 
+        $replaces = array();
 
-	protected function _compileHook($hook){
-		$hook = trim($hook);
+        while (preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)) {
+            $uid = uniqid('@');
+            $replaces[$uid] = $matches;
 
-		if($hook[0] === '-')
-			$hook = substr($hook, 1);
+            $hook = str_replace($matches[0], $uid, $hook);
+        }
 
-		$replaces = array();
+        $hook = '#^' . preg_quote($hook) . '$#i';
 
-		while(preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)){
-			$uid = uniqid('@');
-			$replaces[$uid] = $matches;
+        foreach ($replaces as $uid => $matches) {
+            $regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
 
-			$hook = str_replace($matches[0], $uid, $hook);
-		}
+            $hook = str_replace($uid, '(' . $regex . ')', $hook);
+        }
 
-		$hook = '#^' . preg_quote($hook) . '$#i';
-
-		foreach ($replaces as $uid => $matches) {
-			$regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
-
-			$hook = str_replace($uid, '(' . $regex . ')', $hook);
-		}
-
-		return $hook;
-	}
+        return $hook;
+    }
 
     /**********************************************
      * Getters
