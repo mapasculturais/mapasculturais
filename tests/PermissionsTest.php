@@ -13,7 +13,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
         'Project' => 'projects'
     ];
 
-    function getNewEntity($class){
+    function getNewEntity($class, $user = null){
+        if(!is_null($user)){
+            $_user = $this->app->user->is('guest') ? null : $this->app->user;
+            $this->user = $user;
+        }
+            
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
@@ -23,7 +28,10 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $entity->name = "Test $class "  . uniqid();
         $entity->type = $type;
         $entity->shortDescription = 'A litle short description';
-
+        
+        if(!is_null($user)){
+            $this->user = $_user;
+        }
         return $entity;
     }
 
@@ -81,7 +89,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($class){
                 $entity = $this->getNewEntity($class);
                 $entity->save(true);
-            }, "Asserting that the guest user cannot create $plural.");
+            }, "Asserting that the guest user CANNOT create $plural.");
         }
 
         /*
@@ -94,7 +102,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($class){
                 $entity = $this->getNewEntity($class);
                 $entity->save(true);
-            }, "Asserting that a super admin user can create $plural.");
+            }, "Asserting that a super admin user CAN create $plural.");
         }
 
 
@@ -115,7 +123,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                     $entity->ownerId = $another_user->profile->id;
 
                 $entity->save(true);
-            }, "Asserting that a normal user cannot create $plural to another user.");
+            }, "Asserting that a normal user CANNOT create $plural to another user.");
         }
 
         /*
@@ -133,7 +141,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                     $entity->ownerId = $another_user->profile->id;
 
                 $entity->save(true);
-            }, "Asserting that a super admin user can create $plural to another user.");
+            }, "Asserting that a super admin user CAN create $plural to another user.");
         }
     }
 
@@ -151,7 +159,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $this->getRandomEntity($class);
                 $entity->shortDescription = "modificado " . uniqid();
                 $entity->save(true);
-            }, "Asserting that guest user cannot modify $plural");
+            }, "Asserting that guest user CANNOT modify $plural");
         }
 
 
@@ -165,7 +173,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                     $entity = $this->getRandomEntity($class, "u.id != " . $this->app->user->id);
                     $entity->shortDescription = "modificado " . uniqid();
                     $entity->save(true);
-                }, "Asserting that $role user cannot modify $plural of other user");
+                }, "Asserting that $role user CANNOT modify $plural of other user");
             }
 
 
@@ -177,7 +185,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                     $entity = $this->getRandomEntity($class, "u.id = " . $this->app->user->id);
                     $entity->shortDescription = "modificado " . uniqid();
                     $entity->save(true);
-                }, "Asserting that $role user can modify their own $plural");
+                }, "Asserting that $role user CAN modify their own $plural");
             }
         }
 
@@ -191,7 +199,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                     $entity = $this->getRandomEntity($class, "u.id != " . $this->app->user->id);
                     $entity->shortDescription = "modificado " . uniqid();
                     $entity->save(true);
-                }, "Asserting that $role user cannot modify $plural of other user");
+                }, "Asserting that $role user CANNOT modify $plural of other user");
             }
         }
 
@@ -214,7 +222,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $this->getRandomEntity('Agent', 'e.isVerified = false');
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a guest user cannot verify $plural.");
+            }, "Asserting that a guest user CANNOT verify $plural.");
         }
 
 
@@ -231,7 +239,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a normal user cannot verify their own $plural.");
+            }, "Asserting that a normal user CANNOT verify their own $plural.");
         }
 
         foreach($this->entities as $class => $plural){
@@ -239,7 +247,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a normal user cannot verify $plural of other user.");
+            }, "Asserting that a normal user CANNOT verify $plural of other user.");
         }
 
 
@@ -254,7 +262,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a staff user cannot verify $plural of other user.");
+            }, "Asserting that a staff user CANNOT verify $plural of other user.");
         }
 
         foreach($this->entities as $class => $plural){
@@ -264,7 +272,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a staff user can verify their own $plural.");
+            }, "Asserting that a staff user CAN verify their own $plural.");
         }
 
 
@@ -279,7 +287,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a admin user can verify $plural of other user.");
+            }, "Asserting that a admin user CAN verify $plural of other user.");
         }
 
         foreach($this->entities as $class => $plural){
@@ -289,13 +297,13 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
                 $entity->verify();
                 $entity->save(true);
-            }, "Asserting that a staff user can verify their own $plural.");
+            }, "Asserting that a staff user CAN verify their own $plural.");
         }
     }
 
     function testCanUserViewPrivateData(){ }
 
-    function testAgentRelationsPermission(){
+    function testAgentRelationsPermissions(){
         // create agent relation without control
 
         // create agent relation withcontrol
@@ -303,6 +311,107 @@ class PermissionsTest extends MapasCulturais_TestCase{
         // remove agent relation without control
 
         // remove agent relation with control
+        
+        // assert that related agent with control cannot change the entity owner
+        
+        $GROUP = 'group 1';
+        
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+        $user3 = $this->getUser('staff', 0);
+        
+        /*
+         * Asserting that owner user and a related agent with control can modify an entity
+         */
+        
+        foreach($this->entities as $class => $plural){
+            $entities = $user1->$plural;
+            $entity = $entities[0];
+            
+            $this->assertTrue($entity->canUser('modify', $user1), 'Asserting that user 1 CAN modify the ' . $class . ' before the relation is created.');
+            $this->assertFalse($entity->canUser('modify', $user2), 'Asserting that user 2 CANNOT modify the ' . $class . ' before the relation is created.');
+            $this->assertFalse($entity->canUser('modify', $user3), 'Asserting that user 3 CANNOT modify the ' . $class . ' before the relation is created.');
+
+
+            // login with user1
+            $this->user = $user1;
+
+            // create the realation with control
+            $entity->createAgentRelation($user2->profile, $GROUP, true, true);
+
+            // logout
+            $this->user = null;
+
+            $this->assertTrue($entity->canUser('modify', $user1), 'Asserting that user 1 CAN modify the ' . $class . ' after the relation is created.');
+            $this->assertTrue($entity->canUser('modify', $user2), 'Asserting that user 2 CAN modify the ' . $class . ' after the relation is created.');
+            $this->assertFalse($entity->canUser('modify', $user3), 'Asserting that user 3 CANNOT modify the ' . $class . ' after the relation is created.');
+        }
+        
+        $this->resetTransactions();
+        
+        /*
+         * Asserting that only the owner user can modify the agentId (the owner) of the entity
+         */
+        
+        $new_agent1 = $this->getNewEntity('Agent', $user1);
+        $new_agent2 = $this->getNewEntity('Agent', $user2);
+        $new_agent3 = $this->getNewEntity('Agent', $user3);
+        
+        $new_agent1->save(true);
+        $new_agent2->save(true);
+        $new_agent3->save(true);
+        
+        foreach($this->entities as $class => $plural){
+            if($class == 'Agent')
+                continue;
+            
+            $entities = $user1->$plural;
+            $entity = $entities[0];
+            
+            $this->user = $user1;
+            $this->assertPermissionGranted(function() use($entity, $new_agent1){
+                $entity->owner = $new_agent1;
+                $entity->save();
+            }, 'Asserting that the user 1 CAN modify the ' . $class . ' owner before the relation is created.');
+            
+            $this->user = $user2;
+            $this->assertPermissionDenied(function() use($entity, $new_agent2){
+                $entity->owner = $new_agent2;
+                $entity->save();
+            }, 'Asserting that the user 2 CANNOT modify the ' . $class . ' owner before the relation is created.');
+            
+            $this->user = $user3;
+            $this->assertPermissionDenied(function() use($entity, $new_agent3){
+                $entity->owner = $new_agent3;
+                $entity->save();
+            }, 'Asserting that the user 3 CANNOT modify the ' . $class . ' owner before the relation is created.');
+            
+            
+            // login with user1
+            $this->user = $user1;
+
+            // create the realation with control
+            $entity->createAgentRelation($user2->profile, $GROUP, true, true);
+
+            $this->assertPermissionGranted(function() use($entity, $new_agent1){
+                $entity->owner = $new_agent1;
+                $entity->save();
+            }, 'Asserting that the user 1 CAN modify the ' . $class . ' owner before the relation is created.');
+            
+            $this->user = $user2;
+            $this->assertPermissionDenied(function() use($entity, $new_agent2){
+                $entity->owner = $new_agent2;
+                $entity->save();
+            }, 'Asserting that the user 2, now with control, CANNOT modify the ' . $class . ' owner AFTER the relation is created.');
+            
+            $this->user = $user3;
+            $this->assertPermissionDenied(function() use($entity, $new_agent3){
+                $entity->owner = $new_agent3;
+                $entity->save();
+            }, 'Asserting that the user 3 CANNOT modify the ' . $class . ' owner after the relation is created.');
+        }
+        
+        $this->resetTransactions();
     }
 
     function testProjectRegistrationPermissions(){
@@ -331,14 +440,14 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use($role){
                 $user = $this->getUser('normal', 1);
                 $user->addRole($role);
-            }, "Asserting that guest user cannot add the role $role to a user");
+            }, "Asserting that guest user CANNOT add the role $role to a user");
         }
 
         foreach($roles as $role){
             $this->assertPermissionDenied(function() use($role){
                 $user = $this->getUser($role, 1);
                 $user->removeRole($role);
-            }, "Asserting that guest user cannot remove the role $role of a user");
+            }, "Asserting that guest user CANNOT remove the role $role of a user");
         }
 
 
@@ -351,14 +460,14 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use($role){
                 $user = $this->getUser('normal', 1);
                 $user->addRole($role);
-            }, "Asserting that normal user cannot add the role $role to a user");
+            }, "Asserting that normal user CANNOT add the role $role to a user");
         }
 
         foreach($roles as $role){
             $this->assertPermissionDenied(function() use($role){
                 $user = $this->getUser($role, 1);
                 $user->removeRole($role);
-            }, "Asserting that normal user cannot remove the role $role of a user");
+            }, "Asserting that normal user CANNOT remove the role $role of a user");
         }
 
 
@@ -373,12 +482,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
             switch ($role) {
                 case 'staff':
                     $assertion = 'assertPermissionGranted';
-                    $can = 'can';
+                    $can = 'CAN';
                 break;
 
                 default:
                     $assertion = 'assertPermissionDenied';
-                    $can = 'cannot';
+                    $can = 'CANNOT';
                 break;
             }
 
@@ -394,12 +503,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
             switch ($role) {
                 case 'staff':
                     $assertion = 'assertPermissionGranted';
-                    $can = 'can';
+                    $can = 'CAN';
                 break;
 
                 default:
                     $assertion = 'assertPermissionDenied';
-                    $can = 'cannot';
+                    $can = 'CANNOT';
                 break;
             }
 
@@ -420,7 +529,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use($role){
                 $user = $this->getUser('normal', 1);
                 $user->addRole($role);
-            }, "Asserting that super admin user can add the role $role to a user");
+            }, "Asserting that super admin user CAN add the role $role to a user");
         }
 
         foreach($roles as $role){
@@ -429,7 +538,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use($role){
                 $user = $this->getUser($role, 1);
                 $user->removeRole($role);
-            }, "Asserting that super admin user can remove the role $role of a user");
+            }, "Asserting that super admin user CAN remove the role $role of a user");
         }
     }
 }

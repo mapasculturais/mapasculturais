@@ -56,8 +56,12 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
 
     public function __set($name, $value) {
-        if($name === 'user')
-            $this->setUserId ($value);
+        if($name === 'user'){
+            if(is_object($value) && $value instanceof \MapasCulturais\Entities\User)
+                $this->app->auth->authenticatedUser = $value;
+            else
+                $this->setUserId ($value);
+        }
     }
 
     public function setUserId($user_id = null){
@@ -67,6 +71,12 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
             $this->app->auth->logout();
     }
 
+    /**
+     * 
+     * @param type $user_id
+     * @param type $index
+     * @return MapasCulturais\Entities\User
+     */
     public function getUser($user_id = null, $index = 0){
 
         if(key_exists($user_id, $this->app->config['userIds'])){

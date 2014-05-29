@@ -13,6 +13,15 @@ return array_merge($config,
         'slim.debug' => true,
         'auth.provider' => 'Test',
         'auth.config' => array(),
+        
+//        'app.log.query' => true,
+        
+        'doctrine.database' => array(
+            'dbname'    => 'mapasculturais_test',
+            'user'      => 'mapasculturais',
+            'password'  => 'mapasculturais',
+            'host'      => 'localhost',
+        ),
 
         'userIds' => array(
             'superAdmin' => array(1,2),
