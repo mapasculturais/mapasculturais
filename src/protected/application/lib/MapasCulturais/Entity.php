@@ -105,27 +105,21 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->em->getClassMetadata(get_called_class())->name;
     }
 
+    /**
+     * Returns the owner User of this entity
+     * 
+     * @return \MapasCulturais\Entities\User
+     */
     function getOwnerUser(){
         $app = App::i();
 
         if(!$this->owner)
             return $app->user;
 
-        $cache_id = "{$this}:ownerUserId";
-
-        if($app->cache->contains($cache_id))
-            return $app->repo('User')->find($app->cache->fetch($cache_id));
-
         $owner = $this->owner;
-        if(method_exists($owner, '__load') && !$owner->id)
-            $owner->__load();
-
+        
         $user = $owner->getOwnerUser();
-        if(method_exists($user, '__load') && !$user->id)
-            $user->__load();
-
-        $app->cache->save($cache_id, $user->id);
-
+        
         return $user;
     }
 
