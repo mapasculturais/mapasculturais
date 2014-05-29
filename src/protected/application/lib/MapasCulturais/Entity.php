@@ -145,6 +145,9 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function canUserRemove($user){
+        if($user->is('guest'))
+            return false;
+        
         if($user->is('admin') || $this->getOwnerUser()->id == $user->id)
             return true;
 
