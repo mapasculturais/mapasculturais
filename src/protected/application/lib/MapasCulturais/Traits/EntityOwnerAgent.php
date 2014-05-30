@@ -38,8 +38,10 @@ trait EntityOwnerAgent{
      * @param \MapasCulturais\Entities\Agent $owner
      */
     function setOwner(\MapasCulturais\Entities\Agent $owner){
-        $this->checkPermission('changeOwner');
-        $this->owner = $owner;
+        if(!$this->owner || $owner->id != $this->owner->id){
+            $this->checkPermission('changeOwner');
+            $this->owner = $owner;
+        }
     }
     
     /**
@@ -56,5 +58,29 @@ trait EntityOwnerAgent{
         
         // only admins or the owner of the entity can change the owner
         return ($user->is('admin') || $user->id == $this->getOwnerUser()->id);
+    }
+    
+    protected function _canUser($user){
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        if($this->getOwnerUser()->id == $user->id)
+            return true;
+        
+        if( $this->owner->userHasControl($user) )
+            return true;
+        
+        return false;
+    }
+    
+    protected function canUserCreate($user){
+        return $this->_canUser($user);
+    }
+    
+    protected function canUserRemove($user){
+        return $this->_canUser($user);
     }
 }
