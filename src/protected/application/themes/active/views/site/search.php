@@ -78,7 +78,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Local:</span>{{openEntity.space.metadata.endereco}}</div>
+                        <div><span class="label">Endereço:</span>{{openEntity.space.metadata.endereco}}</div>
                         <div><span class="label">Acessibilidade:</span> {{openEntity.space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>
@@ -204,7 +204,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Local:</span>{{space.metadata.endereco}}</div>
+                        <div><span class="label">Endereço:</span>{{space.metadata.endereco}}</div>
                         <div><span class="label">Acessibilidade:</span> {{space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>
