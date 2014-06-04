@@ -18,10 +18,11 @@ trait EntitySoftDelete{
 
         $entity_class = $this->getClassName();
 
-        //muda o status para 2, temporariamente
         $this->status = $entity_class::STATUS_TRASH;
-
-        $this->save($flush);
+        $em = App::i()->em;
+        $em->persist($this);
+        if($flush)
+            $em->flush();
 
     }
 
@@ -30,10 +31,12 @@ trait EntitySoftDelete{
 
         $entity_class = $this->getClassName();
 
-        //muda o status para 2, temporariamente
         $this->status = $entity_class::STATUS_ENABLED;
 
-        $this->save($flush);
+        $em = App::i()->em;
+        $em->persist($this);
+        if($flush)
+            $em->flush();
     }
 
     function destroy($flush = false){
