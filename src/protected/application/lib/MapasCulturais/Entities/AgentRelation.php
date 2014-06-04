@@ -95,15 +95,26 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         unset($result['objectId']);
         return $result;
     }
-
-    protected function canUserRemove($user = null){
+    
+    protected function canUserCreate($user){
         if($this->hasControl)
+            return $this->owner->canUser('createAgentRelationWithControl');
+        else
+            return $this->owner->canUser('createAgentRelation');
+    }
+
+    protected function canUserRemove($user){
+        if($user->id == $this->agent->getOwnerUser()->id)
+            return true;
+        
+        else if($this->hasControl)
             return $this->owner->canUser('removeAgentRelationWithControl', $user);
+        
         else
             return $this->owner->canUser('removeAgentRelation', $user);
     }
 
-    protected function canUserChangeControl($user = null){
+    protected function canUserChangeControl($user){
         if($this->hasControl)
             return $this->owner->canUser('removeAgentRelationWithControl', $user);
         else

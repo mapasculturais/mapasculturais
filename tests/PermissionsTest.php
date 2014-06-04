@@ -501,7 +501,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $this->user = $user1();
                 $entity = $this->getNewEntity($class, $user1());
                 $entity->save(true);
-            }, "Asserting that user 1 CAN create $plural to his own agent before the relation is created");
+            }, "Asserting that user 1 CAN create $plural to his own agent after the relation is created");
             
             $this->assertPermissionGranted(function() use($user1, $user2, $class){
                 $this->user = $user2();
@@ -600,6 +600,39 @@ class PermissionsTest extends MapasCulturais_TestCase{
             
             $this->resetTransactions();
         }
+        
+        /*
+         *  Asserting that an user with control can create agent relations
+         */
+        
+        foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $this->user = $user1();
+            $user1()->profile->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            $this->user = $user2();
+            $this->assertPermissionGranted(function() use ($user1, $user2, $GROUP){
+                $user1()->profile->createAgentRelation($user2()->profile, $GROUP, false, true);
+                
+            }, "Asserting that user 2 CAN create agent relations to $plural that he has control");
+            
+        }
+        
+        /*
+         *  Asserting that an user with control can remove agent relations of agents without control
+         */
+        
+        /*
+         *  Asserting that an user with control cannot remove agent relations of agents with control
+         */
+        
+        /*
+         *  Asserting that an user with control cannot add control to a related agent
+         */
+        
+        /*
+         *  Asserting that an user with control cannot remove control of a related agent
+         */
         
     }
 
