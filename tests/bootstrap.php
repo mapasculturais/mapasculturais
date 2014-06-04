@@ -78,8 +78,9 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      * @return MapasCulturais\Entities\User
      */
     public function getUser($user_id = null, $index = 0){
-
-        if(key_exists($user_id, $this->app->config['userIds'])){
+        if($user_id instanceof \MapasCulturais\Entities\User){
+            return $user_id;
+        }else if(key_exists($user_id, $this->app->config['userIds'])){
             return $this->app->repo('User')->find($this->app->config['userIds'][$user_id][$index]);
         }else{
             return $this->app->repo('User')->find($user_id);
@@ -102,6 +103,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
     function resetTransactions(){
         $this->app->em->rollback();
+        $this->app->em->clear();
         $this->app->em->beginTransaction();
     }
 
