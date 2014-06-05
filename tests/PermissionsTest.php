@@ -608,13 +608,21 @@ class PermissionsTest extends MapasCulturais_TestCase{
         foreach($this->entities as $class => $plural){
             $this->resetTransactions();
             $this->user = $user1();
-            $user1()->profile->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            if($class === 'Agent'){
+                $entity = $user1()->profile;
+            }else{
+                $entities = $user1()->profile->$plural;
+                $entity = $entities[0];
+            }
+            
+            $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
             
             $this->user = $user2();
-            $this->assertPermissionGranted(function() use ($user1, $user2, $GROUP){
-                $user1()->profile->createAgentRelation($user2()->profile, $GROUP, false, true);
+            $this->assertPermissionGranted(function() use ($entity, $user2, $GROUP){
+                $entity->createAgentRelation($user2()->profile, $GROUP, false, true);
                 
-            }, "Asserting that user 2 CAN create agent relations to $plural that he has control");
+            }, "Asserting that user CAN create agent relations to $plural that he has control");
             
         }
         
@@ -622,17 +630,106 @@ class PermissionsTest extends MapasCulturais_TestCase{
          *  Asserting that an user with control can remove agent relations of agents without control
          */
         
+        foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $this->user = $user1();
+            
+            if($class === 'Agent'){
+                $entity = $user1()->profile;
+            }else{
+                $entities = $user1()->profile->$plural;
+                $entity = $entities[0];
+            }
+            
+            $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            $entity->createAgentRelation($user3()->profile, $GROUP, false, true);
+            
+            $this->user = $user2();
+            $this->assertPermissionGranted(function() use ($entity, $user3, $GROUP){
+                $entity->removeAgentRelation($user3()->profile, $GROUP, false, true);
+                
+            }, "Asserting that user CAN remove agent relations to $plural that he has control");
+            
+        }
+        
         /*
          *  Asserting that an user with control cannot remove agent relations of agents with control
          */
         
+        foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $this->user = $user1();
+            
+            if($class === 'Agent'){
+                $entity = $user1()->profile;
+            }else{
+                $entities = $user1()->profile->$plural;
+                $entity = $entities[0];
+            }
+            
+            $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            $entity->createAgentRelation($user3()->profile, $GROUP, true, true);
+            
+            $this->user = $user2();
+            $this->assertPermissionDenied(function() use ($entity, $user3, $GROUP){
+                $entity->removeAgentRelation($user3()->profile, $GROUP, false, true);
+                
+            }, "Asserting that user CANNOT remove agent relations to $plural that he has control");
+        }
+        
         /*
-         *  Asserting that an user with control cannot add control to a related agent
+         *  Asserting that an user with control cannot give control to a related agent
          */
+        
+        foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $this->user = $user1();
+            
+            if($class === 'Agent'){
+                $entity = $user1()->profile;
+            }else{
+                $entities = $user1()->profile->$plural;
+                $entity = $entities[0];
+            }
+            
+            $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            $entity->createAgentRelation($user3()->profile, $GROUP, false, true);
+            
+            $this->user = $user2();
+            $this->assertPermissionDenied(function() use ($entity, $user3){
+                $entity->setRelatedAgentControl($user3()->profile, true);
+                
+            }, "Asserting that user CANNOT give control to other related agent in $plural that he has control");
+        }
         
         /*
          *  Asserting that an user with control cannot remove control of a related agent
          */
+        
+        foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $this->user = $user1();
+            
+            if($class === 'Agent'){
+                $entity = $user1()->profile;
+            }else{
+                $entities = $user1()->profile->$plural;
+                $entity = $entities[0];
+            }
+            
+            $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
+            
+            $entity->createAgentRelation($user3()->profile, $GROUP, true, true);
+            
+            $this->user = $user2();
+            $this->assertPermissionDenied(function() use ($entity, $user3){
+                $entity->setRelatedAgentControl($user3()->profile, false);
+                
+            }, "Asserting that user CANNOT remove control to other related agent in $plural that he has control");
+        }
         
     }
 
