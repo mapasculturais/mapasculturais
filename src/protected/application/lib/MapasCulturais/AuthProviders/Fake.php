@@ -10,7 +10,7 @@ class Fake extends \MapasCulturais\AuthProvider{
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $users = $app->repo('User')->findBy(array(), array('id' => 'ASC'));
-            $this->render('../auth/fake-authentication', array('users' => $users, 'form_action' => $app->createUrl('auth', 'login')));
+            $this->render('fake-authentication', array('users' => $users, 'form_action' => $app->createUrl('auth', 'login')));
         });
 
         $app->hook('GET(auth.login)', function () use($app){
