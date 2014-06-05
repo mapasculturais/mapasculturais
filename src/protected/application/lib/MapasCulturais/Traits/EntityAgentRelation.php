@@ -142,7 +142,7 @@ trait EntityAgentRelation {
         return $relation;
     }
 
-    function removeAgentRelation(\MapasCulturais\Entities\Agent $agent, $group){
+    function removeAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $flush = true){
         $relation_class = $this->getAgentRelationEntityClassName();
         $repo = App::i()->repo($relation_class);
         $relation = $repo->findOneBy(array('group' => $group, 'agent' => $agent, 'owner' => $this));
@@ -151,7 +151,7 @@ trait EntityAgentRelation {
             if($relation->hasControl)
                 $this->checkPermission('removeAgentRelationWithControl');
 
-            $relation->delete(true);
+            $relation->delete($flush);
 
        }
     }
