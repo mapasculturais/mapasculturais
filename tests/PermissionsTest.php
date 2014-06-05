@@ -66,7 +66,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $exception = null;
         try{
             $callable = \Closure::bind($callable, $this);
-			$callable();
+            $callable();
         } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
             $exception = $ex;
             $msg .= '(message: "' . $ex->getMessage() . '")';
@@ -320,7 +320,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $user1 = function (){ return $this->getUser('normal', 0); };
         $user2 = function (){ return $this->getUser('normal', 1); };
         $user3 = function (){ return $this->getUser('staff', 0); };
-        
         /*
          * Asserting that owner user and a related agent with control can modify an entity
          */
@@ -330,9 +329,9 @@ class PermissionsTest extends MapasCulturais_TestCase{
             
             $entity = $entities[0];
             
-            $this->assertTrue($entity->canUser('modify', $user1()), 'Asserting that user 1 CAN modify the ' . $class . ' before the relation is created.');
-            $this->assertFalse($entity->canUser('modify', $user2()), 'Asserting that user 2 CANNOT modify the ' . $class . ' before the relation is created.');
-            $this->assertFalse($entity->canUser('modify', $user3()), 'Asserting that user 3 CANNOT modify the ' . $class . ' before the relation is created.');
+            $this->assertTrue($entity->canUser('modify', $user1()), "Asserting that user CAN modify his own $class before the relation is created.");
+            $this->assertFalse($entity->canUser('modify', $user2()), "Asserting that user 2 CANNOT modify the $class before the relation is created.");
+            $this->assertFalse($entity->canUser('modify', $user3()), "Asserting that user 3 CANNOT modify the $class before the relation is created.");
 
 
             // login with user1
@@ -344,13 +343,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
             // logout
             $this->user = null;
 
-            $this->assertTrue($entity->canUser('modify', $user1()), 'Asserting that user 1 CAN modify the ' . $class . ' after the relation is created.');
-            $this->assertTrue($entity->canUser('modify', $user2()), 'Asserting that user 2 CAN modify the ' . $class . ' after the relation is created.');
-            $this->assertFalse($entity->canUser('modify', $user3()), 'Asserting that user 3 CANNOT modify the ' . $class . ' after the relation is created.');
+            $this->assertTrue($entity->canUser('modify', $user1()), "Asserting that user CAN modify his own $class after the relation is created.");
+            $this->assertTrue($entity->canUser('modify', $user2()), "Asserting that user 2 CAN modify the $class after the relation is created.");
+            $this->assertFalse($entity->canUser('modify', $user3()), "Asserting that user 3 CANNOT modify the $class after the relation is created.");
             
             $this->resetTransactions();
         }
-        
         
         
         /*
@@ -382,25 +380,25 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->owner = $old_owner;
                 $entity->save(true);
                 
-            }, 'Asserting that the an admin user CAN modify the ' . $class . ' owner');
+            }, "Asserting that an admin user CAN modify the $class owner");
             
             $this->user = $user1();
             $this->assertPermissionGranted(function() use($entity, $new_agent1){
                 $entity->owner = $new_agent1;
                 $entity->save(true);
-            }, 'Asserting that the user 1 CAN modify the ' . $class . ' owner before the relation is created.');
+            }, "Asserting that the user CAN modify his own $class owner before the relation is created.");
             
             $this->user = $user2();
             $this->assertPermissionDenied(function() use($entity, $new_agent2){
                 $entity->owner = $new_agent2;
                 $entity->save(true);
-            }, 'Asserting that the user 2 CANNOT modify the ' . $class . ' owner before the relation is created.');
+            }, "Asserting that the user 2 CANNOT modify the $class owner before the relation is created.");
             
             $this->user = $user3();
             $this->assertPermissionDenied(function() use($entity, $new_agent3){
                 $entity->owner = $new_agent3;
                 $entity->save(true);
-            }, 'Asserting that the user 3 CANNOT modify the ' . $class . ' owner before the relation is created.');
+            }, "Asserting that the user 3 CANNOT modify the $class owner before the relation is created.");
             
             
             // login with user1
@@ -412,23 +410,22 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use($entity, $new_agent1){
                 $entity->owner = $new_agent1;
                 $entity->save(true);
-            }, 'Asserting that the user 1 CAN modify the ' . $class . ' owner before the relation is created.');
+            }, "Asserting that the user CAN modify his own $class owner before the relation is created.");
             
             $this->user = $user2();
             $this->assertPermissionDenied(function() use($entity, $new_agent2){
                 $entity->owner = $new_agent2;
                 $entity->save(true);
-            }, 'Asserting that the user 2, now with control, CANNOT modify the ' . $class . ' owner AFTER the relation is created.');
+            }, "Asserting that the user 2, now with control, CANNOT modify the $class owner AFTER the relation is created.");
             
             $this->user = $user3();
             $this->assertPermissionDenied(function() use($entity, $new_agent3){
                 $entity->owner = $new_agent3;
                 $entity->save(true);
-            }, 'Asserting that the user 3 CANNOT modify the ' . $class . ' owner after the relation is created.');
+            }, "Asserting that the user 3 CANNOT modify the $class owner after the relation is created.");
         }
         
         $this->resetTransactions();
-        
         
         /*
          * Asserting that only the owner user can remove an entity
@@ -446,9 +443,9 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }
             
             
-            $this->assertTrue($entity->canUser('remove', $user1()), 'Asserting that user 1 CAN remove the ' . $class . ' before the relation is created.');
-            $this->assertFalse($entity->canUser('remove', $user2()), 'Asserting that user 2 CANNOT remove the ' . $class . ' before the relation is created.');
-            $this->assertFalse($entity->canUser('remove', $user3()), 'Asserting that user 3 CANNOT remove the ' . $class . ' before the relation is created.');
+            $this->assertTrue($entity->canUser('remove', $user1()), "Asserting that user CAN remove his own $class before the relation is created.");
+            $this->assertFalse($entity->canUser('remove', $user2()), "Asserting that user 2 CANNOT remove the $class before the relation is created.");
+            $this->assertFalse($entity->canUser('remove', $user3()), "Asserting that user 3 CANNOT remove the $class before the relation is created.");
 
             // create the realation with control
             $entity->createAgentRelation($user2()->profile, $GROUP, true, true);
@@ -456,9 +453,9 @@ class PermissionsTest extends MapasCulturais_TestCase{
             // logout
             $this->user = null;
 
-            $this->assertTrue($entity->canUser('remove', $user1()), 'Asserting that user 1 CAN remove the ' . $class . ' after the relation is created.');
-            $this->assertFalse($entity->canUser('remove', $user2()), 'Asserting that user 2 CANNOT remove the ' . $class . ' after the relation is created.');
-            $this->assertFalse($entity->canUser('remove', $user3()), 'Asserting that user 3 CANNOT remove the ' . $class . ' after the relation is created.');
+            $this->assertTrue($entity->canUser('remove', $user1()), "Asserting that user CAN remove his own $class after the relation is created.");
+            $this->assertFalse($entity->canUser('remove', $user2()), "Asserting that user 2, now with control, CANNOT remove the $class after the relation is created.");
+            $this->assertFalse($entity->canUser('remove', $user3()), "Asserting that user 3 CANNOT remove the $class after the relation is created.");
         }
         
         $this->resetTransactions();
@@ -475,21 +472,21 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $this->user = $user1();
                 $entity = $this->getNewEntity($class, $user1());
                 $entity->save(true);
-            }, "Asserting that user 1 CAN create $plural to his own agent before the relation is created");
+            }, "Asserting that user CAN create $plural owned by his own agent before the relation is created");
             
             $this->assertPermissionDenied(function() use($user1, $user2, $class){
                 $this->user = $user2();
                 $entity = $this->getNewEntity($class);
                 $entity->owner = $user1()->profile;
                 $entity->save(true);
-            }, "Asserting that user 2 CANNOT create $plural owned by user 1 agent before the relation is created");
+            }, "Asserting that user 2 CANNOT create $plural owned by user 1 before the relation is created");
             
             $this->assertPermissionDenied(function() use($user1, $user3, $class){
                 $this->user = $user3();
                 $entity = $this->getNewEntity($class);
                 $entity->owner = $user1()->profile;
                 $entity->save(true);
-            }, "Asserting that user 3 CANNOT create $plural owned by user 1 agent before the relation is created");
+            }, "Asserting that user 3 CANNOT create $plural owned by user 1 before the relation is created");
             
             
             $this->user = $user1();
@@ -501,27 +498,26 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $this->user = $user1();
                 $entity = $this->getNewEntity($class, $user1());
                 $entity->save(true);
-            }, "Asserting that user 1 CAN create $plural to his own agent after the relation is created");
+            }, "Asserting that user CAN create $plural owned by his own agent after the relation is created");
             
             $this->assertPermissionGranted(function() use($user1, $user2, $class){
                 $this->user = $user2();
                 $entity = $this->getNewEntity($class);
                 $entity->owner = $user1()->profile;
                 $entity->save(true);
-            }, "Asserting that user 2 CAN create $plural owned by user 1 agent after the relation is created");
+            }, "Asserting that user 2, now with control, CAN create $plural owned by user 1 after the relation is created");
             
             $this->assertPermissionDenied(function() use($user1, $user3, $class){
                 $this->user = $user3();
                 $entity = $this->getNewEntity($class);
                 $entity->owner = $user1()->profile;
                 $entity->save(true);
-            }, "Asserting that user 3 CANNOT create $plural owned by user 1 agent after the relation is created");
+            }, "Asserting that user 3 CANNOT create $plural owned by user 1 after the relation is created");
             
             $this->resetTransactions();
         }
-        
         /*
-         *  Asserting that user with control can create spaces, projects and events owned by the controlled agent.
+         *  Asserting that user with control can remove spaces, projects and events owned by the controlled agent.
          */
         foreach($this->entities as $class => $plural){
             if($class == 'Agent')
@@ -535,7 +531,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 1 CAN remove $plural to his own agent before the relation is created");
+            }, "Asserting that user CAN remove his own $plural before the relation is created");
             
             $this->resetTransactions();
             
@@ -546,7 +542,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 2 CANNOT remove $plural owned by user 1 agent before the relation is created");
+            }, "Asserting that user 2 CANNOT remove $plural owned by user 1 before the relation is created");
             
             $this->resetTransactions();
             
@@ -557,7 +553,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 3 CANNOT remove $plural owned by user 1 agent before the relation is created");
+            }, "Asserting that user 3 CANNOT remove $plural owned by user 1 before the relation is created");
             
             $this->resetTransactions();
             $this->user = $user1();
@@ -570,7 +566,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 1 CAN remove $plural owned by his own agent before the relation is created");
+            }, "Asserting that user CAN remove his own $plural before the relation is created");
             
             $this->resetTransactions();
             $this->user = $user1();
@@ -583,7 +579,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 2 CAN remove $plural owned by user 1 agent after the relation is created");
+            }, "Asserting that user 2, now with control, CAN remove $plural owned by user 1 after the relation is created");
             
             $this->resetTransactions();
             $this->user = $user1();
@@ -596,7 +592,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity = $entities[0];
                 $entity->delete(true);
                 
-            }, "Asserting that user 3 CANNOT remove $plural owned by user 1 agent after the relation is created");
+            }, "Asserting that user 3 CANNOT remove $plural owned by user 1 after the relation is created");
             
             $this->resetTransactions();
         }
@@ -622,7 +618,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($entity, $user2, $GROUP){
                 $entity->createAgentRelation($user2()->profile, $GROUP, false, true);
                 
-            }, "Asserting that user CAN create agent relations to $plural that he has control");
+            }, "Asserting that user CAN create agent relations with $plural that he has control");
             
         }
         
@@ -649,7 +645,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($entity, $user3, $GROUP){
                 $entity->removeAgentRelation($user3()->profile, $GROUP, false, true);
                 
-            }, "Asserting that user CAN remove agent relations to $plural that he has control");
+            }, "Asserting that user CAN remove agent relations with $plural that he has control");
             
         }
         
@@ -676,7 +672,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($entity, $user3, $GROUP){
                 $entity->removeAgentRelation($user3()->profile, $GROUP, false, true);
                 
-            }, "Asserting that user CANNOT remove agent relations to $plural that he has control");
+            }, "Asserting that user CANNOT remove agent relations with $plural that he has control");
         }
         
         /*
@@ -728,7 +724,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($entity, $user3){
                 $entity->setRelatedAgentControl($user3()->profile, false);
                 
-            }, "Asserting that user CANNOT remove control to other related agent in $plural that he has control");
+            }, "Asserting that user CANNOT remove control of other related agent in $plural that he has control");
         }
         
     }
