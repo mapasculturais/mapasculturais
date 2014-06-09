@@ -8,6 +8,8 @@ if(is_editable()){
     add_taxonoy_terms_to_js('tag');
 
     add_entity_properties_metadata_to_js($entity);
+    
+    add_agent_relations_to_js($entity);
 }
 add_map_assets();
 

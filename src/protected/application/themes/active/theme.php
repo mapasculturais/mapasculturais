@@ -11,11 +11,9 @@ function is_editable() {
 $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');
 
-//    if(is_editable()){
     $app->enqueueStyle('vendor', 'select2', '/vendor/select2/select2.css');
     $app->enqueueStyle('vendor', 'x-editable', '/vendor/x-editable/jquery-editable/css/jquery-editable.css', array('select2'));
     $app->enqueueStyle('vendor', 'x-editable-tip', '/vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
-//    }
 
     $app->enqueueStyle('app', 'style', '/css/style.css');
 
@@ -29,15 +27,12 @@ $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueScript('app', 'tim', '/js/tim.js');
     $app->enqueueScript('app', 'mapasculturais', '/js/mapasculturais.js', array('tim'));
 
-//    if(is_editable()){
     $app->enqueueScript('vendor', 'select2', '/vendor/select2/select2.js', array('jquery'));
     $app->enqueueScript('vendor', 'select2-BR', '/js/select2_locale_pt-BR-edit.js', array('select2'));
 
     $app->enqueueScript('vendor', 'poshytip', '/vendor/x-editable/jquery-editable/js/jquery.poshytip.js', array('jquery'));
     $app->enqueueScript('vendor', 'x-editable', '/vendor/x-editable/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
     $app->enqueueScript('app', 'editable', '/js/editable.js', array('mapasculturais'));
-
-//    }
 
     if ($app->config('mode') == 'staging')
         $app->enqueueStyle('app', 'staging', '/css/staging.css', array('style'));
@@ -139,6 +134,18 @@ function add_taxonoy_terms_to_js($taxonomy_slug) {
         </script>
         <?php
     });
+}
+
+function add_agent_relations_to_js($entity){
+    App::i()->hook('mapasculturais.scripts', function() use($entity) {
+        ?>
+        <script type="text/javascript">
+            MapasCulturais.entity = MapasCulturais.entity || {};
+            MapasCulturais.entity.agentRelations = <?php echo json_encode($entity->getAgentRelationsGrouped()); ?>;
+        </script>
+        <?php
+    });
+    
 }
 
 /**
