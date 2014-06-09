@@ -47,7 +47,25 @@ class View extends \Slim\View {
      * @var bool
      */
     protected $_partial = false;
+    
+    /**
+     * CSS Classes to print in body tag
+     * @var array 
+     */
+    protected $bodyClasses = null;
+    
+    /**
+     * Properties of body tag
+     * @var array 
+     */
+    protected $bodyProperties =  null;
 
+    public function __construct() {
+        parent::__construct();
+        
+        $this->bodyClasses = new \ArrayObject();
+        $this->bodyProperties = new \ArrayObject();
+    }
     /**
      * Sets partial property.
      *
@@ -128,6 +146,14 @@ class View extends \Slim\View {
 
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
+        
+        
+        if ($this->controller){ 
+            $this->bodyClasses[] = "controller-{$this->controller->id}";
+            $this->bodyClasses[] = "action-{$this->controller->action}";
+        }
+	if (isset($entity)) 
+            $this->bodyClasses[] = 'entity';
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;

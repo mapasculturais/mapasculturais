@@ -97,12 +97,14 @@
 
         </style>
     </head>
-    <body <?php if ($this->controller->action == 'search') echo 'ng-app="search" ng-controller="SearchController"'; ?>
-	    class="<?php if ($this->controller) echo "controller-{$this->controller->id} action-{$this->controller->action} ";
-	    	if (isset($entity)) echo 'entity ';?>
-	    " ng-class="{'infobox-open': showInfobox()}">
-
-		<?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
+    <?php 
+    $body_properties = array();
+    foreach ($this->bodyProperties as $key => $val)
+        $body_properties[] = "{$key}=\"$val\"";
+    $body_properties = implode(' ', $body_properties);
+    ?>
+    <body class="<?php echo implode(' ', $this->bodyClasses->getArrayCopy())?>" <?php echo $body_properties ?>>
+        <?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
             <!--facebook compartilhar-->
             <div id="fb-root"></div>
             <script>(function(d, s, id) {

@@ -1,46 +1,49 @@
 <?php
+$this->layout = 'interna';
 
-    $this->layout = 'interna';
+$this->bodyProperties['ng-app'] = "search"; 
+$this->bodyProperties['ng-controller'] = "SearchController"; 
+$this->bodyProperties['ng-class'] = "{'infobox-open': showInfobox()}";
 
-    add_taxonoy_terms_to_js('area');
-    add_taxonoy_terms_to_js('linguagem');
-    add_entity_types_to_js('MapasCulturais\Entities\Space');
-    add_entity_types_to_js('MapasCulturais\Entities\Agent');
-    add_entity_types_to_js('MapasCulturais\Entities\Project');
-
-//    $app = \MapasCulturais\App::i();
-
-    $app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
-    $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
-    $app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
-    $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-    $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
-    $app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
-    $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
-    $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
-    $app->enqueueScript('app', 'Search', '/js/Search.js');
-
-    $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
-
-    $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+add_taxonoy_terms_to_js('area');
+add_taxonoy_terms_to_js('linguagem');
+add_entity_types_to_js('MapasCulturais\Entities\Space');
+add_entity_types_to_js('MapasCulturais\Entities\Agent');
+add_entity_types_to_js('MapasCulturais\Entities\Project');
 
 
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+$app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
+$app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
+$app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
+$app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+$app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
+$app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
+$app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
+$app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
+$app->enqueueScript('app', 'Search', '/js/Search.js');
 
-    $app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 
-    $app->hook('mapasculturais.scripts', function() use($app){
-        $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+$app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
+$app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
 
-        ?>
-<script type="text/javascript">
-MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
-</script>
-        <?php
-    });
 
+$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
+$app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+
+$app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+
+$app->hook('mapasculturais.scripts', function() use($app){
+    $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+
+    ?>
+    <script type="text/javascript">
+    MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
+    </script>
+    <?php
+});
+
+    
 
 ?>
 <?php add_map_assets(); ?>
