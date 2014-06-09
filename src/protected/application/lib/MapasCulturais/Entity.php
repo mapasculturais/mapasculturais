@@ -394,12 +394,15 @@ abstract class Entity implements \JsonSerializable{
                 $result[$meta_key] = $meta_value;
         }
 
-        $result['deleteUrl'] = $this->getDeleteUrl();
+        if($controller_id = $this->getControllerId()){
+            $result['controllerId'] = $controller_id;
 
-        $result['editUrl'] = $this->getEditUrl();
+            $result['deleteUrl'] = $this->getDeleteUrl();
 
-        $result['singleUrl'] = $this->getSingleUrl();
+            $result['editUrl'] = $this->getEditUrl();
 
+            $result['singleUrl'] = $this->getSingleUrl();
+        }
         unset(Entity::$_jsonSerializeNestedObjects[$_uid]);
         return $result;
     }
