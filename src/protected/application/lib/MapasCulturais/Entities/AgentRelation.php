@@ -3,7 +3,6 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\App;
 
 /**
  * AgentRelation
@@ -87,12 +86,9 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
-        $result['ownerType'] = $this->owner->className;
-        $result['ownerId'] = $this->owner->id;
-        $result['agentId'] = $this->agent->id;
-        unset($result['owner']);
-        unset($result['agent']);
-        unset($result['objectId']);
+        $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
+        $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl');
+        
         return $result;
     }
     
