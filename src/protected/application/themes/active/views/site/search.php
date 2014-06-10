@@ -12,7 +12,7 @@ add_entity_types_to_js('MapasCulturais\Entities\Agent');
 add_entity_types_to_js('MapasCulturais\Entities\Project');
 
 
-$app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
+$app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
 $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
 $app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
 $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');

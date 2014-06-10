@@ -1,5 +1,4 @@
 <?php
-
 use MapasCulturais\App;
 
 $app = App::i();

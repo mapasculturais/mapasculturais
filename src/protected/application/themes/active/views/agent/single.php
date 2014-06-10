@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if(is_editable()){
     add_entity_types_to_js($entity);
@@ -12,6 +13,10 @@ if(is_editable()){
     add_agent_relations_to_js($entity);
 }
 add_map_assets();
+$app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+$app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+$app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
+$app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
 
 ?>
 <script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); </script>
@@ -27,7 +32,7 @@ add_map_assets();
 
         <div
             <?php if($header = $entity->getFile('header')): ?>
-            style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
             <?php elseif(is_editable()): ?>
                 class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>

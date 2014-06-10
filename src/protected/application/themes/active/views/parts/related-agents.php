@@ -1,9 +1,36 @@
+<div ng-controller="RelatedAgentsController">
+    <div class="bloco" ng-repeat="(group, relations) in groups">
+        <h3 class="subtitulo">{{group}}</h3>
+        <div class="agentes clearfix">
+            <div class="avatar" ng-repeat="(i, relation) in relations">
+                <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">
+                    <img ng-src="{{relation.agent.avatar.avatarSmall ? relation.agent.avatar.avatarSmall.url : defaultAvatar}}" />
+                </a>
+                <img ng-if="isEditable" ng-src="{{relation.agent.avatar.avatarSmall ? relation.agent.avatar.avatarSmall.url : defaultAvatar}}" />
+                
+                <div class="descricao-do-agente">
+                    <h1><a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a></h1>
+                    <div class="objeto-meta">
+                        <div ng-if="relation.agent.terms.area">
+                            <span class="label">área de atuação:</span>
+                            <span ng-repeat="area in relation.agent.terms.area">{{area}}<span ng-if="!$last && area">, </span></span>
+                        </div>
+                        <div><span class="label">tipo:</span> {{relation.agent.type.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php return; ?>
+
 <?php foreach($entity->agentRelationsGrouped as $group => $agentRelations): ?>
 <div class="js-related-group bloco" data-related-group="<?php echo $group; ?>">
 
     <h3 class="subtitulo js-related-group-name"><?php echo $group ?></h3>
 	<div class="agentes clearfix js-relatedAgentsContainer">
-
         <?php
         foreach($agentRelations as $agentRelation):
             $relatedAgent = $agentRelation->agent;
