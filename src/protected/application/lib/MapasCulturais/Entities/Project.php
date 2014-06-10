@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 /**
@@ -14,16 +15,17 @@ use MapasCulturais\App;
  */
 class Project extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityOwnerAgent,
-        \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityNested,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityNested,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
     protected static $validations = array(
@@ -138,22 +140,12 @@ class Project extends \MapasCulturais\Entity
      */
     protected $owner;
 
-
-    protected $_avatar;
-
     /**
      * @var bool
      *
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
-    }
 
     function setRegistrationFrom($date){
         $this->registrationFrom = new \DateTime($date);

@@ -2,6 +2,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 /**
@@ -15,17 +16,18 @@ use MapasCulturais\App;
  */
 class Space extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityOwnerAgent,
-        \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityGeoLocation,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityNested,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityGeoLocation,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityNested,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
     protected static $validations = array(
@@ -129,8 +131,6 @@ class Space extends \MapasCulturais\Entity
      */
     protected $children;
 
-    protected $_avatar;
-
 
     /**
      * @var \MapasCulturais\Entities\Agent
@@ -160,13 +160,6 @@ class Space extends \MapasCulturais\Entity
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
         parent::__construct();
-    }
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
     }
 
     //============================================================= //
