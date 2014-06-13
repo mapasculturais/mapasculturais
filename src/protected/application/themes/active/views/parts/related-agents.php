@@ -1,4 +1,5 @@
 <div ng-controller="RelatedAgentsController">
+    <find-entity entity="agent"></find-entity>
     <div class="bloco" ng-repeat="(group, relations) in groups">
         <h3 class="subtitulo">{{group}}</h3>
         <div class="agentes clearfix">

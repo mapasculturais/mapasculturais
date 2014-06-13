@@ -6,7 +6,7 @@
     module.factory('RelatedAgentsService', ['$http', '$rootScope', function($http, $rootScope){
         var controllerId = null, 
             entityId = null,
-            baeUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
+            baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
     
         try{ controllerId = MapasCulturais.request.controller; }catch (e){};
         try{ entityId = MapasCulturais.request.id; }catch (e){};

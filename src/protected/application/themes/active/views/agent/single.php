@@ -15,8 +15,10 @@ if(is_editable()){
 add_map_assets();
 $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
 $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+
+$app->enqueueScript('app', 'find-service', '/js/FindService.js');
 $app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
-$app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
+$app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'find-service'));
 
 ?>
 <script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); </script>
