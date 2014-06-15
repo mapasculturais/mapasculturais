@@ -461,17 +461,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     public function apiCacheExists($cache_id){
         $app = App::i();
+        
         if(!$app->config['app.useApiCache'])
             return false;
 
+        $app->log->info(print_r([get_class($app->cache), $app->config['app.useApiCache'], $cache_id, $app->cache->contains($cache_id)], true));
+        
         return $app->cache->contains($cache_id);
     }
 
     public function apiCacheResponse($cache_id){
         if($this->apiCacheExists($cache_id)){
             $app = App::i();
-
-            $cache = $app->cache->fetch($cache_id);
+                $cache = $app->cache->fetch($cache_id);
 
             $app->contentType($cache['contentType']);
             echo $cache['output'];
@@ -497,7 +499,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             if($app->config['app.useApiCache']){
                 $cache_id = $this->getApiCacheId($qdata, $options);
 
-                $app->hook('api.response:after', function($var1, $var2, $var3, $var4) use($app, $cache_id){
+                $app->hook('api.response(<<*>>).<<array|item>>(<<*>>):after', function($var1, $var2, $var3, $var4) use($app, $cache_id){
 
                     $lifetime = @$app->config['app.apiCache.lifetime'] ? $app->config['app.apiCache.lifetime'] : 5 * 60;
                     $cache = array(
