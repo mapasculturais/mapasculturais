@@ -65,7 +65,16 @@
     module.controller('RelatedAgentsController', ['$scope', '$rootScope', 'RelatedAgentsService', function($scope, $rootScope, RelatedAgentsService) {
         $scope.groups = MapasCulturais.entity.agentRelations;
         
+        $scope.showCreateDialog = {};
+        
         $scope.isEditable = MapasCulturais.isEditable;
+        
+        $scope.avatarUrl = function(entity){
+            if(entity.avatar.avatarSmall)
+                return entity.avatar.avatarSmall.url;
+            else
+                return MapasCulturais.defaultAvatarURL;
+        };
             
         $rootScope.$on('relatedAgent.created', function(data){
             console.log('relatedAgent.created',data);
@@ -86,6 +95,10 @@
         $scope.deleteRelation = function(group, i){
             delete $scope.groups[group][i];
             $scope.groups[group].splice(i,1);
+        };
+        
+        $scope.filterResult = function(data){
+            
         }
     }]);
 })(angular);
