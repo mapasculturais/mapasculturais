@@ -7,7 +7,7 @@
         var baseUrl = MapasCulturais.baseURL + '/api/';
         function extend (query){
             return angular.extend(query, {
-                "@select": 'id,name,type,shortDescription,terms',
+                "@select": 'id,name,type,shortDescription,terms,avatar',
                 "@files": '(avatar.avatarSmall):url',
                 "@order": 'name'
             });
@@ -111,10 +111,13 @@
             templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
             scope:{
                 entity: '@',
-                filterResult: '='
+                filter: '=',
+                select: '='
             },
             
             link: function($scope, el, attrs){
+                $scope.attrs = attrs;
+                
                 $scope.data = [];
                 
                 $scope.searchText = '';
@@ -131,13 +134,13 @@
                         $timeout.cancel(timeouts.find);
                     
                     timeouts.find = $timeout(function(){
-                        FindService.find($scope.entity, { name: 'ILIKE(*' + $scope.searchText + '*)' }, $scope.processResult);
+                        FindService.find($scope.entity, { name: 'ILIKE(*' + $scope.searchText + '*)' }, function(data,status){ $scope.processResult(data, status); });
                     },500);
                 };
                 
                 $scope.processResult = function(data, status){
-                    if(angular.isFunction($scope.filterResult))
-                        data = $scope.filterResult(id, data);
+                    if(angular.isFunction($scope.filter))
+                        data = $scope.filter(data, status);
 
                     $scope.data = data;
                 };

@@ -17,10 +17,19 @@
                         </div>
                         <div><span class="label">tipo:</span> {{relation.agent.type.name}}</div>
                     </div>
+                    <div class="clearfix" ng-if='isEditable'>
+                        <span class="label">Permitir editar:</span>
+                        <div class="slider-frame" ng-click="toggleControl(relation)" >
+                            <span class="slider-button" ng-class="{'on':relation.hasControl}">{{relation.hasControl ? 'Sim' : 'Não' }}</span>
+                        </div>
+                    </div>
+                    <div class="textright" ng-if="isEditable">
+                        <button type="submit" class="bt-remove-agent" ng-click="deleteRelation(relation)">Excluir</button>
+                    </div>
                 </div>
             </div>
             <div ng-if="isEditable" ng-click="showCreateDialog[group] = ! showCreateDialog[group]" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
-            <find-entity ng-if="isEditable" ng-show="showCreateDialog[group]" entity="agent" description="" id="group:{{group}}}" filterResult="filterResult"></find-entity>
+            <find-entity ng-if="isEditable" ng-show="showCreateDialog[group]" entity="agent" description="" group="{{group}}" filter="filterResult" select="createRelation"></find-entity>
         </div>
     </div>
 </div>

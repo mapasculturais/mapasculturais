@@ -1,14 +1,14 @@
 <div class="directive-find-entity">
     <input ng-model="searchText" ng-change="find()"/>
     <ul class="result-container">
-        <li ng-repeat="entity in data">
+        <li ng-repeat="entity in data" ng-click="select(entity, attrs)">
             <div class="search-agent clearfix">
                 <img class="search-agent-thumb" ng-src='{{avatarUrl(entity)}}' alt="{{entity.name}}" />
                 <h1>{{entity.name}}</h1>
                 <div class="objeto-meta">
                     <div>
                         <span class="label">área de atuação:</span>
-                        {{entity.terms.areas.join(', ')}}
+                        {{entity.terms.area.join(', ')}}
                     </div>
                     <div><span class="label">tipo:</span>{{entity.type.name}}</div>
                 </div>
