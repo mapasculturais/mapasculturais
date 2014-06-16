@@ -465,8 +465,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$app->config['app.useApiCache'])
             return false;
 
-        $app->log->info(print_r([get_class($app->cache), $app->config['app.useApiCache'], $cache_id, $app->cache->contains($cache_id)], true));
-        
         return $app->cache->contains($cache_id);
     }
 
