@@ -72,27 +72,65 @@
     }]);
     
     module.controller('RelatedAgentsController', ['$scope', '$rootScope', 'RelatedAgentsService', function($scope, $rootScope, RelatedAgentsService) {
-        $scope.groups = MapasCulturais.entity.agentRelations;
+        $scope.groups = [];
+        for(var i in MapasCulturais.entity.agentRelations)
+            $scope.groups.push({name: i, relations: MapasCulturais.entity.agentRelations[i]});
         
         $scope.showCreateDialog = {};
         
         $scope.isEditable = MapasCulturais.isEditable;
         
+        $scope.data = {};
+        
+        function getGroup(groupName){
+            var result = null;
+            $scope.groups.forEach(function(group){
+                if(group.name === groupName)
+                    result = group;
+            });
+            
+            return result;
+        }
+        
+        function groupExists(groupName){
+            if(getGroup(groupName))
+                return true;
+            else
+                return false;
+        }
+        
         $scope.avatarUrl = function(entity){
-//            console.log(entity);
             if(entity.avatar.avatarSmall)
                 return entity.avatar.avatarSmall.url;
             else
                 return MapasCulturais.defaultAvatarURL;
         };
         
+        $scope.data.newGroupName = '';
+        
+        $scope.createGroup = function(){
+            if(! groupExists( $scope.data.newGroupName ) ){
+                var newGroup = {name: $scope.data.newGroupName, relations: []};
+                
+                
+                $scope.groups = [newGroup].concat($scope.groups);
+                
+                $scope.newGroupName = '';
+                $scope.showCreateDialog['new-group'] = false;
+            }
+        };
+        
         $scope.createRelation = function(entity){
-            var group = this.$parent.attrs.group;
+            var _scope = this.$parent;
+            var groupName = _scope.attrs.group;
             
-            RelatedAgentsService.create(group, entity.id).
+            RelatedAgentsService.create(groupName, entity.id).
                     success(function(data){
-                        console.log(data);
-                        $scope.groups[group].push(data);
+                        var group = getGroup(groupName);
+                        group.relations.push(data);
+                        $scope.showCreateDialog[groupName] = false;
+                        _scope.$parent.searchText = '';
+                        _scope.$parent.result = [];
                     });
         };
         
@@ -123,13 +161,17 @@
             }
         };
         
-        $scope.filterResult = function(data, status){
-            var group = this.attrs.group;
-            var ids = $scope.groups[group].map(function(e){return e.agent.id});
-            data = data.filter(function(e){ 
-                if(ids.indexOf(e.id) === -1) 
-                    return e;
-            });
+        $scope.filterResult = function( data, status ){
+            var group = getGroup( this.attrs.group );
+            
+            if(group && group.relations.length > 0){
+                var ids = group.relations.map( function( el ){ return el.agent.id; } );
+
+                data = data.filter( function( e ){ 
+                    if( ids.indexOf( e.id ) === -1 ) 
+                        return e;
+                } );
+            }
             return data;
         };
     }]);

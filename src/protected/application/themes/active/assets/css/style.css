@@ -734,9 +734,10 @@ nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
 
 /* =Editable
 -------------------------------------------------------------- */
-.directive-find-entity { background:white; border:1px solid black; padding:10px; margin-top:10px; position: absolute; z-index:100; }
-.directive-find-entity .result-container { width:300px; max-height: 300px; padding:0; margin:0; overflow-y:auto; }
+.directive-find-entity { background:white; width:300px;  border:1px solid black; padding:10px; margin-top:10px; position: absolute; z-index:100; }
+.directive-find-entity .result-container { max-height: 300px; padding:0; margin:0; overflow-y:auto; }
 .directive-find-entity .result-container li:hover { background: #e2e2e2; }
+.directive-find-entity .spinner { float: right; margin:5px 20px; }
 
 .editable { display: inline-block; padding: 0 3px; border-radius: 2px; }
 .editable:hover { background: #e2e2e2; }

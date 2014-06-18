@@ -1,8 +1,15 @@
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
-    <div class="bloco" ng-repeat="(group, relations) in groups">
-        <h3 class="subtitulo">{{group}}</h3>
+    <div class="bloco textright" ng-if="isEditable">
+        <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="showCreateDialog['new-group'] = ! showCreateDialog['new-group']">adicionar grupo de agentes</a>
+        <div class="create-dialog" ng-if="showCreateDialog['new-group']">
+            <input type="text" ng-model="data.newGroupName"/>
+            <input type="submit" ng-click="createGroup()"/>
+        </div>
+    </div>
+    <div class="bloco" ng-repeat="group in groups">
+        <h3 class="subtitulo">{{group.name}}</h3>
         <div class="agentes clearfix">
-            <div class="avatar" ng-repeat="(i, relation) in relations">
+            <div class="avatar" ng-repeat="(i, relation) in group.relations">
                 <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">
                     <img ng-src="{{avatarUrl(relation.agent)}}" />
                 </a>
@@ -28,8 +35,8 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="isEditable" ng-click="showCreateDialog[group] = ! showCreateDialog[group]" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
-            <find-entity ng-if="isEditable" ng-show="showCreateDialog[group]" entity="agent" description="" group="{{group}}" filter="filterResult" select="createRelation"></find-entity>
+            <div ng-if="isEditable" ng-click="showCreateDialog[group.name] = ! showCreateDialog[group.name]" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
+            <find-entity ng-if="isEditable" ng-show="showCreateDialog[group.name]" entity="agent" no-entity-found-text="Nenhum agente encontrado" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
         </div>
     </div>
 </div>

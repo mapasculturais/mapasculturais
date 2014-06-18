@@ -1,18 +1,23 @@
 <div class="directive-find-entity">
-    <input ng-model="searchText" ng-change="find()"/>
-    <ul class="result-container">
-        <li ng-repeat="entity in data" ng-click="select(entity, attrs)">
-            <div class="search-agent clearfix">
-                <img class="search-agent-thumb" ng-src='{{avatarUrl(entity)}}' alt="{{entity.name}}" />
-                <h1>{{entity.name}}</h1>
-                <div class="objeto-meta">
-                    <div>
-                        <span class="label">área de atuação:</span>
-                        {{entity.terms.area.join(', ')}}
-                    </div>
-                    <div><span class="label">tipo:</span>{{entity.type.name}}</div>
+    <div ng-if="spinner" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></div>
+    <input ng-model="searchText" ng-change="find()" placeholder="buscar por nome"/>
+    
+    <div class="no-results" ng-if="!spinner && noEntityFound">
+        {{noEntityFoundText}}
+    </div>
+    
+    <ul class="result-container" ng-if="!spinner && !noEntityFound">
+        <li class="search-agent clearfix" ng-repeat="entity in result" ng-click="select(entity, attrs)">
+            <img class="search-agent-thumb" ng-src='{{avatarUrl(entity)}}' alt="{{entity.name}}" />
+            <h1>{{entity.name}}</h1>
+            <div class="objeto-meta">
+                <div>
+                    <span class="label">área de atuação:</span>
+                    {{entity.terms.area.join(', ')}}
                 </div>
+                <div><span class="label">tipo:</span>{{entity.type.name}}</div>
             </div>
+            
         </li>
     </ul>
 </div>

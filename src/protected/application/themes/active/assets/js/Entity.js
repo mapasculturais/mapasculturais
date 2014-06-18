@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
     
-    var app = angular.module('Entity', ['RelatedAgents']);
+    var app = angular.module('Entity', ['RelatedAgents', 'angularSpinner']);
     
     app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
         var baseUrl = MapasCulturais.baseURL + '/api/';
@@ -101,7 +101,7 @@
         };
     }]);
 
-    app.controller('EntityController',['$scope', 'RelatedAgents', function($scope, RelatedAgents){
+    app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents){
             
     }]).directive('findEntity', ['$timeout', 'FindService', function($timeout, FindService){
         var timeouts = {};
@@ -111,16 +111,23 @@
             templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
             scope:{
                 entity: '@',
+                noResultsText: '@',
                 filter: '=',
                 select: '='
             },
             
             link: function($scope, el, attrs){
+                $scope.data = {
+                    spinnerUrl: MapasCulturais.assetURL + '/img/spinner_48_w.gif'
+                };
+                
                 $scope.attrs = attrs;
                 
-                $scope.data = [];
+                $scope.result = [];
                 
                 $scope.searchText = '';
+                
+                $scope.noEntityFound = false;
                 
                 $scope.avatarUrl = function(entity){
                     if(entity['@files:avatar.avatarSmall'])
@@ -133,16 +140,30 @@
                     if(timeouts.find)
                         $timeout.cancel(timeouts.find);
                     
+                    var s = $scope.searchText.trim().replace(' ', '*');
+                    
                     timeouts.find = $timeout(function(){
-                        FindService.find($scope.entity, { name: 'ILIKE(*' + $scope.searchText + '*)' }, function(data,status){ $scope.processResult(data, status); });
+                        $scope.spinner = true;
+                        FindService.find($scope.entity, { name: 'ILIKE(*' + s + '*)' }, function(data,status){
+                            $scope.processResult(data, status); 
+                            $scope.spinner = false;
+                        });
                     },500);
                 };
                 
                 $scope.processResult = function(data, status){
                     if(angular.isFunction($scope.filter))
                         data = $scope.filter(data, status);
-
-                    $scope.data = data;
+                    
+                    if(data.length === 0){
+                        $scope.noEntityFound = true;
+                        
+                        $timeout(function(){
+                            $scope.noEntityFound = false;
+                        },3000);
+                    }
+                    
+                    $scope.result = data;
                 };
             }
         };
