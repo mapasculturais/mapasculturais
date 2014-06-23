@@ -89,13 +89,13 @@ jQuery(function(){
             if($('.js-verified').hasClass('inactive')){
                 $.getJSON(verify, function(r){
                     if(r && !r.error){
-                        $('.js-verified').removeClass('inactive');
+                        $('.js-verified').removeClass('inactive').addClass('active');
                     }
                 });
             }else{
                 $.getJSON(removeVerification, function(r){
                     if(r && !r.error){
-                        $('.js-verified').addClass('inactive');
+                        $('.js-verified').addClass('inactive').removeClass('active');
                     }
                 });
             }
