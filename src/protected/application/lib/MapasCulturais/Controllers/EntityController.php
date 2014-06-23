@@ -454,6 +454,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $this->apiResponse($data);
         }
     }
+    
+    public function API_describe(){
+        $class = $this->entityClassName;
+        
+        $this->apiResponse($class::getPropertiesMetadata());
+    }
 
     public function getApiCacheId($qdata, $options = array()){
         return $this->id . '::' . md5(serialize($qdata + array('__OPTIONS__' => $options)));

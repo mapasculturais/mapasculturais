@@ -145,9 +145,11 @@ trait EntityMetadata{
             $metas = App::i()->getRegisteredMetadata($entity);
 
         $result = array();
-        foreach($metas as $metadata)
+        foreach($metas as $metadata){
             $result[$metadata->key] = $metadata->getMetadata();
-
+            $result[$metadata->key]['isMetadata'] = true;
+            $result[$metadata->key]['isEntityRelation'] = false;
+        }
         return $result;
     }
 
