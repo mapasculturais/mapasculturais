@@ -118,7 +118,7 @@
             
             link: function($scope, el, attrs){
                 $scope.data = {
-                    spinnerUrl: MapasCulturais.assetURL + '/img/spinner_48_w.gif'
+                    spinnerUrl: MapasCulturais.assetURL + '/img/spinner.gif'
                 };
                 
                 $scope.attrs = attrs;

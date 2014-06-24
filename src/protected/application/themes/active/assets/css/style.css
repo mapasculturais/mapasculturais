@@ -837,7 +837,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .edit-box.mc-left .mc-arrow { right: -20px; border-color: transparent #fff transparent transparent; }
 .edit-box.mc-right .mc-arrow { left: -20px; border-color: transparent transparent transparent #fff; }
 .edit-box input, .edit-box textarea, .edit-box select { width: 100%; }
-.edit-box .spinner { margin: 0 auto; }
+.edit-box .mc-spinner { width:16px; margin: 0 auto;}
 
 /*Directive Find Entity*/
 .directive-find-entity .result-container { max-height: 300px; padding:0; margin:0; overflow-y:auto; }
