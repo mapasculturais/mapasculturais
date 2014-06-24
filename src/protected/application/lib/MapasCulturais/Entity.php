@@ -259,22 +259,48 @@ abstract class Entity implements \JsonSerializable{
      */
     public static function getPropertiesMetadata(){
         $class_metadata = App::i()->em->getClassMetadata(get_called_class())->fieldMappings;
+        $class_relations = App::i()->em->getClassMetadata(get_called_class())->getAssociationMappings();
+        
         $data_array = array();
+        
+        $class = self::getClassName();
+        
         foreach ($class_metadata as $key => $value){
-            if($key[0] == '_')
-                continue;
-
-            $data_array[$key] = array(
+            $metadata = array(
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
                 'length' => $value['length']
             );
+            
+            if($key[0] == '_'){
+                $prop = substr($key, 1);
+                if(method_exists($class, 'get' . $prop)){
+                     $metadata['@select'] = $prop;
+                }else{
+                    continue;
+                }
+            }
+            $data_array[$key] = $metadata;
         }
 
-        $class = get_called_class();
-        if($class::usesMetadata()){
-            $data_array = $data_array + self::getMetadataMetadata();
+        foreach ($class_relations as $key => $value){
+            $data_array[$key] = array(
+                'isMetadata' => false,
+                'isEntityRelation' => true,
+                
+                'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
+                'isOwningSide' => $value['isOwningSide']
+            );
         }
+        
+        if($class::usesMetadata()){
+            $data_array = $data_array + $class::getMetadataMetadata();
+        }
+        
+        
         return $data_array;
     }
 

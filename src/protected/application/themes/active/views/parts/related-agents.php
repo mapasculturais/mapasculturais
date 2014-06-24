@@ -208,7 +208,7 @@
     <form class="js-metalist-form">
         <label ><span>Nome</span> <input type="text"> </label>
         <div class="js-metalist-item-delete" style="display: none;">Excluir</div>
-        <input type="submit">
+        <input type="submit" value="enviar">
     </form>
     <?php endif; ?>
 </div>

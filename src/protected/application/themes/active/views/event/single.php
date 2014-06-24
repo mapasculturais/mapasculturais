@@ -233,7 +233,7 @@ add_occurrence_frequencies_to_js();
                         <?php endif; ?>
 
                         <?php if(is_editable() || $entity->descricaoSonora): ?>
-                            <p><span class="label">Descrição Sonora: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                            <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                         <?php endif; ?>
                     </p>
                 <?php endif; ?>
