@@ -9,20 +9,15 @@ if(is_editable()){
     add_taxonoy_terms_to_js('tag');
 
     add_entity_properties_metadata_to_js($entity);
-    
-    add_agent_relations_to_js($entity);
 }
 add_map_assets();
-$app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
-$app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-$app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
-
-$app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-$app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
-$app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 ?>
-<script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); </script>
+<script> 
+    $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); 
+</script>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <div class="barra-esquerda barra-lateral agente">

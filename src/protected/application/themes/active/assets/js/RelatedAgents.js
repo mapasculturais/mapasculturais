@@ -1,13 +1,16 @@
 (function(angular){
     "use strict";
     
-    var module = angular.module('RelatedAgents', [], ['$httpProvider', function($httpProvider){
+    var module = angular.module('RelatedAgents', []);
+
+    module.config(['$httpProvider',function($httpProvider){
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-        $httpProvider.defaults.transformRequest = [function(data) {
-            return angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
-        }];
+        $httpProvider.defaults.transformRequest = function(data) {
+            var result = angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
+            
+            return result;
+        };
     }]);
-    
     
     module.factory('RelatedAgentsService', ['$http', '$rootScope', function($http, $rootScope){
         var controllerId = null, 
@@ -57,7 +60,8 @@
             setControl: function(agentId, hasControl){
                 return $http({
                     method: 'POST',
-                    url: this.getUrl('setRelatedAgentControl')
+                    url: this.getUrl('setRelatedAgentControl'),
+                    data: {agentId: agentId, hasControl: hasControl}
                 }).success(function(data, status){
                     $rootScope.$emit(hasControl ? 'relatedAgent.controlGiven' : 'relatedAgent.controlRemoved', data);
                 }).error(function(data, status){
@@ -78,7 +82,10 @@
         
         $scope.showCreateDialog = {};
         
+        $scope.spinners = {};
+        
         $scope.isEditable = MapasCulturais.isEditable;
+        $scope.canChangeControl = MapasCulturais.entity.canUserCreateRelatedAgentsWithControl;
         
         $scope.data = {};
         
@@ -104,6 +111,10 @@
                 return entity.avatar.avatarSmall.url;
             else
                 return MapasCulturais.defaultAvatarURL;
+        };
+        
+        $scope.closeNewGroupEditBox = function(){
+            $scope.showCreateDialog['new-group'] = false;
         };
         
         $scope.data.newGroupName = '';
@@ -135,13 +146,15 @@
         };
         
         $scope.deleteRelation = function(relation){
-            var i = $scope.groups[relation.group].indexOf(relation),
-                oldGroups = $scope.groups[relation.group].slice();
-            $scope.groups[relation.group].splice(i,1);
+            var group = getGroup(relation.group);
+            var oldRelations = group.relations.slice();
+            var i = group.relations.indexOf(relation);
+            
+            group.relations.splice(i,1);
             
             RelatedAgentsService.remove(relation.group, relation.agent.id).
                     error(function(){
-                        $scope.groups[relation.group] = oldGroups;
+                        group.relations = oldRelations;
                     });
         };
         

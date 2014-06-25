@@ -71,6 +71,30 @@ function add_map_assets() {
     $app->enqueueScript('app', 'map', '/js/map.js');
 }
 
+function add_angular_entity_assets($entity){
+    $app = App::i();
+    
+    $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+    $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
+    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+
+    $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+    $app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
+    $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
+    if(!is_editable())
+        return;
+    
+    App::i()->hook('mapasculturais.scripts', function() use($app, $entity) {
+        $isEntityOwner = $entity->ownerUser->id === $app->user->id;
+        ?>
+        <script type="text/javascript">
+            MapasCulturais.entity = MapasCulturais.entity || {};
+            MapasCulturais.entity.canUserCreateRelatedAgentsWithControl = <?php echo $entity->canUser('createAgentRelationWithControl') ? 'true' : 'false' ?>;
+        </script>
+        <?php
+    });
+}
+
 function add_entity_properties_metadata_to_js($entity) {
     $class = $entity->className;
     $metadata = $class::getPropertiesMetadata();
