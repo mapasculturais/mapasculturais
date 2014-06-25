@@ -103,13 +103,16 @@
 
     app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents){
             
-    }]).directive('findEntity', ['$timeout', 'FindService', function($timeout, FindService){
+    }]);
+        
+    app.directive('findEntity', ['$timeout', 'FindService', function($timeout, FindService){
         var timeouts = {};
         
         return {
             restrict: 'E',
             templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
             scope:{
+                spinnerCondition: '=',
                 entity: '@',
                 noResultsText: '@',
                 filter: '=',
@@ -117,10 +120,6 @@
             },
             
             link: function($scope, el, attrs){
-                $scope.data = {
-                    spinnerUrl: MapasCulturais.assetURL + '/img/spinner.gif'
-                };
-                
                 $scope.attrs = attrs;
                 
                 $scope.result = [];
@@ -143,10 +142,10 @@
                     var s = $scope.searchText.trim().replace(' ', '*');
                     
                     timeouts.find = $timeout(function(){
-                        $scope.spinner = true;
+                        $scope.spinnerCondition = true;
                         FindService.find($scope.entity, { name: 'ILIKE(*' + s + '*)' }, function(data,status){
                             $scope.processResult(data, status); 
-                            $scope.spinner = false;
+                            $scope.spinnerCondition = false;
                         });
                     },500);
                 };
@@ -168,6 +167,45 @@
             }
         };
     }]);
+
+    app.directive('editBox', function() {
+        return {
+            restrict: 'E',
+            templateUrl: MapasCulturais.assetURL + '/js/directives/edit-box.html',
+            transclude: true,
+            
+            scope: {
+                spinnerCondition: '=',
+                onSubmit: '=',
+                onCancel: '='
+            },
+            
+            link: function($scope, el, attrs) {
+                $scope.args = attrs;
+                
+                $scope.spinnerUrl = MapasCulturais.assetURL + '/img/spinner.gif';
+                
+                $scope.classes = {
+                    'mc-bottom': attrs.position === 'bottom' || !attrs.position, 
+                    'mc-top': attrs.position === 'top', 
+                    'mc-left': attrs.position === 'left', 
+                    'mc-right': attrs.position === 'right'
+                };
+                
+                $scope.submit = function(){
+                    if(angular.isFunction($scope.onSubmit)){
+                        $scope.onSubmit();
+                    }
+                };
+                
+                $scope.cancel = function(){
+                    if(angular.isFunction($scope.onCancel)){
+                        $scope.onCancel();
+                    }
+                };
+            }
+        }
+    });
 
 
 })(angular);
