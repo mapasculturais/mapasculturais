@@ -10,6 +10,6 @@ return array_merge($config,
         'base.url' => 'http://localhost:8000/',
         // development, staging, production
         'app.mode' => 'development',
-        'app.fakeAuthentication' => true
+        'auth.provider' => 'Fake'
     )
 );
