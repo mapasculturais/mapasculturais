@@ -427,10 +427,14 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <p class="staging-hidden">
-            <span class="label">Resumo:</span><br>
-            Resumo da regra
-        </p>
+        <div>
+            <label for="description">Descrição legível do horário:</label><br>
+            <textarea name="description">{{rule.description}}</textarea>
+        </div>
+        <div>
+            <label for="price">Preço:</label><br>
+            <input type="text" name="price" value="{{rule.price}}">
+        </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">
         </footer>
