@@ -11,6 +11,7 @@
         "smottt/wideimage": "dev-master",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
-        "mustache/mustache": "v2.5.1"
+        "mustache/mustache": "v2.5.1",
+        "phpoffice/phpword": "dev-master"
     }
 }

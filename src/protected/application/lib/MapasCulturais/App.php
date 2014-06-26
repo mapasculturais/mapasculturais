@@ -209,12 +209,12 @@ class App extends \Slim\Slim{
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
-        
+
         $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
         $classLoader->register();
-        
+
         $driver = new AnnotationDriver(new AnnotationReader());
-        
+
         $driver->addPaths(array(__DIR__ . '/Entities/'));
 
         // tells the doctrine to ignore hook annotation.
@@ -579,6 +579,7 @@ class App extends \Slim\Slim{
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
+            $this->registerApiOutput('MapasCulturais\ApiOutputs\EmCartaz');
 
             /**
              * @todo melhores mensagens de erro
@@ -1058,37 +1059,37 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-        
+
     public function getMaxUploadSize(){
         $MB = 1024;
         $GB = $MB * 1024;
-        
+
         $convertToKB = function($size) use($MB, $GB){
             switch(strtolower(substr($size, -1))){
                 case 'k';
                     $size = (int) $size;
                 break;
-            
+
                 case 'm':
                     $size = $size * $MB;
                 break;
-            
+
                 case 'g':
                     $size = $size * $GB;
                 break;
             }
-            
+
             return $size;
         };
-        
+
         $max_upload = $convertToKB(ini_get('upload_max_filesize'));
         $max_post = $convertToKB(ini_get('post_max_size'));
         $memory_limit = $convertToKB(ini_get('memory_limit'));
-        
+
         $result = min($max_upload, $max_post, $memory_limit);
-        
+
         if($result < $MB){
-            $result .= ' KB';            
+            $result .= ' KB';
         }else if($result < $GB){
             $result = number_format($result / $MB, 0) . ' MB';
         }else{
@@ -1099,7 +1100,7 @@ class App extends \Slim\Slim{
             else
                 $result = $formated . ' GB';
         }
-        
+
         return $result;
     }
 
