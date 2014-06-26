@@ -402,6 +402,13 @@ abstract class Entity implements \JsonSerializable{
             $this->saveTerms();
             $app->em->flush();
         }
+        
+        // delete the entity cache
+        $repo = $this->repo();
+        if(method_exists($repo, 'deleteEntityCache'))
+            $repo->deleteEntityCache($this->id);
+                
+                
     }
 
     /**

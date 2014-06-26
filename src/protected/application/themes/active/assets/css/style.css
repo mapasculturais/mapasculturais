@@ -723,9 +723,9 @@ nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
 
 /* =Editor
 -------------------------------------------------------------- */
-#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 370px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 380px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
 #editable-entity .mensagem { display: none; margin-bottom: 0; }
-#editable-entity .controles { position: absolute; top: .25rem; right: .75rem; width: 360px; text-align: right; }
+#editable-entity .controles { position: absolute; top: .25rem; right: .75rem; width: 370px; text-align: right; }
 #logo-spcultura-peq { display: none; position: absolute; left: .75rem; margin-bottom: 0; line-height: 2rem; }
 #logo-spcultura-peq img { display: block; height: 2.2rem; width: auto; }
 #funcao-do-agente { width: 135px; background: #fff; text-align: left; }

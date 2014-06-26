@@ -86,16 +86,16 @@ jQuery(function(){
         $('.js-verified').click(function(){
             var verify = $(this).data('verify-url');
             var removeVerification = $(this).data('remove-verification-url');
-            if($('.js-verified').hasClass('inactive')){
-                $.getJSON(verify, function(r){
+            if($('.js-verified').hasClass('active')){
+                $.getJSON(removeVerification, function(r){
                     if(r && !r.error){
-                        $('.js-verified').removeClass('inactive').addClass('active');
+                        $('.js-verified').removeClass('active');
                     }
                 });
             }else{
-                $.getJSON(removeVerification, function(r){
+                $.getJSON(verify, function(r){
                     if(r && !r.error){
-                        $('.js-verified').addClass('inactive').removeClass('active');
+                        $('.js-verified').addClass('active');
                     }
                 });
             }
