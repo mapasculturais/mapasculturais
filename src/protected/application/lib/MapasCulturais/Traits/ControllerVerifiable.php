@@ -30,6 +30,11 @@ trait ControllerVerifiable{
             $entity->cancelVerification();
 
         $entity->save(true);
+        
+        $this->json([$entity, $this->requestedEntity]);
+        return;
+        
+        
         if($this->isAjax()){
             $this->json(true);
         }else{

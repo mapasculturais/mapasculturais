@@ -24,9 +24,7 @@ trait EntityVerifiable{
         $this->isVerified = $val;
     }
 
-    protected function canUserVerify($user = null){
-        $user = is_null($user) ? App::i()->user : $user;
-
+    protected function canUserVerify($user){
         if($user->is('guest'))
             return false;
 
