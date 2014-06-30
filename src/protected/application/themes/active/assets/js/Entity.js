@@ -102,7 +102,9 @@
     }]);
 
     app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents){
+        $scope.openEditBox = function(editboxId){
             
+        };
     }]);
         
     app.directive('findEntity', ['$timeout', 'FindService', function($timeout, FindService){
@@ -168,7 +170,39 @@
         };
     }]);
 
-    app.directive('editBox', function() {
+
+
+    app.factory('EditBox', function(){
+        
+        return {
+            openEditboxes: {},
+            
+            register: function(editboxId){
+                if(this.openEditboxes[editboxId])
+                    throw new Error('EditBox with id ' + editboxId + ' already exists');
+                
+                this.openEditboxes[editboxId] = false;
+            },
+            
+            open: function(editboxId, $event){
+                if(typeof this.openEditboxes[editboxId] === 'undefined')
+                    throw new Error('EditBox with id ' + editboxId + ' does not exists');
+
+                console.log($event);
+                this.openEditboxes[editboxId] = true;
+            },
+            
+            close: function(editboxId){
+                if(typeof this.openEditboxes[editboxId] === 'undefined')
+                    throw new Error('EditBox with id ' + editboxId + ' does not exists');
+                
+                this.openEditboxes[editboxId] = false;
+            }
+        };
+    });
+    
+    
+    app.directive('editBox', ['EditBox', function(EditBox) {
         return {
             restrict: 'E',
             templateUrl: MapasCulturais.assetURL + '/js/directives/edit-box.html',
@@ -181,6 +215,13 @@
             },
             
             link: function($scope, el, attrs) {
+                if(!attrs.id)
+                    throw new Error('EditBox id is required');
+                
+                $scope.editbox = EditBox;
+                
+                EditBox.register(attrs.id);
+                
                 $scope.args = attrs;
                 
                 $scope.spinnerUrl = MapasCulturais.assetURL + '/img/spinner.gif';
@@ -205,7 +246,7 @@
                 };
             }
         }
-    });
+    }]);
 
 
 })(angular);

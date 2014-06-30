@@ -834,8 +834,11 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .edit-box.mc-right .mc-arrow, .edit-box.mc-left .mc-arrow { top: 50%; margin-top: -8px; }
 .edit-box.mc-top .mc-arrow { bottom: -20px; border-color: #fff transparent transparent transparent; }
 .edit-box.mc-bottom .mc-arrow { top: -20px; border-color: transparent transparent #f90 transparent; }
-.edit-box.mc-left .mc-arrow { right: -20px; border-color: transparent #fff transparent transparent; }
-.edit-box.mc-right .mc-arrow { left: -20px; border-color: transparent transparent transparent #fff; }
+
+.edit-box.mc-left { right: 100%; top: -25%; }
+.edit-box.mc-left .mc-arrow { right: -16px; border-color: transparent transparent transparent #fff; }
+
+.edit-box.mc-right .mc-arrow { left: -20px; border-color: transparent #fff transparent transparent; }
 .edit-box input, .edit-box textarea, .edit-box select { width: 100%; }
 .edit-box .mc-spinner { width:16px; margin: 0 auto;}
 

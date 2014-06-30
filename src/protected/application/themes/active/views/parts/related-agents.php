@@ -1,10 +1,9 @@
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="bloco textright" ng-if="isEditable">
-        <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="showCreateDialog['new-group'] = true">adicionar grupo de agentes</a>
-        
-        <edit-box ng-if="showCreateDialog['new-group']" title="Adicionar grupo de agentes" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
+        <edit-box id="new-related-agent-group" position="left" title="Adicionar grupo de agentes" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
             <input type="text" ng-model="data.newGroupName" placeholder="Nome do grupo de agentes"/>
         </edit-box>
+        <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">adicionar grupo de agentes</a>
     </div>
     <div class="bloco" ng-repeat="group in groups">
         <h3 class="subtitulo">{{group.name}}</h3>
@@ -35,8 +34,10 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="isEditable" ng-click="showCreateDialog[group.name] = ! showCreateDialog[group.name]" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
-            <edit-box ng-if="isEditable && showCreateDialog[group.name]" title="Adicionar agente relacionado" spinner-condition="spinners[group.name]">
+            
+            <div ng-if="isEditable" ng-click="editbox.open('add-related-agent-'+group.name, $event)" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
+            
+            <edit-box ng-if="isEditable" id="add-related-agent-{{group.name}}" position="left" title="Adicionar agente relacionado" spinner-condition="spinners[group.name]">
                 <find-entity entity="agent" no-results-text="Nenhum agente encontrado" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
             </edit-box>
         </div>

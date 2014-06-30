@@ -75,8 +75,11 @@
         };
     }]);
     
-    module.controller('RelatedAgentsController', ['$scope', '$rootScope', 'RelatedAgentsService', function($scope, $rootScope, RelatedAgentsService) {
+    module.controller('RelatedAgentsController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EditBox) {
+        $scope.editbox = EditBox;
+        
         $scope.groups = [];
+        
         for(var i in MapasCulturais.entity.agentRelations)
             $scope.groups.push({name: i, relations: MapasCulturais.entity.agentRelations[i]});
         
@@ -114,7 +117,7 @@
         };
         
         $scope.closeNewGroupEditBox = function(){
-            $scope.showCreateDialog['new-group'] = false;
+            EditBox.close('new-related-agent-group');
         };
         
         $scope.data.newGroupName = '';
