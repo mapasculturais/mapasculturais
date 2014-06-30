@@ -97,7 +97,7 @@
 
         </style>
     </head>
-    <?php 
+    <?php
     $body_properties = array();
     foreach ($this->bodyProperties as $key => $val)
         $body_properties[] = "{$key}=\"$val\"";
@@ -241,11 +241,24 @@
                                 <div class="setinha"></div>
                                 <li><a href="<?php echo $app->createUrl('panel');?>"><span class="icone icon_house"></span> Painel</a></li>
                                     <ul class="third-level">
-                                        <li><a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a></li>
-                                        <li><a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a>
+                                            <a href="<?php echo $app->createUrl('event', 'create') ?>" ><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a>
+                                            <a href="<?php echo $app->createUrl('agent', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a>
+                                            <a href="<?php echo $app->createUrl('space', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a>
+                                            <a href="<?php echo $app->createUrl('project', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                        <a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
                                     </ul>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>

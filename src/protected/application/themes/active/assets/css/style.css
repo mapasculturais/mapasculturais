@@ -382,7 +382,10 @@ input.data { width:76px; }
 .menu .entrar:hover { border-top: 6px solid #f90; }
 .menu .entrar:hover a { color: #f90; }
 .menu .usuario:hover, .menu .notificacoes:hover { border-top: 6px solid #f90; }
-.usuario .submenu { left: -36px; width: 180px; background: #f90; }
+.usuario .submenu { left: -36px; width: 190px; background: #f90; }
+.usuario .submenu a { display:inline; vertical-align:super; }
+.usuario .adicionar { float: right; display:inline; }
+.usuario .submenu .third-level li { line-height: 2rem; }
 #main-nav .usuario .submenu a { color: #000; padding: .5rem; }
 #main-nav .usuario .submenu a:hover { color: #fff; }
 .usuario .avatar{ float: none; width: 3rem; height: 3rem; margin: 0 auto; }
