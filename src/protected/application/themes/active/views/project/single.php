@@ -1,5 +1,5 @@
 <?php
-use MapasCulturais\Entities\AgentRelations\Project as Registration;
+use MapasCulturais\Entities\ProjectAgentRelation as Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $registrationForm = $entity->getFile('registrationForm');

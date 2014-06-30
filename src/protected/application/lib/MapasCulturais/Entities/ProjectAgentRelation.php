@@ -1,14 +1,13 @@
 <?php
-namespace MapasCulturais\Entities\AgentRelations;
+namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\Entities;
 use MapasCulturais\App;
 
 /**
  * @ORM\Entity
  */
-class Project extends Entities\AgentRelation {
+class ProjectAgentRelation extends AgentRelation {
     const STATUS_REGISTRATION = -5;
     const STATUS_REGISTRATION_REJECTED = -6;
 

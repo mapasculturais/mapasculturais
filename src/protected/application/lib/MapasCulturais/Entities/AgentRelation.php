@@ -17,10 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"   = "\MapasCulturais\Entities\AgentRelations\Project",
-        "MapasCulturais\Entities\Event"     = "\MapasCulturais\Entities\AgentRelations\Event",
-        "MapasCulturais\Entities\Agent"     = "\MapasCulturais\Entities\AgentRelations\Agent",
-        "MapasCulturais\Entities\Space"     = "\MapasCulturais\Entities\AgentRelations\Space"
+        "MapasCulturais\Entities\Project"   = "\MapasCulturais\Entities\ProjectAgentRelation",
+        "MapasCulturais\Entities\Event"     = "\MapasCulturais\Entities\EventAgentRelation",
+        "MapasCulturais\Entities\Agent"     = "\MapasCulturais\Entities\AgentAgentRelation",
+        "MapasCulturais\Entities\Space"     = "\MapasCulturais\Entities\SpaceAgentRelation"
    })
  */
 abstract class AgentRelation extends \MapasCulturais\Entity

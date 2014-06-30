@@ -179,7 +179,23 @@ class Project extends \MapasCulturais\Entity
         $app = App::i();
         $group = $app->projectRegistrationAgentRelationGroupName;
         $relation_class = $this->getAgentRelationEntityClassName();
-        return $app->repo($relation_class)->findOneBy(array('group' => $group, 'owner' => $this, 'agent' => $agent));
+        
+        $dql = "SELECT e FROM $relation_class e WHERE e.group = :g AND e.owner = :o AND e.agent = :a";
+        $app->log->info("DQL::::::::::::::::::::::::::::::::::::::: $dql");
+        $q = $app->em->createQuery($dql);
+        $q->setParameters(array(
+            'a' => $agent,
+            'o' => $this,
+            'g' => $group
+        ));
+        
+        $q->setMaxResults(1);
+        
+        $result = $q->getOneOrNullResult();
+        $c = get_class($result);
+        $app->log->info("))))))))))))))))))))))))) $c (((((((((((((((((((((((((");
+        return $result;
+        // return $app->repo($relation_class)->findOneBy(array('group' => $group, 'owner' => $this, 'agent' => $agent));
     }
 
     function isRegistered(Agent $agent){
@@ -188,7 +204,7 @@ class Project extends \MapasCulturais\Entity
 
     function isRegistrationApproved(Agent $agent){
         $registration = $this->getRegistrationByAgent($agent);
-        return $registration && $registration->status = AgentRelations\Project::STATUS_ENABLED;
+        return $registration && $registration->status = ProjectAgentRelation::STATUS_ENABLED;
     }
 
     function register(Agent $agent, File $registrationForm = null){
@@ -210,7 +226,7 @@ class Project extends \MapasCulturais\Entity
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
-        $relation->status = AgentRelations\Project::STATUS_REGISTRATION;
+        $relation->status = ProjectAgentRelation::STATUS_REGISTRATION;
 
         $relation->save();
 
@@ -238,7 +254,7 @@ class Project extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, 'project.approveRegistration:before', array($registration));
 
-        $registration->status = AgentRelations\Project::STATUS_ENABLED;
+        $registration->status = ProjectAgentRelation::STATUS_ENABLED;
 
         $registration->save(true);
         $this->clearAgentRelationCache();
@@ -258,7 +274,7 @@ class Project extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, 'project.rejectRegistration:before', array($registration));
 
-        $registration->status = AgentRelations\Project::STATUS_REGISTRATION_REJECTED;
+        $registration->status = ProjectAgentRelation::STATUS_REGISTRATION_REJECTED;
 
         $registration->save(true);
         $this->clearAgentRelationCache();
@@ -292,13 +308,15 @@ class Project extends \MapasCulturais\Entity
             FROM
                 $relation_class e
                 JOIN e.agent a
-            WHERE e.group = :group
+            WHERE e.group = :group AND e.owner = :owner
+            
             $status_dql
             ORDER BY
                 a.name ASC
         ");
 
         $q->setParameter('group', $group);
+        $q->setParameter('owner', $this);
 
         $result = $q->getResult();
 
@@ -306,7 +324,7 @@ class Project extends \MapasCulturais\Entity
     }
 
     function getApprovedRegistrations(){
-        return $this->getRegistrations(AgentRelations\Project::STATUS_ENABLED);
+        return $this->getRegistrations(ProjectAgentRelation::STATUS_ENABLED);
     }
 
     //============================================================= //
