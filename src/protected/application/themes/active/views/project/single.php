@@ -1,9 +1,10 @@
 <?php
-
 use MapasCulturais\Entities\AgentRelations\Project as Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $registrationForm = $entity->getFile('registrationForm');
+
+$this->bodyProperties['ng-app'] = "Entity";
 
 if(is_editable()){
     add_entity_types_to_js($entity);
@@ -12,6 +13,9 @@ if(is_editable()){
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
+
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 add_entity_properties_metadata_to_js($entity);
 
@@ -357,7 +361,7 @@ $ids = array_map(function($e){
 			<li><a href="#">Projeto 3</a></li>
 		</ul>
 		<a class="botao adicionar staging-hidden" href="#">adicionar projeto (só link)</a>
-    </div>
+        </div>
 	<!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
