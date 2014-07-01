@@ -3,7 +3,6 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\App;
 
 /**
  * AgentRelation
@@ -18,10 +17,10 @@ use MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"   = "\MapasCulturais\Entities\AgentRelations\Project",
-        "MapasCulturais\Entities\Event"     = "\MapasCulturais\Entities\AgentRelations\Event",
-        "MapasCulturais\Entities\Agent"     = "\MapasCulturais\Entities\AgentRelations\Agent",
-        "MapasCulturais\Entities\Space"     = "\MapasCulturais\Entities\AgentRelations\Space"
+        "MapasCulturais\Entities\Project"   = "\MapasCulturais\Entities\ProjectAgentRelation",
+        "MapasCulturais\Entities\Event"     = "\MapasCulturais\Entities\EventAgentRelation",
+        "MapasCulturais\Entities\Agent"     = "\MapasCulturais\Entities\AgentAgentRelation",
+        "MapasCulturais\Entities\Space"     = "\MapasCulturais\Entities\SpaceAgentRelation"
    })
  */
 abstract class AgentRelation extends \MapasCulturais\Entity
@@ -87,12 +86,9 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
-        $result['ownerType'] = $this->owner->className;
-        $result['ownerId'] = $this->owner->id;
-        $result['agentId'] = $this->agent->id;
-        unset($result['owner']);
-        unset($result['agent']);
-        unset($result['objectId']);
+        $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
+        $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl');
+        
         return $result;
     }
     

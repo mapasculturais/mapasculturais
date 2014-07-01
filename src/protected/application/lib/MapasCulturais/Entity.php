@@ -94,6 +94,53 @@ abstract class Entity implements \JsonSerializable{
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
     }
+    
+    function simplify($properties = 'id,name'){
+        $e = new \stdClass;
+        
+        $properties = is_string($properties) ? explode(',',$properties) : $properties;
+        if(is_array($properties)){
+            foreach($properties as $prop){
+                switch ($prop){
+                    case 'className':
+                        $e->className = $this->getClassName();
+                    break;
+
+                    case 'files':
+                        $e->files = array();
+
+                        foreach ($this->files as $group => $files){
+                            if(!isset($e->files[$group]))
+                                $e->files[$group] = array();
+
+                            $e->files[$group][] = $f->simplify(array('id', 'url', 'files'));
+                        }
+                    break;
+
+                    case 'avatar':
+                        if($this->usesAvatar()){
+                            $e->avatar = array();
+                            if($avatar = $this->avatar)
+                                foreach($avatar->files as $transformation => $f)
+                                    $e->avatar[$transformation] = $f->simplify(array('id', 'url'));
+                        }
+                    break;
+
+                    case 'terms':
+                        if($this->usesTaxonomies())
+                            $e->terms = $this->getTerms();
+                        
+                    break;
+                    
+                    default:
+                        $e->$prop = $this->$prop;
+                    break;
+                }
+            }
+        }
+        
+        return $e;
+    }
 
     function dump(){
         echo '<pre>';

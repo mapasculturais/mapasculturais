@@ -26,7 +26,7 @@ return array(
 
     'app.log.hook' => false,
 
-    'app.log.query' => false,
+    'app.log.query' => true,
 
     'app.log.requestData' => false,
 

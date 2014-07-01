@@ -1,13 +1,12 @@
 <?php
-namespace MapasCulturais\Entities\AgentRelations;
+namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\Entities;
 
 /**
  * @ORM\Entity
  */
-class Agent extends Entities\AgentRelation{
+class AgentAgentRelation extends AgentRelation{
 
     /**
      * @var \MapasCulturais\Entities\Agent

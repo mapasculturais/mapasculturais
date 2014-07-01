@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if (is_editable()) {
     add_entity_types_to_js($entity);
@@ -12,6 +13,9 @@ if (is_editable()) {
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 }
+
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 

@@ -5,11 +5,6 @@ jQuery(function(){
     MapasCulturais.Editables.init('#editable-entity');
     MapasCulturais.AjaxUploader.init();
     MapasCulturais.MetalistManager.init();
-    //MapasCulturais.RelatedAgentsEditables.init('.js-relatedAgentsContainer');
-
-
-    MapasCulturais.RelatedAgentsEditables.init('.js-related-group');
-    MapasCulturais.RelatedAgentsEditables.initButtonAddRelatedGroup('.js-related-group-add');
 
 
     MapasCulturais.Remove.init();
@@ -29,15 +24,6 @@ jQuery(function(){
 
             // status = 1 (aprovado)
             // status = -6 (rejeitado)
-            if(response.status == -6){
-                MapasCulturais.RelatedAgents.removeAgentFromGroup('registration', response.agentId);
-
-            }else if(response.status == 1){
-                $.getJSON('http://mapasculturais.local/api/agent/findOne', {id: 'eq('+response.agentId+')', '@select': 'id,name,avatar,metadata,files,terms,type,singleUrl'}, function(r){
-                    MapasCulturais.RelatedAgents.addAgentToGroup('registration', r);
-
-                });
-            }
 
         });
         return false;
@@ -580,169 +566,5 @@ MapasCulturais.MetalistManager = {
                 $form.parent().hide();
             }
         });
-    }
-};
-
-MapasCulturais.RelatedAgentsEditables = {
-
-    openCreateAgentDialog : function(buttonElement){
-        MapasCulturais.Modal.open(buttonElement.dataset.dialog);
-        var $editableName = $(buttonElement.dataset.dialog).find('.js-related-editable[data-related-edit="agent[name]"]');
-        $editableName.editable('setValue',
-            $(buttonElement).parents('#select2-drop').find('.select2-input').val()
-        );
-        var $group = $('#dialog-adicionar-integrante .js-group');
-        $group.editable('setValue', $(buttonElement).data('group'));
-        $('.select2-offscreen').each(function(){$(this).select2('close');});
-    },
-
-    initButtonAddRelatedGroup : function(selector){
-
-        if($(selector).length == 0) return false;
-
-
-        var $dialog = $($(selector).data('dialog'));
-        var $textInput = $dialog.find('input:text');
-        var $submitButton = $dialog.find('input:submit');
-
-
-        $(selector).click(function(){ $textInput.focus();});
-
-
-        $submitButton.click(function(e){
-
-            e.preventDefault();
-
-            var newGroupName = $textInput.val();
-            //If no typed group name, nothing to do
-            if(newGroupName.trim().length == 0) return;
-            //Resets the inputm
-            $textInput.val('');
-
-            var template = $('#related-group-template').text();
-            template = template.replace(new RegExp('{{group}}', 'g'), newGroupName);
-            //Insere o novo grupo antes do container do botão de add group
-            $(template).insertBefore($(selector).parent());
-            MapasCulturais.Search.init('.js-related-group[data-related-group="'+newGroupName+'"] .js-search');
-
-            //Closes the modal window
-            $dialog.find('.js-close').click();
-        });
-    },
-
-    init : function(selector) {
-        if($(selector).length == 0) return false;
-
-        $(selector).each(function(){
-
-            /*Init control switch and remove buttons in list view*/
-            $(this).on('click', '.slider-button', function(){
-                var $input = $(this);
-                var hasControl = !$input.hasClass('on');
-
-                if (!hasControl)
-                    $input.removeClass('on').html('Não');
-                else
-                    $input.addClass('on').html('Sim');
-
-                $.post(
-                    MapasCulturais.baseURL + MapasCulturais.request.controller + '/setRelatedAgentControl/id:' + MapasCulturais.request.id,
-                    {
-                        agentId: $(this).parents('.avatar').data('id'),
-                        hasControl: hasControl
-                    },
-                    function(response) {
-                        if (response.error) {
-                            if ($input.hasClass('on'))
-                                $input.removeClass('on').html('Não');
-                            else
-                                $input.addClass('on').html('Sim');
-                        }
-                    }
-                );
-
-            });
-
-            $(this).on('click', '.js-remove-agent', function(){
-                $agent = $(this).parents('.avatar');
-                if(confirm('Tem certeza de que deseja remover este agente?')){
-                    $.post(
-                        MapasCulturais.baseURL + MapasCulturais.request.controller + '/removeAgentRelation/id:' + MapasCulturais.request.id,
-                        {agentId: $agent.data('id'), group: $agent.parents('.js-related-group').data('related-group')},
-                        function(response){
-                            if(!response.error)
-                                if($agent.parents('.js-related-group').find('.avatar').length == 0){
-                                    $agent.parents('.js-related-group').remove();
-                                }else{
-                                    $agent.remove();
-                                }
-                        }
-                    );
-                }
-            });
-        });
-
-        var $dialog = $('#dialog-adicionar-integrante');
-
-        //Setup the submit button
-        $dialog.find('.js-related-submit').click(function(){
-            var $form = $dialog.find('form')
-
-            var $submitButton = $(this);
-            $($submitButton.data('target')+' .js-related-editable').editable('submit', {
-                url: $submitButton.data('action')=='create'?
-                        MapasCulturais.baseURL + MapasCulturais.request.controller + '/createAgentRelation/' + MapasCulturais.request.id :
-                        MapasCulturais.baseURL+'agent/single/id:'+$submitButton.data('id')+'/',
-                ajaxOptions: {
-                    dataType: 'json', //assuming json response
-                    type: 'post'
-                },
-                success: function(response){
-                    if(response.errors){
-                        var errors = '';
-                        for(var p in response.errors){
-                            for(var k in response.errors[p]){
-                                errors = errors + '<p>' + response.errors[p][k] + '</p>';
-                            }
-                        }
-                        $('#ajax-response-errors .js-dialog-content').html(errors);
-                        MapasCulturais.Modal.open('#ajax-response-errors');
-                    }else{
-                        var $agent = MapasCulturais.Search.renderTemplate($('#agent-response-template').text(), response);
-                        $dialog.data('group-element').append($agent);
-                        $dialog.find('.js-close').click();
-                    }
-                },
-                error : function(response){
-                    $('#ajax-response-errors .js-dialog-content').html(response);
-                    MapasCulturais.Modal.open('#ajax-response-errors');
-                }
-            });
-        });
-
-        $dialog.find('.js-related-editable').each(function(){
-                //Set Editable
-                $(this).editable({
-                    name : $(this).data('related-edit'),
-                    mode: 'inline',
-                    inputclass: 'js-related-editable-inputClass'
-                    //placement: 'right'
-                });
-            });
-    }
-}
-
-MapasCulturais.RelatedAgents = {
-    addAgentToGroup: function(group, agent){
-        var template = MapasCulturais.TemplateManager.getTemplate('agent-response-template');
-        var $group = $('[data-related-group="' + group + '"] .js-relatedAgentsContainer');
-        MapasCulturais.Search.processEntity(agent);
-        var html = Mustache.render(template, agent);
-        $group.append(html);
-        MapasCulturais.RelatedAgentsEditables.init('[data-related-group="' + group + '"]');
-    },
-    removeAgentFromGroup: function(group, agent_id){
-        var $group = $('[data-related-group="' + group + '"] .js-relatedAgentsContainer');
-        $group.find("div.avatar[data-id=\"" + agent_id + "\"]").remove();
     }
 };

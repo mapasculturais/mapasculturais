@@ -3,7 +3,9 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
+
 
 /**
  * Event
@@ -15,15 +17,16 @@ use MapasCulturais\App;
  */
 class Event extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityOwnerAgent,
-        \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
 
@@ -96,8 +99,6 @@ class Event extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
-    protected $_avatar;
-
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="event", cascade="remove", orphanRemoval=true)
     */
@@ -139,16 +140,6 @@ class Event extends \MapasCulturais\Entity
         }
         $this->project = $project;
     }
-
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
-    }
-
-
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
         $app = App::i();

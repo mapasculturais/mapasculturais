@@ -1,13 +1,12 @@
 <?php
-namespace MapasCulturais\Entities\AgentRelations;
+namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\Entities;
 
 /**
  * @ORM\Entity
  */
-class Event extends Entities\AgentRelation {
+class EventAgentRelation extends AgentRelation {
 
     /**
      * @var \MapasCulturais\Entities\Event
