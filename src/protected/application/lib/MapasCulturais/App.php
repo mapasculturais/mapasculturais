@@ -317,9 +317,7 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : array());
 
 
-        // run theme theme.php
-        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
-                include ACTIVE_THEME_PATH . 'theme.php';
+        
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
@@ -334,6 +332,10 @@ class App extends \Slim\Slim{
 
         $this->_auth->setCookies();
 
+        // run theme theme.php
+        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
+            include ACTIVE_THEME_PATH . 'theme.php';
+        
         // ===================================== //
 
 
