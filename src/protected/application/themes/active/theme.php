@@ -73,8 +73,10 @@ function add_map_assets() {
 
 function add_angular_entity_assets($entity){
     $app = App::i();
+    $app->enqueueScript('vendor', 'jquery-ui-position', '/vendor/jquery-ui.position.min.js', array('jquery'));
     
     $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+    $app->enqueueScript('vendor', 'angular-sanitize', '/vendor/angular-sanitize.min.js', array('angular'));
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
     $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
 

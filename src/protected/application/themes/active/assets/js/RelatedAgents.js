@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
     
-    var module = angular.module('RelatedAgents', []);
+    var module = angular.module('RelatedAgents', ['ngSanitize']);
 
     module.config(['$httpProvider',function($httpProvider){
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -122,15 +122,18 @@
         
         $scope.data.newGroupName = '';
         
+        $scope.getCreateAgentRelationEditBoxId = function(groupName){
+            return 'add-related-agent-' + groupName.replace(/[^a-z0-9_]/gi,'');
+        };
+        
         $scope.createGroup = function(){
-            if(! groupExists( $scope.data.newGroupName ) ){
+            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) ){
                 var newGroup = {name: $scope.data.newGroupName, relations: []};
-                
                 
                 $scope.groups = [newGroup].concat($scope.groups);
                 
-                $scope.newGroupName = '';
-                $scope.showCreateDialog['new-group'] = false;
+                $scope.data.newGroupName = '';
+                EditBox.close('new-related-agent-group');
             }
         };
         
@@ -145,6 +148,7 @@
                         $scope.showCreateDialog[groupName] = false;
                         _scope.$parent.searchText = '';
                         _scope.$parent.result = [];
+                        EditBox.close($scope.getCreateAgentRelationEditBoxId(groupName));
                     });
         };
         

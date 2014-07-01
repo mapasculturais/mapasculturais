@@ -821,7 +821,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 
 /* =Edit box
 -------------------------------------------------------------- */
-.edit-box { position: absolute; z-index: 1001; padding: .75rem; background: #fff; border: none; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
+.edit-box { position: absolute; z-index: 149; display:none; padding: .75rem; background: #fff; border: none; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
 .edit-box header { margin-bottom: .75rem; padding-bottom: .75rem; border-bottom: 1px solid #ddd; }
 .edit-box header h1 { font-size: 1rem; line-height: 1rem; margin-bottom: 0; }
 .edit-box header p { margin-bottom: 0; font-size: .75rem; }
@@ -835,7 +835,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .edit-box.mc-top .mc-arrow { bottom: -20px; border-color: #fff transparent transparent transparent; }
 .edit-box.mc-bottom .mc-arrow { top: -20px; border-color: transparent transparent #f90 transparent; }
 
-.edit-box.mc-left { right: 100%; top: -25%; }
+
 .edit-box.mc-left .mc-arrow { right: -16px; border-color: transparent transparent transparent #fff; }
 
 .edit-box.mc-right .mc-arrow { left: -20px; border-color: transparent #fff transparent transparent; }

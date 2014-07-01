@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
     
-    var app = angular.module('Entity', ['RelatedAgents', 'angularSpinner']);
+    var app = angular.module('Entity', ['RelatedAgents', 'angularSpinner', 'ngSanitize']);
     
     app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
         var baseUrl = MapasCulturais.baseURL + '/api/';
@@ -173,6 +173,36 @@
 
 
     app.factory('EditBox', function(){
+        function setPosition($box, target){
+            if($box.hasClass('mc-left')){
+                $box.position({
+                    my: 'right-20 center',
+                    at: 'left center',
+                    of: target
+                });
+                
+            }else if($box.hasClass('mc-right')){
+                $box.position({
+                    my: 'left-20 center',
+                    at: 'right center',
+                    of: target
+                });
+                
+            }else if($box.hasClass('mc-top')){
+                $box.position({
+                    my: 'center top-20',
+                    at: 'center bottom',
+                    of: target
+                });
+                
+            }else if($box.hasClass('mc-bottom')){
+                $box.position({
+                    my: 'center bottom-20',
+                    at: 'center top',
+                    of: target
+                });
+            }
+        };
         
         return {
             openEditboxes: {},
@@ -187,9 +217,13 @@
             open: function(editboxId, $event){
                 if(typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
-
-                console.log($event);
+                
                 this.openEditboxes[editboxId] = true;
+                
+                var $box = $('#' + editboxId).find('>div.edit-box');
+                $box.show();
+                
+                setPosition($box, $event.target);
             },
             
             close: function(editboxId){
@@ -197,6 +231,9 @@
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
                 
                 this.openEditboxes[editboxId] = false;
+                
+                var $box = $('#' + editboxId).find('>div.edit-box');
+                $box.hide();
             }
         };
     });
@@ -219,6 +256,7 @@
                     throw new Error('EditBox id is required');
                 
                 $scope.editbox = EditBox;
+                $scope.cancelLabel = attrs.cancelLabel;
                 
                 EditBox.register(attrs.id);
                 
@@ -240,6 +278,9 @@
                 };
                 
                 $scope.cancel = function(){
+                    if(attrs.closeOnCancel)
+                        EditBox.close(attrs.id);
+                    
                     if(angular.isFunction($scope.onCancel)){
                         $scope.onCancel();
                     }
