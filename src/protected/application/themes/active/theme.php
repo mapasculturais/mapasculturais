@@ -324,7 +324,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
 
         $linguagens = array(
-            'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra'
+            'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra, pebate ou encontro'
         );
 
         $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
