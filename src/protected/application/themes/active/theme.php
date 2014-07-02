@@ -319,7 +319,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
 
         $linguagens = array(
-            'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'Palestra, Debate ou Encontro'
+            'cinema'//, 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'Palestra, Debate ou Encontro'
         );
 
         $section->addTextBreak();
@@ -372,21 +372,20 @@ if($app->user->is('admin') || $app->user->is('staff')){
             }
             $section->addText($spaceText.$occurenceDescription, $defaultFont);
         };
+            
 
         foreach($linguagens as $linguagem){
 
             $query = array(
-                '@from'=>'2013-07-01',
-                '@to'=>'2014-10-24',
+                '@from'=>'2014-06-01',
+                '@to'=>'2014-06-30',
                 '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
                 '@order' => 'name ASC',
                 'term:linguagem'=>'ILIKE('.$linguagem.'*)'
             );
 
             $events = $app->controller('event')->apiQueryByLocation($query);
-
-            //print_r(json_decode(json_encode($events)));
-
+            
             $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
             $section->addText('');
 
@@ -394,7 +393,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             foreach($events as $event){
                 if($event['project']){
-                    if(!$projects[$event['project']->id]){
+                    if(!isset($projects[$event['project']->id])){
                         $projects[$event['project']->id] = array(
                             'project' => $event['project'],
                             'events' => array()
@@ -443,7 +442,6 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $app->response()->header('Content-Disposition', 'attachment;filename="apiEmCartazOutput.docx"');
             $app->response()->header('Cache-Control', 'max-age=0');
         }
-
 
     });
 
