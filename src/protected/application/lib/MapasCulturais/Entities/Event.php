@@ -117,7 +117,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -130,8 +130,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-
-
+    
     function setProjectId($projectId){
         if($projectId) {
             $project = App::i()->repo('Project')->find($projectId);
