@@ -581,7 +581,6 @@ class App extends \Slim\Slim{
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
-            $this->registerApiOutput('MapasCulturais\ApiOutputs\EmCartaz');
 
             /**
              * @todo melhores mensagens de erro
