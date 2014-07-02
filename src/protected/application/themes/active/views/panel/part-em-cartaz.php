@@ -3,17 +3,27 @@
 $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
 $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 ?>
+<style>
+    .emcartaz-datepicker{
+        border:none;
+        width:90px;
+        cursor:pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        padding:0;
+    }
+</style>
 <div class="main-content">
     <h1>Revista Em Cartaz</h1>
     <div class="clearfix">
             Filtrar Eventos
-            <label for="data-de-inicio">De:</label>
-            <input id="from-visible" type="text" class="js-emcartaz-dates data-da-ocorrencia "
+            <label for="data-de-inicio">de</label>
+            <input id="from-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
                    readonly="readonly" placeholder="00/00/0000" value="<?php echo $from->format('d/m/Y'); ?>">
             <input id="from" name="startsOn" type="hidden" value="<?php echo $from->format('Y-m-d'); ?>">
 
-            <label for="data-de-fim">Até:</label>
-            <input id="to-visible" type="text" class="js-emcartaz-dates data-da-ocorrencia "
+            <label for="data-de-fim">a</label>
+            <input id="to-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
                    readonly="readonly" placeholder="00/00/0000" value="<?php echo $to->format('d/m/Y'); ?>">
             <input id="to" name="until" type="hidden" value="<?php echo $to->format('Y-m-d'); ?>">
     </div>
