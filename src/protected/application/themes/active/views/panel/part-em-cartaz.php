@@ -47,7 +47,12 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
             $(this).datepicker({
                 dateFormat: $(this).data('date-format') ? $(this).data('date-format') : 'dd/mm/yy',
                 altFormat: $(this).data('alt-format') ? $(this).data('alt-format') : 'yy-mm-dd',
-                altField: altFieldSelector
+                altField: altFieldSelector,
+                beforeShow: function() {
+                    setTimeout(function(){
+                        $('.ui-datepicker').css('z-index', 99999999999999);
+                    }, 0);
+                }
             });
         });
     });
