@@ -2,6 +2,8 @@ MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
 jQuery(function(){
     $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button><button type="button" class="editable-cancel"><span class="icone icon_close"></span></button>';
+    $.fn.select2.defaults.separator = '; ';
+    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.Editables.init('#editable-entity');
     MapasCulturais.AjaxUploader.init();
     MapasCulturais.MetalistManager.init();
@@ -146,7 +148,8 @@ MapasCulturais.Editables = {
 
             var select2_option = {
                 tags: [],
-                tokenSeparators: [","]
+                tokenSeparators: [";",";"],
+                separator:'; '
             };
 
 
