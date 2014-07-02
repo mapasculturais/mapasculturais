@@ -276,9 +276,7 @@ $app->hook('entity(event).save:before', function() {
 
 
 //plugin Em Cartaz
-// TODO: Mover arquivo de template de views/panel/em-cartaz.php para a pasta de plugins
-
-
+// TODO: Mover arquivo de template de views/panel/part-em-cartaz.php para a pasta de plugins
 
 $defaultFrom = new DateTime("first day of next month");
 $defaultTo = new DateTime("last day of next month");
@@ -362,7 +360,15 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         foreach($spaces as $space){
             $spaceText .= $space->name . ', '. $space->endereco.'. ';
         }
-        $textRunObj->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
+        $agentText = '';
+        foreach($event['relatedAgents'] as $group=>$relatedAgent){
+            $agentText .= $group.': ';
+            foreach($relatedAgent as $agent){
+                $agentText .= $agent->name.', ';
+            }
+        }
+
+        $textRunObj->addText($event['shortDescription'].' '.$agentText.' '.$spaceText.$occurenceDescription, $defaultFont);
     };
 
     $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
@@ -386,8 +392,15 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         foreach($spaces as $space){
             $spaceText .= trim($space->name) . ', '. trim($space->endereco).'. ';
         }
+        $agentText = '';
+        foreach($event['relatedAgents'] as $group=>$relatedAgent){
+            $agentText .= trim($group).': ';
+            foreach($relatedAgent as $agent){
+                $agentText .= ($agent->name).', ';
+            }
+        }
 
-        $section->addText(trim($event['shortDescription']).' '.trim($spaceText).' '.trim($occurenceDescription), $defaultFont);
+        $section->addText(trim($event['shortDescription']).'. '.trim($agentText).' '.trim($spaceText).' '.trim($occurenceDescription), $defaultFont);
     };
 
 
@@ -397,7 +410,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             'isVerified' => 'eq(true)',
             '@from'=>$from->format('Y-m-d'),
             '@to'=>$to->format('Y-m-d'),
-            '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
+            '@select' => 'id,name,shortDescription,location,metadata,occurrences,project,relatedAgents',
             '@order' => 'name ASC',
             'term:linguagem'=>'ILIKE('.$linguagem.'*)'
         );
