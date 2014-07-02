@@ -280,12 +280,14 @@ $app->hook('entity(event).save:before', function() {
 
 if($app->user->is('admin') || $app->user->is('staff')){
 
-    $app->hook('GET(panel.em-cartaz)', function() use ($app) {
-        $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-preview').'"> PREVIEW  </a>';
-        $content .= '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'"> DOWNLOAD  </a>';
-        $this->render('generic', array(
-            'title' => 'Revista em Cartaz',
-            'content' => $content
+    $defaultFrom = new DateTime("first day of next month");
+    $defaultTo = new DateTime("last day of next month");
+
+    $app->hook('GET(panel.em-cartaz)', function() use ($app, $defaultFrom, $defaultTo) {
+        $this->render('part-em-cartaz', array(
+            'content'=>'',
+            'from' => isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom,
+            'to' => isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo,
         ));
     });
 
@@ -297,11 +299,11 @@ if($app->user->is('admin') || $app->user->is('staff')){
     });
 
 
-    $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app) {
+    $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $defaultFrom, $defaultTo) {
 
-        $addEventBlock = function ($event){
+        $from = isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom;
+        $to = isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo;
 
-        };
 
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -378,8 +380,8 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             $query = array(
                 'isVerified' => 'eq(true)',
-                '@from'=>'2013-06-01',
-                '@to'=>'2015-06-30',
+                '@from'=>$from->format('Y-m-d'),
+                '@to'=>$to->format('Y-m-d'),
                 '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
                 '@order' => 'name ASC',
                 'term:linguagem'=>'ILIKE('.$linguagem.'*)'
@@ -431,13 +433,14 @@ if($app->user->is('admin') || $app->user->is('staff')){
         }
 
         if($this->action === 'em-cartaz-preview'){
-            $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
+            //$content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
 
             $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
 
-            $this->render('generic', array(
-                'title' => 'Revista Em Cartaz - PREVIEW',
-                'content'=>$content.$objWriter->getWriterPart('Body')->write()
+            $this->render('part-em-cartaz', array(
+                'content'=>$objWriter->getWriterPart('Body')->write(),
+                'from' => $from,
+                'to' => $to
             ));
 
         }else{
@@ -445,7 +448,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $objWriter->save("php://output");
 
             $app->response()->header('Content-Type', 'application/vnd.ms-word');
-            $app->response()->header('Content-Disposition', 'attachment;filename="apiEmCartazOutput.docx"');
+            $app->response()->header('Content-Disposition', 'attachment;filename="Em Cartaz de '.$from->format('d-m-Y').' a '.$to->format('d-m-Y').'.docx"');
             $app->response()->header('Cache-Control', 'max-age=0');
         }
 
