@@ -319,10 +319,10 @@ if($app->user->is('admin') || $app->user->is('staff')){
             array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
 
         $linguagens = array(
-            'cinema', 'dança', 'teatro', 'Palestra, Debate ou Encontro'
+            'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'Palestra, Debate ou Encontro'
         );
 
-
+        $section->addTextBreak();
 
         $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
             $textRunObj = $section->createTextRun();
@@ -343,12 +343,20 @@ if($app->user->is('admin') || $app->user->is('staff')){
         };
 
         $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
-                    $section->addText($event['name'], $eventTitle);
-                    $section->addText($event['shortDescription'], $defaultFont);
-        //            $section->addText(
-        //                ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
-        //                , $defaultFont
-        //            );
+            $section->addTextBreak();
+            $section->addText($event['name'], $eventTitle);
+            $section->addText($event['shortDescription'], $defaultFont);
+            $occurenceDescription = ' ';
+            foreach($event['occurrences'] as $occurrence){
+                if(isset($occurrence->rule->description)){
+                    $occurenceDescription .= $occurrence->rule->description.' ';
+                }
+            }
+            $section->addText($occurenceDescription, $defaultFont);
+//            $section->addText(
+//                ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
+//                , $defaultFont
+//            );
         };
 
         foreach($linguagens as $linguagem){
@@ -364,6 +372,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $events = $app->controller('event')->apiQueryByLocation($query);
 
             $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
+            $section->addText('');
 
             $projects = array();
 
@@ -379,6 +388,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
                     $projects[$event['project']->id]['events'][] = $event;
                     continue;
                 }
+
                 if($this->action === 'em-cartaz-preview'){
                     $addEventBlockHtml($event);
                 }else{
