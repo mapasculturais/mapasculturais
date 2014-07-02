@@ -23,6 +23,6 @@ composer dump-autoload --optimize
 
 cd tools
 
-doctrine ./doctrine orm:generate-proxies
+./doctrine orm:generate-proxies
 
 apachectl start
