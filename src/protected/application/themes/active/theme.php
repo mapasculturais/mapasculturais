@@ -280,12 +280,14 @@ $app->hook('entity(event).save:before', function() {
 
 if($app->user->is('admin') || $app->user->is('staff')){
 
-    $app->hook('GET(panel.em-cartaz)', function() use ($app) {
-        $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-preview').'"> PREVIEW  </a>';
-        $content .= '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'"> DOWNLOAD  </a>';
-        $this->render('generic', array(
-            'title' => 'Revista em Cartaz',
-            'content' => $content
+    $defaultFrom = new DateTime("first day of next month");
+    $defaultTo = new DateTime("last day of next month");
+
+    $app->hook('GET(panel.em-cartaz)', function() use ($app, $defaultFrom, $defaultTo) {
+        $this->render('part-em-cartaz', array(
+            'content'=>'',
+            'from' => isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom,
+            'to' => isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo,
         ));
     });
 
@@ -297,11 +299,11 @@ if($app->user->is('admin') || $app->user->is('staff')){
     });
 
 
-    $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app) {
+    $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $defaultFrom, $defaultTo) {
 
-        $addEventBlock = function ($event){
+        $from = isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom;
+        $to = isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo;
 
-        };
 
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -311,6 +313,9 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
         $defaultFont = $phpWord->addFontStyle('defaultFont',
             array('name'=>'Arial', 'size'=>12));
+
+        $documentHead = $phpWord->addFontStyle('documentHead',
+            array('name'=>'Arial', 'size'=>18, 'color'=>'44AA88', 'bold'=>true));
 
         $eventTitle = $phpWord->addFontStyle('eventTitle',
             array('name'=>'Arial', 'size'=>12, 'color'=>'880000', 'bold'=>true));
@@ -322,15 +327,14 @@ if($app->user->is('admin') || $app->user->is('staff')){
             'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra'
         );
 
-        $section->addTextBreak();
+        $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
         $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
             $textRunObj = $section->createTextRun();
             $textRunObj->addText($event['name'], $eventTitle);
             $textRunObj->addTextBreak();
-            $textRunObj->addText($event['shortDescription'], $defaultFont);
             $spaces = array();
-            $occurenceDescription = ' ';
+            $occurenceDescription = '';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
                     $occurenceDescription .= $occurrence->rule->description.'. ';
@@ -342,19 +346,19 @@ if($app->user->is('admin') || $app->user->is('staff')){
                     $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $spaceText = ' ';
+            $spaceText = '';
             foreach($spaces as $space){
                 $spaceText .= $space->name . ', '. $space->endereco.'. ';
             }
-            $textRunObj->addText($spaceText.$occurenceDescription, $defaultFont);
+            $textRunObj->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
         };
 
         $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
-            $section->addTextBreak();
+            $section->addText('');
             $section->addText($event['name'], $eventTitle);
-            $section->addText($event['shortDescription'], $defaultFont);
+            //$section->addText($event['shortDescription'], $defaultFont);
             $spaces = array();
-            $occurenceDescription = ' ';
+            $occurenceDescription = '';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
                     $occurenceDescription .= $occurrence->rule->description.'. ';
@@ -366,11 +370,12 @@ if($app->user->is('admin') || $app->user->is('staff')){
                     $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $spaceText = ' ';
+            $spaceText = '';
             foreach($spaces as $space){
                 $spaceText .= $space->name . ', '. $space->endereco.'. ';
             }
-            $section->addText($spaceText.$occurenceDescription, $defaultFont);
+
+            $section->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
         };
 
 
@@ -378,8 +383,8 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             $query = array(
                 'isVerified' => 'eq(true)',
-                '@from'=>'2013-06-01',
-                '@to'=>'2015-06-30',
+                '@from'=>$from->format('Y-m-d'),
+                '@to'=>$to->format('Y-m-d'),
                 '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
                 '@order' => 'name ASC',
                 'term:linguagem'=>'ILIKE('.$linguagem.'*)'
@@ -387,8 +392,9 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             $events = $app->controller('event')->apiQueryByLocation($query);
 
-            $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
             $section->addText('');
+            $section->addText('');
+            $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
 
             $projects = array();
 
@@ -431,13 +437,14 @@ if($app->user->is('admin') || $app->user->is('staff')){
         }
 
         if($this->action === 'em-cartaz-preview'){
-            $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
+            //$content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
 
             $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
 
-            $this->render('generic', array(
-                'title' => 'Revista Em Cartaz - PREVIEW',
-                'content'=>$content.$objWriter->getWriterPart('Body')->write()
+            $this->render('part-em-cartaz', array(
+                'content'=>$objWriter->getWriterPart('Body')->write(),
+                'from' => $from,
+                'to' => $to
             ));
 
         }else{
@@ -445,7 +452,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $objWriter->save("php://output");
 
             $app->response()->header('Content-Type', 'application/vnd.ms-word');
-            $app->response()->header('Content-Disposition', 'attachment;filename="apiEmCartazOutput.docx"');
+            $app->response()->header('Content-Disposition', 'attachment;filename="Em Cartaz de '.$from->format('d-m-Y').' a '.$to->format('d-m-Y').'.docx"');
             $app->response()->header('Cache-Control', 'max-age=0');
         }
 
