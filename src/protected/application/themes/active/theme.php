@@ -74,7 +74,7 @@ function add_map_assets() {
 function add_angular_entity_assets($entity){
     $app = App::i();
     $app->enqueueScript('vendor', 'jquery-ui-position', '/vendor/jquery-ui.position.min.js', array('jquery'));
-    
+
     $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
     $app->enqueueScript('vendor', 'angular-sanitize', '/vendor/angular-sanitize.min.js', array('angular'));
     $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
@@ -85,7 +85,7 @@ function add_angular_entity_assets($entity){
     $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
     if(!is_editable())
         return;
-    
+
     App::i()->hook('mapasculturais.scripts', function() use($app, $entity) {
         $isEntityOwner = $entity->ownerUser->id === $app->user->id;
         ?>
@@ -170,7 +170,7 @@ function add_agent_relations_to_js($entity){
         </script>
         <?php
     });
-    
+
 }
 
 /**
@@ -273,3 +273,154 @@ $app->hook('entity(event).load', function() {
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
 });
+
+
+//plugin Em Cartaz
+// TODO: Mover arquivo de template de views/panel/em-cartaz.php para a pasta de plugins
+
+if($app->user->is('admin') || $app->user->is('staff')){
+
+    $app->hook('GET(panel.em-cartaz)', function() use ($app) {
+        $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-preview').'"> PREVIEW  </a>';
+        $content .= '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'"> DOWNLOAD  </a>';
+        $this->render('generic', array(
+            'title' => 'Revista em Cartaz',
+            'content' => $content
+        ));
+    });
+
+    $app->hook('view.partial(panel/part-nav):after', function($template, &$html) use ($app){
+        $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
+        $url = $app->createUrl('panel', 'em-cartaz');
+        $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_document_alt'></span> Em Cartaz</a></li>";
+        $html = str_replace('</ul>', $menu . '</ul>', $html);
+    });
+
+
+    $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app) {
+
+        $addEventBlock = function ($event){
+
+        };
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        // Every element you want to append to the word document is placed in a section.
+        // To create a basic section:
+        $section = $phpWord->addSection();
+
+        $defaultFont = $phpWord->addFontStyle('defaultFont',
+            array('name'=>'Arial', 'size'=>12));
+
+        $eventTitle = $phpWord->addFontStyle('eventTitle',
+            array('name'=>'Arial', 'size'=>12, 'color'=>'880000', 'bold'=>true));
+
+        $linguagemStyle = $phpWord->addFontStyle('linguagemStyle',
+            array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
+
+        $linguagens = array(
+            'cinema', 'dança', 'teatro', 'Palestra, Debate ou Encontro'
+        );
+
+
+
+        $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
+            $textRunObj = $section->createTextRun();
+            $textRunObj->addText($event['name'], $eventTitle);
+            $textRunObj->addTextBreak();
+            $textRunObj->addText($event['shortDescription'], $defaultFont);
+            $occurenceDescription = ' ';
+            foreach($event['occurrences'] as $occurrence){
+                if(isset($occurrence->rule->description)){
+                    $occurenceDescription .= $occurrence->rule->description.' ';
+                }
+            }
+            $textRunObj->addText($occurenceDescription, $defaultFont);
+//                $textRunObj->addText(
+//                    ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
+//                    , $defaultFont
+//                );
+        };
+
+        $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
+                    $section->addText($event['name'], $eventTitle);
+                    $section->addText($event['shortDescription'], $defaultFont);
+        //            $section->addText(
+        //                ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
+        //                , $defaultFont
+        //            );
+        };
+
+        foreach($linguagens as $linguagem){
+
+            $query = array(
+                '@from'=>'2013-07-01',
+                '@to'=>'2014-10-24',
+                '@select' => 'id,projectl',
+                '@order' => 'name ASC',
+                'term:linguagem'=>'ILIKE('.$linguagem.'*)'
+            );
+
+            $events = $app->controller('event')->apiQueryByLocation($query);
+            var_dump( json_decode(json_encode($events)));
+            continue;
+            $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
+
+            $projects = array();
+
+            foreach($events as $event){
+                if($event['project']){
+                    var_dump($event['project']);
+                    if(!$projects[$event['project']->id]){
+                        $projects[$event['project']->id] = array(
+                            'project' => $event['project'],
+                            'events' => array()
+                        );
+                    }
+                    $projects[$event['project']->id] = $projects[$event['project']->id] ? $projects[$event['project']->id] : array();
+                    $projects[$event['project']->id]['events'][] = $event;
+                    continue;
+                }
+                if($this->action === 'em-cartaz-preview'){
+                    $addEventBlockHtml($event);
+                }else{
+                    $addEventBlockDoc($event);
+                }
+            }
+
+            foreach($projects as $project){
+                $textRunObj = $section->createTextRun();
+                foreach($project['events'] as $event){
+                    if($this->action === 'em-cartaz-preview'){
+                        $textRunObj->addText('PROJECT '.$project['project']->name, $eventTitle);
+                        $addEventBlockHtml($event);
+                    }else{
+                        $addEventBlockDoc($event);
+                    }
+                }
+            }
+        }
+
+        if($this->action === 'em-cartaz-preview'){
+            $content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
+
+            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
+
+            $this->render('generic', array(
+                'title' => 'Revista Em Cartaz - PREVIEW',
+                'content'=>$content.$objWriter->getWriterPart('Body')->write()
+            ));
+
+        }else{
+            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+            $objWriter->save("php://output");
+
+            $app->response()->header('Content-Type', 'application/vnd.ms-word');
+            $app->response()->header('Content-Disposition', 'attachment;filename="apiEmCartazOutput.docx"');
+            $app->response()->header('Cache-Control', 'max-age=0');
+        }
+
+
+    });
+
+}
