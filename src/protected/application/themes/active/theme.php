@@ -356,21 +356,19 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $query = array(
                 '@from'=>'2013-07-01',
                 '@to'=>'2014-10-24',
-                '@select' => 'id,projectl',
+                '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
                 '@order' => 'name ASC',
                 'term:linguagem'=>'ILIKE('.$linguagem.'*)'
             );
 
             $events = $app->controller('event')->apiQueryByLocation($query);
-            var_dump( json_decode(json_encode($events)));
-            continue;
+
             $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
 
             $projects = array();
 
             foreach($events as $event){
                 if($event['project']){
-                    var_dump($event['project']);
                     if(!$projects[$event['project']->id]){
                         $projects[$event['project']->id] = array(
                             'project' => $event['project'],
