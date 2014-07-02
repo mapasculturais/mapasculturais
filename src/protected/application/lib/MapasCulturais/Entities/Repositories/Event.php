@@ -143,7 +143,7 @@ class Event extends CachedRepository{
     }
 
 
-    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $where = null, $orderBy = null){
 
         if(is_null($date_from))
             $date_from = date('Y-m-d');
