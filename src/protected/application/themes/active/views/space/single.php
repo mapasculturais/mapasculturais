@@ -25,49 +25,49 @@ add_angular_entity_assets($entity);
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="main-content espaco">
-	<header class="main-content-header">
-		<div
-			<?php if($header = $entity->getFile('header')): ?>
-				 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-				 <?php else: ?>
-				 class="imagem-do-header js-imagem-do-header"
-			<?php endif; ?>
-		>
-			<?php if(is_editable()): ?>
-				<a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-				<div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
-					<?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-				</div>
-			<?php endif; ?>
-		</div>
-		<!--.imagem-do-header-->
-		<div class="content-do-header">
-			<?php if($avatar = $entity->avatar): ?>
-				<div class="avatar com-imagem">
-					<img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+    <header class="main-content-header">
+        <div
+            <?php if($header = $entity->getFile('header')): ?>
+                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
+                 <?php else: ?>
+                 class="imagem-do-header js-imagem-do-header"
+            <?php endif; ?>
+        >
+            <?php if(is_editable()): ?>
+                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
+                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <!--.imagem-do-header-->
+        <div class="content-do-header">
+            <?php if($avatar = $entity->avatar): ?>
+                <div class="avatar com-imagem">
+                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
-					<div class="avatar">
-						<img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
-			<?php endif; ?>
-				<?php if(is_editable()): ?>
-					<a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-					<div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
-						<?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-					</div>
-				<?php endif; ?>
-			</div>
-			<!--.avatar-->
+                    <div class="avatar">
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+            <?php endif; ?>
+                <?php if(is_editable()): ?>
+                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
+                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                        <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!--.avatar-->
 
             <?php if(is_editable() && $entity->canUser('modifyParent')): ?>
             <span  class="js-search js-include-editable"
                    data-field-name='parentId'
                    data-emptytext="Selecionar espaço pai"
-				   data-search-box-width="400px"
-				   data-search-box-placeholder="Selecionar espaço pai"
-				   data-entity-controller="space"
-				   data-search-result-template="#agent-search-result-template"
-				   data-selection-template="#agent-response-template"
-				   data-no-result-template="#agent-response-no-results-template"
+                   data-search-box-width="400px"
+                   data-search-box-placeholder="Selecionar espaço pai"
+                   data-entity-controller="space"
+                   data-search-result-template="#agent-search-result-template"
+                   data-selection-template="#agent-response-template"
+                   data-no-result-template="#agent-response-no-results-template"
                    data-selection-format="parentSpace"
                    data-allow-clear="1",
                    title="Selecionar espaço pai"
@@ -79,24 +79,24 @@ add_angular_entity_assets($entity);
                 <span><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></span>
             <?php endif; ?>
 
-			<h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-			<div class="objeto-meta">
-				<div>
-					<span class="label">Área de atuação: </span>
-					<?php if(is_editable()): ?>
-						<span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
-					<?php else: ?>
-						<?php foreach($entity->terms['area'] as $i => $term): if($i) echo '; ';
-                            ?><a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a><?php
-                        endforeach; ?>
-					<?php endif;?>
-				</div>
-				<div>
-					<span class="label">Tipo: </span>
-					<a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
-				</div>
-				<div>
-					<?php if(is_editable() || !empty($entity->terms['tag'])): ?>
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
+            <div class="objeto-meta">
+                <div>
+                    <span class="label">Área de atuação: </span>
+                    <?php if(is_editable()): ?>
+                        <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
+                    <?php else: ?>
+                        <?php foreach($entity->terms['area'] as $i => $term): if($i) echo '; '; ?>
+                            <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
+                        <?php endforeach; ?>
+                    <?php endif;?>
+                </div>
+                <div>
+                    <span class="label">Tipo: </span>
+                    <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
+                </div>
+                <div>
+                    <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
                         <span class="label">Tags: </span>
                         <?php if(is_editable()): ?>
                             <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
@@ -106,21 +106,21 @@ add_angular_entity_assets($entity);
                                 endforeach; ?>
                         <?php endif;?>
                     <?php endif;?>
-				</div>
-			</div>
-			<!--.objeto-meta-->
-		</div>
-	</header>
-	<ul class="abas clearfix">
-		<li class="active"><a href="#sobre">Sobre</a></li>
-		<li><a href="#agenda">Agenda</a></li>
-		<li class="staging-hidden"><a href="#contas">Contas</a></li>
-	</ul>
-	<div id="sobre" class="aba-content">
-		<div class="ficha-spcultura">
+                </div>
+            </div>
+            <!--.objeto-meta-->
+        </div>
+    </header>
+    <ul class="abas clearfix">
+        <li class="active"><a href="#sobre">Sobre</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li class="staging-hidden"><a href="#contas">Contas</a></li>
+    </ul>
+    <div id="sobre" class="aba-content">
+        <div class="ficha-spcultura">
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
-			</p>
+            </p>
             <div class="servico">
                 <?php if(is_editable()): ?>
                     <p style="display:none" class="privado"><span class="icone icon_lock"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
@@ -191,17 +191,17 @@ add_angular_entity_assets($entity);
                     <!--.mapa-->
                 </div>
             <?php endif; ?>
-		</div>
+        </div>
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
             <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição do espaço" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
         <?php endif; ?>
 
-		<?php if ( is_editable() || $entity->criterios ): ?>
+        <?php if ( is_editable() || $entity->criterios ): ?>
             <h3>Critérios de uso do espaço</h3>
             <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso do espaço" data-emptytext="Insira os critérios de uso do espaço" data-placeholder="Insira os critérios de uso do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
-		<?php endif; ?>
+        <?php endif; ?>
 
         <!-- Video Gallery BEGIN -->
         <?php $app->view->part('parts/video-gallery.php', array('entity'=>$entity)); ?>
@@ -210,9 +210,9 @@ add_angular_entity_assets($entity);
         <!-- Image Gallery BEGIN -->
         <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
-	</div>
-	<!-- #sobre -->
-	<div id="agenda" class="aba-content lista">
+    </div>
+    <!-- #sobre -->
+    <div id="agenda" class="aba-content lista">
             <?php
 
             $date_from = new DateTime();
@@ -248,118 +248,118 @@ add_angular_entity_assets($entity);
                 <!--.objeto-->
             <?php endforeach; ?>
         </div>
-	<!-- #agenda -->
-	<div id="contas" class="aba-content staging-hidden">
-		<h3>Relatórios</h3>
-		<p><a href="#">Nome do Relatório</a></p>
-		<h3>Contratos</h3>
-		<table>
-			<thead>
-			<tr>
-				<th>Data</th>
-				<th>Objeto</th>
-				<th>Contratante</th>
-				<th>Contratado</th>
-				<th>Intermediário</th>
-				<th>Evento relacionado</th>
-				<th>R$</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			</tbody>
-		</table>
+    <!-- #agenda -->
+    <div id="contas" class="aba-content staging-hidden">
+        <h3>Relatórios</h3>
+        <p><a href="#">Nome do Relatório</a></p>
+        <h3>Contratos</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Objeto</th>
+                <th>Contratante</th>
+                <th>Contratado</th>
+                <th>Intermediário</th>
+                <th>Evento relacionado</th>
+                <th>R$</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            <tr>
+                <td>24/05/2013</td>
+                <td>Cachê</td>
+                <td>Mussum</td>
+                <td>Fulanis de Tal</td>
+                <td>Siclanis de Tal</td>
+                <td>Eventis</td>
+                <td>0.000.000,00</td>
+            </tr>
+            </tbody>
+        </table>
         <a class="botao adicionar" href="#">adicionar contrato</a>
         <p class="notas"> adicionar contrato: abre modal com formulário para inserir contrato, com campo "Contratante" já preenchido e travado</p>
 
-	</div>
-	<!--#contas-->
+    </div>
+    <!--#contas-->
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="barra-lateral espaco barra-direita">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-	<div class="bloco">
+    <div class="bloco">
         <?php if($entity->children): ?>
-		<h3 class="subtitulo">Sub-espaços</h3>
-		<ul class="js-slimScroll">
+        <h3 class="subtitulo">Sub-espaços</h3>
+        <ul class="js-slimScroll">
             <?php foreach($entity->children as $space): ?>
-			<li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+            <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
             <?php endforeach; ?>
-		</ul>
+        </ul>
         <?php endif; ?>
 
         <?php if($entity->id && $entity->canUser('createChield')): ?>
-		<a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
+        <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
         <?php endif; ?>
-	</div>
-
-	<div class="bloco staging-hidden">
-		<h3 class="subtitulo">Projetos do espaço</h3>
-		<ul>
-			<li><a href="#">Projeto 1</a></li>
-			<li><a href="#">Projeto 2</a></li>
-			<li><a href="#">Projeto 3</a></li>
-		</ul>
-		<a class="botao adicionar" href="#">adicionar projeto (só link)</a>
     </div>
 
-	<!-- Downloads BEGIN -->
+    <div class="bloco staging-hidden">
+        <h3 class="subtitulo">Projetos do espaço</h3>
+        <ul>
+            <li><a href="#">Projeto 1</a></li>
+            <li><a href="#">Projeto 2</a></li>
+            <li><a href="#">Projeto 3</a></li>
+        </ul>
+        <a class="botao adicionar" href="#">adicionar projeto (só link)</a>
+    </div>
+
+    <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
 
