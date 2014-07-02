@@ -73,7 +73,12 @@ class Event extends CachedRepository{
             'space_ids' => $ids
         ));
 
-        return $query->getResult();
+
+        $result = $query->getResult();
+        
+        $this->_em->clear();
+        
+        return $result;
     }
 
     public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null){
@@ -139,7 +144,12 @@ class Event extends CachedRepository{
             'agent_id' => $agent->id
         ));
 
-        return $query->getResult();
+
+        $result = $query->getResult();
+        
+        $this->_em->clear();
+        
+        return $result;
     }
 
 
@@ -189,13 +199,17 @@ class Event extends CachedRepository{
                 eo.starts_on, eo.starts_at";
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-
+        
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to
         ));
 
-        return $query->getResult();
+        $result = $query->getResult();
+        
+        $this->_em->clear();
+        
+        return $result;
     }
 
-    }
+}
