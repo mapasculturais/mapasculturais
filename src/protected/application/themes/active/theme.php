@@ -329,34 +329,48 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $textRunObj->addText($event['name'], $eventTitle);
             $textRunObj->addTextBreak();
             $textRunObj->addText($event['shortDescription'], $defaultFont);
+            $spaces = array();
             $occurenceDescription = ' ';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
-                    $occurenceDescription .= $occurrence->rule->description.' ';
+                    $occurenceDescription .= $occurrence->rule->description;
+                }
+                if(isset($occurrence->rule->price)){
+                    $occurenceDescription .= '. '.$occurrence->rule->price;
+                }
+                if (!array_key_exists($occurrence->space->id, $spaces)){
+                    $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $textRunObj->addText($occurenceDescription, $defaultFont);
-//                $textRunObj->addText(
-//                    ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
-//                    , $defaultFont
-//                );
+            $spaceText = ' ';
+            foreach($spaces as $space){
+                $spaceText .= $space->name . ', '. $space->endereco.'. ';
+            }
+            $textRunObj->addText($spaceText.$occurenceDescription, $defaultFont);
         };
 
         $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
             $section->addTextBreak();
             $section->addText($event['name'], $eventTitle);
             $section->addText($event['shortDescription'], $defaultFont);
+            $spaces = array();
             $occurenceDescription = ' ';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
-                    $occurenceDescription .= $occurrence->rule->description.' ';
+                    $occurenceDescription .= $occurrence->rule->description;
+                }
+                if(isset($occurrence->rule->price)){
+                    $occurenceDescription .= '. '.$occurrence->rule->price;
+                }
+                if (!array_key_exists($occurrence->space->id, $spaces)){
+                    $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $section->addText($occurenceDescription, $defaultFont);
-//            $section->addText(
-//                ' '.$item['name'] . (array_key_exists('endereco',$item['metadata']) ? ' ' . $item['metadata']['endereco'] : '')
-//                , $defaultFont
-//            );
+            $spaceText = ' ';
+            foreach($spaces as $space){
+                $spaceText .= $space->name . ', '. $space->endereco.'. ';
+            }
+            $section->addText($spaceText.$occurenceDescription, $defaultFont);
         };
 
         foreach($linguagens as $linguagem){
@@ -370,6 +384,8 @@ if($app->user->is('admin') || $app->user->is('staff')){
             );
 
             $events = $app->controller('event')->apiQueryByLocation($query);
+
+            //print_r(json_decode(json_encode($events)));
 
             $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
             $section->addText('');
