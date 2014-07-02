@@ -131,6 +131,14 @@ class Event extends \MapasCulturais\Entity
      */
     protected $isVerified = false;
     
+    
+    /**
+     * @var \MapasCulturais\Entities\ProjectMeta[] Entity Metadata
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     */
+    protected $__metadata = array();
+    
+    
     function setProjectId($projectId){
         if($projectId) {
             $project = App::i()->repo('Project')->find($projectId);

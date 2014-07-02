@@ -112,6 +112,13 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
+    
+    /**
+     * @var \MapasCulturais\Entities\EventOccurrence[] Event Occurrences
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="space", fetch="LAZY", cascade={"remove"})
+     */
+    protected $eventOccurrences;
 
     /**
      * @var \MapasCulturais\Entities\Space
@@ -127,7 +134,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Space[] Chield spaces
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
     protected $children;
 
@@ -155,6 +162,12 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
+    
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $__metadata = array();
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
