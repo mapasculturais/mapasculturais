@@ -361,10 +361,10 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $occurenceDescription = '';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
-                    $occurenceDescription .= $occurrence->rule->description.'. ';
+                    $occurenceDescription .= trim($occurrence->rule->description).'. ';
                 }
                 if(isset($occurrence->rule->price)){
-                    $occurenceDescription .= $occurrence->rule->price.'. ';
+                    $occurenceDescription .= trim($occurrence->rule->price).'. ';
                 }
                 if (!array_key_exists($occurrence->space->id, $spaces)){
                     $spaces[$occurrence->space->id] = $occurrence->space;
@@ -372,10 +372,10 @@ if($app->user->is('admin') || $app->user->is('staff')){
             }
             $spaceText = '';
             foreach($spaces as $space){
-                $spaceText .= $space->name . ', '. $space->endereco.'. ';
+                $spaceText .= trim($space->name) . ', '. trim($space->endereco).'. ';
             }
 
-            $section->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
+            $section->addText(trim($event['shortDescription']).' '.trim($spaceText).' '.trim($occurenceDescription), $defaultFont);
         };
 
 
