@@ -118,8 +118,6 @@ class Project extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
-
-
     /**
      * @var \MapasCulturais\Entities\Project
      *
@@ -130,6 +128,16 @@ class Project extends \MapasCulturais\Entity
      */
     protected $parent;
 
+
+    /**
+     * @var \MapasCulturais\Entities\Project[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $children;
+    
+    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -139,6 +147,13 @@ class Project extends \MapasCulturais\Entity
      * })
      */
     protected $owner;
+    
+    /**
+     * @var \MapasCulturais\Entities\Event[] Event
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
+     */
+    protected $events;
 
     /**
      * @var bool
@@ -146,6 +161,11 @@ class Project extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $__metadata = array();
 
     function setRegistrationFrom($date){
         $this->registrationFrom = new \DateTime($date);
@@ -325,6 +345,14 @@ class Project extends \MapasCulturais\Entity
 
     function getApprovedRegistrations(){
         return $this->getRegistrations(ProjectAgentRelation::STATUS_ENABLED);
+    }
+    
+    
+    
+    /** @ORM\PreRemove */
+    public function unlinkEvents(){ 
+        foreach($this->events as $event)
+            $event->project = null;
     }
 
     //============================================================= //
