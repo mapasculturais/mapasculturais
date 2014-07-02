@@ -319,7 +319,7 @@ if($app->user->is('admin') || $app->user->is('staff')){
             array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
 
         $linguagens = array(
-            'cinema'//, 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'Palestra, Debate ou Encontro'
+            'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra'
         );
 
         $section->addTextBreak();
@@ -333,10 +333,10 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $occurenceDescription = ' ';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
-                    $occurenceDescription .= $occurrence->rule->description;
+                    $occurenceDescription .= $occurrence->rule->description.'. ';
                 }
                 if(isset($occurrence->rule->price)){
-                    $occurenceDescription .= '. '.$occurrence->rule->price;
+                    $occurenceDescription .= $occurrence->rule->price.'. ';
                 }
                 if (!array_key_exists($occurrence->space->id, $spaces)){
                     $spaces[$occurrence->space->id] = $occurrence->space;
@@ -357,10 +357,10 @@ if($app->user->is('admin') || $app->user->is('staff')){
             $occurenceDescription = ' ';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
-                    $occurenceDescription .= $occurrence->rule->description;
+                    $occurenceDescription .= $occurrence->rule->description.'. ';
                 }
                 if(isset($occurrence->rule->price)){
-                    $occurenceDescription .= '. '.$occurrence->rule->price;
+                    $occurenceDescription .= $occurrence->rule->price.'. ';
                 }
                 if (!array_key_exists($occurrence->space->id, $spaces)){
                     $spaces[$occurrence->space->id] = $occurrence->space;
@@ -372,20 +372,21 @@ if($app->user->is('admin') || $app->user->is('staff')){
             }
             $section->addText($spaceText.$occurenceDescription, $defaultFont);
         };
-            
+
 
         foreach($linguagens as $linguagem){
 
             $query = array(
-                '@from'=>'2014-06-01',
-                '@to'=>'2014-06-30',
+                'isVerified' => 'eq(true)',
+                '@from'=>'2013-06-01',
+                '@to'=>'2015-06-30',
                 '@select' => 'id,name,shortDescription,location,metadata,occurrences,project',
                 '@order' => 'name ASC',
                 'term:linguagem'=>'ILIKE('.$linguagem.'*)'
             );
 
             $events = $app->controller('event')->apiQueryByLocation($query);
-            
+
             $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
             $section->addText('');
 
@@ -399,7 +400,6 @@ if($app->user->is('admin') || $app->user->is('staff')){
                             'events' => array()
                         );
                     }
-                    $projects[$event['project']->id] = $projects[$event['project']->id] ? $projects[$event['project']->id] : array();
                     $projects[$event['project']->id]['events'][] = $event;
                     continue;
                 }
@@ -413,9 +413,15 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             foreach($projects as $project){
                 $textRunObj = $section->createTextRun();
+
+                if($this->action === 'em-cartaz-preview'){
+                    $textRunObj->addText('PROJETO '.$project['project']->name, $eventTitle);
+                }else{
+                    $section->addText('PROJETO '.$project['project']->name, $eventTitle);
+                }
                 foreach($project['events'] as $event){
                     if($this->action === 'em-cartaz-preview'){
-                        $textRunObj->addText('PROJECT '.$project['project']->name, $eventTitle);
+
                         $addEventBlockHtml($event);
                     }else{
                         $addEventBlockDoc($event);
