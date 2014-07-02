@@ -118,11 +118,8 @@ class Event extends EntityController {
         }
     }
 
-
-    function API_findByLocation(){
+    function apiQueryByLocation($query_data){
         $app = App::i();
-
-        $query_data = $this->getData;
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
@@ -199,17 +196,21 @@ class Event extends EntityController {
             // @TODO: verificar se o @select tem o id
             $result = $this->apiQuery($query_data);
 
-
             if(is_array($result)){
                 foreach($result as $k => $r){
                     $result[$k] = array_merge($result_occurrences[$r['id']], $r);
                 }
             }
-
-            $this->apiResponse($result);
         }else{
-
-            $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
+            $result = key_exists('@count', $query_data) ? 0 : array();
         }
+
+        return $result;
+    }
+
+    function API_findByLocation(){
+
+        $this->apiResponse($this->apiQueryByLocation($this->getData));
+
     }
 }
