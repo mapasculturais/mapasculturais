@@ -19,8 +19,12 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
     </div>
 
     <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-preview'); ?>')"> Visualizar  </a>
+    |
     <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-download'); ?>')"> Baixar  </a>
-    <?php echo $content; ?>
+    <br><br>
+    <div>
+        <?php echo $content; ?>
+    </div>
 </div>
 <script>
     $(function(){

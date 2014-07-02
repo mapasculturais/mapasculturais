@@ -314,6 +314,9 @@ if($app->user->is('admin') || $app->user->is('staff')){
         $defaultFont = $phpWord->addFontStyle('defaultFont',
             array('name'=>'Arial', 'size'=>12));
 
+        $documentHead = $phpWord->addFontStyle('documentHead',
+            array('name'=>'Arial', 'size'=>18, 'color'=>'44AA88', 'bold'=>true));
+
         $eventTitle = $phpWord->addFontStyle('eventTitle',
             array('name'=>'Arial', 'size'=>12, 'color'=>'880000', 'bold'=>true));
 
@@ -324,15 +327,14 @@ if($app->user->is('admin') || $app->user->is('staff')){
             'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra'
         );
 
-        $section->addTextBreak();
+        $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
         $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
             $textRunObj = $section->createTextRun();
             $textRunObj->addText($event['name'], $eventTitle);
             $textRunObj->addTextBreak();
-            $textRunObj->addText($event['shortDescription'], $defaultFont);
             $spaces = array();
-            $occurenceDescription = ' ';
+            $occurenceDescription = '';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
                     $occurenceDescription .= $occurrence->rule->description.'. ';
@@ -344,19 +346,19 @@ if($app->user->is('admin') || $app->user->is('staff')){
                     $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $spaceText = ' ';
+            $spaceText = '';
             foreach($spaces as $space){
                 $spaceText .= $space->name . ', '. $space->endereco.'. ';
             }
-            $textRunObj->addText($spaceText.$occurenceDescription, $defaultFont);
+            $textRunObj->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
         };
 
         $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
-            $section->addTextBreak();
+            $section->addText('');
             $section->addText($event['name'], $eventTitle);
-            $section->addText($event['shortDescription'], $defaultFont);
+            //$section->addText($event['shortDescription'], $defaultFont);
             $spaces = array();
-            $occurenceDescription = ' ';
+            $occurenceDescription = '';
             foreach($event['occurrences'] as $occurrence){
                 if(isset($occurrence->rule->description)){
                     $occurenceDescription .= $occurrence->rule->description.'. ';
@@ -368,11 +370,12 @@ if($app->user->is('admin') || $app->user->is('staff')){
                     $spaces[$occurrence->space->id] = $occurrence->space;
                 }
             }
-            $spaceText = ' ';
+            $spaceText = '';
             foreach($spaces as $space){
                 $spaceText .= $space->name . ', '. $space->endereco.'. ';
             }
-            $section->addText($spaceText.$occurenceDescription, $defaultFont);
+
+            $section->addText($event['shortDescription'].' '.$spaceText.$occurenceDescription, $defaultFont);
         };
 
 
@@ -389,8 +392,9 @@ if($app->user->is('admin') || $app->user->is('staff')){
 
             $events = $app->controller('event')->apiQueryByLocation($query);
 
-            $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
             $section->addText('');
+            $section->addText('');
+            $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
 
             $projects = array();
 
