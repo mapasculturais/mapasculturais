@@ -5,7 +5,6 @@
         <li><a <?php if($this->template == 'panel/agents') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a></li>
         <li><a <?php if($this->template == 'panel/spaces') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a></li>
         <li><a <?php if($this->template == 'panel/projects') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a></li>
-        <li><a class="staging-hidden <?php if($this->template == 'panel/contracts') echo 'active'; ?>" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
     </ul>
 </nav>
 <!--#nav-do-painel-->

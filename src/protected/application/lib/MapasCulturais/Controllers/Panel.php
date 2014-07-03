@@ -133,23 +133,4 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('projects', array('user' => $user));
     }
-
-    /**
-     * Render the contract list of the user panel.
-     *
-     * This method requires authentication and renders the template 'panel/contract'
-     *
-     * <code>
-     * // creates the url to this action
-     * $url = $app->createUrl('panel', 'contracts');
-     * </code>
-     *
-     */
-    function GET_contracts(){
-        $this->requireAuthentication();
-        $user = $this->_getUser();
-
-        $this->render('contracts', array('user' => $user));
-    }
-
 }
