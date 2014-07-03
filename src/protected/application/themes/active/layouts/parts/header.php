@@ -258,7 +258,6 @@
                                             <a href="<?php echo $app->createUrl('project', 'create') ?>"><span class="adicionar"></span></a>
                                         </li>
                                         <li>
-                                        <a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
                                     </ul>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
