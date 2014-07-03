@@ -153,83 +153,12 @@ $ids = array_map(function($e){
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <header class="clearfix">
-            <p class="alignleft">
-                <strong>XX</strong> eventos entre <input class="data" placeholder="00/00/0000" /> e <input class="data" placeholder="00/00/0000" />
-                <!-- a ideia é que clicando nesses 'a' abra o datepicker, por padrão a data inicial é hoje e a data final 6 meses a partir de hoje-->
-            </p>
-
-            <!--a class="botao adicionar alignright" href="#">adicionar evento</a-->
-        </header>
-
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
+        <?php
+        $date_from = new DateTime();
+        $date_to = new DateTime('+180 days');
+        $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to);
+        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
+        ?>
     </div>
     <!-- #agenda -->
 

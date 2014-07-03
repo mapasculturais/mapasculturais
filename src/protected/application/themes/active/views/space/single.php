@@ -213,41 +213,13 @@ add_angular_entity_assets($entity);
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-            <?php
-
-            $date_from = new DateTime();
-            $date_to = new DateTime('+180 days');
-            $events = !$entity->id ? array() : $app->repo('Event')->findBySpace($entity, $date_from, $date_to);
-            ?>
-
-            <?php foreach($events as $event): ?>
-                <article class="objeto evento clearfix">
-                    <h1><a href="<?php echo $app->createUrl('event', 'single', array('id'=>$event->id))?>">
-                        <?php echo $event->name ?></a>
-                    </h1>
-                    <div class="objeto-content clearfix">
-                        <div class="objeto-thumb"><img src="<?php echo $event->avatar ? $event->avatar->url : ''; ?>"/></div>
-                        <p class="objeto-resumo">
-                            <?php echo $event->shortDescription ?>
-                        </p>
-                        <div class="objeto-meta">
-                            <div><span class="label">Linguagem:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
-                            Ocorrências:
-                            <div style="padding:10px">
-                                <?php
-                                $occurrences = $event->findOccurrencesBySpace($entity, $date_from, $date_to);
-                                foreach($occurrences as $occ):
-                                    ?>
-                                <div>dia <?php echo $occ->startsOn->format('d \d\e M'); ?> das <?php echo $occ->startsAt->format('H:i'); ?> às <?php echo $occ->endsAt->format('H:i'); ?> </div>
-
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!--.objeto-->
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $date_from = new DateTime();
+        $date_to = new DateTime('+180 days');
+        $events = !$entity->id ? array() : $app->repo('Event')->findBySpace($entity, $date_from, $date_to);
+        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
+        ?>
+    </div>
     <!-- #agenda -->
     <div id="contas" class="aba-content staging-hidden">
         <h3>Relatórios</h3>
