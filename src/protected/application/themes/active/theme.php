@@ -412,7 +412,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             '@to'=>$to->format('Y-m-d'),
             '@select' => 'id,name,shortDescription,location,metadata,occurrences,project,relatedAgents',
             '@order' => 'name ASC',
-            'term:linguagem'=>'ILIKE('.$linguagem.'*)'
+            'term:linguagem'=>'EQ('.$linguagem.')'
         );
 
         $events = $app->controller('event')->apiQueryByLocation($query);
