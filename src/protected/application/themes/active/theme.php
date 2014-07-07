@@ -334,7 +334,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
 
     $linguagens = array(
-        'cinema', 'dança', 'teatro', 'música popular', 'música erudita', 'exposição', 'curso ou oficina', 'palestra, debate ou encontro'
+        'Cinema', 'Dança', 'Teatro', 'Música Popular', 'Música Erudita', 'Exposição', 'Curso ou Oficina', 'Palestra, Debate ou Encontro'
     );
 
     $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
