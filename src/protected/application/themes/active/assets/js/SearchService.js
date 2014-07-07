@@ -224,7 +224,7 @@
                     var selectedAreas = entityData.areas.map(function(e){
                         return MapasCulturais.taxonomyTerms.area[e];
                     });
-
+                    selectedAreas = selectedAreas.map(function(e){ return e.replace(',','\,'); });
                     searchData['term:area'] = 'IN(' + selectedAreas  + ')';
                 }
 
@@ -232,7 +232,8 @@
                     var selectedLinguagens = entityData.linguagens.map(function(e){
                         return MapasCulturais.taxonomyTerms.linguagem[e];
                     });
-
+                    selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
+                    console.log(selectedLinguagens);
                     searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
                 }
 
