@@ -22,7 +22,9 @@
                             <hr style="margin:5px 0">
                             <div><span class="label">Local:</span><a href="<?php echo $app->createUrl('space', 'single', array($occ->space->id))?>"><?php echo $occ->space->name; ?></a></div>
                         <?php endif; ?>
-                        <div><?php echo trim($occ->rule->description).'. '.$occ->rule->price;?></div>
+                        <?php if(isset($occ->rule->description)): ?>
+                            <div><?php echo trim($occ->rule->description).'. '.$occ->rule->price;?></div>
+                        <?php endif; ?>
                         <?php
                         $lastSpaceId = $occ->space->id;
                     endforeach;
