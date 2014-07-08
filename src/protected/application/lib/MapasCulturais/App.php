@@ -185,27 +185,6 @@ class App extends \Slim\Slim{
         }
 
 
-        if(key_exists('app.debugbar', $config) && $config['app.debugbar'] && !$this->request->isAjax()){
-            $this->_debugbar = new \DebugBar\StandardDebugBar();
-
-            $log = $this->getLog();
-            $log->setWriter(new \MapasCulturais\Loggers\Slim\DebugBar());
-
-            $debugbarRenderer = $this->_debugbar->getJavascriptRenderer();
-            $debugbarRenderer->setBaseUrl($this->getAssetUrl().'/debugbar/');
-
-            $this->_debugbar["messages"]->addMessage("DebugBar inicializando...!");
-
-            $this->hook('mapasculturais.scripts', function() use ($debugbarRenderer) {
-                echo $debugbarRenderer->renderHead();
-            });
-
-            $this->hook('mapasculturais.body:after', function() use ($debugbarRenderer) {
-                echo $debugbarRenderer->render();
-            });
-        }
-
-
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
@@ -316,11 +295,7 @@ class App extends \Slim\Slim{
         // instantiate the route manager
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : array());
 
-
-        
-
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-
 
         $this->register();
 
@@ -1927,17 +1902,4 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         return null;
     }
-
-    function getTitle($entity){
-
-        $controller = $this->getControllerByEntity($entity);
-
-        $title = $this->getReadableName($controller->action) ? $this->getReadableName($controller->action) : '';
-        $title .= $this->getReadableName($controller->id) ? ' '.$this->getReadableName($controller->id) : '';
-        $title .= $entity->name ? ' '.$entity->name : '';
-
-
-        return $title;
-    }
-
 }

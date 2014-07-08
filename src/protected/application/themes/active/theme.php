@@ -7,6 +7,53 @@ function is_editable() {
     return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
 }
 
+function mapasculturais_head($entity = null){
+    $app = App::i();
+    ?>
+    <script type="text/javascript">
+        var MapasCulturais = {
+            baseURL: '<?php echo $app->baseUrl ?>',
+            vectorLayersURL: "<?php echo $app->baseUrl . $app->config['vectorLayersPath']; ?>",
+            assetURL: '<?php echo $app->assetUrl ?>',
+            request: {
+                controller: '<?php if ($app->view->controller) echo $app->view->controller->id ?>',
+                action: '<?php if ($app->view->controller) echo str_replace($app->view->controller->id . '/', '', $app->view->template) ?>',
+                id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
+            },
+            mode: "<?php echo $app->config('mode'); ?>"
+        };
+    </script>
+    <?php
+    $app->printStyles('vendor');
+    $app->printStyles('fonts');
+    $app->printStyles('app');
+    $app->printScripts('vendor');
+    $app->printScripts('app');
+
+    $app->applyHook('mapasculturais.scripts');
+}
+
+function body_properties(){
+    $app = App::i();
+    $body_properties = array();
+    foreach ($app->view->bodyProperties as $key => $val)
+        $body_properties[] = "{$key}=\"$val\"";
+    $body_properties[] = 'class="' . implode(' ', $app->view->bodyClasses->getArrayCopy()) . '"';
+    
+    $body_properties = implode(' ', $body_properties);
+    
+    echo $body_properties;
+}
+
+function mapasculturais_footer(){
+    $app = App::i();
+    $app->view->part('templates');
+    $app->applyHook('mapasculturais.body:after');
+    ?>
+    <iframe id="require-authentication" src="" style="display:none; position:fixed; top:0%; left:0%; width:100%; height:100%; z-index:100000"></iframe>
+    <?php
+}
+
 $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');
 
