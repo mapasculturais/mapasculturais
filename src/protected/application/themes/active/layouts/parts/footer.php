@@ -1,5 +1,5 @@
 </section>
 <footer id="main-footer"></footer>
-<?php mapasculturais_footer(); ?>
+<?php body_footer(); ?>
 </body>
 </html>

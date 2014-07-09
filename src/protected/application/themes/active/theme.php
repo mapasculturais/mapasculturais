@@ -45,7 +45,11 @@ function body_properties(){
     echo $body_properties;
 }
 
-function mapasculturais_footer(){
+function body_header(){
+    App::i()->applyHook('mapasculturais.body:before');
+}
+
+function body_footer(){
     $app = App::i();
     $app->view->part('templates');
     $app->applyHook('mapasculturais.body:after');
@@ -53,6 +57,23 @@ function mapasculturais_footer(){
     <iframe id="require-authentication" src="" style="display:none; position:fixed; top:0%; left:0%; width:100%; height:100%; z-index:100000"></iframe>
     <?php
 }
+
+$app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
+     $app->hook('mapasculturais.body:before', function(){ ?>
+            <!--facebook compartilhar-->
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id))
+                        return;
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
+            <!--fim do facebook-->
+     <?php });
+});
 
 $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');

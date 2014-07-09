@@ -69,23 +69,7 @@
     </head>
 
     <body <?php body_properties() ?> >
-        <?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
-            <!--facebook compartilhar-->
-            <div id="fb-root"></div>
-            <script>(function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id))
-                        return;
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-            <!--fim do facebook-->
-        <?php endif; ?>
-
-        <?php $app->applyHook('mapasculturais.body:before'); ?>
-
+       <?php body_header(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
