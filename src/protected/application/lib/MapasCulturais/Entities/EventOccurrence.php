@@ -265,7 +265,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->startsAt = @$value['startsOn'] . ' ' . @$value['startsAt'];
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
-        if($value['duration']){
+        if(!empty($value['duration'])){
             @list($hours, $minutes) = explode('h', $value['duration']);
             $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
 
