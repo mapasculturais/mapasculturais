@@ -4,7 +4,6 @@ $app = MapasCulturais\App::i();
 
 return array(
     'issue 212' => function() use ($app){
-        return true;
         // destino => array de espacos que vao ser removidos
         $remover_espacos = [471, 491, 328, 516, 526];
 
@@ -125,11 +124,9 @@ return array(
                     $rule['price'] = $event->preco ? $event->preco : '';
                     $occ->rule = $rule;
                     $app->log->info(str_pad($occCount,4).'EVT '.str_pad($event->id,5).' OCRR. '.str_pad($occ->id,5).' ALTERADO   $rule->price PARA "'.$occ->rule->price.'"');
-                    //$occ->save();
+                    $occ->save();
                 }
             }
-           //var_dump($event->getMetadata('preco')->getClassName());
-            //$event->preco->delete();
         }
         $app->log->info(' ');
         $app->log->info(str_pad($occCount,4).' occurrence->rule atualizadas em '.str_pad($evtCount,4).' eventos (issue #224 - https://github.com/hacklabr/mapasculturais/issues/224');

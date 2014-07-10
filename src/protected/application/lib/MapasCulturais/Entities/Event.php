@@ -130,15 +130,15 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-    
-    
+
+
     /**
      * @var \MapasCulturais\Entities\ProjectMeta[] Entity Metadata
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
     protected $__metadata = array();
-    
-    
+
+
     function setProjectId($projectId){
         if($projectId) {
             $project = App::i()->repo('Project')->find($projectId);
@@ -149,7 +149,9 @@ class Event extends \MapasCulturais\Entity
     }
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
+
         $app = App::i();
+
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -169,6 +171,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
+        $rsm->addFieldResult('e', 'rule', '_rule');
 
         $dql_limit = $dql_offset = '';
 
@@ -180,12 +183,13 @@ class Event extends \MapasCulturais\Entity
 
         $strNativeQuery = "
             SELECT
-                nextval('occurrence_id_seq'::regclass) as id,
-                starts_on, until, starts_at, ends_at
+                eo.*
             FROM
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                WHERE eo.space_id = :space_id
-                AND eo.event_id = :event_id
+                event_occurrence eo WHERE eo.id IN (
+                    SELECT DISTINCT id FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
+                    WHERE space_id = :space_id
+                    AND   event_id = :event_id
+                )
 
             $dql_limit $dql_offset
 

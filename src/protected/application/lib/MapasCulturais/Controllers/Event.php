@@ -88,12 +88,10 @@ class Event extends EntityController {
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
             $occurrences_readable[$e->id] = array();
 
-            foreach($occurrences[$e->id] as $occ){
-                $month = $app->txt($occ->startsOn->format('F'));
-                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
-                if(!in_array($str, $occurrences_readable[$e->id]))
-                    $occurrences_readable[$e->id][] = $str;
-            }
+            $occurrences_readable[$e->id] = array_map(function($occ){
+                return $occ->rule->description;
+            }, $occurrences[$e->id]);
+
         }
 
         if($event_ids){
@@ -107,6 +105,7 @@ class Event extends EntityController {
 
             if(is_array($result)){
                 foreach($result as $k => $e){
+                    //@TODO: verify if occurrences and readable occurrences were selected in query data
                     $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : array();
                     $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : array();
                 }
