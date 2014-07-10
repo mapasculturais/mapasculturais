@@ -378,25 +378,12 @@ class App extends \Slim\Slim{
             return;
         }
 
-        $md5 = md5(implode($sources));
-        if(false && @$this->_config['app.js.cache']){
-            $cache_id = @$this->_config['app.minifyJs'] ? 'css.minified:' : 'css.source:';
-            $cache_id .= $md5;
-
-            if($this->cache->contains($cache_id))
-                return $this->cache->fetch($cache_id);
-        }
-
         $styles = "";
 
         foreach ($sources as $source){
             if(!preg_match('#^http://|https://|//#', $source))
                 $source = $this->getAssetUrl() . $source;
             $styles .= "\n<link href='$source'  media='all' rel='stylesheet' type='text/css' />";
-        }
-
-        if(@$this->_config['app.js.cache']){
-            $this->cache->save($cache_id, $styles);
         }
 
         echo $styles;
@@ -415,49 +402,18 @@ class App extends \Slim\Slim{
             return;
         }
 
-        $md5 = md5(implode($sources));
-        if(false && @$this->_config['app.js.cache']){
-            $cache_id = @$this->_config['app.minifyJs'] ? 'js.minified:' : 'js.source:';
-            $cache_id .= $md5;
-
-            if($this->cache->contains($cache_id))
-                return $this->cache->fetch($cache_id);
-        }
-
         $scripts = "";
 
-        if(@$this->_config['app.js.minify']){
-            $filename = ACTIVE_THEME_PATH . 'assets/gen/js-' . $md5 . '.js';
-            if(!file_exists($filename)){
-                $command = 'java -jar ' . PROTECTED_PATH . 'vendor/closure/compiler.jar';
-                foreach ($sources as $source){
-                    $source = ACTIVE_THEME_PATH . 'assets' . $source;
-                    if(file_exists($source))
-                        $command .= ' --js='.$source;
+        foreach ($sources as $source){
+            if(!preg_match('#^http://|https://|//#', $source)){
+                $hash = '';
+                $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
+                if(file_exists($fullfilepath))
+                    $hash = '?v='.md5_file ($fullfilepath);
 
-                }
-
-                $command .= ' --js_output_file=' . $filename;
-                exec($command);
+                $source = $this->getAssetUrl() . $source . $hash;
             }
-            $url = $this->getAssetUrl() . '/gen/js-' . $md5 . '.js';
-            $scripts = "\n" . '<script type="text/javascript" src="' . $url . '"></script>';
-        }else{
-            foreach ($sources as $source){
-                if(!preg_match('#^http://|https://|//#', $source)){
-                    $hash = '';
-                    $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
-                    if(file_exists($fullfilepath))
-                        $hash = '?v='.md5_file ($fullfilepath);
-
-                    $source = $this->getAssetUrl() . $source . $hash;
-                }
-                $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
-            }
-        }
-
-        if(@$this->_config['app.js.cache']){
-            $this->cache->save($cache_id, $scripts);
+            $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
         }
 
         echo $scripts;
@@ -468,7 +424,7 @@ class App extends \Slim\Slim{
     }
 
     protected function _dbUpdates(){
-        if(!isset($_GET['_execute_db_update']) || @$this->config['app.dbUpdatesDisabled'])
+        if(!isset($_GET['_execute_db_update']) || $this->config['app.dbUpdatesDisabled'])
             return ;
 
         $this->_runningUpdates = true;
@@ -533,7 +489,7 @@ class App extends \Slim\Slim{
             'image_transformations' => array()
         );
 
-        if(@$this->_config['app.registerCache.enabled'] && $this->cache->contains('mapasculturais.register')){
+        if($this->_config['app.useRegisterCache'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
         }else{
             $this->registerAuthProvider('OpenID');
