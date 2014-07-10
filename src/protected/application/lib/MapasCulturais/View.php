@@ -112,7 +112,7 @@ class View extends \Slim\View {
      * @param string $template the template name.
      * @return string The rendered template
      */
-    public function render($template){
+    public function render($template, $data = null){
         $this->template = $template;
 
         if($this->_partial)
