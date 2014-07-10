@@ -1,8 +1,8 @@
 <?php
 $this->layout = 'interna';
 
-$this->bodyProperties['ng-app'] = "search"; 
-$this->bodyProperties['ng-controller'] = "SearchController"; 
+$this->bodyProperties['ng-app'] = "search";
+$this->bodyProperties['ng-controller'] = "SearchController";
 $this->bodyProperties['ng-class'] = "{'infobox-open': showInfobox()}";
 
 add_taxonoy_terms_to_js('area');
@@ -43,7 +43,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
     <?php
 });
 
-    
+
 
 ?>
 <?php add_map_assets(); ?>
@@ -107,7 +107,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
                                 <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
+                        <!--div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div-->
+                        <div ng-repeat="occ in event.readableOccurrences"><time>{{occ}}</time></div>
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
                     </div>
                 </div>
