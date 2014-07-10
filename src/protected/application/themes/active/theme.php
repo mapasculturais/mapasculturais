@@ -363,10 +363,9 @@ $app->hook('GET(panel.em-cartaz)', function() use ($app, $defaultFrom, $defaultT
 });
 
 $app->hook('view.partial(panel/part-nav):after', function($template, &$html) use ($app){
-    if(!$app->user->is('admin') && !$app->user->is('staff')){
-        //throw new MapasCulturais\Exceptions\PermissionDenied;
-        $app->pass();
-    }
+    if(!$app->user->is('admin') && !$app->user->is('staff'))
+        return; 
+    
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
     $url = $app->createUrl('panel', 'em-cartaz');
     $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_document_alt'></span> Em Cartaz</a></li>";
