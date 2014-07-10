@@ -15,6 +15,7 @@ return array_merge($config,
         'auth.config' => array(),
         
 //        'app.log.query' => true,
+        'doctrine.isDev' => true,
         
         'doctrine.database' => array(
             'dbname'    => 'mapasculturais_test',
