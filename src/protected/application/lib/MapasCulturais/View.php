@@ -270,4 +270,12 @@ class View extends \Slim\View {
 
         return $title;
     }
+    
+    function asset($file, $print = true){
+        $url = App::i()->getAssetUrl() . '/' . $file;
+        if($print)
+            echo $url;
+        
+        return $url;
+    }
 }

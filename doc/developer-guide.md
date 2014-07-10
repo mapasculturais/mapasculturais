@@ -72,7 +72,7 @@ O layout é a "moldura" do conteúdo de uma visão. A estrutura mínima de um la
 </html>
 ```
 
-Por padrão as visões usam o arquivo de layout **default.php**, mas você você pode definir qual layout elas usarão colocando a seguinte linha na primeira linha do seu arquivo de visão:
+Por padrão as visões usam o arquivo de layout **default.php**, mas você pode definir qual layout elas usarão colocando a seguinte linha na primeira linha do seu arquivo de visão:
 ```PHP
 $this->layout = 'nome-do-layout'; // não precisa do .php no nome do template
 ```
@@ -107,6 +107,14 @@ Se você só deseja saber se está no modo de edição use a função **is_edita
 ```
 
 ### Partes
+As partes são blocos de código que podem ser incluidos em diferentes views, layouts ou mesmo dentro de outras partes. Estes blocos de código devem ficar, por padrão, na pasta **layouts/parts/** do tema.
+
+Para usar uma parte cujo nome de arquivo é **uma-parte.php** basta chamar o método **part** da seguinte forma:
+
+```HTML+PHP
+<div> A parte será incluida a seguir: </div>
+<?php $this->part('uma-parte'); ?>
+```
 
 #### Enviando variáveis para dentro das partes
 Você pode enviar variáveis para usar dentro das partes. Isto é útil em várias situações, por exmplo quando você quer que uma parte seja usada dentro de um loop e você tem que enviar o item atual do loop para usar dentro da parte.
@@ -118,12 +126,74 @@ $this->part('uma-parte', ['user_name' => 'Fulano de Tal']);
 ```
 
 ```HTML+PHP
-// dentro do arquivo layouts/parts/nome-da-parte.php
-<?php echo $user_name; /* será impresso "Fulano de Tal" */?>
+<!-- dentro do arquivo layouts/parts/uma-parte.php -->
+<span>Nome de usuário: <?php echo $user_name; ?></span>
 ```
 
 
 ### Assets
+Os assets são arquivos estáticos (.css, .js, imagens, etc.) utilizados pelo tema. 
+
+Para imprimir a url de um asset use a função **$this->asset()**. Já se você deseja adicionar um js ou css use as funções **$app->enqueueScript()** e **$app->enqueueStyle()**.
+
+#### Método Asset
+O Método **asset** do objeto de função serve para imprimir ou somente retornar a url de um asset. Este método aceita dois parâmetros: 
+
+O primeiro, **$file**, é o caminho do arquivo deseja dentro da pasta assets do tema, como exemplo a string "img/uma-image.jpg".
+
+O Segundo, **$print**, é opcional e tem como padrão *true*. Se for passado *false* a função somente retornará a url, mas não imprimirá nada.
+
+##### Adicionando uma imagem
+O exemplo a seguir usa uma imagem chamada **logo.png** que está na pasta **assets/img/** do tema.
+```HTML+PHP
+<img src="<?php $this->asset('img/logo.png'); ?>" />
+```
+
+##### Criando um link para um asset
+O exemplo a seguir cria um link para o arquivo **documento.pdf** que está na pasta **asset/** do tema.
+```HTML+PHP
+<a href="<?php $this->asset('documento.pdf'); ?>" >Documento</a>
+```
+
+#### Método enqueueStyle
+Este método é utilizado para adicionar arquivos .css que serão utilizados pela visão, layout ou parte. Este método aceitas 5 parâmetros (**$group**, **$script_name**, **$script_filename**, *array* **$dependences**, **$media**), sendo os dois último opcional.
+
+Há três grupos de estilos no sistema: **vendor**, que são estilos utilizados pelas bibliotecas, **fonts** que são as fontes utilizadas, e **app**, que são os estilos escritos exclusivamente para o tema. 
+
+##### Adicionando um estilo
+O exemplo a seguir adiciona um estilo chamado **um-estilo.css** escrito para a aplicação.
+
+```PHP
+$app->enqueueStyle('app', 'um-estilo', 'css/um-estilo.css');
+```
+
+#### Método enqueueScript
+Este método é utilizado para adicionar arquivos .js que serão utilizados pela visão, layout ou parte. Este método aceitas 4 parâmetros (**$group**, **$script_name**, **$script_filename**, *array* **$dependences**), sendo o último opcional.
+
+Há dois grupos de scripts no sistema: **vendor**, que são as bibliotecas utilizadas, e **app**, que são os scripts escritos exclusivamente para o tema. 
+
+##### Adicionando um script
+O exemplo a seguir adiciona um script chamado **um-script.js** escrito para a aplicação.
+
+```PHP
+$app->enqueueScript('app', 'um-script', 'js/um-script.js');
+```
+
+##### Adicionando um script que depende de outro
+O exemplo a seguir adiciona uma biblioteca que depende de outra biblioteca.
+
+```PHP
+$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
+$app->enqueueScript('vendor', 'jquery', '/vendor/jquery/jquery-2.0.3.min.js');
+```
+
+#### Ordem de impressão das tags de estilos e scripts
+Os grupos de estilos e scripts serão impressos na seguinte ordem e dentro dos grupos os estilos/scripts serão ordenados conforme suas dependências:
+- Estilos do grupo **vendor**
+- Estilos do grupo **font**
+- Estilos do grupo **app**
+- Scripts do grupo **vendor**
+- Scripts do grupo **app**
 
 ### Variáveis Acessíveis
 De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáveis estão acessíveis:
