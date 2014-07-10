@@ -350,11 +350,6 @@ abstract class Entity implements \JsonSerializable{
     }
 
 
-    public function getTitle(){
-        return App::i()->getTitle($this);
-    }
-
-
     /**
      * Return the class path to be used in hook names.
      *

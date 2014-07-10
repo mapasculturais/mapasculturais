@@ -1,18 +1,9 @@
+<?php $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle() ?>
 <!DOCTYPE html>
 <html lang="pt-BR" dir="ltr">
     <head>
         <meta charset="UTF-8" />
-        <title>SP Cultura -
-            <?php
-            $title = isset($entity) ? $entity->getTitle() :
-                    $app->getReadableName($this->controller->id) . ' - ' .
-                    $app->getReadableName($this->controller->action);
-            echo $title;
-            ?>
-        </title>
-
-
-
+        <title>SP Cultura - <?php echo $title ?></title>
 
 <!-- for Google -->
 <!-- <meta name="description" content="Mapas Culturais" />
@@ -39,28 +30,7 @@
 
 
         <link rel="profile" href="http://gmpg.org/xfn/11" />
-        <script type="text/javascript">
-            var MapasCulturais = {
-                baseURL: '<?php echo $baseURL ?>',
-                vectorLayersURL: "<?php echo $baseURL . $app->config['vectorLayersPath']; ?>",
-                assetURL: '<?php echo $assetURL ?>',
-                request: {
-                    controller: '<?php if ($this->controller) echo $this->controller->id ?>',
-                    action: '<?php if ($this->controller) echo str_replace($this->controller->id . '/', '', $this->template) ?>',
-                    id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
-                },
-                mode: "<?php echo $app->config('mode'); ?>"
-            };
-        </script>
-        <?php
-        $app->printStyles('vendor');
-        $app->printStyles('fonts');
-        $app->printStyles('app');
-        $app->printScripts('vendor');
-        $app->printScripts('app');
-
-        $app->applyHook('mapasculturais.scripts');
-        ?>
+        <?php mapasculturais_head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
         <script src="<?php echo $assetURL ?>/js/html5.js" type="text/javascript"></script>
         <![endif]-->
@@ -97,30 +67,9 @@
 
         </style>
     </head>
-    <?php
-    $body_properties = array();
-    foreach ($this->bodyProperties as $key => $val)
-        $body_properties[] = "{$key}=\"$val\"";
-    $body_properties = implode(' ', $body_properties);
-    ?>
-    <body class="<?php echo implode(' ', $this->bodyClasses->getArrayCopy())?>" <?php echo $body_properties ?>>
-        <?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
-            <!--facebook compartilhar-->
-            <div id="fb-root"></div>
-            <script>(function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id))
-                        return;
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-            <!--fim do facebook-->
-        <?php endif; ?>
 
-        <?php $app->applyHook('mapasculturais.body:before'); ?>
-
+    <body <?php body_properties() ?> >
+       <?php body_header(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
