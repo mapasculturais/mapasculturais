@@ -49,6 +49,8 @@ class EventMeta extends \MapasCulturais\Entity
 
     /** @ORM\PostLoad */
     public function _postLoad($args = null){
+        $this->key = trim($this->key);
+        
         App::i()->applyHookBoundTo($this, 'entity(event).meta(' . $this->key . ').load', $args);
     }
 

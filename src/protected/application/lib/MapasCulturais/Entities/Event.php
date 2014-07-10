@@ -3,7 +3,9 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
+
 
 /**
  * Event
@@ -15,14 +17,16 @@ use MapasCulturais\App;
  */
 class Event extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
 
@@ -95,8 +99,6 @@ class Event extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
-    protected $_avatar;
-
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="event", cascade="remove", orphanRemoval=true)
     */
@@ -105,7 +107,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -115,7 +117,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -129,24 +131,13 @@ class Event extends \MapasCulturais\Entity
      */
     protected $isVerified = false;
 
+
     /**
-     * Returns the owner of this event
-     * @return \MapasCulturais\Entities\Agent
+     * @var \MapasCulturais\Entities\ProjectMeta[] Entity Metadata
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
-    function getOwner(){
+    protected $__metadata = array();
 
-        if(!$this->id)
-            return App::i()->user->profile;
-
-        return $this->owner;
-    }
-
-
-    function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->owner = $owner;
-    }
 
     function setProjectId($projectId){
         if($projectId) {
@@ -157,18 +148,10 @@ class Event extends \MapasCulturais\Entity
         $this->project = $project;
     }
 
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
-    }
-
-
-
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
+
         $app = App::i();
+
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -188,6 +171,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
+        $rsm->addFieldResult('e', 'rule', '_rule');
 
         $dql_limit = $dql_offset = '';
 
@@ -199,12 +183,13 @@ class Event extends \MapasCulturais\Entity
 
         $strNativeQuery = "
             SELECT
-                nextval('occurrence_id_seq'::regclass) as id,
-                starts_on, until, starts_at, ends_at
+                eo.*
             FROM
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                WHERE eo.space_id = :space_id
-                AND eo.event_id = :event_id
+                event_occurrence eo WHERE eo.id IN (
+                    SELECT DISTINCT id FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
+                    WHERE space_id = :space_id
+                    AND   event_id = :event_id
+                )
 
             $dql_limit $dql_offset
 

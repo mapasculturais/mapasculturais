@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if (is_editable()) {
     add_entity_types_to_js($entity);
@@ -12,6 +13,9 @@ if (is_editable()) {
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 }
+
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 
@@ -81,7 +85,7 @@ add_occurrence_frequencies_to_js();
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <div class="barra-esquerda barra-lateral evento">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         <?php if(is_editable()): ?>
@@ -157,22 +161,22 @@ add_occurrence_frequencies_to_js();
                         </p>
                         <span class="label">Linguagens: </span>
                         <?php if (is_editable()): ?>
-                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode(', ', $entity->terms['linguagem']) ?></span>
+                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
                         <?php else: ?>
-                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i)
-                                    echo ', ';
-                                ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i) echo ': '; ?>
+                                <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
+                            <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
                     <div>
                         <?php if (is_editable() || !empty($entity->terms['tag'])): ?>
                             <span class="label">Tags: </span>
                             <?php if (is_editable()): ?>
-                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode(', ', $entity->terms['tag']) ?></span>
+                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
                             <?php else: ?>
-                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i)
-                                        echo ', ';
-                                    ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i) echo '; '; ?>
+                                    <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
@@ -233,7 +237,7 @@ add_occurrence_frequencies_to_js();
                         <?php endif; ?>
 
                         <?php if(is_editable() || $entity->descricaoSonora): ?>
-                            <p><span class="label">Descrição Sonora: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                            <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                         <?php endif; ?>
                     </p>
                 <?php endif; ?>
@@ -427,10 +431,14 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <p class="staging-hidden">
-            <span class="label">Resumo:</span><br>
-            Resumo da regra
-        </p>
+        <div>
+            <label for="description">Descrição legível do horário:</label><br>
+            <textarea name="description">{{rule.description}}</textarea>
+        </div>
+        <div>
+            <label for="price">Preço:</label><br>
+            <input type="text" name="price" value="{{rule.price}}">
+        </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">
         </footer>

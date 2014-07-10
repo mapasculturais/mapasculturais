@@ -10,44 +10,40 @@ return array(
     'vectorLayersPath' => 'geojson',
 
     // development, staging, production
-    'app.mode' => 'staging',
-
+    'app.mode' => 'production',
     'app.lcode' => 'pt-br',
 
-    'app.useTranslationsCache' => false,
-
-    'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-
+    'app.dbUpdatesDisabled' => false,    
     'app.defaultApiOutput' => 'json',
 
-    'app.registerCache.enabled' => true,
+    // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
-    'app.registerCache.lifeTime' => 5 * 60,
-
-    'app.log.hook' => false,
-
-    'app.log.query' => false,
-
-    'app.log.requestData' => false,
-
-    'app.log.translations' => true,
-
-    'app.log.apiCache' => false,
-
-    'app.debugbar' => false,
-
-    'app.dbUpdatesDisabled' => false,
-
-    'app.useApiCache' => true,
-
-    'app.apiCache.lifetime' => 10 * 60,
-
+    
+    /* ==================== LOG ================== */
+    // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
+    //'slim.log.writer' => new \Custom\Log\Writer(),
+    
+    'slim.log.level' => Log::NOTICE,
+    'slim.log.enabled' => true,
+    
     'app.queryLogger' => new MapasCulturais\Loggers\DoctrineSQL\SlimLog(),
+    'app.log.query' => false,
+    
+    'app.log.hook' => false,
+    'app.log.requestData' => false,
+    'app.log.translations' => false,
+    'app.log.apiCache' => false,
+    
+    /* ==================== CACHE ================== */
+    'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    
+    'app.useApiCache' => true,
+    'app.apiCache.lifetime' => 600,
+    
+    'app.useRegisterCache' => true,
+    'app.registerCache.lifeTime' => 600,
 
-//    'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
-
-
-    //'app.js.minify' => true,
+    'app.useTranslationsCache' => true,
 
     /*
     'storage.driver' => '\MapasCulturais\Storage\FileSystem',
@@ -58,23 +54,17 @@ return array(
     ),
     */
 
-    // (Log::FATAL, Log::ERROR, Log::WARN, Log::INFO, Log::DEBUG)
-    'slim.log.level' => Log::DEBUG,
-
-    'slim.log.enabled' => true,
-
-    'slim.debug' => true,
-
+    /* ================ SLIM ============== */
+    'slim.debug' => false,
     'slim.middlewares' => array(
         //new \MapasCulturais\Middlewares\ExecutionTime(true, false)
     ),
-
-    // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
-    //'slim.log.writer' => new \MapasCulturais\Loggers\Slim\DebugBar(),
+    
+    /* ================ DOCTRINE =============== */
 
     // basically this tell to doctrine orm to use or not use a persistent cache if available
     // see: https://github.com/doctrine/doctrine2/blob/2.3/lib/Doctrine/ORM/Tools/Setup.php#LC160
-    'doctrine.isDev' => true,
+    'doctrine.isDev' => false,
 
     'doctrine.database' => array(
         'dbname'    => 'mapasculturais',
@@ -92,11 +82,6 @@ return array(
         'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
         'timeout' => '24 hours'
     ),
-    // */
-
-    /*
-    'auth.provider' => 'Fake',
-    'auth.config' => array(),
     // */
 
     //
@@ -135,7 +120,6 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-            'contratos'     => 'contracts'
         ),
 
         'readableNames' => array(
@@ -147,7 +131,6 @@ return array(
                 'agent'     => 'Agente',    'agents'    => 'Agentes',
                 'space'     => 'Espaço',    'spaces'    => 'Espaços',
                 'project'   => 'Projeto',   'projects'  => 'Projetos',
-                'contract'  => 'Contrato',  'contracts' => 'Contratos',
                 'file'      => 'Arquivo',   'files'     => 'Arquivos',
             //actions
                 'list'      => 'Listando',

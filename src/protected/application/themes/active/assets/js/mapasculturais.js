@@ -1,9 +1,6 @@
 MapasCulturais = MapasCulturais || {};
 
 $(function(){
-    if(MapasCulturais.mode != 'development')
-        console.log = function(){};
-
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');

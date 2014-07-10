@@ -1,18 +1,9 @@
+<?php $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle() ?>
 <!DOCTYPE html>
 <html lang="pt-BR" dir="ltr">
     <head>
         <meta charset="UTF-8" />
-        <title>SP Cultura -
-            <?php
-            $title = isset($entity) ? $entity->getTitle() :
-                    $app->getReadableName($this->controller->id) . ' - ' .
-                    $app->getReadableName($this->controller->action);
-            echo $title;
-            ?>
-        </title>
-
-
-
+        <title>SP Cultura - <?php echo $title ?></title>
 
 <!-- for Google -->
 <!-- <meta name="description" content="Mapas Culturais" />
@@ -39,28 +30,7 @@
 
 
         <link rel="profile" href="http://gmpg.org/xfn/11" />
-        <script type="text/javascript">
-            var MapasCulturais = {
-                baseURL: '<?php echo $baseURL ?>',
-                vectorLayersURL: "<?php echo $baseURL . $app->config['vectorLayersPath']; ?>",
-                assetURL: '<?php echo $assetURL ?>',
-                request: {
-                    controller: '<?php if ($this->controller) echo $this->controller->id ?>',
-                    action: '<?php if ($this->controller) echo str_replace($this->controller->id . '/', '', $this->template) ?>',
-                    id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
-                },
-                mode: "<?php echo $app->config('mode'); ?>"
-            };
-        </script>
-        <?php
-        $app->printStyles('vendor');
-        $app->printStyles('fonts');
-        $app->printStyles('app');
-        $app->printScripts('vendor');
-        $app->printScripts('app');
-
-        $app->applyHook('mapasculturais.scripts');
-        ?>
+        <?php mapasculturais_head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
         <script src="<?php echo $assetURL ?>/js/html5.js" type="text/javascript"></script>
         <![endif]-->
@@ -97,28 +67,9 @@
 
         </style>
     </head>
-    <body <?php if ($this->controller->action == 'search') echo 'ng-app="search" ng-controller="SearchController"'; ?>
-	    class="<?php if ($this->controller) echo "controller-{$this->controller->id} action-{$this->controller->action} ";
-	    	if (isset($entity)) echo 'entity ';?>
-	    " ng-class="{'infobox-open': showInfobox()}">
 
-		<?php if ($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
-            <!--facebook compartilhar-->
-            <div id="fb-root"></div>
-            <script>(function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id))
-                        return;
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-            <!--fim do facebook-->
-        <?php endif; ?>
-
-        <?php $app->applyHook('mapasculturais.body:before'); ?>
-
+    <body <?php body_properties() ?> >
+       <?php body_header(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
@@ -239,11 +190,23 @@
                                 <div class="setinha"></div>
                                 <li><a href="<?php echo $app->createUrl('panel');?>"><span class="icone icon_house"></span> Painel</a></li>
                                     <ul class="third-level">
-                                        <li><a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a></li>
-                                        <li><a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a></li>
-                                        <li><a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>"><span class="icone icon_currency_alt"></span> Meus Contratos</a></li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a>
+                                            <a href="<?php echo $app->createUrl('event', 'create') ?>" ><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a>
+                                            <a href="<?php echo $app->createUrl('agent', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a>
+                                            <a href="<?php echo $app->createUrl('space', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a>
+                                            <a href="<?php echo $app->createUrl('project', 'create') ?>"><span class="adicionar"></span></a>
+                                        </li>
+                                        <li>
                                     </ul>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>

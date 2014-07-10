@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if(is_editable()){
     add_entity_types_to_js($entity);
@@ -11,6 +12,9 @@ if(is_editable()){
 }
 add_map_assets();
 
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
+
 ?>
 <script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); </script>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
@@ -21,81 +25,81 @@ add_map_assets();
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="main-content agente">
-	<header class="main-content-header">
+    <header class="main-content-header">
 
         <div
             <?php if($header = $entity->getFile('header')): ?>
-            style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
             <?php elseif(is_editable()): ?>
                 class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>
         >
-		<?php if(is_editable()): ?>
-				<a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-				<div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
-					<?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-				</div>
-			<?php endif; ?>
-		</div>
-		<!--.imagem-do-header-->
-		<div class="content-do-header">
-			<?php if($avatar = $entity->avatar): ?>
-			<div class="avatar com-imagem">
-					<img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-				<?php else: ?>
-					<div class="avatar">
-						<img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
-			<?php endif; ?>
-				<?php if(is_editable()): ?>
-					<a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-					<div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
-						<?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-					</div>
-				<?php endif; ?>
-			</div>
-			<!--.avatar-->
-			<h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-			<div class="objeto-meta">
-				<div>
-					<span class="label">Área de atuação: </span>
-					<?php if(is_editable()): ?>
-						<span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode(', ', $entity->terms['area'])?></span>
-					<?php else: ?>
-						<?php foreach($entity->terms['area'] as $i => $term): if($i) echo ', ';
-                            ?> <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a><?php
-                        endforeach; ?>
-					<?php endif;?>
-				</div>
-				<div>
-					<span class="label">Tipo: </span>
-					<a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'><?php echo $entity->type->name; ?></a>
-				</div>
-				<div>
-					<?php if(is_editable() || !empty($entity->terms['tag'])): ?>
+        <?php if(is_editable()): ?>
+                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
+                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <!--.imagem-do-header-->
+        <div class="content-do-header">
+            <?php if($avatar = $entity->avatar): ?>
+            <div class="avatar com-imagem">
+                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+                <?php else: ?>
+                    <div class="avatar">
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+            <?php endif; ?>
+                <?php if(is_editable()): ?>
+                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
+                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                        <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!--.avatar-->
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
+            <div class="objeto-meta">
+                <div>
+                    <span class="label">Área de atuação: </span>
+                    <?php if(is_editable()): ?>
+                        <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
+                    <?php else: ?>
+                        <?php foreach($entity->terms['area'] as $i => $term): if($i) echo '; ';?>
+                            <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
+                        <?php endforeach; ?>
+                    <?php endif;?>
+                </div>
+                <div>
+                    <span class="label">Tipo: </span>
+                    <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'><?php echo $entity->type->name; ?></a>
+                </div>
+                <div>
+                    <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
                         <span class="label">Tags: </span>
                         <?php if(is_editable()): ?>
-                            <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode(', ', $entity->terms['tag'])?></span>
+                            <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
                         <?php else: ?>
-                            <?php foreach($entity->terms['tag'] as $i => $term): if($i) echo ', ';
-                                ?> <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php
-                            endforeach; ?>
+                            <?php foreach($entity->terms['tag'] as $i => $term): if($i) echo '; '; ?>
+                                <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                            <?php endforeach; ?>
                         <?php endif;?>
                     <?php endif; ?>
-				</div>
-			</div>
-			<!--.objeto-meta-->
-		</div>
-	</header>
-	<ul class="abas clearfix clear">
-		<li class="active"><a href="#sobre">Sobre</a></li>
-		<li><a href="#agenda">Agenda</a></li>
-		<li class="staging-hidden"><a href="#contas">Contas</a></li>
-	</ul>
-	<div id="sobre" class="aba-content">
-		<div class="ficha-spcultura">
-			<p>
+                </div>
+            </div>
+            <!--.objeto-meta-->
+        </div>
+    </header>
+    <ul class="abas clearfix clear">
+        <li class="active"><a href="#sobre">Sobre</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li class="staging-hidden"><a href="#contas">Contas</a></li>
+    </ul>
+    <div id="sobre" class="aba-content">
+        <div class="ficha-spcultura">
+            <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
-			</p>
+            </p>
             <div class="servico">
 
                 <?php if(is_editable() || $entity->site): ?>
@@ -168,140 +172,35 @@ add_map_assets();
                 <!--.servico-->
             <?php endif; ?>
 
-		</div>
-		<!--.ficha-spcultura-->
+        </div>
+        <!--.ficha-spcultura-->
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
             <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição" data-placeholder="Informe seus dados" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
         <?php endif; ?>
-		<!--.descricao-->
+        <!--.descricao-->
         <!-- Video Gallery BEGIN -->
             <?php $app->view->part('parts/video-gallery.php', array('entity'=>$entity)); ?>
         <!-- Video Gallery END -->
         <!-- Image Gallery BEGIN -->
             <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
-	</div>
-	<!-- #sobre -->
-
-	<div id="agenda" class="aba-content lista">
-            <?php
-            $date_from = new DateTime();
-            $date_to = new DateTime('+180 days');
-            $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to);
-            ?>
-            <!--a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create')?>">
-            adicionar evento</a-->
-            <?php foreach($events as $event): ?>
-
-                <article class="objeto evento clearfix">
-                    <h1><a href="<?php echo $app->createUrl('event', 'single', array('id'=>$event->id))?>">
-                        <?php echo $event->name ?></a>
-                    </h1>
-                    <div class="objeto-content clearfix">
-                        <div class="objeto-thumb"><img src="<?php echo $event->avatar ? $event->avatar->url : ''; ?>"/></div>
-                        <p class="objeto-resumo">
-                            <?php echo $event->shortDescription ?>
-                        </p>
-                        <div class="objeto-meta">
-                            <div><span class="label">Linguagem:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
-                            Ocorrências:
-                            <div style="padding:10px">
-                                <?php
-                                $occurrences = $event->findOccurrences($date_from, $date_to);
-                                foreach($occurrences as $occ):
-                                    ?>
-                                <div>dia <?php echo $occ->startsOn->format('d \d\e M'); ?> das <?php echo $occ->startsAt->format('H:i'); ?> às <?php echo $occ->endsAt->format('H:i'); ?> </div>
-
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!--.objeto-->
-            <?php endforeach; ?>
-	</div>
-	<!-- #agenda -->
-	<div id="contas" class="aba-content staging-hidden">
-		<h3>Relatórios</h3>
-		<p><a href="#">Nome do Relatório</a></p>
-		<h3>Contratos</h3>
-		<table>
-			<thead>
-			<tr>
-				<th>Data</th>
-				<th>Objeto</th>
-				<th>Contratante</th>
-				<th>Contratado</th>
-				<th>Intermediário</th>
-				<th>Evento relacionado</th>
-				<th>R$</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			<tr>
-				<td>24/05/2013</td>
-				<td>Cachê</td>
-				<td>Mussum</td>
-				<td>Fulanis de Tal</td>
-				<td>Siclanis de Tal</td>
-				<td>Eventis</td>
-				<td>0.000.000,00</td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
-	<!--#contas-->
-	<?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
+    </div>
+    <!-- #sobre -->
+    <div id="agenda" class="aba-content lista">
+        <?php
+        $date_from = new DateTime();
+        $date_to = new DateTime('+180 days');
+        $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to);
+        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
+        ?>
+    </div>
+    <!-- #agenda -->
+    <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="barra-lateral agente barra-direita">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <!-- Related Agents BEGIN -->
         <?php $this->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->

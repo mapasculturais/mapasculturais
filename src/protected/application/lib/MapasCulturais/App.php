@@ -185,31 +185,16 @@ class App extends \Slim\Slim{
         }
 
 
-        if(key_exists('app.debugbar', $config) && $config['app.debugbar'] && !$this->request->isAjax()){
-            $this->_debugbar = new \DebugBar\StandardDebugBar();
-
-            $log = $this->getLog();
-            $log->setWriter(new \MapasCulturais\Loggers\Slim\DebugBar());
-
-            $debugbarRenderer = $this->_debugbar->getJavascriptRenderer();
-            $debugbarRenderer->setBaseUrl($this->getAssetUrl().'/debugbar/');
-
-            $this->_debugbar["messages"]->addMessage("DebugBar inicializando...!");
-
-            $this->hook('mapasculturais.scripts', function() use ($debugbarRenderer) {
-                echo $debugbarRenderer->renderHead();
-            });
-
-            $this->hook('mapasculturais.body:after', function() use ($debugbarRenderer) {
-                echo $debugbarRenderer->render();
-            });
-        }
-
-
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
+
+        $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
+        $classLoader->register();
+
         $driver = new AnnotationDriver(new AnnotationReader());
+
+        $driver->addPaths(array(__DIR__ . '/Entities/'));
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -310,13 +295,7 @@ class App extends \Slim\Slim{
         // instantiate the route manager
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : array());
 
-
-        // run theme theme.php
-        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
-                include ACTIVE_THEME_PATH . 'theme.php';
-
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-
 
         $this->register();
 
@@ -328,6 +307,10 @@ class App extends \Slim\Slim{
 
         $this->_auth->setCookies();
 
+        // run theme theme.php
+        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
+            include ACTIVE_THEME_PATH . 'theme.php';
+        
         // ===================================== //
 
 
@@ -395,25 +378,12 @@ class App extends \Slim\Slim{
             return;
         }
 
-        $md5 = md5(implode($sources));
-        if(false && @$this->_config['app.js.cache']){
-            $cache_id = @$this->_config['app.minifyJs'] ? 'css.minified:' : 'css.source:';
-            $cache_id .= $md5;
-
-            if($this->cache->contains($cache_id))
-                return $this->cache->fetch($cache_id);
-        }
-
         $styles = "";
 
         foreach ($sources as $source){
             if(!preg_match('#^http://|https://|//#', $source))
                 $source = $this->getAssetUrl() . $source;
             $styles .= "\n<link href='$source'  media='all' rel='stylesheet' type='text/css' />";
-        }
-
-        if(@$this->_config['app.js.cache']){
-            $this->cache->save($cache_id, $styles);
         }
 
         echo $styles;
@@ -432,49 +402,18 @@ class App extends \Slim\Slim{
             return;
         }
 
-        $md5 = md5(implode($sources));
-        if(false && @$this->_config['app.js.cache']){
-            $cache_id = @$this->_config['app.minifyJs'] ? 'js.minified:' : 'js.source:';
-            $cache_id .= $md5;
-
-            if($this->cache->contains($cache_id))
-                return $this->cache->fetch($cache_id);
-        }
-
         $scripts = "";
 
-        if(@$this->_config['app.js.minify']){
-            $filename = ACTIVE_THEME_PATH . 'assets/gen/js-' . $md5 . '.js';
-            if(!file_exists($filename)){
-                $command = 'java -jar ' . PROTECTED_PATH . 'vendor/closure/compiler.jar';
-                foreach ($sources as $source){
-                    $source = ACTIVE_THEME_PATH . 'assets' . $source;
-                    if(file_exists($source))
-                        $command .= ' --js='.$source;
+        foreach ($sources as $source){
+            if(!preg_match('#^http://|https://|//#', $source)){
+                $hash = '';
+                $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
+                if(file_exists($fullfilepath))
+                    $hash = '?v='.md5_file ($fullfilepath);
 
-                }
-
-                $command .= ' --js_output_file=' . $filename;
-                exec($command);
+                $source = $this->getAssetUrl() . $source . $hash;
             }
-            $url = $this->getAssetUrl() . '/gen/js-' . $md5 . '.js';
-            $scripts = "\n" . '<script type="text/javascript" src="' . $url . '"></script>';
-        }else{
-            foreach ($sources as $source){
-                if(!preg_match('#^http://|https://|//#', $source)){
-                    $hash = '';
-                    $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
-                    if(file_exists($fullfilepath))
-                        $hash = '?v='.md5_file ($fullfilepath);
-
-                    $source = $this->getAssetUrl() . $source . $hash;
-                }
-                $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
-            }
-        }
-
-        if(@$this->_config['app.js.cache']){
-            $this->cache->save($cache_id, $scripts);
+            $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
         }
 
         echo $scripts;
@@ -485,7 +424,7 @@ class App extends \Slim\Slim{
     }
 
     protected function _dbUpdates(){
-        if(!isset($_GET['_execute_db_update']) || @$this->config['app.dbUpdatesDisabled'])
+        if(!isset($_GET['_execute_db_update']) || $this->config['app.dbUpdatesDisabled'])
             return ;
 
         $this->_runningUpdates = true;
@@ -550,7 +489,7 @@ class App extends \Slim\Slim{
             'image_transformations' => array()
         );
 
-        if(@$this->_config['app.registerCache.enabled'] && $this->cache->contains('mapasculturais.register')){
+        if($this->_config['app.useRegisterCache'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
         }else{
             $this->registerAuthProvider('OpenID');
@@ -880,9 +819,9 @@ class App extends \Slim\Slim{
         return $filename;
     }
 
-    /**********************************************
+    /*     * ********************************************
      * Hooks System
-     **********************************************/
+     * ******************************************** */
 
     /**
      * Clear hook listeners
@@ -894,23 +833,22 @@ class App extends \Slim\Slim{
      * @param  string   $name   A hook name (Optional)
      */
     public function clearHooks($name = null) {
-        if(is_null($name)){
+        if (is_null($name)) {
             $this->_hooks = array();
             $this->_excludeHooks = array();
-        }else{
+        } else {
             $hooks = $this->_getHookCallables($name);
-            foreach($this->_excludeHooks as $hook => $cb){
-                if(in_array($cb, $hooks))
+            foreach ($this->_excludeHooks as $hook => $cb) {
+                if (in_array($cb, $hooks))
                     unset($this->_excludeHooks[$hook]);
             }
 
-            foreach($this->_hooks as $hook => $cbs){
-                foreach($cbs as $i => $cb)
+            foreach ($this->_hooks as $hook => $cbs) {
+                foreach ($cbs as $i => $cb)
                     unset($this->_hooks[$hook][$i]);
             }
         }
     }
-
 
     /**
      * Get hook listeners
@@ -934,30 +872,29 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook($name, $callable, $priority = 10) {
-		$_hooks = explode(',', $name);
-		foreach($_hooks as $hook){
-			if(trim($hook)[0] === '-'){
-				$hook = $this->_compileHook($hook);
-				if(!key_exists($hook, $this->_excludeHooks))
-					$this->_excludeHooks[$hook] = array();
+        $_hooks = explode(',', $name);
+        foreach ($_hooks as $hook) {
+            if (trim($hook)[0] === '-') {
+                $hook = $this->_compileHook($hook);
+                if (!key_exists($hook, $this->_excludeHooks))
+                    $this->_excludeHooks[$hook] = array();
 
-				$this->_excludeHooks[$hook][] = $callable;
-			}else{
-				$hook = $this->_compileHook($hook);
+                $this->_excludeHooks[$hook][] = $callable;
+            }else {
+                $hook = $this->_compileHook($hook);
 
-				if(!key_exists($hook, $this->_hooks))
-					$this->_hooks[$hook] = array();
+                if (!key_exists($hook, $this->_hooks))
+                    $this->_hooks[$hook] = array();
 
-				if(!key_exists($priority, $this->_hooks[$hook]))
-					$this->_hooks[$hook][$priority] = array();
+                if (!key_exists($priority, $this->_hooks[$hook]))
+                    $this->_hooks[$hook][$priority] = array();
 
-				$this->_hooks[$hook][$priority][] = $callable;
+                $this->_hooks[$hook][$priority][] = $callable;
 
-				ksort($this->_hooks[$hook]);
-			}
-		}
-	}
-
+                ksort($this->_hooks[$hook]);
+            }
+        }
+    }
 
     /**
      * Invoke hook
@@ -965,19 +902,19 @@ class App extends \Slim\Slim{
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
      */
     function applyHook($name, $hookArg = null) {
-		if(is_null($hookArg))
+        if (is_null($hookArg))
             $hookArg = array();
-        else if(!is_array($hookArg))
+        else if (!is_array($hookArg))
             $hookArg = array($hookArg);
 
-		if($this->config['app.log.hook'])
+        if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
 
-		$callables = $this->_getHookCallables($name);
-		foreach ($callables as $callable) {
-			call_user_func_array($callable, $hookArg);
-		}
-	}
+        $callables = $this->_getHookCallables($name);
+        foreach ($callables as $callable) {
+            call_user_func_array($callable, $hookArg);
+        }
+    }
 
     /**
      * Invoke hook biding callbacks to the target object
@@ -987,107 +924,104 @@ class App extends \Slim\Slim{
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
      */
     function applyHookBoundTo($target_object, $name, $hookArg = null) {
-        if(is_null($hookArg))
+        if (is_null($hookArg))
             $hookArg = array();
-        else if(!is_array($hookArg))
+        else if (!is_array($hookArg))
             $hookArg = array($hookArg);
 
-        if($this->config['app.log.hook'])
+        if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
 
-		$callables = $this->_getHookCallables($name);
-		foreach ($callables as $callable) {
-			$callable = \Closure::bind($callable, $target_object);
-			call_user_func_array($callable, $hookArg);
-		}
-	}
+        $callables = $this->_getHookCallables($name);
+        foreach ($callables as $callable) {
+            $callable = \Closure::bind($callable, $target_object);
+            call_user_func_array($callable, $hookArg);
+        }
+    }
 
+    function _getHookCallables($name) {
+        $exclude_list = array();
+        $result = array();
 
+        foreach ($this->_excludeHooks as $hook => $callables) {
+            if (preg_match($hook, $name))
+                $exclude_list = array_merge($callables);
+        }
 
-	function _getHookCallables($name){
-		$exclude_list = array();
-		$result = array();
+        foreach ($this->_hooks as $hook => $_callables) {
+            if (preg_match($hook, $name)) {
+                foreach ($_callables as $callables) {
+                    foreach ($callables as $callable) {
+                        if (!in_array($callable, $exclude_list))
+                            $result[] = $callable;
+                    }
+                }
+            }
+        }
 
-		foreach($this->_excludeHooks as $hook => $callables){
-			if(preg_match($hook, $name))
-				$exclude_list = array_merge($callables);
-		}
+        return $result;
+    }
 
-		foreach($this->_hooks as $hook => $_callables){
-			if(preg_match($hook, $name)){
-				foreach($_callables as $callables){
-					foreach ($callables as $callable) {
-						if(!in_array($callable, $exclude_list))
-							$result[] = $callable;
-					}
-				}
-			}
-		}
+    protected function _compileHook($hook) {
+        $hook = trim($hook);
 
-		return $result;
-	}
+        if ($hook[0] === '-')
+            $hook = substr($hook, 1);
 
+        $replaces = array();
 
-	protected function _compileHook($hook){
-		$hook = trim($hook);
+        while (preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)) {
+            $uid = uniqid('@');
+            $replaces[$uid] = $matches;
 
-		if($hook[0] === '-')
-			$hook = substr($hook, 1);
+            $hook = str_replace($matches[0], $uid, $hook);
+        }
 
-		$replaces = array();
+        $hook = '#^' . preg_quote($hook) . '$#i';
 
-		while(preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)){
-			$uid = uniqid('@');
-			$replaces[$uid] = $matches;
+        foreach ($replaces as $uid => $matches) {
+            $regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
 
-			$hook = str_replace($matches[0], $uid, $hook);
-		}
+            $hook = str_replace($uid, '(' . $regex . ')', $hook);
+        }
 
-		$hook = '#^' . preg_quote($hook) . '$#i';
-
-		foreach ($replaces as $uid => $matches) {
-			$regex = str_replace('*', '[^\(\)\:]*', $matches[1]);
-
-			$hook = str_replace($uid, '(' . $regex . ')', $hook);
-		}
-
-		return $hook;
-	}
+        return $hook;
+    }
 
     /**********************************************
      * Getters
      **********************************************/
-        
+
     public function getMaxUploadSize(){
         $MB = 1024;
         $GB = $MB * 1024;
-        
+
         $convertToKB = function($size) use($MB, $GB){
             switch(strtolower(substr($size, -1))){
                 case 'k';
                     $size = (int) $size;
                 break;
-            
+
                 case 'm':
                     $size = $size * $MB;
                 break;
-            
+
                 case 'g':
                     $size = $size * $GB;
                 break;
             }
-            
+
             return $size;
         };
-        
+
         $max_upload = $convertToKB(ini_get('upload_max_filesize'));
         $max_post = $convertToKB(ini_get('post_max_size'));
         $memory_limit = $convertToKB(ini_get('memory_limit'));
-        
+
         $result = min($max_upload, $max_post, $memory_limit);
-        
+
         if($result < $MB){
-            $result .= ' KB';            
+            $result .= ' KB';
         }else if($result < $GB){
             $result = number_format($result / $MB, 0) . ' MB';
         }else{
@@ -1098,7 +1032,7 @@ class App extends \Slim\Slim{
             else
                 $result = $formated . ' GB';
         }
-        
+
         return $result;
     }
 
@@ -1924,17 +1858,4 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         return null;
     }
-
-    function getTitle($entity){
-
-        $controller = $this->getControllerByEntity($entity);
-
-        $title = $this->getReadableName($controller->action) ? $this->getReadableName($controller->action) : '';
-        $title .= $this->getReadableName($controller->id) ? ' '.$this->getReadableName($controller->id) : '';
-        $title .= $entity->name ? ' '.$entity->name : '';
-
-
-        return $title;
-    }
-
 }

@@ -88,12 +88,10 @@ class Event extends EntityController {
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
             $occurrences_readable[$e->id] = array();
 
-            foreach($occurrences[$e->id] as $occ){
-                $month = $app->txt($occ->startsOn->format('F'));
-                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
-                if(!in_array($str, $occurrences_readable[$e->id]))
-                    $occurrences_readable[$e->id][] = $str;
-            }
+            $occurrences_readable[$e->id] = array_map(function($occ){
+                return $occ->rule->description;
+            }, $occurrences[$e->id]);
+
         }
 
         if($event_ids){
@@ -107,6 +105,7 @@ class Event extends EntityController {
 
             if(is_array($result)){
                 foreach($result as $k => $e){
+                    //@TODO: verify if occurrences and readable occurrences were selected in query data
                     $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : array();
                     $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : array();
                 }
@@ -118,11 +117,8 @@ class Event extends EntityController {
         }
     }
 
-
-    function API_findByLocation(){
+    function apiQueryByLocation($query_data){
         $app = App::i();
-
-        $query_data = $this->getData;
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
@@ -199,17 +195,21 @@ class Event extends EntityController {
             // @TODO: verificar se o @select tem o id
             $result = $this->apiQuery($query_data);
 
-
             if(is_array($result)){
                 foreach($result as $k => $r){
                     $result[$k] = array_merge($result_occurrences[$r['id']], $r);
                 }
             }
-
-            $this->apiResponse($result);
         }else{
-
-            $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
+            $result = key_exists('@count', $query_data) ? 0 : array();
         }
+
+        return $result;
+    }
+
+    function API_findByLocation(){
+
+        $this->apiResponse($this->apiQueryByLocation($this->getData));
+
     }
 }
