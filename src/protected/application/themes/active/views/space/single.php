@@ -16,7 +16,6 @@ add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
 ?>
-<script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map',locateMeControl:true}); }); </script>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <div class="barra-esquerda barra-lateral agente">
