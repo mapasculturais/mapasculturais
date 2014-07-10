@@ -26,7 +26,7 @@ if(is_editable() || $entity->className != $owner->className || $entity->id != $o
                        title="Repassar propriedade"
                  ><?php echo $owner->name ?></h4>
             <?php else: ?>
-                <h4><a href="<?php echo $app->createUrl('agent', 'single', array('id' => $owner->id)) ?>"><?php echo $owner->name ?></a></h4>
+                <h4><a href="<?php echo $app->createUrl('agent', 'single', array($owner->id)) ?>"><?php echo $owner->name ?></a></h4>
             <?php endif; ?>
 
             <img src="<?php echo $avatar_url; ?>" class="avatar js-owner-avatar" />

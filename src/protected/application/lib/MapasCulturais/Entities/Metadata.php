@@ -84,6 +84,8 @@ class Metadata extends \MapasCulturais\Entity
 
     /** @ORM\PostLoad */
     public function _postLoad($args = null){
+        $this->key = trim($this->key);
+        
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').meta(' . $this->key . ').load', $args);
     }

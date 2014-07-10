@@ -13,9 +13,11 @@
     <div class="mensagem erro escondido"></div>
     <?php if($response_template): ?><script type="js-template"><?php echo $response_template; ?></script><?php endif; ?>
     <?php if($add_description): ?> <label> Descrição: <input type="text" name="description[<?php echo $file_group ?>]" /> </label><br /><?php endif; ?>
+    
+    <p>Tamanho máximo do arquivo: <?php echo $app->maxUploadSize; ?></p>
+    <?php if($file_types): ?><p>Tipos de arquivos suportados: <?php echo $file_types; ?></p><?php endif; ?>
     <label> Arquivo <input type="file" name="<?php echo $file_group ?>" /> </label><br />
-
-    <input type="submit"/>
+    <input type="submit" value="enviar"/>
 </form>
 <style>
     .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }

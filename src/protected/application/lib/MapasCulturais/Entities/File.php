@@ -277,6 +277,7 @@ class File extends \MapasCulturais\Entity
 
     /** @ORM\PostLoad */
     public function _postLoad($args = null){
+        $this->group = trim($this->group);
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').load', $args);
     }

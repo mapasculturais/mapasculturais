@@ -1,9 +1,10 @@
 <?php
-
-use MapasCulturais\Entities\AgentRelations\Project as Registration;
+use MapasCulturais\Entities\ProjectAgentRelation as Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $registrationForm = $entity->getFile('registrationForm');
+
+$this->bodyProperties['ng-app'] = "Entity";
 
 if(is_editable()){
     add_entity_types_to_js($entity);
@@ -12,6 +13,9 @@ if(is_editable()){
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
+
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 add_entity_properties_metadata_to_js($entity);
 
@@ -28,55 +32,55 @@ $ids = array_map(function($e){
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <div class="barra-esquerda barra-lateral projeto">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 
 <article class="main-content projeto">
-	<header class="main-content-header">
-		<div
-			<?php if($header = $entity->getFile('header')): ?>
-				 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-				 <?php else: ?>
-				 class="imagem-do-header js-imagem-do-header"
-			<?php endif; ?>
-		>
-			<?php if(is_editable()): ?>
-				<a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-				<div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
-					<?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-				</div>
-			<?php endif; ?>
-		</div>
-		<!--.imagem-do-header-->
-		<div class="content-do-header">
-			<?php if($avatar = $entity->avatar): ?>
-				<div class="avatar com-imagem">
-					<img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+    <header class="main-content-header">
+        <div
+            <?php if($header = $entity->getFile('header')): ?>
+                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
+                 <?php else: ?>
+                 class="imagem-do-header js-imagem-do-header"
+            <?php endif; ?>
+        >
+            <?php if(is_editable()): ?>
+                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
+                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <!--.imagem-do-header-->
+        <div class="content-do-header">
+            <?php if($avatar = $entity->avatar): ?>
+                <div class="avatar com-imagem">
+                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
-					<div class="avatar">
-						<img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
-			<?php endif; ?>
-				<?php if(is_editable()): ?>
-					<a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-					<div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
-						<?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-					</div>
-				<?php endif; ?>
-			</div>
-			<!--.avatar-->
+                    <div class="avatar">
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+            <?php endif; ?>
+                <?php if(is_editable()): ?>
+                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
+                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                        <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!--.avatar-->
 
             <?php if(is_editable() && $entity->canUser('modifyParent')): ?>
             <span  class="js-search js-include-editable"
                    data-field-name='parentId'
                    data-emptytext="Selecionar projeto pai"
-				   data-search-box-width="400px"
-				   data-search-box-placeholder="Selecionar projeto pai"
-				   data-entity-controller="project"
-				   data-search-result-template="#agent-search-result-template"
-				   data-selection-template="#agent-response-template"
-				   data-no-result-template="#agent-response-no-results-template"
+                   data-search-box-width="400px"
+                   data-search-box-placeholder="Selecionar projeto pai"
+                   data-entity-controller="project"
+                   data-search-result-template="#agent-search-result-template"
+                   data-selection-template="#agent-response-template"
+                   data-no-result-template="#agent-response-no-results-template"
                    data-selection-format="parentProject"
                    data-allow-clear="1",
                    title="Selecionar projeto pai"
@@ -88,39 +92,39 @@ $ids = array_map(function($e){
                 <h4><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
             <?php endif; ?>
 
-			<h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-			<div class="objeto-meta">
-				<div>
-					<span class="label">Tipo: </span>
-					<a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='project' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
-				</div>
-				<div>
-					<?php if(is_editable() || !empty($entity->terms['tag'])): ?>
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
+            <div class="objeto-meta">
+                <div>
+                    <span class="label">Tipo: </span>
+                    <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='project' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
+                </div>
+                <div>
+                    <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
                         <span class="label">Tags: </span>
                         <?php if(is_editable()): ?>
-                            <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode(', ', $entity->terms['tag'])?></span>
+                            <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
                         <?php else: ?>
-                            <?php foreach($entity->terms['tag'] as $i => $term): if($i) echo ', ';
-                                ?><a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php
-                                endforeach; ?>
+                            <?php foreach($entity->terms['tag'] as $i => $term): if($i) echo '; '; ?>
+                                <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                            <?php endforeach; ?>
                         <?php endif;?>
                     <?php endif;?>
-				</div>
-			</div>
-			<!--.objeto-meta-->
-		</div>
-	</header>
+                </div>
+            </div>
+            <!--.objeto-meta-->
+        </div>
+    </header>
 
-	<ul class="abas clearfix">
-		<li class="active"><a href="#sobre">Sobre</a></li>
-		<li class="staging-hidden"><a href="#agenda">Agenda</a></li>
+    <ul class="abas clearfix">
+        <li class="active"><a href="#sobre">Sobre</a></li>
+        <li class="staging-hidden"><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Incrições</a></li>
-	</ul>
-	<div id="sobre" class="aba-content">
-		<div class="ficha-spcultura">
+    </ul>
+    <div id="sobre" class="aba-content">
+        <div class="ficha-spcultura">
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
-			</p>
+            </p>
             <div class="servico">
                 <?php if(is_editable() || $entity->site): ?>
                     <p><span class="label">Site:</span>
@@ -131,7 +135,7 @@ $ids = array_map(function($e){
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-		</div>
+        </div>
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
@@ -146,88 +150,17 @@ $ids = array_map(function($e){
         <!-- Image Gallery BEGIN -->
         <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
-	</div>
-	<!-- #sobre -->
-	<div id="agenda" class="aba-content lista">
-        <header class="clearfix">
-            <p class="alignleft">
-                <strong>XX</strong> eventos entre <input class="data" placeholder="00/00/0000" /> e <input class="data" placeholder="00/00/0000" />
-                <!-- a ideia é que clicando nesses 'a' abra o datepicker, por padrão a data inicial é hoje e a data final 6 meses a partir de hoje-->
-            </p>
-
-            <!--a class="botao adicionar alignright" href="#">adicionar evento</a-->
-        </header>
-
-		<article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-        <article class="objeto evento clearfix">
-            <h1><a href="<?php echo $this->controller->createUrl('single')?>">Título do evento</a></h1>
-            <div class="objeto-content clearfix">
-                <div class="objeto-thumb"></div>
-                <p class="objeto-resumo">
-                    Atirei o pau no gatis. Viva Forevis aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Copo furadis é disculpa de babadis, arcu quam euismod magna, bibendum egestas augue arcu ut est. Delegadis gente finis.
-                </p>
-                <div class="objeto-meta">
-                    <div><span class="label">Linguagem:</span> <a href="#">Música</a></div>
-                    <div><span class="label">Data:</span> <time>00/00</time></div>
-                    <div><span class="label">Horário:</span> <time>00h00</time></div>
-                    <div><span class="label">Local:</span> <a href="#">Lorem ipsum dolor</a></div>
-                    <div><span class="label">Classificação:</span> livre</div>
-                </div>
-            </div>
-        </article>
-        <!--.objeto-->
-	</div>
-	<!-- #agenda -->
+    </div>
+    <!-- #sobre -->
+    <div id="agenda" class="aba-content lista">
+        <?php
+        $date_from = new DateTime();
+        $date_to = new DateTime('+180 days');
+        $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to);
+        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
+        ?>
+    </div>
+    <!-- #agenda -->
 
     <div id="inscricoes" class="aba-content">
         <?php if(is_editable() || $entity->registrationFrom || $entity->registrationTo): ?>
@@ -245,13 +178,13 @@ $ids = array_map(function($e){
         <?php endif; ?>
 
         <?php if($entity->introInscricoes || is_editable()): ?>
-		<div id="intro-das-inscricoes">
+        <div id="intro-das-inscricoes">
             <?php if(is_editable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
             <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->introInscricoes; ?></p>
-		</div>
+        </div>
         <?php endif; ?>
 
-		<p class="js-ficha-inscricao">
+        <p class="js-ficha-inscricao">
             <?php if (is_editable()): ?>
                 <p>
                 <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
@@ -301,11 +234,11 @@ $ids = array_map(function($e){
         <?php endif; ?>
 
         <?php if($entity->canUser('approveRegistration')): ?>
-		<div id="inscritos" class="privado lista-sem-thumb">
-			<div class="clearfix">
-				<h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-				<a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar a Lista de Inscritos</a>
-			</div>
+        <div id="inscritos" class="privado lista-sem-thumb">
+            <div class="clearfix">
+                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
+                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar a Lista de Inscritos</a>
+            </div>
             <div class="js-registration-list">
                 <?php foreach($entity->registrations as $registration): ?>
                 <article id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="objeto evento clearfix">
@@ -323,42 +256,42 @@ $ids = array_map(function($e){
                 <!--.objeto-->
                 <?php endforeach; ?>
             </div>
-		</div>
+        </div>
         <?php endif; ?>
-	</div>
-	<!--#inscricoes-->
+    </div>
+    <!--#inscricoes-->
 
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="barra-lateral projeto barra-direita">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-	<div class="bloco">
+    <div class="bloco">
         <?php if($entity->children): ?>
-		<h3 class="subtitulo">Sub-espaços</h3>
-		<ul class="js-slimScroll">
+        <h3 class="subtitulo">Sub-espaços</h3>
+        <ul class="js-slimScroll">
             <?php foreach($entity->children as $space): ?>
-			<li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+            <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
             <?php endforeach; ?>
-		</ul>
+        </ul>
         <?php endif; ?>
 
         <?php if($entity->id && $entity->canUser('createChield')): ?>
-		<a class="botao adicionar staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
+        <a class="botao adicionar staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
         <?php endif; ?>
-	</div>
-	<div class="bloco staging-hidden">
-		<h3 class="subtitulo ">Projetos do espaço</h3>
-		<ul>
-			<li><a href="#">Projeto 1</a></li>
-			<li><a href="#">Projeto 2</a></li>
-			<li><a href="#">Projeto 3</a></li>
-		</ul>
-		<a class="botao adicionar staging-hidden" href="#">adicionar projeto (só link)</a>
     </div>
-	<!-- Downloads BEGIN -->
+    <div class="bloco staging-hidden">
+        <h3 class="subtitulo ">Projetos do espaço</h3>
+        <ul>
+            <li><a href="#">Projeto 1</a></li>
+            <li><a href="#">Projeto 2</a></li>
+            <li><a href="#">Projeto 3</a></li>
+        </ul>
+        <a class="botao adicionar staging-hidden" href="#">adicionar projeto (só link)</a>
+        </div>
+    <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
 

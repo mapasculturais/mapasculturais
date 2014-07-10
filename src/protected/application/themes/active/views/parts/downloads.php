@@ -5,7 +5,7 @@
         <?php if(is_editable()): ?>
             <a class="adicionar js-open-dialog hltip" data-dialog="#dialog-download-file" href="#" title="Clique para adicionar arquivo para download"></a>
             <div id="dialog-download-file" class="js-dialog" title="Adicionar Arquivo">
-                <?php add_ajax_uploader($entity, 'downloads', 'append', 'ul.js-downloads', '<li id="file-{{id}}" class="li-dos-blocos"><a href="{{url}}">{{description}}</a> <div class="botoes"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este vídeo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo"></a></div></li>', '', true)?>
+                <?php add_ajax_uploader($entity, 'downloads', 'append', 'ul.js-downloads', '<li id="file-{{id}}" class="li-dos-blocos"><a href="{{url}}">{{description}}</a> <div class="botoes"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este vídeo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo"></a></div></li>', '', true, false)?>
             </div>
         <?php endif; ?>
         <ul class="ul-dos-blocos js-downloads js-slimScroll">

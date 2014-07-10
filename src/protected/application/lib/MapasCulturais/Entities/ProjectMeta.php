@@ -47,6 +47,8 @@ class ProjectMeta extends \MapasCulturais\Entity
 
     /** @ORM\PostLoad */
     public function _postLoad($args = null){
+        $this->key = trim($this->key);
+        
         App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').load', $args);
     }
 

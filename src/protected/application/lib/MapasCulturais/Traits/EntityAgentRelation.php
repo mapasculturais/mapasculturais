@@ -18,17 +18,29 @@ trait EntityAgentRelation {
     }
 
     function getAgentRelationEntityClassName(){
-        return preg_replace('#Entities\\\([^\\\]+)$#', 'Entities\\\AgentRelations\\\$1', $this->getClassName());
+        return $this->getClassName() . 'AgentRelation';
     }
 
-    function getAgentRelations(){
+    function getAgentRelations($has_control = null){
         if(!$this->id)
             return array();
 
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
             return array();
-
+        
+        $params = array(
+            'owner' => $this,
+            'in' => array(Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED)
+        );
+        
+        $dql_has_control = '';
+        
+        if(is_bool($has_control)){
+            $params['has_control'] = $has_control;
+            $dql_has_control = "ar.hasControl = :has_control AND";
+        }
+        
         $dql = "
             SELECT
                 ar,
@@ -41,18 +53,15 @@ trait EntityAgentRelation {
             WHERE
                 ar.owner = :owner AND
                 ar.status > 0 AND
+                $dql_has_control
                 a.status IN (:in)
             ORDER BY a.name";
 
         $query = App::i()->em->createQuery($dql);
 
-        $query->setParameters(array(
-            'owner' => $this,
-            'in' => array(Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED)
-        ));
+        $query->setParameters($params);
 
         $result = $query->getResult();
-
         return $result;
     }
 
@@ -96,14 +105,12 @@ trait EntityAgentRelation {
     }
 
     function getUsersWithControl(){
-        $result = array($this->ownerUser);
-        $relations = $this->getAgentRelations();
+        $result = array($this->getOwnerUser());
+        $relations = $this->getAgentRelations(true);
+        
         foreach($relations as $relation){
-            if($relation->hasControl && !in_array($relation->agent->user, $result)){
-                $result[] = $relation->agent->user;
-            }
+            $result[] = $relation->agent->user;
         }
-
         return $result;
     }
 
@@ -126,15 +133,16 @@ trait EntityAgentRelation {
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
-        $relation->save($flush);
-
+        
         if($has_control)
-            $this->addControlToRelatedAgent($agent);
+            $relation->hasControl = true;
+        
+        $relation->save($flush);
 
         return $relation;
     }
 
-    function removeAgentRelation(\MapasCulturais\Entities\Agent $agent, $group){
+    function removeAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $flush = true){
         $relation_class = $this->getAgentRelationEntityClassName();
         $repo = App::i()->repo($relation_class);
         $relation = $repo->findOneBy(array('group' => $group, 'agent' => $agent, 'owner' => $this));
@@ -143,7 +151,7 @@ trait EntityAgentRelation {
             if($relation->hasControl)
                 $this->checkPermission('removeAgentRelationWithControl');
 
-            $relation->delete(true);
+            $relation->delete($flush);
 
        }
     }

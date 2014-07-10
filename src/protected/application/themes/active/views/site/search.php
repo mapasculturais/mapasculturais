@@ -1,45 +1,48 @@
 <?php
+$this->layout = 'interna';
 
-    $this->layout = 'interna';
+$this->bodyProperties['ng-app'] = "search";
+$this->bodyProperties['ng-controller'] = "SearchController";
+$this->bodyProperties['ng-class'] = "{'infobox-open': showInfobox()}";
 
-    add_taxonoy_terms_to_js('area');
-    add_taxonoy_terms_to_js('linguagem');
-    add_entity_types_to_js('MapasCulturais\Entities\Space');
-    add_entity_types_to_js('MapasCulturais\Entities\Agent');
-    add_entity_types_to_js('MapasCulturais\Entities\Project');
-
-//    $app = \MapasCulturais\App::i();
-
-    $app->enqueueScript('vendor', 'angular', '/vendor/angular.min.js');
-    $app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
-    $app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
-    $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-    $app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
-    $app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
-    $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
-    $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
-    $app->enqueueScript('app', 'Search', '/js/Search.js');
-
-    $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
-
-    $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+add_taxonoy_terms_to_js('area');
+add_taxonoy_terms_to_js('linguagem');
+add_entity_types_to_js('MapasCulturais\Entities\Space');
+add_entity_types_to_js('MapasCulturais\Entities\Agent');
+add_entity_types_to_js('MapasCulturais\Entities\Project');
 
 
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+$app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+$app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
+$app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
+$app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+$app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
+$app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
+$app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
+$app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
+$app->enqueueScript('app', 'Search', '/js/Search.js');
 
-    $app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 
-    $app->hook('mapasculturais.scripts', function() use($app){
-        $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+$app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
+$app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
 
-        ?>
-<script type="text/javascript">
-MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
-</script>
-        <?php
-    });
+
+$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
+$app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+
+$app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+
+$app->hook('mapasculturais.scripts', function() use($app){
+    $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+
+    ?>
+    <script type="text/javascript">
+    MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
+    </script>
+    <?php
+});
+
 
 
 ?>
@@ -78,7 +81,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Local:</span>{{openEntity.space.metadata.endereco}}</div>
+                        <div><span class="label">Endereço:</span>{{openEntity.space.metadata.endereco}}</div>
                         <div><span class="label">Acessibilidade:</span> {{openEntity.space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>
@@ -104,7 +107,8 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                                 <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
+                        <!--div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div-->
+                        <div ng-repeat="occ in event.readableOccurrences"><time>{{occ}}</time></div>
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
                     </div>
                 </div>
@@ -126,7 +130,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
     <div id="camadas-de-entidades" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
-        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} espaços"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
     </div>
     <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div>
@@ -204,7 +208,7 @@ MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def-
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Local:</span>{{space.metadata.endereco}}</div>
+                        <div><span class="label">Endereço:</span>{{space.metadata.endereco}}</div>
                         <div><span class="label">Acessibilidade:</span> {{space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
                     </div>
                 </div>

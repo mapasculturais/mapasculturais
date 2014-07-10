@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
 (function(angular) {
     var app = angular.module('ng-mapasculturais', []);
     app.config(["$httpProvider", function($httpProvider) {
-
+            
             $httpProvider.responseInterceptors.push(function($q, $rootScope) {
 
                 return function(promise) {

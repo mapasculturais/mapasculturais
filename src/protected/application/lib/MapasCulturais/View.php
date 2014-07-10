@@ -47,7 +47,25 @@ class View extends \Slim\View {
      * @var bool
      */
     protected $_partial = false;
+    
+    /**
+     * CSS Classes to print in body tag
+     * @var array 
+     */
+    protected $bodyClasses = null;
+    
+    /**
+     * Properties of body tag
+     * @var array 
+     */
+    protected $bodyProperties =  null;
 
+    public function __construct() {
+        parent::__construct();
+        
+        $this->bodyClasses = new \ArrayObject();
+        $this->bodyProperties = new \ArrayObject();
+    }
     /**
      * Sets partial property.
      *
@@ -94,7 +112,7 @@ class View extends \Slim\View {
      * @param string $template the template name.
      * @return string The rendered template
      */
-    public function render($template){
+    public function render($template, $data = null){
         $this->template = $template;
 
         if($this->_partial)
@@ -128,6 +146,14 @@ class View extends \Slim\View {
 
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
+        
+        
+        if ($this->controller){ 
+            $this->bodyClasses[] = "controller-{$this->controller->id}";
+            $this->bodyClasses[] = "action-{$this->controller->action}";
+        }
+	if (isset($entity)) 
+            $this->bodyClasses[] = 'entity';
 
         // render the template
         $templatePath = $this->templatesDirectory . '/' . $template;
@@ -227,5 +253,29 @@ class View extends \Slim\View {
                 $template = '../layouts/parts/' . $template;
 
         echo $this->partialRender($template, $data);
+    }
+    
+    function getTitle($entity = null){
+        $app = App::i();
+        $title = '';
+        if($entity){
+            $controller = $app->getControllerByEntity($entity);
+
+            $title .= $app->getReadableName($controller->action) ? $app->getReadableName($controller->action) : '';
+            $title .= $app->getReadableName($controller->id) ? ' '.$app->getReadableName($controller->id) : '';
+            $title .= $entity->name ? ' '.$entity->name : '';
+        }else{
+            $title = $app->getReadableName($this->controller->id) . ' - ' . $app->getReadableName($this->controller->action);
+        }
+
+        return $title;
+    }
+    
+    function asset($file, $print = true){
+        $url = App::i()->getAssetUrl() . '/' . $file;
+        if($print)
+            echo $url;
+        
+        return $url;
     }
 }

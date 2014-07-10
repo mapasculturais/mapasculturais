@@ -1,5 +1,4 @@
 <?php
-
 use MapasCulturais\App;
 
 $app = App::i();
@@ -8,14 +7,80 @@ function is_editable() {
     return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
 }
 
+function mapasculturais_head($entity = null){
+    $app = App::i();
+    ?>
+    <script type="text/javascript">
+        var MapasCulturais = {
+            baseURL: '<?php echo $app->baseUrl ?>',
+            vectorLayersURL: "<?php echo $app->baseUrl . $app->config['vectorLayersPath']; ?>",
+            assetURL: '<?php echo $app->assetUrl ?>',
+            request: {
+                controller: '<?php if ($app->view->controller) echo $app->view->controller->id ?>',
+                action: '<?php if ($app->view->controller) echo str_replace($app->view->controller->id . '/', '', $app->view->template) ?>',
+                id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
+            },
+            mode: "<?php echo $app->config('mode'); ?>"
+        };
+    </script>
+    <?php
+    $app->printStyles('vendor');
+    $app->printStyles('fonts');
+    $app->printStyles('app');
+    $app->printScripts('vendor');
+    $app->printScripts('app');
+
+    $app->applyHook('mapasculturais.scripts');
+}
+
+function body_properties(){
+    $app = App::i();
+    $body_properties = array();
+    foreach ($app->view->bodyProperties as $key => $val)
+        $body_properties[] = "{$key}=\"$val\"";
+    $body_properties[] = 'class="' . implode(' ', $app->view->bodyClasses->getArrayCopy()) . '"';
+    
+    $body_properties = implode(' ', $body_properties);
+    
+    echo $body_properties;
+}
+
+function body_header(){
+    App::i()->applyHook('mapasculturais.body:before');
+}
+
+function body_footer(){
+    $app = App::i();
+    $app->view->part('templates');
+    $app->applyHook('mapasculturais.body:after');
+    ?>
+    <iframe id="require-authentication" src="" style="display:none; position:fixed; top:0%; left:0%; width:100%; height:100%; z-index:100000"></iframe>
+    <?php
+}
+
+$app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
+     $app->hook('mapasculturais.body:before', function(){ ?>
+            <!--facebook compartilhar-->
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id))
+                        return;
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
+            <!--fim do facebook-->
+     <?php });
+});
+
 $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');
 
-//    if(is_editable()){
     $app->enqueueStyle('vendor', 'select2', '/vendor/select2/select2.css');
     $app->enqueueStyle('vendor', 'x-editable', '/vendor/x-editable/jquery-editable/css/jquery-editable.css', array('select2'));
     $app->enqueueStyle('vendor', 'x-editable-tip', '/vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
-//    }
 
     $app->enqueueStyle('app', 'style', '/css/style.css');
 
@@ -29,15 +94,12 @@ $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueScript('app', 'tim', '/js/tim.js');
     $app->enqueueScript('app', 'mapasculturais', '/js/mapasculturais.js', array('tim'));
 
-//    if(is_editable()){
-    $app->enqueueScript('vendor', 'select2', '/vendor/select2/select2.js', array('jquery'));
+    $app->enqueueScript('vendor', 'select2', '/vendor/select2-3.5.0/select2.min.js', array('jquery'));
     $app->enqueueScript('vendor', 'select2-BR', '/js/select2_locale_pt-BR-edit.js', array('select2'));
 
-    $app->enqueueScript('vendor', 'poshytip', '/vendor/x-editable/jquery-editable/js/jquery.poshytip.js', array('jquery'));
-    $app->enqueueScript('vendor', 'x-editable', '/vendor/x-editable/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
+    $app->enqueueScript('vendor', 'poshytip', '/vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
+    $app->enqueueScript('vendor', 'x-editable', '/vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
     $app->enqueueScript('app', 'editable', '/js/editable.js', array('mapasculturais'));
-
-//    }
 
     if ($app->config('mode') == 'staging')
         $app->enqueueStyle('app', 'staging', '/css/staging.css', array('style'));
@@ -75,6 +137,32 @@ function add_map_assets() {
     //Mapa das Singles
     $app->enqueueStyle('app', 'map', '/css/map.css');
     $app->enqueueScript('app', 'map', '/js/map.js');
+}
+
+function add_angular_entity_assets($entity){
+    $app = App::i();
+    $app->enqueueScript('vendor', 'jquery-ui-position', '/vendor/jquery-ui.position.min.js', array('jquery'));
+
+    $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+    $app->enqueueScript('vendor', 'angular-sanitize', '/vendor/angular-sanitize.min.js', array('angular'));
+    $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
+    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+
+    $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+    $app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
+    $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
+    if(!is_editable())
+        return;
+
+    App::i()->hook('mapasculturais.scripts', function() use($app, $entity) {
+        $isEntityOwner = $entity->ownerUser->id === $app->user->id;
+        ?>
+        <script type="text/javascript">
+            MapasCulturais.entity = MapasCulturais.entity || {};
+            MapasCulturais.entity.canUserCreateRelatedAgentsWithControl = <?php echo $entity->canUser('createAgentRelationWithControl') ? 'true' : 'false' ?>;
+        </script>
+        <?php
+    });
 }
 
 function add_entity_properties_metadata_to_js($entity) {
@@ -141,6 +229,18 @@ function add_taxonoy_terms_to_js($taxonomy_slug) {
     });
 }
 
+function add_agent_relations_to_js($entity){
+    App::i()->hook('mapasculturais.scripts', function() use($entity) {
+        ?>
+        <script type="text/javascript">
+            MapasCulturais.entity = MapasCulturais.entity || {};
+            MapasCulturais.entity.agentRelations = <?php echo json_encode($entity->getAgentRelationsGrouped()); ?>;
+        </script>
+        <?php
+    });
+
+}
+
 /**
  *
  * @param type $file_owner
@@ -151,7 +251,7 @@ function add_taxonoy_terms_to_js($taxonomy_slug) {
  * @param type $response_transform
  * @param type $add_description_input
  */
-function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false) {
+function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = 'jpg ou png') {
     App::i()->view->part('parts/ajax-uploader', array(
         'file_owner' => $file_owner,
         'file_group' => $group_name,
@@ -159,7 +259,8 @@ function add_ajax_uploader($file_owner, $group_name, $response_action, $response
         'response_target' => $response_target,
         'response_template' => $response_template,
         'response_transform' => $response_transform,
-        'add_description' => $add_description_input
+        'add_description' => $add_description_input,
+        'file_types' => $file_types
     ));
 }
 
@@ -219,16 +320,16 @@ $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($
 });
 
 // sempre que insere uma imagem cria o avatarSmall
-$app->hook('entity(<<*>>).file(avatar).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
     $this->transform('avatarSmall');
     $this->transform('avatarBig');
 });
 
-$app->hook('entity(<<*>>).file(header).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
     $this->transform('header');
 });
 
-$app->hook('entity(<<*>>).file(gallery).insert:after', function() {
+$app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
     $this->transform('galleryThumb');
     $this->transform('galleryFull');
 });
@@ -239,4 +340,213 @@ $app->hook('entity(event).load', function() {
 
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
+});
+
+
+//plugin Em Cartaz
+// TODO: Mover arquivo de template de views/panel/part-em-cartaz.php para a pasta de plugins
+
+$defaultFrom = new DateTime("first day of next month");
+$defaultTo = new DateTime("last day of next month");
+
+$app->hook('GET(panel.em-cartaz)', function() use ($app, $defaultFrom, $defaultTo) {
+    $this->requireAuthentication();
+    if(!$app->user->is('admin') && !$app->user->is('staff')){
+        //throw new MapasCulturais\Exceptions\PermissionDenied;
+        $app->pass();
+    }
+    $this->render('part-em-cartaz', array(
+        'content'=>'',
+        'from' => isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom,
+        'to' => isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo,
+    ));
+});
+
+$app->hook('view.partial(panel/part-nav):after', function($template, &$html) use ($app){
+    if(!$app->user->is('admin') && !$app->user->is('staff')){
+        //throw new MapasCulturais\Exceptions\PermissionDenied;
+        $app->pass();
+    }
+    $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
+    $url = $app->createUrl('panel', 'em-cartaz');
+    $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_document_alt'></span> Em Cartaz</a></li>";
+    $html = str_replace('</ul>', $menu . '</ul>', $html);
+});
+
+
+$app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $defaultFrom, $defaultTo) {
+    if(!$app->user->is('admin') && !$app->user->is('staff')){
+        //throw new MapasCulturais\Exceptions\PermissionDenied;
+        $app->pass();
+    }
+    $from = isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom;
+    $to = isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo;
+
+
+    $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+    // Every element you want to append to the word document is placed in a section.
+    // To create a basic section:
+    $section = $phpWord->addSection();
+
+    $defaultFont = $phpWord->addFontStyle('defaultFont',
+        array('name'=>'Arial', 'size'=>12));
+
+    $documentHead = $phpWord->addFontStyle('documentHead',
+        array('name'=>'Arial', 'size'=>18, 'color'=>'44AA88', 'bold'=>true));
+
+    $eventTitle = $phpWord->addFontStyle('eventTitle',
+        array('name'=>'Arial', 'size'=>12, 'color'=>'880000', 'bold'=>true));
+
+    $linguagemStyle = $phpWord->addFontStyle('linguagemStyle',
+        array('name'=>'Arial', 'size'=>12, 'color'=>'FF0000', 'bold'=>true));
+
+    $linguagens = array(
+        'Cinema', 'Dança', 'Teatro', 'Música Popular', 'Música Erudita', 'Exposição', 'Curso ou Oficina', 'Palestra, Debate ou Encontro'
+    );
+
+    $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
+
+    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
+        $textRunObj = $section->createTextRun();
+        $textRunObj->addText($event['name'], $eventTitle);
+        $textRunObj->addTextBreak();
+        $spaces = array();
+        $occurenceDescription = '';
+        foreach($event['occurrences'] as $occurrence){
+            if(isset($occurrence->rule->description)){
+                $occurenceDescription .= $occurrence->rule->description.'. ';
+            }
+            if(isset($occurrence->rule->price)){
+                $occurenceDescription .= $occurrence->rule->price.'. ';
+            }
+            if (!array_key_exists($occurrence->space->id, $spaces)){
+                $spaces[$occurrence->space->id] = $occurrence->space;
+            }
+        }
+        $spaceText = '';
+        foreach($spaces as $space){
+            $spaceText .= $space->name . ', '. $space->endereco.'. ';
+        }
+        $agentText = '';
+        foreach($event['relatedAgents'] as $group=>$relatedAgent){
+            $agentText .= $group.': ';
+            foreach($relatedAgent as $agent){
+                $agentText .= $agent->name.', ';
+            }
+        }
+
+        $textRunObj->addText($event['shortDescription'].' '.$agentText.' '.$spaceText.$occurenceDescription, $defaultFont);
+    };
+
+    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
+        $section->addText('');
+        $section->addText($event['name'], $eventTitle);
+        //$section->addText($event['shortDescription'], $defaultFont);
+        $spaces = array();
+        $occurenceDescription = '';
+        foreach($event['occurrences'] as $occurrence){
+            if(isset($occurrence->rule->description)){
+                $occurenceDescription .= trim($occurrence->rule->description).'. ';
+            }
+            if(isset($occurrence->rule->price)){
+                $occurenceDescription .= trim($occurrence->rule->price).'. ';
+            }
+            if (!array_key_exists($occurrence->space->id, $spaces)){
+                $spaces[$occurrence->space->id] = $occurrence->space;
+            }
+        }
+        $spaceText = '';
+        foreach($spaces as $space){
+            $spaceText .= trim($space->name) . ', '. trim($space->endereco).'. ';
+        }
+        $agentText = '';
+        foreach($event['relatedAgents'] as $group=>$relatedAgent){
+            $agentText .= trim($group).': ';
+            foreach($relatedAgent as $agent){
+                $agentText .= ($agent->name).', ';
+            }
+        }
+
+        $section->addText(trim($event['shortDescription']).'. '.trim($agentText).' '.trim($spaceText).' '.trim($occurenceDescription), $defaultFont);
+    };
+
+
+    foreach($linguagens as $linguagem){
+
+        $query = array(
+            'isVerified' => 'eq(true)',
+            '@from'=>$from->format('Y-m-d'),
+            '@to'=>$to->format('Y-m-d'),
+            '@select' => 'id,name,shortDescription,location,metadata,occurrences,project,relatedAgents',
+            '@order' => 'name ASC',
+            'term:linguagem'=>'EQ('.$linguagem.')'
+        );
+
+        $events = $app->controller('event')->apiQueryByLocation($query);
+
+        $section->addText('');
+        $section->addText('');
+        $section->addText(mb_strtoupper($linguagem, 'UTF-8').'*', $linguagemStyle);
+
+        $projects = array();
+
+        foreach($events as $event){
+            if($event['project']){
+                if(!isset($projects[$event['project']->id])){
+                    $projects[$event['project']->id] = array(
+                        'project' => $event['project'],
+                        'events' => array()
+                    );
+                }
+                $projects[$event['project']->id]['events'][] = $event;
+                continue;
+            }
+
+            if($this->action === 'em-cartaz-preview'){
+                $addEventBlockHtml($event);
+            }else{
+                $addEventBlockDoc($event);
+            }
+        }
+
+        foreach($projects as $project){
+            $textRunObj = $section->createTextRun();
+
+            if($this->action === 'em-cartaz-preview'){
+                $textRunObj->addText('PROJETO '.$project['project']->name, $eventTitle);
+            }else{
+                $section->addText('PROJETO '.$project['project']->name, $eventTitle);
+            }
+            foreach($project['events'] as $event){
+                if($this->action === 'em-cartaz-preview'){
+
+                    $addEventBlockHtml($event);
+                }else{
+                    $addEventBlockDoc($event);
+                }
+            }
+        }
+    }
+
+    if($this->action === 'em-cartaz-preview'){
+        //$content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
+
+        $this->render('part-em-cartaz', array(
+            'content'=>$objWriter->getWriterPart('Body')->write(),
+            'from' => $from,
+            'to' => $to
+        ));
+
+    }else{
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save("php://output");
+
+        $app->response()->header('Content-Type', 'application/vnd.ms-word');
+        $app->response()->header('Content-Disposition', 'attachment;filename="Em Cartaz de '.$from->format('d-m-Y').' a '.$to->format('d-m-Y').'.docx"');
+        $app->response()->header('Cache-Control', 'max-age=0');
+    }
+
 });

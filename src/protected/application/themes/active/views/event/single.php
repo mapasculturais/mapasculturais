@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if (is_editable()) {
     add_entity_types_to_js($entity);
@@ -11,8 +12,10 @@ if (is_editable()) {
     $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
-    //$app->enqueueStyle('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
 }
+
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 
@@ -82,7 +85,7 @@ add_occurrence_frequencies_to_js();
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <div class="barra-esquerda barra-lateral evento">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         <?php if(is_editable()): ?>
@@ -135,15 +138,15 @@ add_occurrence_frequencies_to_js();
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
-                    <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
-                    <?php endif; ?>
-                    <?php if (is_editable()): ?>
-                        <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                        <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
-                            <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-                        </div>
-                    <?php endif; ?>
+                <div class="avatar">
+                    <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                <?php endif; ?>
+                <?php if (is_editable()): ?>
+                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
+                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                        <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                    </div>
+                <?php endif; ?>
                 </div>
                 <!--.avatar-->
 
@@ -151,24 +154,29 @@ add_occurrence_frequencies_to_js();
                 <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
                 <div class="objeto-meta">
                     <div>
+                        <p>
+                            <?php if (is_editable() || $entity->subTitle): ?>
+                                <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                            <?php endif; ?>
+                        </p>
                         <span class="label">Linguagens: </span>
                         <?php if (is_editable()): ?>
-                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode(', ', $entity->terms['linguagem']) ?></span>
+                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
                         <?php else: ?>
-                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i)
-                                    echo ', ';
-                                ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i) echo ': '; ?>
+                                <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
+                            <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
                     <div>
                         <?php if (is_editable() || !empty($entity->terms['tag'])): ?>
                             <span class="label">Tags: </span>
                             <?php if (is_editable()): ?>
-                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode(', ', $entity->terms['tag']) ?></span>
+                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
                             <?php else: ?>
-                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i)
-                                        echo ', ';
-                                    ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i) echo '; '; ?>
+                                    <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
@@ -181,25 +189,10 @@ add_occurrence_frequencies_to_js();
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <p>
-                <?php if (!is_editable() || $entity->subTitle): ?>
-                    <span class="label">Sub-Título:</span><br>
+                <?php if (is_editable() || $entity->shortDescription): ?>
+                    <span class="label">Descrição Curta:</span><br>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
                 <?php endif; ?>
-                <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->subTitle; ?></span>
-            </p>
-            <p>
-                <?php
-                    /*Agente padrão da Giovanna editando atrações da Virada*/
-                    if($entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                        $shortDescriptionLabel = 'Sinopse';
-                    }else{
-                        $shortDescriptionLabel = 'Descrição Curta';
-                    }
-                ?>
-                <?php if (!is_editable() || $entity->shortDescription): ?>
-                    <span class="label"><?php echo $shortDescriptionLabel;?>:</span><br>
-                <?php endif; ?>
-
-                <span class="js-editable" data-edit="shortDescription" data-original-title="<?php echo $shortDescriptionLabel;?>" data-emptytext="Insira uma <?php echo strtolower($shortDescriptionLabel);?> para o evento" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
             <div class="servico">
 
@@ -234,10 +227,6 @@ add_occurrence_frequencies_to_js();
                     <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                 <?php endif; ?>
 
-                <?php if (is_editable() || $entity->duracao): ?>
-                    <p><span class="label">Duração: </span><span class="js-editable" data-edit="duracao" data-original-title="Duração" data-emptytext="000min"><?php echo $entity->duracao; ?></span></p>
-                <?php endif; ?>
-
                 <?php if(is_editable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                     <br>
                     <p>
@@ -248,7 +237,7 @@ add_occurrence_frequencies_to_js();
                         <?php endif; ?>
 
                         <?php if(is_editable() || $entity->descricaoSonora): ?>
-                            <p><span class="label">Descrição Sonora: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                            <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                         <?php endif; ?>
                     </p>
                 <?php endif; ?>
@@ -442,10 +431,14 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <p class="staging-hidden">
-            <span class="label">Resumo:</span><br>
-            Resumo da regra
-        </p>
+        <div>
+            <label for="description">Descrição legível do horário:</label><br>
+            <textarea name="description">{{rule.description}}</textarea>
+        </div>
+        <div>
+            <label for="price">Preço:</label><br>
+            <input type="text" name="price" value="{{rule.price}}">
+        </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">
         </footer>
