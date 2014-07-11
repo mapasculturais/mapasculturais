@@ -89,7 +89,9 @@ class Event extends EntityController {
             $occurrences_readable[$e->id] = array();
 
             $occurrences_readable[$e->id] = array_map(function($occ){
-                return $occ->rule->description;
+                if(isset($occ->rule->description)) {
+                    return $occ->rule->description;
+                }
             }, $occurrences[$e->id]);
 
         }
