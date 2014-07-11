@@ -23,8 +23,6 @@ add_map_assets();
 
 add_occurrence_frequencies_to_js();
 ?>
-<script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map', isMapEditable:false}); }); </script>
-
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
