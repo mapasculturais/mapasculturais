@@ -4,6 +4,15 @@ $app = MapasCulturais\App::i();
 
 return array(
     'issue 212' => function() use ($app){
+        $app->hook('entity(<<event|space|project|agent>>).remove:before', function() use($app){
+            $app->log->info(" >> REMOVING $this->className ($this->id) - $this->name" );
+            
+            if($this->className === 'MapasCulturais\Entities\Event'){
+                foreach($this->occurrences as $occ)
+                    $app->log->info("   >> >>  Space name: {$occ->space->name}" );
+            }
+        });
+        
         // destino => array de espacos que vao ser removidos
         $remover_espacos = [471, 491, 328, 516, 526];
 
@@ -41,6 +50,7 @@ return array(
 
         foreach($espacos as $destino_id => $origens){
             $destino = $repo->find($destino_id);
+            
 
             foreach($origens as $space_id){
                 $remover_espacos[] = $space_id;
@@ -49,7 +59,7 @@ return array(
 
                 $occurrences = $app->repo('EventOccurrence')->findBy(['space' => $space]);
 
-                $app->log->info('Movendo os eventos do espaço ' . $space->name . ' para o espaço ' . $destino->name);
+                $app->log->info('Movendo os eventos do espaço ' . $space->name . ' para o espaço ' . $destino->name . ' STATUS: ' . $destino->status);
 
                 foreach($occurrences as $oc){
                     $oc->space = $destino;
@@ -61,11 +71,21 @@ return array(
         $app->em->flush();
 
         $secretaria_oficial = $app->repo('Agent')->find(425);
+        
         $secretaria_lixo = $app->repo('Agent')->find(433);
 
         $agente_virada_cultural_lixo = $app->repo('Agent')->find(428);
+        
+        foreach($agente_virada_cultural_lixo->projects as $project){
+            $project->owner = $secretaria_oficial;
+            $project->save();
+        }
+        
+        $app->em->refresh($agente_virada_cultural_lixo);
+        
         $agente_virada_cultural_lixo->destroy();
-
+        
+        
         foreach($secretaria_lixo->spaces as $entity){
             $app->log->info('Movendo o espaço ' . $entity->name . ' para a secretaria oficial');
 
@@ -89,7 +109,6 @@ return array(
 
         $app->em->flush();
 
-
         foreach($remover_espacos as $space_id){
             $space = $repo->find($space_id);
 
@@ -99,8 +118,8 @@ return array(
         }
 
         $app->em->flush();
-
-
+       
+        $app->em->refresh($secretaria_lixo);
         $secretaria_lixo->destroy();
 
         return true;
