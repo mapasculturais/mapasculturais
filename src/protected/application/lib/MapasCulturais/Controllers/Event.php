@@ -88,7 +88,7 @@ class Event extends EntityController {
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
             $occurrences_readable[$e->id] = array();
 
-            $occurrences_readable[$e->id] = array_map(function($occ){
+            $occurrences_readable[$e->id] = array_map(function($occ) use ($app) {
                 if(isset($occ->rule->description)) {
                     return $occ->rule->description;
                 }else{
