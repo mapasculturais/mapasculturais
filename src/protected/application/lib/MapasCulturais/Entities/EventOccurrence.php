@@ -378,6 +378,26 @@ class EventOccurrence extends \MapasCulturais\Entity
             'deleteUrl' => $this->deleteUrl,
         );
     }
+    
+    protected function canUserCreate($user){
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+    }
+    
+    protected function canUserModify($user){
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

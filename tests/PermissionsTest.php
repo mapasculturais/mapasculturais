@@ -727,6 +727,60 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that user CANNOT remove control of other related agent in $plural that he has control");
         }
         
+        $this->resetTransactions();
+    }
+    
+    function testEventOccurrencePermissions(){
+        $this->resetTransactions();
+        
+        $rule = array(
+            'startsAt' => '11:11',
+            'duration' => '01h00',
+            'frequency' => 'once',
+            'startsOn' => '2014-07-16',
+            'until' => '',
+            'description' => 'das 11:11 às 12:11 do dia 16 de Julho',
+            'price' => 'R$11,11'
+        );
+        
+        $user0 = $this->getUser('normal', 0);
+        $user1 = $this->getUser('normal', 1);
+        
+        $space = $user1->spaces[0];
+        
+        // Asserting that a normal user CANNOT create an event occurrence on spaces that he don't have control
+        $this->user = $user0;
+        
+        $event = $this->getNewEntity('Event');
+        $event->save();
+        
+        $this->assertPermissionDenied(function() use($event, $space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CANNOT create an event occurrence on spaces that he don't have control");
+        
+        
+        // Asserting that a normal user CAN create an event occurrence on spaces that he have control
+        $this->user = $user1;
+        
+        $space->createAgentRelation($user0->profile, "AGENTS WITH CONTROL", true, true);
+        
+        $this->user = $user0;
+        
+        $this->assertPermissionGranted(function() use($event, $space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
     }
 
     function testProjectRegistrationPermissions(){
