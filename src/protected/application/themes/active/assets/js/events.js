@@ -57,7 +57,8 @@ MapasCulturais.EventOccurrenceManager = {
                         $element.append('<span class="erro hltip" data-hltip-classes="hltip-erro" title="Erro:'+message+'"/>');
                         //$form.find('[name="'+i+'"]')
                     }
-                    $form.find('div.mensagem.erro').html('Corrija os seguintes erros abaixo.')
+                    $form.parent().scrollTop(0);
+                    $form.find('div.mensagem.erro').html('Corrija os erros indicados abaixo.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -87,10 +88,19 @@ MapasCulturais.EventOccurrenceManager = {
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
             },
             error: function(xhr, textStatus, errorThrown, $form) {
-                $form.find('div.mensagem.erro').html('Erro inesperado.')
-                    .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
-                    .delay(MapasCulturais.Messages.delayToFadeOut)
-                    .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+                $form.parent().scrollTop(0);
+                
+                if(xhr.status === 403){
+                    $form.find('div.mensagem.erro').html('Você não tem permissão para criar eventos nesse espaço.')
+                        .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
+                        .delay(MapasCulturais.Messages.delayToFadeOut)
+                        .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+                }else{
+                    $form.find('div.mensagem.erro').html('Erro inesperado.')
+                        .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
+                        .delay(MapasCulturais.Messages.delayToFadeOut)
+                        .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+                }
             },
             dataType:  'json'
         });
