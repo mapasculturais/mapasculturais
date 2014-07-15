@@ -208,10 +208,6 @@ add_occurrence_frequencies_to_js();
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                 <?php endif; ?>
 
-                <?php if (is_editable() || $entity->preco): ?>
-                    <p><span class="label">Entrada: </span><span class="js-editable" data-edit="preco" data-original-title="Preço" data-emptytext="Informe o preço do evento"><?php echo $entity->preco; ?></span></p>
-                <?php endif; ?>
-
                 <?php if (is_editable() || $entity->site): ?>
                     <p><span class="label">Site:</span>
                         <?php if (is_editable()): ?>
