@@ -30,14 +30,19 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
+            <p><span class="label">Descrição:</span> {{rule.description}}</p>
+            <p><span class="label">Preço:</span> {{rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{#rule.duration}}
+                <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{/rule.duration}}
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            {{#rule.screen_until}}
+                <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+            {{/rule.screen_until}}
         </div>
         <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -67,11 +72,8 @@ add_occurrence_frequencies_to_js();
         </header>
         {{/space}}
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
-            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
-            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            <p>{{rule.description}}</p>
+            <p><span class="label">Preço:</span> {{rule.price}}</p>
         </div>
         <!-- .infos -->
         {{#space}}
