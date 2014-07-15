@@ -17,9 +17,9 @@ git checkout $BRANCH
 
 cd $DIR/../src/protected/
 
-composer update
+composer.phar update
 
-composer dump-autoload --optimize
+composer.phar dump-autoload --optimize
 
 cd tools
 
