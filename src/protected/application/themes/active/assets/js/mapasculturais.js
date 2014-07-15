@@ -140,8 +140,13 @@ MapasCulturais.Modal = {
     $bg: null,
     initKeyboard: function (selector){
         $(document.body).keyup(function (e){
-            //if(e.keyCode == 27)
-            //    $(selector + ' .js-close').click();
+            if(e.keyCode == 27){
+                $(selector).each(function(){
+                   if($(this).is(':visible')) {
+                       $(this).find('.js-close').click();
+                   }
+                });
+            }
         });
     },
 
@@ -202,6 +207,8 @@ MapasCulturais.Modal = {
     close: function(selector){
         $('body').css('overflow','auto');
         var $dialog = $(selector);
+        //alert('closing');
+        $dialog.find('.editable').editable('hide');
         $dialog.css(MapasCulturais.Modal.cssFinal).animate(MapasCulturais.Modal.cssInit, MapasCulturais.Modal.time, function(){
             $dialog.hide();
         });
