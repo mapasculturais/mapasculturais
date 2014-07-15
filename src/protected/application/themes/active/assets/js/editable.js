@@ -512,14 +512,15 @@ MapasCulturais.MetalistManager = {
                 var $target = $($form.data('response-target'));
                 var group = $form.data('metalist-group');
                 var action = $form.data('metalist-action');
-                var template = $form.find('script[type="js-response-template"]').text();
+                var template = $form.find('script.js-response-template').text();
                 var $editBtn;
 
                 var $html = $(Mustache.render(template, response));
 
                 $editBtn = $html.find('.js-open-dialog');
                 $editBtn.data('item', response);
-
+                    console.log('tartget', $target);
+                    console.log('template', template);
                 switch(action){
 
                     case 'edit':
@@ -538,7 +539,7 @@ MapasCulturais.MetalistManager = {
 
                         //if this metalist is of videos, update the new displayed item passing the video url
                         if(group == 'videos'){
-                            MapasCulturais.Video.getAndSetVideoData(response.value, $('.js-metalist-item-id-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
+                            MapasCulturais.Video.getAndSetVideoData(response.value, $('#video-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
 
                             $('#video-player:hidden').show();
 

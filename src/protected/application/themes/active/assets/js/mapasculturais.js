@@ -268,7 +268,8 @@ MapasCulturais.MetaListUpdateDialog = function ($caller){
         responseTemplate = $caller.data('response-template');
     }
 
-    $form.find('script[type="js-response-template"]').text(responseTemplate);
+    $form.find('script.js-response-template').text(responseTemplate);
+    console.log(''  )
 
     //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
     if(group == 'videos') {
@@ -388,7 +389,9 @@ MapasCulturais.Video = {
             });
         }else if(videoData.parsedURL.attr('host').indexOf('vimeo') != -1){
             videoData.provider = 'vimeo';
-            videoData.videoID = videoData.parsedURL.attr('path').split('/')[1];
+            console.log(videoData.parsedURL);
+            var tmpArray = videoData.parsedURL.attr('path').split('/');
+            videoData.videoID = tmpArray[tmpArray.length-1];
             $.getJSON('http://www.vimeo.com/api/v2/video/'+videoData.videoID+'.json?callback=?', {format: "json"}, function(data) {
                 videoData.details = data[0];
                 videoData.thumbnailURL = data[0].thumbnail_small;
