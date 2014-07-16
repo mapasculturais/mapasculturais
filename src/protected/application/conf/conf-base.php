@@ -101,6 +101,8 @@ return array(
             'projeto'   => array('project', 'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
+            'sobre'     => array('site',    'page', array('sobre')),
+            'como-usar'     => array('site',    'page', array('como-usar'))
         ),
         'controllers' => array(
             'painel'         => 'panel',
