@@ -382,11 +382,11 @@ input.data { width:76px; }
 .menu .entrar:hover { border-top: 6px solid #f90; }
 .menu .entrar:hover a { color: #f90; }
 .menu .usuario:hover, .menu .notificacoes:hover { border-top: 6px solid #f90; }
-.usuario .submenu { left: -36px; width: 180px; background: #f90; }
+.usuario .submenu { left: -2.5rem; width: 10rem; background: #f90; }
 #main-nav .usuario .submenu a { color: #000; padding: .5rem; }
 #main-nav .usuario .submenu a:hover { color: #fff; }
 .usuario .avatar{ float: none; width: 3rem; height: 3rem; margin: 0 auto; }
-.usuario .setinha { left: 79px; top: -16px; border-color: transparent transparent #f90 transparent; }
+.usuario .setinha { left: 50%; top: -16px; margin-left: -8px; border-color: transparent transparent #f90 transparent; }
 .notificacoes .submenu { left: -110px; width: 300px; background: #e2e2e2; }
 .notificacoes .slimScrollDiv { margin-bottom: .75rem; }
 .notificacoes:hover > a { color: #f90; }
