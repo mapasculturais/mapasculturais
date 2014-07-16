@@ -31,6 +31,30 @@ class Site extends \MapasCulturais\Controller {
     }
 
     function GET_page() {
-        $this->render('page');
+        $app = \MapasCulturais\App::i();
+        if(key_exists(0, $this->data))
+            $page_name = $this->data[0];
+        else
+            $app->pass();
+        
+        $filename = ACTIVE_THEME_PATH . 'pages/' . $page_name . '.md';
+        
+        if(file_exists($filename)){
+            $content = \Michelf\MarkdownExtra::defaultTransform(file_get_contents($filename));
+            $this->render('page', array('content' => $content));
+            return ;
+            
+            preg_match('#(\<%left(?<left>.*)left%\>)?[[:blank:]]*(\<%right(?<right>.*)right%\>)?(?<content>.*)#s', file_get_contents($filename), $matches);
+            die(var_dump($matches));
+            
+                
+                $content = \Michelf\MarkdownExtra::defaultTransform();
+                $left = \Michelf\MarkdownExtra::defaultTransform(file_get_contents($content));
+                $right = \Michelf\MarkdownExtra::defaultTransform(file_get_contents($content));
+            
+                $this->render('page', array('content' => $content));
+        }else{
+            $app->pass();
+        }
     }
 }
