@@ -34,38 +34,6 @@
         <!--[if lt IE 9]>
         <script src="<?php echo $assetURL ?>/js/html5.js" type="text/javascript"></script>
         <![endif]-->
-        <style>
-
-            /* Styling for the ngProgress itself */
-            #ngProgress {
-                margin: 0;
-                padding: 10 0;
-                z-index: 99998;
-                background-color: white;
-                color: red;
-                box-shadow: 0 0 10px 0; /* Inherits the font color */
-                height: 5px;
-                opacity: 0;
-
-                /* Add CSS3 styles for transition smoothing */
-                -webkit-transition: all 0.2s ease-in-out;
-                -moz-transition: all 0.2s ease-in-out;
-                -o-transition: all 0.2s ease-in-out;
-                transition: all 0.2s ease-in-out;
-            }
-
-            /* Styling for the ngProgress-container */
-            #ngProgress-container {
-                position: fixed;
-                margin: 0;
-                padding: 0;
-                top: 0px;
-                left: 0;
-                right: 0;
-                z-index: 99999;
-            }
-
-        </style>
     </head>
 
     <body <?php body_properties() ?> >
