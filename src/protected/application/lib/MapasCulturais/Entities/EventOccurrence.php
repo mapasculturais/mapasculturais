@@ -265,7 +265,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->startsAt = @$value['startsOn'] . ' ' . @$value['startsAt'];
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
-        if($value['duration']){
+        if(!empty($value['duration'])){
             @list($hours, $minutes) = explode('h', $value['duration']);
             $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
 
@@ -377,6 +377,26 @@ class EventOccurrence extends \MapasCulturais\Entity
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
         );
+    }
+    
+    protected function canUserCreate($user){
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+    }
+    
+    protected function canUserModify($user){
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
 
     //============================================================= //

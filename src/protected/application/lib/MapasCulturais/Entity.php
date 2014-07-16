@@ -94,6 +94,53 @@ abstract class Entity implements \JsonSerializable{
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
     }
+    
+    function simplify($properties = 'id,name'){
+        $e = new \stdClass;
+        
+        $properties = is_string($properties) ? explode(',',$properties) : $properties;
+        if(is_array($properties)){
+            foreach($properties as $prop){
+                switch ($prop){
+                    case 'className':
+                        $e->className = $this->getClassName();
+                    break;
+
+                    case 'files':
+                        $e->files = array();
+
+                        foreach ($this->files as $group => $files){
+                            if(!isset($e->files[$group]))
+                                $e->files[$group] = array();
+
+                            $e->files[$group][] = $f->simplify(array('id', 'url', 'files'));
+                        }
+                    break;
+
+                    case 'avatar':
+                        if($this->usesAvatar()){
+                            $e->avatar = array();
+                            if($avatar = $this->avatar)
+                                foreach($avatar->files as $transformation => $f)
+                                    $e->avatar[$transformation] = $f->simplify(array('id', 'url'));
+                        }
+                    break;
+
+                    case 'terms':
+                        if($this->usesTaxonomies())
+                            $e->terms = $this->getTerms();
+                        
+                    break;
+                    
+                    default:
+                        $e->$prop = $this->$prop;
+                    break;
+                }
+            }
+        }
+        
+        return $e;
+    }
 
     function dump(){
         echo '<pre>';
@@ -212,22 +259,48 @@ abstract class Entity implements \JsonSerializable{
      */
     public static function getPropertiesMetadata(){
         $class_metadata = App::i()->em->getClassMetadata(get_called_class())->fieldMappings;
+        $class_relations = App::i()->em->getClassMetadata(get_called_class())->getAssociationMappings();
+        
         $data_array = array();
+        
+        $class = self::getClassName();
+        
         foreach ($class_metadata as $key => $value){
-            if($key[0] == '_')
-                continue;
-
-            $data_array[$key] = array(
+            $metadata = array(
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
                 'length' => $value['length']
             );
+            
+            if($key[0] == '_'){
+                $prop = substr($key, 1);
+                if(method_exists($class, 'get' . $prop)){
+                     $metadata['@select'] = $prop;
+                }else{
+                    continue;
+                }
+            }
+            $data_array[$key] = $metadata;
         }
 
-        $class = get_called_class();
-        if($class::usesMetadata()){
-            $data_array = $data_array + self::getMetadataMetadata();
+        foreach ($class_relations as $key => $value){
+            $data_array[$key] = array(
+                'isMetadata' => false,
+                'isEntityRelation' => true,
+                
+                'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
+                'isOwningSide' => $value['isOwningSide']
+            );
         }
+        
+        if($class::usesMetadata()){
+            $data_array = $data_array + $class::getMetadataMetadata();
+        }
+        
+        
         return $data_array;
     }
 
@@ -274,11 +347,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function getControllerId(){
         return App::i()->getControllerIdByEntity($this);
-    }
-
-
-    public function getTitle(){
-        return App::i()->getTitle($this);
     }
 
 
@@ -329,6 +397,13 @@ abstract class Entity implements \JsonSerializable{
             $this->saveTerms();
             $app->em->flush();
         }
+        
+        // delete the entity cache
+        $repo = $this->repo();
+        if(method_exists($repo, 'deleteEntityCache'))
+            $repo->deleteEntityCache($this->id);
+                
+                
     }
 
     /**

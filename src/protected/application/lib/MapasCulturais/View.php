@@ -112,7 +112,7 @@ class View extends \Slim\View {
      * @param string $template the template name.
      * @return string The rendered template
      */
-    public function render($template){
+    public function render($template, $data = null){
         $this->template = $template;
 
         if($this->_partial)
@@ -253,5 +253,29 @@ class View extends \Slim\View {
                 $template = '../layouts/parts/' . $template;
 
         echo $this->partialRender($template, $data);
+    }
+    
+    function getTitle($entity = null){
+        $app = App::i();
+        $title = '';
+        if($entity){
+            $controller = $app->getControllerByEntity($entity);
+
+            $title .= $app->getReadableName($controller->action) ? $app->getReadableName($controller->action) : '';
+            $title .= $app->getReadableName($controller->id) ? ' '.$app->getReadableName($controller->id) : '';
+            $title .= $entity->name ? ' '.$entity->name : '';
+        }else{
+            $title = $app->getReadableName($this->controller->id) . ' - ' . $app->getReadableName($this->controller->action);
+        }
+
+        return $title;
+    }
+    
+    function asset($file, $print = true){
+        $url = App::i()->getAssetUrl() . '/' . $file;
+        if($print)
+            echo $url;
+        
+        return $url;
     }
 }

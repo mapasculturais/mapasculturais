@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "Entity";
 
 if (is_editable()) {
     add_entity_types_to_js($entity);
@@ -13,14 +14,15 @@ if (is_editable()) {
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 }
 
+add_agent_relations_to_js($entity);
+add_angular_entity_assets($entity);
+
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
 
 add_map_assets();
 
 add_occurrence_frequencies_to_js();
 ?>
-<script> $(function(){ MapasCulturais.Map.initialize({mapSelector:'.js-map', isMapEditable:false}); }); </script>
-
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
@@ -28,14 +30,19 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
+            <p><span class="label">Descrição:</span> {{rule.description}}</p>
+            <p><span class="label">Preço:</span> {{rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{#rule.duration}}
+                <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{/rule.duration}}
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            {{#rule.screen_until}}
+                <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+            {{/rule.screen_until}}
         </div>
         <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -65,11 +72,8 @@ add_occurrence_frequencies_to_js();
         </header>
         {{/space}}
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
-            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
-            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            <p>{{rule.description}}</p>
+            <p><span class="label">Preço:</span> {{rule.price}}</p>
         </div>
         <!-- .infos -->
         {{#space}}
@@ -81,7 +85,7 @@ add_occurrence_frequencies_to_js();
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <div class="barra-esquerda barra-lateral evento">
-	<div class="setinha"></div>
+    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         <?php if(is_editable()): ?>
@@ -157,22 +161,22 @@ add_occurrence_frequencies_to_js();
                         </p>
                         <span class="label">Linguagens: </span>
                         <?php if (is_editable()): ?>
-                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode(', ', $entity->terms['linguagem']) ?></span>
+                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
                         <?php else: ?>
-                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i)
-                                    echo ', ';
-                                ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i) echo ': '; ?>
+                                <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
+                            <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
                     <div>
                         <?php if (is_editable() || !empty($entity->terms['tag'])): ?>
                             <span class="label">Tags: </span>
                             <?php if (is_editable()): ?>
-                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode(', ', $entity->terms['tag']) ?></span>
+                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
                             <?php else: ?>
-                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i)
-                                        echo ', ';
-                                    ?><a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php endforeach; ?>
+                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i) echo '; '; ?>
+                                    <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
@@ -204,10 +208,6 @@ add_occurrence_frequencies_to_js();
                     }
                     ?>
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
-                <?php endif; ?>
-
-                <?php if (is_editable() || $entity->preco): ?>
-                    <p><span class="label">Entrada: </span><span class="js-editable" data-edit="preco" data-original-title="Preço" data-emptytext="Informe o preço do evento"><?php echo $entity->preco; ?></span></p>
                 <?php endif; ?>
 
                 <?php if (is_editable() || $entity->site): ?>
@@ -427,10 +427,14 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <p class="staging-hidden">
-            <span class="label">Resumo:</span><br>
-            Resumo da regra
-        </p>
+        <div>
+            <label for="description">Descrição legível do horário:</label><br>
+            <textarea name="description">{{rule.description}}</textarea>
+        </div>
+        <div>
+            <label for="price">Preço:</label><br>
+            <input type="text" name="price" value="{{rule.price}}">
+        </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">
         </footer>

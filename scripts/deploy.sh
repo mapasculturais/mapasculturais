@@ -17,12 +17,12 @@ git checkout $BRANCH
 
 cd $DIR/../src/protected/
 
-composer update
+composer.phar update
 
-composer dump-autoload --optimize
+composer.phar dump-autoload --optimize
 
 cd tools
 
-doctrine ./doctrine orm:generate-proxies
+./doctrine orm:generate-proxies
 
 apachectl start

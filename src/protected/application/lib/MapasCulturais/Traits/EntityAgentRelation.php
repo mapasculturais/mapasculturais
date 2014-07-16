@@ -18,7 +18,7 @@ trait EntityAgentRelation {
     }
 
     function getAgentRelationEntityClassName(){
-        return preg_replace('#Entities\\\([^\\\]+)$#', 'Entities\\\AgentRelations\\\$1', $this->getClassName());
+        return $this->getClassName() . 'AgentRelation';
     }
 
     function getAgentRelations($has_control = null){

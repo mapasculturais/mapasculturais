@@ -3,7 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 
@@ -19,15 +19,16 @@ use MapasCulturais\App;
  */
 class Agent extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityGeoLocation,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityGeoLocation,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -153,9 +154,13 @@ class Agent extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $events = array();
-
-
-    protected $_avatar;
+    
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $__metadata = array();
+    
 
     /**
      * Constructor
@@ -199,13 +204,6 @@ class Agent extends \MapasCulturais\Entity
         $this->checkPermission('modifyOwner');
         $user->checkPermission('modify');
         $this->user = $user;
-    }
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
     }
 
     function jsonSerialize() {

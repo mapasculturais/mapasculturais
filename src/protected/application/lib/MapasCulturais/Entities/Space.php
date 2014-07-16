@@ -2,6 +2,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 /**
@@ -15,17 +16,18 @@ use MapasCulturais\App;
  */
 class Space extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityOwnerAgent,
-        \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityGeoLocation,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityNested,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityGeoLocation,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityNested,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
     protected static $validations = array(
@@ -110,6 +112,13 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
+    
+    /**
+     * @var \MapasCulturais\Entities\EventOccurrence[] Event Occurrences
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="space", fetch="LAZY", cascade={"remove"})
+     */
+    protected $eventOccurrences;
 
     /**
      * @var \MapasCulturais\Entities\Space
@@ -125,11 +134,9 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Space[] Chield spaces
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
     protected $children;
-
-    protected $_avatar;
 
 
     /**
@@ -155,18 +162,17 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
+    
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $__metadata = array();
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
         parent::__construct();
-    }
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
     }
 
     //============================================================= //

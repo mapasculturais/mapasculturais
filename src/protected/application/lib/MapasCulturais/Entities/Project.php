@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 /**
@@ -14,16 +15,17 @@ use MapasCulturais\App;
  */
 class Project extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityOwnerAgent,
-        \MapasCulturais\Traits\EntityTypes,
-        \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles,
-        \MapasCulturais\Traits\EntityMetaLists,
-        \MapasCulturais\Traits\EntityTaxonomies,
-        \MapasCulturais\Traits\EntityAgentRelation,
-        \MapasCulturais\Traits\EntityNested,
-        \MapasCulturais\Traits\EntityVerifiable,
-        \MapasCulturais\Traits\EntitySoftDelete;
+    use Traits\EntityOwnerAgent,
+        Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityFiles,
+        Traits\EntityAvatar,
+        Traits\EntityMetaLists,
+        Traits\EntityTaxonomies,
+        Traits\EntityAgentRelation,
+        Traits\EntityNested,
+        Traits\EntityVerifiable,
+        Traits\EntitySoftDelete;
 
 
     protected static $validations = array(
@@ -116,8 +118,6 @@ class Project extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
-
-
     /**
      * @var \MapasCulturais\Entities\Project
      *
@@ -128,6 +128,16 @@ class Project extends \MapasCulturais\Entity
      */
     protected $parent;
 
+
+    /**
+     * @var \MapasCulturais\Entities\Project[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $children;
+    
+    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -137,9 +147,13 @@ class Project extends \MapasCulturais\Entity
      * })
      */
     protected $owner;
-
-
-    protected $_avatar;
+    
+    /**
+     * @var \MapasCulturais\Entities\Event[] Event
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
+     */
+    protected $events;
 
     /**
      * @var bool
@@ -147,13 +161,11 @@ class Project extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-
-    function getAvatar(){
-        if(!$this->_avatar)
-            $this->_avatar = $this->getFile('avatar');
-
-        return $this->_avatar;
-    }
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $__metadata = array();
 
     function setRegistrationFrom($date){
         $this->registrationFrom = new \DateTime($date);
@@ -187,7 +199,23 @@ class Project extends \MapasCulturais\Entity
         $app = App::i();
         $group = $app->projectRegistrationAgentRelationGroupName;
         $relation_class = $this->getAgentRelationEntityClassName();
-        return $app->repo($relation_class)->findOneBy(array('group' => $group, 'owner' => $this, 'agent' => $agent));
+        
+        $dql = "SELECT e FROM $relation_class e WHERE e.group = :g AND e.owner = :o AND e.agent = :a";
+        $app->log->info("DQL::::::::::::::::::::::::::::::::::::::: $dql");
+        $q = $app->em->createQuery($dql);
+        $q->setParameters(array(
+            'a' => $agent,
+            'o' => $this,
+            'g' => $group
+        ));
+        
+        $q->setMaxResults(1);
+        
+        $result = $q->getOneOrNullResult();
+        $c = get_class($result);
+        $app->log->info("))))))))))))))))))))))))) $c (((((((((((((((((((((((((");
+        return $result;
+        // return $app->repo($relation_class)->findOneBy(array('group' => $group, 'owner' => $this, 'agent' => $agent));
     }
 
     function isRegistered(Agent $agent){
@@ -196,7 +224,7 @@ class Project extends \MapasCulturais\Entity
 
     function isRegistrationApproved(Agent $agent){
         $registration = $this->getRegistrationByAgent($agent);
-        return $registration && $registration->status = AgentRelations\Project::STATUS_ENABLED;
+        return $registration && $registration->status = ProjectAgentRelation::STATUS_ENABLED;
     }
 
     function register(Agent $agent, File $registrationForm = null){
@@ -218,7 +246,7 @@ class Project extends \MapasCulturais\Entity
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
-        $relation->status = AgentRelations\Project::STATUS_REGISTRATION;
+        $relation->status = ProjectAgentRelation::STATUS_REGISTRATION;
 
         $relation->save();
 
@@ -246,7 +274,7 @@ class Project extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, 'project.approveRegistration:before', array($registration));
 
-        $registration->status = AgentRelations\Project::STATUS_ENABLED;
+        $registration->status = ProjectAgentRelation::STATUS_ENABLED;
 
         $registration->save(true);
         $this->clearAgentRelationCache();
@@ -266,7 +294,7 @@ class Project extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, 'project.rejectRegistration:before', array($registration));
 
-        $registration->status = AgentRelations\Project::STATUS_REGISTRATION_REJECTED;
+        $registration->status = ProjectAgentRelation::STATUS_REGISTRATION_REJECTED;
 
         $registration->save(true);
         $this->clearAgentRelationCache();
@@ -300,13 +328,15 @@ class Project extends \MapasCulturais\Entity
             FROM
                 $relation_class e
                 JOIN e.agent a
-            WHERE e.group = :group
+            WHERE e.group = :group AND e.owner = :owner
+            
             $status_dql
             ORDER BY
                 a.name ASC
         ");
 
         $q->setParameter('group', $group);
+        $q->setParameter('owner', $this);
 
         $result = $q->getResult();
 
@@ -314,7 +344,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     function getApprovedRegistrations(){
-        return $this->getRegistrations(AgentRelations\Project::STATUS_ENABLED);
+        return $this->getRegistrations(ProjectAgentRelation::STATUS_ENABLED);
+    }
+    
+    
+    
+    /** @ORM\PreRemove */
+    public function unlinkEvents(){ 
+        foreach($this->events as $event)
+            $event->project = null;
     }
 
     //============================================================= //
