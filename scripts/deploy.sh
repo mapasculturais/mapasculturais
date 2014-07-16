@@ -1,6 +1,4 @@
 #!/bin/bash
-sudo apachectl stop
-
 if [[ $1 ]]; then
 	BRANCH=$1
 else
@@ -25,4 +23,4 @@ cd tools
 
 ./doctrine orm:generate-proxies
 
-apachectl start
+sudo restart php5-fpm
