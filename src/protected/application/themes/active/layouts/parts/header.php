@@ -191,22 +191,25 @@
                                 <li>
                                     <a href="<?php echo $app->createUrl('panel');?>">Painel</a>
                                 </li>
-                                <li><a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
-                                    <a href="<?php echo $app->createUrl('event', 'create') ?>" ><span class="adicionar"></span></a>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
                                 </li>
-                                <li><a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
-                                    <a href="<?php echo $app->createUrl('agent', 'create') ?>"><span class="adicionar"></span>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
                                 </li>
                                 <li>
                                     <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
-                                    <a href="<?php echo $app->createUrl('space', 'create') ?>"><span class="adicionar"></span></a>
+                                    <a class="adicionar"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
                                 </li>
                                 <li>
                                     <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
-                                    <a href="<?php echo $app->createUrl('project', 'create') ?>"><span class="adicionar"></span></a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                                 </li>
-                                <li><a class="staging-hidden" href="<?php echo $app->createUrl('panel', 'contracts') ?>">Meus Contratos</a>
+                                <li class="staging-hidden"><a href="<?php echo $app->createUrl('panel', 'contracts') ?>">Meus Contratos</a>
                                 </li>
+                                <li class="row"></li>
                                 <li><a href="#">Ajuda</a></li>
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
                             </ul>
