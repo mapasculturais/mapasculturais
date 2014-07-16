@@ -12,6 +12,7 @@
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "v2.5.1",
-        "phpoffice/phpword": "dev-master"
+        "phpoffice/phpword": "dev-master",
+        "michelf/php-markdown": "1.4.1"
     }
 }

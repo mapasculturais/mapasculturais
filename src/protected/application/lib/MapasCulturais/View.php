@@ -278,4 +278,8 @@ class View extends \Slim\View {
         
         return $url;
     }
+    
+    function renderMarkdown($markdown){
+        return \Michelf\MarkdownExtra::defaultTransform($markdown);
+    }
 }
