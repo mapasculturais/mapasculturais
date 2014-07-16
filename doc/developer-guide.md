@@ -9,7 +9,7 @@ Guia do Desenvolvedor
     - [Temas](#temas)
       - [theme.php](theme-php)
       - [Estrutura de pastas](#estrutura-de-pastas)
-    - [Páginas](#Paginas)
+    - [Páginas](#Páginas)
     - [Layouts](#Layouts)
     - [Visões](#Visões)
     - [Partes](#Partes)
