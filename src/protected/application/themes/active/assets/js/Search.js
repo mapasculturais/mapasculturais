@@ -70,8 +70,8 @@
         event: {
             keyword: '',
             linguagens: [],
-            from: null,
-            to: null,
+            from: moment().format('YYYY-MM-DD'),
+            to: moment().add(1, 'week').format('YYYY-MM-DD'),
             classificacaoEtaria: [],
             isVerified: false
         },
