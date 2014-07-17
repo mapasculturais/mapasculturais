@@ -1,4 +1,12 @@
+<!--header class="clearfix">
+    <p class="alignleft">
+        <strong>XX</strong> eventos entre <a class="tag">00/00/00</a> e <a class="tag">00/00/00</a>
+    </p>
+
+    <a class="botao adicionar alignright" href="#">adicionar evento</a>
+</header-->
 <?php foreach($events as $event): ?>
+
     <article class="objeto evento clearfix">
         <h1><a href="<?php echo $app->createUrl('event', 'single', array($event->id))?>">
             <?php echo $event->name ?></a>
