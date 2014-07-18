@@ -313,6 +313,10 @@
 
             function apiCount(entity, searchData, action) {
 
+                if(entity === 'space' && action === 'findByEvents'){
+                    entity = 'event';
+                    action = 'findByLocation';
+                }
                 action = action || 'find';
                 var querystring = "";
 
