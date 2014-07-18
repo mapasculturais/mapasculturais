@@ -142,7 +142,7 @@ class Event extends \MapasCulturais\Entity
     protected $__metadata = array();
     
     protected function canUserCreate($user){
-        $can = $this->genericPermissionVerification($user);
+        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
         
         if($can && $this->project){
             return $this->project->userHasControl($user);
@@ -152,8 +152,7 @@ class Event extends \MapasCulturais\Entity
     }
     
     protected function canUserModify($user){
-        $can = $this->genericPermissionVerification($user);
-        
+        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
         if($can && $this->project){
             return $this->project->userHasControl($user);
         }else{

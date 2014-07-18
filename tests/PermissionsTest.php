@@ -329,6 +329,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
          */
         
         foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
             $entities = $class == 'Agent' ? $user1()->$plural : $user1()->profile->$plural;
             
             $entity = $entities[0];
@@ -508,10 +509,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $this->user = $user2();
                 $entity = $this->getNewEntity($class);
                 $entity->owner = $user1()->profile;
-                
-                if($class === "Event")
-                    var_dump($entity->dump());
-                
                 $entity->save(true);
             }, "Asserting that user 2, now with control, CAN create $plural owned by user 1 after the relation is created");
             
