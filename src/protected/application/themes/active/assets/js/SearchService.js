@@ -137,20 +137,54 @@
                     countResults[entity] = apiCache[entity + 'Count'].num;
 
                 }else{
-                    numCountRequests++;
-                    activeRequests++;
-                    $rootScope.spinnerCount ++ ;
-                    apiCount(requestEntity, sData, requestAction).success(function(rs){
-                        numCountSuccessRequests++;
-                        activeRequests--;
-                        $rootScope.spinnerCount--;
+                    //Counting XX events in YY spaces
+                    if(requestEntity === 'space' && requestAction === 'findByEvents'){
 
-                        countResults[entity] = rs;
+                       var otherRequestEntity = 'event';
+                       var otherRequestAction = 'findByLocation';
 
-                        apiCache[entity + 'Count'].num = rs;
-                        apiCache[entity + 'Count'].params = apiCountParams;
-                        endCountRequest();
-                    });
+                       numCountRequests+=2;
+                       activeRequests+=2;
+                       $rootScope.spinnerCount+=2;
+
+                       countResults['event'] = {};
+
+                       apiCount(otherRequestEntity, sData, otherRequestAction).success(function(rs){
+                           numCountSuccessRequests++;
+                           activeRequests--;
+                           $rootScope.spinnerCount--;
+
+                           countResults['event'].events = rs;
+                           endCountRequest();
+                       });
+
+                       apiCount(requestEntity, sData, requestAction).success(function(rs){
+                           numCountSuccessRequests++;
+                           activeRequests--;
+                           $rootScope.spinnerCount--;
+
+                           countResults['event'].spaces = rs;
+                           endCountRequest();
+                       });
+
+                    }else{
+                        // DEFAULT CASE
+                        numCountRequests++;
+                        activeRequests++;
+                        $rootScope.spinnerCount ++ ;
+                        apiCount(requestEntity, sData, requestAction).success(function(rs){
+                            numCountSuccessRequests++;
+                            activeRequests--;
+                            $rootScope.spinnerCount--;
+
+                            countResults[entity] = rs;
+
+                            apiCache[entity + 'Count'].num = rs;
+                            apiCache[entity + 'Count'].params = apiCountParams;
+                            endCountRequest();
+                        });
+                    }
+
                 }
                 if(apiCache[data.global.viewMode][entity].params === apiParams){
                     results[entity] = apiCache[data.global.viewMode][entity].result;
@@ -209,6 +243,7 @@
 
             function endCountRequest(){
                 if(numCountSuccessRequests === numCountRequests && lastEmitedCountResult !== JSON.stringify(countResults)){
+                    console.log(countResults);
                     $rootScope.$emit('searchCountResultsReady', countResults);
                 }
             }
@@ -313,10 +348,6 @@
 
             function apiCount(entity, searchData, action) {
 
-                if(entity === 'space' && action === 'findByEvents'){
-                    entity = 'event';
-                    action = 'findByLocation';
-                }
                 action = action || 'find';
                 var querystring = "";
 

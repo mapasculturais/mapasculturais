@@ -340,13 +340,26 @@
 
         $scope.numAgents = 0;
         $scope.numSpaces = 0;
-        $scope.numEvents = 0;
+        $scope.numEvents = {
+            events: 0,
+            spaces: 0
+        };
         $scope.numProjects = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            $scope.numEvents = parseInt(results.event);
+            if(results.event){
+                $scope.numEvents = {
+                    events: parseInt(results.event.events),
+                    spaces: parseInt(results.event.spaces)
+                };
+            }else{
+                $scope.numEvents = {
+                    events: 0,
+                    spaces: 0
+                };
+            };
             $scope.numProjects = parseInt(results.project);
         });
 
