@@ -111,7 +111,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             var defaultCircleStrokeWeight = 2;
             var saoPaulo = new L.LatLng(-23.54894, -46.63882);
             var mapCenter = isPositionDefined ? new L.LatLng($(this).data('lat'), $(this).data('lng')) : saoPaulo;
-            var options = $(this).data('options') ? $(this).data('options') : {dragging: isEditable, zoomControl: isEditable, doubleClickZoom: isEditable, scrollWheelZoom: isEditable};
+            var options = $(this).data('options') ? $(this).data('options') : {dragging: true, zoomControl: true, doubleClickZoom: true, scrollWheelZoom: true};
 
             var locateMeControl = initializerOptions.locateMeControl ? true : false;
 
