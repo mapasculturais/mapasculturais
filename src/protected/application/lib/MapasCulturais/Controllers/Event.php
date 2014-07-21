@@ -89,7 +89,7 @@ class Event extends EntityController {
             $occurrences_readable[$e->id] = array();
 
             $occurrences_readable[$e->id] = array_map(function($occ) use ($app) {
-                if(isset($occ->rule->description)) {
+                if(!empty($occ->rule->description)) {
                     return $occ->rule->description;
                 }else{
                     return $occ->startsOn->format('d \d\e') . ' ' . $app->txt($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
