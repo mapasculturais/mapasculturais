@@ -140,7 +140,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 }, 400);
             });
 
-            var marker = new L.marker(map.getCenter(), {draggable: isEditable });
+            var marker = new L.marker(map.getCenter(), {draggable: isEditable && MapasCulturais.request.controller !== 'event' });
             var markerIcon = {};
             if (MapasCulturais.request.controller == 'agent' || MapasCulturais.request.controller == 'space')
                 markerIcon = MapasCulturais.Map.iconOptions[MapasCulturais.request.controller].icon;
