@@ -439,10 +439,11 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
-
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
-
                 select2:{
+                    initSelection : function (element, callback) {
+                        callback({id: $selector.data('value'), name: $selector.data('value-name')});
+                    },
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 2,
@@ -628,7 +629,13 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
+            onSave: function($selector){
+                var entity = $selector.data('entity');
+                $selector.data('value', entity.id);
+                $selector.data('value-name', entity.name);
+            },
             selection: function(entity, $selector){
+                $selector.data('entity', entity);
                 return entity.name;
             },
 

@@ -96,7 +96,9 @@
                     new L.LatLng(item.location.latitude, item.location.longitude),
                     $window.leaflet.iconOptions[entity]
                 ).bindLabel(
-                    item.name
+                    entity === 'event' ?
+                        '<center>Eventos encontrados no espaço <br> <strong>'+item.name+'</strong></center>'
+                        : item.name
                 ).on('click', function() {
 
                     var infobox = document.querySelector('#infobox');
