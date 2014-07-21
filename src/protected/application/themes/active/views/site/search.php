@@ -81,8 +81,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Endereço:</span>{{openEntity.space.metadata.endereco}}</div>
-                        <div><span class="label">Acessibilidade:</span> {{openEntity.space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
+                        <div ng-show="openEntity.space.endereco"><span class="label">Endereço:</span>{{openEntity.space.endereco}}</div>
+                        <div><span class="label">Acessibilidade:</span> {{openEntity.space.acessibilidade || 'Não Informado'}}</div>
                     </div>
                 </div>
             </article>
@@ -101,16 +101,18 @@ $app->hook('mapasculturais.scripts', function() use($app){
                     </a>
                     <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div>
+                        <div ng-show="event.terms.linguagem && event.terms.linguagem.length">
                             <span class="label">Linguagem:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
                                 <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <!--div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div-->
-                        <div ng-repeat="occ in event.readableOccurrences"><time>{{occ}}</time></div>
-                        <div><span class="label">Preço:</span>{{occ.price}}</div>
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
+                        <!--div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div-->
+                        <div ng-repeat="occ in event.occurrences">
+                            <hr ng-if="$index>0" style="margin:2px 0">
+                            <time>{{event.readableOccurrences[$index].trim()}}</time><span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -209,8 +211,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Endereço:</span>{{space.metadata.endereco}}</div>
-                        <div><span class="label">Acessibilidade:</span> {{space.metadata.acessibilidade ? 'Sim' : 'Não'}}</div>
+                        <div ng-show="space.endereco"><span class="label">Endereço:</span> {{space.endereco}}</div>
+                        <div><span class="label">Acessibilidade:</span> {{space.acessibilidade || 'Não informado'}}</div>
                     </div>
                 </div>
             </article>
@@ -231,14 +233,16 @@ $app->hook('mapasculturais.scripts', function() use($app){
                     <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">
                         <div>
-                            <span class="label">Linguagem:</span>
+                            <span ng-show="event.terms.linguagem" class="label">Linguagem:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
                                 <a>{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div>
-
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
+                        <div ng-repeat="occ in event.occurrences">
+                            <hr ng-if="$index>0" style="margin:2px 0">
+                            <time>{{event.readableOccurrences[$index].trim()}}</time><span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>
+                        </div>
                     </div>
                 </div>
             </article>

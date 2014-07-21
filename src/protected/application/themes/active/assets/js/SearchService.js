@@ -320,7 +320,9 @@
             function apiFind(entity, searchData, page, action) {
                 if(data.global.viewMode === 'list'){
                     searchData['@select'] = 'id,singleUrl,name,type,shortDescription,terms';
-                    if(entity === 'project')
+                    if(entity === 'space')
+                        searchData['@select'] += ',endereco,acessibilidade';
+                    else if(entity === 'project')
                         searchData['@select'] += ',registrationFrom,registrationTo';
                     else if(entity === 'event')
                         searchData['@select'] += ',classificacaoEtaria';

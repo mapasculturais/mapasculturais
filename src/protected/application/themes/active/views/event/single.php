@@ -30,7 +30,7 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <p><span class="label">Descrição:</span> {{rule.description}}</p>
+            <p style="display:inline; white-space: nowrap;"><span class="label">Descrição Legível da Ocorrência:</span> {{rule.description}}</p>
             <p><span class="label">Preço:</span> {{rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
@@ -71,10 +71,12 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         {{/space}}
+
         <div class="infos">
-            <p>{{rule.description}}</p>
-            <p><span class="label">Preço:</span> {{rule.price}}</p>
+            {{#rule.description}}   <p>{{rule.description}}</p>                             {{/rule.description}}
+            {{#rule.price}}         <p><span class="label">Preço:</span> {{rule.price}}</p> {{/rule.price}}
         </div>
+
         <!-- .infos -->
         {{#space}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>

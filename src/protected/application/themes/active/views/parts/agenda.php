@@ -17,8 +17,12 @@
                 <?php echo $event->shortDescription ?>
             </p>
             <div class="objeto-meta">
-                <div><span class="label">Linguagem:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
-                <div><span class="label">Classificação:</span> <?php echo $event->classificacaoEtaria; ?></div>
+                <?php if (!empty($event->terms['linguagem'])): ?>
+                    <div><span class="label">Linguagem:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
+                <?php endif; ?>
+                <?php if (!empty($event->terms['linguagem'])): ?>
+                    <div><span class="label">Classificação:</span> <?php echo $event->classificacaoEtaria; ?></div>
+                <?php endif; ?>
                 <div>
                     <?php
                     $occurrences = $event->occurrences->toArray();

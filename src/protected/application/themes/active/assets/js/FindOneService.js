@@ -29,8 +29,7 @@
 
                 $rootScope.spinnerCount++;
                 numRequests++;
-            }
-            if(entity === 'event'){
+
                 select += ',endereco';
                 apiFindOne('space', select, sData, page, requestAction).success(function(rs){
                     result[entity].space = rs;
@@ -57,6 +56,8 @@
 
             function apiFindOne(entity, select, searchData, page, action) {
                 action = action || 'find';
+                if(entity === 'space')
+                    select += ',endereco,acessibilidade';
                 searchData['@select'] = select;
                 searchData['@files'] = '(avatar.avatarBig):url';
                 var querystring = "";
