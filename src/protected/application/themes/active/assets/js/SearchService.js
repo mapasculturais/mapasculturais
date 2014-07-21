@@ -243,7 +243,6 @@
 
             function endCountRequest(){
                 if(numCountSuccessRequests === numCountRequests && lastEmitedCountResult !== JSON.stringify(countResults)){
-                    console.log(countResults);
                     $rootScope.$emit('searchCountResultsReady', countResults);
                 }
             }
