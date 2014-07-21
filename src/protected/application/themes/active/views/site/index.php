@@ -9,17 +9,17 @@ $class_project = 'MapasCulturais\Entities\Project';
 
 $class_file = 'MapasCulturais\Entities\File';
 
-$num_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.isVerified = TRUE")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_verified_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 
-$num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 
-$num_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e WHERE e.isVerified = TRUE")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_verified_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 
-$num_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e WHERE e.isVerified = TRUE")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_verified_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 
 
 
