@@ -5,7 +5,6 @@ else
 	BRANCH="stable"
 fi
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
 
@@ -23,4 +22,3 @@ cd tools
 
 ./doctrine orm:generate-proxies
 
-sudo restart php5-fpm
