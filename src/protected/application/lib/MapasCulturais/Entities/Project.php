@@ -32,6 +32,9 @@ class Project extends \MapasCulturais\Entity
         'name' => array(
             'required' => 'O nome do projeto é obrigatório'
         ),
+        'shortDescription' => array(
+            'required' => 'A descrição curta é obrigatória'
+        ),
         'type' => array(
             'required' => 'O tipo do projeto é obrigatório',
         ),

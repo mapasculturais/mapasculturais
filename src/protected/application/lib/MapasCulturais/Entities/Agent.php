@@ -36,7 +36,10 @@ class Agent extends \MapasCulturais\Entity
     protected static $validations = array(
         'name' => array(
             'required' => 'O nome do agente é obrigatório'
-        )
+        ),
+        'shortDescription' => array(
+            'required' => 'A descrição curta é obrigatória'
+        ),
     );
 
     /**
