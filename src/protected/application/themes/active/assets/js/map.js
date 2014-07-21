@@ -225,7 +225,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             map.on('click', function(e) {
 
                 //se for só visualização, não edição
-                if (isEditable)
+                if (isEditable && MapasCulturais.request.controller !== 'event')
                     marker.setLatLng(e.latlng);
             });
 
