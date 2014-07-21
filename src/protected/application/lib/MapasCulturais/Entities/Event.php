@@ -38,7 +38,7 @@ class Event extends \MapasCulturais\Entity
             'required' => 'A descrição curta é obrigatória'
         ),
         'project' => array(
-            '$this->validateProject' => 'Você não pode criar eventos neste projeto.'
+            '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
         )
 
     );
