@@ -35,6 +35,9 @@ class Space extends \MapasCulturais\Entity
             'required' => 'O nome do espaço é obrigatório',
             'unique' => 'Já existe um espaço com este nome'
          ),
+        'shortDescription' => array(
+            'required' => 'A descrição curta é obrigatória'
+        ),
         'type' => array(
             'required' => 'O tipo do espaço é obrigatório',
         ),

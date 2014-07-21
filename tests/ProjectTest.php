@@ -25,6 +25,7 @@ class ProjectTests extends MapasCulturais_TestCase{
     function testDatesValidations(){
         $project = new Project;
         $project->name = "Test1";
+        $project->shortDescription = "A short description";
         $project->type = 1;
 
         $project->registrationFrom = date('Y-m-d', time() - 3600 * 24);
