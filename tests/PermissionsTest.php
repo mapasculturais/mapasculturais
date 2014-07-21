@@ -76,6 +76,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testCanUserCreate(){
+        $this->resetTransactions();
         $app = MapasCulturais\App::i();
 
         /*
@@ -149,6 +150,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
 
     function testCanUserModify(){
+        $this->resetTransactions();
         /*
          * Asserting thar guest users cannot modify entities
          */
@@ -210,6 +212,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserRemove(){ }
 
     function testCanUserVerifyEntity(){
+        $this->resetTransactions();
         $app = $this->app;
 
         $this->user = null;
@@ -305,6 +308,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserViewPrivateData(){ }
 
     function testAgentRelationsPermissions(){
+        $this->resetTransactions();
         // create agent relation without control
 
         // create agent relation withcontrol
@@ -325,6 +329,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
          */
         
         foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
             $entities = $class == 'Agent' ? $user1()->$plural : $user1()->profile->$plural;
             
             $entity = $entities[0];
@@ -782,6 +787,37 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
     }
+    
+    function testProjectEventCreation(){
+        $this->resetTransactions();
+        // assert that a user WITHOUT control of a project CANNOT create events to this project
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+        
+        $project = $user2->projects[0];
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionDenied(function() use($project){
+            $event = $this->getNewEntity('Event');
+            $event->project = $project;
+            $event->save();
+        }, 'Asserting that a user WITHOUT control of a project CANNOT create events to this project');
+        
+        
+        // assert that a user WITH control of a project CAN create events to this project
+        $this->user = $user2;
+        
+        $project->createAgentRelation($user1->profile, "AGENTS WITH CONTROL", true, true);
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionGranted(function() use($project){
+            $event = $this->getNewEntity('Event');
+            $event->project = $project;
+            $event->save();
+        }, 'Asserting that a user WITH control of a project CAN create events to this project');
+    }
 
     function testProjectRegistrationPermissions(){
         // approve registration
@@ -798,6 +834,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testCanUserAddRemoveRole(){
+        $this->resetTransactions();
         $roles = ['staff', 'admin', 'superAdmin'];
 
         /*

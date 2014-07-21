@@ -291,13 +291,15 @@ MapasCulturais.Editables = {
                         var firstShown = false;
                         $('.js-response-error').remove();
                         for(var p in response.data){
-                            if(p.substr(0,5) == 'term-')
+                            if(MapasCulturais.request.controller === 'event' && p === 'project'){
+                                $field = $('.editable[data-field-name="projectId"');
+                            }else if(p.substr(0,5) == 'term-'){
                                 $field = $('#' + p);
-                            else if(p == 'type')
+                            }else if(p == 'type'){
                                 $field = $('.js-editable-type');
-                            else
+                            }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
-
+                            }
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;

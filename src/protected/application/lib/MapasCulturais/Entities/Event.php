@@ -35,7 +35,10 @@ class Event extends \MapasCulturais\Entity
             'required' => 'O nome do evento é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'O descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória'
+        ),
+        'project' => array(
+            '$this->validateProject' => 'Você não pode criar eventos neste projeto.'
         )
 
     );
@@ -137,7 +140,33 @@ class Event extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
     protected $__metadata = array();
+    
+    protected function canUserCreate($user){
+        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
+        
+        if($can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
+        }
+    }
+    
+    protected function canUserModify($user){
+        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
+        if($can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
+        }
+    }
 
+    protected function validateProject(){
+        if($this->project){
+            return $this->project->canUser('modify');
+        }else{
+            return true;
+        }
+    }
 
     function setProjectId($projectId){
         if($projectId) {

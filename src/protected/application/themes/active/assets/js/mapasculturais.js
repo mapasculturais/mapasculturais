@@ -448,6 +448,9 @@ MapasCulturais.Search = {
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 2,
                     allowClear: $selector.data('allow-clear'),
+                    initSelection: function(e,cb){
+                        cb({id: 4, name:'teste'});
+                    },
                     ajax: {
                         url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
                         dataType: 'json',
