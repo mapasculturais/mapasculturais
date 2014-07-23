@@ -13,6 +13,11 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
         text-align: center;
         margin: 0 3px;
     }
+    
+    img.spinner { 
+        float:right; 
+        display:none; 
+    }
 </style>
 <header class="clearfix">
     <p class="alignleft">
@@ -30,6 +35,7 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
            readonly="readonly" placeholder="00/00/0000" value="<?php echo $date_to->format('d/m/Y'); ?>">
     <input id="agenda-to" name="until" type="hidden" value="<?php echo $date_to->format('Y-m-d'); ?>">
 
+    <img src="<?php $this->asset('img/spinner-black.gif') ?>" class="spinner" />
     <!-- OCULTADO POR ENQUANTO BOTÃO DE CADSTRAR EVENTO
     <a class="botao adicionar alignright" href="#">adicionar evento</a>
     -->

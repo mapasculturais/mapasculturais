@@ -5,7 +5,7 @@
             <?php echo $event->name ?></a>
         </h1>
         <div class="objeto-content clearfix">
-            <div class="objeto-thumb"><img src="<?php echo $event->avatar ? $event->avatar->url : '" style="display:none'; ?>"/></div>
+            <div class="objeto-thumb"><img src="<?php echo $event->avatar ? $event->avatar->transform('avatarMedium')->url : '" style="display:none'; ?>"/></div>
             <p class="objeto-resumo">
                 <?php echo $event->shortDescription ?>
             </p>
@@ -18,12 +18,13 @@
                 <?php endif; ?>
                 <div>
                     <?php
+                    unset($lastSpaceId);
                     $occurrences = $event->occurrences->toArray();
                     usort($occurrences, function($a, $b) {
                         return $a->space->id - $b->space->id;
                     });
                     foreach($occurrences as $occ):
-                        if(!$entity instanceof \MapasCulturais\Entities\Space && (!isset($lastSpaceId) || $occ->space->id !== $lastSpaceId)): ?>
+                        if($entity->className != 'MapasCulturais\Entities\Space' && (!isset($lastSpaceId) || $occ->space->id !== $lastSpaceId)): ?>
                             <hr style="margin:5px 0">
                             <div><span class="label">Local:</span><a href="<?php echo $app->createUrl('space', 'single', array($occ->space->id))?>"><?php echo $occ->space->name; ?></a></div>
                         <?php endif; ?>
