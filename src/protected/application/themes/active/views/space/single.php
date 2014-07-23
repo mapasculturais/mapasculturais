@@ -18,7 +18,7 @@ add_angular_entity_assets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="barra-esquerda barra-lateral agente">
+<div class="barra-esquerda barra-lateral espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
