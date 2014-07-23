@@ -5,56 +5,6 @@
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
         var activeRequests= 0,
             canceler = null,
-            apiCache = {
-                list:{
-                    agent: {
-                        params: '',
-                        result: []
-                    },
-                    space: {
-                        params: '',
-                        result: []
-                    },
-                    event: {
-                        params: '',
-                        result: []
-                    },
-                    project: {
-                        params: '',
-                        result: []
-                    }
-                },
-                map:{
-                    agent: {
-                        params: '',
-                        result: []
-                    },
-                    space: {
-                        params: '',
-                        result: []
-                    },
-                    event: {
-                        params: '',
-                        result: []
-                    },
-                },
-                agentCount: {
-                    params: '',
-                    num: 0
-                },
-                spaceCount: {
-                    params: '',
-                    num: 0
-                },
-                eventCount: {
-                    params: '',
-                    num: 0
-                },
-                projectCount: {
-                    params: '',
-                    num: 0
-                }
-            },
             lastEmitedResult = 'null',
             lastEmitedCountResult = 'null';
 
@@ -133,81 +83,65 @@
 
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
-                if(apiCache[entity + 'Count'].params === apiCountParams){
-                    countResults[entity] = apiCache[entity + 'Count'].num;
+                
+                //Counting XX events in YY spaces
+                if(requestEntity === 'space' && requestAction === 'findByEvents'){
+
+                   var otherRequestEntity = 'event';
+                   var otherRequestAction = 'findByLocation';
+
+                   numCountRequests+=2;
+                   activeRequests+=2;
+                   $rootScope.spinnerCount+=2;
+
+                   countResults['event'] = {};
+
+                   apiCount(otherRequestEntity, sData, otherRequestAction).success(function(rs){
+                       numCountSuccessRequests++;
+                       activeRequests--;
+                       $rootScope.spinnerCount--;
+
+                       countResults['event'].events = rs;
+                       endCountRequest();
+                   });
+
+                   apiCount(requestEntity, sData, requestAction).success(function(rs){
+                       numCountSuccessRequests++;
+                       activeRequests--;
+                       $rootScope.spinnerCount--;
+
+                       countResults['event'].spaces = rs;
+                       endCountRequest();
+                   });
 
                 }else{
-                    //Counting XX events in YY spaces
-                    if(requestEntity === 'space' && requestAction === 'findByEvents'){
-
-                       var otherRequestEntity = 'event';
-                       var otherRequestAction = 'findByLocation';
-
-                       numCountRequests+=2;
-                       activeRequests+=2;
-                       $rootScope.spinnerCount+=2;
-
-                       countResults['event'] = {};
-
-                       apiCount(otherRequestEntity, sData, otherRequestAction).success(function(rs){
-                           numCountSuccessRequests++;
-                           activeRequests--;
-                           $rootScope.spinnerCount--;
-
-                           countResults['event'].events = rs;
-                           endCountRequest();
-                       });
-
-                       apiCount(requestEntity, sData, requestAction).success(function(rs){
-                           numCountSuccessRequests++;
-                           activeRequests--;
-                           $rootScope.spinnerCount--;
-
-                           countResults['event'].spaces = rs;
-                           endCountRequest();
-                       });
-
-                    }else{
-                        // DEFAULT CASE
-                        numCountRequests++;
-                        activeRequests++;
-                        $rootScope.spinnerCount ++ ;
-                        apiCount(requestEntity, sData, requestAction).success(function(rs){
-                            numCountSuccessRequests++;
-                            activeRequests--;
-                            $rootScope.spinnerCount--;
-
-                            countResults[entity] = rs;
-
-                            apiCache[entity + 'Count'].num = rs;
-                            apiCache[entity + 'Count'].params = apiCountParams;
-                            endCountRequest();
-                        });
-                    }
-
-                }
-                if(apiCache[data.global.viewMode][entity].params === apiParams){
-                    results[entity] = apiCache[data.global.viewMode][entity].result;
-
-                }else{
-                    numRequests++;
+                    // DEFAULT CASE
+                    numCountRequests++;
                     activeRequests++;
-                    $rootScope.spinnerCount++;
-                    apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs){
-                        numSuccessRequests++;
+                    $rootScope.spinnerCount ++ ;
+                    apiCount(requestEntity, sData, requestAction).success(function(rs){
+                        numCountSuccessRequests++;
                         activeRequests--;
                         $rootScope.spinnerCount--;
 
-                        results[entity] = rs;
-
-                        apiCache[data.global.viewMode][entity].result = rs;
-                        apiCache[data.global.viewMode][entity].params = apiParams;
-
-                        endRequest();
+                        countResults[entity] = rs;
+                        endCountRequest();
                     });
-
-
                 }
+
+                numRequests++;
+                activeRequests++;
+                $rootScope.spinnerCount++;
+                apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs){
+                    numSuccessRequests++;
+                    activeRequests--;
+                    $rootScope.spinnerCount--;
+
+                    results[entity] = rs;
+
+                    endRequest();
+                });
+
             }
 
             function countAndRemoveResultsNotInMap(entity, results){
