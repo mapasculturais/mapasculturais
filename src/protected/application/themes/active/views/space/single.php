@@ -238,16 +238,6 @@ add_angular_entity_assets($entity);
         <?php endif; ?>
     </div>
 
-    <div class="bloco staging-hidden">
-        <h3 class="subtitulo">Projetos do espaço</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-        <a class="botao adicionar" href="#">adicionar projeto (só link)</a>
-    </div>
-
     <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
