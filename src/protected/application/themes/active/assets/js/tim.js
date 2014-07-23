@@ -125,6 +125,11 @@ var hl;
 				$($(this).attr('href')).hide();
 			});
 
+                        $links.each(function(){
+                            $(this).attr('id', 'tab-'+$(this).attr('href').replace('#',''));
+                        });
+
+
 			// Bind the click event handler
 			$(this).on('click', 'a', function(e){
 				// Make the old tab inactive.
@@ -141,8 +146,20 @@ var hl;
 
 				// Prevent the anchor's default click action
 				e.preventDefault();
+
+                                location.hash = $(this).attr('id').replace('tab-','tab=');
 			});
+
+                        $links.each(function(){
+                            console.log(location.hash, $(this).attr('id').replace('tab=','tab='));
+                            if(location.hash.toString().replace('#', '') === $(this).attr('id').replace('tab-','tab=')){
+                                console.log('active',$(this));
+                                $(this).click();
+                            }
+                        });
 		});
+
+
 
 		$('.tags div').slimScroll({
 			position: 'right',
