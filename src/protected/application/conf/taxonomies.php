@@ -22,6 +22,7 @@ return array(
             'Arqueologia',
             'Arquitetura-Urbanismo',
             'Arquivo',
+            'Arte de Rua',
             'Arte Digital',
             'Artes Visuais',
             'Artesanato',
