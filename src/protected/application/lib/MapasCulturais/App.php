@@ -310,9 +310,14 @@ class App extends \Slim\Slim{
         // run theme theme.php
         if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
             include ACTIVE_THEME_PATH . 'theme.php';
-        
+
         // ===================================== //
 
+        // run plugins
+        foreach($config['plugins.enabled'] as $plugin){
+            include PLUGINS_PATH.$plugin.'.php';
+        }
+        // ===================================== //
 
         // don't run dbUpdates anymore
         $this->_dbUpdates();

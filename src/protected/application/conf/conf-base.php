@@ -13,33 +13,33 @@ return array(
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
 
-    'app.dbUpdatesDisabled' => false,    
+    'app.dbUpdatesDisabled' => false,
     'app.defaultApiOutput' => 'json',
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
-    
+
     /* ==================== LOG ================== */
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
     //'slim.log.writer' => new \Custom\Log\Writer(),
-    
+
     'slim.log.level' => Log::NOTICE,
     'slim.log.enabled' => true,
-    
+
     'app.queryLogger' => new MapasCulturais\Loggers\DoctrineSQL\SlimLog(),
     'app.log.query' => false,
-    
+
     'app.log.hook' => false,
     'app.log.requestData' => false,
     'app.log.translations' => false,
     'app.log.apiCache' => false,
-    
+
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    
+
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 600,
-    
+
     'app.useRegisterCache' => true,
     'app.registerCache.lifeTime' => 600,
 
@@ -59,7 +59,7 @@ return array(
     'slim.middlewares' => array(
         //new \MapasCulturais\Middlewares\ExecutionTime(true, false)
     ),
-    
+
     /* ================ DOCTRINE =============== */
 
     // basically this tell to doctrine orm to use or not use a persistent cache if available
@@ -83,6 +83,10 @@ return array(
         'timeout' => '24 hours'
     ),
     // */
+
+    'plugins.enabled' => array(
+        
+    ),
 
     //
     'routes' => array(
