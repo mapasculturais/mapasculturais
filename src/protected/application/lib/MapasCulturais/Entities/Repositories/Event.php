@@ -196,16 +196,19 @@ class Event extends CachedRepository{
                 ON eo.event_id = e.id AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
 
             WHERE
-                e.status > 0 AND
+                e.status > 0 AND (
 
-                e.id IN(
-                    SELECT
-                        object_id
-                    FROM
-                        agent_relation
-                    WHERE
-                        object_type = 'MapasCulturais\Entities\Event' AND
-                        agent_id = :agent_id
+                    e.id IN(
+                        SELECT
+                            object_id
+                        FROM
+                            agent_relation
+                        WHERE
+                            object_type = 'MapasCulturais\Entities\Event' AND
+                            agent_id = :agent_id
+                    ) OR 
+
+                    e.agent_id = :agent_id
                 )
 
 
