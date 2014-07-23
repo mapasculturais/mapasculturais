@@ -63,7 +63,8 @@ class Event extends EntityController {
         unset(
             $query_data['@from'],
             $query_data['@to'],
-            $query_data['spaceId']
+            $query_data['spaceId'],
+            $query_data['_geoLocation']
         );
 
         $app = App::i();
@@ -78,11 +79,11 @@ class Event extends EntityController {
         $occurrences_readable = array();
 
         $events = $app->repo('Event')->findBySpace($space, $date_from, $date_to);
-
+        
         $event_ids = array_map(function($e) {
             return $e->id;
-
         }, $events);
+        
 
         foreach($events as $e){
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
@@ -99,12 +100,9 @@ class Event extends EntityController {
         }
 
         if($event_ids){
-            $event_data = array('id' => 'IN(' . implode(',', $event_ids) .')');
-
-            foreach($query_data as $key => $val)
-                if($key[0] === '@' || $key == '_geoLocation')
-                    $event_data[$key] = $val;
-
+            $event_data = $query_data;
+            $event_data['id'] = 'IN(' . implode(',', $event_ids) .')';
+            
             $result = $this->apiQuery($event_data);
 
             if(is_array($result)){
