@@ -188,12 +188,7 @@ add_angular_entity_assets($entity);
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php
-        $date_from = new DateTime();
-        $date_to = new DateTime('+180 days');
-        $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to);
-        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
-        ?>
+        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
