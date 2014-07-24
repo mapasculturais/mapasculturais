@@ -1,6 +1,4 @@
 <?php
-use \Slim\Log;
-
 date_default_timezone_set('America/Sao_Paulo');
 
 return array(
@@ -23,8 +21,10 @@ return array(
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
     //'slim.log.writer' => new \Custom\Log\Writer(),
 
-    'slim.log.level' => Log::NOTICE,
+    'slim.log.level' => \Slim\Log::NOTICE,
     'slim.log.enabled' => true,
+    
+    'app.log.path' => realpath(BASE_PATH . '..') . '/logs/',
 
     'app.queryLogger' => new MapasCulturais\Loggers\DoctrineSQL\SlimLog(),
     'app.log.query' => false,
