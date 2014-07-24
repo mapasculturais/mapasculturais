@@ -1,3 +1,7 @@
+$(function(){
+    MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
+});
+
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
@@ -20,7 +24,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     MapasCulturais.Search.init('.js-search-occurrence-space');
 
     MapasCulturais.EventDates.init('.js-event-dates');
-
 
     $dialog.find('form').find('.js-event-time').mask('00:00');
     $dialog.find('form').find('.js-event-duration').mask('00h00');
@@ -85,11 +88,14 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
+                console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
+                MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
+
             },
             error: function(xhr, textStatus, errorThrown, $form) {
                 $form.parent().scrollTop(0);
-                
+
                 if(xhr.status === 403){
                     $form.find('div.mensagem.erro').html('Você não tem permissão para criar eventos nesse espaço.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
@@ -113,6 +119,27 @@ MapasCulturais.EventOccurrenceManager = {
             $(selector).find('.js-freq-hide').not('.js-' + $(this).val()).find('input[type=checkbox]').attr('checked', false);
         });
         $(selector).find('.js-select-frequency').change();
+    },
+    initMapTogglers : function(selector){
+        $(selector).click(function() {
+            var $map = $(this).closest('.regra').find('.mapa');
+            MapasCulturais.reenableScrollWheelZoom = false;
+            if($map.is(':visible')){
+                $map.slideUp('fast');
+                $(this).parent().find('.ver-mapa').show();
+                $(this).parent().find('.ocultar-mapa').hide();
+
+            }else{
+                $map.slideDown('fast', function(){
+                    $map.data('leaflet-map').invalidateSize();
+                    $map.data('leaflet-map').scrollWheelZoom.disable();
+                });
+                $(this).parent().find('.ver-mapa').hide();
+                $(this).parent().find('.ocultar-mapa').show();
+            }
+
+            return false;
+        });
     }
 };
 

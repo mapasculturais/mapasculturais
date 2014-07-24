@@ -4,7 +4,7 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepic
 $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 ?>
 <style>
-    .emcartaz-datepicker{
+    .emcartaz-datepicker{!
         border:none;
         width:90px;
         cursor:pointer;
@@ -12,6 +12,8 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
         font-weight: bold;
         padding:0;
     }
+
+    .main-content a{color:#880000}
 </style>
 <div class="main-content">
     <h1>Revista Em Cartaz</h1>
