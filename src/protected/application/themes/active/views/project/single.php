@@ -60,7 +60,7 @@ $ids = array_map(function($e){
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--project.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
                     <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>

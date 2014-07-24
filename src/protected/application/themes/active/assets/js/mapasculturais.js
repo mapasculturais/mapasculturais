@@ -92,7 +92,7 @@ MapasCulturais.TemplateManager = {
     }
 };
 
-MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar-padrao.png';
+MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
 
 MapasCulturais.isEditable = MapasCulturais.request.action == 'create' || MapasCulturais.request.action == 'edit';
 

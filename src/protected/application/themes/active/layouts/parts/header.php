@@ -150,7 +150,7 @@
                                     <?php if ($app->user->profile->avatar): ?>
                                         <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
                                     <?php else: ?>
-                                        <img src="<?php echo $app->assetUrl; ?>/img/avatar-padrao.png" />
+                                        <img src="<?php echo $app->assetUrl; ?>/img/avatar.png" />
                                     <?php endif; ?>
                                 </div>
                             </a>
