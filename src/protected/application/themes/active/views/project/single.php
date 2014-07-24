@@ -118,7 +118,7 @@ $ids = array_map(function($e){
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li class="staging-hidden"><a href="#agenda">Agenda</a></li>
-        <li><a href="#inscricoes">Incrições</a></li>
+        <li><a href="#inscricoes">Inscrições</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
