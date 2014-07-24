@@ -8,7 +8,7 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-./db-updates.sh 1
+./db-update.sh 1
 
 cd $DIR/..
 
