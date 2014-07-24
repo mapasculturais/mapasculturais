@@ -26,18 +26,11 @@
                 <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">Inscrições Abertas</span>
             </div>
             <!--.filtro-->
-            <form id="form-agente" class="filtro staging-hidden">
-                <label for="nome-do-agente">Agente</label>
-                <input class="autocomplete" name="nome-do-agente" type="text" placeholder="Agente" />
-                <a class="botao principal" href="#">Listar agentes</a>
-            </form>
-            <!-- #form-projeto-->
-            <form id="form-espaco" class="filtro staging-hidden">
-                <label for="nome-do-espaco">Espaço</label>
-                <input class="autocomplete" name="nome-do-espaco" type="text" placeholder="Espaço" />
-                <a class="botao principal" href="#">Listar espaços</a>
-            </form>
-            <!-- #form-projeto-->
+            <div class="filtro filtro-prefeitura">
+                <a class="hltip botao" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('project')">Resultados da SMC</a>
+            </div>
+            <!-- div.filtro-prefeitura -->
+
         </div>
         <!--#filtro-projetos-->
 
@@ -228,7 +221,7 @@
                 <a class="tag tag-evento" ng-if="showFilters('event') && data.event.isVerified" ng-click="toggleVerified('event')">SMC</a>
                 <a class="tag tag-agente" ng-if="showFilters('agent') && data.agent.isVerified" ng-click="toggleVerified('agent')">SMC</a>
                 <a class="tag tag-espaco" ng-if="showFilters('space') && data.space.isVerified" ng-click="toggleVerified('space')">SMC</a>
-                <a class="tag tag-projeto" ng-if="showFilters('project') && data.space.isVerified" ng-click="toggleVerified('project')">SMC</a>
+                <a class="tag tag-projeto" ng-if="showFilters('project') && data.project.isVerified" ng-click="toggleVerified('project')">SMC</a>
 
                 <a class="tag tag-evento" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
 

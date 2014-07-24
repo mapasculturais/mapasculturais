@@ -118,7 +118,7 @@ $ids = array_map(function($e){
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li class="staging-hidden"><a href="#agenda">Agenda</a></li>
-        <li><a href="#inscricoes">Incrições</a></li>
+        <li><a href="#inscricoes">Inscrições</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -153,12 +153,7 @@ $ids = array_map(function($e){
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php
-        $date_from = new DateTime();
-        $date_to = new DateTime('+180 days');
-        $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to);
-        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
-        ?>
+        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
@@ -270,7 +265,7 @@ $ids = array_map(function($e){
     <!-- Related Agents END -->
     <div class="bloco">
         <?php if($entity->children): ?>
-        <h3 class="subtitulo">Sub-espaços</h3>
+        <h3 class="subtitulo">Sub-projetos</h3>
         <ul class="js-slimScroll">
             <?php foreach($entity->children as $space): ?>
             <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
@@ -282,15 +277,6 @@ $ids = array_map(function($e){
         <a class="botao adicionar staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
         <?php endif; ?>
     </div>
-    <div class="bloco staging-hidden">
-        <h3 class="subtitulo ">Projetos do espaço</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-        <a class="botao adicionar staging-hidden" href="#">adicionar projeto (só link)</a>
-        </div>
     <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
