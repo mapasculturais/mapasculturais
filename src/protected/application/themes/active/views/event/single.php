@@ -71,10 +71,23 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         {{/space}}
-
         <div class="infos">
-            {{#rule.description}}   <p>{{rule.description}}</p>                             {{/rule.description}}
-            {{#rule.price}}         <p><span class="label">Preço:</span> {{rule.price}}</p> {{/rule.price}}
+            {{#rule.description}}
+                <p>{{rule.description}}</p>
+            {{/rule.description}}
+            {{^rule.description}}
+                <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
+                {{#rule.duration}}
+                    <p><span class="label">Duração:</span> {{rule.duration}}</p>
+                {{/rule.duration}}
+                <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
+                {{#rule.screen_until}}
+                    <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+                {{/rule.screen_until}}
+            {{/rule.description}}
+            {{#rule.price}}
+                <p><span class="label">Preço:</span> {{rule.price}}</p>
+            {{/rule.price}}
         </div>
 
         <!-- .infos -->
