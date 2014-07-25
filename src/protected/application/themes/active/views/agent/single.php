@@ -92,7 +92,6 @@ add_angular_entity_assets($entity);
     <ul class="abas clearfix clear">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
-        <li class="staging-hidden"><a href="#contas">Contas</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
