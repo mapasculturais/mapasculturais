@@ -245,7 +245,10 @@
 
             if(newValue !== $rison.stringify(diffFilter($scope.data))){
                 $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
-                $rootScope.$emit('searchDataChange', $scope.data);
+                $timeout.cancel($scope.timer);
+                $scope.timer = $timeout(function() {
+                    $rootScope.$emit('searchDataChange', $scope.data);
+                },500);
             }
         };
 
@@ -257,7 +260,9 @@
                 $timeout.cancel($scope.timer);
                 if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
                     $location.hash(serialized);
-                    $rootScope.$emit('searchDataChange', $scope.data);
+                    $scope.timer = $timeout(function() {
+                        $rootScope.$emit('searchDataChange', $scope.data);
+                    },500);
                 } else {
                     $scope.timer = $timeout(function() {
                         $location.hash(serialized);
@@ -327,8 +332,10 @@
             if($rootScope.isPaginating)
                 return;
             
-            $rootScope.pagination[entity]++;
+            if($scope[entity + 's'].length === 0)
+                return; 
             
+            $rootScope.pagination[entity]++;
             // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
             if($rootScope.pagination[entity] > 2)
                 $rootScope.$emit('resultPagination', $scope.data);

@@ -77,7 +77,6 @@
                     $rootScope.pagination[activeEntity] = 1;
                 
                 var isDiff = (paginating && $rootScope.pagination[activeEntity] !== lastQueries.page) || (!angular.equals(listQueryData, lastQueries.list) || lastQueries.listedEntity !== activeEntity);
-                
                 if( isDiff ){
                     $rootScope.isPaginating = true;
                     lastQueries.listedEntity = activeEntity;
