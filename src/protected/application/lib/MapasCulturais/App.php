@@ -145,7 +145,6 @@ class App extends \Slim\Slim{
      * @return \MapasCulturais\App
      */
     public function init($config = array()){
-
         if($this->_initiated)
             return $this;
 
@@ -318,9 +317,9 @@ class App extends \Slim\Slim{
             include PLUGINS_PATH.$plugin.'.php';
         }
         // ===================================== //
-
-        // don't run dbUpdates anymore
-        $this->_dbUpdates();
+        
+        if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
+            $this->_dbUpdates();
 
         return $this;
     }
@@ -429,37 +428,29 @@ class App extends \Slim\Slim{
     }
 
     protected function _dbUpdates(){
-        if(!isset($_GET['_execute_db_update']) || $this->config['app.dbUpdatesDisabled'])
-            return ;
-
         $this->_runningUpdates = true;
 
-        if($this->cache->contains(__METHOD__)){
-            $executed_updates = $this->cache->fetch(__METHOD__);
+        $executed_updates = array();
 
-        }else{
-            $executed_updates = array();
+        foreach($this->repo('DbUpdate')->findAll() as $up)
+            $executed_updates[] = $up->name;
 
-            foreach($this->repo('DbUpdate')->findAll() as $up)
-                $executed_updates[] = $up->name;
-
-            $this->cache->save(__METHOD__, $executed_updates);
-
-        }
-
-        $updates = include APPLICATION_PATH.'/conf/db-updates.php';
+        $updates = include DB_UPDATES_FILE;
 
         $new_updates = false;
 
         foreach($updates as $name => $function){
             if(!in_array($name, $executed_updates)){
                 $new_updates = true;
-                $this->log->info("DB UPDATE > '$name' executed");
+                echo "\nApplying db update \"$name\":";
+                echo "\n-------------------------------------------------------------------------------------------------------\n";
+                
                 if($function() !== false){
                     $up = new Entities\DbUpdate();
                     $up->name = $name;
                     $up->save();
                 }
+                echo "\n-------------------------------------------------------------------------------------------------------\n\n";
             }
         }
 
