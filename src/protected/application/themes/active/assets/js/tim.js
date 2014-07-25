@@ -152,9 +152,7 @@ var hl;
             });
 
             $links.each(function() {
-                console.log(location.hash, $(this).attr('id').replace('tab=', 'tab='));
                 if (location.hash.toString().replace('#', '') === $(this).attr('id').replace('tab-', 'tab=')) {
-                    console.log('active', $(this));
                     $(this).click();
                 }
             });
