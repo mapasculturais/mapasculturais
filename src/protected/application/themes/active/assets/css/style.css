@@ -184,7 +184,8 @@ input[type="submit"], button[type="submit"] { width: auto; padding: 0 .75rem; ve
 input[type="submit"]:hover, button[type="submit"]:hover { box-shadow: rgba(0,0,0, .25) 0 1px 2px 0; -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0; }
 input[type="radio"], input[type="checkbox"] { width: auto; height: auto; margin: 0; vertical-align: baseline; }
 input:focus, textarea:focus, button:focus, select:focus { outline: none; }
-a { color: #000000; text-decoration: none; outline: none; font-weight: bold; cursor:pointer; }
+a { text-decoration: none; outline: none; font-weight: bold; cursor:pointer; }
+a, .leaflet-container a { color: #000000; }
 a:hover { text-decoration: underline; }
 img, embed, object, video { max-width: 100%; height: auto; }
 
@@ -600,7 +601,7 @@ body.editable #main-section { margin-top: 136px; }
 /* =Mapa
 -------------------------------------------------------------- */
 #mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
-#infobox { display: none; position: absolute; z-index: 149; top: 105px; left: 0; bottom: 0; width: 300px; overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
+#infobox { position: absolute; z-index: 149; margin:0; top:0; left: 0; bottom: 0; width: 300px; overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
 #infobox .icon_close { position: absolute; top: .5rem; right: .5rem; cursor:pointer; }
 #infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
 #infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
