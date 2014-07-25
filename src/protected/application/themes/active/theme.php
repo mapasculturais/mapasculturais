@@ -108,30 +108,30 @@ $app->hook('view.render(<<*>>):before', function() use($app) {
 function add_map_assets() {
     $app = App::i();
     //Leaflet -a JavaScript library for mobile-friendly maps
-    $app->enqueueStyle('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.2/leaflet.css');
-    $app->enqueueScript('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.2/leaflet.js');
+    $app->enqueueStyle('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.3/leaflet.css');
+    $app->enqueueScript('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.3/leaflet.js');
     //Leaflet Vector Layers
     $app->enqueueScript('vendor', 'leaflet-vector-layers', '/vendor/leaflet-vector-layers/dist/lvector.js', array('leaflet'));
     //Conjuntos de Marcadores
-    $app->enqueueStyle('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins/Leaflet.markercluster-0.4/dist/MarkerCluster.css', array('leaflet'));
-    $app->enqueueStyle('vendor', 'leaflet-marker-cluster-d', '/vendor/leaflet/lib/leaflet-plugins/Leaflet.markercluster-0.4/dist/MarkerCluster.Default.css', array('leaflet-marker-cluster'));
-    $app->enqueueScript('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins/Leaflet.markercluster-0.4/dist/leaflet.markercluster.js', array('leaflet'));
+    $app->enqueueStyle('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/MarkerCluster.css', array('leaflet'));
+    $app->enqueueStyle('vendor', 'leaflet-marker-cluster-d', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/MarkerCluster.Default.css', array('leaflet-marker-cluster'));
+    $app->enqueueScript('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/leaflet.markercluster.js', array('leaflet'));
     //Controle de Full Screen
-    $app->enqueueStyle('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins/brunob-leaflet.fullscreen-06c4127/Control.FullScreen.css', array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins/brunob-leaflet.fullscreen-06c4127/Control.FullScreen.js', array('leaflet'));
+    $app->enqueueStyle('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.css', array('leaflet'));
+    $app->enqueueScript('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.js', array('leaflet'));
     //Leaflet Label Plugin
-    //$app->enqueueStyle( 'vendor', 'leaflet-label',           '/vendor/leaflet/lib/leaflet-plugins/leaflet-label/leaflet.label.css',                                         array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-label', '/vendor/leaflet/lib/leaflet-plugins/leaflet-label/leaflet.label.js', array('leaflet'));
+    //$app->enqueueStyle( 'vendor', 'leaflet-label',           '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-label/leaflet.label.css',                                         array('leaflet'));
+    $app->enqueueScript('vendor', 'leaflet-label', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.label-master/dist/leaflet.label.js', array('leaflet'));
     //Leaflet Draw
-    $app->enqueueStyle('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins/Leaflet.draw-0.2.3/dist/leaflet.draw.css', array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins/Leaflet.draw-0.2.3/dist/leaflet.draw.js', array('leaflet'));
+    $app->enqueueStyle('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw.css', array('leaflet'));
+    $app->enqueueScript('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw.js', array('leaflet'));
 
     //Google Maps API. In dev mode, test internet connection to avoid waiting for host timeout when working without connection
 //    if ($app->config('mode') !== 'development' || @fsockopen("maps.google.com", 80))
         $app->enqueueScript('vendor', 'google-maps-api', 'http://maps.google.com/maps/api/js?v=3.2&sensor=false');
 
     //Leaflet Plugins (Google)false');
-    $app->enqueueScript('vendor', 'leaflet-google-tile', '/vendor/leaflet/lib/leaflet-plugins/leaflet-plugins-master/layer/tile/Google.js', array('leaflet'));
+    $app->enqueueScript('vendor', 'leaflet-google-tile', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-plugins-master/layer/tile/Google.js', array('leaflet'));
     //Pure CSS Tooltips (Hint - https://github.com/chinchang/hint.css)
     //$app->enqueueStyle('vendor', 'hint', 'http://cdn.jsdelivr.net/hint.css/1.3.0/hint.min.css');
     //Mapa das Singles
