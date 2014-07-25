@@ -299,7 +299,7 @@
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
                 return;
-
+            
             $rootScope.isPaginating = false;
 
             if(results.paginating){
@@ -326,8 +326,12 @@
 
             if($rootScope.isPaginating)
                 return;
+            
             $rootScope.pagination[entity]++;
-            $rootScope.$emit('resultPagination', $scope.data);
+            
+            // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
+            if($rootScope.pagination[entity] > 2)
+                $rootScope.$emit('resultPagination', $scope.data);
         };
 
         $scope.numResults = function (num, entity){

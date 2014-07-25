@@ -3,10 +3,11 @@
 
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
-        var activeRequests= 0,
+        var activeRequests = 0,
             canceler = null,
             lastEmitedResult = 'null',
-            lastEmitedCountResult = 'null';
+            lastEmitedCountResult = 'null',
+            lastQueries = {enabledEntities: null, space: null, agent: null, event: null, project: null, listedEntity: null, list:null, page: null};
 
         $rootScope.spinnerCount = $rootScope.spinnerCount || 0;
 
@@ -19,6 +20,7 @@
         };
 
         function search (ev, data){
+            
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -38,39 +40,61 @@
                 activeRequests = 0;
             }
 
-            if(data.global.viewMode === 'list'){
-                $rootScope.isPaginating = true;
-            }
-
             canceler = $q.defer();
-
+            
             if(data.global.viewMode === 'map'){
+                var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
                 if(data.global.enabled.agent){
-                    callApi('agent');
+                    var agentQueryData = data2searchData(data.agent);
+                    if(!angular.equals(agentQueryData, lastQueries.agent) || !compareEnabledEntities){
+                        lastQueries.agent = angular.copy(agentQueryData);
+                        callApi('agent', agentQueryData);
+                    }
                 }
 
                 if(data.global.enabled.event){
-                    callApi('event');
+                    var eventQueryData = data2searchData(data.event);
+                    if(!angular.equals(eventQueryData, lastQueries.event) || !compareEnabledEntities){
+                        lastQueries.event = angular.copy(eventQueryData);
+                        callApi('event', eventQueryData);
+                    }
                 }
 
                 if(data.global.enabled.space){
-                    callApi('space');
+                    var spaceQueryData = data2searchData(data.space);
+                    if(!angular.equals(spaceQueryData, lastQueries.space) || !compareEnabledEntities){
+                        lastQueries.space = angular.copy(spaceQueryData);
+                        callApi('space', spaceQueryData);
+                    }
                 }
+                
+                lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
-                callApi(data.global.filterEntity);
+                var activeEntity = data.global.filterEntity;
+                var listQueryData = data2searchData(data[activeEntity]);
+                
+                if(activeEntity !== lastQueries.listedEntity)
+                    $rootScope.pagination[activeEntity] = 1;
+                
+                var isDiff = (paginating && $rootScope.pagination[activeEntity] !== lastQueries.page) || (!angular.equals(listQueryData, lastQueries.list) || lastQueries.listedEntity !== activeEntity);
+                
+                if( isDiff ){
+                    $rootScope.isPaginating = true;
+                    lastQueries.listedEntity = activeEntity;
+                    lastQueries.list = angular.copy(listQueryData);
+                    callApi(activeEntity, angular.copy(listQueryData));
+                }else{
+                    $rootScope.isPaginating = false;
+                }
             }
 
             endCountRequest();
             endRequest();
 
-            function callApi(entity){
-                var sData = data2searchData(data[entity]),
-                    apiCountParams = JSON.stringify(sData),
-                    apiParams = JSON.stringify([sData,data.global.locationFilters,data.global.isVerified,$rootScope.pagination[entity]]),
-                    requestEntity = entity,
+            function callApi(entity, sData){
+                var requestEntity = entity,
                     requestAction = 'find';
-
-
+                
                 if(entity === 'event'){
                     if(data.global.viewMode === 'list'){
                         requestAction = 'findByLocation';
@@ -80,7 +104,7 @@
                     }
 
                 }
-
+                
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
                 
@@ -153,8 +177,7 @@
             }
 
             function endRequest(){
-                if(numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
-
+                if(numRequests > 0 && numSuccessRequests === numRequests && lastEmitedResult !== JSON.stringify(results)){
                     if(data.global.viewMode === 'map') {
                         $rootScope.resultsNotInMap = {agent: 0, space: 0, event: 0};
                         if(results.agent) {
@@ -167,7 +190,7 @@
                             countAndRemoveResultsNotInMap('event', results);
                         }
                     }
-
+                    
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
 
@@ -176,7 +199,7 @@
             }
 
             function endCountRequest(){
-                if(numCountSuccessRequests === numCountRequests && lastEmitedCountResult !== JSON.stringify(countResults)){
+                if(numCountRequests > 0 && numCountSuccessRequests === numCountRequests && lastEmitedCountResult !== JSON.stringify(countResults)){
                     $rootScope.$emit('searchCountResultsReady', countResults);
                 }
             }
@@ -201,7 +224,7 @@
                         return MapasCulturais.taxonomyTerms.linguagem[e];
                     });
                     selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
-                    console.log(selectedLinguagens);
+                    
                     searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
                 }
 
