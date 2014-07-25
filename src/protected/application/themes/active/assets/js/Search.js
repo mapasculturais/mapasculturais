@@ -2,6 +2,8 @@
     "use strict";
 
     window.apply = null;
+    
+    var timeoutTime = 300;
 
     var defaultLocationRadius = 2000;
 
@@ -248,7 +250,7 @@
                 $timeout.cancel($scope.timer);
                 $scope.timer = $timeout(function() {
                     $rootScope.$emit('searchDataChange', $scope.data);
-                },500);
+                },timeoutTime);
             }
         };
 
@@ -262,12 +264,12 @@
                     $location.hash(serialized);
                     $scope.timer = $timeout(function() {
                         $rootScope.$emit('searchDataChange', $scope.data);
-                    },500);
+                    },timeoutTime);
                 } else {
                     $scope.timer = $timeout(function() {
                         $location.hash(serialized);
                         $rootScope.$emit('searchDataChange', $scope.data);
-                    }, 500);
+                    }, timeoutTime);
                     $window.dataTimeout = $scope.timer;
                 }
             }
