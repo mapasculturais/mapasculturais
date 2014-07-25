@@ -1,9 +1,15 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 
+// creating base url
+$prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
+$host_part = $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+if(substr($host_part,-1) !== '/') $host_part .= '/';
+$base_url = $prot_part . $host_part;
+
 return array(
     // sempre colocar a barra no final da url
-    'base.url' => 'http://'.(array_key_exists('SERVER_NAME' , $_SERVER) ? ($_SERVER['SERVER_NAME'].dirname($_SERVER['SCRIPT_NAME']) ) : 'mapasculturais.local') . '/',
+    'base.url' => $base_url,
 
     'vectorLayersPath' => 'geojson',
 
