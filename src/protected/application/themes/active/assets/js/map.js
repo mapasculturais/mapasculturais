@@ -505,9 +505,16 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
         });
 
-        $('#endereco').on('click dblclick mousedown', function(e){
+        $('.js-leaflet-control').on('click dblclick mousedown startdrag', function(e){
             e.stopPropagation();
         });
 
-}
+};
+
+// Fix Leaflet FUllScreen control that not allows keyboard inputs
+(function(){
+    window.fullScreenApi.requestFullScreen = function(el) {
+        return (this.prefix === '') ? el.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT) : el[this.prefix + 'RequestFullScreen'](Element.ALLOW_KEYBOARD_INPUT);
+    };
+})();
 

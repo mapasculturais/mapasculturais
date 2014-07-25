@@ -47,7 +47,26 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
 ?>
 <?php add_map_assets(); ?>
-    <div id="infobox" style="display:block" ng-show="showInfobox()">
+
+    <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
+        <form id="form-local" method="post">
+            <label for="proximo-a">Local: </label>
+            <input id="endereco" ng-model="data.global.locationFilters.address.text" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
+            <!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
+            <input type="hidden" name="lat" />
+            <input type="hidden" name="lng" />
+        </form>
+        <a id ="proximo-a-mim" class="control-infobox-open hltip botoes-do-mapa" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
+        <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
+    </div>
+    <!--#filtro-local-->
+    <div id="camadas-de-entidades" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
+        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
+    </div>
+
+    <div id="infobox"class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-show="showInfobox()">
         <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">
@@ -117,26 +136,11 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 </div>
             </article>
         </div>
-    </div>
-    <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
-        <form id="form-local" method="post">
-            <label for="proximo-a">Local: </label>
-            <input id="endereco" ng-model="data.global.locationFilters.address.text" type="text" class="proximo-a" name="proximo-a" placeholder="Digite um endereço" />
-            <!--<p class="mensagem-erro-proximo-a-mim mensagens">Não foi possível determinar sua localização. Digite seu endereço, bairro ou CEP </p>-->
-            <input type="hidden" name="lat" />
-            <input type="hidden" name="lng" />
-        </form>
-        <a id ="proximo-a-mim" class="control-infobox-open hltip botoes-do-mapa" ng-click="filterNeighborhood()" title="Buscar somente resultados próximos a mim."></a>
-        <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
-    </div>
-    <!--#filtro-local-->
-    <div id="camadas-de-entidades" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
-        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
-        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
-        <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
-    </div>
-    <div id="mapa" ng-controller="SearchMapController"  ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
-    </div>
+    </div><!--#infobox-->
+
+    <div id="mapa" ng-controller="SearchMapController" ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
+    </div><!--#mapa-->
+
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
