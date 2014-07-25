@@ -139,7 +139,7 @@ $ids = array_map(function($e){
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDsecription" data-original-title="Descrição" data-emptytext="Insira uma descrição do espaço" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
 

@@ -194,7 +194,7 @@ add_angular_entity_assets($entity);
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição do espaço" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Espaço" data-emptytext="Insira uma descrição do espaço" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
         <?php if ( is_editable() || $entity->criterios ): ?>

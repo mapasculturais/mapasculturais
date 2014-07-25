@@ -326,9 +326,9 @@ add_occurrence_frequencies_to_js();
         </div>
         <!--.ficha-spcultura-->
 
-        <?php if (is_editable() || $entity->longDescription): ?>
+        <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição detalhada do evento" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
 
