@@ -200,7 +200,6 @@ add_occurrence_frequencies_to_js();
             </div>
     </header>
     <!--.main-content-header-->
-    <!--aqui entram as abas quando tiver contas e repercussão funcionando-->
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <p>
