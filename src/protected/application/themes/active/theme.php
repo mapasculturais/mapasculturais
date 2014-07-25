@@ -58,6 +58,11 @@ function body_footer(){
     <?php
 }
 
+$app->hook('view.render(<<agent|space|project|event>>/single):before', function() use ($app) {
+    $app->enqueueScript('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
+    $app->enqueueStyle('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/magnific-popup.css');
+});
+
 $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
      $app->hook('mapasculturais.body:before', function(){ ?>
             <!--facebook compartilhar-->
