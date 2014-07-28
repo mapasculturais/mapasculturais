@@ -30,8 +30,8 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <p style="display:inline; white-space: nowrap;"><span class="label">Descrição Legível da Ocorrência:</span> {{rule.description}}</p>
-            <p><span class="label">Preço:</span> {{rule.price}}</p>
+            <p style="display:inline; white-space: nowrap;"><span class="label">Descrição Legível da Ocorrência:</span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
+            <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
                 <p><span class="label">Duração:</span> {{rule.duration}}</p>
