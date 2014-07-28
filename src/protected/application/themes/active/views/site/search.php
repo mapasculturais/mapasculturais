@@ -66,7 +66,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
     </div>
 
-    <div id="infobox"class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-show="showInfobox()">
+    <div id="infobox" ng-show="showInfobox()">
         <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">

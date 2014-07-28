@@ -514,7 +514,18 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 // Fix Leaflet FUllScreen control that not allows keyboard inputs
 (function(){
     window.fullScreenApi.requestFullScreen = function(el) {
-        return (this.prefix === '') ? el.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT) : el[this.prefix + 'RequestFullScreen'](Element.ALLOW_KEYBOARD_INPUT);
+
+        //Change the element to use <html> tag
+        el = document.querySelector('html');
+
+        //Add permission to allow keyboard input
+        return (this.prefix === '') ?
+            el.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+        :
+            el[this.prefix + 'RequestFullScreen'](Element.ALLOW_KEYBOARD_INPUT);
+
+        //Scroll the window to the bottom
+        //didn't work window.scrollTo(0,document.body.scrollHeight);
     };
 })();
 
