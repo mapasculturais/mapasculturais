@@ -2,7 +2,7 @@
     "use strict";
 
     window.apply = null;
-    
+
     var timeoutTime = 300;
 
     var defaultLocationRadius = 2000;
@@ -306,7 +306,7 @@
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
                 return;
-            
+
             $rootScope.isPaginating = false;
 
             if(results.paginating){
@@ -333,10 +333,10 @@
 
             if($rootScope.isPaginating)
                 return;
-            
+
             if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
-                return; 
-            
+                return;
+
             $rootScope.pagination[entity]++;
             // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
             if($rootScope.pagination[entity] > 2)
@@ -409,7 +409,7 @@
             var from = $scope.data.event.from,
                 to = $scope.data.event.to;
 
-            return from && to && (formatDate(from) !== formatDate() || from !== to );
+            return from !== skeletonData.event.from && to !== skeletonData.event.to;
         };
 
         $scope.eventDateFilter = function(){
@@ -423,8 +423,8 @@
         };
 
         $scope.cleanEventDateFilters = function(){
-            $scope.data.event.from = null;
-            $scope.data.event.to = null;
+            $scope.data.event.from = skeletonData.event.from;
+            $scope.data.event.to = skeletonData.event.to;
         }
 
         $scope.readableProjectRegistrationDates = function(project){
