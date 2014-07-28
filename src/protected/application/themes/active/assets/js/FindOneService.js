@@ -27,18 +27,22 @@
                     events: {}
                 };
 
-                $rootScope.spinnerCount++;
-                numRequests++;
+                if (data.global.enabled.event){
+                    $rootScope.spinnerCount++;
+                    numRequests++;
 
-                select += ',endereco';
-                apiFindOne('space', select, sData, page, requestAction).success(function(rs){
-                    result[entity].space = rs;
+                    select += ',endereco';
+                    apiFindOne('space', select, sData, page, requestAction).success(function(rs){
+                        result[entity].space = rs;
+                        endRequest();
+                    });
+                    apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
+                        result[entity].events = rs;
+                        endRequest();
+                    });;
+                }else{
                     endRequest();
-                });
-                apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
-                    result[entity].events = rs;
-                    endRequest();
-                });;
+                }
             }else{
                 apiFindOne(entity, select, sData, page, requestAction).success(function(rs){
                     result[entity] = rs;
