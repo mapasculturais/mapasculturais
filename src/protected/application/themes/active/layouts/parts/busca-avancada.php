@@ -4,7 +4,7 @@
         <div id="filtro-projetos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'project'">
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
-                <input ng-model="data.project.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
+                <input ng-model="data.project.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Buscar projetos" />
             </form>
             <!--#busca-->
             <div class="filtro">
@@ -37,12 +37,12 @@
         <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'event'">
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
-                <input ng-model="data.event.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Digite um palavra-chave" />
+                <input ng-model="data.event.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
             </form>
             <!--#busca-->
             <div class="filtro">
-                <label>Intervalo entre</label>
-                <input class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> e
+                <label class="show-label" for="data-de-inicio">Entre</label>
+                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> <label class="show-label">a</label>
                 <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" />
             </div>
             <!--.filtro-->
@@ -83,7 +83,7 @@
         <div id="filtro-agentes" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'agent'">
             <form class="form-palavra-chave filtro">
                 <label>Palavra-chave</label>
-                <input ng-model="data.agent.keyword" class="campo-de-busca" type="text" name="busca" placeholder="Digite um palavra-chave" />
+                <input ng-model="data.agent.keyword" class="campo-de-busca" type="text" name="busca" placeholder="Buscar agentes" />
             </form>
             <!--#busca-->
             <div class="filtro">
@@ -123,7 +123,7 @@
         <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'space'">
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-espaco">Palavra-chave</label>
-                <input ng-model="data.space.keyword" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Digite um palavra-chave" />
+                <input ng-model="data.space.keyword" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Buscar espaços" />
             </form>
             <!--#busca-->
             <div class="filtro">

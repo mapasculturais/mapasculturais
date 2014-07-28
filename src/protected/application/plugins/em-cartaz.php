@@ -25,7 +25,7 @@ $app->hook('view.partial(panel/part-nav):after', function($template, &$html) use
 
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
     $url = $app->createUrl('panel', 'em-cartaz');
-    $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_document_alt'></span> Em Cartaz</a></li>";
+    $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_star'></span> Em Cartaz</a></li>";
     $html = str_replace('</ul>', $menu . '</ul>', $html);
 });
 
