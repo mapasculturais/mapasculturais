@@ -20,7 +20,19 @@ class ProjectAgentRelation extends AgentRelation {
      * })
      */
     protected $owner;
-
+    
+    protected function canUserCreate($user){
+        if($user->is('admin'))
+            return true;
+        
+        if($user->is('guest'))
+            return false;
+        
+        if($this->status === self::STATUS_REGISTRATION && $user->id === $this->agent->user->id)
+            return true;
+        else
+            return parent::canUserCreate($user);
+    }
 
     protected function canUserModify($user){
         $group = App::i()->projectRegistrationAgentRelationGroupName;
