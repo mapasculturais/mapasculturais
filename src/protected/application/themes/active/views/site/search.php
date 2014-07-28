@@ -146,7 +146,6 @@ $app->hook('mapasculturais.scripts', function() use($app){
             <div class="clearfix">
                 <h1><span class="icone icon_document_alt"></span> Projetos</h1>
                 <a class="botao adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
-                <a class="icone arrow_carrot-down"></a>
             </div>
         </header>
         <div id="lista-dos-projetos" class="lista" infinite-scroll="data.global.filterEntity === 'project' && addMore('agent')" ng-show="data.global.filterEntity === 'project'">
@@ -171,7 +170,6 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'agent'">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
-            <a class="icone arrow_carrot-down"></a>
         </header>
 
         <div id="lista-dos-agentes" class="lista" infinite-scroll="data.global.filterEntity === 'agent' && addMore('agent')" ng-show="data.global.filterEntity === 'agent'">
@@ -197,7 +195,6 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'space'">
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
-            <a class="icone arrow_carrot-down"></a>
         </header>
         <div id="lista-dos-espacos" class="lista" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
             <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
@@ -224,7 +221,6 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <header id="header-dos-eventos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'event'">
             <h1><span class="icone icon_calendar"></span> Eventos</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
-            <a class="icone arrow_carrot-down"></a>
         </header>
 
         <div id="lista-dos-eventos" class="lista" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
