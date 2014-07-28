@@ -14,6 +14,8 @@ if (is_editable()) {
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 }
 
+$app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+
 add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
