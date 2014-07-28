@@ -363,7 +363,7 @@
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            console.log($scope.data.global.viewMode);
+            
             if($scope.data.global.viewMode === 'list'){
                 $scope.numEventsInList = results.event;
             }else{

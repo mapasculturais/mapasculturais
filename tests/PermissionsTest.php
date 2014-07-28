@@ -820,9 +820,44 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testProjectRegistrationPermissions(){
-        // approve registration
+        
+        $this->resetTransactions();
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+        
+        $this->assertPermissionGranted(function() use($user1, $user2){
+            $this->user = $user1;
+            
+            $project = $this->getNewEntity('Project');
+            $project->owner = $user1->profile;
+            $project->type = 1;
+            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24);
+            $project->registrationTo = date('Y-m-d', time() + 3600 * 24);
+            $project->save(true);
+            
+            $this->user = $user2;
+            
+            $project->register($user2->profile);
 
-        // reject registration
+        }, "Asserting that a normal user CAN register in a project with registration open");
+        
+        
+        $this->assertPermissionDenied(function() use($user1, $user2){
+            $this->user = $user1;
+            
+            $project = $this->getNewEntity('Project');
+            $project->owner = $user1->profile;
+            $project->type = 1;
+            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24 * 2);
+            $project->registrationTo = date('Y-m-d', time() - 3600 * 24);
+            $project->save(true);
+            
+            $this->user = $user2;
+            
+            $project->register($user2->profile);
+
+        }, "Asserting that a normal user CANNOT register in a project with registration closed");
+    
     }
 
     function testFilesPermissions(){

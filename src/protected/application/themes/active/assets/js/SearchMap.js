@@ -28,6 +28,8 @@
                 });
 
                 $scope.map.on('zoomend moveend', function(){
+                    if($scope.data.global.viewMode === 'list')
+                        return;
                     $scope.data.global.map = {
                         center : $window.leaflet.map.getCenter(),
                         zoom : $window.leaflet.map.getZoom()
