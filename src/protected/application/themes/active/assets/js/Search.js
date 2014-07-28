@@ -2,6 +2,8 @@
     "use strict";
 
     window.apply = null;
+    
+    var timeoutTime = 300;
 
     var defaultLocationRadius = 2000;
 
@@ -245,7 +247,10 @@
 
             if(newValue !== $rison.stringify(diffFilter($scope.data))){
                 $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
-                $rootScope.$emit('searchDataChange', $scope.data);
+                $timeout.cancel($scope.timer);
+                $scope.timer = $timeout(function() {
+                    $rootScope.$emit('searchDataChange', $scope.data);
+                },timeoutTime);
             }
         };
 
@@ -257,12 +262,14 @@
                 $timeout.cancel($scope.timer);
                 if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
                     $location.hash(serialized);
-                    $rootScope.$emit('searchDataChange', $scope.data);
+                    $scope.timer = $timeout(function() {
+                        $rootScope.$emit('searchDataChange', $scope.data);
+                    },timeoutTime);
                 } else {
                     $scope.timer = $timeout(function() {
                         $location.hash(serialized);
                         $rootScope.$emit('searchDataChange', $scope.data);
-                    }, 500);
+                    }, timeoutTime);
                     $window.dataTimeout = $scope.timer;
                 }
             }
@@ -299,7 +306,7 @@
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
                 return;
-
+            
             $rootScope.isPaginating = false;
 
             if(results.paginating){
@@ -326,8 +333,14 @@
 
             if($rootScope.isPaginating)
                 return;
+            
+            if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
+                return; 
+            
             $rootScope.pagination[entity]++;
-            $rootScope.$emit('resultPagination', $scope.data);
+            // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
+            if($rootScope.pagination[entity] > 2)
+                $rootScope.$emit('resultPagination', $scope.data);
         };
 
         $scope.numResults = function (num, entity){
@@ -344,22 +357,28 @@
             events: 0,
             spaces: 0
         };
+        $scope.numEventsInList = 0;
         $scope.numProjects = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            if(results.event){
-                $scope.numEvents = {
-                    events: parseInt(results.event.events),
-                    spaces: parseInt(results.event.spaces)
-                };
+            console.log($scope.data.global.viewMode);
+            if($scope.data.global.viewMode === 'list'){
+                $scope.numEventsInList = results.event;
             }else{
-                $scope.numEvents = {
-                    events: 0,
-                    spaces: 0
+                if(results.event){
+                    $scope.numEvents = {
+                        events: parseInt(results.event.events),
+                        spaces: parseInt(results.event.spaces)
+                    };
+                }else{
+                    $scope.numEvents = {
+                        events: 0,
+                        spaces: 0
+                    };
                 };
-            };
+            }
             $scope.numProjects = parseInt(results.project);
         });
 

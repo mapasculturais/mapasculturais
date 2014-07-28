@@ -72,22 +72,14 @@ jQuery(function(){
 
     if($('.js-verified').length){
         $('.js-verified').click(function(){
-            var verify = $(this).data('verify-url');
-            var removeVerification = $(this).data('remove-verification-url');
-            if($('.js-verified').hasClass('active')){
-                $.getJSON(removeVerification, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').removeClass('active');
-                    }
-                });
+            var $this = $(this);
+            if($this.hasClass('active')){
+                $this.removeClass('active');
+                $('#is-verified-input').editable('setValue', 0);
             }else{
-                $.getJSON(verify, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').addClass('active');
-                    }
-                });
+                $this.addClass('active');
+                $('#is-verified-input').editable('setValue', 1);
             }
-
             return false;
         });
     }

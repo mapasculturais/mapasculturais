@@ -179,23 +179,27 @@
                             ({{resultsNotInMap.agent}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="numResults(numAgents, 'agent') && (numResults(numSpaces, 'space') || numResults(numEvents.events, 'event'))">,</span>
+                    <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numAgents, 'agent') && (numResults(numSpaces, 'space') || numResults(numEvents.events, 'event'))">,</span>
                     <span ng-if="numResults(numSpaces, 'space')">{{numResults(numSpaces, 'space')}} espaço<span ng-show="numResults(numSpaces, 'space')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} espaços sem localização">
                             ({{resultsNotInMap.space}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="numResults(numSpaces, 'space') && numResults(numEvents.events, 'event')">,</span>
-                    <span ng-if="numResults(numEvents.events, 'event')">{{numResults(numEvents.events, 'event')}} evento<span ng-show="numResults(numEvents.events, 'event')!==1">s</span>
+                    <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numSpaces, 'space') && numResults(numEvents.events, 'event')">,</span>
+                    <span ng-if="data.global.viewMode === 'map' && numResults(numEvents.events, 'event')">{{numResults(numEvents.events, 'event')}} evento<span ng-show="numResults(numEvents.events, 'event')!==1">s</span>
                         em {{numResults(numEvents.spaces, 'event')}} espaço<span ng-show="numResults(numEvents.spaces, 'event')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
                             ({{resultsNotInMap.event}})
                         </span>
                     </span>
-                    <!--,--><span ng-if="(numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project')">,</span>
+                    <span ng-if="data.global.viewMode === 'list' && numEventsInList">{{numEventsInList}} evento<span ng-show="numEventsInList!==1">s</span> </span>
+                    
+                    <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project')">,</span>
                     <span ng-if="numProjects">{{numProjects}} projeto<span ng-show="numProjects!==1">s</span> </span>
                 </span>
-                <span ng-show="spinnerCount===0 && (numResults(numEvents.events, 'event') === 0 || !showFilters('event')) && (numResults(numAgents, 'agent') === 0 || !showFilters('agent')) && (numResults(numSpaces, 'space') === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                <span ng-if="data.global.viewMode === 'map'" ng-show="spinnerCount===0 && (numResults(numEvents.events, 'event') === 0 || !showFilters('event')) && (numResults(numAgents, 'agent') === 0 || !showFilters('agent')) && (numResults(numSpaces, 'space') === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                <span ng-if="data.global.viewMode === 'list'" ng-show="spinnerCount===0 && numEventsInList == 0 || !showFilters('event') && (numAgents == 0 || !showFilters('agent')) && (numSpaces == 0 || !showFilters('space')) && (numProjects == 0 || !showFilters('project'))">Nenhum resultado encontrado</span>
+                
             </div>
             <!--#resultados-->
             <div id="filtros-selecionados">

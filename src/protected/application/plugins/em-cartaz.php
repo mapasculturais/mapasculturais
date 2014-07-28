@@ -63,17 +63,24 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
     $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
-    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle){
+    $addEventBlockHtml = function($event) use ($app, $section, $defaultFont, $eventTitle){
         $textRunObj = $section->createTextRun();
-        $textRunObj->addText($event['name'], $eventTitle);
+        $textRunObj->addLink($event['singleUrl'], $event['name'], $eventTitle, $eventTitle);
         $textRunObj->addTextBreak();
+        $eventText = $event['shortDescription'];
+        if(!empty($event['classificacaoEtaria'])){
+            $eventText .= '+'.$event['classificacaoEtaria'].'. ';
+        }
+
         $spaces = array();
         $occurenceDescription = '';
         foreach($event['occurrences'] as $occurrence){
-            if(isset($occurrence->rule->description)){
+            if(!empty($occurrence->rule->description)){
                 $occurenceDescription .= $occurrence->rule->description.'. ';
+            }else{
+                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
             }
-            if(isset($occurrence->rule->price)){
+            if(!empty($occurrence->rule->price)){
                 $occurenceDescription .= $occurrence->rule->price.'. ';
             }
             if (!array_key_exists($occurrence->space->id, $spaces)){
@@ -92,7 +99,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             }
         }
 
-        $textRunObj->addText($event['shortDescription'].' '.$agentText.' '.$spaceText.$occurenceDescription, $defaultFont);
+        $textRunObj->addText($eventText.' '.$agentText.' '.$spaceText.$occurenceDescription, $defaultFont);
     };
 
     $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
@@ -134,7 +141,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             'isVerified' => 'eq(true)',
             '@from'=>$from->format('Y-m-d'),
             '@to'=>$to->format('Y-m-d'),
-            '@select' => 'id,name,shortDescription,location,metadata,occurrences,project,relatedAgents',
+            '@select' => 'id,name,shortDescription,singleUrl,classificacaoEtaria,location,metadata,occurrences,project,relatedAgents',
             '@order' => 'name ASC',
             'term:linguagem'=>'EQ('.$linguagem.')'
         );

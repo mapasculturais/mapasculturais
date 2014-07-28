@@ -6,6 +6,10 @@ else
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+./db-update.sh 1
+
 cd $DIR/..
 
 git pull --all
