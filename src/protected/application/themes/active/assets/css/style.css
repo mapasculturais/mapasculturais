@@ -554,20 +554,15 @@ body.editable #main-section { margin-top: 136px; }
 #url-da-busca { width: 70%; margin-bottom: 0; border:1px solid #ccc; cursor:default; }
 #views { float: left; width: auto; margin-left: .75rem; padding-left:.75rem; border-left: 2px solid #d3d3d3; }
 /* header do objeto*/
-.header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem 3rem .5625rem .5625rem; background: #fff; }
+.header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem; background: #fff; }
 .header-do-objeto h1 { float: left; width: auto; height: 1.875rem; margin-bottom: 0; font-size: 1.5rem; line-height: 1.875rem; }
 .header-do-objeto h1 .icone { width: 1.5rem; height: 1.875rem; line-height: 1.875rem; font-size: 1.5rem; }
-.header-do-objeto .arrow_carrot-down { position: absolute; top: 0; right: 0; width: 3rem; height: 3rem; line-height: 3rem; font-size: 2rem; text-align: center; }
 .header-do-objeto .icone { vertical-align: initial; }
 .header-do-objeto .botao.adicionar, .header-do-objeto .botao.adicionar:hover { float: right; margin: -1px 1.5rem; color: #fff; background: #000; border: 1px solid #000; }
-#header-dos-eventos { border-left: 3rem solid #b3b921; }
-#header-dos-agentes { border-left: 3rem solid #1dabc6; }
-#header-dos-espacos { border-left: 3rem solid #e83f96; }
-#header-dos-projetos { border-left: 3rem solid #cc0033; }
-#header-dos-eventos .arrow_carrot-down { background: #b3b921; }
-#header-dos-agentes .arrow_carrot-down { background: #1dabc6; }
-#header-dos-espacos .arrow_carrot-down { background: #e83f96; }
-#header-dos-projetos .arrow_carrot-down { background: #cc0033; }
+#header-dos-eventos { border-left: 3rem solid #b3b921; border-right: 3rem solid #b3b921; }
+#header-dos-agentes { border-left: 3rem solid #1dabc6; border-right: 3rem solid #1dabc6; }
+#header-dos-espacos { border-left: 3rem solid #e83f96; border-right: 3rem solid #e83f96; }
+#header-dos-projetos { border-left: 3rem solid #cc0033; border-right: 3rem solid #cc0033; }
 
 
 /* =Listas
@@ -723,7 +718,9 @@ nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
 
 /* =Editor
 -------------------------------------------------------------- */
-#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 380px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 130px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity.editable-entity-edit { padding: .25rem 245px; }
+#editable-entity.can-edit-roles { padding: .25rem 380px; }
 #editable-entity .mensagem { display: none; margin-bottom: 0; }
 #editable-entity .controles { position: absolute; top: .25rem; right: .75rem; width: 370px; text-align: right; }
 #logo-spcultura-peq { display: none; position: absolute; left: .75rem; margin-bottom: 0; line-height: 2rem; }
