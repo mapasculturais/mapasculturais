@@ -334,7 +334,7 @@
             if($rootScope.isPaginating)
                 return;
             
-            if($scope[entity + 's'].length === 0)
+            if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
                 return; 
             
             $rootScope.pagination[entity]++;
@@ -357,22 +357,28 @@
             events: 0,
             spaces: 0
         };
+        $scope.numEventsInList = 0;
         $scope.numProjects = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            if(results.event){
-                $scope.numEvents = {
-                    events: parseInt(results.event.events),
-                    spaces: parseInt(results.event.spaces)
-                };
+            console.log($scope.data.global.viewMode);
+            if($scope.data.global.viewMode === 'list'){
+                $scope.numEventsInList = results.event;
             }else{
-                $scope.numEvents = {
-                    events: 0,
-                    spaces: 0
+                if(results.event){
+                    $scope.numEvents = {
+                        events: parseInt(results.event.events),
+                        spaces: parseInt(results.event.spaces)
+                    };
+                }else{
+                    $scope.numEvents = {
+                        events: 0,
+                        spaces: 0
+                    };
                 };
-            };
+            }
             $scope.numProjects = parseInt(results.project);
         });
 

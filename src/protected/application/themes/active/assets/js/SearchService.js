@@ -107,7 +107,7 @@
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
                 
-                //Counting XX events in YY spaces
+                //Counting XX events in YY spaces (events in map mode)
                 if(requestEntity === 'space' && requestAction === 'findByEvents'){
 
                    var otherRequestEntity = 'event';
@@ -146,7 +146,7 @@
                         numCountSuccessRequests++;
                         activeRequests--;
                         $rootScope.spinnerCount--;
-
+                        console.log(rs);
                         countResults[entity] = rs;
                         endCountRequest();
                     });

@@ -58,6 +58,11 @@ function body_footer(){
     <?php
 }
 
+$app->hook('view.render(<<agent|space|project|event>>/single):before', function() use ($app) {
+    $app->enqueueScript('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
+    $app->enqueueStyle('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/magnific-popup.css');
+});
+
 $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
      $app->hook('mapasculturais.body:before', function(){ ?>
             <!--facebook compartilhar-->
@@ -251,7 +256,7 @@ function add_agent_relations_to_js($entity){
  * @param type $response_transform
  * @param type $add_description_input
  */
-function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = 'jpg ou png') {
+function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.doc, .xls, .pdf, .jpg ou .png') {
     App::i()->view->part('parts/ajax-uploader', array(
         'file_owner' => $file_owner,
         'file_group' => $group_name,

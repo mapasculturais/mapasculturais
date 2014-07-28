@@ -12,6 +12,23 @@ var hl;
         if ($('#editable-entity').length) {
             $('#main-section').css('margin-top', headerHeight + $('#editable-entity').outerHeight(true));
         }
+        
+        // inicializa a galeria
+        if ($(document.body).hasClass('action-single') && $(document.body).hasClass('entity')) {
+            $('.js-gallery').magnificPopup({
+                delegate: 'a', // child items selector, by clicking on it popup will open
+                type: 'image',
+                gallery:{
+                    enabled:true,
+                    
+                    // arrowMarkup: '<button title="%title%" type="button" class="mfp-arrow mfp-arrow-%dir%"></button>', // markup of an arrow button
+
+                    tPrev: 'Anterior', // title for left button
+                    tNext: 'Próxima', // title for right button
+                    tCounter: '%curr% de %total%' // markup of counter
+                }
+            });
+        }
 
 
         // ajusta o tamanho do mapa internamente no leaflet
