@@ -191,6 +191,9 @@ MapasCulturais.EventHumanReadableManager = {
         $(selector).find('.grupo-descricao-automatica > a').click(function() {
             $(selector).find('input[name="description"]').val( $(selector).find('#descricao-automatica').html() ).data('synced', 1);
         });
+        
+        //On init, we assume we are allways synced, even if the values are different, because the could have been manually edited
+        $(selector).find('input[name="description"]').data('synced', 1);
     },
     updateSuggestion: function(selector) {
         var human = MapasCulturais.EventHumanReadableManager.getSuggestion(selector);
