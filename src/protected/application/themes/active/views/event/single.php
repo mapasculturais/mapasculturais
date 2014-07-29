@@ -33,7 +33,7 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <p style="display:inline; white-space: nowrap;"><span class="label">Descrição Legível da Ocorrência:</span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
+            <p><span class="label">Descrição Legível: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
@@ -318,7 +318,7 @@ add_occurrence_frequencies_to_js();
                     </a>
                 </div>
             <?php endif; ?>
-            <div id="dialog-event-occurrence" class="js-dialog" title="Adicionar Ocorrência">
+            <div id="dialog-event-occurrence" class="js-dialog">
                 <?php if($this->controller->action == 'create'): ?>
                     <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
                 <?php else: ?>
@@ -416,12 +416,12 @@ add_occurrence_frequencies_to_js();
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="data-de-inicio">Data inicial:</label><br>
-                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
+                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates js-start-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
                 <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
             <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
                 <label for="data-de-fim">Data final:</label><br>
-                <input id="until-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
+                <input id="until-{{id}}-visible" type="text" class="js-event-dates js-end-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
                 <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
                 <!--(Se repetir mostra o campo de data final)-->
             </div>
@@ -445,9 +445,14 @@ add_occurrence_frequencies_to_js();
             </div>
         </div>
         <div class="clearfix">
-            <div class="grupo-de-campos descricao-horario-legivel" >
+            <div class="grupo-de-campos descricao-horario-legivel">
                 <label for="description">Descrição legível do horário:</label>
-                <textarea name="description">{{rule.description}}</textarea>
+                <p class="form-help">Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado.</p>
+                <div class="grupo-descricao-automatica clearfix">
+                    <p id="descricao-automatica" class="mensagem automatica">Descrição gerada pelo sistema automaticamente.</p>
+                    <a class="botao simples inserir"></a>
+                </div>
+                <input type="text" name="description" value="{{rule.description}}">
             </div>
         </div>
         <div class="clearfix">
