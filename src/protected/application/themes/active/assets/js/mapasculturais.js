@@ -29,31 +29,6 @@ $(function(){
         });
     }
 
-
-    if($('body.controller-event.entity').length){
-        //Mostra o mapa dos espaços nos eventos
-        $('.toggle-mapa').click(function() {
-            var $map = $(this).closest('.regra').find('.mapa');
-            MapasCulturais.reenableScrollWheelZoom = false;
-            if($map.is(':visible')){
-                $map.slideUp('fast');
-                $(this).parent().find('.ver-mapa').show();
-                $(this).parent().find('.ocultar-mapa').hide();
-
-            }else{
-                $map.slideDown('fast', function(){
-                    $map.data('leaflet-map').invalidateSize();
-                    $map.data('leaflet-map').scrollWheelZoom.disable();
-                });
-                $(this).parent().find('.ver-mapa').hide();
-                $(this).parent().find('.ocultar-mapa').show();
-            }
-
-            return false;
-        });
-
-        return false;
-    }
 });
 
 MapasCulturais.auth = {
@@ -140,8 +115,13 @@ MapasCulturais.Modal = {
     $bg: null,
     initKeyboard: function (selector){
         $(document.body).keyup(function (e){
-            //if(e.keyCode == 27)
-            //    $(selector + ' .js-close').click();
+            if(e.keyCode == 27){
+                $(selector).each(function(){
+                   if($(this).is(':visible')) {
+                       $(this).find('.js-close').click();
+                   }
+                });
+            }
         });
     },
 
@@ -202,6 +182,8 @@ MapasCulturais.Modal = {
     close: function(selector){
         $('body').css('overflow','auto');
         var $dialog = $(selector);
+        //alert('closing');
+        $dialog.find('.editable').editable('hide');
         $dialog.css(MapasCulturais.Modal.cssFinal).animate(MapasCulturais.Modal.cssInit, MapasCulturais.Modal.time, function(){
             $dialog.hide();
         });
@@ -268,7 +250,8 @@ MapasCulturais.MetaListUpdateDialog = function ($caller){
         responseTemplate = $caller.data('response-template');
     }
 
-    $form.find('script[type="js-response-template"]').text(responseTemplate);
+    $form.find('script.js-response-template').text(responseTemplate);
+    console.log(''  )
 
     //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
     if(group == 'videos') {
@@ -388,7 +371,9 @@ MapasCulturais.Video = {
             });
         }else if(videoData.parsedURL.attr('host').indexOf('vimeo') != -1){
             videoData.provider = 'vimeo';
-            videoData.videoID = videoData.parsedURL.attr('path').split('/')[1];
+            console.log(videoData.parsedURL);
+            var tmpArray = videoData.parsedURL.attr('path').split('/');
+            videoData.videoID = tmpArray[tmpArray.length-1];
             $.getJSON('http://www.vimeo.com/api/v2/video/'+videoData.videoID+'.json?callback=?', {format: "json"}, function(data) {
                 videoData.details = data[0];
                 videoData.thumbnailURL = data[0].thumbnail_small;
@@ -429,14 +414,18 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
-
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
-
                 select2:{
+                    initSelection : function (element, callback) {
+                        callback({id: $selector.data('value'), name: $selector.data('value-name')});
+                    },
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 2,
                     allowClear: $selector.data('allow-clear'),
+                    initSelection: function(e,cb){
+                        cb({id: 4, name:'teste'});
+                    },
                     ajax: {
                         url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
                         dataType: 'json',
@@ -618,7 +607,13 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
+            onSave: function($selector){
+                var entity = $selector.data('entity');
+                $selector.data('value', entity.id);
+                $selector.data('value-name', entity.name);
+            },
             selection: function(entity, $selector){
+                $selector.data('entity', entity);
                 return entity.name;
             },
 

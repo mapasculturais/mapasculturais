@@ -34,38 +34,6 @@
         <!--[if lt IE 9]>
         <script src="<?php echo $assetURL ?>/js/html5.js" type="text/javascript"></script>
         <![endif]-->
-        <style>
-
-            /* Styling for the ngProgress itself */
-            #ngProgress {
-                margin: 0;
-                padding: 10 0;
-                z-index: 99998;
-                background-color: white;
-                color: red;
-                box-shadow: 0 0 10px 0; /* Inherits the font color */
-                height: 5px;
-                opacity: 0;
-
-                /* Add CSS3 styles for transition smoothing */
-                -webkit-transition: all 0.2s ease-in-out;
-                -moz-transition: all 0.2s ease-in-out;
-                -o-transition: all 0.2s ease-in-out;
-                transition: all 0.2s ease-in-out;
-            }
-
-            /* Styling for the ngProgress-container */
-            #ngProgress-container {
-                position: fixed;
-                margin: 0;
-                padding: 0;
-                top: 0px;
-                left: 0;
-                right: 0;
-                z-index: 99999;
-            }
-
-        </style>
     </head>
 
     <body <?php body_properties() ?> >
@@ -74,8 +42,8 @@
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
                 <ul id="menu-secundario">
-                    <li><a href="#">Sobre o SP Cultura</a></li>
-                    <li><a href="#">Como usar</a></li>
+                    <li><a href="<?php echo $app->createUrl('site', 'page', array('sobre')) ?>">Sobre o SP Cultura</a></li>
+                    <!--<li><a href="<?php echo $app->createUrl('site', 'page', array('como-usar')) ?>">Como usar</a></li>-->
                 </ul>
                 <h1 id="logo-smc"><a href="http://www.prefeitura.sp.gov.br" target="_blank"><img src="<?php echo $assetURL ?>/img/logo-prefeitura.png" /></a></h1>
             </nav>
@@ -188,27 +156,29 @@
                             </a>
                             <ul class="submenu">
                                 <div class="setinha"></div>
-                                <li><a href="<?php echo $app->createUrl('panel');?>"><span class="icone icon_house"></span> Painel</a></li>
-                                    <ul class="third-level">
-                                        <li>
-                                            <a href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icone icon_calendar"></span> Meus Eventos</a>
-                                            <a href="<?php echo $app->createUrl('event', 'create') ?>" ><span class="adicionar"></span></a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icone icon_profile"></span> Meus Agentes</a>
-                                            <a href="<?php echo $app->createUrl('agent', 'create') ?>"><span class="adicionar"></span></a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icone icon_building"></span> Meus Espaços</a>
-                                            <a href="<?php echo $app->createUrl('space', 'create') ?>"><span class="adicionar"></span></a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icone icon_document_alt"></span> Meus Projetos</a>
-                                            <a href="<?php echo $app->createUrl('project', 'create') ?>"><span class="adicionar"></span></a>
-                                        </li>
-                                        <li>
-                                    </ul>
-                                <li><a href="#">Ajuda</a></li>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel');?>">Painel</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
+                                    <a class="adicionar"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
+                                    <a class="adicionar" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
+                                </li>
+                                <li class="staging-hidden"><a href="<?php echo $app->createUrl('panel', 'contracts') ?>">Meus Contratos</a>
+                                </li>
+                                <li class="row"></li>
+                                <!--<li><a href="#">Ajuda</a></li>-->
                                 <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
                             </ul>
                         </li>

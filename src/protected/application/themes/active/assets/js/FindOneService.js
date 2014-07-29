@@ -27,19 +27,22 @@
                     events: {}
                 };
 
-                $rootScope.spinnerCount++;
-                numRequests++;
-            }
-            if(entity === 'event'){
-                select += ',endereco';
-                apiFindOne('space', select, sData, page, requestAction).success(function(rs){
-                    result[entity].space = rs;
+                if (data.global.enabled.event){
+                    $rootScope.spinnerCount++;
+                    numRequests++;
+
+                    select += ',endereco';
+                    apiFindOne('space', select, sData, page, requestAction).success(function(rs){
+                        result[entity].space = rs;
+                        endRequest();
+                    });
+                    apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
+                        result[entity].events = rs;
+                        endRequest();
+                    });;
+                }else{
                     endRequest();
-                });
-                apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
-                    result[entity].events = rs;
-                    endRequest();
-                });;
+                }
             }else{
                 apiFindOne(entity, select, sData, page, requestAction).success(function(rs){
                     result[entity] = rs;
@@ -57,6 +60,8 @@
 
             function apiFindOne(entity, select, searchData, page, action) {
                 action = action || 'find';
+                if(entity === 'space')
+                    select += ',endereco,acessibilidade';
                 searchData['@select'] = select;
                 searchData['@files'] = '(avatar.avatarBig):url';
                 var querystring = "";

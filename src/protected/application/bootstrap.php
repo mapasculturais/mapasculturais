@@ -5,6 +5,7 @@ define('PROTECTED_PATH', realpath(__DIR__.'/../') . '/');
 define('APPLICATION_PATH', realpath(__DIR__) . '/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
+define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
 
 define('AUTOLOAD_TTL', 60 * 5);
 

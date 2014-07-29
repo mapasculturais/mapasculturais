@@ -72,22 +72,14 @@ jQuery(function(){
 
     if($('.js-verified').length){
         $('.js-verified').click(function(){
-            var verify = $(this).data('verify-url');
-            var removeVerification = $(this).data('remove-verification-url');
-            if($('.js-verified').hasClass('active')){
-                $.getJSON(removeVerification, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').removeClass('active');
-                    }
-                });
+            var $this = $(this);
+            if($this.hasClass('active')){
+                $this.removeClass('active');
+                $('#is-verified-input').editable('setValue', 0);
             }else{
-                $.getJSON(verify, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').addClass('active');
-                    }
-                });
+                $this.addClass('active');
+                $('#is-verified-input').editable('setValue', 1);
             }
-
             return false;
         });
     }
@@ -291,13 +283,15 @@ MapasCulturais.Editables = {
                         var firstShown = false;
                         $('.js-response-error').remove();
                         for(var p in response.data){
-                            if(p.substr(0,5) == 'term-')
+                            if(MapasCulturais.request.controller === 'event' && p === 'project'){
+                                $field = $('.editable[data-field-name="projectId"');
+                            }else if(p.substr(0,5) == 'term-'){
                                 $field = $('#' + p);
-                            else if(p == 'type')
+                            }else if(p == 'type'){
                                 $field = $('.js-editable-type');
-                            else
+                            }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
-
+                            }
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
@@ -512,14 +506,15 @@ MapasCulturais.MetalistManager = {
                 var $target = $($form.data('response-target'));
                 var group = $form.data('metalist-group');
                 var action = $form.data('metalist-action');
-                var template = $form.find('script[type="js-response-template"]').text();
+                var template = $form.find('script.js-response-template').text();
                 var $editBtn;
 
                 var $html = $(Mustache.render(template, response));
 
                 $editBtn = $html.find('.js-open-dialog');
                 $editBtn.data('item', response);
-
+                    console.log('tartget', $target);
+                    console.log('template', template);
                 switch(action){
 
                     case 'edit':
@@ -538,7 +533,7 @@ MapasCulturais.MetalistManager = {
 
                         //if this metalist is of videos, update the new displayed item passing the video url
                         if(group == 'videos'){
-                            MapasCulturais.Video.getAndSetVideoData(response.value, $('.js-metalist-item-id-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
+                            MapasCulturais.Video.getAndSetVideoData(response.value, $('#video-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
 
                             $('#video-player:hidden').show();
 

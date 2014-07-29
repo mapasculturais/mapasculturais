@@ -1,12 +1,24 @@
-<?php if (!is_editable() && !$entity->canUser('modify')) return; ?>
-<div id="editable-entity" class="clearfix sombra" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>" data-submit-button-selector="#submitButton">
+<?php 
+if (!is_editable() && !$entity->canUser('modify')) 
+    return; 
+$can_edit_roles = $this->controller->id == 'agent' && $entity->user->id != $app->user->id && $entity->id == $entity->user->profile->id && $entity->user->canUser('addRole');
+if(is_editable()){
+    $classes = 'editable-entity-edit';
+    if($can_edit_roles)
+        $classes .= ' can-edit-roles';
+}else{
+    $classes = 'editable-entity-single';
+}
+?>
+
+<div id="editable-entity" class="clearfix sombra <?php echo $classes ?>" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>" data-submit-button-selector="#submitButton">
     <h1 id="logo-spcultura-peq"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
     <?php if (is_editable()): ?>
         <script type="text/javascript">
             MapasCulturais.Messages.help('Os ícones de lápis indicam conteúdos editáveis.');
         </script>
         <div class="controles">
-            <?php if ($this->controller->id == 'agent' && $entity->user->id != $app->user->id && $entity->id == $entity->user->profile->id && $entity->user->canUser('addRole')): ?>
+            <?php if ($can_edit_roles): ?>
                 <div id="funcao-do-agente" class="dropdown">
                     <div class="placeholder js-selected"> <?php
                         if ($entity->user->is('superAdmin'))

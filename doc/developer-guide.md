@@ -1,6 +1,7 @@
 Guia do Desenvolvedor
 =====================
 
+- [Arquivo de Configuração](#arquivo-de-configuracao)
 - [Model](#model)
 - [Controller](#controller)
 - [EntityController](#entitycontroller)
@@ -8,6 +9,7 @@ Guia do Desenvolvedor
     - [Temas](#temas)
       - [theme.php](theme-php)
       - [Estrutura de pastas](#estrutura-de-pastas)
+    - [Páginas](#Páginas)
     - [Layouts](#Layouts)
     - [Visões](#Visões)
     - [Partes](#Partes)
@@ -19,6 +21,8 @@ Guia do Desenvolvedor
 - [Cache]()
 - [Outputs da API]()
 
+
+## Arquivo de Configuração
 
 ## Model
 
@@ -54,6 +58,63 @@ dentro da pasta raíz do tema
 - **layouts/** - *onde ficam os layouts do site*
     - **parts/** - *onde ficam os template parts utilizados pelo tema*
 - **views/** - *onde ficam as viões dos controles*
+- **pages/** - onde ficam os arquivos de páginas
+
+### Páginas
+As páginas do sistema são arquivos **.md** (Markdown) salvos dentro da pasta **pages/** do tema. Para criar uma nova página basta criar um novo arquivo **.md** dentro desta pasta. Estes arquivos são renderizadas pela biblioteca [PHP Markdown Extra](https://michelf.ca/projects/php-markdown/extra/).
+
+#### Url da página
+Para uma página cujo nome de arquivo é **nome-da-pagina.md**, a url de acesso será **http://mapasculturais/page/site/nome-da-pagina/**
+
+
+#### Títullo da página
+O texto do **primeiro h1** do conteúdo da página será utilizado como título da página (tag <title>). Isto é feito via javascript.
+
+
+No exemplo a seguir o título da página será **Título da Págna**
+```Markdown
+# Título da Página
+
+Conteúdo da página ....
+
+```
+
+#### Sidebars
+O Conteúdo das sidebars estão nos arquivos **_right.md** e **_left.md**
+
+#### Substituindo uma sidebar
+Você pode substituir uma sidebar envolvendo o conteúdo que você deseja que substitua o conteúdo padrão com as tags **<%left left%>** para a sidebar da esquerda e **<%right right%>** para a sidebar da direita.
+
+No exemplo a seguir substituimos a sidebar da direita por um menu com três links:
+```Markdown
+<%right 
+- [Primeiro link](#primeiro)
+- [Segundo link](#segundo)
+- [Terceiro link](#terceiro)
+right%>
+
+# Título da Página
+
+Conteúdo da página ....
+```
+
+#### Extendendo uma sidebar
+Você pode extender uma sidebar, adicionando conteúdo antes ou depois do conteúdo padrão, colocando um **:after** ou **:before** logo depois da tag de abertura.
+
+No exemplo a seguir extendemos a sidebar da esquerda adicionando um menu com 2 links no final da sidebar:
+```Markdown
+<%left:after
+## submenu da página
+
+- [Primeiro Link](#primeiro)
+- [Segundo Link](#segundo)
+left%>
+
+# Título da Página
+
+Conteúdo da página ....
+```
+
 
 ### Layouts
 O layout é a "moldura" do conteúdo de uma visão. A estrutura mínima de um layout é a seguinte:

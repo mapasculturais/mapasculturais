@@ -3,6 +3,8 @@
 
     window.apply = null;
 
+    var timeoutTime = 300;
+
     var defaultLocationRadius = 2000;
 
     var skeletonData = {
@@ -70,8 +72,8 @@
         event: {
             keyword: '',
             linguagens: [],
-            from: null,
-            to: null,
+            from: moment().format('YYYY-MM-DD'),
+            to: moment().add(1, 'week').format('YYYY-MM-DD'),
             classificacaoEtaria: [],
             isVerified: false
         },
@@ -245,7 +247,10 @@
 
             if(newValue !== $rison.stringify(diffFilter($scope.data))){
                 $scope.data = deepExtend(angular.copy(skeletonData), $rison.parse(newValue));
-                $rootScope.$emit('searchDataChange', $scope.data);
+                $timeout.cancel($scope.timer);
+                $scope.timer = $timeout(function() {
+                    $rootScope.$emit('searchDataChange', $scope.data);
+                },timeoutTime);
             }
         };
 
@@ -257,12 +262,14 @@
                 $timeout.cancel($scope.timer);
                 if(oldValue && !angular.equals(oldValue.global.enabled, newValue.global.enabled)) {
                     $location.hash(serialized);
-                    $rootScope.$emit('searchDataChange', $scope.data);
+                    $scope.timer = $timeout(function() {
+                        $rootScope.$emit('searchDataChange', $scope.data);
+                    },timeoutTime);
                 } else {
                     $scope.timer = $timeout(function() {
                         $location.hash(serialized);
                         $rootScope.$emit('searchDataChange', $scope.data);
-                    }, 500);
+                    }, timeoutTime);
                     $window.dataTimeout = $scope.timer;
                 }
             }
@@ -326,8 +333,14 @@
 
             if($rootScope.isPaginating)
                 return;
+
+            if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
+                return;
+
             $rootScope.pagination[entity]++;
-            $rootScope.$emit('resultPagination', $scope.data);
+            // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
+            if($rootScope.pagination[entity] > 2)
+                $rootScope.$emit('resultPagination', $scope.data);
         };
 
         $scope.numResults = function (num, entity){
@@ -340,13 +353,32 @@
 
         $scope.numAgents = 0;
         $scope.numSpaces = 0;
-        $scope.numEvents = 0;
+        $scope.numEvents = {
+            events: 0,
+            spaces: 0
+        };
+        $scope.numEventsInList = 0;
         $scope.numProjects = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            $scope.numEvents = parseInt(results.event);
+            
+            if($scope.data.global.viewMode === 'list'){
+                $scope.numEventsInList = results.event;
+            }else{
+                if(results.event){
+                    $scope.numEvents = {
+                        events: parseInt(results.event.events),
+                        spaces: parseInt(results.event.spaces)
+                    };
+                }else{
+                    $scope.numEvents = {
+                        events: 0,
+                        spaces: 0
+                    };
+                };
+            }
             $scope.numProjects = parseInt(results.project);
         });
 
@@ -377,7 +409,7 @@
             var from = $scope.data.event.from,
                 to = $scope.data.event.to;
 
-            return from && to && (formatDate(from) !== formatDate() || from !== to );
+            return from !== skeletonData.event.from && to !== skeletonData.event.to;
         };
 
         $scope.eventDateFilter = function(){
@@ -391,8 +423,8 @@
         };
 
         $scope.cleanEventDateFilters = function(){
-            $scope.data.event.from = null;
-            $scope.data.event.to = null;
+            $scope.data.event.from = skeletonData.event.from;
+            $scope.data.event.to = skeletonData.event.to;
         }
 
         $scope.readableProjectRegistrationDates = function(project){

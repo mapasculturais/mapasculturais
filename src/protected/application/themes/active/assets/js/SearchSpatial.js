@@ -114,7 +114,7 @@
                     neighborhoodRadius = $scope.defaultLocationRadius;
 
                 var marker = L.marker(e.latlng, $window.leaflet.iconOptions['location']).addTo(map)
-                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a href='#' onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
+                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
                     .openPopup();
 
                 var circle = L.circle(e.latlng, $scope.defaultLocationRadius, {className : 'vetorial-padrao'}).addTo(map.drawnItems);

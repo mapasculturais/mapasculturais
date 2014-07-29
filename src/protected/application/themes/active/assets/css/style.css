@@ -358,14 +358,13 @@ input.data { width:76px; }
 .menu > li div.icone { width: 1.5rem; height: 1.5rem; margin: 0 auto .25rem; font-size: 1rem; line-height: 1.5rem/*24px*/; border-radius: 2px; }
 .submenu { display: none; position: absolute; top: 70px; margin: 0; padding: .75rem; list-style: none; font-size: .8rem; line-height: 1rem; background: #e2e2e2; box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3); -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3); border-radius: 2px; }
 .submenu li { float: none; line-height: 1.5rem; }
-.submenu .third-level li {line-height: 1.3rem; padding-left:10px; }
-
-.menu .submenu a { display: block; font-weight: normal; }
+.submenu li.row { margin: .5rem; border-top: 1px solid #fff; }
+.submenu a { font-weight: normal; }
 
 /* Abas dos objetos */
 .abas-objetos li { -webkit-transition: all .3s; transition: all .3s; }
 .abas-objetos li.active:after { content: "\42"; position: absolute; right: 0; left: 0; width: 100%; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 34px; line-height: 18px; text-align: center; text-transform: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-#aba-eventos:hover, #aba-eventos.active { border-top: 6px solid #b3b921; color: #b3b921;}
+#aba-eventos:hover, #aba-eventos.active { border-top: 6px solid #b3b921; color: #b3b921; }
 #aba-agentes:hover, #aba-agentes.active { border-top: 6px solid #1dabc6; color: #1dabc6; }
 #aba-espacos:hover, #aba-espacos.active { border-top: 6px solid #e83f96; color: #e83f96; }
 #aba-projetos:hover, #aba-projetos.active { border-top: 6px solid #cc0033; color: #cc0033; }
@@ -382,14 +381,13 @@ input.data { width:76px; }
 .menu .entrar:hover { border-top: 6px solid #f90; }
 .menu .entrar:hover a { color: #f90; }
 .menu .usuario:hover, .menu .notificacoes:hover { border-top: 6px solid #f90; }
-.usuario .submenu { left: -36px; width: 190px; background: #f90; }
-.usuario .submenu a { display:inline; vertical-align:super; }
-.usuario .adicionar { float: right; display:inline; }
-.usuario .submenu .third-level li { line-height: 2rem; }
-#main-nav .usuario .submenu a { color: #000; padding: .5rem; }
-#main-nav .usuario .submenu a:hover { color: #fff; }
-.usuario .avatar{ float: none; width: 3rem; height: 3rem; margin: 0 auto; }
-.usuario .setinha { left: 79px; top: -16px; border-color: transparent transparent #f90 transparent; }
+.usuario .avatar { float: none; width: 3rem; height: 3rem; margin: 0 auto; }
+.usuario .setinha { left: 50%; top: -16px; margin-left: -8px; border-color: transparent transparent #f90 transparent; }
+.usuario .submenu { left: -2.5rem; width: 10rem; background: #f90; }
+.usuario .submenu li { position: relative; padding-right: 2rem; }
+.usuario .submenu a { color: #000; padding: .5rem; }
+.usuario .submenu a:hover { color: #fff; }
+.usuario .submenu .adicionar { position: absolute; right: 0; top: 0; }
 .notificacoes .submenu { left: -110px; width: 300px; background: #e2e2e2; }
 .notificacoes .slimScrollDiv { margin-bottom: .75rem; }
 .notificacoes:hover > a { color: #f90; }
@@ -493,7 +491,6 @@ body.editable #main-section { margin-top: 136px; }
 #busca-avancada { background-color: #e2e2e2; font-size: .875rem; }
 #busca-avancada .wrap { position: relative; padding: .75rem; }
 #busca-avancada input { margin-bottom: 0; border: none; }
-#busca-avancada label { font-family: "aleo", serif; }
 #busca-avancada .campo-de-busca { width: 100%; }
 /*filtro local*/
 #filtro-local { position: absolute; z-index: 150; left: 0rem; height: 1.875rem; }
@@ -519,7 +516,7 @@ body.editable #main-section { margin-top: 136px; }
 .filtro { float: left; box-sizing: border-box; -moz-box-sizing: border-box; width: 20%; padding: 0 .75rem; border-left: 1px dotted #000; line-height: 2rem; }
 .filtro:first-child { border: none; }
 .filtro .label, .filtro label { display: none; }
-.filtro .show-label { display: inline; font-weight: normal; font-size: .75rem; cursor:default;}
+.filtro .show-label { display: inline; font-size: .75rem; cursor: default; }
 .filtro .tags { margin-bottom: 0; height: 144px; }
 .filtro .tag { margin-bottom: 0; }
 .filtro .dropdown { width: 100%; }
@@ -557,20 +554,15 @@ body.editable #main-section { margin-top: 136px; }
 #url-da-busca { width: 70%; margin-bottom: 0; border:1px solid #ccc; cursor:default; }
 #views { float: left; width: auto; margin-left: .75rem; padding-left:.75rem; border-left: 2px solid #d3d3d3; }
 /* header do objeto*/
-.header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem 3rem .5625rem .5625rem; background: #fff; }
+.header-do-objeto { position: relative; margin-bottom: 5px; padding: .5625rem; background: #fff; }
 .header-do-objeto h1 { float: left; width: auto; height: 1.875rem; margin-bottom: 0; font-size: 1.5rem; line-height: 1.875rem; }
 .header-do-objeto h1 .icone { width: 1.5rem; height: 1.875rem; line-height: 1.875rem; font-size: 1.5rem; }
-.header-do-objeto .arrow_carrot-down { position: absolute; top: 0; right: 0; width: 3rem; height: 3rem; line-height: 3rem; font-size: 2rem; text-align: center; }
 .header-do-objeto .icone { vertical-align: initial; }
 .header-do-objeto .botao.adicionar, .header-do-objeto .botao.adicionar:hover { float: right; margin: -1px 1.5rem; color: #fff; background: #000; border: 1px solid #000; }
-#header-dos-eventos { border-left: 3rem solid #b3b921; }
-#header-dos-agentes { border-left: 3rem solid #1dabc6; }
-#header-dos-espacos { border-left: 3rem solid #e83f96; }
-#header-dos-projetos { border-left: 3rem solid #cc0033; }
-#header-dos-eventos .arrow_carrot-down { background: #b3b921; }
-#header-dos-agentes .arrow_carrot-down { background: #1dabc6; }
-#header-dos-espacos .arrow_carrot-down { background: #e83f96; }
-#header-dos-projetos .arrow_carrot-down { background: #cc0033; }
+#header-dos-eventos { border-left: 3rem solid #b3b921; border-right: 3rem solid #b3b921; }
+#header-dos-agentes { border-left: 3rem solid #1dabc6; border-right: 3rem solid #1dabc6; }
+#header-dos-espacos { border-left: 3rem solid #e83f96; border-right: 3rem solid #e83f96; }
+#header-dos-projetos { border-left: 3rem solid #cc0033; border-right: 3rem solid #cc0033; }
 
 
 /* =Listas
@@ -602,7 +594,7 @@ body.editable #main-section { margin-top: 136px; }
 /* =Mapa
 -------------------------------------------------------------- */
 #mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
-#infobox { display: none; position: absolute; z-index: 149; top: 105px; left: 0; bottom: 0; width: 300px; overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
+#infobox { position: absolute; z-index: 149; top: 105px; left: 0; bottom: 0; width: 300px; overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
 #infobox .icon_close { position: absolute; top: .5rem; right: .5rem; cursor:pointer; }
 #infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
 #infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
@@ -726,7 +718,9 @@ nav.barra-esquerda .icone { vertical-align: initial; margin-right: 5px; }
 
 /* =Editor
 -------------------------------------------------------------- */
-#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 380px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity { position: fixed; z-index: 123; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; min-height: 42px; padding: .25rem 130px; border-left: 8px solid #f90; background: #e2e2e2; text-align: center; }
+#editable-entity.editable-entity-edit { padding: .25rem 245px; }
+#editable-entity.can-edit-roles { padding: .25rem 380px; }
 #editable-entity .mensagem { display: none; margin-bottom: 0; }
 #editable-entity .controles { position: absolute; top: .25rem; right: .75rem; width: 370px; text-align: right; }
 #logo-spcultura-peq { display: none; position: absolute; left: .75rem; margin-bottom: 0; line-height: 2rem; }
@@ -879,7 +873,8 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 #dialog-event-occurrence .editable { margin-bottom: 1.5rem; }
 .horario-da-ocorrencia { width: 50px; margin-right: 1.5rem; }
 .data-da-ocorrencia { width: 81px; margin-right: 1.5rem; }
-
+.descricao-horario-legivel { width: 100% !important; }
+.descricao-horario-legivel textarea { width: 100%; }
 /* =Responsive
 -------------------------------------------------------------- */
 @media screen and (min-width: 1588px) {

@@ -14,6 +14,8 @@ if (is_editable()) {
     $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 }
 
+$app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+
 add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
@@ -30,14 +32,19 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
+            <p style="display:inline; white-space: nowrap;"><span class="label">Descrição Legível da Ocorrência:</span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
+            <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{#rule.duration}}
+                <p><span class="label">Duração:</span> {{rule.duration}}</p>
+            {{/rule.duration}}
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            {{#rule.screen_until}}
+                <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+            {{/rule.screen_until}}
         </div>
         <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -67,12 +74,24 @@ add_occurrence_frequencies_to_js();
         </header>
         {{/space}}
         <div class="infos">
-            <!--p class="label">Resumo da regra que será exibido pro público.</p-->
-            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-            <p><span class="label">Duração:</span> {{rule.duration}}</p>
-            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-            {{#rule.screen_until}}<p><span class="label">Data final:</span> {{rule.screen_until}}</p><!--(Se repetir mostra o campo de data final)-->{{/rule.screen_until}}
+            {{#rule.description}}
+                <p>{{rule.description}}</p>
+            {{/rule.description}}
+            {{^rule.description}}
+                <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
+                {{#rule.duration}}
+                    <p><span class="label">Duração:</span> {{rule.duration}}</p>
+                {{/rule.duration}}
+                <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
+                {{#rule.screen_until}}
+                    <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+                {{/rule.screen_until}}
+            {{/rule.description}}
+            {{#rule.price}}
+                <p><span class="label">Preço:</span> {{rule.price}}</p>
+            {{/rule.price}}
         </div>
+
         <!-- .infos -->
         {{#space}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -183,7 +202,6 @@ add_occurrence_frequencies_to_js();
             </div>
     </header>
     <!--.main-content-header-->
-    <!--aqui entram as abas quando tiver contas e repercussão funcionando-->
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <p>
@@ -206,10 +224,6 @@ add_occurrence_frequencies_to_js();
                     }
                     ?>
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
-                <?php endif; ?>
-
-                <?php if (is_editable() || $entity->preco): ?>
-                    <p><span class="label">Entrada: </span><span class="js-editable" data-edit="preco" data-original-title="Preço" data-emptytext="Informe o preço do evento"><?php echo $entity->preco; ?></span></p>
                 <?php endif; ?>
 
                 <?php if (is_editable() || $entity->site): ?>
@@ -313,9 +327,9 @@ add_occurrence_frequencies_to_js();
         </div>
         <!--.ficha-spcultura-->
 
-        <?php if (is_editable() || $entity->longDescription): ?>
+        <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição detalhada do evento" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
 
@@ -429,13 +443,17 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <div>
-            <label for="description">Descrição legível do horário:</label><br>
-            <textarea name="description">{{rule.description}}</textarea>
+        <div class="clearfix">
+            <div class="grupo-de-campos descricao-horario-legivel" >
+                <label for="description">Descrição legível do horário:</label>
+                <textarea name="description">{{rule.description}}</textarea>
+            </div>
         </div>
-        <div>
-            <label for="price">Preço:</label><br>
-            <input type="text" name="price" value="{{rule.price}}">
+        <div class="clearfix">
+            <div class="grupo-de-campos" >
+                <label for="price">Preço:</label><br>
+                <input type="text" name="price" value="{{rule.price}}">
+            </div>
         </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">

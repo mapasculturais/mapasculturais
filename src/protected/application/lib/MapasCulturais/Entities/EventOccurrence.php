@@ -26,7 +26,7 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'startsAt' => array(
             'required' => 'Hora de inicio é obrigatória',
-            '$value instanceof \DateTime' => 'Hora de inicio inválida',
+            '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio inválida',
          ),
         'duration' => array(
             //'required' => 'A duração é obrigatória',
@@ -48,7 +48,10 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'space' => array(
             'required' => 'Espaço é obrigatório'
-         )
+         ),
+        'description' => array(
+            'required' => 'A descrição legível do horário é obrigatória'
+        )
 
     );
 
@@ -208,7 +211,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Event
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade="persist")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      * })
@@ -248,6 +251,15 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
     }
 
+    function getDescription(){
+        return $this->rule->description;
+    }
+
+
+    function getPrice(){
+        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
+    }
+
     /**
      * @var string
      *
@@ -262,7 +274,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
         $value = (array) $value;
 
-        $this->startsAt = @$value['startsOn'] . ' ' . @$value['startsAt'];
+        $this->startsAt = $value['startsOn'] . ' ' . $value['startsAt'];
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
         if(!empty($value['duration'])){
@@ -274,16 +286,18 @@ class EventOccurrence extends \MapasCulturais\Entity
             else
                 $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
 
-            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
-            $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
+            if($this->startsAt instanceof \DateTime){
+                $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
+                $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
+            }
         }else{
             $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
 
 
-        $this->startsOn = @$value['startsOn'];
-        $this->until = @$value['until'] ? $value['until'] : null;
-        $this->frequency = @$value['frequency'];
+        $this->startsOn = $value['startsOn'];
+        $this->until = $value['until'] ? $value['until'] : null;
+        $this->frequency = $value['frequency'];
 
         $this->_rule = json_encode($value);
 
@@ -295,9 +309,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             $recurrence->delete();
         }
 
-        if (@$value['frequency']) {
+        if ($value['frequency']) {
             $freq = $this->frequency;
-            $days = @$value['day'];
+            $days = isset($value['day']) ? $value['day'] : null;
             switch ($freq) {
                 case 'weekly':
                     $this->flag_day_on = false;
@@ -318,7 +332,7 @@ class EventOccurrence extends \MapasCulturais\Entity
                     break;
 
                 case 'monthly':
-                    if (@$value['monthly']==='week') {
+                    if (isset($value['monthly']) && $value['monthly']==='week') {
                         $this->flag_day_on = false;
 
                         if (is_null($days)) break;
@@ -377,6 +391,26 @@ class EventOccurrence extends \MapasCulturais\Entity
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
         );
+    }
+
+    protected function canUserCreate($user){
+        if($user->is('guest'))
+            return false;
+
+        if($user->is('admin'))
+            return true;
+
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+    }
+
+    protected function canUserModify($user){
+        if($user->is('guest'))
+            return false;
+
+        if($user->is('admin'))
+            return true;
+
+        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
 
     //============================================================= //

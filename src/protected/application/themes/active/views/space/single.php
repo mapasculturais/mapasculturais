@@ -18,7 +18,7 @@ add_angular_entity_assets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="barra-esquerda barra-lateral agente">
+<div class="barra-esquerda barra-lateral espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
@@ -113,7 +113,6 @@ add_angular_entity_assets($entity);
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
-        <li class="staging-hidden"><a href="#contas">Contas</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -194,7 +193,7 @@ add_angular_entity_assets($entity);
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição do espaço" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Espaço" data-emptytext="Insira uma descrição do espaço" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
         <?php if ( is_editable() || $entity->criterios ): ?>
@@ -212,15 +211,10 @@ add_angular_entity_assets($entity);
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php
-        $date_from = new DateTime();
-        $date_to = new DateTime('+180 days');
-        $events = !$entity->id ? array() : $app->repo('Event')->findBySpace($entity, $date_from, $date_to);
-        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
-        ?>
+        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-    
+
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="barra-lateral espaco barra-direita">
@@ -241,16 +235,6 @@ add_angular_entity_assets($entity);
         <?php if($entity->id && $entity->canUser('createChield')): ?>
         <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
         <?php endif; ?>
-    </div>
-
-    <div class="bloco staging-hidden">
-        <h3 class="subtitulo">Projetos do espaço</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-        <a class="botao adicionar" href="#">adicionar projeto (só link)</a>
     </div>
 
     <!-- Downloads BEGIN -->

@@ -15,6 +15,9 @@ return array_merge($config,
         // 'slim.middlewares' => array( new \MapasCulturais\Middlewares\ExecutionTime(true, false) ),
         
         // logs
+        'slim.log.level' => \Slim\Log::NOTICE,
+        'slim.log.enabled' => true,
+        
         'app.log.hook' => false,
         'app.log.query' => false,
         'app.log.requestData' => false,

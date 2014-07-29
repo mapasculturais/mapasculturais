@@ -76,6 +76,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testCanUserCreate(){
+        $this->resetTransactions();
         $app = MapasCulturais\App::i();
 
         /*
@@ -149,6 +150,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
 
     function testCanUserModify(){
+        $this->resetTransactions();
         /*
          * Asserting thar guest users cannot modify entities
          */
@@ -210,6 +212,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserRemove(){ }
 
     function testCanUserVerifyEntity(){
+        $this->resetTransactions();
         $app = $this->app;
 
         $this->user = null;
@@ -305,6 +308,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserViewPrivateData(){ }
 
     function testAgentRelationsPermissions(){
+        $this->resetTransactions();
         // create agent relation without control
 
         // create agent relation withcontrol
@@ -325,6 +329,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
          */
         
         foreach($this->entities as $class => $plural){
+            $this->resetTransactions();
             $entities = $class == 'Agent' ? $user1()->$plural : $user1()->profile->$plural;
             
             $entity = $entities[0];
@@ -727,12 +732,132 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that user CANNOT remove control of other related agent in $plural that he has control");
         }
         
+        $this->resetTransactions();
+    }
+    
+    function testEventOccurrencePermissions(){
+        $this->resetTransactions();
+        
+        $rule = array(
+            'startsAt' => '11:11',
+            'duration' => '01h00',
+            'frequency' => 'once',
+            'startsOn' => '2014-07-16',
+            'until' => '',
+            'description' => 'das 11:11 às 12:11 do dia 16 de Julho',
+            'price' => 'R$11,11'
+        );
+        
+        $user0 = $this->getUser('normal', 0);
+        $user1 = $this->getUser('normal', 1);
+        
+        $space = $user1->spaces[0];
+        
+        // Asserting that a normal user CANNOT create an event occurrence on spaces that he don't have control
+        $this->user = $user0;
+        
+        $event = $this->getNewEntity('Event');
+        $event->save();
+        
+        $this->assertPermissionDenied(function() use($event, $space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CANNOT create an event occurrence on spaces that he don't have control");
+        
+        
+        // Asserting that a normal user CAN create an event occurrence on spaces that he have control
+        $this->user = $user1;
+        
+        $space->createAgentRelation($user0->profile, "AGENTS WITH CONTROL", true, true);
+        
+        $this->user = $user0;
+        
+        $this->assertPermissionGranted(function() use($event, $space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
+    }
+    
+    function testProjectEventCreation(){
+        $this->resetTransactions();
+        // assert that a user WITHOUT control of a project CANNOT create events to this project
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+        
+        $project = $user2->projects[0];
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionDenied(function() use($project){
+            $event = $this->getNewEntity('Event');
+            $event->project = $project;
+            $event->save();
+        }, 'Asserting that a user WITHOUT control of a project CANNOT create events to this project');
+        
+        
+        // assert that a user WITH control of a project CAN create events to this project
+        $this->user = $user2;
+        
+        $project->createAgentRelation($user1->profile, "AGENTS WITH CONTROL", true, true);
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionGranted(function() use($project){
+            $event = $this->getNewEntity('Event');
+            $event->project = $project;
+            $event->save();
+        }, 'Asserting that a user WITH control of a project CAN create events to this project');
     }
 
     function testProjectRegistrationPermissions(){
-        // approve registration
+        
+        $this->resetTransactions();
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+        
+        $this->assertPermissionGranted(function() use($user1, $user2){
+            $this->user = $user1;
+            
+            $project = $this->getNewEntity('Project');
+            $project->owner = $user1->profile;
+            $project->type = 1;
+            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24);
+            $project->registrationTo = date('Y-m-d', time() + 3600 * 24);
+            $project->save(true);
+            
+            $this->user = $user2;
+            
+            $project->register($user2->profile);
 
-        // reject registration
+        }, "Asserting that a normal user CAN register in a project with registration open");
+        
+        
+        $this->assertPermissionDenied(function() use($user1, $user2){
+            $this->user = $user1;
+            
+            $project = $this->getNewEntity('Project');
+            $project->owner = $user1->profile;
+            $project->type = 1;
+            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24 * 2);
+            $project->registrationTo = date('Y-m-d', time() - 3600 * 24);
+            $project->save(true);
+            
+            $this->user = $user2;
+            
+            $project->register($user2->profile);
+
+        }, "Asserting that a normal user CANNOT register in a project with registration closed");
+    
     }
 
     function testFilesPermissions(){
@@ -744,6 +869,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testCanUserAddRemoveRole(){
+        $this->resetTransactions();
         $roles = ['staff', 'admin', 'superAdmin'];
 
         /*
