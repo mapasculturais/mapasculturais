@@ -416,12 +416,12 @@ add_occurrence_frequencies_to_js();
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="data-de-inicio">Data inicial:</label><br>
-                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
+                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates js-start-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
                 <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
             <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
                 <label for="data-de-fim">Data final:</label><br>
-                <input id="until-{{id}}-visible" type="text" class="js-event-dates data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
+                <input id="until-{{id}}-visible" type="text" class="js-event-dates js-end-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
                 <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
                 <!--(Se repetir mostra o campo de data final)-->
             </div>
@@ -449,7 +449,7 @@ add_occurrence_frequencies_to_js();
                 <label for="description">Descrição legível do horário:</label>
                 <p class="form-help">Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado.</p>
                 <div class="grupo-descricao-automatica clearfix">
-                    <p class="mensagem automatica">Descrição gerada pelo sistema automaticamente.</p>
+                    <p id="descricao-automatica" class="mensagem automatica">Descrição gerada pelo sistema automaticamente.</p>
                     <a class="botao simples inserir"></a>
                 </div>
                 <input type="text" name="description" value="{{rule.description}}">
