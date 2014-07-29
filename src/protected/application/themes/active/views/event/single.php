@@ -260,10 +260,26 @@ add_occurrence_frequencies_to_js();
                 <h6>Este evento ocorre em:</h6>
                 <?php
                 //$entity->getMetaLists(array('group'=>'links'));
-                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
+                $occurrences = array();
                 ?>
-                <?php if (is_editable() || $occurrences): ?>
+                <?php if (true or is_editable() || $occurrences): ?>
                     <div class="js-event-occurrence">
+                        <div class="regra clearfix">
+                            <header class="clearfix">
+                                <h3 class="alignleft"><a href="http://localhost:8000/espaco/198/">Teatro Alfredo Mesquita</a></h3>
+                                <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
+                            </header>
+                            <div class="infos">
+                                <p class="descricao-legivel">Descrição legível do horário do evento</p>
+                                <p><span class="label">Preço:</span> Não Informado.</p>
+                                <p><span class="label">Endereço:</span> Rua dos Bobos, 0</p>
+                            </div>
+                            <!-- .infos -->
+                            <div id="occurrence-map-2388" class="mapa js-map leaflet-container leaflet-fade-anim" data-lat="-23.5220278" data-lng="-46.6303708" tabindex="0" style="position: relative;"></div>
+                            <!-- .mapa -->
+                        </div>
+                        <!--html estatico-->
+
                         <?php
 
                         $screenFrequencies = getOccurrenceFrequencies();
