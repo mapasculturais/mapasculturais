@@ -873,7 +873,8 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 #dialog-event-occurrence .editable { margin-bottom: 1.5rem; }
 .horario-da-ocorrencia { width: 50px; margin-right: 1.5rem; }
 .data-da-ocorrencia { width: 81px; margin-right: 1.5rem; }
-
+.descricao-horario-legivel { width: 100% !important; }
+.descricao-horario-legivel textarea { width: 100%; }
 /* =Responsive
 -------------------------------------------------------------- */
 @media screen and (min-width: 1588px) {

@@ -48,7 +48,10 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'space' => array(
             'required' => 'Espaço é obrigatório'
-         )
+         ),
+        'description' => array(
+            'required' => 'A descrição legível do horário é obrigatória'
+        )
 
     );
 
@@ -246,6 +249,15 @@ class EventOccurrence extends \MapasCulturais\Entity
         } else {
             return array();
         }
+    }
+    
+    function getDescription(){
+        return $this->rule->description;
+    }
+    
+    
+    function getPrice(){
+        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
     }
 
     /**

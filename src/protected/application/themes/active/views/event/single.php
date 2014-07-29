@@ -441,13 +441,17 @@ add_occurrence_frequencies_to_js();
                 -->
             </div>
         </div>
-        <div>
-            <label for="description">Descrição legível do horário:</label><br>
-            <textarea name="description">{{rule.description}}</textarea>
+        <div class="clearfix">
+            <div class="grupo-de-campos descricao-horario-legivel" >
+                <label for="description">Descrição legível do horário:</label>
+                <textarea name="description">{{rule.description}}</textarea>
+            </div>
         </div>
-        <div>
-            <label for="price">Preço:</label><br>
-            <input type="text" name="price" value="{{rule.price}}">
+        <div class="clearfix">
+            <div class="grupo-de-campos" >
+                <label for="price">Preço:</label><br>
+                <input type="text" name="price" value="{{rule.price}}">
+            </div>
         </div>
         <footer class="clearfix">
             <input type="submit" value="enviar">
