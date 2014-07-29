@@ -222,21 +222,21 @@ MapasCulturais.EditBox = {
     setPosition: function($box, target){
         if($box.hasClass('mc-left')){
             $box.position({
-                my: 'right-20 center',
+                my: 'right-10 center',
                 at: 'left center',
                 of: target
             });
 
         }else if($box.hasClass('mc-right')){
             $box.position({
-                my: 'left+20 center',
+                my: 'left+10 center',
                 at: 'right center',
                 of: target
             });
 
         }else if($box.hasClass('mc-top')){
             $box.position({
-                my: 'center bottom-20',
+                my: 'center bottom-10',
                 at: 'center top',
                 of: target
             });
@@ -343,6 +343,7 @@ MapasCulturais.EditBox = {
         $dialog.find('.js-ajax-upload-progress').hide();
         $dialog.show();
         $dialog.find('input,textarea').not(':hidden').first().focus();
+        MapasCulturais.EditBox.setPosition($dialog, $button);
         MapasCulturais.EditBox.setPosition($dialog, $button);
         return;
     }
