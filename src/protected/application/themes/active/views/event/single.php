@@ -20,6 +20,7 @@ add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+$app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
 add_map_assets();
 
