@@ -430,7 +430,7 @@ body.editable #main-section { margin-top: 136px; }
 #capa-nav ul a.up, #capa-nav ul a.down { width: 40px; padding: 0; background: #000; text-indent: 0; text-align: center; font-size: 2rem; }
 .up { border-top-right-radius: 2px; }
 .down { border-bottom-right-radius: 2px; }
-.ver-mais { font-size: 4rem; text-align: center; position: relative; z-index: 100; }
+.ver-mais { font-size: 4rem; text-align: center; position: relative; z-index: 51; }
 .objeto-capa { float: none; width: 75%; padding: 2rem 12.5%; color: #fff; }
 .objeto-capa h1, .objeto-capa h2, .objeto-capa h3, .objeto-capa h4, .objeto-capa h5, .objeto-capa h6 { color: #fff; }
 .objeto-capa h1 .icone { vertical-align: initial; }
