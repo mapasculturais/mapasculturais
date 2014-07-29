@@ -818,7 +818,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 
 /* =Edit box
 -------------------------------------------------------------- */
-.edit-box { position: absolute; z-index: 149; display:none; padding: .75rem; background: #fff; border: none; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
+.edit-box { position: absolute; z-index: 149; min-width:375px; display:none; padding: .75rem; background: #fff; border: none; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
 .edit-box header { margin-bottom: .75rem; padding-bottom: .75rem; border-bottom: 1px solid #ddd; }
 .edit-box header h1 { font-size: 1rem; line-height: 1rem; margin-bottom: 0; }
 .edit-box header p { margin-bottom: 0; font-size: .75rem; }
