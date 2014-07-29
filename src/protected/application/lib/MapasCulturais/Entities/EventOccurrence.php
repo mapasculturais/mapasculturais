@@ -250,12 +250,12 @@ class EventOccurrence extends \MapasCulturais\Entity
             return array();
         }
     }
-    
+
     function getDescription(){
         return $this->rule->description;
     }
-    
-    
+
+
     function getPrice(){
         return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
     }
@@ -392,24 +392,24 @@ class EventOccurrence extends \MapasCulturais\Entity
             'deleteUrl' => $this->deleteUrl,
         );
     }
-    
+
     protected function canUserCreate($user){
         if($user->is('guest'))
             return false;
-        
+
         if($user->is('admin'))
             return true;
-        
+
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
-    
+
     protected function canUserModify($user){
         if($user->is('guest'))
             return false;
-        
+
         if($user->is('admin'))
             return true;
-        
+
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
 
