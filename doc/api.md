@@ -9,7 +9,7 @@ Action find
 Parâmetros
 O Método find aceita os seguintes parâmetros:
 
-* **@select** - usado para selecionar o que será retornado pela api. _ex:( @select: id,name)_
+* **@select** - usado para selecionar as propriedades da entidade que serão retornadas pela api. Você pode retornar propriedades de entidades relacionadas. _ex:( @select: id,name,owner.name,owner.singleUrl)_
 * **@order** - usado para definir em que ordem o resultado será retornado. _ex:( @order: name ASC, id DESC)_
 * **@limit** - usado para definir o número máximo de entidades que serão retornadas. _ex:( @limit: 10)_
 * **@page** - usado em paginações em conjunto com o @limit. _ex:( @limit:10, @page: 2)_
@@ -58,6 +58,16 @@ $.getJSON(
   {
     '@select': 'id, name, email', 
     'email': 'like(*gmail.com)'
+  },
+  function (response){ console.log(response); });
+```
+* **retornando o id e nome do espaços e nomes do agentes que publicaram os espaços **
+
+```javascript
+$.getJSON(
+  'http://mapasculturais.local/api/space/find',
+  {
+    '@select': 'id, name, owner.name',
   },
   function (response){ console.log(response); });
 ```
