@@ -217,7 +217,7 @@ tr th { text-align: left; }
 .url { word-wrap: break-word; word-break: break-all; }
 .mensagem { margin-bottom: 1.5rem; padding: .25rem .75rem; border-radius: 2px; border-style: solid; border-width: 1px; font-size: .75rem; }
 .mensagem.ajuda { background: #cff; border-color: #9be7ee; color: #40b4b4; }
-.mensagem.alerta, { background: #ffc; border-color: #eed29b; color: #c93; }
+.mensagem.alerta { background: #ffc; border-color: #eed29b; color: #c93; }
 .mensagem.erro { background: #fcc; border-color: #ee9b9b; color: #c33; }
 .mensagem.sucesso { background: #cfc; border-color: #a6dfa6; color: #6c6; }
 .mensagem.automatica { background: #eee; border-color: #ddd; color: #666; }
