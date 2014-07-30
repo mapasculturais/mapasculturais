@@ -234,7 +234,7 @@ tr th { text-align: left; }
 .botao { height: 1.875rem; padding: 0 .5rem; font-size: .75rem; line-height: 1.875rem; }
 .botao.principal { color: #fff; background: #f90; border: 1px solid #f90; }
 .botao.principal:hover { border-color: #e48203; }
-.botao.selected, .botao.selected:hover { background-color: #f90 !important; border: 1px solid #f90 !important; }
+.botao.selected, .botao.selected:hover { background-color: #000 !important; border: 1px solid #000 !important; color: #fff; }
 .botao.simples, .botao.adicionar, .botao.editar, .botao.download, .botao.excluir { color: #666; background: #d8d8d8; border: 1px solid #c4c4c4; }
 .botao.adicionar:hover, .botao.editar:hover, .botao.download:hover, .botao.excluir:hover { color: #333; background: #ddd; border: 1px solid #999; }
 .botao-grande { padding: .5rem; font-size: .875rem; text-align: center; color: #fff; background: #000; }
