@@ -594,6 +594,10 @@ body.editable #main-section { margin-top: 136px; }
 .espaco:hover h1 a, .espaco .objeto-meta a { color: #e83f96; }
 .projeto:hover h1 a, .projeto .objeto-meta a { color: #cc0033; }
 
+.objeto.evento .nome-projeto { display: block; font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; font-family: "Open Sans", Arial, Helvetica, sans-serif; }
+.objeto.evento .nome-projeto a { color: #888; }
+.objeto.evento .nome-projeto a:hover { color: #aebf3a; }
+
 /* =Mapa
 -------------------------------------------------------------- */
 #mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
