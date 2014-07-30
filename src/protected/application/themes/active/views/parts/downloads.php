@@ -3,8 +3,8 @@
     <div class="bloco">
         <h3 class="subtitulo <?php if(is_editable()) echo 'editando' ?>">Downloads</h3>
         <?php if(is_editable()): ?>
-            <a class="adicionar js-open-dialog hltip" data-dialog="#dialog-download-file" href="#" title="Clique para adicionar arquivo para download"></a>
-            <div id="dialog-download-file" class="js-dialog" title="Adicionar Arquivo">
+            <a class="adicionar js-open-editbox hltip" data-target="#editbox-download-file" href="#" title="Clique para adicionar arquivo para download"></a>
+            <div id="editbox-download-file" class="js-editbox mc-left" title="Adicionar Arquivo" data-submit-label="Enviar">
                 <?php add_ajax_uploader($entity, 'downloads', 'append', 'ul.js-downloads', '<li id="file-{{id}}" class="li-dos-blocos"><a href="{{url}}">{{description}}</a> <div class="botoes"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este vídeo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo"></a></div></li>', '', true, false)?>
             </div>
         <?php endif; ?>

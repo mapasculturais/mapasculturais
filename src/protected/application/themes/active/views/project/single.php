@@ -47,8 +47,8 @@ $ids = array_map(function($e){
             <?php endif; ?>
         >
             <?php if(is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
@@ -63,8 +63,8 @@ $ids = array_map(function($e){
                         <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -117,7 +117,7 @@ $ids = array_map(function($e){
 
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
-        <li class="staging-hidden"><a href="#agenda">Agenda</a></li>
+        <li><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Inscrições</a></li>
     </ul>
     <div id="sobre" class="aba-content">
@@ -179,12 +179,11 @@ $ids = array_map(function($e){
         </div>
         <?php endif; ?>
 
-        <p class="js-ficha-inscricao">
+        <div class="js-ficha-inscricao">
             <?php if (is_editable()): ?>
                 <p>
-                <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
-                Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.<br/><br/>
-                Selecione um arquivo e clique em "Enviar".
+                    <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
+                    Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.
                 </p>
             <?php endif; ?>
             <?php if($registrationForm): ?>
@@ -193,11 +192,13 @@ $ids = array_map(function($e){
                     <a class='icone icon_close hltip js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title='Remover a ficha de inscrição'></a>
                 <?php endif; ?>
             <?php endif; ?>
-        </p>
-
+        </div>
+        
         <?php if($this->controller->action == 'edit'): ?>
-
-                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>'); ?>
+            <a class="botao simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
+            <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição">
+                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>','',false,'.doc, .xls, .pdf'); ?>
+            </div>
         <?php endif; ?>
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !is_editable()): ?>
             <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
