@@ -72,7 +72,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
-            <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarBig'].url||defaultImageURL}}">
+            <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarSmall'].url||defaultImageURL}}">
             <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
             <div class="objeto-meta">
                 <div><span class="label">Tipo:</span> <a ng-click="data.agent.type=openEntity.agent.type.id">{{openEntity.agent.type.name}}</a></div>
@@ -90,7 +90,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarBig'].url||defaultImageURL}}">
+                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||defaultImageURL}}">
                     </a>
                     <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
                     <div class="objeto-meta">
@@ -110,15 +110,20 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
-                <a href="{{openEntity.event.space.singleUrl}}"><span class="icone icon_building"></span>{{openEntity.event.space.name}}</a><br>
+                <a href="{{openEntity.event.space.singleUrl}}">
+                    <img class="objeto-thumb" ng-src="{{openEntity.event.space['@files:avatar.avatarSmall'].url||defaultImageURL}}">
+                    {{openEntity.event.space.name}}
+                </a><br>
                 {{openEntity.event.space.endereco}}
             </p>
 
             <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
-                <h1><span class="nome-projeto"><a href="#">Nome do projeto</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
+                <h1><span class="nome-projeto">
+                        <a href="{{event['project.singleUrl']}}">{{event['project.name']}}</a></span>
+                    <a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarBig'].url||defaultImageURL}}">
+                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarSmall'].url||defaultImageURL}}">
                     </a>
                     <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">
