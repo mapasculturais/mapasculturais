@@ -166,9 +166,9 @@ $ids = array_map(function($e){
             <?php endif; ?>
             <p>
                 <?php if(is_editable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if(is_editable() || $entity->registrationFrom): ?>de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></span><?php endif; ?>
+                <?php if(is_editable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
                 <?php if(is_editable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
-                <?php if(is_editable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></span><?php endif; ?>
+                <?php if(is_editable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
             </p>
         <?php endif; ?>
 
@@ -187,15 +187,19 @@ $ids = array_map(function($e){
                 </p>
             <?php endif; ?>
             <?php if($registrationForm): ?>
-                <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a>
-                <?php if(is_editable()): ?>
-                    <a class='icone icon_close hltip js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title='Remover a ficha de inscrição'></a>
-                <?php endif; ?>
+                <p>
+                    <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a>
+                    <?php if(is_editable()): ?>
+                        <a class='botao simples hltip js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title='Remover a ficha de inscrição'>Remover a ficha de inscrição</a>
+                    <?php endif; ?>
+                </p>
             <?php endif; ?>
         </div>
         
         <?php if($this->controller->action == 'edit'): ?>
-            <a class="botao simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
+            <p>
+                <a class="botao simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
+            </p>
             <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição">
                 <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>','',false,'.doc, .xls, .pdf'); ?>
             </div>
