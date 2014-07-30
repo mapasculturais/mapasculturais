@@ -832,7 +832,7 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .edit-box .mc-cancel .icon_close { font-size: 1.5rem; }
 .edit-box.mc-top .mc-arrow, .edit-box.mc-bottom .mc-arrow { left: 50%; margin-left: -4px; }
 .edit-box.mc-right .mc-arrow, .edit-box.mc-left .mc-arrow { top: 50%; margin-top: -8px; }
-.edit-box.mc-top .mc-arrow { bottom: -20px; border-color: #fff transparent transparent transparent; }
+.edit-box.mc-top .mc-arrow { bottom: -16px; border-color: #fff transparent transparent transparent; }
 .edit-box.mc-bottom .mc-arrow { top: -20px; border-color: transparent transparent #f90 transparent; }
 
 

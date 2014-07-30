@@ -16,7 +16,7 @@
     <?php if(is_editable()): ?>
         <p class="p-dos-botoes">
             <a class="botao adicionar js-open-editbox" data-target="#editbox-gallery-image" href="#">adicionar imagem</a>
-            <div id="editbox-gallery-image" class="js-editbox mc-left" title="Adicionar Imagem na Galeria">
+            <div id="editbox-gallery-image" class="js-editbox mc-top" title="Adicionar Imagem na Galeria">
                 <?php add_ajax_uploader($entity, 'gallery', 'append', 'div.js-gallery', '<div id="file-{{id}}" class="item-da-galeria" ><a href="{{url}}"><img src="{{files.galleryThumb.url}}" /></a> <div class="botoes-de-edicao"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" class="icone icon_close_alt hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir"></a></div></div>', 'galleryThumb')?>
             </div>
         </p>
