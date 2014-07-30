@@ -827,7 +827,8 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 .edit-box header p { margin-bottom: 0; font-size: .75rem; }
 .edit-box footer { text-align: right; }
 .edit-box footer button { margin-bottom: 0; }
-.edit-box footer .mc-cancel { margin-left: 7px; }
+.edit-box footer .mc-cancel { border: none; cursor: pointer; font-weight: bold; height: 2rem; margin-left: 7px; padding: 0 .75rem;
+vertical-align: bottom; width: auto; }
 .edit-box .mc-cancel { padding: 3px; }
 .edit-box .mc-cancel .icon_close { font-size: 1.5rem; }
 .edit-box.mc-top .mc-arrow, .edit-box.mc-bottom .mc-arrow { left: 50%; margin-left: -4px; }
@@ -848,6 +849,12 @@ div.ficha-spcultura .editable-buttons-bottom { float: left; }
 
 .agentes-relacionados .directive-find-entity { width:300px; right:0px; }
 
+/* ajax uploader */
+.js-ajax-upload-progress { margin-bottom: 10px; }
+.js-ajax-upload-progress .progress { position: relative; width: 100%; padding: 1px; border-radius: 3px; box-sizing: border-box; -moz-box-sizing: border-box; }
+.js-ajax-upload-progress .bar { background-color: #aebf3a; height: 24px; border-radius: 3px; }
+.js-ajax-upload-progress .percent { position: absolute; display: inline-block; top: 0px; left: 48%; font-weight: bold; }
+.js-ajax-upload-progress .inactive .percent { display: none; }
 
 /* =Modal
 -------------------------------------------------------------- */

@@ -22,7 +22,8 @@ $app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
 $app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
 $app->enqueueScript('app', 'Search', '/js/Search.js');
 
-$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
+$app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
 $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
 $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));

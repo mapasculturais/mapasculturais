@@ -381,7 +381,7 @@ MapasCulturais.AjaxUploader = {
             },
             uploadProgress: function(event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
-                bar.width(percentVal);
+                bar.animate({'width':percentVal});
                 percent.html(percentVal);
             },
             success: function (response, statusText, xhr, $form)  {

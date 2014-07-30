@@ -19,7 +19,7 @@ $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
 add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
-$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
 $app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
 add_map_assets();
@@ -64,8 +64,6 @@ add_occurrence_frequencies_to_js();
         <?php endif; ?>
     </div>
 <?php $eventOccurrenceItemTemplate = ob_get_clean(); ?>
-
-
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
     <div class="regra clearfix">
         <header class="clearfix">
