@@ -355,6 +355,20 @@ MapasCulturais.Editables = {
 };
 
 MapasCulturais.AjaxUploader = {
+    resetProgressBar: function(containerSelector, acivate){
+        console.log(containerSelector);
+        var bar = $(containerSelector).find('.js-ajax-upload-progress .bar');
+        var percent = $(containerSelector).find('.js-ajax-upload-progress .percent');
+        var percentVal = '0%';
+        bar.width(percentVal);
+        percent.html(percentVal);
+        console.log('bar',bar);
+        if(!acivate)
+            $(containerSelector).find('.js-ajax-upload-progress .progress').addClass('inactive');
+        else
+            $(containerSelector).find('.js-ajax-upload-progress .progress').removeClass('inactive');
+
+    },
     animationTime: 100,
     init: function() {
         var bar = $('.js-ajax-upload-progress .bar');
@@ -362,24 +376,22 @@ MapasCulturais.AjaxUploader = {
         // bind form using 'ajaxForm'
         $('.js-ajax-upload').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
-            beforeSend: function() {
-                var percentVal = '0%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-                $('.js-ajax-upload-progress').show('slow');
+            beforeSubmit: function(arr, $form, options) {
+                MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), true);
             },
             uploadProgress: function(event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
-                bar.width(percentVal)
+                bar.width(percentVal);
                 percent.html(percentVal);
             },
             success: function (response, statusText, xhr, $form)  {
 
                 var percentVal = '100%';
-                bar.width(percentVal)
+                bar.width(percentVal);
                 percent.html(percentVal);
 
                 if(response.error){
+                    MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), false);
                     var group = $form.data('group');
                     var error_message = typeof response.data == 'string' ? response.data : response.data[group];
                     $form.find('div.mensagem.erro').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
@@ -444,7 +456,7 @@ MapasCulturais.AjaxUploader = {
 
                 $form.parents('.js-editbox').find('.mc-cancel').click();
             },
-            
+
             // other available options:
             //url:       url         // override for form's 'action' attribute
             //type:      type        // 'get' or 'post', override for form's 'method' attribute
@@ -513,7 +525,7 @@ MapasCulturais.MetalistManager = {
 
                 $editBtn = $html.find('.js-open-editbox');
                 $editBtn.data('item', response);
-                
+
                 switch(action){
 
                     case 'edit':
@@ -564,28 +576,28 @@ MapasCulturais.MetalistManager = {
             }
         });
     },
-    
+
     updateDialog: function ($caller){
         var $dialog = $($caller.data('target'));
         var $form = $dialog.find('.js-metalist-form');
         var group = $dialog.data('metalist-group');
 
         var item = $caller.data('item') || {};
-        
+
         if(typeof item === 'string')
             item = JSON.parse(item);
-        
+
         $form.data('metalist-action', $caller.data('metalist-action'));
         $form.data('metalist-group', group);
 
         if($caller.data('metalist-action') === 'edit'){
-            if(group === 'videos') 
+            if(group === 'videos')
                 $dialog.removeClass('mc-top').addClass('mc-bottom');
-            
+
             $form.find('input.js-metalist-group').attr('name', '').val('');
             $form.attr('action', MapasCulturais.baseURL + 'metalist/single/' + item.id);
         }else{
-            if(group === 'videos') 
+            if(group === 'videos')
                 $dialog.removeClass('mc-bottom').addClass('mc-top');
             $form.find('input.js-metalist-group').attr('name', 'group').val(group);
             $form.attr('action', $dialog.data('action-url'));
@@ -598,7 +610,7 @@ MapasCulturais.MetalistManager = {
         $form.find('input.js-metalist-value').attr('placeholder', $dialog.data('metalist-value-label'));
 
         // define os valores dos inputs do form
-        
+
         $form.find('input.js-metalist-title').val(item.title);
         $form.find('input.js-metalist-value').val(item.value);
 
