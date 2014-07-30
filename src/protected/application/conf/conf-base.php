@@ -40,6 +40,7 @@ return array(
     'app.log.requestData' => false,
     'app.log.translations' => false,
     'app.log.apiCache' => false,
+    'app.log.apiDql' => false,
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
