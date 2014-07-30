@@ -256,6 +256,23 @@
 
         $scope.dataChange = function(newValue, oldValue){
             if(newValue === undefined) return;
+            if(newValue.global.viewMode === 'map'){
+                var filterEntity = newValue.global.filterEntity;
+                if(!newValue.global.enabled[filterEntity]){
+                    var enabledEntities = 0;
+                    
+                    angular.forEach(newValue.global.enabled, function(v,k){ if(v) enabledEntities++; });
+                    
+                    if(enabledEntities === 1){
+                        var obj = {space:false, agent:false, event:false};
+                        obj[filterEntity] = true;
+                        newValue.global.enabled = obj; 
+                    }else{
+                        newValue.global.enabled[filterEntity] = true;
+                    }
+                    return;
+                }
+            }
             var serialized = $rison.stringify(diffFilter(newValue));
             $window.$timout = $timeout;
             if($location.hash() !== serialized){
