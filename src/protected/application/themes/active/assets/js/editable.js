@@ -356,13 +356,11 @@ MapasCulturais.Editables = {
 
 MapasCulturais.AjaxUploader = {
     resetProgressBar: function(containerSelector, acivate){
-        console.log(containerSelector);
         var bar = $(containerSelector).find('.js-ajax-upload-progress .bar');
         var percent = $(containerSelector).find('.js-ajax-upload-progress .percent');
         var percentVal = '0%';
-        bar.width(percentVal);
+        bar.stop().width(percentVal);
         percent.html(percentVal);
-        console.log('bar',bar);
         if(!acivate)
             $(containerSelector).find('.js-ajax-upload-progress .progress').addClass('inactive');
         else
@@ -383,6 +381,7 @@ MapasCulturais.AjaxUploader = {
                 var percentVal = percentComplete + '%';
                 bar.animate({'width':percentVal});
                 percent.html(percentVal);
+                console.log('percent',percentComplete);
             },
             success: function (response, statusText, xhr, $form)  {
 
