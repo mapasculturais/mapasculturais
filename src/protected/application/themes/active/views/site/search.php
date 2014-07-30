@@ -110,8 +110,9 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
-                <a href="{{openEntity.event.space.singleUrl}}">{{openEntity.event.space.name}}<br>
-                    {{openEntity.event.space.endereco}}</a></p>
+                <a href="{{openEntity.event.space.singleUrl}}"><span class="icone icon_building"></span>{{openEntity.event.space.name}}</a><br>
+                {{openEntity.event.space.endereco}}
+            </p>
 
             <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
                 <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
