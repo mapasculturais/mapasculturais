@@ -40,7 +40,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='li-dos-blocos'>
                                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                                data-response-target="#link-<?php echo $link->id ?>"
                                data-metalist-action="edit"
-                               data-item='<?php echo json_encode($link) ?>'
+                               data-item="<?php echo htmlentities(json_encode($link)) ?>"
                                href="#" title='editar'></a>
                            <a class='icone icon_close js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Excluir este link?" title='excluir'></a>
                         </div>

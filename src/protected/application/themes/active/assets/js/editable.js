@@ -571,7 +571,10 @@ MapasCulturais.MetalistManager = {
         var group = $dialog.data('metalist-group');
 
         var item = $caller.data('item') || {};
-
+        
+        if(typeof item === 'string')
+            item = JSON.parse(item);
+        
         $form.data('metalist-action', $caller.data('metalist-action'));
         $form.data('metalist-group', group);
 
@@ -595,6 +598,7 @@ MapasCulturais.MetalistManager = {
         $form.find('input.js-metalist-value').attr('placeholder', $dialog.data('metalist-value-label'));
 
         // define os valores dos inputs do form
+        
         $form.find('input.js-metalist-title').val(item.title);
         $form.find('input.js-metalist-value').val(item.value);
 

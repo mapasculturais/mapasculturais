@@ -38,7 +38,7 @@ $template = "<li id='video-{{id}}'>
                            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                            data-response-target="#video-<?php echo $video->id ?>"
                            data-metalist-action="edit"
-                           data-item='<?php echo json_encode($video);?>'
+                           data-item="<?php echo htmlentities(json_encode($video));?>"
                            href="#" title='Editar'></a>
                            <a class='icone icon_close_alt js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Excluir este vídeo?" title='Excluir'></a>
                     </div>
