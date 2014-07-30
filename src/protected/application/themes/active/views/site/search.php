@@ -110,11 +110,12 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
-                <a href="{{openEntity.event.space.singleUrl}}">{{openEntity.event.space.name}}<br>
-                    {{openEntity.event.space.endereco}}</a></p>
+                <a href="{{openEntity.event.space.singleUrl}}"><span class="icone icon_building"></span>{{openEntity.event.space.name}}</a><br>
+                {{openEntity.event.space.endereco}}
+            </p>
 
             <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
-                <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
+                <h1><span class="nome-projeto"><a href="#">Nome do projeto</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
                         <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarBig'].url||defaultImageURL}}">
@@ -226,7 +227,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <div id="lista-dos-eventos" class="lista" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
-                <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
+                <h1><span class="nome-projeto"><a href="#">Nome do projeto</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
                         <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarBig'].url||defaultImageURL}}">

@@ -217,7 +217,7 @@ tr th { text-align: left; }
 .url { word-wrap: break-word; word-break: break-all; }
 .mensagem { margin-bottom: 1.5rem; padding: .25rem .75rem; border-radius: 2px; border-style: solid; border-width: 1px; font-size: .75rem; }
 .mensagem.ajuda { background: #cff; border-color: #9be7ee; color: #40b4b4; }
-.mensagem.alerta, { background: #ffc; border-color: #eed29b; color: #c93; }
+.mensagem.alerta { background: #ffc; border-color: #eed29b; color: #c93; }
 .mensagem.erro { background: #fcc; border-color: #ee9b9b; color: #c33; }
 .mensagem.sucesso { background: #cfc; border-color: #a6dfa6; color: #6c6; }
 .mensagem.automatica { background: #eee; border-color: #ddd; color: #666; }
@@ -234,7 +234,7 @@ tr th { text-align: left; }
 .botao { height: 1.875rem; padding: 0 .5rem; font-size: .75rem; line-height: 1.875rem; }
 .botao.principal { color: #fff; background: #f90; border: 1px solid #f90; }
 .botao.principal:hover { border-color: #e48203; }
-.botao.selected, .botao.selected:hover { background-color: #f90 !important; border: 1px solid #f90 !important; }
+.botao.selected, .botao.selected:hover { background-color: #000; border: 1px solid #000; color: #fff; }
 .botao.simples, .botao.adicionar, .botao.editar, .botao.download, .botao.excluir { color: #666; background: #d8d8d8; border: 1px solid #c4c4c4; }
 .botao.adicionar:hover, .botao.editar:hover, .botao.download:hover, .botao.excluir:hover { color: #333; background: #ddd; border: 1px solid #999; }
 .botao-grande { padding: .5rem; font-size: .875rem; text-align: center; color: #fff; background: #000; }
@@ -534,7 +534,8 @@ body.editable #main-section { margin-top: 136px; }
 .lista-de-filtro li span { display: inline-block; width: 80%; vertical-align: top; }
 .filtro-prefeitura { float: right; text-align: center; }
 .filtro-prefeitura .botao { color: #fff; background-color: #000; background-image: url(../img/prefeitura.png); background-position: 8px center; background-repeat: no-repeat; padding-left: 40px; }
-.filtro-prefeitura .botao:hover { background-color: #f90; border-color: #f90; }
+.filtro-prefeitura .botao:hover, .filtro-prefeitura .botao.selected, .filtro-prefeitura .botao.selected:hover { background-color: #f90; border-color: #f90; }
+
 /* header dos resultados*/
 #header-dos-resultados { position: relative; min-height: 1.5rem; padding: .75rem; background-color: #eee; font-family: 'aleo', serif; font-size: .875rem; color: #000; }
 #resultados { position: absolute; top: .75rem; left: .75rem;  width: 250px; padding-right: .75rem; }
@@ -594,12 +595,17 @@ body.editable #main-section { margin-top: 136px; }
 .espaco:hover h1 a, .espaco .objeto-meta a { color: #e83f96; }
 .projeto:hover h1 a, .projeto .objeto-meta a { color: #cc0033; }
 
+.objeto.evento .nome-projeto { display: block; font-size: .70rem; text-transform: uppercase; color: #888; letter-spacing: .1em; font-family: "Open Sans", Arial, Helvetica, sans-serif; }
+.objeto.evento .nome-projeto a { color: #888; }
+.objeto.evento .nome-projeto a:hover { color: #aebf3a; }
+
 /* =Mapa
 -------------------------------------------------------------- */
 #mapa { display: block; position: fixed; z-index: 0; top: 96px; bottom: 0; left: 0; /*348px qdo abre a infobox*/ right: 0; }
 #infobox { position: absolute; z-index: 149; top: 105px; left: 0; bottom: 0; width: 300px; overflow: auto; padding: 2rem .75rem .75rem; border-radius: 0; background: #eee; }
 #infobox .icon_close { position: absolute; top: .5rem; right: .5rem; cursor:pointer; }
 #infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
+#infobox .espaco-dos-eventos .icone { margin: -3px 5px 0px 0; }
 #infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
 #infobox .objeto { padding: .75rem; }
 #infobox .objeto h1 { font-size: 1.25rem; }
