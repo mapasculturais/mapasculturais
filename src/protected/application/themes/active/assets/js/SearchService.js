@@ -20,7 +20,7 @@
         };
 
         function search (ev, data){
-            
+
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -41,7 +41,7 @@
             }
 
             canceler = $q.defer();
-            
+
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
                 if(data.global.enabled.agent){
@@ -67,17 +67,17 @@
                         callApi('space', spaceQueryData);
                     }
                 }
-                
+
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
                 var activeEntity = data.global.filterEntity;
                 var listQueryData = data2searchData(data[activeEntity]);
-                
+
                 if(activeEntity !== lastQueries.listedEntity)
                     $rootScope.pagination[activeEntity] = 1;
-                
+
                 var isDiff = (paginating && $rootScope.pagination[activeEntity] !== lastQueries.page) || (!angular.equals(listQueryData, lastQueries.list) || lastQueries.listedEntity !== activeEntity);
-                
+
                 if( isDiff ){
                     $rootScope.isPaginating = true;
                     lastQueries.listedEntity = activeEntity;
@@ -94,7 +94,7 @@
             function callApi(entity, sData){
                 var requestEntity = entity,
                     requestAction = 'find';
-                
+
                 if(entity === 'event'){
                     if(data.global.viewMode === 'list'){
                         requestAction = 'findByLocation';
@@ -104,10 +104,10 @@
                     }
 
                 }
-                
+
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
-                
+
                 //Counting XX events in YY spaces (events in map mode)
                 if(requestEntity === 'space' && requestAction === 'findByEvents'){
 
@@ -189,7 +189,7 @@
                             countAndRemoveResultsNotInMap('event', results);
                         }
                     }
-                    
+
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
 
@@ -223,7 +223,7 @@
                         return MapasCulturais.taxonomyTerms.linguagem[e];
                     });
                     selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
-                    
+
                     searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
                 }
 
@@ -281,9 +281,9 @@
                     else if(entity === 'project')
                         searchData['@select'] += ',registrationFrom,registrationTo';
                     else if(entity === 'event')
-                        searchData['@select'] += ',classificacaoEtaria';
+                        searchData['@select'] += ',classificacaoEtaria,project.name,project.singleUrl';
 
-                    searchData['@files'] = '(avatar.avatarBig):url';
+                    searchData['@files'] = '(avatar.avatarMedium):url';
                     if(page) {
                         searchData['@page'] = page;
                         searchData['@limit'] = '10';

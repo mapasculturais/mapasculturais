@@ -119,7 +119,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
             <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
                 <h1><span class="nome-projeto">
-                        <a href="{{event['project.singleUrl']}}">{{event['project.name']}}</a></span>
+                        <a href="{{event.project.singleUrl}}">{{event.project.name}}</a></span>
                     <a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
@@ -160,7 +160,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{project.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{project['@files:avatar.avatarBig'].url||defaultImageURL.replace('avatar','avatar--project')}}">
+                        <img class="objeto-thumb" ng-src="{{project['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--project')}}">
                     </a>
                     <p class="objeto-resumo">
                         {{project.shortDescription}}
@@ -184,7 +184,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{agent['@files:avatar.avatarBig'].url||defaultImageURL.replace('avatar','avatar--agent')}}">
+                        <img class="objeto-thumb" ng-src="{{agent['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--agent')}}">
                     </a>
                     <p class="objeto-resumo">{{agent.shortDescription}}</p>
                     <div class="objeto-meta">
@@ -208,7 +208,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarBig'].url||defaultImageURL.replace('avatar','avatar--space')}}">
+                        <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--space')}}">
                     </a>
                     <p class="objeto-resumo">{{space.shortDescription}}</p>
                     <div class="objeto-meta">
@@ -232,10 +232,10 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
         <div id="lista-dos-eventos" class="lista" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
             <article class="objeto evento clearfix" ng-repeat="event in events">
-                <h1><span class="nome-projeto"><a href="#">Nome do projeto</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
+                <h1><span class="nome-projeto"><a href="{{event.project.singleUrl}}">{{event.project.name}}</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarBig'].url||defaultImageURL.replace('avatar','avatar--event')}}">
+                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--event')}}">
                     </a>
                     <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">

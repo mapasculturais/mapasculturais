@@ -323,7 +323,8 @@ add_occurrence_frequencies_to_js();
                                         $templateData->occurrencesDescription .= trim($occurrence->rule->description);
                                         if(!$arePricesTheSame)
                                             $templateData->occurrencesDescription .= '. '.$occurrence->rule->price;
-                                        $templateData->occurrencesDescription .= '; ';
+                                        if($occurrence->rule->description)
+                                            $templateData->occurrencesDescription .= '; ';
                                     }
                                     $templateData->occurrencesDescription = substr($templateData->occurrencesDescription,0,-2);
                                     $templatesData[] = $templateData;
