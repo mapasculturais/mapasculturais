@@ -35,6 +35,23 @@ $(function(){
     }
 
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
+
+
+    // identify Internet Explorer
+    if(navigator.appName != 'Microsoft Internet Explorer' && !(navigator.appName == 'Netscape' && navigator.userAgent.indexOf('Trident') !== -1)){
+        //not IE
+    }else{
+        // is IE
+        $('body').addClass('ie');
+        //identify version
+        var ua = navigator.userAgent.toLowerCase();
+        if(!isNaN(version = parseInt(ua.split('msie')[1]))){ // 7, 8, 9, 10
+            $('body').addClass('ie'+version);
+        }else if( parseInt(ua.split('rv:')[1]) === 11) { // 11
+            $('body').addClass('ie11');
+        }
+    }
+
 });
 
 MapasCulturais.auth = {
@@ -182,22 +199,22 @@ MapasCulturais.Modal = {
 
     open: function(selector){
         var $dialog = $(selector);
-        
+
         $dialog.find('div.mensagem.erro').html('').hide();
         $dialog.find('.js-ajax-upload-progress').hide();
         $dialog.css('opacity',0).show();
         setTimeout(function(){
            var top = $dialog.height() + 100 > $(window).height() ? $(window).scrollTop() + 100 : $(window).scrollTop() + ( $(window).height() - $dialog.height()) / 2 - 50;
-        
+
            $dialog.css({
                 top: top,
                 left: '50%',
                 marginLeft: -$dialog.width() / 2,
                 opacity: 1
-            }); 
+            });
         },25);
-        
-        
+
+
         return;
     }
 };
@@ -331,7 +348,7 @@ MapasCulturais.EditBox = {
     open: function(selector, $button){
         var $dialog = $(selector);
         $dialog.find('div.mensagem.erro').html('').hide();
-        
+
         MapasCulturais.AjaxUploader.resetProgressBar(selector);
 
         $dialog.show();
