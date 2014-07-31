@@ -60,7 +60,7 @@ trait EntityOwnerAgent{
         return ($user->is('admin') || $user->id == $this->getOwnerUser()->id);
     }
     
-    protected function _canUser($user){
+    protected function _canUser($user, $action = ''){
         if($user->is('guest'))
             return false;
         
@@ -73,14 +73,18 @@ trait EntityOwnerAgent{
         if( $this->owner->userHasControl($user) )
             return true;
         
+        
+        if($this->usesAgentRelation() && $this->userHasControl($user) && $action !== 'remove')
+            return true;
+        
         return false;
     }
     
     protected function canUserCreate($user){
-        return $this->_canUser($user);
+        return $this->_canUser($user, 'create');
     }
     
     protected function canUserRemove($user){
-        return $this->_canUser($user);
+        return $this->_canUser($user, 'remove');
     }
 }

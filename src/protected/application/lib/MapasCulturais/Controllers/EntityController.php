@@ -471,8 +471,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$app->config['app.useApiCache'])
             return false;
 
-        $app->log->info(print_r([get_class($app->cache), $app->config['app.useApiCache'], $cache_id, $app->cache->contains($cache_id)], true));
-
         return $app->cache->contains($cache_id);
     }
 
@@ -729,13 +727,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             $result[] = "$final_dql";
 
-            if(@$app->config['app.log.apiDql']){
-                $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL <<<<<<<<<<<<<<<<");
-                $app->log->debug($final_dql);
-
-                $app->log->debug(">>>>>>>>>>>>>>> API FIND DQL PARAMS <<<<<<<<<<<<<<<<");
-//              $app->log->debug(print_r($this->_apiFindParamList,true));
-            }
+            if($app->config['app.log.apiDql'])
+                $app->log->debug("API DQL: ".$final_dql);
+            
 
 
             if($page && $limit)
@@ -747,12 +741,27 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $query->setFirstResult($offset);
 
             $processEntity = function($r) use($append_files_cb, $select){
+                
                 $entity = array();
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
                     try{
-                        $prop_value = $r->$prop;
+                        if(strpos($prop, '.')){
+                            
+                            $props = explode('.',$prop);
+                            $current_object = $r;
+                            foreach($props as $p){
+                                $current_object = $current_object->$p;
+                                
+                                if(!is_object($current_object))
+                                    break;
+                            }
+                            
+                            $prop_value = $current_object;
+                        }else{
+                            $prop_value = $r->$prop;
+                        }
                         if(is_object($prop_value) && $prop_value instanceof \Doctrine\Common\Collections\Collection)
                             $prop_value = $prop_value->toArray();
 

@@ -34,11 +34,11 @@ add_angular_entity_assets($entity);
             <?php endif; ?>
         >
         <?php if(is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
-                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-                </div>
-            <?php endif; ?>
+            <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+            <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
+                <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+            </div>
+        <?php endif; ?>
         </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">
@@ -50,8 +50,8 @@ add_angular_entity_assets($entity);
                         <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -92,7 +92,6 @@ add_angular_entity_assets($entity);
     <ul class="abas clearfix clear">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
-        <li class="staging-hidden"><a href="#contas">Contas</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -176,7 +175,7 @@ add_angular_entity_assets($entity);
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição" data-emptytext="Insira uma descrição" data-placeholder="Informe seus dados" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Agente" data-emptytext="Insira uma descrição do agente" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
         <!--.descricao-->
         <!-- Video Gallery BEGIN -->
@@ -188,12 +187,7 @@ add_angular_entity_assets($entity);
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php
-        $date_from = new DateTime();
-        $date_to = new DateTime('+180 days');
-        $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to);
-        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
-        ?>
+        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
     <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>

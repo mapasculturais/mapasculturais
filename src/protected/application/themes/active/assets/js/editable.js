@@ -72,22 +72,14 @@ jQuery(function(){
 
     if($('.js-verified').length){
         $('.js-verified').click(function(){
-            var verify = $(this).data('verify-url');
-            var removeVerification = $(this).data('remove-verification-url');
-            if($('.js-verified').hasClass('active')){
-                $.getJSON(removeVerification, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').removeClass('active');
-                    }
-                });
+            var $this = $(this);
+            if($this.hasClass('active')){
+                $this.removeClass('active');
+                $('#is-verified-input').editable('setValue', 0);
             }else{
-                $.getJSON(verify, function(r){
-                    if(r && !r.error){
-                        $('.js-verified').addClass('active');
-                    }
-                });
+                $this.addClass('active');
+                $('#is-verified-input').editable('setValue', 1);
             }
-
             return false;
         });
     }
@@ -109,6 +101,7 @@ MapasCulturais.Remove = {
                 var href = $this.data('href');
 
                 $.getJSON(href,function(r){
+                    console.log(r);
                     if(r.error){
                         MapasCulturais.Messages.error(r.data);
                     }else{
@@ -116,7 +109,10 @@ MapasCulturais.Remove = {
                         if($this.data('remove-callback'))
                             cb = $this.data('remove-callback');
                         $target.remove();
-                        cb();
+                        if(typeof cb === 'string')
+                            eval(cb);
+                        else
+                            cb();
                     }
                 });
             });
@@ -291,13 +287,15 @@ MapasCulturais.Editables = {
                         var firstShown = false;
                         $('.js-response-error').remove();
                         for(var p in response.data){
-                            if(p.substr(0,5) == 'term-')
+                            if(MapasCulturais.request.controller === 'event' && p === 'project'){
+                                $field = $('.editable[data-field-name="projectId"');
+                            }else if(p.substr(0,5) == 'term-'){
                                 $field = $('#' + p);
-                            else if(p == 'type')
+                            }else if(p == 'type'){
                                 $field = $('.js-editable-type');
-                            else
+                            }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
-
+                            }
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
@@ -361,6 +359,18 @@ MapasCulturais.Editables = {
 };
 
 MapasCulturais.AjaxUploader = {
+    resetProgressBar: function(containerSelector, acivate){
+        var bar = $(containerSelector).find('.js-ajax-upload-progress .bar');
+        var percent = $(containerSelector).find('.js-ajax-upload-progress .percent');
+        var percentVal = '0%';
+        bar.stop().width(percentVal);
+        percent.html(percentVal);
+        if(!acivate)
+            $(containerSelector).find('.js-ajax-upload-progress .progress').addClass('inactive');
+        else
+            $(containerSelector).find('.js-ajax-upload-progress .progress').removeClass('inactive');
+
+    },
     animationTime: 100,
     init: function() {
         var bar = $('.js-ajax-upload-progress .bar');
@@ -368,24 +378,23 @@ MapasCulturais.AjaxUploader = {
         // bind form using 'ajaxForm'
         $('.js-ajax-upload').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
-            beforeSend: function() {
-                var percentVal = '0%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-                $('.js-ajax-upload-progress').show('slow');
+            beforeSubmit: function(arr, $form, options) {
+                MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), true);
             },
             uploadProgress: function(event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
-                bar.width(percentVal)
+                bar.animate({'width':percentVal});
                 percent.html(percentVal);
+                console.log('percent',percentComplete);
             },
             success: function (response, statusText, xhr, $form)  {
 
                 var percentVal = '100%';
-                bar.width(percentVal)
+                bar.width(percentVal);
                 percent.html(percentVal);
 
                 if(response.error){
+                    MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), false);
                     var group = $form.data('group');
                     var error_message = typeof response.data == 'string' ? response.data : response.data[group];
                     $form.find('div.mensagem.erro').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
@@ -447,8 +456,10 @@ MapasCulturais.AjaxUploader = {
                 }
 
                 $form.get(0).reset();
-
-                $form.parents('.js-dialog').find('.js-close').click();
+                if($form.parents('.js-editbox').data('success-callback'))
+                    eval($form.parents('.js-editbox').data('success-callback'));
+                
+                $form.parents('.js-editbox').find('.mc-cancel').click();
             },
 
             // other available options:
@@ -473,26 +484,26 @@ MapasCulturais.MetalistManager = {
 
             beforeSubmit:function(arr, $form, options){
                 //por enquanto validando apenas o vídeo contendo vimeo ou youtube e o link contendo algum protocolo...
-                var group = $form.parents('.js-dialog').data('metalist-group');
+                var group = $form.parents('.js-editbox').data('metalist-group');
                 var $linkField = $form.find('input.js-metalist-value');
                 var $errorTag = $form.find('.mensagem.erro');
                 $errorTag.html('');
 
-                if(group == 'videos'){
-                    if($.trim($form.find('input.js-metalist-title').val()) == ''){
+                if(group === 'videos'){
+                    if($.trim($form.find('input.js-metalist-title').val()) === ''){
                         $errorTag.html('Insira um título para seu vídeo.').show();
                         return false;
                     }
 
                     var parsedURL = purl($linkField.val());
-                    if (parsedURL.attr('host').indexOf('youtube') == -1 && parsedURL.attr('host').indexOf('vimeo')  == -1){
+                    if (parsedURL.attr('host').indexOf('youtube') === -1 && parsedURL.attr('host').indexOf('vimeo')  === -1){
                         $errorTag.html('Insira uma url de um vídeo do YouTube ou do Vimeo.').show();
 
                         return false;
                     }
-                }else if (group == 'links'){
+                }else if (group === 'links'){
 
-                    if($.trim($form.find('input.js-metalist-title').val()) == ''){
+                    if($.trim($form.find('input.js-metalist-title').val()) === ''){
                         $errorTag.html('Insira um título para seu link.').show();
                         return false;
                     }
@@ -512,12 +523,12 @@ MapasCulturais.MetalistManager = {
                 var $target = $($form.data('response-target'));
                 var group = $form.data('metalist-group');
                 var action = $form.data('metalist-action');
-                var template = $form.find('script[type="js-response-template"]').text();
+                var template = $form.find('script.js-response-template').text();
                 var $editBtn;
 
                 var $html = $(Mustache.render(template, response));
 
-                $editBtn = $html.find('.js-open-dialog');
+                $editBtn = $html.find('.js-open-editbox');
                 $editBtn.data('item', response);
 
                 switch(action){
@@ -525,27 +536,27 @@ MapasCulturais.MetalistManager = {
                     case 'edit':
                         $target.replaceWith($html);
                         $target = $html;
-                        MapasCulturais.Modal.initButtons($editBtn);
+                        MapasCulturais.EditBox.initButtons($editBtn);
                         //if this metalist is of videos, update the new displayed item passing the video url
-                        if(group == 'videos'){
+                        if(group === 'videos'){
                             MapasCulturais.Video.getAndSetVideoData(response.value, $target.find('.js-metalist-item-display'), MapasCulturais.Video.setupVideoGalleryItem);
                         }
                         break;
 
                     default: //append (insert)
                         $target.append($html);
-                        MapasCulturais.Modal.initButtons($editBtn);
+                        MapasCulturais.EditBox.initButtons($editBtn);
 
                         //if this metalist is of videos, update the new displayed item passing the video url
-                        if(group == 'videos'){
-                            MapasCulturais.Video.getAndSetVideoData(response.value, $('.js-metalist-item-id-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
+                        if(group === 'videos'){
+                            MapasCulturais.Video.getAndSetVideoData(response.value, $('#video-'+response.id), MapasCulturais.Video.setupVideoGalleryItem);
 
                             $('#video-player:hidden').show();
 
                         }
 
                 }
-                $form.parents('.js-dialog').find('.js-close').click();
+                $form.parents('.js-editbox').find('.mc-cancel').click();
                 //$form.get(0).reset();
             },
 
@@ -569,5 +580,63 @@ MapasCulturais.MetalistManager = {
                 $form.parent().hide();
             }
         });
+    },
+
+    updateDialog: function ($caller){
+        var $dialog = $($caller.data('target'));
+        var $form = $dialog.find('.js-metalist-form');
+        var group = $dialog.data('metalist-group');
+
+        var item = $caller.data('item') || {};
+
+        if(typeof item === 'string')
+            item = JSON.parse(item);
+
+        $form.data('metalist-action', $caller.data('metalist-action'));
+        $form.data('metalist-group', group);
+
+        if($caller.data('metalist-action') === 'edit'){
+            if(group === 'videos')
+                $dialog.removeClass('mc-top').addClass('mc-bottom');
+
+            $form.find('input.js-metalist-group').attr('name', '').val('');
+            $form.attr('action', MapasCulturais.baseURL + 'metalist/single/' + item.id);
+        }else{
+            if(group === 'videos')
+                $dialog.removeClass('mc-bottom').addClass('mc-top');
+            $form.find('input.js-metalist-group').attr('name', 'group').val(group);
+            $form.attr('action', $dialog.data('action-url'));
+        }
+
+        $form.data('response-target', $caller.data('response-target'));
+
+        // define os labels do form
+        $form.find('input.js-metalist-title').attr('placeholder', $dialog.data('metalist-title-label'));
+        $form.find('input.js-metalist-value').attr('placeholder', $dialog.data('metalist-value-label'));
+
+        // define os valores dos inputs do form
+
+        $form.find('input.js-metalist-title').val(item.title);
+        $form.find('input.js-metalist-value').val(item.value);
+
+
+
+        var responseTemplate = '';
+        //If Edit or insert:
+        if($caller.data('metalist-action') === 'edit'){
+            responseTemplate = $dialog.data('response-template');
+        }else{
+            $dialog.find('h2').html($caller.data('dialog-title'));
+            responseTemplate = $caller.data('response-template');
+        }
+
+        $form.find('script.js-response-template').text(responseTemplate);
+
+        //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
+        if(group === 'videos') {
+            $form.find('input.js-metalist-value').on('change', function(){
+                MapasCulturais.Video.getAndSetVideoData($(this).val(), $form.find('input.js-metalist-title'), MapasCulturais.Video.setTitle);
+            });
+        }
     }
 };

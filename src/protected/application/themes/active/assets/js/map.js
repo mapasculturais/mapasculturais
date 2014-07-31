@@ -111,7 +111,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             var defaultCircleStrokeWeight = 2;
             var saoPaulo = new L.LatLng(-23.54894, -46.63882);
             var mapCenter = isPositionDefined ? new L.LatLng($(this).data('lat'), $(this).data('lng')) : saoPaulo;
-            var options = $(this).data('options') ? $(this).data('options') : {dragging: isEditable, zoomControl: isEditable, doubleClickZoom: isEditable, scrollWheelZoom: isEditable};
+            var options = $(this).data('options') ? $(this).data('options') : {dragging: true, zoomControl: true, doubleClickZoom: true, scrollWheelZoom: true};
 
             var locateMeControl = initializerOptions.locateMeControl ? true : false;
 
@@ -140,7 +140,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
                 }, 400);
             });
 
-            var marker = new L.marker(map.getCenter(), {draggable: isEditable });
+            var marker = new L.marker(map.getCenter(), {draggable: isEditable && MapasCulturais.request.controller !== 'event' });
             var markerIcon = {};
             if (MapasCulturais.request.controller == 'agent' || MapasCulturais.request.controller == 'space')
                 markerIcon = MapasCulturais.Map.iconOptions[MapasCulturais.request.controller].icon;
@@ -225,7 +225,7 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             map.on('click', function(e) {
 
                 //se for só visualização, não edição
-                if (isEditable)
+                if (isEditable && MapasCulturais.request.controller !== 'event')
                     marker.setLatLng(e.latlng);
             });
 
@@ -439,26 +439,23 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             $('.js-sp-geo').each(function(){
                 var $checkbox = $(this).parents('label').find('input:checkbox');
+                var geotable = $(this).data('geot');
+                var fields = $(this).data('fds');
 
-                $(this).on('click', function(event) {
-                    var geotable = $(this).data('geot');
-                    event.preventDefault();
-                    $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
-                        $(this).parents('label').find('input:checkbox').prop('checked', false);
-                    });
-                    subprefs.setMap(null);
-                    if ($checkbox.prop('checked')) {
-                        $checkbox.prop('checked', false);
-                    } else {
-                        subprefs.options.geotable = '"sp_'+geotable+'"';
-                        subprefs.options.fields = $(this).data('fds');
-                        subprefs.setMap(map);
-                    }
-                });
                 $checkbox.on('click', function(event){
-                    event.preventDefault();
-                    $(this).prop('checked', false);
-                    $(this).parents('label').find('.js-sp-geo').trigger('click');
+                    subprefs.setMap(null);
+
+                    if ($(this).prop('checked') === true) {
+                        $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
+                            $(this).parents('label').find('input:checkbox').prop('checked', false);
+                        });
+
+                        subprefs.options.geotable = '"sp_'+geotable+'"';
+                        subprefs.options.fields = fields;
+                        subprefs.setMap(map);
+                    } else {
+                        subprefs.setMap(null);
+                    }
                 });
             });
 
@@ -508,9 +505,27 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
             });
         });
 
-        $('#endereco').on('click dblclick mousedown', function(e){
+        $('.js-leaflet-control').on('click dblclick mousedown startdrag', function(e){
             e.stopPropagation();
         });
 
-}
+};
+
+// Fix Leaflet FUllScreen control that not allows keyboard inputs
+(function(){
+    window.fullScreenApi.requestFullScreen = function(el) {
+
+        //Change the element to use <html> tag
+        el = document.querySelector('html');
+
+        //Add permission to allow keyboard input
+        return (this.prefix === '') ?
+            el.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+        :
+            el[this.prefix + 'RequestFullScreen'](Element.ALLOW_KEYBOARD_INPUT);
+
+        //Scroll the window to the bottom
+        //didn't work window.scrollTo(0,document.body.scrollHeight);
+    };
+})();
 

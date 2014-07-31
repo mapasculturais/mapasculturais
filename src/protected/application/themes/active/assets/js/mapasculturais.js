@@ -5,6 +5,11 @@ $(function(){
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
     MapasCulturais.Modal.initButtons('.js-open-dialog');
+
+    MapasCulturais.EditBox.initBoxes('.js-editbox');
+    MapasCulturais.EditBox.initButtons('.js-open-editbox');
+
+
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
 
@@ -29,31 +34,7 @@ $(function(){
         });
     }
 
-
-    if($('body.controller-event.entity').length){
-        //Mostra o mapa dos espaços nos eventos
-        $('.toggle-mapa').click(function() {
-            var $map = $(this).closest('.regra').find('.mapa');
-            MapasCulturais.reenableScrollWheelZoom = false;
-            if($map.is(':visible')){
-                $map.slideUp('fast');
-                $(this).parent().find('.ver-mapa').show();
-                $(this).parent().find('.ocultar-mapa').hide();
-
-            }else{
-                $map.slideDown('fast', function(){
-                    $map.data('leaflet-map').invalidateSize();
-                    $map.data('leaflet-map').scrollWheelZoom.disable();
-                });
-                $(this).parent().find('.ver-mapa').hide();
-                $(this).parent().find('.ocultar-mapa').show();
-            }
-
-            return false;
-        });
-
-        return false;
-    }
+    MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 });
 
 MapasCulturais.auth = {
@@ -140,8 +121,13 @@ MapasCulturais.Modal = {
     $bg: null,
     initKeyboard: function (selector){
         $(document.body).keyup(function (e){
-            //if(e.keyCode == 27)
-            //    $(selector + ' .js-close').click();
+            if(e.keyCode == 27){
+                $(selector).each(function(){
+                   if($(this).is(':visible')) {
+                       $(this).find('.js-close').click();
+                   }
+                });
+            }
         });
     },
 
@@ -202,6 +188,8 @@ MapasCulturais.Modal = {
     close: function(selector){
         $('body').css('overflow','auto');
         var $dialog = $(selector);
+        //alert('closing');
+        $dialog.find('.editable').editable('hide');
         $dialog.css(MapasCulturais.Modal.cssFinal).animate(MapasCulturais.Modal.cssInit, MapasCulturais.Modal.time, function(){
             $dialog.hide();
         });
@@ -227,54 +215,148 @@ MapasCulturais.Modal = {
     }
 };
 
-MapasCulturais.MetaListUpdateDialog = function ($caller){
-    var $dialog = $($caller.data('dialog'));
-    var $form = $dialog.find('.js-metalist-form');
-    var group = $dialog.data('metalist-group');
 
-    var item = $caller.data('item') || {};
+MapasCulturais.EditBox = {
+    time: 'fast',
 
-    $form.data('metalist-action', $caller.data('metalist-action'));
-    $form.data('metalist-group', group);
+    setPosition: function($box, target){
+        if($box.hasClass('mc-left')){
+            $box.position({
+                my: 'right-10 center',
+                at: 'left center',
+                of: target
+            });
 
-    if($caller.data('metalist-action') == 'edit'){
-        $form.find('input.js-metalist-group').attr('name', '').val('');
-        $form.attr('action', MapasCulturais.baseURL + 'metalist/single/' + item.id);
-    }else{
-        $form.find('input.js-metalist-group').attr('name', 'group').val(group);
-        $form.attr('action', $dialog.data('action-url'));
-    }
+        }else if($box.hasClass('mc-right')){
+            $box.position({
+                my: 'left+10 center',
+                at: 'right center',
+                of: target
+            });
 
-    $form.data('response-target', $caller.data('response-target'));
+        }else if($box.hasClass('mc-top')){
+            $box.position({
+                my: 'center bottom-10',
+                at: 'center top',
+                of: target
+            });
 
-    // define os labels do form
-    $form.find('label.js-metalist-title span').html($dialog.data('metalist-title-label'));
-    $form.find('label.js-metalist-value span').html($dialog.data('metalist-value-label'));
-    $form.find('label.js-metalist-description span').html($dialog.data('metalist-description-label'));
+        }else if($box.hasClass('mc-bottom')){
+            $box.position({
+                my: 'center top+10',
+                at: 'center bottom',
+                of: target
+            });
+        }
+    },
 
-    // define os valores dos inputs do form
-    $form.find('input.js-metalist-title').val(item.title);
-    $form.find('input.js-metalist-value').val(item.value);
-    $form.find('textarea.js-metalist-description').val(item.description);
-
-
-
-    var responseTemplate = '';
-    //If Edit or insert:
-    if($caller.data('metalist-action') == 'edit'){
-        responseTemplate = $dialog.data('response-template');
-    }else{
-        $dialog.find('h2').html($caller.data('dialog-title'));
-        responseTemplate = $caller.data('response-template');
-    }
-
-    $form.find('script[type="js-response-template"]').text(responseTemplate);
-
-    //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
-    if(group == 'videos') {
-        $form.find('input.js-metalist-value').on('change', function(){
-            MapasCulturais.Video.getAndSetVideoData($(this).val(), $form.find('input.js-metalist-title'), MapasCulturais.Video.setTitle);
+    initKeyboard: function (selector){
+        $(document.body).keyup(function (e){
+            if(e.keyCode == 27){
+                $(selector).each(function(){
+                   if($(this).is(':visible')) {
+                       $(this).find('.js-close').click();
+                   }
+                });
+            }
         });
+    },
+
+    initBoxes: function(selector){
+
+        $(selector).each(function(){
+            var $dialog = $(this);
+
+            if($dialog.find('.js-dialog-disabled').length)
+                return;
+
+            if($dialog.data('dialog-init'))
+                return;
+
+            if($dialog.data('init'))
+                return;
+
+            $dialog.data('init', true);
+
+            /*$dialog.hide();  Moved to style.css */
+
+            $dialog.addClass('edit-box');
+
+            $dialog.data('dialog-init', 1);
+            if($dialog.attr('title')){
+                $dialog.prepend('<header><h1>' + $(this).attr('title') + '</h1></header>');
+            }
+            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
+            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
+
+            $dialog.append('<footer><button type="submit" class="mc-submit">' + submit_label + '</button> <button class="mc-cancel botao simples">' + cancel_label + '</button></footer><div class="mc-arrow"></div>');
+
+            // close button
+            $dialog.find('.mc-cancel').click(function (){
+                MapasCulturais.EditBox.close($dialog);
+                return false;
+            });
+
+            // submit form
+            $dialog.find('footer button.mc-submit').click(function(){
+                $dialog.find('form').submit();
+            });
+        });
+    },
+
+    initButtons: function(selector){
+        $(selector).each(function(){
+            var $button = $(this);
+            var dialog_selector = $(this).data('target');
+            var $dialog = $(dialog_selector);
+            if($dialog.find('.js-dialog-disabled').length)
+                $(this).addClass('inactive').addClass('hltip').attr('title', $dialog.find('.js-dialog-disabled').data('message'));
+
+        });
+        $(selector).click(function(){
+            var $button = $(this);
+            if($button.hasClass('inactive'))
+                return false;
+
+            var dialog_selector = $button.data('target');
+
+            MapasCulturais.EditBox.open(dialog_selector, $button);
+
+            if($button.data('dialog-title'))
+                $(dialog_selector).find('header h1').html($button.data('dialog-title'));
+
+            if( $button.data('dialog-callback') )
+                eval( $button.data('dialog-callback'))($button);
+
+            return false;
+        });
+    },
+
+    close: function(selector){
+        $('body').css('overflow','auto');
+        var $dialog = $(selector);
+        //alert('closing');
+        $dialog.find('.editable').editable('hide');
+        $dialog.hide();
+        return;
+    },
+
+    open: function(selector, $button){
+        var $dialog = $(selector);
+        $dialog.find('div.mensagem.erro').html('').hide();
+        
+        MapasCulturais.AjaxUploader.resetProgressBar(selector);
+
+        $dialog.show();
+        $dialog.find('input,textarea').not(':hidden').first().focus();
+        $dialog.css('opacity',0);
+        MapasCulturais.EditBox.setPosition($dialog, $button);
+        setTimeout(function(){
+            MapasCulturais.EditBox.setPosition($dialog, $button);
+            $dialog.css('opacity',1);
+        },25);
+
+        return;
     }
 };
 
@@ -388,7 +470,9 @@ MapasCulturais.Video = {
             });
         }else if(videoData.parsedURL.attr('host').indexOf('vimeo') != -1){
             videoData.provider = 'vimeo';
-            videoData.videoID = videoData.parsedURL.attr('path').split('/')[1];
+            console.log(videoData.parsedURL);
+            var tmpArray = videoData.parsedURL.attr('path').split('/');
+            videoData.videoID = tmpArray[tmpArray.length-1];
             $.getJSON('http://www.vimeo.com/api/v2/video/'+videoData.videoID+'.json?callback=?', {format: "json"}, function(data) {
                 videoData.details = data[0];
                 videoData.thumbnailURL = data[0].thumbnail_small;
@@ -429,14 +513,18 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
-
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
-
                 select2:{
+                    initSelection : function (element, callback) {
+                        callback({id: $selector.data('value'), name: $selector.data('value-name')});
+                    },
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 2,
                     allowClear: $selector.data('allow-clear'),
+                    initSelection: function(e,cb){
+                        cb({id: 4, name:'teste'});
+                    },
                     ajax: {
                         url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
                         dataType: 'json',
@@ -618,7 +706,13 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
+            onSave: function($selector){
+                var entity = $selector.data('entity');
+                $selector.data('value', entity.id);
+                $selector.data('value-name', entity.name);
+            },
             selection: function(entity, $selector){
+                $selector.data('entity', entity);
                 return entity.name;
             },
 

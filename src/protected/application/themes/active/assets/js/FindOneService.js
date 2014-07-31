@@ -6,7 +6,7 @@
         return function(data){
 
             if(data.global.viewMode === 'list') return;
-            var select = 'id,singleUrl,name,type,shortDescription,terms',
+            var select = 'id,singleUrl,name,type,shortDescription,terms,project.name,project.singleUrl',
                 requestAction = 'findOne',
                 page=null,
                 result = {},
@@ -27,19 +27,22 @@
                     events: {}
                 };
 
-                $rootScope.spinnerCount++;
-                numRequests++;
-            }
-            if(entity === 'event'){
-                select += ',endereco';
-                apiFindOne('space', select, sData, page, requestAction).success(function(rs){
-                    result[entity].space = rs;
+                if (data.global.enabled.event){
+                    $rootScope.spinnerCount++;
+                    numRequests++;
+
+                    select += ',endereco';
+                    apiFindOne('space', select, sData, page, requestAction).success(function(rs){
+                        result[entity].space = rs;
+                        endRequest();
+                    });
+                    apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
+                        result[entity].events = rs;
+                        endRequest();
+                    });;
+                }else{
                     endRequest();
-                });
-                apiSpaceEvents(data.global.openEntity.id, $rootScope.searchArgs.map.event).success(function(rs){
-                    result[entity].events = rs;
-                    endRequest();
-                });;
+                }
             }else{
                 apiFindOne(entity, select, sData, page, requestAction).success(function(rs){
                     result[entity] = rs;
@@ -57,8 +60,10 @@
 
             function apiFindOne(entity, select, searchData, page, action) {
                 action = action || 'find';
+                if(entity === 'space')
+                    select += ',endereco,acessibilidade';
                 searchData['@select'] = select;
-                searchData['@files'] = '(avatar.avatarBig):url';
+                searchData['@files'] = '(avatar.avatarSmall):url';
                 var querystring = "";
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
@@ -70,7 +75,7 @@
                 var action = 'findBySpace';
                 searchData['spaceId'] = spaceId;
                 searchData['@select'] = select + ',classificacaoEtaria';
-                searchData['@files'] = '(avatar.avatarBig):url';
+                searchData['@files'] = '(avatar.avatarSmall):url';
                 var querystring = "";
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];

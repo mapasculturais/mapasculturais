@@ -1,5 +1,8 @@
 //Inicia o mapa para a busca e configura o timeout do scroll
 jQuery(document).ready(function() {
+
+    if(!$('.js-map').length) return;
+
     MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
 
     var timeout;
@@ -10,16 +13,13 @@ jQuery(document).ready(function() {
             leaflet.map.scrollWheelZoom.enable();
         }, 400);
     });
-
-
-    
 });
 
 
 (function(angular) {
     var app = angular.module('ng-mapasculturais', []);
     app.config(["$httpProvider", function($httpProvider) {
-            
+
             $httpProvider.responseInterceptors.push(function($q, $rootScope) {
 
                 return function(promise) {

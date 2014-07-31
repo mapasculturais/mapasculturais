@@ -31,6 +31,59 @@ class Site extends \MapasCulturais\Controller {
     }
 
     function GET_page() {
-        $this->render('page');
+        $app = \MapasCulturais\App::i();
+        $view = $app->view;
+        
+        if(key_exists(0, $this->data))
+            $page_name = $this->data[0];
+        else
+            $app->pass();
+        
+        
+        
+        $filename = ACTIVE_THEME_PATH . 'pages/' . $page_name . '.md';
+        
+        if(file_exists($filename)){
+            $left = $view->renderMarkdown(file_get_contents(ACTIVE_THEME_PATH . 'pages/_left.md'));
+            $right = $view->renderMarkdown(file_get_contents(ACTIVE_THEME_PATH . 'pages/_right.md'));
+            
+            $content = '';
+            
+            $file_content = file_get_contents($filename);
+            
+            if(preg_match('#\<%left(:after|:before)?(.*)left%\>#s', $file_content, $matches_left)){
+                $page_left = $view->renderMarkdown($matches_left[2]);
+                
+                if($matches_left[1] == ':after')
+                    $left =  $left . $page_left;
+                elseif($matches_left[1] == ':before')
+                    $left =  $page_left . $left;
+                else
+                    $left = $page_left;
+                        
+                $file_content = str_replace($matches_left[0], '', $file_content);
+            }
+            
+            if(preg_match('#\<%right(:after|:before)?(.*)right%\>#s', $file_content, $matches_right)){
+                $page_right = $view->renderMarkdown($matches_right[2]);
+                
+                if($matches_right[1] == ':after')
+                    $right =  $right . $page_right;
+                elseif($matches_right[1] == ':before')
+                    $right =  $page_right . $right;
+                else
+                    $right = $page_right;
+                        
+                $file_content = str_replace($matches_right[0], '', $file_content);
+            }
+            
+            $content = $view->renderMarkdown($file_content);
+
+            $attrs = array('content' => $content, 'left' => $left, 'right' => $right);
+            
+            $this->render('page', $attrs);
+        }else{
+            $app->pass();
+        }
     }
 }

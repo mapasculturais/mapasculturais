@@ -47,8 +47,8 @@ $ids = array_map(function($e){
             <?php endif; ?>
         >
             <?php if(is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
@@ -63,8 +63,8 @@ $ids = array_map(function($e){
                         <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -117,8 +117,8 @@ $ids = array_map(function($e){
 
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
-        <li class="staging-hidden"><a href="#agenda">Agenda</a></li>
-        <li><a href="#inscricoes">Incrições</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li><a href="#inscricoes">Inscrições</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -139,7 +139,7 @@ $ids = array_map(function($e){
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <div class="descricao js-editable" data-edit="longDsecription" data-original-title="Descrição" data-emptytext="Insira uma descrição do espaço" data-placeholder="Insira uma descrição do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->longDescription; ?></div>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo $entity->longDescription; ?></span>
         <?php endif; ?>
 
 
@@ -153,12 +153,7 @@ $ids = array_map(function($e){
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php
-        $date_from = new DateTime();
-        $date_to = new DateTime('+180 days');
-        $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to);
-        $this->part('parts/agenda', array('events'=>$events, 'entity'=>$entity));
-        ?>
+        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
@@ -171,9 +166,9 @@ $ids = array_map(function($e){
             <?php endif; ?>
             <p>
                 <?php if(is_editable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if(is_editable() || $entity->registrationFrom): ?>de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></span><?php endif; ?>
+                <?php if(is_editable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
                 <?php if(is_editable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
-                <?php if(is_editable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></span><?php endif; ?>
+                <?php if(is_editable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
             </p>
         <?php endif; ?>
 
@@ -184,25 +179,32 @@ $ids = array_map(function($e){
         </div>
         <?php endif; ?>
 
-        <p class="js-ficha-inscricao">
+        <div>
             <?php if (is_editable()): ?>
                 <p>
-                <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
-                Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.<br/><br/>
-                Selecione um arquivo e clique em "Enviar".
+                    <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
+                    Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.
                 </p>
             <?php endif; ?>
-            <?php if($registrationForm): ?>
-                <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a>
-                <?php if(is_editable()): ?>
-                    <a class='icone icon_close hltip js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title='Remover a ficha de inscrição'></a>
+            <p class="js-ficha-inscricao">
+                <?php if($registrationForm): ?>
+                    <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a>
+                    <?php if(is_editable()): ?>
+                        <a class='botao excluir simples js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-remove-callback="$('#upload-registration-button').removeClass('oculto');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>
+                    <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
-        </p>
-
+            </p>
+        </div>
+        
         <?php if($this->controller->action == 'edit'): ?>
-
-                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Rmover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>'); ?>
+            <p id="upload-registration-button" <?php if($registrationForm): ?>class="oculto"<?php endif; ?>>
+                <a class="botao adicionar simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
+            </p>
+            <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição" data-success-callback="$('#upload-registration-button').addClass('oculto');">
+                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao',''
+                        . '<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a> '
+                        . '<a class="botao excluir simples js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-remove-callback="$(\'#upload-registration-button\').removeClass(\'oculto\');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>','',false,'.doc, .xls, .pdf'); ?>
+            </div>
         <?php endif; ?>
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !is_editable()): ?>
             <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
@@ -270,7 +272,7 @@ $ids = array_map(function($e){
     <!-- Related Agents END -->
     <div class="bloco">
         <?php if($entity->children): ?>
-        <h3 class="subtitulo">Sub-espaços</h3>
+        <h3 class="subtitulo">Sub-projetos</h3>
         <ul class="js-slimScroll">
             <?php foreach($entity->children as $space): ?>
             <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
@@ -282,15 +284,6 @@ $ids = array_map(function($e){
         <a class="botao adicionar staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
         <?php endif; ?>
     </div>
-    <div class="bloco staging-hidden">
-        <h3 class="subtitulo ">Projetos do espaço</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-        <a class="botao adicionar staging-hidden" href="#">adicionar projeto (só link)</a>
-        </div>
     <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
