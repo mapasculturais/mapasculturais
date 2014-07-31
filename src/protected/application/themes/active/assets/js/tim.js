@@ -234,18 +234,54 @@ var hl;
         });
 
         //Botão de busca da home
-        $('#filtro-da-capa .submenu-dropdown li').click(function() {
-            var url_template = $(this).data('searh-url-template') ?
-                    $(this).data('searh-url-template') : $("#filtro-da-capa").data('searh-url-template');
+        if($('#form-de-busca-geral').length){
+            $('#campo-de-busca').focus();
+            $('#filtro-da-capa .submenu-dropdown li').click(function() {
+                var url_template = $(this).data('searh-url-template') ?
+                        $(this).data('searh-url-template') : $("#filtro-da-capa").data('searh-url-template');
 
-            var params = {
-                entity: $(this).data('entity'),
-                keyword: $('#campo-de-busca').val()
-            };
+                var params = {
+                    entity: $(this).data('entity'),
+                    keyword: $('#campo-de-busca').val()
+                };
 
-            document.location = Mustache.render(url_template, params);
-        });
+                document.location = Mustache.render(url_template, params);
+            }).on('keydown', function(event){
+                if(event.keyCode === 13 || event.keyCode === 32){
+                    event.preventDefault();
+                    $(this).click();
+                }else if(event.keyCode === 27){
+                    $(this).attr('css', '');
+                    $(this).blur();
+                    $('#campo-de-busca').focus();
+                    return false;
+                }
 
+            });
+
+            $('#form-de-busca-geral').on('submit', function(){
+                $('.submenu-dropdown').css({display:'block',opacity:1}); return false;
+            });
+            $('#form-de-busca-geral #campo-de-busca').on('blur', function(){
+                $('.submenu-dropdown').attr('style','');
+            });
+            $('#form-de-busca-geral #campo-de-busca').on('keydown', function(event){
+                if(event.keyCode === 9){
+                    $('.submenu-dropdown').css({display:'block',opacity:1});
+                }
+            });
+            var tabindex = 1;
+            $('.submenu-dropdown li').each(function(){
+                tabindex++;
+                $(this).attr('tabindex', tabindex);
+                $(this).on('focus', function(){
+                    $('.submenu-dropdown').css({display:'block',opacity:1});
+                });
+                $(this).on('blur', function(){
+                    $('.submenu-dropdown').attr('style','');
+                });
+            });
+        }
         //Scroll da Home ////////////////////////////////////////////////////
 
         $('#capa-intro div.ver-mais a').click(function() {
