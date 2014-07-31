@@ -249,6 +249,12 @@ $app->hook('mapasculturais.scripts', function() use($app){
                             <hr ng-if="$index>0" style="margin:2px 0">
                             <time>{{event.readableOccurrences[$index].trim()}}</time><span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>
                         </div>
+                        <div class="ocorrencias">
+                            <p class="title">Este evento ocorre em:</p>
+                            <p><span class="label">Centro Cultural da Juventude</span> Av. Deputado Emílio Carlos, 3.641, Vila Nova Cachoeirinha. Dia 27 de agosto de 2014 às 15:00. Grátis (não é necessário retirar ingresso)</p>
+                            <p><span class="label">Galeria Olido</span> Av. São João, 473. São Paulo. 20 de Agosto às 17:00</p>
+                        </div>
+                     </div>
                     </div>
                 </div>
             </article>
