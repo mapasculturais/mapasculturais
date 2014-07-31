@@ -112,13 +112,6 @@ MapasCulturais.confirm = function (message, cb){
 
 MapasCulturais.Modal = {
     time: 'fast',
-    cssInit: {position:'fixed', left:0, top:0, width: $(window).width(),  opacity:0 },
-    cssFinal: {left: $(window).width()/4, top:$(window).height()/4, width: $(window).width()/2, height: $(window).height()/2, opacity:1},
-
-    cssBg: {position:'fixed', background:'white', top:0, left:0, width:'100%', zIndex:999},
-    cssBgOpacity: .95,
-
-    $bg: null,
     initKeyboard: function (selector){
         $(document.body).keyup(function (e){
             if(e.keyCode == 27){
@@ -132,15 +125,8 @@ MapasCulturais.Modal = {
     },
 
     initDialogs: function(selector){
-        if(!MapasCulturais.Modal.$bg){
-            MapasCulturais.Modal.$bg = $('<div></div>');
-            MapasCulturais.Modal.$bg.css(this.cssBg);
-            MapasCulturais.Modal.$bg.click(function(){
-                MapasCulturais.Modal.close(selector);
-            });
-            $('body').append(MapasCulturais.Modal.$bg.hide());
-        }
         $(selector).each(function(){
+            $('body').append($(this));
             if($(this).find('.js-dialog-disabled').length)
                 return;
 
@@ -190,27 +176,28 @@ MapasCulturais.Modal = {
         var $dialog = $(selector);
         //alert('closing');
         $dialog.find('.editable').editable('hide');
-        $dialog.css(MapasCulturais.Modal.cssFinal).animate(MapasCulturais.Modal.cssInit, MapasCulturais.Modal.time, function(){
-            $dialog.hide();
-        });
-        MapasCulturais.Modal.$bg.animate({opacity:0}, MapasCulturais.Modal.time, function(){
-            $(this).hide();
-        });
+        $dialog.hide();
         return;
     },
 
     open: function(selector){
-        $('body').css('overflow','hidden');
         var $dialog = $(selector);
-        this.$bg.css({opacity:0, height:$('body').height()}).show().animate({opacity:this.cssBgOpacity},this.time);
-
+        
         $dialog.find('div.mensagem.erro').html('').hide();
         $dialog.find('.js-ajax-upload-progress').hide();
-//        if($dialog.find('form').length)
-//            $dialog.find('form').get(0).reset();
-        $dialog.css(this.cssInit).show().animate(this.cssFinal, MapasCulturais.Modal.time, function(){
-            $dialog.find('input,textarea').not(':hidden').first().focus();
-        });
+        $dialog.css('opacity',0).show();
+        setTimeout(function(){
+           var top = $dialog.height() + 100 > $(window).height() ? $(window).scrollTop() + 100 : $(window).scrollTop() + ( $(window).height() - $dialog.height()) / 2 - 50;
+        
+           $dialog.css({
+                top: top,
+                left: '50%',
+                marginLeft: -$dialog.width() / 2,
+                opacity: 1
+            }); 
+        },25);
+        
+        
         return;
     }
 };

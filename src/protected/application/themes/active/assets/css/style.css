@@ -865,8 +865,8 @@ vertical-align: bottom; width: auto; }
 
 /* =Modal
 -------------------------------------------------------------- */
-.js-dialog { display: none; margin-top: 15px; padding: 1.5rem; z-index:1000; background: #fff; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
-.js-dialog-content { overflow: auto; height: 80% /*calcular via js e remover essa regra*/; padding-right: 1rem; }
+.js-dialog { position: absolute; display: none; margin-top: 15px; padding: 1.5rem; z-index:1000; background: #fff; border-top: 4px solid #f90; border-radius: 2px; box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3); }
+.js-dialog-content {  padding-right: 1rem; }
 .js-dialog h2 { margin-right: 3rem; margin-bottom: .5rem; font-size: 1.5rem; }
 .js-dialog h3 { font-size: 1rem; line-height: 1.5rem; }
 .js-dialog h4 { font-size: .875rem; line-height: 1.5rem; }
