@@ -765,9 +765,20 @@ abstract class EntityController extends \MapasCulturais\Controller{
                         if(is_object($prop_value) && $prop_value instanceof \Doctrine\Common\Collections\Collection)
                             $prop_value = $prop_value->toArray();
 
-                        $entity[$prop] = $prop_value;
-                    }  catch (\Exception $e){
-                    }
+                        if(strpos($prop, '.')){
+                            $props = explode('.',$prop);
+                            $carray =& $entity;
+                            for($i = 0; $i < count($props) -1; $i++){
+                                $p = $props[$i];
+                                if(!isset($carray[$p]))
+                                    $carray[$p] = array();
+                                $carray =& $carray[$p];
+                            }
+                            $carray[array_pop($props)] = $prop_value;
+                        }else{
+                            $entity[$prop] = $prop_value;
+                        }                        
+                    }  catch (\Exception $e){ }
                 }
                 return $entity;
             };
