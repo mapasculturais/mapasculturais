@@ -179,29 +179,31 @@ $ids = array_map(function($e){
         </div>
         <?php endif; ?>
 
-        <div class="js-ficha-inscricao">
+        <div>
             <?php if (is_editable()): ?>
                 <p>
                     <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
                     Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.
                 </p>
             <?php endif; ?>
-            <?php if($registrationForm): ?>
-                <p>
-                    <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a>
+            <p class="js-ficha-inscricao">
+                <?php if($registrationForm): ?>
+                    <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a>
                     <?php if(is_editable()): ?>
-                        <a class='botao excluir simples js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>
+                        <a class='botao excluir simples js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-remove-callback="$('#upload-registration-button').removeClass('oculto');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>
                     <?php endif; ?>
-                </p>
-            <?php endif; ?>
+                <?php endif; ?>
+            </p>
         </div>
         
         <?php if($this->controller->action == 'edit'): ?>
-            <p>
+            <p id="upload-registration-button" <?php if($registrationForm): ?>class="oculto"<?php endif; ?>>
                 <a class="botao adicionar simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
             </p>
-            <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição">
-                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao','<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a Ficha de Inscrição</a><a class="icone icon_close hltip js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-confirm-message="Remover a ficha de inscrição?" title="Remover a ficha de inscrição"></a>','',false,'.doc, .xls, .pdf'); ?>
+            <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição" data-success-callback="$('#upload-registration-button').addClass('oculto');">
+                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao',''
+                        . '<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a> '
+                        . '<a class="botao excluir simples js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-remove-callback="$(\'#upload-registration-button\').removeClass(\'oculto\');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>','',false,'.doc, .xls, .pdf'); ?>
             </div>
         <?php endif; ?>
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !is_editable()): ?>

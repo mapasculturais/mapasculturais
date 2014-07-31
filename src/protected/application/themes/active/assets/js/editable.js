@@ -101,6 +101,7 @@ MapasCulturais.Remove = {
                 var href = $this.data('href');
 
                 $.getJSON(href,function(r){
+                    console.log(r);
                     if(r.error){
                         MapasCulturais.Messages.error(r.data);
                     }else{
@@ -108,7 +109,10 @@ MapasCulturais.Remove = {
                         if($this.data('remove-callback'))
                             cb = $this.data('remove-callback');
                         $target.remove();
-                        cb();
+                        if(typeof cb === 'string')
+                            eval(cb);
+                        else
+                            cb();
                     }
                 });
             });
@@ -452,7 +456,9 @@ MapasCulturais.AjaxUploader = {
                 }
 
                 $form.get(0).reset();
-
+                if($form.parents('.js-editbox').data('success-callback'))
+                    eval($form.parents('.js-editbox').data('success-callback'));
+                
                 $form.parents('.js-editbox').find('.mc-cancel').click();
             },
 
