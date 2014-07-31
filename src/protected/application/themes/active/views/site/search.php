@@ -111,8 +111,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
                 <a href="{{openEntity.event.space.singleUrl}}">
-                    <img class="objeto-thumb" ng-src="{{openEntity.event.space['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--space')}}">
-                    {{openEntity.event.space.name}}
+                    <span class="icone icon_building"></span>{{openEntity.event.space.name}}
                 </a><br>
                 {{openEntity.event.space.endereco}}
             </p>
