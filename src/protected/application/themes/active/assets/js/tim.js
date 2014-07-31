@@ -1,6 +1,9 @@
 var hl;
 (function($) {
     $(document).ready(function() {
+        if(MapasCulturais.mode !== 'development')
+            $('.staging-hidden').remove();
+        
         // posição do header
         var lastScrollTop = 0;
 
