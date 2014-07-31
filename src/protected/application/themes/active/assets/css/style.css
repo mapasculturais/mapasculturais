@@ -953,3 +953,27 @@ ul.abas { display: none; }
 }
 
 
+
+/* =IE fixes
+-------------------------------------------------------------- */
+
+.ie11 .dropdown .placeholder {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ie11 .dropdown .placeholder:after {
+    margin-top: 1.25rem;
+}
+
+.ie11 #filtro-da-capa .placeholder {
+    width: 124px;
+}
+
+.ie11 .botao.editar:before {
+    margin-top: 1rem;
+}
+
+.ie11 .abas-objetos li.active:after {
+    margin-top: 1px;
+}
