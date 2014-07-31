@@ -93,7 +93,7 @@ class EventTest extends MapasCulturais_TestCase{
         $space = $this->createSpace();
 
         $occurrence = new EventOccurrence;
-        $occurrence->rule = '';
+        $occurrence->rule = $this->getEventRule();
         $occurrence->event = $event;
         $occurrence->space = $space;
 
@@ -126,7 +126,7 @@ class EventTest extends MapasCulturais_TestCase{
         $space = $this->createSpace();
 
         $occurrence = new EventOccurrence;
-        $occurrence->rule = '';
+        $occurrence->rule = $this->getEventRule();
         $occurrence->event = $event;
         $occurrence->space = $space;
 
@@ -168,7 +168,7 @@ class EventTest extends MapasCulturais_TestCase{
         $space = $this->createSpace();
 
         $occurrence = new EventOccurrence;
-        $occurrence->rule = '';
+        $occurrence->rule = $this->getEventRule();
         $occurrence->event = $event;
         $occurrence->space = $space;
 
@@ -221,12 +221,11 @@ class EventTest extends MapasCulturais_TestCase{
         $space = $this->createSpace();
 
         $occurrence = new EventOccurrence;
-        $occurrence->rule = '';
+        $rule = '';
         $occurrence->event = $event;
         $occurrence->space = $space;
 
-        $rule = '{"spaceId":"31","startsAt":"12:31","duration":"00h01","frequency":"weekly","startsOn":"2014-02-10","until":"2014-02-19","day":{"1":"on","3":"on"},"monthly":"week"}';
-        $occurrence->rule = json_decode($rule);
+        $occurrence->rule = $this->getEventRule();
 
         $this->assertEmpty($occurrence->validationErrors, print_r($occurrence->validationErrors, true));
         $occurrence->save(true);
@@ -236,4 +235,8 @@ class EventTest extends MapasCulturais_TestCase{
         $this->assertEquals(2, count($occurrence->recurrences));
     }
 
+    function getEventRule(){
+        $rule = '{"spaceId":"31","startsAt":"12:31","duration":"00h01","frequency":"weekly","startsOn":"2014-02-10","until":"2014-02-19","day":{"1":"on","3":"on"},"monthly":"week","description":"test description"}';
+        return json_decode($rule);
+    }
 }

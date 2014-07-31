@@ -529,17 +529,20 @@ abstract class Entity implements \JsonSerializable{
         $errors = $this->_validationErrors;
         $class = get_called_class();
         foreach($class::$validations as $property => $validations){
+            
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
 
+           
             foreach($validations as $validation => $error_message){
                 $validation = trim($validation);
 
                 $ok = true;
-
+                
+             
                 if($validation == 'required'){
                     $ok = (bool) $this->$property;
-
+                    
                 }elseif($validation == 'unique'){
                     $ok = $this->validateUniquePropertyValue($property);
 
@@ -555,6 +558,7 @@ abstract class Entity implements \JsonSerializable{
                         $errors[$property] = array();
 
                     $errors[$property][] = App::txt($error_message);
+                    
                 }
             }
         }

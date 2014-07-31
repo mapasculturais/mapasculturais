@@ -149,6 +149,13 @@ class File extends \MapasCulturais\Entity
         return $this->owner->canUser('modify');
     }
 
+    public function save($flush = false) {
+        if(preg_match('#.php$#', $this->mimeType))
+            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            
+        parent::save($flush);
+    }
+
     public function jsonSerialize() {
 
         return array(

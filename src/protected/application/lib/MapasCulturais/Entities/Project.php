@@ -204,7 +204,6 @@ class Project extends \MapasCulturais\Entity
         $relation_class = $this->getAgentRelationEntityClassName();
         
         $dql = "SELECT e FROM $relation_class e WHERE e.group = :g AND e.owner = :o AND e.agent = :a";
-        $app->log->info("DQL::::::::::::::::::::::::::::::::::::::: $dql");
         $q = $app->em->createQuery($dql);
         $q->setParameters(array(
             'a' => $agent,
@@ -215,10 +214,7 @@ class Project extends \MapasCulturais\Entity
         $q->setMaxResults(1);
         
         $result = $q->getOneOrNullResult();
-        $c = get_class($result);
-        $app->log->info("))))))))))))))))))))))))) $c (((((((((((((((((((((((((");
         return $result;
-        // return $app->repo($relation_class)->findOneBy(array('group' => $group, 'owner' => $this, 'agent' => $agent));
     }
 
     function isRegistered(Agent $agent){
@@ -236,7 +232,7 @@ class Project extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, 'project.register:before', array($agent, $registrationForm));
 
         if(!$this->isRegistrationOpen())
-            return $app->txt("The registration is not open.");
+            throw new \MapasCulturais\Exceptions\PermissionDenied(App::i()->user, $this, 'register');
 
         $group = $app->projectRegistrationAgentRelationGroupName;
 

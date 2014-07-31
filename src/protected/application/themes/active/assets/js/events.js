@@ -19,6 +19,9 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     $dialog.find('.js-dialog-content').html(Mustache.render(template, item));
 
     MapasCulturais.EventOccurrenceManager.init($dialog.find('form'));
+    MapasCulturais.EventHumanReadableManager.init($dialog.find('form'));
+    
+    
     $dialog.find('form').data('action', $caller.data('form-action'));
 
     MapasCulturais.Search.init('.js-search-occurrence-space');
@@ -88,7 +91,7 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
-                console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
+                //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 
@@ -108,7 +111,15 @@ MapasCulturais.EventOccurrenceManager = {
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }
             },
-            dataType:  'json'
+            dataType:  'json',
+            beforeSubmit: function(arr, $form, options) {
+                
+                if ($form.find('input[name="description"]').data('synced') != 1)
+                    return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
+                
+                return true;
+                
+            }
         });
 
         $(selector).find('.js-select-frequency').change(function(){
@@ -157,5 +168,118 @@ MapasCulturais.EventDates = {
                 altField: altFieldSelector
             });
         });
+    }
+};
+
+MapasCulturais.EventHumanReadableManager = {
+    
+    init : function(selector) {
+        
+        var $form = $(selector);
+        
+        // Add onChange events to the fields
+        $(selector).find('input[type="checkbox"], select[name="frequency"], #horario-de-inicio, .js-start-date, .js-end-date').change(function() {
+            MapasCulturais.EventHumanReadableManager.updateSuggestion($form);
+        });
+        
+        // If there are values, run it at init
+        var date_s = $(selector).find('.js-start-date').val();
+        var hour = $(selector).find('#horario-de-inicio').val();
+        if (date_s && hour)
+            MapasCulturais.EventHumanReadableManager.updateSuggestion($form);
+        
+        $(selector).find('.grupo-descricao-automatica > a').click(function() {
+            $(selector).find('input[name="description"]').val( $(selector).find('#descricao-automatica').html() ).data('synced', 1);
+        });
+        
+        //On init, we assume we are allways synced, even if the values are different, because the could have been manually edited
+        $(selector).find('input[name="description"]').data('synced', 1);
+    },
+    updateSuggestion: function(selector) {
+        var human = MapasCulturais.EventHumanReadableManager.getSuggestion(selector);
+        $(selector).find('#descricao-automatica').html(human);
+        if (human == $(selector).find('input[name="description"]').val())
+            $(selector).find('input[name="description"]').data('synced', 1);
+        else
+            $(selector).find('input[name="description"]').data('synced', 0);
+    },
+    getSuggestion: function(selector) {
+        
+        var human = '';
+        
+        var date_s = $(selector).find('.js-start-date').val();
+        var hour = $(selector).find('#horario-de-inicio').val();
+        var frequency = $(selector).find('select[name="frequency"]').val();
+        var date_e = $(selector).find('.js-end-date').val();
+        var weekDays = [];
+        $(selector).find('input[type="checkbox"]:checked').each(function() { if ($(this).is(':checked')) weekDays.push($(this).attr('name').replace(/[^\d]/g, '')) });
+        
+        //console.log( date_s);
+        //console.log( hour);
+        //console.log( frequency);
+        //console.log( date_e);
+        //console.log( weekDays);
+        
+        var mdate_s = false;
+        var mdate_e = false;
+        
+        if (date_s) mdate_s = moment(date_s, 'DD/MM/YYYY');
+        if (date_e) mdate_e = moment(date_e, 'DD/MM/YYYY');
+        
+        if (frequency == 'once') {
+            if (!mdate_s) return '...';
+            human += 'Dia ' + mdate_s.format('D [de] MMMM [de] YYYY');
+        } else {
+            
+            if (!mdate_s || !mdate_e) return '...';
+            
+            if (frequency == 'daily') {
+                human += 'Diariamente';
+            } else if (frequency == 'weekly') {
+                
+                
+                if (weekDays.length > 0) {
+                    
+                    if (weekDays[0] == '0' || weekDays[0] == '6') {
+                        human += 'Todo ';
+                    } else {
+                        human += 'Toda ';
+                    }
+                    
+                    var count = 1;
+                    $.each(weekDays, function(i, v) {
+                        var wformat = weekDays.length > 1 ? 'ddd' : 'dddd';
+                        human += moment().day(v).format(wformat);
+                        count ++;
+                        if (count == weekDays.length)
+                            human += ' e ';
+                        else if (count < weekDays.length)
+                            human += ', '
+                    });
+                }
+            }
+            
+            if (mdate_s.year() != mdate_e.year()) {
+                human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+            } else {
+                if (mdate_s.month() != mdate_e.month()) {
+                    human += ' de ' + mdate_s.format('D [de] MMMM') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                } else {
+                    human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                }
+            }
+            
+            
+        }
+        
+        if (hour) {
+            if (hour.substring(0,2) == '01')
+                human += ' à ' + hour;
+            else
+                human += ' às ' + hour;
+        }
+        
+        return human;
+    
     }
 };

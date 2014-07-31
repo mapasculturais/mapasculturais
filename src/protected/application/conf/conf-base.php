@@ -3,7 +3,8 @@ date_default_timezone_set('America/Sao_Paulo');
 
 // creating base url
 $prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
-$host_part = $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+//added @ for HTTP_HOST undefined in Tests
+$host_part = @$_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 if(substr($host_part,-1) !== '/') $host_part .= '/';
 $base_url = $prot_part . $host_part;
 
@@ -29,7 +30,7 @@ return array(
 
     'slim.log.level' => \Slim\Log::NOTICE,
     'slim.log.enabled' => true,
-    
+
     'app.log.path' => realpath(BASE_PATH . '..') . '/logs/',
 
     'app.queryLogger' => new MapasCulturais\Loggers\DoctrineSQL\SlimLog(),
@@ -39,6 +40,7 @@ return array(
     'app.log.requestData' => false,
     'app.log.translations' => false,
     'app.log.apiCache' => false,
+    'app.log.apiDql' => false,
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
@@ -91,7 +93,7 @@ return array(
     // */
 
     'plugins.enabled' => array(
-        
+
     ),
 
     //
@@ -112,7 +114,7 @@ return array(
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
-            'como-usar'     => array('site',    'page', array('como-usar'))
+            'como-usar' => array('site',    'page', array('como-usar'))
         ),
         'controllers' => array(
             'painel'         => 'panel',

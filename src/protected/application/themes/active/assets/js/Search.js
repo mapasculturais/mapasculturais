@@ -2,7 +2,7 @@
     "use strict";
 
     window.apply = null;
-    
+
     var timeoutTime = 300;
 
     var defaultLocationRadius = 2000;
@@ -256,6 +256,23 @@
 
         $scope.dataChange = function(newValue, oldValue){
             if(newValue === undefined) return;
+            if(newValue.global.viewMode === 'map'){
+                var filterEntity = newValue.global.filterEntity;
+                if(!newValue.global.enabled[filterEntity]){
+                    var enabledEntities = 0;
+                    
+                    angular.forEach(newValue.global.enabled, function(v,k){ if(v) enabledEntities++; });
+                    
+                    if(enabledEntities === 1){
+                        var obj = {space:false, agent:false, event:false};
+                        obj[filterEntity] = true;
+                        newValue.global.enabled = obj; 
+                    }else{
+                        newValue.global.enabled[filterEntity] = true;
+                    }
+                    return;
+                }
+            }
             var serialized = $rison.stringify(diffFilter(newValue));
             $window.$timout = $timeout;
             if($location.hash() !== serialized){
@@ -306,7 +323,7 @@
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
                 return;
-            
+
             $rootScope.isPaginating = false;
 
             if(results.paginating){
@@ -333,10 +350,10 @@
 
             if($rootScope.isPaginating)
                 return;
-            
+
             if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
-                return; 
-            
+                return;
+
             $rootScope.pagination[entity]++;
             // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
             if($rootScope.pagination[entity] > 2)
@@ -363,7 +380,7 @@
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            console.log($scope.data.global.viewMode);
+            
             if($scope.data.global.viewMode === 'list'){
                 $scope.numEventsInList = results.event;
             }else{
@@ -409,7 +426,7 @@
             var from = $scope.data.event.from,
                 to = $scope.data.event.to;
 
-            return from && to && (formatDate(from) !== formatDate() || from !== to );
+            return from !== skeletonData.event.from && to !== skeletonData.event.to;
         };
 
         $scope.eventDateFilter = function(){
@@ -423,8 +440,8 @@
         };
 
         $scope.cleanEventDateFilters = function(){
-            $scope.data.event.from = null;
-            $scope.data.event.to = null;
+            $scope.data.event.from = skeletonData.event.from;
+            $scope.data.event.to = skeletonData.event.to;
         }
 
         $scope.readableProjectRegistrationDates = function(project){

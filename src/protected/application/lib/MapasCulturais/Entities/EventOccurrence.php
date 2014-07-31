@@ -48,7 +48,10 @@ class EventOccurrence extends \MapasCulturais\Entity
          ),
         'space' => array(
             'required' => 'Espaço é obrigatório'
-         )
+         ),
+        'description' => array(
+            'required' => 'A descrição legível do horário é obrigatória'
+        )
 
     );
 
@@ -208,7 +211,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Event
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade="persist")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      * })
@@ -246,6 +249,15 @@ class EventOccurrence extends \MapasCulturais\Entity
         } else {
             return array();
         }
+    }
+
+    function getDescription(){
+        return $this->rule->description;
+    }
+
+
+    function getPrice(){
+        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
     }
 
     /**
@@ -380,24 +392,24 @@ class EventOccurrence extends \MapasCulturais\Entity
             'deleteUrl' => $this->deleteUrl,
         );
     }
-    
+
     protected function canUserCreate($user){
         if($user->is('guest'))
             return false;
-        
+
         if($user->is('admin'))
             return true;
-        
+
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
-    
+
     protected function canUserModify($user){
         if($user->is('guest'))
             return false;
-        
+
         if($user->is('admin'))
             return true;
-        
+
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
 

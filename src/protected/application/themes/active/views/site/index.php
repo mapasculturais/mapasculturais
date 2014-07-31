@@ -115,7 +115,6 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
                 </div>
             </div>
         </form>
-        <p>Você também pode participar colaborando com suas próprias informações, preenchendo seu perfil de agente (artistas ou gestores) e assim obter vantagens como, por exemplo, se candidatar facilmente em editais da prefeitura, além de poder disponibilizar seus eventos na agenda, divulgar seu espaço ou projeto. Para isso, é necessário ter uma conta no SPCultura, clicando no botão abaixo.</p>
         <p class="textcenter"><a class="botao-grande" href="<?php echo $app->createUrl('panel') ?>">Colabore com o SP Cultura</a></p>
     </div>
     <div class="ver-mais"><a class="hltip icone arrow_carrot-down" href="#capa-eventos" title="Saiba mais"></a></div>
