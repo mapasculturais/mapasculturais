@@ -260,13 +260,13 @@
                 var filterEntity = newValue.global.filterEntity;
                 if(!newValue.global.enabled[filterEntity]){
                     var enabledEntities = 0;
-                    
+
                     angular.forEach(newValue.global.enabled, function(v,k){ if(v) enabledEntities++; });
-                    
+
                     if(enabledEntities === 1){
                         var obj = {space:false, agent:false, event:false};
                         obj[filterEntity] = true;
-                        newValue.global.enabled = obj; 
+                        newValue.global.enabled = obj;
                     }else{
                         newValue.global.enabled[filterEntity] = true;
                     }
@@ -380,7 +380,7 @@
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
             $scope.numSpaces = parseInt(results.space);
-            
+
             if($scope.data.global.viewMode === 'list'){
                 $scope.numEventsInList = results.event;
             }else{
@@ -426,7 +426,7 @@
             var from = $scope.data.event.from,
                 to = $scope.data.event.to;
 
-            return from !== skeletonData.event.from && to !== skeletonData.event.to;
+            return from !== skeletonData.event.from || to !== skeletonData.event.to;
         };
 
         $scope.eventDateFilter = function(){
