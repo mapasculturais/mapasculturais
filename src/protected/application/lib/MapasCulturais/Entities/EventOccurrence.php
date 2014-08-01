@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event_occurrence")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventOccurrence extends \MapasCulturais\Entity

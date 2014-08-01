@@ -14,7 +14,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\CachedRepository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Agent")
  * @ORM\HasLifecycleCallbacks
  */
 class Agent extends \MapasCulturais\Entity

@@ -10,6 +10,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventMeta extends \MapasCulturais\Entity

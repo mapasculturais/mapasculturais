@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="space_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class SpaceMeta extends \MapasCulturais\Entity

@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Project")
  * @ORM\HasLifecycleCallbacks
  */
 class Project extends \MapasCulturais\Entity

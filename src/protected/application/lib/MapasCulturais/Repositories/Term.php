@@ -1,11 +1,9 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
 
-
-use Doctrine\ORM\EntityRepository;
-use MapasCulturais\Entities\Term as Entity;
-
-class Term extends EntityRepository{
+class Term extends \MapasCulturais\Repository{
+    use \MapasCulturais\Traits\RepositoryCache;
+    
     /**
      * Returns an array with all terms of the given taxonomy slug as strings.
      *

@@ -10,6 +10,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="project_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class ProjectMeta extends \MapasCulturais\Entity

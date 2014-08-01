@@ -1,10 +1,10 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
 
-use MapasCulturais\Entities\User as Entity;
-use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities;
 
-class User extends CachedRepository{
+class User extends \MapasCulturais\Repository{
+    use \MapasCulturais\Traits\RepositoryCache;
 
     protected $_isCreating = false;
 
@@ -26,16 +26,16 @@ class User extends CachedRepository{
     public function createByAuthResponse($response){
         $this->_isCreating = true;
         $app = \MapasCulturais\App::i();
-
+        
          // cria o usuário
-        $user = new Entity;
+        $user = new Entities\User;
         $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
         $user->email = $response['auth']['info']['email'];
         $this->_em->persist($user);
 
         // cria um agente do tipo user profile para o usuário criado acima
-        $agent = new Agent($user);
+        $agent = new Entities\Agent($user);
         $agent->isUserProfile = true;
         if(isset($response['auth']['info']['name']))
             $agent->name = $response['auth']['info']['name'];
