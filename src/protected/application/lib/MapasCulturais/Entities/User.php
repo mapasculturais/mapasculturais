@@ -16,7 +16,7 @@ use MapasCulturais\App;
  * 
  * @ORM\Table(name="usr")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\User")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\User")
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity

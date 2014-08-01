@@ -347,3 +347,40 @@ $app->hook('entity(event).load', function() {
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
 });
+
+
+$app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
+    $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
+        
+    $class = $this->getClassName();
+    
+    $joins .= "LEFT JOIN 
+                MapasCulturais\Entities\TermRelation 
+                    tr 
+                WITH 
+                    tr.objectType = '$class' AND 
+                    tr.objectId = e.id
+                    LEFT JOIN 
+                        tr.term 
+                            t 
+                        WITH 
+                            t.taxonomy = '{$taxonomy->id}'";
+});
+
+$app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where){
+    $where .= " OR lower(t.term) LIKE lower(:keyword) ";
+});
+
+$app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
+    $joins .= " LEFT JOIN e.project p
+                LEFT JOIN MapasCulturais\Entities\EventMeta m
+                    WITH
+                        m.key = 'subTitle' AND
+                        m.owner = e
+                ";
+});
+
+$app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
+    $where .= " OR lower(p.name) LIKE lower(:keyword) 
+                OR lower(m.value) LIKE lower(:keyword)";
+});

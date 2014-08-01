@@ -48,7 +48,7 @@
         </div>
 
     </section>
-    <section id="atividades">
+    <section id="atividades" class="staging-hidden">
 		<header class="clearfix">
 			<h2 class="alignleft">Atividades</h2>
 			<div id="status-das-atividades" class="dropdown alignright">

@@ -1,7 +1,11 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
+use MapasCulturais\Traits;
 
-class Space extends CachedRepository{
+class Space extends \MapasCulturais\Repository{
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryCache;
+    
     public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
             return array();

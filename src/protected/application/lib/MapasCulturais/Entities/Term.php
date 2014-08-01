@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="term")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\Term")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Term")
  * @ORM\HasLifecycleCallbacks
 
  */

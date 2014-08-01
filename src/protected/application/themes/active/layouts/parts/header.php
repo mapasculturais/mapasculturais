@@ -80,7 +80,7 @@
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
                     <?php if ($app->auth->isUserAuthenticated()): ?>
-                        <li class="notificacoes">
+                        <li class="notificacoes staging-hidden">
                             <a href="#">
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>
@@ -174,8 +174,6 @@
                                 <li>
                                     <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
                                     <a class="adicionar" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
-                                </li>
-                                <li class="staging-hidden"><a href="<?php echo $app->createUrl('panel', 'contracts') ?>">Meus Contratos</a>
                                 </li>
                                 <li class="row"></li>
                                 <!--<li><a href="#">Ajuda</a></li>-->

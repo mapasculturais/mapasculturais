@@ -328,7 +328,7 @@ input.data { width:76px; }
 .dropdown .submenu-dropdown:before { content: "\42"; position: absolute; top: -13px; right: 0; left: 0; padding-right: .25rem; color: #e2e2e2; font-family: 'ElegantIcons'; speak: none; font-weight: normal; font-variant: normal; font-size: 24px; text-align: right; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .dropdown:hover .submenu-dropdown { display: block; opacity: 1; }
 .dropdown .submenu-dropdown ul { list-style: none; margin: 0; }
-.dropdown .submenu-dropdown li { padding: 0 .5rem; margin-bottom: .5rem; cursor: pointer; -webkit-transition: all .3s; transition: all .3s; }
+.dropdown .submenu-dropdown li { padding: 0 .5rem; margin-bottom: .5rem; cursor: pointer; -webkit-transition: all .2s; transition: all .2s; }
 .dropdown .submenu-dropdown li:hover { background: #f90; color: #fff; }
 
 
@@ -474,10 +474,10 @@ body.editable #main-section { margin-top: 136px; }
 #filtro-da-capa .submenu-dropdown { top: 48px; background: #000; }
 #filtro-da-capa .submenu-dropdown:before { color: #000; }
 #filtro-da-capa .icone { margin-right: 5px; vertical-align: initial; font-size: 1rem; }
-#filtro-de-eventos:hover { background-color: #b3b921; }
-#filtro-de-agentes:hover { background-color: #1dabc6; }
-#filtro-de-espacos:hover { background-color: #e83f96; }
-#filtro-de-projetos:hover { background-color: #cc0033; }
+#filtro-de-eventos:hover, #filtro-de-eventos:focus { background-color: #b3b921; }
+#filtro-de-agentes:hover, #filtro-de-agentes:focus { background-color: #1dabc6; }
+#filtro-de-espacos:hover, #filtro-de-espacos:focus { background-color: #e83f96; }
+#filtro-de-projetos:hover, #filtro-de-projetos:focus { background-color: #cc0033; }
 .destaque-aleatorio { position: relative; margin-bottom: 1.5rem; margin-top: 4.5rem; border-radius: 2px; overflow: hidden; }
 .destaque-content { display: block; position: absolute; top: 100%; bottom: 0; padding: 1.5rem; background: #000; color: #fff; font-weight: normal; font-size: .875rem; -webkit-transition: top .5s; transition: top .5s; }
 .destaque-content:hover { text-decoration: none; }
@@ -953,4 +953,30 @@ ul.abas { display: none; }
     -o-transition:all linear 1s;
     transition:all linear 1s;
 
+}
+
+
+
+/* =IE fixes
+-------------------------------------------------------------- */
+
+.ie11 .dropdown .placeholder {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ie11 .dropdown .placeholder:after {
+    margin-top: 1.25rem;
+}
+
+.ie11 #filtro-da-capa .placeholder {
+    width: 124px;
+}
+
+.ie11 .botao.editar:before {
+    margin-top: 1rem;
+}
+
+.ie11 .abas-objetos li.active:after {
+    margin-top: 1px;
 }

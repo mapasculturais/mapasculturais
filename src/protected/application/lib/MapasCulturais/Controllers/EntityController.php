@@ -567,12 +567,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $offset = null;
             $limit = null;
             $page = null;
+            $keyword = null;
 
             $dqls = array();
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@keyword'){
+                    $keyword = $val;
                     continue;
                 }elseif(strtolower($key) == '@order'){
                     $order = $val;
@@ -701,6 +705,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
 
             $dql_where = implode($op, $dqls);
+            
+                
 
             if($metadata_class)
                 $metadata_class = ", $metadata_class m";
@@ -711,6 +717,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $dql_where = $dql_where ? $dql_where . ' AND e.status > 0' : 'WHERE e.status > 0';
             }
 
+            if($keyword){
+                $repo = $this->repo();
+                if($repo->usesKeyword()){
+                    $ids = implode(',',$repo->getIdsByKeyword($keyword));
+                    $dql_where .= $ids ? "AND e.id IN($ids)" : 'AND e.id < 0';
+                }
+            }
 
             $selecting = $counting ? 'COUNT(e)' : 'e';
 

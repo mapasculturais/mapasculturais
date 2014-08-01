@@ -1,11 +1,13 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
+use MapasCulturais\Traits;
 
-use Doctrine\ORM\EntityRepository;
-class Event extends CachedRepository{
-
+class Event extends \MapasCulturais\Repository{
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryCache;
+    
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
-
+        
         if($space instanceof \MapasCulturais\Entities\Space){
             $ids = $space->id;
 

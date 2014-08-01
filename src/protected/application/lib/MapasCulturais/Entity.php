@@ -360,10 +360,11 @@ abstract class Entity implements \JsonSerializable{
      *
      * @return string
      */
-    public function getHookClassPath($class = null){
-        if(!$class)
-            $class = $this->getClassName();
-
+    public static function getHookClassPath($class = null){
+        if(!$class){
+            $called_class = get_called_class();
+            $class = $called_class::getClassName();
+        }
         return preg_replace('#^MapasCulturais\.Entities\.#','',str_replace('\\','.',$class));
     }
 
@@ -400,7 +401,7 @@ abstract class Entity implements \JsonSerializable{
         
         // delete the entity cache
         $repo = $this->repo();
-        if(method_exists($repo, 'deleteEntityCache'))
+        if($repo->usesCache())
             $repo->deleteEntityCache($this->id);
                 
                 

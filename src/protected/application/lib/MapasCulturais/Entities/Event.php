@@ -12,7 +12,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\Event")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Event")
  * @ORM\HasLifecycleCallbacks
  */
 class Event extends \MapasCulturais\Entity

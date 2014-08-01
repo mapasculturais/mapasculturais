@@ -11,7 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="space")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\Space")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Space")
  * @ORM\HasLifecycleCallbacks
  */
 class Space extends \MapasCulturais\Entity
