@@ -207,7 +207,7 @@
                 var searchData = {};
 
                 if(entityData.keyword){
-                    searchData.name = 'ILIKE(*' + entityData.keyword.replace(' ', '*') + '*)';
+                    searchData['@keyword'] = entityData.keyword;
                 }
 
                 if(entityData.areas && entityData.areas.length){

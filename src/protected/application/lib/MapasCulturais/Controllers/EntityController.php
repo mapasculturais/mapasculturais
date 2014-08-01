@@ -721,7 +721,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $repo = $this->repo();
                 if($repo->usesKeyword()){
                     $ids = implode(',',$repo->getIdsByKeyword($keyword));
-                    $dql_where .= "AND e.id IN($ids)";
+                    $dql_where .= $ids ? "AND e.id IN($ids)" : 'AND e.id < 0';
                 }
             }
 
