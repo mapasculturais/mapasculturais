@@ -610,7 +610,7 @@ body.editable #main-section { margin-top: 136px; }
 #infobox .espaco-dos-eventos { background: #e2e2e2; border-radius: 2px; padding: .5rem; font-size: .75rem; }
 #infobox .espaco-dos-eventos .objeto-thumb { width: 40px; height: 40px; margin-top: 0.4rem; }
 #infobox .espaco-dos-eventos .icone { margin: -3px 5px 0px 0; }
-#infobox h2 { font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
+#infobox h2 { color:#aebf3a; /*color tmp, Cátia!*/ font-size: 1rem; line-height: 1.5rem; margin-bottom: 0; }
 #infobox .objeto { padding: .75rem; }
 #infobox .objeto h1 { font-size: 1.25rem; }
 #infobox .objeto-thumb { position: static; float: left; margin: 0 .75rem 1.5rem 0; width: 60px; height: 60px; }
