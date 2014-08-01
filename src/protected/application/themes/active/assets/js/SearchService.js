@@ -281,7 +281,7 @@
                     else if(entity === 'project')
                         searchData['@select'] += ',registrationFrom,registrationTo';
                     else if(entity === 'event')
-                        searchData['@select'] += ',classificacaoEtaria,project.name,project.singleUrl';
+                        searchData['@select'] += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
 
                     searchData['@files'] = '(avatar.avatarMedium):url';
                     if(page) {

@@ -133,10 +133,11 @@ $app->hook('mapasculturais.scripts', function() use($app){
                             </span>
                         </div>
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
-                        <!--div ng-repeat="occ in event.readableOccurrences"><span class="label">Horário:</span> <time>{{occ}}</time></div-->
-                        <div ng-repeat="occ in event.occurrences">
-                            <hr ng-if="$index>0" style="margin:2px 0">
-                            <time>{{event.readableOccurrences[$index].trim()}}</time><span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>
+                        <div class="ocorrencias">
+                            <p class="title">Este evento ocorre em:</p>
+                            <span ng-repeat="occ in event.occurrences">
+                                {{occ.rule.description.trim()||event.readableOccurrences[$index].trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span><span ng-show="!$last">;</span>
+                            </span>
                         </div>
                     </div>
                 </div>
