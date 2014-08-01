@@ -6,6 +6,7 @@ use MapasCulturais\App;
 
 /**
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class ProjectAgentRelation extends AgentRelation {
     const STATUS_REGISTRATION = -5;
