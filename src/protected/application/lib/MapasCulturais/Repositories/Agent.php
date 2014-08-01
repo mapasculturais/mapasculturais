@@ -3,6 +3,7 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 
 class Agent extends \MapasCulturais\Repository{
-    use Traits\RepositoryCache;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryCache;
 }
 
