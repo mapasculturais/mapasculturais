@@ -247,13 +247,11 @@ $app->hook('mapasculturais.scripts', function() use($app){
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
                         <div class="ocorrencias">
                             <p class="title">Este evento ocorre em:</p>
-                            <div ng-repeat="occ in event.occurrences">
-                                <p>
-                                    <a href=">{{occ.space.singleUrl}}">{{occ.space.name||'Galeria Olido'}}</a>
-                                    {{occ.space.endereco.trim()||'Av. Bla bla, 473. São Paulo'}}.
-                                    {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>
-                                </p>
-                            </div>
+                            <span ng-repeat="occ in event.occurrences">
+                                    <a href=">{{occ.space.singleUrl}}">{{occ.space.name}}</a>:
+                                    {{occ.space.endereco.trim()}}
+                                    {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>;
+                            </span>
                         </div>
                      </div>
                     </div>
