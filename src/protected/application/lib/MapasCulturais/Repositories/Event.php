@@ -82,11 +82,12 @@ class Event extends \MapasCulturais\Repository{
 
         return $result;
     }
-
+    
     public function findByProject($project, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         if($project instanceof \MapasCulturais\Entities\Project){
-            $ids = $project->id;
+            $ids = $project->getChildrenIds();
+            $ids[] = $project->id;
 
         }elseif($project && is_array($project) && is_object($project[0]) ){
             $ids = array(-1);

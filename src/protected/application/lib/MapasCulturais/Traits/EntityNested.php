@@ -48,4 +48,17 @@ trait EntityNested{
 
         $this->parent = $parent;
     }
+    
+    /**
+     * @return array of ids
+     */
+    public function getChildrenIds(){
+        $result = array();
+        foreach($this->children as $child){
+            $result[] = $child->id;
+            $result = array_merge($result, $child->getChildrenIds());
+        }
+        
+        return $result;
+    }
 }
