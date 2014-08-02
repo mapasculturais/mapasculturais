@@ -9,8 +9,18 @@ $class_project = 'MapasCulturais\Entities\Project';
 
 $class_file = 'MapasCulturais\Entities\File';
 
-$num_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_events = $app->controller('Event')->apiQueryByLocation(array(
+    '@count' => 1,
+    '@from' => date('Y-m-d'),
+    '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
+));
+
+$num_verified_events = $app->controller('Event')->apiQueryByLocation(array(
+    '@count' => 1,
+    '@from' => date('Y-m-d'),
+    '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
+    'isVerified' => 'EQ(true)'
+)); 
 
 $num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 $num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
@@ -157,7 +167,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos de Hoje</a>
+        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos da Semana</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
     </div>
 </article>
