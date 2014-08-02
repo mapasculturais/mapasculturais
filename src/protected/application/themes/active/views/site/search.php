@@ -253,7 +253,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                         <div class="ocorrencias">
                             <p class="title">Este evento ocorre em:</p>
                             <span ng-repeat="occ in event.occurrences">
-                                    <a href=">{{occ.space.singleUrl}}">{{occ.space.name}}</a>:
+                                    <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a>:
                                     {{occ.space.endereco.trim()}}
                                     {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>;
                             </span>
