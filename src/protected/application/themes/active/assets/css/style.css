@@ -583,6 +583,7 @@ body.editable #main-section { margin-top: 136px; }
 #agenda.lista .objeto:hover { background: #f8f8f8; }
 .objeto h1 { margin-bottom: .75rem; padding-bottom: .75rem; line-height: 1.5rem; border-bottom: 1px solid #eee; }
 .lista .objeto h1 { font-size: 1.25rem; margin-right: 35rem; }
+#agenda-content .objeto h1 { margin-right: 16.5rem }
 .objeto-content { position: relative; min-height: 6rem; }
 .objeto-thumb { position: absolute; top: 0; left: 0; width: 6rem; height: 6rem; background: #ccc; }
 .objeto-resumo { float: left; min-height: 6rem; margin-right: 34rem; margin-bottom: 0; padding: 0 1.5rem 0 7.5rem; font-size: .875rem; }
