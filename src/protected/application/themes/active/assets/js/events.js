@@ -28,8 +28,42 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
 
     MapasCulturais.EventDates.init('.js-event-dates');
 
-    $dialog.find('form').find('.js-event-time').mask('00:00');
-    $dialog.find('form').find('.js-event-duration').mask('000000');
+    var $startsAt = $dialog.find('form').find('.js-event-time');
+    var $duration = $dialog.find('form').find('.js-event-duration');
+    var $endsAt = $dialog.find('form').find('.js-event-end-time');
+
+    $startsAt.mask('00:00', {
+      onComplete: function(time) {
+        console.log('startsAt complete');
+        var mtime = moment(time, 'HH:mm');
+        var duration = $duration.val();
+
+        if(mtime.isValid() && $.isNumeric(duration)) {
+            $endsAt.val(mtime.add(duration, 'minutes').format('HH:mm'));
+        }
+      }});
+
+    $duration.mask('99999999')
+    $duration.change(function(event) {
+        console.log('duration change');
+        var mtime = moment($startsAt.val(), 'HH:mm');
+        var duration = $(this).val();
+
+        if(mtime.isValid() && $.isNumeric(duration)) {
+            $endsAt.val(mtime.add(duration, 'minutes').format('HH:mm'));
+        }
+    });
+
+    $endsAt.mask('00:00', {
+      onComplete: function(time) {
+        console.log('endsAt complete');
+        var mendtime = moment(time, 'HH:mm');
+        var mtime = moment($startsAt.val(), 'HH:mm');
+
+        if(mtime.isValid() && mendtime.isValid()) {
+            $duration.val(Math.abs(mendtime.diff(mtime, 'minutes')));
+        }
+      }});
 };
 
 
