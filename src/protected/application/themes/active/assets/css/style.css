@@ -641,9 +641,25 @@ body.editable #main-section { margin-top: 136px; }
 .barra-lateral .setinha { top: 0; left: 50%; margin-left: -8px; }
 .bloco { position: relative; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #fff; font-size: .875rem; }
 .subtitulo { margin-bottom: .75rem; font-size: .70rem; line-height: 1.5rem; font-family: "Opens Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #888; }
+
 .oficial { display: block; width: 89px; height: 72px; margin: 0 auto; background: url(../img/brasao-pb.png) no-repeat center; text-indent: -9999px; }
 .oficial.inactive { opacity: .2; }
 .oficial.active { background: url(../img/brasao.png) no-repeat center;}
+
+.bloco--verified:before {
+    width: 1rem; 
+    height: 1rem; 
+    content: '\6c'; 
+    font-size: 1rem; 
+    line-height: 1rem; 
+    font-family: 'ElegantIcons'; 
+    font-weight: normal; 
+    font-style: normal; 
+    color: #666;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 .compartilhamentos { font-size: 4rem; line-height: 3rem; font-weight: bold; }
 .botoes-de-compartilhar { height: 2rem; }
