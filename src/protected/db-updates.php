@@ -38,7 +38,7 @@ return array(
             }
             $value['endsAt'] = $o->endsAt->format('H:i');
             $o->rule = $value;
-            echo "ev occurence start: " . $value['startsAt'] . " for: " . $value['duration'] . " minutes ends: " . $value['endsAt'];
+            echo "ev occurence start: {$value['startsAt']} for: {$value['duration']} minutes ends: {$value['endsAt']}\n";
             $o->save();
         }
     },
