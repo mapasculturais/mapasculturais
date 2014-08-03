@@ -253,7 +253,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDescription(){
-        return $this->rule->description;
+        return isset($this->rule->description) ? $this->rule->description : "";
     }
 
 
