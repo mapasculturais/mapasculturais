@@ -55,21 +55,18 @@
                             <div>Eventos</div>
                         </a>
                     </li>
-                    <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
-                        <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                            <div class="icone icon_profile"></div>
-                            <div>Agentes</div>
-                        </a>
-                    </li>
                     <li id="aba-espacos" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
                         <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
                             <div class="icone icon_building"></div>
                             <div>Espaços</div>
                         </a>
                     </li>
-                </ul>
-                <!--.menu.abas-objetos-->
-                <ul class="menu abas-objetos clearfix">
+                    <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
+                        <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
+                            <div class="icone icon_profile"></div>
+                            <div>Agentes</div>
+                        </a>
+                    </li>
                     <li id="aba-projetos"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
                         <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                             <div class="icone icon_document_alt"></div>
