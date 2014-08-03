@@ -279,19 +279,15 @@ class EventOccurrence extends \MapasCulturais\Entity
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
         if(!empty($value['duration'])){
-            @list($hours, $minutes) = explode('h', $value['duration']);
-            $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
-
-            if(!$minutes)
-                $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
-            else
-                $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+            $value['duration'] = intval($value['duration']);
+            $dateString = 'PT'.$value['duration'] .'M';
 
             if($this->startsAt instanceof \DateTime){
                 $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
                 $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
             }
         }else{
+            $value['duration'] = 0;
             $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
 
