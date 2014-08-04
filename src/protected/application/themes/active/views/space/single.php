@@ -219,24 +219,28 @@ add_angular_entity_assets($entity);
 </article>
 <div class="barra-lateral espaco barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
+    <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-    <div class="bloco">
-        <?php if($entity->children): ?>
-        <h3 class="subtitulo">Sub-espaços</h3>
-        <ul class="js-slimScroll">
-            <?php foreach($entity->children as $space): ?>
-            <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
-            <?php endforeach; ?>
-        </ul>
-        <?php endif; ?>
+    <?php if($this->controller->action !== 'create'): ?>
+        <div class="bloco">
+            <?php if($entity->children): ?>
+            <h3 class="subtitulo">Sub-espaços</h3>
+            <ul class="js-slimScroll">
+                <?php foreach($entity->children as $space): ?>
+                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
 
-        <?php if($entity->id && $entity->canUser('createChield')): ?>
-        <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
-        <?php endif; ?>
-    </div>
-
+            <?php if($entity->id && $entity->canUser('createChield')): ?>
+            <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
