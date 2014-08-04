@@ -139,7 +139,7 @@ class Space extends \MapasCulturais\Entity
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
-    protected $children;
+    protected $_children;
 
 
     /**
