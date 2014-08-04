@@ -875,8 +875,8 @@ vertical-align: bottom; width: auto; }
 .directive-find-entity .result-container { max-height: 300px; padding:0; margin:0; overflow-y:auto; }
 .directive-find-entity .result-container li:hover { background: #e2e2e2; }
 
-.agentes-relacionados .directive-find-entity { width:300px; right:0px; }
-
+.agentes-relacionados .directive-find-entity { width:375px; right:0px; }
+.agentes-relacionados .directive-find-entity ul.result-container>li { cursor:pointer; }
 /* ajax uploader */
 .js-ajax-upload-progress { margin-bottom: 10px; }
 .js-ajax-upload-progress .progress { position: relative; width: 100%; padding: 1px; border-radius: 3px; box-sizing: border-box; -moz-box-sizing: border-box; }
