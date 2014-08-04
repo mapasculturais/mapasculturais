@@ -139,8 +139,8 @@ class Project extends \MapasCulturais\Entity
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
-    protected $children;
-
+    protected $_children;
+    
 
 
     /**
@@ -158,7 +158,7 @@ class Project extends \MapasCulturais\Entity
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
      */
-    protected $events;
+    protected $_events;
 
     /**
      * @var bool
@@ -171,6 +171,10 @@ class Project extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+    
+    function getEvents(){
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
 
     function setRegistrationFrom($date){
         $this->registrationFrom = new \DateTime($date);

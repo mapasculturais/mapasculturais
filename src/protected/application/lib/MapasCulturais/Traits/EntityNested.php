@@ -13,6 +13,11 @@ trait EntityNested{
         return true;
     }
 
+    function getChildren(){
+        $class = get_called_class();
+        return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED);
+    }
+    
     function setParentId($parent_id){
         if($parent_id)
             $parent = $this->repo()->find($parent_id);
@@ -54,7 +59,7 @@ trait EntityNested{
      */
     public function getChildrenIds(){
         $result = array();
-        foreach($this->children as $child){
+        foreach($this->getChildren() as $child){
             $result[] = $child->id;
             $result = array_merge($result, $child->getChildrenIds());
         }

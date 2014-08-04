@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 use Respect\Validation\Validator as v;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * The base class for all entities used in MapasCulturais.
@@ -168,6 +169,14 @@ abstract class Entity implements \JsonSerializable{
         $user = $owner->getOwnerUser();
         
         return $user;
+    }
+    
+    protected function fetchByStatus($collection, $status){
+        if(!is_object($collection) || !method_exists($collection, 'matching'))
+                return array();
+        
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
+        return $collection->matching($criteria);
     }
 
     protected function genericPermissionVerification($user){

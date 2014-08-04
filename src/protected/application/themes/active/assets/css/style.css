@@ -647,14 +647,14 @@ body.editable #main-section { margin-top: 136px; }
 .oficial.active { background: url(../img/brasao.png) no-repeat center;}
 
 .bloco--verified:before {
-    width: 1rem; 
-    height: 1rem; 
-    content: '\6c'; 
-    font-size: 1rem; 
-    line-height: 1rem; 
-    font-family: 'ElegantIcons'; 
-    font-weight: normal; 
-    font-style: normal; 
+    width: 1rem;
+    height: 1rem;
+    content: '\6c';
+    font-size: 1rem;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-style: normal;
     color: #666;
     position: absolute;
     top: 0;
@@ -712,6 +712,7 @@ table.contratos td { font-size: .75rem; }
 .ocorrencia .mapa, .ocultar-mapa { display: none; }
 .toggle-mapa { float: right; font-size: .75rem; color: #666; line-height: 2rem; }
 .toggle-mapa:hover { color: #333; text-decoration: none; }
+.sobre-logo-prefeitura { margin: -10px 0 0 30px; max-width: 115px; }
 
 /* =Painel e Páginas
 -------------------------------------------------------------- */
@@ -916,7 +917,7 @@ vertical-align: bottom; width: auto; }
 .grupo-descricao-automatica { padding-right: 2.5rem; position: relative; }
 .grupo-descricao-automatica .mensagem { margin-bottom: .75rem; }
 .grupo-descricao-automatica .botao { position: absolute; top: 0; right: 0; }
-
+#dialog-event-occurrence label{ white-space: nowrap; }
 /* =Como usar
 -------------------------------------------------------------- */
 .como-usar { padding-bottom: 3rem; margin-bottom: 3rem; border-bottom: 1px solid #eee; }

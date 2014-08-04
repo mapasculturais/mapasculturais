@@ -194,10 +194,15 @@ add_angular_entity_assets($entity);
 </article>
 <div class="barra-lateral agente barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>
+    <?php endif; ?>
+    
     <!-- Related Agents BEGIN -->
         <?php $this->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
 
+    <?php if(count($entity->spaces) > 0): ?>
     <div class="bloco">
         <h3 class="subtitulo">Espaços do agente</h3>
         <ul class="js-slimScroll">
@@ -206,6 +211,7 @@ add_angular_entity_assets($entity);
             <?php endforeach; ?>
         </ul>
     </div>
+    <?php endif; ?>
     <!--
     <div class="bloco">
         <h3 class="subtitulo">Projetos do agente</h3>
