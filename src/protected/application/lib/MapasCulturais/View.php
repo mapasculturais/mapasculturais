@@ -280,6 +280,9 @@ class View extends \Slim\View {
     }
     
     function renderMarkdown($markdown){
+        $app = App::i();
+        $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
+        $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);
     }
 }
