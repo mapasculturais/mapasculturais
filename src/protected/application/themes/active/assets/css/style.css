@@ -712,6 +712,7 @@ table.contratos td { font-size: .75rem; }
 .ocorrencia .mapa, .ocultar-mapa { display: none; }
 .toggle-mapa { float: right; font-size: .75rem; color: #666; line-height: 2rem; }
 .toggle-mapa:hover { color: #333; text-decoration: none; }
+.sobre-logo-prefeitura { margin: -10px 0 0 30px; max-width: 115px; }
 
 /* =Painel e Páginas
 -------------------------------------------------------------- */
