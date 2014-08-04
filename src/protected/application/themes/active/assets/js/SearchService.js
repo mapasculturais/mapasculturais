@@ -3,6 +3,7 @@
 
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
+        $rootScope.lastResult = $rootScope.lastResult || { agent:null, space:null, event:null };
         var activeRequests = 0,
             canceler = null,
             lastEmitedResult = 'null',
@@ -49,6 +50,8 @@
                     if(!angular.equals(agentQueryData, lastQueries.agent) || !compareEnabledEntities){
                         lastQueries.agent = angular.copy(agentQueryData);
                         callApi('agent', agentQueryData);
+                    }else{
+                        results.agent = $rootScope.lastResult.agent;
                     }
                 }
 
@@ -57,6 +60,8 @@
                     if(!angular.equals(eventQueryData, lastQueries.event) || !compareEnabledEntities){
                         lastQueries.event = angular.copy(eventQueryData);
                         callApi('event', eventQueryData);
+                    }else{
+                        results.event = $rootScope.lastResult.event;
                     }
                 }
 
@@ -65,6 +70,8 @@
                     if(!angular.equals(spaceQueryData, lastQueries.space) || !compareEnabledEntities){
                         lastQueries.space = angular.copy(spaceQueryData);
                         callApi('space', spaceQueryData);
+                    }else{
+                        results.space = $rootScope.lastResult.space;
                     }
                 }
 
@@ -192,7 +199,7 @@
 
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
-
+                    $rootScope.lastResult = results;
                     $rootScope.$emit('searchResultsReady', results);
                 }
             }
