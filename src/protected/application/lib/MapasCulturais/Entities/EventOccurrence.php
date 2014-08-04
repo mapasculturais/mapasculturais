@@ -290,7 +290,9 @@ class EventOccurrence extends \MapasCulturais\Entity
             $value['duration'] = 0;
             $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
-        $value['endsAt'] = $this->endsAt->format('H:i');
+        if($this->endsAt instanceof \DateTime){
+            $value['endsAt'] = $this->endsAt->format('H:i');
+        }
 
         $this->startsOn = $value['startsOn'];
         $this->until = $value['until'] ? $value['until'] : null;
