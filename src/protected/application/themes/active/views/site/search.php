@@ -159,7 +159,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <a class="botao adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
             </div>
         </header>
-        <div id="lista-dos-projetos" class="lista" infinite-scroll="data.global.filterEntity === 'project' && addMore('agent')" ng-show="data.global.filterEntity === 'project'">
+        <div id="lista-dos-projetos" class="lista" infinite-scroll="data.global.filterEntity === 'project' && addMore('project')" ng-show="data.global.filterEntity === 'project'">
             <article class="objeto projeto clearfix"  ng-repeat="project in projects" id="agent-result-{{project.id}}">
                 <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
