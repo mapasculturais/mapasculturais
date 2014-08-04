@@ -313,17 +313,18 @@ add_occurrence_frequencies_to_js();
                                     $templateData->occurrencesPrice = '';
                                     $prices = array();
                                     foreach ($space['occurrences'] as $occurrence) {
-                                        $prices[] = strtolower(trim($occurrence->rule->price));
+                                        $prices[] = !empty($occurrence->rule->price) ? strtolower(trim($occurrence->rule->price)) : '';
                                     }
                                     $arePricesTheSame = compareArrayElements($prices);
-                                    if($arePricesTheSame){
+                                    if($arePricesTheSame && !empty($space['occurrences'][0]->rule->price)){
                                         $templateData->occurrencesPrice = $space['occurrences'][0]->rule->price;
                                     }
                                     foreach ($space['occurrences'] as $occurrence) {
-                                        $templateData->occurrencesDescription .= trim($occurrence->rule->description);
+                                        if(!empty($occurrence->rule->description))
+                                            $templateData->occurrencesDescription .= trim($occurrence->rule->description);
                                         if(!$arePricesTheSame)
                                             $templateData->occurrencesDescription .= '. '.$occurrence->rule->price;
-                                        if($occurrence->rule->description)
+                                        if(!empty($occurrence->rule->description))
                                             $templateData->occurrencesDescription .= '; ';
                                     }
                                     $templateData->occurrencesDescription = substr($templateData->occurrencesDescription,0,-2);

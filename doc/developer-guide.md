@@ -67,7 +67,7 @@ As páginas do sistema são arquivos **.md** (Markdown) salvos dentro da pasta *
 Para uma página cujo nome de arquivo é **nome-da-pagina.md**, a url de acesso será **http://mapasculturais/page/site/nome-da-pagina/**
 
 
-#### Títullo da página
+#### Título da página
 O texto do **primeiro h1** do conteúdo da página será utilizado como título da página (tag <title>). Isto é feito via javascript.
 
 
