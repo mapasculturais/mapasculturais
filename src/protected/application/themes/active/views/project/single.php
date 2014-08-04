@@ -12,23 +12,26 @@ if(is_editable()){
 
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
+    
+    $app->hook('mapasculturais.scripts', function() use ($app, $entity){
+
+        $ids = array_map(function($e){
+
+            return $e->agent->id;
+        }, $entity->registrations);
+        ?>
+        <script type="text/javascript">
+            MapasCulturais.agentRelationDisabledCD = ['<?php echo $app->txt('project registration')?>'];
+        </script>
+        <?php
+    });
 }
 
 add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
 add_entity_properties_metadata_to_js($entity);
-
-$ids = array_map(function($e){
-
-    return $e->agent->id;
-}, $entity->registrations);
 ?>
-<script type="text/javascript">
-    MapasCulturais.agentRelationGroupExludeIds = {};
-    MapasCulturais.agentRelationGroupExludeIds['<?php echo $app->projectRegistrationAgentRelationGroupName ?>'] = <?php echo json_encode($ids); ?>;
-</script>
-<?php //include(__DIR__.'/../../layouts/parts/editable-entity.php');  ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <div class="barra-esquerda barra-lateral projeto">

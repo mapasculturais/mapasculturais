@@ -29,13 +29,12 @@
                             <span class="slider-button" ng-class="{'on':relation.hasControl}">{{relation.hasControl ? 'Sim' : 'Não' }}</span>
                         </div>
                     </div>
-                    <div class="textright" ng-if="isEditable && (!relation.hasControl || canChangeControl)">
+                    <div class="textright" ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
                         <button type="submit" class="bt-remove-agent" ng-click="deleteRelation(relation)">Excluir</button>
                     </div>
                 </div>
             </div>
-            
-            <div ng-if="isEditable" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
+            <div ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
             
             <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="Adicionar agente relacionado" spinner-condition="spinners[group.name]" cancel-label="Cancelar" close-on-cancel='true'>
                 <find-entity entity="agent" no-results-text="Nenhum agente encontrado" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
