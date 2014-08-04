@@ -325,8 +325,6 @@ MapasCulturais.Editables = {
 
 
                     }else{
-                        if(action === 'create')
-                            location.href = MapasCulturais.Editables.baseTarget+'/edit/'+response.id;
 
                         if($('.js-sp_distrito').length > 0      && response['sp_distrito'])         $('.js-sp_distrito').html(response['sp_distrito']);
                         if($('.js-sp_regiao').length > 0        && response['sp_regiao'])           $('.js-sp_regiao').html(response['sp_regiao']);
@@ -339,6 +337,9 @@ MapasCulturais.Editables = {
                                 removeClass('editable-unsaved').
                                 parent().
                                 removeClass('erro');
+
+                        if(action === 'create')
+                            location.href = MapasCulturais.Editables.baseTarget+'/edit/'+response.id;
                     }
 
                 },
@@ -458,7 +459,7 @@ MapasCulturais.AjaxUploader = {
                 $form.get(0).reset();
                 if($form.parents('.js-editbox').data('success-callback'))
                     eval($form.parents('.js-editbox').data('success-callback'));
-                
+
                 $form.parents('.js-editbox').find('.mc-cancel').click();
             },
 
