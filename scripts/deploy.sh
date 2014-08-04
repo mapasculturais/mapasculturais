@@ -26,3 +26,4 @@ cd tools
 
 ./doctrine orm:generate-proxies
 
+restart php5-fpm
