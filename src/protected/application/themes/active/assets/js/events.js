@@ -20,16 +20,50 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
 
     MapasCulturais.EventOccurrenceManager.init($dialog.find('form'));
     MapasCulturais.EventHumanReadableManager.init($dialog.find('form'));
-    
-    
+
+
     $dialog.find('form').data('action', $caller.data('form-action'));
 
     MapasCulturais.Search.init('.js-search-occurrence-space');
 
     MapasCulturais.EventDates.init('.js-event-dates');
 
-    $dialog.find('form').find('.js-event-time').mask('00:00');
-    $dialog.find('form').find('.js-event-duration').mask('00h00');
+    var $startsAt = $dialog.find('form').find('.js-event-time');
+    var $duration = $dialog.find('form').find('.js-event-duration');
+    var $endsAt = $dialog.find('form').find('.js-event-end-time');
+
+    $startsAt.mask('00:00', {
+      onComplete: function(time) {
+        console.log('startsAt complete');
+        var mtime = moment(time, 'HH:mm');
+        var duration = $duration.val();
+
+        if(mtime.isValid() && $.isNumeric(duration)) {
+            $endsAt.val(mtime.add(duration, 'minutes').format('HH:mm'));
+        }
+      }});
+
+    $duration.mask('99999999')
+    $duration.change(function(event) {
+        console.log('duration change');
+        var mtime = moment($startsAt.val(), 'HH:mm');
+        var duration = $(this).val();
+
+        if(mtime.isValid() && $.isNumeric(duration)) {
+            $endsAt.val(mtime.add(duration, 'minutes').format('HH:mm'));
+        }
+    });
+
+    $endsAt.mask('00:00', {
+      onComplete: function(time) {
+        console.log('endsAt complete');
+        var mendtime = moment(time, 'HH:mm');
+        var mtime = moment($startsAt.val(), 'HH:mm');
+
+        if(mtime.isValid() && mendtime.isValid()) {
+            $duration.val(Math.abs(mendtime.diff(mtime, 'minutes')));
+        }
+      }});
 };
 
 
@@ -113,12 +147,12 @@ MapasCulturais.EventOccurrenceManager = {
             },
             dataType:  'json',
             beforeSubmit: function(arr, $form, options) {
-                
+
                 if ($form.find('input[name="description"]').data('synced') != 1)
                     return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
-                
+
                 return true;
-                
+
             }
         });
 
@@ -172,26 +206,26 @@ MapasCulturais.EventDates = {
 };
 
 MapasCulturais.EventHumanReadableManager = {
-    
+
     init : function(selector) {
-        
+
         var $form = $(selector);
-        
+
         // Add onChange events to the fields
         $(selector).find('input[type="checkbox"], select[name="frequency"], #horario-de-inicio, .js-start-date, .js-end-date').change(function() {
             MapasCulturais.EventHumanReadableManager.updateSuggestion($form);
         });
-        
+
         // If there are values, run it at init
         var date_s = $(selector).find('.js-start-date').val();
         var hour = $(selector).find('#horario-de-inicio').val();
         if (date_s && hour)
             MapasCulturais.EventHumanReadableManager.updateSuggestion($form);
-        
+
         $(selector).find('.grupo-descricao-automatica > a').click(function() {
             $(selector).find('input[name="description"]').val( $(selector).find('#descricao-automatica').html() ).data('synced', 1);
         });
-        
+
         //On init, we assume we are allways synced, even if the values are different, because the could have been manually edited
         $(selector).find('input[name="description"]').data('synced', 1);
     },
@@ -204,48 +238,48 @@ MapasCulturais.EventHumanReadableManager = {
             $(selector).find('input[name="description"]').data('synced', 0);
     },
     getSuggestion: function(selector) {
-        
+
         var human = '';
-        
+
         var date_s = $(selector).find('.js-start-date').val();
         var hour = $(selector).find('#horario-de-inicio').val();
         var frequency = $(selector).find('select[name="frequency"]').val();
         var date_e = $(selector).find('.js-end-date').val();
         var weekDays = [];
         $(selector).find('input[type="checkbox"]:checked').each(function() { if ($(this).is(':checked')) weekDays.push($(this).attr('name').replace(/[^\d]/g, '')) });
-        
+
         //console.log( date_s);
         //console.log( hour);
         //console.log( frequency);
         //console.log( date_e);
         //console.log( weekDays);
-        
+
         var mdate_s = false;
         var mdate_e = false;
-        
+
         if (date_s) mdate_s = moment(date_s, 'DD/MM/YYYY');
         if (date_e) mdate_e = moment(date_e, 'DD/MM/YYYY');
-        
+
         if (frequency == 'once') {
             if (!mdate_s) return '...';
             human += 'Dia ' + mdate_s.format('D [de] MMMM [de] YYYY');
         } else {
-            
+
             if (!mdate_s || !mdate_e) return '...';
-            
+
             if (frequency == 'daily') {
                 human += 'Diariamente';
             } else if (frequency == 'weekly') {
-                
-                
+
+
                 if (weekDays.length > 0) {
-                    
+
                     if (weekDays[0] == '0' || weekDays[0] == '6') {
                         human += 'Todo ';
                     } else {
                         human += 'Toda ';
                     }
-                    
+
                     var count = 1;
                     $.each(weekDays, function(i, v) {
                         var wformat = weekDays.length > 1 ? 'ddd' : 'dddd';
@@ -258,7 +292,7 @@ MapasCulturais.EventHumanReadableManager = {
                     });
                 }
             }
-            
+
             if (mdate_s.year() != mdate_e.year()) {
                 human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
             } else {
@@ -268,18 +302,18 @@ MapasCulturais.EventHumanReadableManager = {
                     human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
                 }
             }
-            
-            
+
+
         }
-        
+
         if (hour) {
             if (hour.substring(0,2) == '01')
                 human += ' à ' + hour;
             else
                 human += ' às ' + hour;
         }
-        
+
         return human;
-    
+
     }
 };

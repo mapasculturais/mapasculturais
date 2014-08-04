@@ -37,8 +37,9 @@ add_occurrence_frequencies_to_js();
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
-                <p><span class="label">Duração:</span> {{rule.duration}}</p>
+                <p><span class="label">Duração:</span> {{rule.duration}} min</p>
             {{/rule.duration}}
+            <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
@@ -434,7 +435,11 @@ add_occurrence_frequencies_to_js();
             </div>
             <div class="grupo-de-campos">
                 <label for="duracao">Duração:</label><br>
-                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="00h00"  value="{{rule.duration}}">
+                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="minutos"  value="{{rule.duration}}">
+            </div>
+            <div class="grupo-de-campos">
+                <label for="horario-de-fim">Horário final:</label><br>
+                <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
                 <span class="label">Frequência:</span><br>
