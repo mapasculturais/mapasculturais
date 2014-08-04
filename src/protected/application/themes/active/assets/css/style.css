@@ -977,23 +977,23 @@ ul.abas { display: none; }
 /* =IE fixes
 -------------------------------------------------------------- */
 
-.ie11 .dropdown .placeholder {
+.ie .dropdown .placeholder {
     width: 100%;
     box-sizing: border-box;
 }
 
-.ie11 .dropdown .placeholder:after {
+.ie .dropdown .placeholder:after {
     margin-top: 1.25rem;
 }
 
-.ie11 #filtro-da-capa .placeholder {
+.ie #filtro-da-capa .placeholder {
     width: 124px;
 }
 
-.ie11 .botao.editar:before {
+.ie .botao.editar:before {
     margin-top: 1rem;
 }
 
-.ie11 .abas-objetos li.active:after {
+.ie .abas-objetos li.active:after {
     margin-top: 1px;
 }
