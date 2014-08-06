@@ -1,5 +1,5 @@
 <?php
-namespace MapasCulturais\Types\DoctrineMap;
+namespace MapasCulturais\DoctrineMappings\Types;
 
 use \Doctrine\DBAL\Types\Type;
 use \Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -42,6 +42,6 @@ class Point extends Type
     }
 
     static function register(){
-        Type::addType('point', '\MapasCulturais\Types\DoctrineMap\Point');
+        Type::addType('point', '\MapasCulturais\DoctrineMappings\Types\Point');
     }
 }

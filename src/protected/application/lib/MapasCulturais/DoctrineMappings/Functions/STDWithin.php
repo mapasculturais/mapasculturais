@@ -1,6 +1,6 @@
 <?php
 
-namespace MapasCulturais\Types\DoctrineMap;
+namespace MapasCulturais\DoctrineMappings\Functions;
 
 use CrEOF\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
