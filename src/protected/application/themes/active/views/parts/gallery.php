@@ -1,3 +1,7 @@
+<?php 
+if($this->controller->action === 'create')
+    return;
+?>
 <?php $gallery = $entity->getFiles('gallery'); ?>
 <?php if (is_editable() || $gallery): ?>
     <h3>Galeria</h3>

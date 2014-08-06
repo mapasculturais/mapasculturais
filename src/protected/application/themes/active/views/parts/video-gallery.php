@@ -1,4 +1,8 @@
 <?php
+if($this->controller->action === 'create')
+    return;
+
+
 $videos = $entity->getMetaLists('videos');
 
 $template = "<li id='video-{{id}}'>
@@ -54,7 +58,7 @@ $template = "<li id='video-{{id}}'>
      data-metalist-group="videos"
      data-metalist-title-label="Título" data-metalist-value-label="Endereço do vídeo (Youtube ou Vimeo)" data-metalist-description-label="Descrição">
     <?php if($this->controller->action == 'create'): ?>
-        <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
+        <span class="js-dialog-disabled" data-message="Para adicionar vídeos você primeiro deve salvar."></span>
     <?php else: $app->view->part('parts/metalist-form.template.html'); endif; ?>
 </div>
 <?php if(is_editable()): ?>

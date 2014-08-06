@@ -1,3 +1,7 @@
+<?php 
+if($this->controller->action === 'create')
+    return;
+?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="bloco textright" ng-if="isEditable">
         <edit-box id="new-related-agent-group" position="left" title="Adicionar grupo de agentes" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">

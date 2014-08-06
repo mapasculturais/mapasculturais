@@ -385,6 +385,10 @@ add_occurrence_frequencies_to_js();
 <!--.main-content-->
 <div class="barra-lateral evento barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
+    <?php endif; ?>
+    
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity' => $entity)); ?>
     <!-- Related Agents END -->
