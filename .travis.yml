@@ -19,6 +19,7 @@ before_script:
   - psql -c 'create user mapasculturais;' -U postgres
   - psql -c 'create database mapasculturais_test owner mapasculturais;' -U postgres
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais_test
+  - psql -c 'CREATE EXTENSION unaccent;' -U postgres -d mapasculturais_test
   - psql -f db/schema.sql -U mapasculturais -d mapasculturais_test
   - psql -f db/test-data.sql -U mapasculturais -d mapasculturais_test
 
