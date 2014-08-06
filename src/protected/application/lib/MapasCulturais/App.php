@@ -35,6 +35,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read mixed $notFound Callable to be invoked if no matching routes are found
  *
  * @property-read array $config
+ * 
+ * @property-read bool $isAccessControlEnabled is access control enabled?
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
@@ -105,8 +107,6 @@ class App extends \Slim\Slim{
      */
     protected $_enqueuedStyles = array();
 
-    protected $_runningUpdates = false;
-
     /**
      * The Application Registry.
      *
@@ -114,15 +114,16 @@ class App extends \Slim\Slim{
      *
      * @var type
      */
-    public $_register = array();
+    protected $_register = array();
 
     protected $_registerLocked = true;
 
+    protected $_hooks = array();
+    protected $_excludeHooks = array();
 
-
-	protected $_hooks = array();
-	protected $_excludeHooks = array();
-
+    
+    protected $isAccessControlEnabled = true;
+    protected $isWorkflowEnabled = true;
 
     /**
      * Initializes the application instance.
@@ -423,12 +424,24 @@ class App extends \Slim\Slim{
         echo $scripts;
     }
 
-    public function isRunningUpdates(){
-        return $this->_runningUpdates;
+    function enableAccessControl(){
+        $this->isAccessControlEnabled = true;
+    }
+
+    function disableAccessControl(){
+        $this->isAccessControlEnabled = false;
+    }
+
+    function enableWorkflow(){
+        $this->isWorkflowEnabled = true;
+    }
+
+    function disableWorkflow(){
+        $this->isWorkflowEnabled = false;
     }
 
     protected function _dbUpdates(){
-        $this->_runningUpdates = true;
+        $this->disableAccessControl();
 
         $executed_updates = array();
 
@@ -459,8 +472,7 @@ class App extends \Slim\Slim{
             $this->cache->deleteAll();
         }
 
-        $this->_runningUpdates = false;
-
+        $this->enableAccessControl();
     }
 
     public function register(){

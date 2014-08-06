@@ -211,27 +211,22 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function canUser($action, $userOrAgent = null){
-
-        if(App::i()->isRunningUpdates())
+        $app = App::i();
+        if(!$app->isAccessControlEnabled)
             return true;
 
-        if(App::i()->repo('User')->isCreating())
+        if($app->repo('User')->isCreating())
             return true;
 
-        $user = is_null($userOrAgent) ? App::i()->user : $userOrAgent->getOwnerUser();
+        $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
 
-        if($user && $user->is('superAdmin'))
+        if($user->is('superAdmin'))
             return true;
-
-        if(is_null($user))
-            $user = new GuestUser;
 
         if(method_exists($this, 'canUser' . $action)){
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> EXISTS");
             $method = 'canUser' . $action;
             return $this->$method($user);
         }else{
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> ELSE");
             return $this->genericPermissionVerification($user);
         }
     }
