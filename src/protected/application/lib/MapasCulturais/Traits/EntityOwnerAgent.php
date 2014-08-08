@@ -39,7 +39,31 @@ trait EntityOwnerAgent{
      */
     function setOwner(\MapasCulturais\Entities\Agent $owner){
         if(!$this->owner || $owner->id != $this->owner->id){
-            $this->checkPermission('changeOwner');
+            try{
+                $this->checkPermission('changeOwner');
+                $owner->checkPermission('modify');
+                
+            }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+                $app = App::i();
+                if($app->isWorkflowEnabled){
+                    $ar = new \MapasCulturais\Entities\RequestAuthority();
+                    $ar->targetEntity = $this;
+                    
+                    if($app->user->id === $this->getOwnerUser()->id){
+                        $ar->requesterUser = $app->user;
+                        $ar->requestedUser = $owner->getOwnerUser();
+                    }else{
+                        $ar->requesterUser = $owner->getOwnerUser();
+                        $ar->requestedUser = $app->user;
+                    }
+                    $ar->destinationAgent = $owner;
+                    $ar->save(true);
+                    
+                    throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+                }else{
+                    throw $e;
+                }
+            }
             $this->owner = $owner;
         }
     }

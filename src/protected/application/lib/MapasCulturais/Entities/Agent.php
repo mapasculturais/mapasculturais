@@ -215,9 +215,32 @@ class Agent extends \MapasCulturais\Entity
             $this->setUser($owner->user);
     }
 
-    function setUser($user){
-        $this->checkPermission('modifyOwner');
-        $user->checkPermission('modify');
+    function setUser(User $user){
+        try{
+            $this->checkPermission('modify');
+            $user->checkPermission('modify');
+        }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+            $app = App::i();
+            if($app->isWorkflowEnabled){
+                $ar = new \MapasCulturais\Entities\RequestAuthority();
+                $ar->targetEntity = $this;
+                
+                if($this->user->id === $app->user->id){
+                    
+                    $ar->requesterUser = $app->user;
+                    $ar->requestedUser = $user;
+                }else{
+                    $ar->requesterUser = $user;
+                    $ar->requestedUser = $app->user;
+                }
+                $ar->save(true);
+
+                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+            }else{
+                throw $e;
+            }
+        }
+        
         $this->user = $user;
     }
 

@@ -42,6 +42,24 @@ CREATE TABLE agent (
 );
 
 
+CREATE SEQUENCE authorization_request_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE authorization_request(
+    id integer DEFAULT nextval('authorization_request_id_seq'::regclass) NOT NULL,
+    requested_user_id integer NOT NULL,
+    requesting_user_id integer NOT NULL,
+    object_type character varying(255) NOT NULL,
+    object_id integer NOT NULL,
+    type character varying(255) NOT NULL,
+    create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+    action_timestamp timestamp without time zone DEFAULT NULL,
+    status smallint NOT NULL
+);
 --
 -- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: -
 --

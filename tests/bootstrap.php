@@ -46,6 +46,13 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      * @var \MapasCulturais\App
      */
     protected $app;
+    
+    protected $entities = [
+        'Agent' => 'agents',
+        'Space' => 'spaces',
+        'Event' => 'events',
+        'Project' => 'projects'
+    ];
 
     public function __construct($name = NULL, array $data = array(), $dataName = '') {
         $this->app = MapasCulturais\App::i();
@@ -62,6 +69,67 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
             else
                 $this->setUserId ($value);
         }
+    }
+    
+    
+    function getNewEntity($class, $user = null){
+        if(!is_null($user)){
+            $_user = $this->app->user->is('guest') ? null : $this->app->user;
+            $this->user = $user;
+        }
+            
+        $app = MapasCulturais\App::i();
+        $classname = 'MapasCulturais\Entities\\' . $class;
+
+        $type = array_shift($app->getRegisteredEntityTypes($classname));
+
+        $entity = new $classname;
+        $entity->name = "Test $class "  . uniqid();
+        $entity->type = $type;
+        $entity->shortDescription = 'A litle short description';
+        
+        if(!is_null($user)){
+            $this->user = $_user;
+        }
+        return $entity;
+    }
+    
+    function assertPermissionDenied($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
+            $exception = $ex;
+        }
+
+        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $exception, $msg);
+    }
+
+
+    function assertPermissionGranted($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
+            $exception = $ex;
+            $msg .= '(message: "' . $ex->getMessage() . '")';
+        }
+
+        $this->assertEmpty($exception, $msg);
+    }
+    
+    function assertAuthorizationRequestCreated($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        } catch (MapasCulturais\Exceptions\WorkflowRequest $ex) {
+            $exception = $ex;
+        }
+
+        $this->assertInstanceOf('MapasCulturais\Exceptions\WorkflowRequest', $exception, $msg);
     }
 
     public function setUserId($user_id = null){

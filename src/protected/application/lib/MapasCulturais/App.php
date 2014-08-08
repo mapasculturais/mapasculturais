@@ -37,6 +37,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read array $config
  * 
  * @property-read bool $isAccessControlEnabled is access control enabled?
+ * @property-read bool $isWorkflowEnabled is the workflow enabled?
  *
  * @method \MapasCulturais\App i() Returns the application object
  */

@@ -3,12 +3,63 @@ namespace MapasCulturais;
 
 $app = App::i();
 return array(
-    'teste de execução pelo deploy' => function() use($app){
-        $agents = $app->repo('Agent')->findAll();
-
-        foreach($agents as $a){
-            echo "AGENTE: $a->name\n";
-        }
+    'create authoriaztion_request schema' => function() use($app){
+        $conn = $app->em->getConnection();
+        $conn->beginTransaction();
+        
+        echo "creating sequence request_id_seq\n";
+        $conn->executeQuery("
+            CREATE SEQUENCE request_id_seq
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;");
+        
+        echo "creating table request\n";
+        $conn->executeQuery("
+            CREATE TABLE request(
+                id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
+                requested_user_id integer NOT NULL,
+                requester_user_id integer NOT NULL,
+                object_type character varying(255) NOT NULL,
+                object_id integer NOT NULL,
+                metadata text,
+                type character varying(255) NOT NULL,
+                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+                action_timestamp timestamp without time zone DEFAULT NULL,
+                status smallint NOT NULL
+            )");
+        
+        echo "creating primary key\n";
+        $conn->executeQuery("
+            ALTER TABLE ONLY request
+                ADD CONSTRAINT request_pk PRIMARY KEY (id);");
+        
+        echo "creating fk requested_user_fk\n";
+        $conn->executeQuery("
+            ALTER TABLE ONLY request
+                ADD CONSTRAINT requested_user_fk FOREIGN KEY (requested_user_id) REFERENCES usr(id);");
+        
+        echo "creating fk requester_user_fk\n";
+        $conn->executeQuery("
+            ALTER TABLE ONLY request
+                ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);");
+        
+        echo "creating index requested_user_index\n";
+        $conn->executeQuery("
+            CREATE INDEX requested_user_index 
+                ON request USING btree (requested_user_id, object_type, object_id);");
+        
+        echo "creating index requester_user_index\n";
+        $conn->executeQuery("
+            CREATE INDEX requester_user_index 
+                ON request USING btree (requester_user_id, object_type, object_id);");
+        
+        echo "drop table authority_request\n";
+        $conn->executeQuery("DROP TABLE authority_request");
+        
+        $conn->commit();
     },
 
     'Virada 2014 - set events is verified' => function() use($app){
