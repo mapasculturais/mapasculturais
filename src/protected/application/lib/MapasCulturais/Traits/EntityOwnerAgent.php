@@ -37,8 +37,8 @@ trait EntityOwnerAgent{
      * 
      * @param \MapasCulturais\Entities\Agent $owner
      */
-    function setOwner(\MapasCulturais\Entities\Agent $owner){
-        if(!$this->owner || $owner->id != $this->owner->id){
+    function setOwner($owner){
+        if(is_object($owner) && !$this->owner || $owner->id != $this->owner->id){
             $this->checkPermission('changeOwner');
             $this->owner = $owner;
         }
