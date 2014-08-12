@@ -27,7 +27,9 @@ trait EntityNested{
         $this->setParent($parent);
     }
 
-    function setParent(\MapasCulturais\Entity $parent){
+    function setParent($parent){
+        if(!is_object($parent))
+            return;
         $parent->checkPermission('createChild');
         
         $error1 = App::txt('O pai não pode ser o filho.');
