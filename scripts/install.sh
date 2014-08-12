@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 PGUSER=postgres
 DBNAME=mapasculturais
 DBUSER=mapasculturais
