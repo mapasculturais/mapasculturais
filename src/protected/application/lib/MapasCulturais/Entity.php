@@ -189,14 +189,9 @@ abstract class Entity implements \JsonSerializable{
         if($this->getOwnerUser()->id == $user->id)
             return true;
 
-        if($this->usesAgentRelation()){
-            $users_with_control = $this->getUsersWithControl();
-
-            foreach($users_with_control as $u){
-                if($user->id == $u->id)
-                    return true;
-            }
-        }
+        if($this->usesAgentRelation() && $this->userHasControl($user))
+            return true;
+        
         return false;
     }
 
