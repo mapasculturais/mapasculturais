@@ -80,7 +80,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $app = MapasCulturais\App::i();
 
         /*
-         * Guest users cant create entities.
+         * Guest users CANNOT create entities.
          */
         $this->user = null;
 
@@ -95,7 +95,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
 
         /*
-         * Super Admins can create entities
+         * Super Admins CAN create entities
          */
         $this->user = 'superAdmin';
 
@@ -109,7 +109,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
 
         /*
-         * Normal users cannot create entities to another users
+         * Normal users CANNOT create entities to another users
          */
         $this->user = 'normal';
 
@@ -129,7 +129,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
 
         /*
-         * Super Admins can create entities to another users
+         * Super Admins CAN create entities to another users
          */
         $this->user = 'superAdmin';
 
@@ -472,7 +472,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
             if($class == 'Agent')
                 continue;
             
-            
             $this->assertPermissionGranted(function() use($user1, $class){
                 $this->user = $user1();
                 $entity = $this->getNewEntity($class, $user1());
@@ -655,7 +654,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
         
         /*
-         *  Asserting that an user with control cannot remove agent relations of agents with control
+         *  Asserting that an user with control CANNOT remove agent relations of agents with control
          */
         
         foreach($this->entities as $class => $plural){
@@ -730,6 +729,70 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->setRelatedAgentControl($user3()->profile, false);
                 
             }, "Asserting that user CANNOT remove control of other related agent in $plural that he has control");
+        }
+        
+        
+        /**
+         * Asserting that an user with control over a space or project can control children spaces or projects
+         */
+        
+        foreach(array('Space' => 'spaces', 'Project' => 'projects') as $class => $plural){
+            $this->resetTransactions();
+            
+            $this->user = $user1();
+            
+            $parentEntity = $this->getNewEntity($class);
+            $parentEntity->owner = $user1()->profile;
+            $parentEntity->save();
+            
+            $childEntity = $this->getNewEntity($class);
+            $childEntity->owner = $user1()->profile;
+            $childEntity->parent = $parentEntity;
+            $childEntity->save();
+            
+            $parentEntity->createAgentRelation($user2()->profile, $GROUP, true, true);
+
+            $this->user = $user2();
+            
+            $this->assertTrue($childEntity->userHasControl($user2()), "Asserting that an user with control over a parent $class CAN have control over child a $class");
+            $this->assertTrue($childEntity->canUser('modify'), "Asserting that an user with control over a parent $class CAN modify a child $class");
+            $this->assertTrue($childEntity->canUser('createAgentRelation'), "Asserting that an user with control over a parent $class CAN create agent relations to a child $class");
+            $this->assertTrue($childEntity->canUser('createChild'), "Asserting that an user with control over a parent $class CAN create children for the child $class");
+            
+            // somente quem controla o owner pode remover. quem controla o parent não.
+            $this->assertFalse($childEntity->canUser('remove'), "Asserting that an user with control over a parent $class CANNOT remove a child $class");
+        }
+        
+        
+        /**
+         * Asserting that an user with control over an agent CONTROL and CAN REMOVE spaces, events and projects of the controlled agent
+         */
+        
+        foreach($this->entities as $class => $plural){
+            if($class === 'Agent')
+                continue;
+            
+            $this->resetTransactions();
+            
+            $this->user = $user1();
+            
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $user1()->profile;
+            $entity->save();
+            
+            $user1()->profile->createAgentRelation($user2()->profile, $GROUP, true, true);           
+            
+            $this->user = $user2();
+            
+            $this->assertTrue($entity->userHasControl($user2()), "Asserting that an user with control over the owner agent CAN CONTROL $plural of this controlled agent");
+            $this->assertTrue($entity->canUser('modify'), "Asserting that an user with control over the owner agent CAN modify $plural of this controlled agent");
+            $this->assertTrue($entity->canUser('createAgentRelation'), "Asserting that an user with control over the owner agent CAN create agent relations to $plural of this controlled agent");
+            if($class != 'Event')
+                $this->assertTrue($childEntity->canUser('createChild'), "Asserting that an user with control over the owner agent CAN create children for $plural of this controlled agent");
+            
+            // somente quem controla o owner pode remover. quem controla o parent não.
+            $this->assertTrue($entity->canUser('remove'), "Asserting that an user with control over the owner agent CAN remove $plural of this controlled agent");
+            
         }
         
         $this->resetTransactions();
