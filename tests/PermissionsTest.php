@@ -849,6 +849,29 @@ class PermissionsTest extends MapasCulturais_TestCase{
             
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
+        
+        
+
+        // Assert that a normal user CAN create an event occurrence in public spaces that he don't have control
+        $this->user = $user0;
+        $public_space = $this->getNewEntity('Space');
+        $public_space->owner = $user0->profile;
+        $public_space->public = true;
+        $public_space->save();
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionGranted(function() use($event, $public_space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $public_space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CAN create an event occurrence in public spaces that he don't have control");
+        
+        
     }
     
     function testProjectEventCreation(){
