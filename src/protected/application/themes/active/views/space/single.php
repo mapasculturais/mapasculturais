@@ -116,6 +116,13 @@ add_angular_entity_assets($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
+            <p><span class="icone"></span><span class="label">Este espaço é:</span> 
+            <?php if(is_editable()): ?>
+                <span class="js-editable" data-edit="public" data-type="select" data-source="[{value: 0, text: 'privado e requer autorização para criar eventos'},{value: 1, text:'público e qualquer pessoa pode criar eventos'}]"><?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?></span>
+            <?php else: ?>
+                <?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?>
+            <?php endif; ?>
+            </p>
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
