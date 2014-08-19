@@ -11,14 +11,14 @@ function mapasculturais_head($entity = null){
     $app = App::i();
     $site_name = $app->siteName;
     
-    $title = $app->view->getTitle($entity);
+    $title = htmlentities($app->view->getTitle($entity));
     $image_url = $app->view->asset('img/share.png', false);
     if($entity){
-        $description = $entity->shortDescription;
+        $description = htmlentities($entity->shortDescription);
         if($entity->avatar)
             $image_url = $entity->avatar->transform('avatarBig')->url;
     }else{
-        $description = $app->siteDescription;
+        $description = htmlentities($app->siteDescription);
     }
     
     ?>
