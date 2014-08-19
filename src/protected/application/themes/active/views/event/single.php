@@ -19,7 +19,7 @@ $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
 add_agent_relations_to_js($entity);
 add_angular_entity_assets($entity);
 
-$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.min.js');
+$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
 $app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
 add_map_assets();
@@ -37,8 +37,9 @@ add_occurrence_frequencies_to_js();
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
-                <p><span class="label">Duração:</span> {{rule.duration}}</p>
+                <p><span class="label">Duração:</span> {{rule.duration}} min</p>
             {{/rule.duration}}
+            <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
             <?php if(is_editable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
@@ -64,40 +65,22 @@ add_occurrence_frequencies_to_js();
         <?php endif; ?>
     </div>
 <?php $eventOccurrenceItemTemplate = ob_get_clean(); ?>
-
-
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
-    <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
-        {{#space}}
+    <div class="regra clearfix">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
-        {{/space}}
         <div class="infos">
-            {{#rule.description}}
-                <p>{{rule.description}}</p>
-            {{/rule.description}}
-            {{^rule.description}}
-                <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
-                {{#rule.duration}}
-                    <p><span class="label">Duração:</span> {{rule.duration}}</p>
-                {{/rule.duration}}
-                <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
-                {{#rule.screen_until}}
-                    <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
-                {{/rule.screen_until}}
-            {{/rule.description}}
-            {{#rule.price}}
-                <p><span class="label">Preço:</span> {{rule.price}}</p>
-            {{/rule.price}}
+            <p class="descricao-legivel">{{occurrencesDescription}}</p>
+            {{#occurrencesPrice}}
+                <p><span class="label">Preço:</span> {{occurrencesPrice}}</p>
+            {{/occurrencesPrice}}
+            <p><span class="label">Endereço:</span> {{space.endereco}}</p>
         </div>
-
         <!-- .infos -->
-        {{#space}}
-        <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
+        <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
         <!-- .mapa -->
-        {{/space}}
     </div>
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
@@ -144,8 +127,8 @@ add_occurrence_frequencies_to_js();
             <?php endif; ?>
             >
                 <?php if (is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php add_ajax_uploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
@@ -157,11 +140,11 @@ add_occurrence_frequencies_to_js();
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                 <div class="avatar">
-                    <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                    <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--event.png" />
                 <?php endif; ?>
                 <?php if (is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -258,12 +241,43 @@ add_occurrence_frequencies_to_js();
             <!--.servico-->
             <div class="servico ocorrencia clearfix">
                 <h6>Este evento ocorre em:</h6>
+
                 <?php
-                //$entity->getMetaLists(array('group'=>'links'));
-                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() : array();
+
+                //Event->getOccurrencesGroupedBySpace()
+                function getOccurrencesBySpace($occurrences){
+                    $spaces = array();
+                    usort($occurrences, function($a, $b) {
+                        return $a->space->id - $b->space->id;
+                    });
+                    foreach ($occurrences as $occurrence) {
+                        if (!array_key_exists($occurrence->space->id, $spaces)){
+                            $spaces[$occurrence->space->id] = array(
+                                'space' => $occurrence->space,
+                                'location' => $occurrence->space->location,
+                                'occurrences' => array()
+                            );
+                        }
+                        $spaces[$occurrence->space->id]['occurrences'][] = $occurrence;
+                    }
+                    return $spaces;
+                }
+
+                function compareArrayElements($array){
+                    $compareBase = null;
+                    foreach($array as $element){
+                        if($compareBase === null) $compareBase = $element;
+                        if($compareBase !== $element)
+                            return false;
+                    }
+                    return true;
+                }
+
+                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() :  array();
                 ?>
                 <?php if (is_editable() || $occurrences): ?>
                     <div class="js-event-occurrence">
+
                         <?php
 
                         $screenFrequencies = getOccurrenceFrequencies();
@@ -271,31 +285,54 @@ add_occurrence_frequencies_to_js();
 
                         if ($occurrences) {
 
-                            $spaces = array();
+                            if (is_editable()) {
 
-                            usort($occurrences, function($a, $b) {
-                                return $a->space->id - $b->space->id;
-                            });
+                                foreach ($occurrences as $occurrence) {
+                                    $templateData = json_decode(json_encode($occurrence));
+                                    if(!is_object($templateData->rule))
+                                        $templateData->rule = new stdclass;
+                                    $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
+                                    $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
+                                    $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
 
-                            foreach ($occurrences as $occurrence) {
+                                    $templateData->rule->screen_spaceAddress = $occurrence->space->endereco;
 
-                                $templateData = json_decode(json_encode($occurrence));
-                                if(!is_object($templateData->rule))
-                                    $templateData->rule = new stdclass;
-                                $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
-                                $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
-                                $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
-                                $templateData->serialized = json_encode($templateData);
-                                $templateData->formAction = $occurrence->editUrl;
-
-                                if (is_editable()) {
+                                    $templateData->serialized = json_encode($templateData);
+                                    $templateData->formAction = $occurrence->editUrl;
                                     echo $mustache->render($eventOccurrenceItemTemplate, $templateData);
-                                } else {
-                                    if (!array_key_exists($occurrence->space->id, $spaces))
-                                        $spaces[$occurrence->space->id] = true;
-                                    else
-                                        $templateData->space = null;
+                                }
 
+                            }else{
+
+                                $spaces = getOccurrencesBySpace($occurrences);
+
+                                $templateData = array();
+                                $templatesData = array();
+                                foreach($spaces as $space){
+                                    $templateData = json_decode(json_encode($space));
+                                    $templateData->occurrencesDescription = '';
+                                    $templateData->occurrencesPrice = '';
+                                    $prices = array();
+                                    foreach ($space['occurrences'] as $occurrence) {
+                                        $prices[] = !empty($occurrence->rule->price) ? strtolower(trim($occurrence->rule->price)) : '';
+                                    }
+                                    $arePricesTheSame = compareArrayElements($prices);
+                                    if($arePricesTheSame && !empty($space['occurrences'][0]->rule->price)){
+                                        $templateData->occurrencesPrice = $space['occurrences'][0]->rule->price;
+                                    }
+                                    foreach ($space['occurrences'] as $occurrence) {
+                                        if(!empty($occurrence->rule->description))
+                                            $templateData->occurrencesDescription .= trim($occurrence->rule->description);
+                                        if(!$arePricesTheSame)
+                                            $templateData->occurrencesDescription .= '. '.$occurrence->rule->price;
+                                        if(!empty($occurrence->rule->description))
+                                            $templateData->occurrencesDescription .= '; ';
+                                    }
+                                    $templateData->occurrencesDescription = substr($templateData->occurrencesDescription,0,-2);
+                                    $templatesData[] = $templateData;
+                                }
+
+                                foreach($templatesData as $templateData){
                                     echo $mustache->render($eventOccurrenceItemTemplate_VIEW, $templateData);
                                 }
 
@@ -348,6 +385,10 @@ add_occurrence_frequencies_to_js();
 <!--.main-content-->
 <div class="barra-lateral evento barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
+    <?php endif; ?>
+    
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity' => $entity)); ?>
     <!-- Related Agents END -->
@@ -398,7 +439,11 @@ add_occurrence_frequencies_to_js();
             </div>
             <div class="grupo-de-campos">
                 <label for="duracao">Duração:</label><br>
-                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="00h00"  value="{{rule.duration}}">
+                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="minutos"  value="{{rule.duration}}">
+            </div>
+            <div class="grupo-de-campos">
+                <label for="horario-de-fim">Horário final:</label><br>
+                <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
                 <span class="label">Frequência:</span><br>

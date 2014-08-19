@@ -11,7 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="space")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\Space")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Space")
  * @ORM\HasLifecycleCallbacks
  */
 class Space extends \MapasCulturais\Entity
@@ -81,6 +81,14 @@ class Space extends \MapasCulturais\Entity
      */
     protected $name;
 
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="public", type="boolean", nullable=false)
+     */
+    protected $public = false;
+    
     /**
      * @var string
      *
@@ -139,7 +147,7 @@ class Space extends \MapasCulturais\Entity
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
-    protected $children;
+    protected $_children;
 
 
     /**

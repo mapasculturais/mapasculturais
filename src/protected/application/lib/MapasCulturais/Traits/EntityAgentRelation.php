@@ -118,6 +118,12 @@ trait EntityAgentRelation {
         foreach($this->getUsersWithControl() as $u)
             if($u->id == $user->id)
                 return true;
+            
+        if($this->usesOwnerAgent() && $this->owner->userHasControl($user))
+            return true;
+            
+        if($this->usesNested() && is_object($this->parent) && $this->parent->userHasControl($user))
+            return true;
 
         return false;
     }

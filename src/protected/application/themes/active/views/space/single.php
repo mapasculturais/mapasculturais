@@ -33,8 +33,8 @@ add_angular_entity_assets($entity);
             <?php endif; ?>
         >
             <?php if(is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
+                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
@@ -46,11 +46,11 @@ add_angular_entity_assets($entity);
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--space.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -116,6 +116,13 @@ add_angular_entity_assets($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
+            <p><span class="icone"></span><span class="label">Este espaço é:</span> 
+            <?php if(is_editable()): ?>
+                <span class="js-editable" data-edit="public" data-type="select" data-source="[{value: 0, text: 'privado e requer autorização para criar eventos'},{value: 1, text:'público e qualquer pessoa pode criar eventos'}]"><?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?></span>
+            <?php else: ?>
+                <?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?>
+            <?php endif; ?>
+            </p>
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
@@ -219,24 +226,28 @@ add_angular_entity_assets($entity);
 </article>
 <div class="barra-lateral espaco barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
+    <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-    <div class="bloco">
-        <?php if($entity->children): ?>
-        <h3 class="subtitulo">Sub-espaços</h3>
-        <ul class="js-slimScroll">
-            <?php foreach($entity->children as $space): ?>
-            <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
-            <?php endforeach; ?>
-        </ul>
-        <?php endif; ?>
+    <?php if($this->controller->action !== 'create'): ?>
+        <div class="bloco">
+            <?php if($entity->children): ?>
+            <h3 class="subtitulo">Sub-espaços</h3>
+            <ul class="js-slimScroll">
+                <?php foreach($entity->children as $space): ?>
+                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
 
-        <?php if($entity->id && $entity->canUser('createChield')): ?>
-        <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
-        <?php endif; ?>
-    </div>
-
+            <?php if($entity->id && $entity->canUser('createChield')): ?>
+            <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     <!-- Downloads BEGIN -->
     <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->

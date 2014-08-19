@@ -14,7 +14,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\CachedRepository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Agent")
  * @ORM\HasLifecycleCallbacks
  */
 class Agent extends \MapasCulturais\Entity
@@ -144,19 +144,19 @@ class Agent extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $spaces = array();
+    protected $_spaces = array();
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $projects = array();
+    protected $_projects = array();
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $events = array();
+    protected $_events = array();
     
     
     /**
@@ -184,6 +184,18 @@ class Agent extends \MapasCulturais\Entity
         $this->isUserProfile = true;
 
         $this->save(true);
+    }
+    
+    function getProjects(){
+        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED);
+    }
+    
+    function getEvents(){
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
+    
+    function getSpaces(){
+        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED);
     }
 
 

@@ -3,6 +3,7 @@
 
     var app = angular.module('SearchService', ['angularSpinner']);
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
+        $rootScope.lastResult = $rootScope.lastResult || { agent:null, space:null, event:null };
         var activeRequests = 0,
             canceler = null,
             lastEmitedResult = 'null',
@@ -20,7 +21,7 @@
         };
 
         function search (ev, data){
-            
+
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -41,7 +42,7 @@
             }
 
             canceler = $q.defer();
-            
+
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
                 if(data.global.enabled.agent){
@@ -49,6 +50,8 @@
                     if(!angular.equals(agentQueryData, lastQueries.agent) || !compareEnabledEntities){
                         lastQueries.agent = angular.copy(agentQueryData);
                         callApi('agent', agentQueryData);
+                    }else{
+                        results.agent = $rootScope.lastResult.agent;
                     }
                 }
 
@@ -57,6 +60,8 @@
                     if(!angular.equals(eventQueryData, lastQueries.event) || !compareEnabledEntities){
                         lastQueries.event = angular.copy(eventQueryData);
                         callApi('event', eventQueryData);
+                    }else{
+                        results.event = $rootScope.lastResult.event;
                     }
                 }
 
@@ -65,19 +70,21 @@
                     if(!angular.equals(spaceQueryData, lastQueries.space) || !compareEnabledEntities){
                         lastQueries.space = angular.copy(spaceQueryData);
                         callApi('space', spaceQueryData);
+                    }else{
+                        results.space = $rootScope.lastResult.space;
                     }
                 }
-                
+
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
                 var activeEntity = data.global.filterEntity;
                 var listQueryData = data2searchData(data[activeEntity]);
-                
+
                 if(activeEntity !== lastQueries.listedEntity)
                     $rootScope.pagination[activeEntity] = 1;
-                
+
                 var isDiff = (paginating && $rootScope.pagination[activeEntity] !== lastQueries.page) || (!angular.equals(listQueryData, lastQueries.list) || lastQueries.listedEntity !== activeEntity);
-                
+
                 if( isDiff ){
                     $rootScope.isPaginating = true;
                     lastQueries.listedEntity = activeEntity;
@@ -94,7 +101,7 @@
             function callApi(entity, sData){
                 var requestEntity = entity,
                     requestAction = 'find';
-                
+
                 if(entity === 'event'){
                     if(data.global.viewMode === 'list'){
                         requestAction = 'findByLocation';
@@ -104,10 +111,10 @@
                     }
 
                 }
-                
+
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
-                
+
                 //Counting XX events in YY spaces (events in map mode)
                 if(requestEntity === 'space' && requestAction === 'findByEvents'){
 
@@ -189,10 +196,10 @@
                             countAndRemoveResultsNotInMap('event', results);
                         }
                     }
-                    
+
                     lastEmitedResult = JSON.stringify(results);
                     results.paginating = paginating;
-
+                    $rootScope.lastResult = results;
                     $rootScope.$emit('searchResultsReady', results);
                 }
             }
@@ -207,7 +214,7 @@
                 var searchData = {};
 
                 if(entityData.keyword){
-                    searchData.name = 'ILIKE(*' + entityData.keyword.replace(' ', '*') + '*)';
+                    searchData['@keyword'] = entityData.keyword;
                 }
 
                 if(entityData.areas && entityData.areas.length){
@@ -223,7 +230,7 @@
                         return MapasCulturais.taxonomyTerms.linguagem[e];
                     });
                     selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
-                    
+
                     searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
                 }
 
@@ -281,9 +288,9 @@
                     else if(entity === 'project')
                         searchData['@select'] += ',registrationFrom,registrationTo';
                     else if(entity === 'event')
-                        searchData['@select'] += ',classificacaoEtaria';
+                        searchData['@select'] += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
 
-                    searchData['@files'] = '(avatar.avatarBig):url';
+                    searchData['@files'] = '(avatar.avatarMedium):url';
                     if(page) {
                         searchData['@page'] = page;
                         searchData['@limit'] = '10';

@@ -9,8 +9,18 @@ $class_project = 'MapasCulturais\Entities\Project';
 
 $class_file = 'MapasCulturais\Entities\File';
 
-$num_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_events = $em->createQuery("SELECT COUNT(e) FROM $class_event e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
+$num_events = $app->controller('Event')->apiQueryByLocation(array(
+    '@count' => 1,
+    '@from' => date('Y-m-d'),
+    '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
+));
+
+$num_verified_events = $app->controller('Event')->apiQueryByLocation(array(
+    '@count' => 1,
+    '@from' => date('Y-m-d'),
+    '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
+    'isVerified' => 'EQ(true)'
+)); 
 
 $num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 $num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
@@ -102,15 +112,15 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
         <h1>Bem-vind@!</h1>
         <p>O SP Cultura é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria Municipal de Cultura de São Paulo sobre o cenário cultural paulistano. Ficou mais fácil se programar para conhecer as opções culturais que a cidade oferece: shows musicais, espetáculos teatrais, sessões de cinema, saraus, entre outras. Além de conferir a agenda de eventos, você também pode colaborar na gestão da cultura da cidade: basta criar seu perfil de <a href="<?php echo $url_search_agents ?>" >agente cultural</a>. A partir deste cadastro, fica mais fácil participar dos editais de fomento às artes da Prefeitura e também divulgar seus <a href="<?php echo $url_search_events; ?>">eventos</a>, <a href="<?php echo $url_search_spaces; ?>">espaços</a> ou <a href="<?php echo $url_search_projects; ?>">projetos</a>.</p>
         <form id="form-de-busca-geral" class="clearfix">
-            <input id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave" />
+            <input tabindex="1" id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
             <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
                 <div class="placeholder"><span class="icone icon_search"></span> Buscar</div>
                 <div class="submenu-dropdown">
                     <ul>
-                        <li id="filtro-de-eventos"  data-entity="event"><span class="icone icon_calendar"></span> Eventos</li>
-                        <li id="filtro-de-agentes"  data-entity="agent"><span class="icone icon_profile"></span> Agentes</li>
-                        <li id="filtro-de-espacos"  data-entity="space"><span class="icone icon_building"></span> Espaços</li>
-                        <li id="filtro-de-projetos" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icone icon_document_alt"></span> Projetos</li>
+                        <li tabindex="2" id="filtro-de-eventos"  data-entity="event"><span class="icone icon_calendar"></span> Eventos</li>
+                        <li tabindex="3" id="filtro-de-agentes"  data-entity="agent"><span class="icone icon_profile"></span> Agentes</li>
+                        <li tabindex="4" id="filtro-de-espacos"  data-entity="space"><span class="icone icon_building"></span> Espaços</li>
+                        <li tabindex="5" id="filtro-de-projetos" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icone icon_document_alt"></span> Projetos</li>
                     </ul>
                 </div>
             </div>
@@ -157,7 +167,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos de Hoje</a>
+        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos da Semana</a>
         <a class="botao-grande adicionar" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
     </div>
 </article>

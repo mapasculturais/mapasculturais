@@ -3,6 +3,7 @@ namespace MapasCulturais;
 
 use Respect\Validation\Validator as v;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * The base class for all entities used in MapasCulturais.
@@ -169,6 +170,14 @@ abstract class Entity implements \JsonSerializable{
         
         return $user;
     }
+    
+    protected function fetchByStatus($collection, $status){
+        if(!is_object($collection) || !method_exists($collection, 'matching'))
+                return array();
+        
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
+        return $collection->matching($criteria);
+    }
 
     protected function genericPermissionVerification($user){
         if($user->is('guest'))
@@ -180,14 +189,9 @@ abstract class Entity implements \JsonSerializable{
         if($this->getOwnerUser()->id == $user->id)
             return true;
 
-        if($this->usesAgentRelation()){
-            $users_with_control = $this->getUsersWithControl();
-
-            foreach($users_with_control as $u){
-                if($user->id == $u->id)
-                    return true;
-            }
-        }
+        if($this->usesAgentRelation() && $this->userHasControl($user))
+            return true;
+        
         return false;
     }
 
@@ -360,10 +364,11 @@ abstract class Entity implements \JsonSerializable{
      *
      * @return string
      */
-    public function getHookClassPath($class = null){
-        if(!$class)
-            $class = $this->getClassName();
-
+    public static function getHookClassPath($class = null){
+        if(!$class){
+            $called_class = get_called_class();
+            $class = $called_class::getClassName();
+        }
         return preg_replace('#^MapasCulturais\.Entities\.#','',str_replace('\\','.',$class));
     }
 
@@ -400,7 +405,7 @@ abstract class Entity implements \JsonSerializable{
         
         // delete the entity cache
         $repo = $this->repo();
-        if(method_exists($repo, 'deleteEntityCache'))
+        if($repo->usesCache())
             $repo->deleteEntityCache($this->id);
                 
                 

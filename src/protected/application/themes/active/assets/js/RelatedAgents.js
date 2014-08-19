@@ -92,6 +92,13 @@
         
         $scope.data = {};
         
+        $scope.agentRelationDisabledCD = MapasCulturais.agentRelationDisabledCD || [];
+        
+        $scope.disabledCD = function(groupName){
+            return $scope.agentRelationDisabledCD.indexOf(groupName) >= 0;
+        };
+        
+        
         function getGroup(groupName){
             var result = null;
             $scope.groups.forEach(function(group){
@@ -127,7 +134,7 @@
         };
         
         $scope.createGroup = function(){
-            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) ){
+            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName && $scope.data.newGroupName.toLowerCase().trim() !== 'registration') ){
                 var newGroup = {name: $scope.data.newGroupName, relations: []};
                 
                 $scope.groups = [newGroup].concat($scope.groups);

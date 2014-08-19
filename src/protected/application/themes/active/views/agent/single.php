@@ -34,11 +34,11 @@ add_angular_entity_assets($entity);
             <?php endif; ?>
         >
         <?php if(is_editable()): ?>
-                <a class="botao editar js-open-dialog" data-dialog="#dialog-change-header" href="#">editar</a>
-                <div id="dialog-change-header" class="js-dialog" title="Editar Imagem da Capa">
-                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-                </div>
-            <?php endif; ?>
+            <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+            <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
+                <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+            </div>
+        <?php endif; ?>
         </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">
@@ -47,11 +47,11 @@ add_angular_entity_assets($entity);
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar-padrao.png" />
+                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--agent.png" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
-                    <a class="botao editar js-open-dialog" data-dialog="#dialog-change-avatar" href="#">editar</a>
-                    <div id="dialog-change-avatar" class="js-dialog" title="Editar avatar">
+                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
@@ -194,10 +194,15 @@ add_angular_entity_assets($entity);
 </article>
 <div class="barra-lateral agente barra-direita">
     <div class="setinha"></div>
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>
+    <?php endif; ?>
+    
     <!-- Related Agents BEGIN -->
         <?php $this->part('parts/related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
 
+    <?php if(count($entity->spaces) > 0): ?>
     <div class="bloco">
         <h3 class="subtitulo">Espaços do agente</h3>
         <ul class="js-slimScroll">
@@ -206,6 +211,7 @@ add_angular_entity_assets($entity);
             <?php endforeach; ?>
         </ul>
     </div>
+    <?php endif; ?>
     <!--
     <div class="bloco">
         <h3 class="subtitulo">Projetos do agente</h3>

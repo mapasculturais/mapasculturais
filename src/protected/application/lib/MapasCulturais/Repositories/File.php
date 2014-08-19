@@ -1,9 +1,11 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
 
 use MapasCulturais\App;
 
-class File extends CachedRepository{
+class File extends \MapasCulturais\Repository{
+    use \MapasCulturais\Traits\RepositoryCache;
+    
     function findByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 

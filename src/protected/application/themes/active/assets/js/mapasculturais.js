@@ -5,6 +5,11 @@ $(function(){
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
     MapasCulturais.Modal.initButtons('.js-open-dialog');
+
+    MapasCulturais.EditBox.initBoxes('.js-editbox');
+    MapasCulturais.EditBox.initButtons('.js-open-editbox');
+
+
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
 
@@ -27,6 +32,24 @@ $(function(){
 
 
         });
+    }
+
+    MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
+
+
+    // identify Internet Explorer
+    if(navigator.appName != 'Microsoft Internet Explorer' && !(navigator.appName == 'Netscape' && navigator.userAgent.indexOf('Trident') !== -1)){
+        //not IE
+    }else{
+        // is IE
+        $('body').addClass('ie');
+        //identify version
+        var ua = navigator.userAgent.toLowerCase();
+        if(!isNaN(version = parseInt(ua.split('msie')[1]))){ // 7, 8, 9, 10
+            $('body').addClass('ie'+version);
+        }else if( parseInt(ua.split('rv:')[1]) === 11) { // 11
+            $('body').addClass('ie11');
+        }
     }
 
 });
@@ -67,7 +90,7 @@ MapasCulturais.TemplateManager = {
     }
 };
 
-MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar-padrao.png';
+MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
 
 MapasCulturais.isEditable = MapasCulturais.request.action == 'create' || MapasCulturais.request.action == 'edit';
 
@@ -106,13 +129,6 @@ MapasCulturais.confirm = function (message, cb){
 
 MapasCulturais.Modal = {
     time: 'fast',
-    cssInit: {position:'fixed', left:0, top:0, width: $(window).width(),  opacity:0 },
-    cssFinal: {left: $(window).width()/4, top:$(window).height()/4, width: $(window).width()/2, height: $(window).height()/2, opacity:1},
-
-    cssBg: {position:'fixed', background:'white', top:0, left:0, width:'100%', zIndex:999},
-    cssBgOpacity: .95,
-
-    $bg: null,
     initKeyboard: function (selector){
         $(document.body).keyup(function (e){
             if(e.keyCode == 27){
@@ -126,15 +142,8 @@ MapasCulturais.Modal = {
     },
 
     initDialogs: function(selector){
-        if(!MapasCulturais.Modal.$bg){
-            MapasCulturais.Modal.$bg = $('<div></div>');
-            MapasCulturais.Modal.$bg.css(this.cssBg);
-            MapasCulturais.Modal.$bg.click(function(){
-                MapasCulturais.Modal.close(selector);
-            });
-            $('body').append(MapasCulturais.Modal.$bg.hide());
-        }
         $(selector).each(function(){
+            $('body').append($(this));
             if($(this).find('.js-dialog-disabled').length)
                 return;
 
@@ -184,80 +193,174 @@ MapasCulturais.Modal = {
         var $dialog = $(selector);
         //alert('closing');
         $dialog.find('.editable').editable('hide');
-        $dialog.css(MapasCulturais.Modal.cssFinal).animate(MapasCulturais.Modal.cssInit, MapasCulturais.Modal.time, function(){
-            $dialog.hide();
-        });
-        MapasCulturais.Modal.$bg.animate({opacity:0}, MapasCulturais.Modal.time, function(){
-            $(this).hide();
-        });
+        $dialog.hide();
         return;
     },
 
     open: function(selector){
-        $('body').css('overflow','hidden');
         var $dialog = $(selector);
-        this.$bg.css({opacity:0, height:$('body').height()}).show().animate({opacity:this.cssBgOpacity},this.time);
 
         $dialog.find('div.mensagem.erro').html('').hide();
         $dialog.find('.js-ajax-upload-progress').hide();
-//        if($dialog.find('form').length)
-//            $dialog.find('form').get(0).reset();
-        $dialog.css(this.cssInit).show().animate(this.cssFinal, MapasCulturais.Modal.time, function(){
-            $dialog.find('input,textarea').not(':hidden').first().focus();
-        });
+        $dialog.css('opacity',0).show();
+        setTimeout(function(){
+           var top = $dialog.height() + 100 > $(window).height() ? $(window).scrollTop() + 100 : $(window).scrollTop() + ( $(window).height() - $dialog.height()) / 2 - 50;
+
+           $dialog.css({
+                top: top,
+                left: '50%',
+                marginLeft: -$dialog.width() / 2,
+                opacity: 1
+            });
+        },25);
+
+
         return;
     }
 };
 
-MapasCulturais.MetaListUpdateDialog = function ($caller){
-    var $dialog = $($caller.data('dialog'));
-    var $form = $dialog.find('.js-metalist-form');
-    var group = $dialog.data('metalist-group');
 
-    var item = $caller.data('item') || {};
+MapasCulturais.EditBox = {
+    time: 'fast',
 
-    $form.data('metalist-action', $caller.data('metalist-action'));
-    $form.data('metalist-group', group);
+    setPosition: function($box, target){
+        if($box.hasClass('mc-left')){
+            $box.position({
+                my: 'right-10 center',
+                at: 'left center',
+                of: target
+            });
 
-    if($caller.data('metalist-action') == 'edit'){
-        $form.find('input.js-metalist-group').attr('name', '').val('');
-        $form.attr('action', MapasCulturais.baseURL + 'metalist/single/' + item.id);
-    }else{
-        $form.find('input.js-metalist-group').attr('name', 'group').val(group);
-        $form.attr('action', $dialog.data('action-url'));
-    }
+        }else if($box.hasClass('mc-right')){
+            $box.position({
+                my: 'left+10 center',
+                at: 'right center',
+                of: target
+            });
 
-    $form.data('response-target', $caller.data('response-target'));
+        }else if($box.hasClass('mc-top')){
+            $box.position({
+                my: 'center bottom-10',
+                at: 'center top',
+                of: target
+            });
 
-    // define os labels do form
-    $form.find('label.js-metalist-title span').html($dialog.data('metalist-title-label'));
-    $form.find('label.js-metalist-value span').html($dialog.data('metalist-value-label'));
-    $form.find('label.js-metalist-description span').html($dialog.data('metalist-description-label'));
+        }else if($box.hasClass('mc-bottom')){
+            $box.position({
+                my: 'center top+10',
+                at: 'center bottom',
+                of: target
+            });
+        }
+    },
 
-    // define os valores dos inputs do form
-    $form.find('input.js-metalist-title').val(item.title);
-    $form.find('input.js-metalist-value').val(item.value);
-    $form.find('textarea.js-metalist-description').val(item.description);
-
-
-
-    var responseTemplate = '';
-    //If Edit or insert:
-    if($caller.data('metalist-action') == 'edit'){
-        responseTemplate = $dialog.data('response-template');
-    }else{
-        $dialog.find('h2').html($caller.data('dialog-title'));
-        responseTemplate = $caller.data('response-template');
-    }
-
-    $form.find('script.js-response-template').text(responseTemplate);
-    console.log(''  )
-
-    //if this metalist is of videos,changing a video url results in getting its title from its provider's api and set it to its title field
-    if(group == 'videos') {
-        $form.find('input.js-metalist-value').on('change', function(){
-            MapasCulturais.Video.getAndSetVideoData($(this).val(), $form.find('input.js-metalist-title'), MapasCulturais.Video.setTitle);
+    initKeyboard: function (selector){
+        $(document.body).keyup(function (e){
+            if(e.keyCode == 27){
+                $(selector).each(function(){
+                   if($(this).is(':visible')) {
+                       $(this).find('.js-close').click();
+                   }
+                });
+            }
         });
+    },
+
+    initBoxes: function(selector){
+
+        $(selector).each(function(){
+            var $dialog = $(this);
+
+            if($dialog.find('.js-dialog-disabled').length)
+                return;
+
+            if($dialog.data('dialog-init'))
+                return;
+
+            if($dialog.data('init'))
+                return;
+
+            $dialog.data('init', true);
+
+            /*$dialog.hide();  Moved to style.css */
+
+            $dialog.addClass('edit-box');
+
+            $dialog.data('dialog-init', 1);
+            if($dialog.attr('title')){
+                $dialog.prepend('<header><h1>' + $(this).attr('title') + '</h1></header>');
+            }
+            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
+            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
+
+            $dialog.append('<footer><button type="submit" class="mc-submit">' + submit_label + '</button> <button class="mc-cancel botao simples">' + cancel_label + '</button></footer><div class="mc-arrow"></div>');
+
+            // close button
+            $dialog.find('.mc-cancel').click(function (){
+                MapasCulturais.EditBox.close($dialog);
+                return false;
+            });
+
+            // submit form
+            $dialog.find('footer button.mc-submit').click(function(){
+                $dialog.find('form').submit();
+            });
+        });
+    },
+
+    initButtons: function(selector){
+        $(selector).each(function(){
+            var $button = $(this);
+            var dialog_selector = $(this).data('target');
+            var $dialog = $(dialog_selector);
+            if($dialog.find('.js-dialog-disabled').length)
+                $(this).addClass('inactive').addClass('hltip').attr('title', $dialog.find('.js-dialog-disabled').data('message'));
+
+        });
+        $(selector).click(function(){
+            var $button = $(this);
+            if($button.hasClass('inactive'))
+                return false;
+
+            var dialog_selector = $button.data('target');
+
+            MapasCulturais.EditBox.open(dialog_selector, $button);
+
+            if($button.data('dialog-title'))
+                $(dialog_selector).find('header h1').html($button.data('dialog-title'));
+
+            if( $button.data('dialog-callback') )
+                eval( $button.data('dialog-callback'))($button);
+
+            return false;
+        });
+    },
+
+    close: function(selector){
+        $('body').css('overflow','auto');
+        var $dialog = $(selector);
+        //alert('closing');
+        $dialog.find('.editable').editable('hide');
+        $dialog.hide();
+        return;
+    },
+
+    open: function(selector, $button){
+        var $dialog = $(selector);
+        $dialog.find('div.mensagem.erro').html('').hide();
+
+        MapasCulturais.AjaxUploader.resetProgressBar(selector);
+
+        $dialog.show();
+        $dialog.find('input,textarea').not(':hidden').first().focus();
+        $dialog.css('opacity',0);
+        MapasCulturais.EditBox.setPosition($dialog, $button);
+        setTimeout(function(){
+            MapasCulturais.EditBox.setPosition($dialog, $button);
+            $dialog.css('opacity',1);
+        },25);
+
+        return;
     }
 };
 

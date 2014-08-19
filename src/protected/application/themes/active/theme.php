@@ -9,7 +9,52 @@ function is_editable() {
 
 function mapasculturais_head($entity = null){
     $app = App::i();
+    $site_name = $app->siteName;
+    
+    $title = $app->view->getTitle($entity);
+    $image_url = $app->view->asset('img/share.png', false);
+    if($entity){
+        $description = $entity->shortDescription;
+        if($entity->avatar)
+            $image_url = $entity->avatar->transform('avatarBig')->url;
+    }else{
+        $description = $app->siteDescription;
+    }
+    
     ?>
+    <!-- for Google -->
+    <meta name="description" content="<?php echo $description ?>" />
+    <meta name="keywords" content="<?php echo $site_name ?>" />
+
+    <meta name="author" content="<?php echo $site_name ?>" />
+    <meta name="copyright" content="<?php echo $site_name ?>" />
+    <meta name="application-name" content="<?php echo $site_name ?>" />
+    
+    <!-- for Google+ -->
+    <meta itemprop="name" content="<?php echo $title ?>"> 
+    <meta itemprop="description" content="<?php echo $description ?>"> 
+    <meta itemprop="image" content="<?php echo $image_url ?>">
+    
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="<?php echo $title;?>" />
+    <meta name="twitter:description" content="<?php echo $description ?>" />
+    <meta name="twitter:image" content="<?php echo $image_url ?>" />
+    
+    <!-- for Facebook -->
+    <meta property="og:title" content="<?php echo $title ?>" /> 
+    <meta property="og:type" content="article" /> 
+    <meta property="og:image" content="<?php echo $image_url ?>" />
+    <meta property="og:description" content="<?php echo $description ?>" /> 
+    <meta property="og:site_name" content="<?php echo $site_name ?>" /> 
+    <?php if($entity): ?>
+        <meta property="og:url" content="<?php echo $entity->singleUrl; ?>" />
+        <meta property="article:published_time" content="<?php echo $entity->createTimestamp->format('Y-m-d') ?>" /> 
+        <meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" /> 
+    <?php endif; ?>
+
+    <?php $app->applyHook('mapasculturais.head'); ?>
+        
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
@@ -61,6 +106,7 @@ function body_footer(){
 $app->hook('view.render(<<agent|space|project|event>>/single):before', function() use ($app) {
     $app->enqueueScript('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
     $app->enqueueStyle('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/magnific-popup.css');
+    $app->enqueueStyle('app', 'magnific-popup', '/css/magnific-popup.css');
 });
 
 $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
@@ -256,7 +302,7 @@ function add_agent_relations_to_js($entity){
  * @param type $response_transform
  * @param type $add_description_input
  */
-function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.doc, .xls, .pdf, .jpg ou .png') {
+function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
     App::i()->view->part('parts/ajax-uploader', array(
         'file_owner' => $file_owner,
         'file_group' => $group_name,
@@ -345,4 +391,41 @@ $app->hook('entity(event).load', function() {
 
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
+});
+
+
+$app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
+    $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
+        
+    $class = $this->getClassName();
+    
+    $joins .= "LEFT JOIN 
+                MapasCulturais\Entities\TermRelation 
+                    tr 
+                WITH 
+                    tr.objectType = '$class' AND 
+                    tr.objectId = e.id
+                    LEFT JOIN 
+                        tr.term 
+                            t 
+                        WITH 
+                            t.taxonomy = '{$taxonomy->id}'";
+});
+
+$app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where){
+    $where .= " OR lower(t.term) LIKE lower(:keyword) ";
+});
+
+$app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
+    $joins .= " LEFT JOIN e.project p
+                LEFT JOIN MapasCulturais\Entities\EventMeta m
+                    WITH
+                        m.key = 'subTitle' AND
+                        m.owner = e
+                ";
+});
+
+$app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
+    $where .= " OR lower(p.name) LIKE lower(:keyword) 
+                OR lower(m.value) LIKE lower(:keyword)";
 });

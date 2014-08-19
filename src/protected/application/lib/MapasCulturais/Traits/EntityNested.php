@@ -13,6 +13,11 @@ trait EntityNested{
         return true;
     }
 
+    function getChildren(){
+        $class = get_called_class();
+        return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED);
+    }
+    
     function setParentId($parent_id){
         if($parent_id)
             $parent = $this->repo()->find($parent_id);
@@ -23,6 +28,10 @@ trait EntityNested{
     }
 
     function setParent($parent){
+        if(!is_object($parent))
+            return;
+        $parent->checkPermission('createChild');
+        
         $error1 = App::txt('O pai não pode ser o filho.');
         $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
 
@@ -47,5 +56,18 @@ trait EntityNested{
             unset($this->_validationErrors['parent']);
 
         $this->parent = $parent;
+    }
+    
+    /**
+     * @return array of ids
+     */
+    public function getChildrenIds(){
+        $result = array();
+        foreach($this->getChildren() as $child){
+            $result[] = $child->id;
+            $result = array_merge($result, $child->getChildrenIds());
+        }
+        
+        return $result;
     }
 }

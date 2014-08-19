@@ -1,22 +1,16 @@
 <?php
-namespace MapasCulturais\Entities\Repositories;
+namespace MapasCulturais\Repositories;
 
-use Doctrine\ORM\EntityRepository;
-use MapasCulturais\Entities\MetaList as Entity;
 use MapasCulturais\App;
 
-class MetaList extends EntityRepository{
+class MetaList extends \MapasCulturais\Repository{
     function findByGroup(\MapasCulturais\Entity $owner, $group){
-        $app = App::i();
-
         $result = $this->findBy(array('objectType' => $owner->getClassName(), 'objectId' => $owner->id, 'group' => $group), array('id'=>'ASC'));
-        //$this->_em->getConfiguration()->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
+        
         return $result;
     }
 
     function findOneByGroup(\MapasCulturais\Entity $owner, $group){
-        $app = App::i();
-
         $result = $this->findOneBy(array('objectType' => $owner->getClassName(), 'objectId' => $owner->id, 'group' => $group));
 
         return $result;

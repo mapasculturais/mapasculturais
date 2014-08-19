@@ -12,7 +12,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\Event")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Event")
  * @ORM\HasLifecycleCallbacks
  */
 class Event extends \MapasCulturais\Entity
@@ -178,7 +178,6 @@ class Event extends \MapasCulturais\Entity
     }
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
-
         $app = App::i();
 
         if(is_null($date_from))

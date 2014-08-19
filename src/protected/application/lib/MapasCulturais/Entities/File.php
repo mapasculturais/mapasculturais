@@ -21,7 +21,7 @@ use \MapasCulturais\App;
  * @property-read array $tmpFile $_FILE
  * @ORM\Table(name="file")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\File")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
  */
 class File extends \MapasCulturais\Entity

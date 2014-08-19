@@ -1,19 +1,19 @@
 <?php
-namespace MapasCulturais\Types\DoctrineMap;
+namespace MapasCulturais\DoctrineMappings\Types;
 
 use \Doctrine\DBAL\Types\Type;
 use \Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
- * Definition of a PostGIS Geometry type to be used by Doctrine.
+ * Definition of a PostGIS Geography type to be used by Doctrine.
  */
-class Geometry extends Type
+class Geography extends Type
 {
-    const GEOMETRY = 'geometry'; // modify to match your type name
+    const GEOGRAPHY = 'geography'; // modify to match your type name
 
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return 'geometry';
+        return 'geography';
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -28,10 +28,10 @@ class Geometry extends Type
 
     public function getName()
     {
-        return self::GEOMETRY; // modify to match your constant name
+        return self::GEOGRAPHY; // modify to match your constant name
     }
 
     static function register(){
-        Type::addType('geometry', '\MapasCulturais\Types\DoctrineMap\Geometry');
+        Type::addType('geography', '\MapasCulturais\DoctrineMappings\Types\Geography');
     }
 }

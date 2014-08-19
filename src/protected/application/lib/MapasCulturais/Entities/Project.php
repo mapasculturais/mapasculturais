@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Project")
  * @ORM\HasLifecycleCallbacks
  */
 class Project extends \MapasCulturais\Entity
@@ -39,7 +40,8 @@ class Project extends \MapasCulturais\Entity
             'required' => 'O tipo do projeto é obrigatório',
         ),
         'registrationFrom' => array(
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida'
+            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
+            '!empty($this->registrationTo)' => 'Data final obrigatória caso data inicial preenchida'
         ),
         'registrationTo' => array(
             '$this->validateDate($value)' => 'O valor informado não é uma data válida',
@@ -137,9 +139,9 @@ class Project extends \MapasCulturais\Entity
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
-    protected $children;
+    protected $_children;
     
-    
+
 
     /**
      * @var \MapasCulturais\Entities\Agent
@@ -150,13 +152,13 @@ class Project extends \MapasCulturais\Entity
      * })
      */
     protected $owner;
-    
+
     /**
      * @var \MapasCulturais\Entities\Event[] Event
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
      */
-    protected $events;
+    protected $_events;
 
     /**
      * @var bool
@@ -164,11 +166,15 @@ class Project extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-    
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+    
+    function getEvents(){
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
 
     function setRegistrationFrom($date){
         $this->registrationFrom = new \DateTime($date);
@@ -202,7 +208,7 @@ class Project extends \MapasCulturais\Entity
         $app = App::i();
         $group = $app->projectRegistrationAgentRelationGroupName;
         $relation_class = $this->getAgentRelationEntityClassName();
-        
+
         $dql = "SELECT e FROM $relation_class e WHERE e.group = :g AND e.owner = :o AND e.agent = :a";
         $q = $app->em->createQuery($dql);
         $q->setParameters(array(
@@ -210,9 +216,9 @@ class Project extends \MapasCulturais\Entity
             'o' => $this,
             'g' => $group
         ));
-        
+
         $q->setMaxResults(1);
-        
+
         $result = $q->getOneOrNullResult();
         return $result;
     }
@@ -328,7 +334,7 @@ class Project extends \MapasCulturais\Entity
                 $relation_class e
                 JOIN e.agent a
             WHERE e.group = :group AND e.owner = :owner
-            
+
             $status_dql
             ORDER BY
                 a.name ASC
@@ -345,11 +351,11 @@ class Project extends \MapasCulturais\Entity
     function getApprovedRegistrations(){
         return $this->getRegistrations(ProjectAgentRelation::STATUS_ENABLED);
     }
-    
-    
-    
+
+
+
     /** @ORM\PreRemove */
-    public function unlinkEvents(){ 
+    public function unlinkEvents(){
         foreach($this->events as $event)
             $event->project = null;
     }

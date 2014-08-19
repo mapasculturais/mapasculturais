@@ -18,7 +18,7 @@ use \MapasCulturais\App;
  *
  * @ORM\Table(name="MetaList")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\MetaList")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\MetaList")
  * @ORM\HasLifecycleCallbacks
  */
 class MetaList extends \MapasCulturais\Entity

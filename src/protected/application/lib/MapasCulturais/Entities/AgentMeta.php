@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="agent_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class AgentMeta extends \MapasCulturais\Entity

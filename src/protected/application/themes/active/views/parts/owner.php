@@ -2,7 +2,7 @@
 if(is_editable() || $entity->className != $owner->className || $entity->id != $owner->id):
     if($this->controller->id == 'agent' && !$app->user->is('admin'))
         return;
-    $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar-padrao.png";
+    $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar.png";
 
     ?>
     <footer class="meta">

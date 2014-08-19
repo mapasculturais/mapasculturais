@@ -3,32 +3,7 @@
 <html lang="pt-BR" dir="ltr">
     <head>
         <meta charset="UTF-8" />
-        <title>SP Cultura - <?php echo $title ?></title>
-
-<!-- for Google -->
-<!-- <meta name="description" content="Mapas Culturais" />
-<meta name="keywords" content="Mapas Culturais" />
-
-<meta name="author" content="Mapas Culturais" />
-<meta name="copyright" content="" />
-<meta name="application-name" content="Mapas Culturais" />
- -->
-<!-- for Facebook -->
-<!-- <meta property="og:title" content="<?php echo $title;?>" />
-<meta property="og:type" content="article" />
-<meta property="og:image" content="" />
-<meta property="og:url" content="" />
-<meta property="og:description" content="Mapas Culturais" />
- -->
-<!-- for Twitter -->
-<!-- <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="" />
-<meta name="twitter:description" content="Mapas Culturais" />
-<meta name="twitter:image" content="" />
- -->
-
-
-
+        <title><?php echo $title == $app->siteName ? $title : "{$app->siteName} - {$title}"; ?></title>
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <?php mapasculturais_head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
@@ -43,7 +18,7 @@
             <nav id="about-nav" class="alignright clearfix">
                 <ul id="menu-secundario">
                     <li><a href="<?php echo $app->createUrl('site', 'page', array('sobre')) ?>">Sobre o SP Cultura</a></li>
-                    <!--<li><a href="<?php echo $app->createUrl('site', 'page', array('como-usar')) ?>">Como usar</a></li>-->
+                    <li><a href="<?php echo $app->createUrl('site', 'page', array('como-usar')) ?>">Como usar</a></li>
                 </ul>
                 <h1 id="logo-smc"><a href="http://www.prefeitura.sp.gov.br" target="_blank"><img src="<?php echo $assetURL ?>/img/logo-prefeitura.png" /></a></h1>
             </nav>
@@ -55,21 +30,18 @@
                             <div>Eventos</div>
                         </a>
                     </li>
-                    <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
-                        <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                            <div class="icone icon_profile"></div>
-                            <div>Agentes</div>
-                        </a>
-                    </li>
                     <li id="aba-espacos" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
                         <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
                             <div class="icone icon_building"></div>
                             <div>Espaços</div>
                         </a>
                     </li>
-                </ul>
-                <!--.menu.abas-objetos-->
-                <ul class="menu abas-objetos clearfix">
+                    <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
+                        <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
+                            <div class="icone icon_profile"></div>
+                            <div>Agentes</div>
+                        </a>
+                    </li>
                     <li id="aba-projetos"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
                         <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                             <div class="icone icon_document_alt"></div>
@@ -80,7 +52,7 @@
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
                     <?php if ($app->auth->isUserAuthenticated()): ?>
-                        <li class="notificacoes">
+                        <li class="notificacoes staging-hidden">
                             <a href="#">
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>
@@ -150,7 +122,7 @@
                                     <?php if ($app->user->profile->avatar): ?>
                                         <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
                                     <?php else: ?>
-                                        <img src="<?php echo $app->assetUrl; ?>/img/avatar-padrao.png" />
+                                        <img src="<?php echo $app->assetUrl; ?>/img/avatar.png" />
                                     <?php endif; ?>
                                 </div>
                             </a>
@@ -174,8 +146,6 @@
                                 <li>
                                     <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
                                     <a class="adicionar" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
-                                </li>
-                                <li class="staging-hidden"><a href="<?php echo $app->createUrl('panel', 'contracts') ?>">Meus Contratos</a>
                                 </li>
                                 <li class="row"></li>
                                 <!--<li><a href="#">Ajuda</a></li>-->

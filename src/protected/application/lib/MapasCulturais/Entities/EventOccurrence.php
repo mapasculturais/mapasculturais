@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event_occurrence")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventOccurrence extends \MapasCulturais\Entity
@@ -252,7 +253,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDescription(){
-        return $this->rule->description;
+        return isset($this->rule->description) ? $this->rule->description : "";
     }
 
 
@@ -278,22 +279,20 @@ class EventOccurrence extends \MapasCulturais\Entity
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
         if(!empty($value['duration'])){
-            @list($hours, $minutes) = explode('h', $value['duration']);
-            $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
-
-            if(!$minutes)
-                $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
-            else
-                $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+            $value['duration'] = intval($value['duration']);
+            $dateString = 'PT'.$value['duration'] .'M';
 
             if($this->startsAt instanceof \DateTime){
                 $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
                 $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
             }
         }else{
+            $value['duration'] = 0;
             $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
-
+        if($this->endsAt instanceof \DateTime){
+            $value['endsAt'] = $this->endsAt->format('H:i');
+        }
 
         $this->startsOn = $value['startsOn'];
         $this->until = $value['until'] ? $value['until'] : null;
@@ -400,7 +399,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('admin'))
             return true;
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     protected function canUserModify($user){
