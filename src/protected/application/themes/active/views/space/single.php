@@ -21,6 +21,28 @@ add_angular_entity_assets($entity);
 <div class="barra-esquerda barra-lateral espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
+    <div class="bloco">
+        <h3 class="subtitulo">Status</h3>
+        <?php if(is_editable()): ?>
+            <span class="js-editable" data-edit="public" data-type="select" data-source="[{value: 0, text: 'privado e requer autorização para criar eventos'},{value: 1, text:'público e qualquer pessoa pode criar eventos'}]">
+                <?php if ($entity->public) : ?>
+                <div class="venue-status"><div class="icone icon_group"></div>público</div>
+                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+            <?php else: ?>
+                <div class="venue-status"><div class="icone icon_lock"></div>privado</div>
+                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+            <?php endif; ?>
+            </span>
+        <?php else: ?>
+            <?php if ($entity->public) : ?>
+                <div class="venue-status"><div class="icone icon_group"></div>público</div>
+                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+            <?php else: ?>
+                <div class="venue-status"><div class="icone icon_lock"></div>privado</div>
+                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="main-content espaco">
@@ -116,13 +138,6 @@ add_angular_entity_assets($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
-            <p><span class="icone"></span><span class="label">Este espaço é:</span> 
-            <?php if(is_editable()): ?>
-                <span class="js-editable" data-edit="public" data-type="select" data-source="[{value: 0, text: 'privado e requer autorização para criar eventos'},{value: 1, text:'público e qualquer pessoa pode criar eventos'}]"><?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?></span>
-            <?php else: ?>
-                <?php echo $entity->public ? 'público e qualquer pessoa pode criar eventos' : 'privado e requer autorização para criar eventos'; ?>
-            <?php endif; ?>
-            </p>
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>
