@@ -1041,8 +1041,12 @@ class App extends \Slim\Slim{
                 $this->_config['app.projectRegistrationAgentRelationGroupName'] : 'registration';
     }
 
-    public function getDebugbar(){
-        return $this->_debugbar;
+    public function getSiteName(){
+        return $this->_config['app.siteName'];
+    }
+    
+    public function getSiteDescription(){
+        return $this->_config['app.siteDescription'];
     }
 
     /**

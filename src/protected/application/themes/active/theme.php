@@ -9,7 +9,52 @@ function is_editable() {
 
 function mapasculturais_head($entity = null){
     $app = App::i();
+    $site_name = $app->siteName;
+    
+    $title = $app->view->getTitle($entity);
+    $image_url = $app->view->asset('img/share.png', false);
+    if($entity){
+        $description = $entity->shortDescription;
+        if($entity->avatar)
+            $image_url = $entity->avatar->transform('avatarBig')->url;
+    }else{
+        $description = $app->siteDescription;
+    }
+    
     ?>
+    <!-- for Google -->
+    <meta name="description" content="<?php echo $description ?>" />
+    <meta name="keywords" content="<?php echo $site_name ?>" />
+
+    <meta name="author" content="<?php echo $site_name ?>" />
+    <meta name="copyright" content="<?php echo $site_name ?>" />
+    <meta name="application-name" content="<?php echo $site_name ?>" />
+    
+    <!-- for Google+ -->
+    <meta itemprop="name" content="<?php echo $title ?>"> 
+    <meta itemprop="description" content="<?php echo $description ?>"> 
+    <meta itemprop="image" content="<?php echo $image_url ?>">
+    
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="<?php echo $title;?>" />
+    <meta name="twitter:description" content="<?php echo $description ?>" />
+    <meta name="twitter:image" content="<?php echo $image_url ?>" />
+    
+    <!-- for Facebook -->
+    <meta property="og:title" content="<?php echo $title ?>" /> 
+    <meta property="og:type" content="article" /> 
+    <meta property="og:image" content="<?php echo $image_url ?>" />
+    <meta property="og:description" content="<?php echo $description ?>" /> 
+    <meta property="og:site_name" content="<?php echo $site_name ?>" /> 
+    <?php if($entity): ?>
+        <meta property="og:url" content="<?php echo $entity->singleUrl; ?>" />
+        <meta property="article:published_time" content="<?php echo $entity->createTimestamp->format('Y-m-d') ?>" /> 
+        <meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" /> 
+    <?php endif; ?>
+
+    <?php $app->applyHook('mapasculturais.head'); ?>
+        
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
