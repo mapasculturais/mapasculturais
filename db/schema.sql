@@ -438,6 +438,7 @@ CREATE TABLE space (
     status smallint NOT NULL,
     type smallint NOT NULL,
     agent_id integer,
+    public BOOLEAN NOT NULL DEFAULT false,
     is_verified boolean DEFAULT false NOT NULL
 );
 
