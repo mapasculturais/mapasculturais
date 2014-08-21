@@ -542,6 +542,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $limit = null;
             $page = null;
             $keyword = null;
+            $permissions = null;
 
             $dqls = array();
             foreach($qdata as $key => $val){
@@ -551,6 +552,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     continue;
                 }elseif(strtolower($key) == '@keyword'){
                     $keyword = $val;
+                    continue;
+                }elseif(strtolower($key) == '@permissions'){
+                    $permissions = explode(',', $val);
                     continue;
                 }elseif(strtolower($key) == '@order'){
                     $order = $val;
@@ -768,7 +772,18 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $query->setMaxResults(1);
                 
                 if($r = $query->getOneOrNullResult()){
-                    $entity = $processEntity($r);
+                    
+                    if($permissions){
+                        foreach($permissions as $perm){
+                            if(!$r->canUser(trim($perm))){
+                                $r = null;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if($r)
+                        $entity = $processEntity($r);
                 }else{
                     $entity = null;
                 }
@@ -777,8 +792,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 
                 $rs = $query->getResult();
                 
-                if($counting)
-                    return count($rs);
                 
                 $result = array();
                 
@@ -789,8 +802,35 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 
                 foreach($rs as $r){
-                    $result[] = $processEntity($r);
+                    if($permissions){
+                        foreach($permissions as $perm){
+                            if(!$r->canUser(trim($perm))){
+                                $r = null;
+                                break;
+                            }
+                        }
+                    }
+                    if($r)
+                        $result[] = $r;
                 }
+                
+                if(is_array($permissions)){
+                    $rs = array_filter($rs, function($entity) use($permissions){
+                        foreach($permissions as $perm)
+                            if(!$entity->canUser($perm))
+                                return false;
+                            
+                        return true;
+                    });
+                }
+                
+                if($counting)
+                    return count($rs);
+                
+                $result = array_map(function($entity) use ($processEntity){
+                    return $processEntity($entity);
+                }, $rs);
+                
                 return $result;
             }
         }
