@@ -28,7 +28,8 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityNested;
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -108,6 +109,24 @@ class Agent extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $parent;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Agent[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $_children;
+    
     /**
      * @var bool
      *
@@ -204,15 +223,20 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getOwner(){
-        return $this->user ?
-                $this->user->profile :
-                App::i()->user->profile;
+        if($this->parent){
+            return $this->parent;
+        }else{
+            return $this->user ? $this->user->profile : App::i()->user->profile;
+        }
     }
-
+    
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->setUser($owner->user);
+        if($owner){
+            $this->setParent($owner);
+        }else{
+            $this->setParent();
+        }
     }
 
     function setUser($user){
@@ -220,7 +244,20 @@ class Agent extends \MapasCulturais\Entity
         $user->checkPermission('modify');
         $this->user = $user;
     }
-
+    
+    function setParent(Agent $parent = null){
+        if($parent != $this->parent){
+            $this->checkPermission('modifyParent');
+            $this->parent = $parent;
+            if(!is_null($parent)){
+                if($parent->id == $this->id)
+                    $this->parent = null;
+                
+                $this->setUser($parent->user);
+            }
+        }
+    }
+    
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         unset($result['user']);

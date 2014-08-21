@@ -869,6 +869,14 @@ ALTER TABLE ONLY agent_relation
 
 
 --
+-- Name: project_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent
+    ADD CONSTRAINT agent_agent_fk FOREIGN KEY (parent_id) REFERENCES agent(id);
+
+
+--
 -- Name: comment_comment_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
