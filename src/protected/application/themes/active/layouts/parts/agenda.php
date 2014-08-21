@@ -18,7 +18,7 @@
         $events = array();
     }
 ?>
-<?php $this->part('parts/agenda-header', array('date_from'=>$date_from, 'date_to'=>$date_to, 'events_count'=>count($events))); ?>
+<?php $this->part('agenda-header', array('date_from'=>$date_from, 'date_to'=>$date_to, 'events_count'=>count($events))); ?>
 <div id="agenda-content">
-    <?php $this->part('parts/agenda-content', array('events' => $events, 'entity' => $entity)); ?>
+    <?php $this->part('agenda-content', array('events' => $events, 'entity' => $entity)); ?>
 </div>
