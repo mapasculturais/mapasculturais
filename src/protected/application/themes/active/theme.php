@@ -63,8 +63,15 @@ function mapasculturais_head($entity = null){
             request: {
                 controller: '<?php if ($app->view->controller) echo $app->view->controller->id ?>',
                 action: '<?php if ($app->view->controller) echo str_replace($app->view->controller->id . '/', '', $app->view->template) ?>',
-                id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
+                id: <?php echo ($entity && $entity->id) ? $entity->id : 'null'; ?>,
             },
+            <?php if($entity && is_editable()): ?>
+            entity: {
+                id: <?php echo $entity->id ? $entity->id : 'null' ?>, 
+                ownerId: <?php echo $entity->owner->id ? $entity->owner->id : 'null' ?>, 
+                ownerUserId: <?php echo $entity->ownerUser->id ? $entity->ownerUser->id : 'null' ?>
+            },
+            <?php endif; ?>
             mode: "<?php echo $app->config('mode'); ?>"
         };
     </script>

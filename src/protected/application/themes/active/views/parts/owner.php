@@ -1,15 +1,14 @@
 <?php
-if(is_editable() || $entity->className != $owner->className || $entity->id != $owner->id):
-    if($this->controller->id == 'agent' && !$app->user->is('admin'))
-        return;
+if(is_editable() || "$entity" != "$owner"):
     $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar.png";
-
+    if($entity->isUserProfile)
+        return;
     ?>
     <footer class="meta">
 		<div class="dono clearfix js-owner">
 			<p class="small bottom">Publicado por</p>
 
-            <?php if(is_editable() && $entity->canUser('modifyOwner')): ?>
+            <?php if(is_editable() && $entity->canUser('changeOwner')): ?>
                 <h4 class="js-search js-include-editable"
                        data-field-name='ownerId'
                        data-emptytext="Selecione um agente"
@@ -21,7 +20,6 @@ if(is_editable() || $entity->className != $owner->className || $entity->id != $o
                        data-no-result-template="#agent-response-no-results-template"
                        data-selection-format="changeOwner"
                        data-auto-open="true"
-                       <?php if($entity->className === $owner->className) echo ' data-profiles-only="true" '; ?>
                        data-value="<?php echo $owner->id ?>"
                        title="Repassar propriedade"
                  ><?php echo $owner->name ?></h4>

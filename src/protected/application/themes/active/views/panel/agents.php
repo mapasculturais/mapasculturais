@@ -1,5 +1,5 @@
 <?php
-$this->part('panel/part-nav.php');
+$this->layout = 'panel'
 ?>
 <div class="lista-sem-thumb main-content">
 	<header class="header-do-painel clearfix">

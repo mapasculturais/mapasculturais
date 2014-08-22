@@ -47,6 +47,9 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    
+    'app.useEventsCache' => true,
+    'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 600,
