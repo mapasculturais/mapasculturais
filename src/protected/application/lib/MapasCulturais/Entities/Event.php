@@ -308,9 +308,6 @@ class Event extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
-
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
     /** @ORM\PostPersist */

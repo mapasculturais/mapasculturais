@@ -596,20 +596,6 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
-     * Executed after the entity is loaded.
-     *
-     * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events
-     * @see http://docs.doctrine-project.org/en/latest/reference/events.html#postload
-     *
-     * @hook **entity.load**
-     * @hook **entity({$entity_class}).load**
-     */
-    public function postLoad($args = null){
-        $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').load', $args);
-    }
-
-    /**
      * Executed before the entity is inserted.
      *
      * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events

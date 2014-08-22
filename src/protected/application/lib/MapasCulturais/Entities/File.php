@@ -281,14 +281,6 @@ class File extends \MapasCulturais\Entity
         return $this->_transform($transformation_name, "resizeDown($width, $height, 'outside')->crop('center', 'middle', $width, $height)");
     }
 
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->group = trim($this->group);
-        $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->storage->add($this);
@@ -341,9 +333,6 @@ class File extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

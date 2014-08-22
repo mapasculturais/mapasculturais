@@ -30,5 +30,14 @@ return array(
                    FOREIGN KEY (event_occurrence_id)
                    REFERENCES event_occurrence(id)
                    ON DELETE CASCADE");
+    },
+    
+    'alter tables to change CHAR to VARCHAR' => function() use ($conn){
+        $conn->executeQuery('ALTER TABLE ONLY agent_meta ALTER COLUMN key TYPE character varying(32);');
+        $conn->executeQuery('ALTER TABLE ONLY event_meta ALTER COLUMN key TYPE character varying(32);');
+        $conn->executeQuery('ALTER TABLE ONLY space_meta ALTER COLUMN key TYPE character varying(32);');
+        $conn->executeQuery('ALTER TABLE ONLY project_meta ALTER COLUMN key TYPE character varying(32);');
+        $conn->executeQuery('ALTER TABLE ONLY metadata ALTER COLUMN key TYPE character varying(32);');
+        $conn->executeQuery('ALTER TABLE ONLY file ALTER COLUMN grp TYPE character varying(32);');
     }
 );

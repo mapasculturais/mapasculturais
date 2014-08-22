@@ -135,13 +135,6 @@ class MetaList extends \MapasCulturais\Entity
         return App::i()->storage->getPath($this);
     }
 
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
@@ -180,9 +173,6 @@ class MetaList extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
