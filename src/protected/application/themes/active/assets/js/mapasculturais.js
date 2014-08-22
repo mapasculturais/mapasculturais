@@ -725,8 +725,14 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
+        
         chooseSpace: {
             onSave: function($selector){
                 var entity = $selector.data('entity'),
@@ -760,6 +766,7 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
+                
                 if($selector.data('value')){
                     searchParams.id = '!in('+$selector.data('value')+')';
                 }
@@ -767,7 +774,8 @@ MapasCulturais.Search = {
                 //if(!MapasCulturais.cookies.get('mapasculturais.adm'))
                 //    searchParams.owner = 'in(@me.spaces)';
 
-                searchParams['@select'] += ',shortDescription,';
+                searchParams['@select'] += ',shortDescription';
+                searchParams['@permissions'] += '@control';
                 return searchParams;
             }
         },
@@ -834,6 +842,11 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams, $selector){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
 
@@ -847,6 +860,11 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams, $selector){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
 
