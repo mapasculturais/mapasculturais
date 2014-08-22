@@ -40,7 +40,7 @@ class Agent extends \MapasCulturais\Entity
         ),
         'shortDescription' => array(
             'required' => 'A descrição curta é obrigatória'
-        ),
+        )
     );
 
     /**
@@ -238,16 +238,16 @@ class Agent extends \MapasCulturais\Entity
             $this->setParent();
         }
     }
-
+    
     function setUser($user){
-        $this->checkPermission('modifyOwner');
-        $user->checkPermission('modify');
+        $this->checkPermission('modify');
         $this->user = $user;
     }
     
     function setParent(Agent $parent = null){
         if($parent != $this->parent){
-            $this->checkPermission('modifyParent');
+            $this->checkPermission('changeOwner');
+            $parent->checkPermission('modify');
             $this->parent = $parent;
             if(!is_null($parent)){
                 if($parent->id == $this->id)
@@ -277,6 +277,19 @@ class Agent extends \MapasCulturais\Entity
             return false;
         else
             return parent::canUserRemove($user);
+    }
+    
+    protected function canUserChangeOwner($user){
+        if($this->isUserProfile)
+            return false;
+        
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
     }
 
     //============================================================= //
