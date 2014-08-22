@@ -28,6 +28,10 @@ trait EntityNested{
     }
 
     function setParent($parent){
+        if(!is_object($parent))
+            return;
+        $parent->checkPermission('createChild');
+        
         $error1 = App::txt('O pai não pode ser o filho.');
         $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
 

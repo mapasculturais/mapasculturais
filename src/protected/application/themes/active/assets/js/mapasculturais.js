@@ -519,20 +519,17 @@ MapasCulturais.Search = {
                 type:'select2',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
-                    initSelection : function (element, callback) {
-                        callback({id: $selector.data('value'), name: $selector.data('value-name')});
-                    },
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
-                    minimumInputLength: 2,
+                    minimumInputLength: 0,
                     allowClear: $selector.data('allow-clear'),
                     initSelection: function(e,cb){
-                        cb({id: 4, name:'teste'});
+                        cb({id: $selector.data('value'), name: $selector.data('editable').$element.html()});
                     },
                     ajax: {
                         url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
                         dataType: 'json',
-                        quietMillis: 100,
+                        quietMillis: 350,
                         data: function (term, page) { // page is the one-based page number tracked by Select2
                             var searchParams = MapasCulturais.Search.getEntityController(term, page, $selector);
 
@@ -547,12 +544,13 @@ MapasCulturais.Search = {
                         },
                         results: function (data, page) {
                             var more = data.length == MapasCulturais.Search.limit;
-
                             // notice we return the value of more so Select2 knows if more results can be loaded
+                            
                             return {results: data, more: more};
                         }
                     },
                     formatResult: function(entity){
+                        console.log('formatResult', entity);
                         var format = $selector.data('selection-format');
                         if(MapasCulturais.Search.formats[format] && MapasCulturais.Search.formats[format].result)
                             return MapasCulturais.Search.formats[format].result(entity, $selector);
@@ -561,11 +559,13 @@ MapasCulturais.Search = {
                     }, // omitted for brevity, see the source of this page
 
                     formatSelection: function(entity){
+                        console.log('formatSelection', entity);
                         var format = $selector.data('selection-format');
                         return MapasCulturais.Search.formats[format].selection(entity, $selector);
                     }, // omitted for brevity, see the source of this page
 
                     formatNoMatches: function(term){
+                        console.log('formatNoMatches', term);
                         var format = $selector.data('selection-format');
                         return MapasCulturais.Search.formats[format].noMatches(term, $selector);
                     },
@@ -725,8 +725,14 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
+        
         chooseSpace: {
             onSave: function($selector){
                 var entity = $selector.data('entity'),
@@ -760,6 +766,7 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
+                
                 if($selector.data('value')){
                     searchParams.id = '!in('+$selector.data('value')+')';
                 }
@@ -767,7 +774,8 @@ MapasCulturais.Search = {
                 //if(!MapasCulturais.cookies.get('mapasculturais.adm'))
                 //    searchParams.owner = 'in(@me.spaces)';
 
-                searchParams['@select'] += ',shortDescription,';
+                searchParams['@select'] += ',shortDescription';
+                searchParams['@permissions'] += '@control';
                 return searchParams;
             }
         },
@@ -834,6 +842,11 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams, $selector){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
 
@@ -847,6 +860,11 @@ MapasCulturais.Search = {
             },
 
             onClear: function($selector){
+            },
+            
+            ajaxData: function(searchParams, $selector){
+                searchParams['@permissions'] = '@control';
+                return searchParams;
             }
         },
 
@@ -926,18 +944,14 @@ MapasCulturais.Search = {
             ajaxData: function(searchParams, $selector){
                 var excludedIds = MapasCulturais.request.controller === 'agent' && MapasCulturais.request.id? [MapasCulturais.request.id] : [];
 
-                excludedIds.push($selector.data('value'));
+//                excludedIds.push($selector.data('value'));
 
                 if ( excludedIds.length > 0)
                     searchParams.id = '!in('+excludedIds.toString()+')';
 
-                if(!MapasCulturais.cookies.get('mapasculturais.adm'))
-                    searchParams.user = 'eq(@me)';
-
-                if($selector.data('profiles-only'))
-                    searchParams.isUserProfile = 'eq(true)';
-
-                searchParams['@select'] += ',shortDescription,';
+                searchParams['@select'] += ',shortDescription';
+                searchParams['@permissions'] = '@control';
+                //searchParams['user'] = 'EQ(@User:' + MapasCulturais.entity.ownerUserId + ')';
                 return searchParams;
             }
         }

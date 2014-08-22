@@ -264,8 +264,10 @@ class View extends \Slim\View {
             $title .= $app->getReadableName($controller->action) ? $app->getReadableName($controller->action) : '';
             $title .= $app->getReadableName($controller->id) ? ' '.$app->getReadableName($controller->id) : '';
             $title .= $entity->name ? ' '.$entity->name : '';
+        }elseif($this->controller->id == 'site' && $this->controller->action === 'index'){
+            $title = $app->siteName;
         }else{
-            $title = $app->getReadableName($this->controller->id) . ' - ' . $app->getReadableName($this->controller->action);
+            $title =$app->getReadableName($this->controller->action);
         }
 
         return $title;

@@ -81,6 +81,14 @@ class Space extends \MapasCulturais\Entity
      */
     protected $name;
 
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="public", type="boolean", nullable=false)
+     */
+    protected $public = false;
+    
     /**
      * @var string
      *

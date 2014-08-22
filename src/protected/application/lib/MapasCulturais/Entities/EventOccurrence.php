@@ -399,7 +399,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('admin'))
             return true;
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     protected function canUserModify($user){

@@ -234,19 +234,23 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomStringFunction('st_summary', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STSummary');
 
 
-        $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\Types\DoctrineMap\STDWithin');
-        $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\Types\DoctrineMap\STMakePoint');
+        $doctrine_config->addCustomStringFunction('string_agg', 'MapasCulturais\DoctrineMappings\Functions\StringAgg');
+        $doctrine_config->addCustomStringFunction('unaccent', 'MapasCulturais\DoctrineMappings\Functions\Unaccent');
+        $doctrine_config->addCustomStringFunction('recurring_event_occurrence_for', 'MapasCulturais\DoctrineMappings\Functions\RecurringEventOcurrenceFor');
+
+        $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
+        $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
         $doctrine_config->setQueryCacheImpl(new \Doctrine\Common\Cache\ApcCache());
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
 
-        \MapasCulturais\Types\DoctrineMap\Frequency::register();
+        \MapasCulturais\DoctrineMappings\Types\Frequency::register();
 
-        \MapasCulturais\Types\DoctrineMap\Point::register();
-        \MapasCulturais\Types\DoctrineMap\Geography::register();
-        \MapasCulturais\Types\DoctrineMap\Geometry::register();
+        \MapasCulturais\DoctrineMappings\Types\Point::register();
+        \MapasCulturais\DoctrineMappings\Types\Geography::register();
+        \MapasCulturais\DoctrineMappings\Types\Geometry::register();
 
 
 
@@ -317,7 +321,7 @@ class App extends \Slim\Slim{
             include PLUGINS_PATH.$plugin.'.php';
         }
         // ===================================== //
-        
+
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
 
@@ -444,7 +448,7 @@ class App extends \Slim\Slim{
                 $new_updates = true;
                 echo "\nApplying db update \"$name\":";
                 echo "\n-------------------------------------------------------------------------------------------------------\n";
-                
+
                 if($function() !== false){
                     $up = new Entities\DbUpdate();
                     $up->name = $name;
@@ -1037,8 +1041,12 @@ class App extends \Slim\Slim{
                 $this->_config['app.projectRegistrationAgentRelationGroupName'] : 'registration';
     }
 
-    public function getDebugbar(){
-        return $this->_debugbar;
+    public function getSiteName(){
+        return $this->_config['app.siteName'];
+    }
+    
+    public function getSiteDescription(){
+        return $this->_config['app.siteDescription'];
     }
 
     /**

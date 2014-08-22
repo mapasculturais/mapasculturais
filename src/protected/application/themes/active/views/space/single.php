@@ -21,6 +21,28 @@ add_angular_entity_assets($entity);
 <div class="barra-esquerda barra-lateral espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
+    <div class="bloco">
+        <h3 class="subtitulo">Status</h3>
+        <?php if(is_editable()): ?>
+            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
+                <?php if ($entity->public) : ?>
+                    <div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div>
+                    <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+                <?php else: ?>
+                    <div class="venue-status"><div class="icone icon_lock"></div>Publicação restrita</div>
+                    <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <?php if ($entity->public) : ?>
+                <div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div>
+                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+            <?php else: ?>
+                <div class="venue-status"><div class="icone icon_lock"></div>Publicação restrita</div>
+                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="main-content espaco">

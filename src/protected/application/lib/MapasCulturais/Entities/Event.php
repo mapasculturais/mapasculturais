@@ -225,6 +225,9 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
+        
+        if($app->config['app.useEventsCache'])
+            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
         $query->setParameters(array(
             'date_from' => $date_from,
@@ -284,7 +287,11 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
+        
+        if($app->config['app.useEventsCache'])
+            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
+        
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to,

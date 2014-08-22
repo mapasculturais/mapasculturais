@@ -1,5 +1,5 @@
 <?php
-$this->layout = 'interna';
+$this->layout = 'search';
 
 $this->bodyProperties['ng-app'] = "search";
 $this->bodyProperties['ng-controller'] = "SearchController";
