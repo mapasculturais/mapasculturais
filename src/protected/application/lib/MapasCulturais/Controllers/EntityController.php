@@ -795,38 +795,24 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 
                 $result = array();
                 
-                if($page && $limit){
-                    $offset = (($page - 1) * $limit);
-                    $rs = array_slice($rs, $offset, $limit);
-                }
-
-                
-                foreach($rs as $r){
-                    if($permissions){
-                        foreach($permissions as $perm){
-                            if(!$r->canUser(trim($perm))){
-                                $r = null;
-                                break;
-                            }
-                        }
-                    }
-                    if($r)
-                        $result[] = $r;
-                }
-                
                 if(is_array($permissions)){
-                    $rs = array_filter($rs, function($entity) use($permissions){
+                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
                         foreach($permissions as $perm)
                             if(!$entity->canUser($perm))
                                 return false;
                             
                         return true;
-                    });
+                    }));
                 }
                 
                 if($counting)
                     return count($rs);
                 
+                
+                if($page && $limit){
+                    $offset = (($page - 1) * $limit);
+                    $rs = array_slice($rs, $offset, $limit);
+                }
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);
