@@ -14,7 +14,7 @@ function mapasculturais_head($entity = null){
     $title = htmlentities($app->view->getTitle($entity));
     $image_url = $app->view->asset('img/share.png', false);
     if($entity){
-        $description = htmlentities($entity->shortDescription);
+        $description = $entity->shortDescription ? htmlentities($entity->shortDescription) : $title;
         if($entity->avatar)
             $image_url = $entity->avatar->transform('avatarBig')->url;
     }else{
