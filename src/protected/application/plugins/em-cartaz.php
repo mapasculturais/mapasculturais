@@ -1,7 +1,7 @@
 <?php
 
 //plugin Em Cartaz
-// TODO: Mover arquivo de template de views/panel/part-em-cartaz.php para a pasta de plugins
+// TODO: Mover arquivo de template de views/panel/em-cartaz.php para a pasta de plugins
 
 $defaultFrom = new DateTime("first day of next month");
 $defaultTo = new DateTime("last day of next month");
@@ -12,21 +12,21 @@ $app->hook('GET(panel.em-cartaz)', function() use ($app, $defaultFrom, $defaultT
         //throw new MapasCulturais\Exceptions\PermissionDenied;
         $app->pass();
     }
-    $this->render('part-em-cartaz', array(
+    $this->render('em-cartaz', array(
         'content'=>'',
         'from' => isset($this->getData['from']) ? new DateTime($this->getData['from']) : $defaultFrom,
         'to' => isset($this->getData['to']) ? new DateTime($this->getData['to']) : $defaultTo,
     ));
 });
 
-$app->hook('view.partial(panel/part-nav):after', function($template, &$html) use ($app){
+$app->hook('panel.menu:after', function() use ($app){
     if(!$app->user->is('admin') && !$app->user->is('staff'))
         return;
 
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
+    
     $url = $app->createUrl('panel', 'em-cartaz');
-    $menu = "<li><a class='$a_class' href='$url'><span class='icone icon_star'></span> Em Cartaz</a></li>";
-    $html = str_replace('</ul>', $menu . '</ul>', $html);
+    echo "<li><a class='$a_class' href='$url'><span class='icone icon_star'></span> Em Cartaz</a></li>";
 });
 
 
@@ -197,7 +197,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
 
-        $this->render('part-em-cartaz', array(
+        $this->render('em-cartaz', array(
             'content'=>$objWriter->getWriterPart('Body')->write(),
             'from' => $from,
             'to' => $to
