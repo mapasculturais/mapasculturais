@@ -29,6 +29,7 @@ CREATE SEQUENCE agent_id_seq
 CREATE TABLE agent (
     id integer DEFAULT nextval('agent_id_seq'::regclass) NOT NULL,
     user_id integer NOT NULL,
+    parent_id integer,
     type smallint NOT NULL,
     name character varying(255) NOT NULL,
     location point,
@@ -989,6 +990,8 @@ ALTER TABLE ONLY agent
     ADD CONSTRAINT usr_agent_fk FOREIGN KEY (user_id) REFERENCES usr(id);
 
 
+ALTER TABLE ONLY agent 
+    ADD CONSTRAINT agent_agent_fk FOREIGN KEY (parent_id) REFERENCES agent(id);
 
 
 CREATE DOMAIN frequency AS CHARACTER VARYING CHECK ( VALUE IN ( 'once', 'daily', 'weekly', 'monthly', 'yearly' ) );
@@ -1020,15 +1023,17 @@ CREATE TABLE event_occurrence_recurrence (
   "month" integer,
   "day" integer,
   week integer,
-  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence
+  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS  event_occurrence_cancellation (
   id serial PRIMARY KEY,
   event_occurrence_id integer,
   date date,
-  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence
+  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence ON DELETE CASCADE
 );
+
+
 
 -- Event Library
 
