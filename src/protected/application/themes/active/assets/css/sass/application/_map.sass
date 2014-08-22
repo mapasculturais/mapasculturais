@@ -1,0 +1,74 @@
+/* =Mapa
+-------------------------------------------------------------- */
+#mapa {
+    display: block;
+    position: fixed;
+    z-index: 0;
+    top: 96px;
+    bottom: 0;
+    left: 0; /*348px qdo abre a infobox*/
+    right: 0;
+}
+#infobox {
+    position: absolute;
+    z-index: 149;
+    top: 105px;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    overflow: auto;
+    padding: 2rem .75rem .75rem;
+    border-radius: 0;
+    background: #eee;
+}
+#infobox .icon_close {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+}
+#infobox .espaco-dos-eventos {
+    background: #e2e2e2;
+    border-radius: 2px;
+    padding: .5rem;
+    font-size: .75rem;
+}
+#infobox .espaco-dos-eventos .objeto-thumb {
+    width: 40px;
+    height: 40px;
+    margin-top: .4rem;
+}
+#infobox .espaco-dos-eventos .icone {
+    margin: -3px 5px 0 0;
+}
+#infobox h2 {
+    color: #aebf3a; /*color tmp, Cátia!*/
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 0;
+}
+#infobox .objeto {
+    padding: .75rem;
+}
+#infobox .objeto h1 {
+    font-size: 1.25rem;
+}
+#infobox .objeto-thumb {
+    position: static;
+    float: left;
+    margin: 0 .75rem 1.5rem 0;
+    width: 60px;
+    height: 60px;
+}
+#infobox .objeto-resumo {
+    float: none;
+    min-height: 4rem;
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    font-size: .75rem;
+}
+#infobox .objeto.evento .objeto-thumb {
+    margin-bottom: 0;
+    margin-top: .5rem;
+}
