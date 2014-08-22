@@ -1,4 +1,6 @@
-<?php $this->part('panel/part-nav.php');?>
+<?php
+$this->layout = 'panel'
+?>
 <div class="main-content">
 
 	<p id="boas-vindas-painel">
