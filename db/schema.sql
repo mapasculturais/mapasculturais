@@ -56,7 +56,7 @@ COMMENT ON COLUMN agent.location IS 'type=POINT';
 
 CREATE TABLE agent_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -234,7 +234,7 @@ ALTER SEQUENCE event_id_seq OWNED BY event.id;
 --
 
 CREATE TABLE event_meta (
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     object_id integer NOT NULL,
     value text
 );
@@ -264,7 +264,7 @@ CREATE TABLE file (
     object_type character varying(255) NOT NULL,
     object_id integer NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-    grp character(32) NOT NULL,
+    grp character varying(32) NOT NULL,
     description character varying(255)
 );
 
@@ -276,7 +276,7 @@ CREATE TABLE file (
 CREATE TABLE metadata (
     object_id integer NOT NULL,
     object_type character varying(255) NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -388,7 +388,7 @@ ALTER SEQUENCE project_id_seq OWNED BY project.id;
 
 CREATE TABLE project_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -476,7 +476,7 @@ ALTER SEQUENCE space_id_seq OWNED BY space.id;
 
 CREATE TABLE space_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 

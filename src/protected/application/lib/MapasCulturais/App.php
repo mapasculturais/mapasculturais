@@ -850,6 +850,8 @@ class App extends \Slim\Slim{
         }
     }
 
+    protected $_hookCache = array();
+    
     /**
      * Get hook listeners
      *
@@ -872,6 +874,7 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook($name, $callable, $priority = 10) {
+        $this->_hookCache = array();
         $_hooks = explode(',', $name);
         foreach ($_hooks as $hook) {
             if (trim($hook)[0] === '-') {
@@ -939,10 +942,14 @@ class App extends \Slim\Slim{
         }
     }
 
+    
     function _getHookCallables($name) {
         $exclude_list = array();
         $result = array();
-
+//        
+//        if(isset($this->_hookCache[$name]))
+//            return $this->_hookCache[$name];
+        
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
                 $exclude_list = array_merge($callables);
@@ -958,6 +965,8 @@ class App extends \Slim\Slim{
                 }
             }
         }
+        
+        $this->_hookCache[$name] = $result;
 
         return $result;
     }

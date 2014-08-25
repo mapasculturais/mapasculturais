@@ -392,10 +392,6 @@ $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', f
     $this->transform('galleryFull');
 });
 
-$app->hook('entity(event).load', function() {
-    $this->type = 1;
-});
-
 $app->hook('entity(event).save:before', function() {
     $this->type = 1;
 });

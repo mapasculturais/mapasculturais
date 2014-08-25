@@ -44,15 +44,6 @@ class ProjectMeta extends \MapasCulturais\Entity
      */
     protected $owner;
 
-
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->key = trim($this->key);
-        
-        App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').insert:before', $args);
@@ -84,9 +75,6 @@ class ProjectMeta extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
