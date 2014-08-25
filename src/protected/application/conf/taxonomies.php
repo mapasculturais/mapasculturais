@@ -93,7 +93,7 @@ return array(
             'Dança',
             'Exposição',
             'Hip Hop',
-            'Livre e Literatura',
+            'Livro e Literatura',
             'Música Popular',
             'Música Erudita',
             'Palestra, Debate ou Encontro',
