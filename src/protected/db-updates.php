@@ -39,5 +39,25 @@ return array(
         $conn->executeQuery('ALTER TABLE ONLY project_meta ALTER COLUMN key TYPE character varying(32);');
         $conn->executeQuery('ALTER TABLE ONLY metadata ALTER COLUMN key TYPE character varying(32);');
         $conn->executeQuery('ALTER TABLE ONLY file ALTER COLUMN grp TYPE character varying(32);');
-    }
+    },
+            
+    'change owner of verified spaces of type Biblioteca Publica to agent SMB (id 592)' => function () use($app){
+        
+        $smb = $app->repo('Agent')->find(592);
+        
+        $spaces = $app->controller('space')->apiQuery([
+            '@select' => 'id,name,singleUrl',
+            //'isVerified' => 'EQ(true)',
+            'owner' => 'IN(@Agent:425)', // 425 é o id do agente da secretaria
+            'type' => 'EQ(20)' // id do tipo Biblioteca Publica
+        ]);
+        
+        foreach ($spaces as $i => $space){
+            echo ($i + 1) . ' - ' . $space['name'] . "... ";
+            $b = $app->repo('Space')->find($space['id']);
+            $b->owner = $smb;
+            $b->save(true);
+            echo "OK\n";
+        }
+    },
 );
