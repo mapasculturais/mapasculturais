@@ -125,6 +125,10 @@ add_entity_properties_metadata_to_js($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
+            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <div class="mensagem alerta">O limite de caracteres foi diminuido para 400 caracteres e seu texto atual tem <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será truncado ao salvar. </div>
+            <?php endif; ?>
+
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $entity->shortDescription; ?></span>
             </p>

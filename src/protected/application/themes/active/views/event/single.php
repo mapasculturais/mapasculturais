@@ -188,6 +188,9 @@ add_occurrence_frequencies_to_js();
     <!--.main-content-header-->
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
+            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <div class="mensagem alerta">O limite de caracteres foi diminuido para 400 caracteres e seu texto atual tem <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será truncado ao salvar. </div>
+            <?php endif; ?>
             <p>
                 <?php if (is_editable() || $entity->shortDescription): ?>
                     <span class="label">Descrição Curta:</span><br>
