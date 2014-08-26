@@ -46,23 +46,23 @@ $link-hover-color:      $link-color;
 //
 //## Font, line-height, and color for body text, headings, and more.
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-@font-family-monospace:   'Courier New', monospace;
-@font-family-base:        'Open Sans', Helvetica, Arial, sans-serif;
+$font-family-monospace:   'Courier New', monospace;
+$font-family-base:        'Open Sans', Helvetica, Arial, sans-serif;
 
-@font-size-base:          1rem; // 16px
-@font-size-small:         .875rem; // 14px
-@font-size-smaller:       .75rem; // 12px
+$font-size-base:          1rem; // 16px
+$font-size-small:         .875rem; // 14px
+$font-size-smaller:       .75rem; // 12px
 
-@font-size-h1:            2.25rem; // 36px
-@font-size-h2:            2rem; // 32px
-@font-size-h3:            1.75rem; // 28px
-@font-size-h4:            1.5rem; // 24px
-@font-size-h5:            1.25rem; // 20px
-@font-size-h6:            @font-size-base; // 16px
+$font-size-h1:            2.25rem; // 36px
+$font-size-h2:            2rem; // 32px
+$font-size-h3:            1.75rem; // 28px
+$font-size-h4:            1.5rem; // 24px
+$font-size-h5:            1.25rem; // 20px
+$font-size-h6:            $font-size-base; // 16px
 
-@line-height-base:        1.5rem; // 24px
+$line-height-base:        1.5rem; // 24px
 
-@headings-font-family:    'aleo', serif;
-@headings-font-weight:    bold;
-@headings-line-height:    1.1;
-@headings-color:          #000000;
+$headings-font-family:    'aleo', serif;
+$headings-font-weight:    bold;
+$headings-line-height:    1.1;
+$headings-color:          #000000;
