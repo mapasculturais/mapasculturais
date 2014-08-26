@@ -173,7 +173,7 @@ class Event extends \MapasCulturais\Entity
     
     function setProject($project){
         if($project)
-            $this->setProjectId($projectId);
+            $this->setProjectId($project->id);
         else
             $this->setProjectId(null);
     }
