@@ -170,9 +170,19 @@ class Event extends \MapasCulturais\Entity
             return true;
         }
     }
+    
+    function setProject($project){
+        if($project)
+            $this->setProjectId($projectId);
+        else
+            $this->setProjectId(null);
+    }
 
     function setProjectId($projectId){
-        if($projectId && !$this->project || $this->project->id != $projectId){
+        if(!$projectId){
+            $this->project = null;
+            
+        }elseif(!$this->project || $this->project->id != $projectId){
             $this->_projectChanged = true;
             $project = App::i()->repo('Project')->find($projectId);
             
