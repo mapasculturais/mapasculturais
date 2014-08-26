@@ -1,0 +1,73 @@
+/* =Barra lateral
+-------------------------------------------------------------- */
+.barra-lateral {
+    float: left;
+    position: relative;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: 1.5rem;
+}
+.barra-esquerda {
+    width: 15%;
+}
+.barra-direita {
+    width: 25%;
+}
+.barra-lateral.evento {
+    border-top: #b3b921 12px solid;
+}
+.barra-lateral.evento a,
+.barra-lateral.evento .compartilhamentos {
+    color: #b3b921;
+}
+.barra-lateral.evento .setinha {
+    border-color: #b3b921 transparent transparent transparent;
+}
+.barra-lateral.agente {
+    border-top: #1dabc6 12px solid;
+}
+.barra-lateral.agente a,
+.barra-lateral.agente .compartilhamentos {
+    color: #1dabc6;
+}
+.barra-lateral.agente .setinha {
+    border-color: #1dabc6 transparent transparent transparent;
+}
+.barra-lateral.espaco {
+    border-top: #e83f96 12px solid;
+}
+.barra-lateral.espaco a,
+.barra-lateral.espaco .compartilhamentos {
+    color: #e83f96;
+}
+.barra-lateral.espaco .setinha {
+    border-color: #e83f96 transparent transparent transparent;
+}
+.barra-lateral.projeto {
+    border-top: #c03 12px solid;
+}
+.barra-lateral.projeto a,
+.barra-lateral.projeto .compartilhamentos {
+    color: #c03;
+}
+.barra-lateral.projeto .setinha {
+    border-color: #c03 transparent transparent transparent;
+}
+.barra-lateral a.botao.adicionar {
+    color: #666;
+}
+.barra-lateral a.botao.adicionar:hover {
+    color: #000;
+}
+.barra-lateral .avatar {
+    float: left;
+    width: 3rem;
+    height: 3rem;
+    margin-right: .75rem;
+    background-size: cover;
+}
+.barra-lateral .setinha {
+    top: 0;
+    left: 50%;
+    margin-left: -8px;
+}

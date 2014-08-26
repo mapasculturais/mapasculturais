@@ -1,0 +1,202 @@
+/* =Busca avançada
+-------------------------------------------------------------- */
+#main-header .busca-main-header {
+    position: relative;
+    z-index: 152;
+}
+#main-header #busca {
+    position: relative;
+    z-index: 151;
+}
+#busca-avancada {
+    background-color: #e2e2e2;
+    font-size: .875rem;
+}
+#busca-avancada .wrap {
+    position: relative;
+    padding: .75rem;
+}
+#busca-avancada input {
+    margin-bottom: 0;
+    border: none;
+}
+#busca-avancada .campo-de-busca {
+    width: 100%;
+}
+/*filtro local*/
+#filtro-local {
+    position: absolute;
+    z-index: 150;
+    left: 0rem;
+    height: 1.875rem;
+}
+#filtro-local label {
+    display: none;
+}
+#filtro-local input[type='text'] {
+    width: 350px;
+    margin-right: 6px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    border: none;
+}
+#filtro-local input[type='text']:focus {
+    border: 1px solid #000;
+}
+#form-local {
+    display: inline-block;
+    vertical-align: top;
+}
+.botoes-do-mapa {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+#proximo-a-mim {
+    background: #000 url(../img/icon-localizacao.png) center no-repeat;
+}
+#proximo-a-mim:hover {
+    background-color: #f90;
+}
+.botoes-do-mapa.active {
+    background-color: #f90;
+}
+
+/*camadas de entidades*/
+#camadas-de-entidades {
+    position: absolute;
+    z-index: 150;
+    right: 0rem;
+    height: 1.875rem;
+}
+
+/* filtros dos objetos*/
+.filtro-objeto {
+    position: relative;
+    clear: both;
+    padding: .75rem 0;
+    color: #000;
+    font-size: .875rem;
+}
+#filtro-eventos {
+    background: #b3b921;
+}
+#filtro-agentes {
+    background: #1dabc6;
+}
+#filtro-espacos {
+    background: #e83f96;
+}
+#filtro-projetos {
+    background: #c03;
+}
+.filtro-objeto .icon_close {
+    position: absolute;
+    right: .75rem;
+    top: .75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+}
+.filtro {
+    float: left;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 20%;
+    padding: 0 .75rem;
+    border-left: 1px dotted #000;
+    line-height: 2rem;
+}
+.filtro:first-child {
+    border: none;
+}
+.filtro .label,
+.filtro label {
+    display: none;
+}
+.filtro .show-label {
+    display: inline;
+    font-size: .75rem;
+    cursor: default;
+}
+.filtro .tags {
+    margin-bottom: 0;
+    height: 144px;
+}
+.filtro .tag {
+    margin-bottom: 0;
+}
+.filtro .dropdown {
+    width: 100%;
+}
+.filtro .dropdown,
+.filtro .dropdown .submenu-dropdown {
+    background: #fff;
+}
+.filtro .dropdown .submenu-dropdown:before {
+    color: #fff;
+}
+.filtro .dropdown .submenu-dropdown li:hover {
+    background: #eee;
+    color: #000;
+}
+.lista-de-filtro {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.lista-de-filtro li {
+    cursor: pointer;
+    margin-bottom: .5rem;
+    padding: 0 2px;
+    line-height: 1.5rem;
+}
+.lista-de-filtro li:before {
+    display: inline-block;
+    content: '\4e';
+    margin: .325rem .75rem .325rem 0;
+    padding: 2px;
+    background: #e2e2e2;
+    -webkit-font-smoothing: antialiased;
+    font: normal .75rem/.75rem 'ElegantIcons';
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+}
+.lista-de-filtro li:hover:before {
+    color: #000;
+    background: #fff;
+}
+.lista-de-filtro li.selected:before {
+    color: #fff;
+    background: #000;
+}
+.lista-de-filtro li span {
+    display: inline-block;
+    width: 80%;
+    vertical-align: top;
+}
+.filtro-prefeitura {
+    float: right;
+    text-align: center;
+}
+.filtro-prefeitura .botao {
+    color: #fff;
+    background-color: #000;
+    background-image: url(../img/prefeitura.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+.filtro-prefeitura .botao:hover,
+.filtro-prefeitura .botao.selected,
+.filtro-prefeitura .botao.selected:hover {
+    background-color: #f90;
+    border-color: #f90;
+}

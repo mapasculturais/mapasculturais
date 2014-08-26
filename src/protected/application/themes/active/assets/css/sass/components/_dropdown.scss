@@ -1,0 +1,88 @@
+/*dropdown*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+    height: 2rem;
+    margin: 0;
+    background: #e2e2e2;
+    color: #000;
+    border-radius: 2px;
+    font-size: .75rem;
+    line-height: 1.875rem;
+}
+.dropdown .placeholder {
+    padding: 0 .5rem;
+    cursor: pointer;
+}
+.dropdown .placeholder:after {
+    content: '\33';
+    float: right;
+    font-family: 'ElegantIcons';
+    speak: none;
+    font-size: 1rem;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1.875rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.dropdown .submenu-dropdown {
+    z-index: 900;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    min-width: 100%;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: none;
+    margin: 0;
+    padding: .5rem 0;
+    background: #e2e2e2;
+    border-radius: 2px;
+            box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
+    -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
+    -webkit-transition: opacity .5s;
+            transition: opacity .5s;
+    opacity: 0;
+}
+.dropdown .submenu-dropdown:before {
+    content: '\42';
+    position: absolute;
+    top: -13px;
+    right: 0;
+    left: 0;
+    padding-right: .25rem;
+    color: #e2e2e2;
+    font-family: 'ElegantIcons';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    font-size: 24px;
+    text-align: right;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.dropdown:hover .submenu-dropdown {
+    display: block;
+    opacity: 1;
+}
+.dropdown .submenu-dropdown ul {
+    list-style: none;
+    margin: 0;
+}
+.dropdown .submenu-dropdown li {
+    padding: 0 .5rem;
+    margin-bottom: .5rem;
+    cursor: pointer;
+    -webkit-transition: all .2s;
+            transition: all .2s;
+}
+.dropdown .submenu-dropdown li:hover {
+    background: #f90;
+    color: #fff;
+}

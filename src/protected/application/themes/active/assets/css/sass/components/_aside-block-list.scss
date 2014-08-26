@@ -1,0 +1,33 @@
+/* botoes de editar e excluir itens das ul's da barra lateral*/
+.ul-dos-blocos li.li-dos-blocos {
+    position: relative;
+    min-height: 1.5rem;
+    padding: 0 4rem 0 3px;
+}
+.ul-dos-blocos li.li-dos-blocos .botoes {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 3px;
+}
+.ul-dos-blocos li.li-dos-blocos:hover {
+    background: #e2e2e2;
+    border-radius: 2px;
+}
+.ul-dos-blocos li.li-dos-blocos:hover .botoes {
+    display: inline-block;
+}
+.ul-dos-blocos a.icone,
+.ul-dos-blocos a.editar {
+    margin-left: 5px;
+    color: #666;
+    cursor: pointer;
+}
+.ul-dos-blocos a.icone:hover,
+.ul-dos-blocos a.editar:hover {
+    color: #333;
+}
+.ul-dos-blocos a.icone {
+    font-size: 1.5rem;
+}

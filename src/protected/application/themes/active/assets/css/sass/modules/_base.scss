@@ -1,0 +1,207 @@
+/* =Global Elements
+-------------------------------------------------------------- */
+body {
+    background: #fff;
+    color: #333;
+}
+
+hr {
+    background-color: #ccc;
+    border: 1px solid #fff;
+    clear: both;
+    height: 1px;
+    margin-bottom: 24px;
+}
+
+/* HTML5 */
+section,
+article,
+header,
+footer,
+nav,
+aside,
+hgroup {
+    display: block;
+}
+
+/* Text elements */
+p {
+    margin-bottom: 1.5rem;
+}
+ul {
+    list-style: disc;
+    margin: 0 0 1.5rem 1.5em;
+}
+ol {
+    list-style: decimal;
+    margin: 0 0 1.5rem 1.5em;
+}
+ol ol {
+    list-style: upper-alpha;
+}
+ol ol ol {
+    list-style: lower-roman;
+}
+ol ol ol ol {
+    list-style: lower-alpha;
+}
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+    margin-bottom: 0;
+}
+dl {
+    margin: 0 0 24px 0;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    margin-bottom: 24px;
+}
+strong {
+    font-weight: bold;
+}
+cite,
+em,
+i {
+    font-style: italic;
+}
+big {
+    font-size: 131.25%;
+}
+ins {
+    background: #f66;
+    text-decoration: none;
+}
+blockquote {
+    font-style: italic;
+    padding: 0 3em;
+    color: #999;
+}
+blockquote cite,
+blockquote em,
+blockquote i {
+    font-style: normal;
+}
+pre {
+    background: #ebebeb;
+    margin-bottom: 24px;
+    padding: 1.5em;
+}
+abbr,
+acronym {
+    border-bottom: 1px dotted #666;
+    cursor: help;
+}
+address {
+    font-style: normal;
+}
+sup,
+sub {
+    height: 0;
+    line-height: 1;
+    position: relative;
+    vertical-align: baseline;
+}
+sup {
+    bottom: 1ex;
+}
+sub {
+    top: .5ex;
+}
+label {
+    color: #000;
+}
+input,
+textarea,
+button,
+select {
+    padding: 3px 6px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #666;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+input,
+textarea {
+    font-size: .75rem;
+}
+input,
+button,
+select {
+    height: 2rem;
+    margin: 0 0 .75rem;
+}
+input[type='submit'],
+button[type='submit'] {
+    width: auto;
+    padding: 0 .75rem;
+    vertical-align: bottom;
+    color: #fff;
+    font-weight: bold;
+    font-size: .75rem;
+    background: #000;
+    cursor: pointer;
+    border: none;
+}
+input[type='submit']:hover,
+button[type='submit']:hover {
+            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+}
+input[type='radio'],
+input[type='checkbox'] {
+    width: auto;
+    height: auto;
+    margin: 0;
+    vertical-align: baseline;
+}
+input:focus,
+textarea:focus,
+button:focus,
+select:focus {
+    outline: none;
+}
+a {
+    color: #000;
+    text-decoration: none;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: underline;
+}
+img,
+embed,
+object,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/*table*/
+table {
+    margin: 0 0 1.5rem;
+    font-size: .75rem;
+}
+th,
+td {
+    padding: .75rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+td {
+    color: #333;
+}
+thead tr th {
+    text-align: center;
+}
+tr th {
+    text-align: left;
+}

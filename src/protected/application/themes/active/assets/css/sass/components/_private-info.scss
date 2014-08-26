@@ -1,0 +1,16 @@
+.privado {
+    position: relative;
+    padding-right: 1.5rem;
+}
+.privado .icone {
+    width: 1rem;
+    height: 1rem;
+}
+.privado h3 .icone {
+    line-height: 1rem;
+    vertical-align: top;
+}
+.privado .icon_lock:before {
+    font-size: .75rem;
+    color: #ccc;
+}

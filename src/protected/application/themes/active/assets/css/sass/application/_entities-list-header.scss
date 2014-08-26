@@ -1,0 +1,48 @@
+/* header do objeto*/
+.header-do-objeto {
+    position: relative;
+    margin-bottom: 5px;
+    padding: .5625rem;
+    background: #fff;
+}
+.header-do-objeto h1 {
+    float: left;
+    width: auto;
+    height: 1.875rem;
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+}
+.header-do-objeto h1 .icone {
+    width: 1.5rem;
+    height: 1.875rem;
+    line-height: 1.875rem;
+    font-size: 1.5rem;
+}
+.header-do-objeto .icone {
+    vertical-align: initial;
+}
+.header-do-objeto .botao.adicionar,
+.header-do-objeto .botao.adicionar:hover {
+    float: right;
+    margin: -1px 1.5rem;
+    color: #fff;
+    background: #000;
+    border: 1px solid #000;
+}
+#header-dos-eventos {
+    border-left: 3rem solid #b3b921;
+    border-right: 3rem solid #b3b921;
+}
+#header-dos-agentes {
+    border-left: 3rem solid #1dabc6;
+    border-right: 3rem solid #1dabc6;
+}
+#header-dos-espacos {
+    border-left: 3rem solid #e83f96;
+    border-right: 3rem solid #e83f96;
+}
+#header-dos-projetos {
+    border-left: 3rem solid #c03;
+    border-right: 3rem solid #c03;
+}
