@@ -126,6 +126,8 @@ class Event extends \MapasCulturais\Entity
      * })
      */
     protected $project = null;
+    
+    private $_projectChanged = false;
 
     /**
      * @var bool
@@ -153,7 +155,7 @@ class Event extends \MapasCulturais\Entity
     
     protected function canUserModify($user){
         $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
-        if($can && $this->project){
+        if($this->_projectChanged && $can && $this->project){
             return $this->project->userHasControl($user);
         }else{
             return $can;
@@ -161,7 +163,7 @@ class Event extends \MapasCulturais\Entity
     }
 
     protected function validateProject(){
-        if($this->project){
+        if($this->project && $this->_projectChanged){
             return $this->project->canUser('modify');
         }else{
             return true;
@@ -169,12 +171,12 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProjectId($projectId){
-        if($projectId) {
+        if($projectId && !$this->project || $this->project->id != $projectId){
+            $this->_projectChanged = true;
             $project = App::i()->repo('Project')->find($projectId);
-        }else{
-            $project = null;
+            
+            $this->project = $project;
         }
-        $this->project = $project;
     }
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
