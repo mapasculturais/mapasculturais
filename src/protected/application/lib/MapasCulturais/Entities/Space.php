@@ -36,7 +36,8 @@ class Space extends \MapasCulturais\Entity
             'unique' => 'Já existe um espaço com este nome'
          ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
         'type' => array(
             'required' => 'O tipo do espaço é obrigatório',
