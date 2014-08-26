@@ -20,7 +20,12 @@
 @import "map";
 @import "pages-nav";
 @import "pages";
-@import "responsive";
 @import "search-result-header";
 @import "sidebar";
 @import "simple-list";
+
+
+//
+// responsive partial must be the last import!
+
+@import "responsive";
