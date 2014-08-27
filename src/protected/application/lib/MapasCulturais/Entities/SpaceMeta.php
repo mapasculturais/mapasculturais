@@ -49,14 +49,6 @@ class SpaceMeta extends \MapasCulturais\Entity
         return $this->owner->canUser($action, $userOrAgent);
     }
 
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->key = trim($this->key);
-        
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', $args);
@@ -88,9 +80,6 @@ class SpaceMeta extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

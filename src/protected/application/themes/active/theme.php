@@ -9,7 +9,52 @@ function is_editable() {
 
 function mapasculturais_head($entity = null){
     $app = App::i();
+    $site_name = $app->siteName;
+    
+    $title = htmlentities($app->view->getTitle($entity));
+    $image_url = $app->view->asset('img/share.png', false);
+    if($entity){
+        $description = $entity->shortDescription ? htmlentities($entity->shortDescription) : $title;
+        if($entity->avatar)
+            $image_url = $entity->avatar->transform('avatarBig')->url;
+    }else{
+        $description = htmlentities($app->siteDescription);
+    }
+    
     ?>
+    <!-- for Google -->
+    <meta name="description" content="<?php echo $description ?>" />
+    <meta name="keywords" content="<?php echo $site_name ?>" />
+
+    <meta name="author" content="<?php echo $site_name ?>" />
+    <meta name="copyright" content="<?php echo $site_name ?>" />
+    <meta name="application-name" content="<?php echo $site_name ?>" />
+    
+    <!-- for Google+ -->
+    <meta itemprop="name" content="<?php echo $title ?>"> 
+    <meta itemprop="description" content="<?php echo $description ?>"> 
+    <meta itemprop="image" content="<?php echo $image_url ?>">
+    
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="<?php echo $title;?>" />
+    <meta name="twitter:description" content="<?php echo $description ?>" />
+    <meta name="twitter:image" content="<?php echo $image_url ?>" />
+    
+    <!-- for Facebook -->
+    <meta property="og:title" content="<?php echo $title ?>" /> 
+    <meta property="og:type" content="article" /> 
+    <meta property="og:image" content="<?php echo $image_url ?>" />
+    <meta property="og:description" content="<?php echo $description ?>" /> 
+    <meta property="og:site_name" content="<?php echo $site_name ?>" /> 
+    <?php if($entity): ?>
+        <meta property="og:url" content="<?php echo $entity->singleUrl; ?>" />
+        <meta property="article:published_time" content="<?php echo $entity->createTimestamp->format('Y-m-d') ?>" /> 
+        <meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" /> 
+    <?php endif; ?>
+
+    <?php $app->applyHook('mapasculturais.head'); ?>
+        
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
@@ -18,8 +63,15 @@ function mapasculturais_head($entity = null){
             request: {
                 controller: '<?php if ($app->view->controller) echo $app->view->controller->id ?>',
                 action: '<?php if ($app->view->controller) echo str_replace($app->view->controller->id . '/', '', $app->view->template) ?>',
-                id: <?php echo (isset($entity) && $entity->id) ? $entity->id : 'null'; ?>,
+                id: <?php echo ($entity && $entity->id) ? $entity->id : 'null'; ?>,
             },
+            <?php if($entity && is_editable()): ?>
+            entity: {
+                id: <?php echo $entity->id ? $entity->id : 'null' ?>, 
+                ownerId: <?php echo $entity->owner->id ? $entity->owner->id : 'null' ?>, 
+                ownerUserId: <?php echo $entity->ownerUser->id ? $entity->ownerUser->id : 'null' ?>
+            },
+            <?php endif; ?>
             mode: "<?php echo $app->config('mode'); ?>"
         };
     </script>
@@ -338,10 +390,6 @@ $app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', fu
 $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
     $this->transform('galleryThumb');
     $this->transform('galleryFull');
-});
-
-$app->hook('entity(event).load', function() {
-    $this->type = 1;
 });
 
 $app->hook('entity(event).save:before', function() {

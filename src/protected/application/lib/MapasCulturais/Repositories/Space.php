@@ -56,6 +56,10 @@ class Space extends \MapasCulturais\Repository{
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
 
+        $app = \MapasCulturais\App::i();
+        if($app->config['app.useEventsCache'])
+            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
+
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to

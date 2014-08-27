@@ -214,9 +214,9 @@ abstract class Entity implements \JsonSerializable{
             return true;
 
         $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
-
-        if($user->is('superAdmin'))
-            return true;
+        
+        if(strtolower($action) === '@control' && $this->usesAgentRelation())
+            return $this->userHasControl($user);
 
         if(method_exists($this, 'canUser' . $action)){
             $method = 'canUser' . $action;
@@ -588,20 +588,6 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
-     * Executed after the entity is loaded.
-     *
-     * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events
-     * @see http://docs.doctrine-project.org/en/latest/reference/events.html#postload
-     *
-     * @hook **entity.load**
-     * @hook **entity({$entity_class}).load**
-     */
-    public function postLoad($args = null){
-        $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').load', $args);
-    }
-
-    /**
      * Executed before the entity is inserted.
      *
      * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events
@@ -641,7 +627,12 @@ abstract class Entity implements \JsonSerializable{
     public function postPersist($args = null){
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
-
+        
+        $repo = $app->repo($this->className);
+        if($repo->usesCache()){
+            $repo->deleteEntityCache($this->id);
+        }
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
     }
@@ -698,7 +689,11 @@ abstract class Entity implements \JsonSerializable{
     public function postRemove($args = null){
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
-
+        $repo = $app->repo($this->className);
+        if($repo->usesCache())
+            $repo->deleteEntityCache($this->id);
+        
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
     }
 

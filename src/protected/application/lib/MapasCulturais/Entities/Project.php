@@ -34,7 +34,8 @@ class Project extends \MapasCulturais\Entity
             'required' => 'O nome do projeto é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
         'type' => array(
             'required' => 'O tipo do projeto é obrigatório',
@@ -364,9 +365,6 @@ class Project extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

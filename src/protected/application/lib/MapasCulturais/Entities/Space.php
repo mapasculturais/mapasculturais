@@ -36,7 +36,8 @@ class Space extends \MapasCulturais\Entity
             'unique' => 'Já existe um espaço com este nome'
          ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
         'type' => array(
             'required' => 'O tipo do espaço é obrigatório',
@@ -81,6 +82,14 @@ class Space extends \MapasCulturais\Entity
      */
     protected $name;
 
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="public", type="boolean", nullable=false)
+     */
+    protected $public = false;
+    
     /**
      * @var string
      *
@@ -182,9 +191,6 @@ class Space extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

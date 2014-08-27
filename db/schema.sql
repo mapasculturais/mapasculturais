@@ -29,6 +29,7 @@ CREATE SEQUENCE agent_id_seq
 CREATE TABLE agent (
     id integer DEFAULT nextval('agent_id_seq'::regclass) NOT NULL,
     user_id integer NOT NULL,
+    parent_id integer,
     type smallint NOT NULL,
     name character varying(255) NOT NULL,
     location point,
@@ -42,24 +43,42 @@ CREATE TABLE agent (
 );
 
 
-CREATE SEQUENCE authorization_request_id_seq
+CREATE SEQUENCE request_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE authorization_request(
-    id integer DEFAULT nextval('authorization_request_id_seq'::regclass) NOT NULL,
+CREATE TABLE request(
+    id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
     requested_user_id integer NOT NULL,
-    requesting_user_id integer NOT NULL,
+    requester_user_id integer NOT NULL,
     object_type character varying(255) NOT NULL,
     object_id integer NOT NULL,
+    metadata text,
     type character varying(255) NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
     action_timestamp timestamp without time zone DEFAULT NULL,
     status smallint NOT NULL
 );
+
+ALTER TABLE ONLY request
+    ADD CONSTRAINT request_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY request
+    ADD CONSTRAINT requested_user_fk FOREIGN KEY (requested_user_id) REFERENCES usr(id);
+
+ALTER TABLE ONLY request
+    ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);
+
+CREATE INDEX requested_user_index 
+    ON request USING btree (requested_user_id, object_type, object_id);
+
+CREATE INDEX requester_user_index 
+    ON request USING btree (requester_user_id, object_type, object_id);
+        
+
 --
 -- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: -
 --
@@ -73,7 +92,7 @@ COMMENT ON COLUMN agent.location IS 'type=POINT';
 
 CREATE TABLE agent_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -111,41 +130,6 @@ CREATE SEQUENCE agent_relation_id_seq
 --
 
 ALTER SEQUENCE agent_relation_id_seq OWNED BY agent_relation.id;
-
-
---
--- Name: authority_request; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE authority_request (
-    id integer NOT NULL,
-    owner_type smallint NOT NULL,
-    owner_id integer NOT NULL,
-    object_type smallint NOT NULL,
-    object_id integer NOT NULL,
-    create_timestamp timestamp without time zone NOT NULL,
-    status smallint NOT NULL
-);
-
-
---
--- Name: authority_request_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE authority_request_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: authority_request_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE authority_request_id_seq OWNED BY authority_request.id;
-
 
 --
 -- Name: comment; Type: TABLE; Schema: public; Owner: -; Tablespace:
@@ -251,7 +235,7 @@ ALTER SEQUENCE event_id_seq OWNED BY event.id;
 --
 
 CREATE TABLE event_meta (
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     object_id integer NOT NULL,
     value text
 );
@@ -281,7 +265,7 @@ CREATE TABLE file (
     object_type character varying(255) NOT NULL,
     object_id integer NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-    grp character(32) NOT NULL,
+    grp character varying(32) NOT NULL,
     description character varying(255)
 );
 
@@ -293,7 +277,7 @@ CREATE TABLE file (
 CREATE TABLE metadata (
     object_id integer NOT NULL,
     object_type character varying(255) NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -405,7 +389,7 @@ ALTER SEQUENCE project_id_seq OWNED BY project.id;
 
 CREATE TABLE project_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -456,6 +440,7 @@ CREATE TABLE space (
     status smallint NOT NULL,
     type smallint NOT NULL,
     agent_id integer,
+    public BOOLEAN NOT NULL DEFAULT false,
     is_verified boolean DEFAULT false NOT NULL
 );
 
@@ -492,7 +477,7 @@ ALTER SEQUENCE space_id_seq OWNED BY space.id;
 
 CREATE TABLE space_meta (
     object_id integer NOT NULL,
-    key character(32) NOT NULL,
+    key character varying(32) NOT NULL,
     value text
 );
 
@@ -886,6 +871,14 @@ ALTER TABLE ONLY agent_relation
 
 
 --
+-- Name: project_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent
+    ADD CONSTRAINT agent_agent_fk FOREIGN KEY (parent_id) REFERENCES agent(id);
+
+
+--
 -- Name: comment_comment_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -998,6 +991,8 @@ ALTER TABLE ONLY agent
     ADD CONSTRAINT usr_agent_fk FOREIGN KEY (user_id) REFERENCES usr(id);
 
 
+ALTER TABLE ONLY agent 
+    ADD CONSTRAINT agent_agent_fk FOREIGN KEY (parent_id) REFERENCES agent(id);
 
 
 CREATE DOMAIN frequency AS CHARACTER VARYING CHECK ( VALUE IN ( 'once', 'daily', 'weekly', 'monthly', 'yearly' ) );
@@ -1029,15 +1024,17 @@ CREATE TABLE event_occurrence_recurrence (
   "month" integer,
   "day" integer,
   week integer,
-  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence
+  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS  event_occurrence_cancellation (
   id serial PRIMARY KEY,
   event_occurrence_id integer,
   date date,
-  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence
+  CONSTRAINT event_occurrence_fk FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence ON DELETE CASCADE
 );
+
+
 
 -- Event Library
 

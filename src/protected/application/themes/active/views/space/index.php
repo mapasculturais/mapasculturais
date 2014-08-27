@@ -1,4 +1,4 @@
-<?php $this->layout = 'interna'; ?>
+<?php $this->layout = 'search'; ?>
 <div id="mapa">
     <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps?t=m&amp;q=S%C3%A9,+S%C3%A3o+Paulo,+Rep%C3%BAblica+Federativa+do+Brasil&amp;ie=UTF8&amp;hq=&amp;hnear=S%C3%A9,+S%C3%A3o+Paulo,+Brasil&amp;z=14&amp;ll=-23.548857,-46.629509&amp;output=embed"></iframe><br /><small><a href="https://www.google.com/maps?t=m&amp;q=S%C3%A9,+S%C3%A3o+Paulo,+Rep%C3%BAblica+Federativa+do+Brasil&amp;ie=UTF8&amp;hq=&amp;hnear=S%C3%A9,+S%C3%A3o+Paulo,+Brasil&amp;z=14&amp;ll=-23.548857,-46.629509&amp;source=embed" style="color:#0000FF;text-align:left">Ver mapa maior</a></small>
 </div>

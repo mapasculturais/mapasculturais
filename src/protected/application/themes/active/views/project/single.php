@@ -125,8 +125,12 @@ add_entity_properties_metadata_to_js($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
+            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+            <?php endif; ?>
+
             <p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="700"></textarea>'><?php echo $entity->shortDescription; ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
             <div class="servico">
                 <?php if(is_editable() || $entity->site): ?>
@@ -142,7 +146,7 @@ add_entity_properties_metadata_to_js($entity);
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo $entity->longDescription; ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
 
 

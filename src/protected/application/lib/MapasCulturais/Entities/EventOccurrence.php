@@ -399,7 +399,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('admin'))
             return true;
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     protected function canUserModify($user){
@@ -416,9 +416,6 @@ class EventOccurrence extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

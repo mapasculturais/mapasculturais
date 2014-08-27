@@ -28,7 +28,8 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityNested;
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -38,8 +39,12 @@ class Agent extends \MapasCulturais\Entity
             'required' => 'O nome do agente é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
+        'type' => array(
+            'required' => 'O tipo do agente é obrigatório',
+        )
     );
 
     /**
@@ -108,6 +113,24 @@ class Agent extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $parent;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Agent[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $_children;
+    
     /**
      * @var bool
      *
@@ -204,46 +227,65 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getOwner(){
-        return $this->user ?
-                $this->user->profile :
-                App::i()->user->profile;
+        if($this->parent){
+            return $this->parent;
+        }else{
+            return $this->user ? $this->user->profile : App::i()->user->profile;
+        }
     }
-
+    
+    function setOwner(Agent $parent = null){
+        if($parent){
+            $this->setParent($parent);
+        }else{
+            $this->setParent();
+        }
+    }
+    
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->setUser($owner->user);
+        if($owner){
+            $this->setParent($owner);
+        }else{
+            $this->setParent();
+        }
     }
-
-    function setUser(User $user){
-        try{
-            $this->checkPermission('modify');
-            $user->checkPermission('modify');
-        }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+    
+    function setUser($user){
+        $this->checkPermission('modify');
+        $this->user = $user;
+    }
+    
+    function setParent(Agent $parent = null){
+        if($parent != $this->parent){
             $app = App::i();
-            if($app->isWorkflowEnabled){
+            try{
+                $this->checkPermission('changeOwner');
+                if(!is_null($parent)){
+                    $parent->checkPermission('modify');
+                    if($parent->id != $this->id)
+                        $this->setUser($parent->user);
+                }
+            }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+                if(!$app->isWorkflowEnabled)
+                    throw $e;
+                echo "\n--------->>NO CATCH\n\n\n\n";
                 $ar = new \MapasCulturais\Entities\RequestAuthority();
                 $ar->targetEntity = $this;
                 
                 if($this->user->id === $app->user->id){
-                    
                     $ar->requesterUser = $app->user;
-                    $ar->requestedUser = $user;
+                    $ar->requestedUser = $parent->user;
                 }else{
-                    $ar->requesterUser = $user;
+                    $ar->requesterUser = $parent->user;
                     $ar->requestedUser = $app->user;
                 }
+                $ar->destinationAgent = $parent;
                 $ar->save(true);
-
-                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
-            }else{
-                throw $e;
             }
         }
-        
-        $this->user = $user;
     }
-
+    
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         unset($result['user']);
@@ -251,7 +293,7 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserCreate($user){
-        if(is_null($user) || $user->is('guest'))
+        if($user->is('guest'))
             return true;
         else
             return $this->genericPermissionVerification($user);
@@ -264,14 +306,31 @@ class Agent extends \MapasCulturais\Entity
         else
             return parent::canUserRemove($user);
     }
+    
+    protected function canUserDestroy($user){
+        if($this->isUserProfile)
+            return false;
+        else
+            return $user->is('superAdmin');
+    }
+    
+    protected function canUserChangeOwner($user){
+        if($this->isUserProfile)
+            return false;
+        
+        if($user->is('guest'))
+            return false;
+        
+        if($user->is('admin'))
+            return true;
+        
+        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

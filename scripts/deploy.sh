@@ -6,9 +6,8 @@ else
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CDIR=$( pwd )
 cd $DIR
-
-./db-update.sh 1
 
 cd $DIR/..
 
@@ -18,11 +17,23 @@ git checkout $BRANCH
 
 cd $DIR/../src/protected/
 
-composer.phar update
+if hash composer.phar 2>/dev/null; then
+	composer="composer.phar"
+else
+	composer="composer"
+fi
 
-composer.phar dump-autoload --optimize
+$composer update --prefer-dist
+
+$composer dump-autoload --optimize
 
 cd tools
 
-./doctrine orm:generate-proxies
+REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies
 
+cd $DIR
+./db-update.sh 1
+
+cd $CDIR
+
+restart php5-fpm

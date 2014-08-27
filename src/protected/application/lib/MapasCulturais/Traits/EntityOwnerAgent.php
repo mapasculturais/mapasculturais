@@ -37,7 +37,8 @@ trait EntityOwnerAgent{
      * 
      * @param \MapasCulturais\Entities\Agent $owner
      */
-    function setOwner(\MapasCulturais\Entities\Agent $owner){
+
+    function setOwner($owner){
         if(!$this->owner || $owner->id != $this->owner->id){
             try{
                 $this->checkPermission('changeOwner');
@@ -45,25 +46,26 @@ trait EntityOwnerAgent{
                 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 $app = App::i();
-                if($app->isWorkflowEnabled){
-                    $ar = new \MapasCulturais\Entities\RequestAuthority();
-                    $ar->targetEntity = $this;
-                    
-                    if($app->user->id === $this->getOwnerUser()->id){
-                        $ar->requesterUser = $app->user;
-                        $ar->requestedUser = $owner->getOwnerUser();
-                    }else{
-                        $ar->requesterUser = $owner->getOwnerUser();
-                        $ar->requestedUser = $app->user;
-                    }
-                    $ar->destinationAgent = $owner;
-                    $ar->save(true);
-                    
-                    throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
-                }else{
+                if(!$app->isWorkflowEnabled)
                     throw $e;
+                
+                $ar = new \MapasCulturais\Entities\RequestAuthority();
+                $ar->targetEntity = $this;
+
+                if($app->user->id === $this->getOwnerUser()->id){
+                    $ar->requesterUser = $app->user;
+                    $ar->requestedUser = $owner->getOwnerUser();
+                }else{
+                    $ar->requesterUser = $owner->getOwnerUser();
+                    $ar->requestedUser = $app->user;
                 }
+                $ar->destinationAgent = $owner;
+                $ar->save(true);
+
+                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+                
             }
+
             $this->owner = $owner;
         }
     }
@@ -79,9 +81,13 @@ trait EntityOwnerAgent{
         if($user->is('guest'))
             return false;
         
+        if($user->is('admin'))
+            return true;
         
-        // only admins or the owner of the entity can change the owner
-        return ($user->is('admin') || $user->id == $this->getOwnerUser()->id);
+        if($this->getOwner()->userHasControl($user))
+            return true;
+        
+        return false;
     }
     
     protected function _canUser($user, $action = ''){

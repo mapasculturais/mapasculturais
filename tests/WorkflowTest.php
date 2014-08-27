@@ -29,10 +29,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
             
             $this->assertAuthorizationRequestCreated(function() use($user2, $entity){
                 $this->user = $user2;
-                if($entity->getClassName() === 'MapasCulturais\Entities\Agent')
-                    $entity->user = $user2;
-                else
-                    $entity->owner = $user2->profile;
+                $entity->owner = $user2->profile;
                 $entity->save();
             }, "Asserting that AuthorityRequest is created when an user tries to take ownership of a {$class}.");
         }
@@ -49,10 +46,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
             
             $this->assertAuthorizationRequestCreated(function() use($user1, $user2, $entity){
                 $this->user = $user1;
-                if($entity->getClassName() === 'MapasCulturais\Entities\Agent')
-                    $entity->user = $user2;
-                else
-                    $entity->owner = $user2->profile;
+                $entity->owner = $user2->profile;
                 $entity->save();
             }, "Asserting that AuthorityRequest is created when an user tries to give ownership of a {$class}.");
         }
@@ -103,10 +97,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
             
             // create the request 
             try{
-                if($entity->getClassName() === 'MapasCulturais\Entities\Agent')
-                    $entity->user = $user2;
-                else
-                    $entity->owner = $user2->profile;
+                $entity->owner = $user2->profile;
                 
                 $entity->save();
             } catch (MapasCulturais\Exceptions\WorkflowRequest $e) {

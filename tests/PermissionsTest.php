@@ -808,6 +808,26 @@ class PermissionsTest extends MapasCulturais_TestCase{
             
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
+        
+        // Assert that a normal user CAN create an event occurrence in public spaces that he don't have control
+        $this->user = $user0;
+        $public_space = $this->getNewEntity('Space');
+        $public_space->owner = $user0->profile;
+        $public_space->public = true;
+        $public_space->save();
+        
+        $this->user = $user1;
+        
+        $this->assertPermissionGranted(function() use($event, $public_space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $public_space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CAN create an event occurrence in public spaces that he don't have control");
+        
         $this->app->enableWorkflow();
     }
     
@@ -885,7 +905,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }, "Asserting that a normal user CANNOT register in a project with registration closed");
         $this->app->enableWorkflow();
     }
-
+    
     function testFilesPermissions(){
         $this->app->disableWorkflow();
         $this->app->enableWorkflow();
@@ -1011,5 +1031,75 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that super admin user CAN remove the role $role of a user");
         }
         $this->app->enableWorkflow();
+    }
+    
+    function testSoftDeleteDestroy(){
+        foreach(['normal', 'staff', 'admin'] as $role){
+            foreach ($this->entities as $class => $plural){
+                $this->resetTransactions();
+                $user = $this->getUser($role, 1);
+                $this->user = $user;
+                $profile = $user->profile;
+                $entity = $this->getNewEntity($class);
+                $entity->owner = $profile;
+                $entity->save(true);
+                $this->assertPermissionDenied(function() use($entity){
+                    $entity->destroy(true);
+                }, "Asserting that a $role user CANNOT destroy his own $plural");
+
+            }
+        }
+        
+        foreach ($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $user = $this->getUser('superAdmin', 1);
+            $this->user = $user;
+            $profile = $user->profile;
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $profile;
+            $entity->save(true);
+            $this->assertPermissionGranted(function() use($entity){
+                $entity->destroy(true);
+            }, "Asserting that a Super Admin user CAN destroy his own $plural");
+
+        }
+        
+        foreach(['normal', 'staff', 'admin'] as $role){
+            foreach ($this->entities as $class => $plural){
+                $this->resetTransactions();
+                
+                $user = $this->getUser('normal', 0);
+                $this->user = $user;
+                $profile = $user->profile;
+                $entity = $this->getNewEntity($class);
+                $entity->owner = $profile;
+                $entity->save(true);
+                
+                $this->user = $this->getUser($role, 1);
+                
+                $this->assertPermissionDenied(function() use($entity){
+                    $entity->destroy(true);
+                }, "Asserting that a $role user CANNOT destroy other user $plural");
+
+            }
+        }
+        
+        foreach ($this->entities as $class => $plural){
+            $this->resetTransactions();
+
+            $user = $this->getUser('normal', 0);
+            $this->user = $user;
+            $profile = $user->profile;
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $profile;
+            $entity->save(true);
+
+            $this->user = $this->getUser('superAdmin', 1);
+
+            $this->assertPermissionGranted(function() use($entity){
+                $entity->destroy(true);
+            }, "Asserting that a Super Admin user CAN destroy other user $plural");
+
+        }
     }
 }

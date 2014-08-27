@@ -35,7 +35,8 @@ class Event extends \MapasCulturais\Entity
             'required' => 'O nome do evento é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
         'project' => array(
             '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
@@ -126,6 +127,8 @@ class Event extends \MapasCulturais\Entity
      * })
      */
     protected $project = null;
+    
+    private $_projectChanged = false;
 
     /**
      * @var bool
@@ -153,7 +156,7 @@ class Event extends \MapasCulturais\Entity
     
     protected function canUserModify($user){
         $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
-        if($can && $this->project){
+        if($this->_projectChanged && $can && $this->project){
             return $this->project->userHasControl($user);
         }else{
             return $can;
@@ -161,20 +164,30 @@ class Event extends \MapasCulturais\Entity
     }
 
     protected function validateProject(){
-        if($this->project){
+        if($this->project && $this->_projectChanged){
             return $this->project->canUser('modify');
         }else{
             return true;
         }
     }
+    
+    function setProject($project){
+        if($project)
+            $this->setProjectId($project->id);
+        else
+            $this->setProjectId(null);
+    }
 
     function setProjectId($projectId){
-        if($projectId) {
+        if(!$projectId){
+            $this->project = null;
+            
+        }elseif(!$this->project || $this->project->id != $projectId){
+            $this->_projectChanged = true;
             $project = App::i()->repo('Project')->find($projectId);
-        }else{
-            $project = null;
+            
+            $this->project = $project;
         }
-        $this->project = $project;
     }
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
@@ -225,6 +238,9 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
+        
+        if($app->config['app.useEventsCache'])
+            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
         $query->setParameters(array(
             'date_from' => $date_from,
@@ -284,7 +300,11 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
+        
+        if($app->config['app.useEventsCache'])
+            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
+        
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to,
@@ -300,9 +320,6 @@ class Event extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
