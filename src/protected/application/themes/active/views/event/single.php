@@ -194,7 +194,7 @@ add_occurrence_frequencies_to_js();
             <p>
                 <?php if (is_editable() || $entity->shortDescription): ?>
                     <span class="label">Descrição Curta:</span><br>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $entity->shortDescription; ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 <?php endif; ?>
             </p>
             <div class="servico">
@@ -370,7 +370,7 @@ add_occurrence_frequencies_to_js();
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $entity->longDescription; ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
 
 
