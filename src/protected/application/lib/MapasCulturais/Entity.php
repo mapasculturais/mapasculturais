@@ -630,7 +630,12 @@ abstract class Entity implements \JsonSerializable{
     public function postPersist($args = null){
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
-
+        
+        $repo = $app->repo($this->className);
+        if($repo->usesCache()){
+            $repo->deleteEntityCache($this->id);
+        }
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
     }
@@ -687,7 +692,11 @@ abstract class Entity implements \JsonSerializable{
     public function postRemove($args = null){
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
-
+        $repo = $app->repo($this->className);
+        if($repo->usesCache())
+            $repo->deleteEntityCache($this->id);
+        
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
     }
 
