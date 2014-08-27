@@ -35,7 +35,8 @@ class Event extends \MapasCulturais\Entity
             'required' => 'O nome do evento é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(1,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
         'project' => array(
             '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
@@ -169,9 +170,19 @@ class Event extends \MapasCulturais\Entity
             return true;
         }
     }
+    
+    function setProject($project){
+        if($project)
+            $this->setProjectId($project->id);
+        else
+            $this->setProjectId(null);
+    }
 
     function setProjectId($projectId){
-        if($projectId && !$this->project || $this->project->id != $projectId){
+        if(!$projectId){
+            $this->project = null;
+            
+        }elseif(!$this->project || $this->project->id != $projectId){
             $this->_projectChanged = true;
             $project = App::i()->repo('Project')->find($projectId);
             
