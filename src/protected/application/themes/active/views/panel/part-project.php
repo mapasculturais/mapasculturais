@@ -30,6 +30,9 @@
             <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
         <?php else: ?>
             <a class="action" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
+                <?php if($entity->canUser('destroy')): ?>
+                    <a class="action" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>
+                <?php endif; ?>
         <?php endif; ?>
     </div>
 </article>

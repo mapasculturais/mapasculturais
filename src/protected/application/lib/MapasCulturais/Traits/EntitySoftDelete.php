@@ -54,10 +54,26 @@ trait EntitySoftDelete{
     }
 
     function destroy($flush = false){
+        $this->checkPermission('destroy');
+        $hook_class_path = $this->getHookClassPath();
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:before');
+        
         parent::delete($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:after');
     }
 
     function getUndeleteUrl(){
         return App::i()->createUrl($this->controllerId, 'undelete', array($this->id));
+    }
+    
+    function getDestroyUrl(){
+        return App::i()->createUrl($this->controllerId, 'destroy', array($this->id));
+    }
+    
+    protected function canUserDestroy($user){
+        return $user->is('superAdmin');
     }
 }

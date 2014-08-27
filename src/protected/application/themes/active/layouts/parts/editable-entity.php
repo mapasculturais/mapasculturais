@@ -75,6 +75,9 @@ if(is_editable()){
                 <a href="<?php echo $entity->deleteUrl ?>" class="botao selected">Excluir</a>
             <?php elseif ($entity->canUser('undelete') && $entity->status < 0): ?>
                 <a href="<?php echo $entity->undeleteUrl ?>" class="botao selected">Recuperar</a>
+                <?php if($entity->canUser('destroy')): ?>
+                    <a class="botao selected" href="<?php echo $entity->destroyUrl; ?>">Excluir Definitivamente</a>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

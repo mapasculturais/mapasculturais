@@ -215,9 +215,6 @@ abstract class Entity implements \JsonSerializable{
         
         $user = is_null($userOrAgent) ? App::i()->user : $userOrAgent->getOwnerUser();
 
-        if($user && $user->is('superAdmin'))
-            return true;
-
         if(is_null($user))
             $user = new GuestUser;
         
@@ -225,11 +222,9 @@ abstract class Entity implements \JsonSerializable{
             return $this->userHasControl($user);
 
         if(method_exists($this, 'canUser' . $action)){
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> EXISTS");
             $method = 'canUser' . $action;
             return $this->$method($user);
         }else{
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> ELSE");
             return $this->genericPermissionVerification($user);
         }
     }
