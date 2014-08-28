@@ -18,7 +18,7 @@ h1 .icone {
     background: #fff;
     color: $gray;
     padding: 2px;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .icon_check:hover {
     color: $brand-accent;
@@ -45,5 +45,5 @@ h1 .icone {
     height: 1rem;
 }
 .icone.icon_download:before {
-    font-size: 1rem;
+    font-size: $font-size-base;
 }

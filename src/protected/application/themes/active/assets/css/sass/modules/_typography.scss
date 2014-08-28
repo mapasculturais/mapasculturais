@@ -1,5 +1,7 @@
-/* =Fonts
--------------------------------------------------------------- */
+//
+// Typography
+// --------------------------------------------------
+
 @font-face {
     font-family: 'aleo';
     src: url('../fonts/aleo-bold-webfont.eot');
@@ -67,15 +69,15 @@
 }
 
 body {
-    font: 100%/150% /*16px/24px*/ 'Open Sans', Arial, Helvetica, sans-serif;
+    font: $font-size-base/$line-height-base /*16px/24px*/ $font-family-base;
 }
 pre {
-    font-family: Verdana, sans-serif;
-    font-size: .75rem /*12px*/;
+    font-family: $font-family-monospace;
+    font-size: $font-size-smaller; // 12px
 }
 code {
-    font-family: 'Courier New', monospace;
-    font-size: .75rem /*12px*/;
+    font-family: $font-family-monospace;
+    font-size: $font-size-smaller; // 12px
 }
 h1,
 h2,
@@ -83,35 +85,38 @@ h3,
 h4,
 h5,
 h6 {
-    margin-bottom: 1.5rem /*24px*/;
-    font-weight: bold;
-    font-family: 'aleo', serif;
-    color: $brand-accent;
+    margin-bottom: $line-height-base; // 24px
+    font-weight: $headings-font-weight;
+    font-family: $headings-font-family;
+    color: $headings-color;
 }
 h1 {
-    font-size: 2.25rem /*36px*/;
-    line-height: 3rem /*48px*/;
+    font-size: $font-size-h1; // 36px
+    line-height: $line-height-h1; // 48px
 }
 h2 {
-    font-size: 2rem /*32px*/;
-    line-height: 3rem /*48px*/;
+    font-size: $font-size-h2; // 32px
+    line-height: $line-height-h2; // 48px
 }
 h3 {
-    font-size: 1.75rem /*28px*/;
-    line-height: 2rem /*32px*/;
+    font-size: $font-size-h3; // 28px
+    line-height: $line-height-h3; // 32px
 }
 h4 {
-    font-size: 1.5rem /*24px*/;
+    font-size: $font-size-h4; //24px
+    line-height: $line-height-h4; // 24px
 }
 h5 {
-    font-size: 1.375rem /*22px*/;
+    font-size: $font-size-h5; // 20px
+    line-height: $line-height-h5; // 24px
 }
 h6 {
-    font-size: 1rem /*20px*/;
+    font-size: $font-size-h6; // 16px
+    line-height: $line-height-h6; // 24px
 }
 h1 + h2,
 h2 + h3,
 h4 + h5,
 h5 + h6 {
-    margin-top: 1.5rem /*24px*/;
+    margin-top: $line-height-base; // 24px
 }

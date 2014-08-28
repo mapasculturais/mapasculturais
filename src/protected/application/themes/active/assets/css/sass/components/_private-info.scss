@@ -1,6 +1,6 @@
 .privado {
     position: relative;
-    padding-right: 1.5rem;
+    padding-right: $padding-large;
 }
 .privado .icone {
     width: 1rem;
@@ -11,6 +11,6 @@
     vertical-align: top;
 }
 .privado .icon_lock:before {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     color: $gray;
 }

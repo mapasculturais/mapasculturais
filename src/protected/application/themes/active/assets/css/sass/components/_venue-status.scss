@@ -1,5 +1,5 @@
 .venue-status {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
     font-weight: bold;
 }
 
@@ -16,6 +16,6 @@
 
 .venue-status-definition {
     margin-bottom: 0;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     color: #888;
 }

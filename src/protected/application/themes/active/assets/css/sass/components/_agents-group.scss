@@ -11,10 +11,10 @@
     top: 3.5rem;
     right: -.75rem;
     width: 180px;
-    padding: .75rem;
-    font-size: .75rem;
+    padding: $padding-base;
+    font-size: $font-size-smaller;
     background: #fff;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
 }
@@ -24,7 +24,7 @@
     top: -13px;
     right: 0;
     left: 0;
-    padding-right: 1.5rem;
+    padding-right: $padding-large;
     color: #fff;
     font-family: 'ElegantIcons';
     speak: none;
@@ -38,7 +38,7 @@
     -moz-osx-font-smoothing: grayscale;
 }
 .agentes .avatar .descricao-do-agente h1 {
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
     margin-bottom: 0;
 }

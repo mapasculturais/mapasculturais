@@ -53,11 +53,11 @@
     }
     .barra-esquerda .bloco {
         float: right;
-        margin: 0 .75rem 1.5rem;
+        margin: 0 $line-height-half $line-height-base;
         border-bottom: none;
     }
     .botoes-de-compartilhar {
         float: left;
-        margin-right: .75rem;
+        margin-right: $line-height-half;
     }
 }

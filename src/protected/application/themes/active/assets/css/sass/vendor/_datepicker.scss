@@ -11,7 +11,7 @@
     -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
 }
 .ui-datepicker .ui-datepicker-header {
-    padding: 0 .5rem;
+    padding: 0 $padding-small;
     line-height: 2.5rem;
     background: $gray-light;
 }
@@ -39,7 +39,7 @@
     width: 1rem;
     height: inherit;
     margin: 0 5px;
-    font-size: 1rem;
+    font-size: $font-size-base;
     line-height: inherit;
     font-family: 'ElegantIcons';
     vertical-align: top;

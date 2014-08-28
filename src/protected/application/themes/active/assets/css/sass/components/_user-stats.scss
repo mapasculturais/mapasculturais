@@ -1,5 +1,5 @@
 #estatisticas-do-usuario {
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
 }
 #estatisticas-do-usuario div.box {
     display: block;
@@ -24,7 +24,7 @@
     margin-top: 2rem;
     margin-bottom: 0;
     background: #ddd;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 #estatisticas-do-usuario div.box:hover .icon_plus {
     background: $brand-accent;

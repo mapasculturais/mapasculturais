@@ -1,11 +1,11 @@
 nav.barra-esquerda ul {
     list-style: none;
-    margin: 0 -1.5rem;
-    font-size: .875rem;
+    margin: 0 -$line-height-base;
+    font-size: $font-size-small;
 }
 nav.barra-esquerda a {
     display: block;
-    padding: .75rem;
+    padding: $padding-base;
     border-left: $gray 6px solid;
     -webkit-transition: all .3s;
             transition: all .3s;

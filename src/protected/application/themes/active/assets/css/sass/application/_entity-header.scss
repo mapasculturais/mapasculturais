@@ -12,8 +12,8 @@
 }
 .imagem-do-header .botao.editar {
     position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    bottom: $line-height-base;
+    right: $line-height-base;
 }
 .com-imagem .botao.editar {
     display: none;
@@ -35,6 +35,6 @@
 }
 .content-do-header .avatar .botao.editar {
     position: absolute;
-    right: .75rem;
-    bottom: .75rem;
+    right: $line-height-half;
+    bottom: $line-height-half;
 }

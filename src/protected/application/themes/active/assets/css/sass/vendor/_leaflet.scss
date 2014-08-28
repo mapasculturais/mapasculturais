@@ -3,7 +3,7 @@
     height: 100%;
 }
 #camadas-de-entidades {
-    font: 1rem/1.5rem 'Open Sans', Arial, Helvetica, sans-serif;
+    font: $font-size-base/$line-height-base $font-family-base;
 }
 #camadas-de-entidades a {
     color: #fff;
@@ -22,9 +22,9 @@
 /*controles de layers, zoom, fullscreen, localize-me*/
 .leaflet-control-layers,
 .leaflet-bar {
-    -webkit-border-radius: 2px;
-       -moz-border-radius: 2px;
-            border-radius: 2px;
+    -webkit-border-radius: $border-radius-base;
+       -moz-border-radius: $border-radius-base;
+            border-radius: $border-radius-base;
     -moz-box-shadow: 0 2px 6px rgba(0,0,0,.3);
          box-shadow: 0 2px 6px rgba(0,0,0,.3);
     -webkitbox-shadow: 0 2px 6px rgba(0,0,0,.3);
@@ -37,7 +37,7 @@
     margin-right: 124px !important;
 }
 .leaflet-control-layers-expanded {
-    padding: .75rem;
+    padding: $padding-base;
     background-color: $brand-primary;
 }
 .leaflet-control-layers-toggle {
@@ -50,8 +50,8 @@
     border-top: 1px solid #fff;
 }
 .leaflet-control-layers-list label {
-    font-size: .75rem;
-    margin-bottom: .75rem;
+    font-size: $font-size-smaller;
+    margin-bottom: $line-height-half;
 }
 .leaflet-control-layers-list label:hover {
     color: #fff;
@@ -75,7 +75,7 @@
     border-radius: 0 0 2px 2px;
 }
 .leaflet-bar a:only-of-type {
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .leaflet-control-zoom-fullscreen {
     background-image: url(../img/icon-fullscreen.png);
@@ -94,13 +94,13 @@
 }
 .leaflet-control-command-interior {
     display: block;
-    padding: .5rem;
+    padding: $padding-small;
     cursor: pointer;
     text-align: center;
     color: #fff;
-    -webkit-border-radius: 2px;
-       -moz-border-radius: 2px;
-            border-radius: 2px;
+    -webkit-border-radius: $border-radius-base;
+       -moz-border-radius: $border-radius-base;
+            border-radius: $border-radius-base;
     background-color: $brand-accent;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.15);
 }
@@ -128,7 +128,7 @@
 }
 .leaflet-draw-actions a {
     font-family: 'Open Sans';
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     font-weight: bold;
     border-left-color: #fff;
     background-color: $brand-accent;
@@ -150,7 +150,7 @@
 }
 /*label*/
 .leaflet-label {
-    font: .75rem/1.5 'Open Sans', Arial, Helvetica, sans-serif;
+    font: .75rem/1.5 $font-family-base;
     position: absolute;
     z-index: 9999999 !important;
     display: block;
@@ -163,7 +163,7 @@
     white-space: nowrap;
     color: #fff;
     border-color: $brand-accent;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     background: $brand-accent;
 }
 .leaflet-label.leaflet-clickable {

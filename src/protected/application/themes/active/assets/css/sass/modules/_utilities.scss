@@ -1,7 +1,7 @@
 /* =General classes
 -------------------------------------------------------------- */
 .small {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 .bottom {
     margin-bottom: 0 !important;
@@ -67,7 +67,7 @@
 .box {
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    padding: 1.5rem;
+    padding: $padding-large;
 }
 //renomear
 .descricao {

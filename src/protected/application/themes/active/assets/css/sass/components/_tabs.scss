@@ -1,15 +1,15 @@
 /* Abas */
 .abas {
-    margin: 0 0 1.5rem;
-    border-bottom: 1px solid $gray-lighter;
+    margin: 0 0  $line-height-base;
+    border-bottom: $thin-row;
     list-style: none;
-    font-size: .875rem;
+    font-size: $font-size-small;
 }
 .abas li {
     float: left;
     margin-bottom: -1px;
     padding: 5px 20px;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: $thin-row;
     -webkit-transition: all .3s;
             transition: all .3s;
 }

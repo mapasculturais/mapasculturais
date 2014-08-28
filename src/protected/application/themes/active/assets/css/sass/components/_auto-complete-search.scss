@@ -1,12 +1,12 @@
 .search-agent {
     position: relative;
     min-height: 3rem;
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
     padding: .75rem 0 .75rem 3.75rem;
 }
 .search-agent h1 {
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
     margin-bottom: 0;
 }
 .search-agent-thumb {

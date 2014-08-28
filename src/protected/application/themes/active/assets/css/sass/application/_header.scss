@@ -16,13 +16,13 @@
 }
 #logo-spcultura {
     float: left;
-    padding: .375rem 1.5rem;
+    padding: .375rem $padding-large;
 }
 #logo-spcultura img {
     width: 138px;
 }
 #about-nav {
-    padding: 0 1.5rem;
+    padding: 0 $padding-large;
 }
 #logo-smc {
     clear: both;
@@ -71,7 +71,7 @@
 }
 .menu > li {
     width: 5rem;
-    padding: .75rem;
+    padding: $padding-base;
     border-top: 6px solid transparent;
             box-shadow: 1px 0 0 0 $gray-lighter inset;
     -webkit-box-shadow: 1px 0 0 0 $gray-lighter inset;
@@ -81,35 +81,35 @@
     -webkit-box-shadow: none;
 }
 .menu > li > a {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     line-height: 1.25rem/*20px*/;
     text-align: center;
 }
 .menu > li div.icone {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: $line-height-base;;
+    height: $line-height-base;;
     margin: 0 auto .25rem;
-    font-size: 1rem;
-    line-height: 1.5rem/*24px*/;
-    border-radius: 2px;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    border-radius: $border-radius-base;
 }
 .submenu {
     display: none;
     position: absolute;
     top: 70px;
     margin: 0;
-    padding: .75rem;
+    padding: $padding-base;
     list-style: none;
     font-size: .8rem;
     line-height: 1rem;
     background: $gray-light;
             box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .submenu li {
     float: none;
-    line-height: 1.5rem;
+    line-height: $line-height-base;
 }
 .submenu li.row {
     margin: .5rem;
@@ -232,7 +232,7 @@
 }
 .usuario .submenu a {
     color: $brand-accent;
-    padding: .5rem;
+    padding: $padding-small;
 }
 .usuario .submenu a:hover {
     color: #fff;
@@ -248,7 +248,7 @@
     background: $gray-light;
 }
 .notificacoes .slimScrollDiv {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
 }
 .notificacoes:hover > a {
     color: $brand-primary;
@@ -278,8 +278,8 @@
     margin: 0 1rem 0 0;
 }
 .notificacoes .submenu a.notificacao {
-    margin-bottom: .75rem;
-    padding: .5rem;
+    margin-bottom: $line-height-half;
+    padding: $padding-small;
     background: #f8f8f8;
     border-left: 5px solid #999;
     border-radius: 0 2px 2px 0;

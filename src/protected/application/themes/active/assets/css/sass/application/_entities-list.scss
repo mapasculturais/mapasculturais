@@ -9,10 +9,10 @@
 }
 .lista header {
     margin-bottom: 3rem;
-    padding: .75rem;
-    border-radius: 2px;
+    padding: $padding-base;
+    border-radius: $border-radius-base;
     background: $gray-light;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 .lista header p {
     margin-bottom: 0;
@@ -27,9 +27,9 @@
 }
 .objeto {
     margin-bottom: 5px;
-    padding: 1.5rem;
+    padding: $padding-large;
     background: #f8f8f8;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     -webkit-transition: all .3s;
             transition: all .3s;
 }
@@ -43,10 +43,10 @@
     background: #f8f8f8;
 }
 .objeto h1 {
-    margin-bottom: .75rem;
-    padding-bottom: .75rem;
-    line-height: 1.5rem;
-    border-bottom: 1px solid $gray-lighter;
+    margin-bottom: $line-height-half;
+    padding-bottom: $padding-base;
+    line-height: $line-height-base;
+    border-bottom: $thin-row;
 }
 .lista .objeto h1 {
     font-size: 1.25rem;
@@ -72,8 +72,8 @@
     min-height: 6rem;
     margin-right: 34rem;
     margin-bottom: 0;
-    padding: 0 1.5rem 0 7.5rem;
-    font-size: .875rem;
+    padding: 0 $padding-large 0 7.5rem;
+    font-size: $font-size-small;
 }
 .lista .objeto-meta {
     float: right;
@@ -83,7 +83,7 @@
     min-height: 6rem;
     margin-left: -34rem;
     margin-top: -4rem;
-    padding-left: 1.5rem;
+    padding-left: $padding-large;
     border-left: 1px solid $gray-lighter;
 }
 #agenda.lista .objeto-meta {
@@ -132,7 +132,7 @@
     text-transform: uppercase;
     color: #888;
     letter-spacing: .1em;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-family: $font-family-base;
     line-height: 1.2rem;
     margin-bottom: .5rem;
 }

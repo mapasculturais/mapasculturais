@@ -1,20 +1,20 @@
 .ficha-spcultura {
-    margin-bottom: 1.5rem;
-    padding: 1.5rem;
+    margin-bottom: $line-height-base;
+    padding: $padding-large;
     background: #f8f8f8;
-    border-radius: 2px;
-    font-size: .875rem;
+    border-radius: $border-radius-base;
+    font-size: $font-size-small;
     color: #888;
 }
 .servico {
-    margin-bottom: 1.5rem;
-    padding-top: 1.5rem;
+    margin-bottom: $line-height-base;
+    padding-top: $padding-large;
     border-top: 1px solid #ddd;
 }
 .servico > p,
 .infos p {
     margin-bottom: 0;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     color: #888;
 }
 .infos {
@@ -27,6 +27,6 @@
     -moz-box-sizing: border-box;
     width: 60%;
     height: 408px;
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
+    margin-bottom: $line-height-base;
+    padding-left: $padding-large;
 }

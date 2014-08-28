@@ -1,11 +1,11 @@
 /* header dos resultados*/
 #header-dos-resultados {
     position: relative;
-    min-height: 1.5rem;
-    padding: .75rem;
+    min-height: $line-height-base;;
+    padding: $padding-base;
     background-color: $gray-lighter;
-    font-family: 'aleo', serif;
-    font-size: .875rem;
+    font-family: $headings-font-family;
+    font-size: $font-size-small;
     color: $brand-accent;
 }
 #resultados {
@@ -13,19 +13,19 @@
     top: .75rem;
     left: .75rem;
     width: 250px;
-    padding-right: .75rem;
+    padding-right: $padding-base;
 }
 
 #busca-combinada {
     float: right;
     margin-right: .75rem;
-    padding-right: .75rem;
+    padding-right: $padding-base;
     border-right: 2px solid #d3d3d3;
 }
 #filtros-selecionados {
     margin-left: .75rem !important;
     margin-right: 106px;
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
     border-left: 2px solid #d3d3d3;
     border-right: 2px solid #d3d3d3;
 }
@@ -38,7 +38,7 @@
     width: 1rem;
     height: 1rem;
     margin-top: -3px;
-    font-size: 1rem;
+    font-size: $font-size-base;
     line-height: 1rem;
     font-family: 'ElegantIcons';
     vertical-align: middle;
@@ -73,9 +73,9 @@
     top: 2.25rem;
     right: -24px;
     width: 400px;
-    padding: .75rem;
+    padding: $padding-base;
     background: #fff;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
 }
@@ -85,8 +85,8 @@
     border-color: transparent transparent #fff transparent;
 }
 #compartilhar-url .icone {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: $line-height-base;;
+    height: $line-height-base;;
     margin-left: .75rem;
     font-size: 1.5rem;
 }
@@ -108,6 +108,6 @@
     float: left;
     width: auto;
     margin-left: .75rem;
-    padding-left: .75rem;
+    padding-left: $padding-base;
     border-left: 2px solid #d3d3d3;
 }

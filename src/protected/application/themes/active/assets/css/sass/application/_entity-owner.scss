@@ -1,8 +1,8 @@
 .dono {
-    margin: 1.5rem 0 1.5rem;
-    padding-top: 1.5rem;
+    margin: $line-height-base 0;
+    padding-top: $padding-large;
     border-top: 1px solid $gray-lighter;
-    font-size: .875rem;
+    font-size: $font-size-small;
 }
 .dono .avatar {
     width: 3rem;

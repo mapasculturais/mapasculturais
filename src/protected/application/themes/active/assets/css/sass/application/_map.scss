@@ -29,9 +29,9 @@
 }
 #infobox .espaco-dos-eventos {
     background: $gray-light;
-    border-radius: 2px;
-    padding: .5rem;
-    font-size: .75rem;
+    border-radius: $border-radius-base;
+    padding: $padding-small;
+    font-size: $font-size-smaller;
 }
 #infobox .espaco-dos-eventos .objeto-thumb {
     width: 40px;
@@ -43,12 +43,12 @@
 }
 #infobox h2 {
     color: #aebf3a; /*color tmp, Cátia!*/
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
     margin-bottom: 0;
 }
 #infobox .objeto {
-    padding: .75rem;
+    padding: $padding-base;
 }
 #infobox .objeto h1 {
     font-size: 1.25rem;
@@ -56,7 +56,7 @@
 #infobox .objeto-thumb {
     position: static;
     float: left;
-    margin: 0 .75rem 1.5rem 0;
+    margin: 0 $line-height-half $line-height-base 0;
     width: 60px;
     height: 60px;
 }
@@ -64,9 +64,9 @@
     float: none;
     min-height: 4rem;
     margin-right: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
     padding: 0;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 #infobox .objeto.evento .objeto-thumb {
     margin-bottom: 0;

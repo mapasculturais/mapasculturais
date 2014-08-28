@@ -3,7 +3,7 @@
 .editable {
     display: inline-block;
     padding: 0 3px;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .editable:hover {
     background: $gray-light;
@@ -16,7 +16,7 @@
     height: 1rem;
     margin-left: 5px;
     content: '\6c';
-    font-size: 1rem;
+    font-size: $font-size-base;
     line-height: 1rem;
     font-family: 'ElegantIcons';
     font-weight: normal;
@@ -63,11 +63,11 @@ a.editable-click:hover {
 /* balãozinho*/
 .tip-yellowsimple {
     z-index: 1001;
-    padding: .75rem;
+    padding: $padding-base;
     background: #fff;
     border: none;
     border-top: 4px solid $brand-primary;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
 }
@@ -125,7 +125,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 .select2-container-multi .select2-choices {
     border: 1px solid $gray !important;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     background: none !important;
 }
 .select2-container-multi .select2-choices .select2-search-field input {
@@ -133,16 +133,16 @@ div.ficha-spcultura .editable-buttons-bottom {
     margin: -1px 0;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-family: $font-family-base;
 }
 .select2-container-multi .select2-choices .select2-search-choice {
-    padding: 0 1.5rem 0 .5rem;
+    padding: 0 $padding-large 0 $padding-small;
     background-image: none;
     background: $brand-accent;
     color: #fff;
     border: none;
-    border-radius: 2px;
-    line-height: 1.5rem;
+    border-radius: $border-radius-base;
+    line-height: $line-height-base;
     font-size: .7rem;
     text-transform: uppercase;
 }
@@ -161,8 +161,8 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 .select2-container-multi .select2-search-choice-close:before {
     content: '\4d';
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
     font-family: 'ElegantIcons';
     font-weight: normal;
     font-style: normal;
@@ -179,30 +179,30 @@ div.ficha-spcultura .editable-buttons-bottom {
     border-top: 1px solid $gray;
 }
 .select2-results {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 .select2-results .select2-result-label {
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
 }
 .select2-results .select2-highlighted {
     background: $gray-lighter;
     color: $brand-accent;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .select2-container .select2-choice {
     height: inherit;
-    padding: 0 0 0 .5rem;
+    padding: 0 0 0 $padding-small;
     border: 1px solid $gray;
-    line-height: 1.5rem;
-    font-size: .75rem;
+    line-height: $line-height-base;
+    font-size: $font-size-smaller;
     font-weight: normal;
     color: #888;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     background-color: #fff;
     background-image: none;
 }
 .select2-container .select2-choice .select2-arrow {
-    width: 1.5rem;
+    width: $line-height-base;;
     border-left: none;
     border-radius: 0;
     background: none;
@@ -211,10 +211,10 @@ div.ficha-spcultura .editable-buttons-bottom {
 .select2-container .select2-choice .select2-arrow:before {
     content: '\33';
     display: inline-block;
-    width: 1.5rem;
+    width: $line-height-base;;
     speak: none;
-    line-height: 1.5rem;
-    font-size: 1rem;
+    line-height: $line-height-base;
+    font-size: $font-size-base;
     font-family: 'ElegantIcons';
     font-weight: normal;
     font-variant: normal;

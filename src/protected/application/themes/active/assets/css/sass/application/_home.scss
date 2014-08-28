@@ -112,7 +112,7 @@
     vertical-align: initial;
 }
 .objeto-capa .botao-grande {
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
 }
 .objeto-capa .box {
     position: relative;
@@ -120,7 +120,7 @@
 }
 .objeto-capa .box h4 {
     font-family: 'Open Sans';
-    font-size: 1rem;
+    font-size: $font-size-base;
 }
 .objeto-capa .abas {
     margin-bottom: 0;
@@ -190,7 +190,7 @@
 .estatisticas {
     float: left;
     margin-right: 10px;
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
     padding-left: 5px;
     border-left: 1px solid #fff;
 }
@@ -200,7 +200,7 @@
     font-weight: bold;
 }
 .label-das-estatisticas {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 /* Busca Geral */
 #form-de-busca-geral {
@@ -216,7 +216,7 @@
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     border: none;
-    font-size: .875rem;
+    font-size: $font-size-small;
 }
 #form-de-busca-geral input[type='submit'] {
     height: 2.5rem;
@@ -230,7 +230,7 @@
     height: 2.5rem;
     background: $brand-accent;
     color: #fff;
-    font-size: .875rem;
+    font-size: $font-size-small;
     line-height: 2.5rem;
     font-weight: bold;
     text-align: left;
@@ -242,7 +242,7 @@
     color: #fff;
 }
 #filtro-da-capa li {
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
     cursor: pointer;
 }
 #filtro-da-capa .submenu-dropdown {
@@ -255,7 +255,7 @@
 #filtro-da-capa .icone {
     margin-right: 5px;
     vertical-align: initial;
-    font-size: 1rem;
+    font-size: $font-size-base;
 }
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {
@@ -275,9 +275,9 @@
 }
 .destaque-aleatorio {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
     margin-top: 4.5rem;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     overflow: hidden;
 }
 .destaque-content {
@@ -285,11 +285,11 @@
     position: absolute;
     top: 100%;
     bottom: 0;
-    padding: 1.5rem;
+    padding: $padding-large;
     background: $brand-accent;
     color: #fff;
     font-weight: normal;
-    font-size: .875rem;
+    font-size: $font-size-small;
     -webkit-transition: top .5s;
             transition: top .5s;
 }
@@ -306,12 +306,12 @@
     width: 100%;
 }
 .destaque-content h3 {
-    font-size: .75rem;
-    line-height: 1.5rem;
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
     font-family: 'Open Sans';
     text-transform: uppercase;
 }
 .destaque-content h2 {
     font-size: 1.5rem;
-    line-height: 1.5rem;
+    line-height: $line-height-base;
 }

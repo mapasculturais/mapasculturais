@@ -5,7 +5,7 @@
 
 body {
     background: $body-bg;
-    color: $gray-darker;
+    color: $text-color;
 }
 
 hr {
@@ -80,8 +80,8 @@ ins {
 }
 blockquote {
     font-style: italic;
-    padding: 0 3em;
-    color: #999;
+    padding: 0 3rem;
+    color: $gray-dark;
 }
 blockquote cite,
 blockquote em,
@@ -89,7 +89,7 @@ blockquote i {
     font-style: normal;
 }
 pre {
-    background: #ebebeb;
+    background: $gray-light;
     margin-bottom: $line-height-base;
     padding: $line-height-base;
 }
@@ -124,15 +124,15 @@ select {
     padding: 3px 6px;
     background: #fff;
     border: 1px solid $gray;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     color: $gray-dark;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-family: $font-family-base;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 input,
 textarea {
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 input,
 button,
@@ -143,11 +143,11 @@ select {
 input[type='submit'],
 button[type='submit'] {
     width: auto;
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
     vertical-align: bottom;
     color: #fff;
     font-weight: bold;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     background: $brand-accent;
     cursor: pointer;
     border: none;
@@ -171,13 +171,14 @@ select:focus {
     outline: none;
 }
 a {
-    color: $brand-accent;
+    color: $link-color;
     text-decoration: none;
     outline: none;
     font-weight: bold;
     cursor: pointer;
 }
 a:hover {
+    color: $link-hover-color;
     text-decoration: underline;
 }
 img,
@@ -190,14 +191,14 @@ video {
 
 /*table*/
 table {
-    margin: 0 0 1.5rem;
-    font-size: .75rem;
+    margin: 0 0 $line-height-base;
+    font-size: $font-size-smaller;
 }
 th,
 td {
-    padding: .75rem;
+    padding: $padding-base;
     text-align: center;
-    border-bottom: 1px solid $gray;
+    border-bottom: $thin-row;
 }
 td {
     color: $gray-darker;

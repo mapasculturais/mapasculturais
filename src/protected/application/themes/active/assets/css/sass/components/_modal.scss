@@ -4,11 +4,11 @@
     position: absolute;
     display: none;
     margin-top: 15px;
-    padding: 1.5rem;
+    padding: $padding-large;
     z-index: 1000;
     background: #fff;
     border-top: 4px solid $brand-primary;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
 }
@@ -21,25 +21,25 @@
     font-size: 1.5rem;
 }
 .js-dialog h3 {
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
 }
 .js-dialog h4 {
-    font-size: .875rem;
-    line-height: 1.5rem;
+    font-size: $font-size-small;
+    line-height: $line-height-base;
 }
 .js-dialog h5 {
-    font-size: .75rem;
-    line-height: 1.5rem;
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
 }
 .js-dialog h6 {
-    font-size: .75rem;
-    line-height: 1.5rem;
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
 }
 .js-dialog a.js-close {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: $line-height-base;
+    right: $line-height-base;
     font-size: 2rem;
     color: #999;
 }
@@ -54,7 +54,7 @@
 }
 .js-dialog footer {
     border-top: 1px solid $gray;
-    padding-top: .75rem;
+    padding-top: $padding-base;
 }
 .js-metalist-form input[type=text],
 .js-metalist-form textarea {
@@ -69,7 +69,7 @@
 }
 .js-dialog .dropdown,
 .js-dialog .dropdown .submenu-dropdown {
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
     background-color: #fff;
     border: 1px solid $gray;
 }
@@ -101,15 +101,15 @@
 }
 /*ocorrências de eventos*/
 #dialog-event-occurrence .editable {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
 }
 .horario-da-ocorrencia {
     width: 50px;
-    margin-right: 1.5rem;
+    margin-right: $line-height-base;
 }
 .data-da-ocorrencia {
     width: 81px;
-    margin-right: 1.5rem;
+    margin-right: $line-height-base;
 }
 .descricao-horario-legivel {
     width: 100% !important;
@@ -122,7 +122,7 @@
     position: relative;
 }
 .grupo-descricao-automatica .mensagem {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
 }
 .grupo-descricao-automatica .botao {
     position: absolute;

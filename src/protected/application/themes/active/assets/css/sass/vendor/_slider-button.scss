@@ -5,16 +5,16 @@
     display: inline-block;
     margin: 0 auto;
     width: 60px;
-    height: 1.5rem;
-    border-radius: 2px;
+    height: $line-height-base;;
+    border-radius: $border-radius-base;
     border: 1px solid $gray;
 }
 .slider-button {
     display: inline-block;
     width: 30px;
-    height: 1.5rem;
+    height: $line-height-base;;
     background: $gray-light;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     -webkit-transition: all .1s ease-in-out;
             transition: all .1s ease-in-out;
     color: #fff;

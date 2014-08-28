@@ -14,7 +14,7 @@
     line-height: 1.875rem;
 }
 .header-do-objeto h1 .icone {
-    width: 1.5rem;
+    width: $line-height-base;;
     height: 1.875rem;
     line-height: 1.875rem;
     font-size: 1.5rem;
@@ -25,7 +25,7 @@
 .header-do-objeto .botao.adicionar,
 .header-do-objeto .botao.adicionar:hover {
     float: right;
-    margin: -1px 1.5rem;
+    margin: -1px $line-height-base;
     color: #fff;
     background: $brand-accent;
     border: 1px solid $brand-accent;

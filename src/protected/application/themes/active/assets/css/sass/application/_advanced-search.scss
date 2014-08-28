@@ -10,11 +10,11 @@
 }
 #busca-avancada {
     background-color: $gray-light;
-    font-size: .875rem;
+    font-size: $font-size-small;
 }
 #busca-avancada .wrap {
     position: relative;
-    padding: .75rem;
+    padding: $padding-base;
 }
 #busca-avancada input {
     margin-bottom: 0;
@@ -27,7 +27,7 @@
 #filtro-local {
     position: absolute;
     z-index: 150;
-    left: 0rem;
+    left: 0;
     height: 1.875rem;
 }
 #filtro-local label {
@@ -52,7 +52,7 @@
     width: 32px;
     height: 32px;
     line-height: 32px;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
     background-color: $brand-accent;
     color: #fff;
@@ -80,9 +80,9 @@
 .filtro-objeto {
     position: relative;
     clear: both;
-    padding: .75rem 0;
+    padding: $padding-base 0;
     color: $brand-accent;
-    font-size: .875rem;
+    font-size: $font-size-small;
 }
 #filtro-eventos {
     background: $brand-event;
@@ -98,19 +98,19 @@
 }
 .filtro-objeto .icon_close {
     position: absolute;
-    right: .75rem;
-    top: .75rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    right: $line-height-half;
+    top: $line-height-half;
+    width: $line-height-base;
+    height: $line-height-base;
     line-height: 2.5rem;
-    font-size: 1.5rem;
+    font-size: $line-height-base;
 }
 .filtro {
     float: left;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     width: 20%;
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
     border-left: 1px dotted $brand-accent;
     line-height: 2rem;
 }
@@ -123,7 +123,7 @@
 }
 .filtro .show-label {
     display: inline;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
     cursor: default;
 }
 .filtro .tags {
@@ -155,7 +155,7 @@
     cursor: pointer;
     margin-bottom: .5rem;
     padding: 0 2px;
-    line-height: 1.5rem;
+    line-height: $line-height-base;
 }
 .lista-de-filtro li:before {
     display: inline-block;
@@ -167,7 +167,7 @@
     font: normal .75rem/.75rem 'ElegantIcons';
     text-align: center;
     color: #fff;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
 }
 .lista-de-filtro li:hover:before {
     color: $brand-accent;

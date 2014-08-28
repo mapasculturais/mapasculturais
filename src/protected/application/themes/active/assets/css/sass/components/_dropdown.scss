@@ -6,12 +6,12 @@
     margin: 0;
     background: $gray-light;
     color: $brand-accent;
-    border-radius: 2px;
-    font-size: .75rem;
+    border-radius: $border-radius-base;
+    font-size: $font-size-smaller;
     line-height: 1.875rem;
 }
 .dropdown .placeholder {
-    padding: 0 .5rem;
+    padding: 0 $padding-small;
     cursor: pointer;
 }
 .dropdown .placeholder:after {
@@ -19,7 +19,7 @@
     float: right;
     font-family: 'ElegantIcons';
     speak: none;
-    font-size: 1rem;
+    font-size: $font-size-base;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
@@ -39,9 +39,9 @@
     -moz-box-sizing: border-box;
     display: none;
     margin: 0;
-    padding: .5rem 0;
+    padding: $padding-small 0;
     background: $gray-light;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
     -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
     -webkit-transition: opacity .5s;
@@ -76,7 +76,7 @@
     margin: 0;
 }
 .dropdown .submenu-dropdown li {
-    padding: 0 .5rem;
+    padding: 0 $padding-small;
     margin-bottom: .5rem;
     cursor: pointer;
     -webkit-transition: all .2s;

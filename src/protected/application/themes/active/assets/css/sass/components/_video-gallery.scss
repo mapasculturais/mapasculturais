@@ -10,8 +10,8 @@
     float: left;
     width: 150px;
     margin-right: .75rem;
-    padding: .5rem;
-    border-radius: 2px;
+    padding: $padding-small;
+    border-radius: $border-radius-base;
     list-style: none;
 }
 .js-videogallery li:hover,
@@ -19,11 +19,11 @@
     background: $gray-lighter;
 }
 .js-videogallery li h1 {
-    height: 1.5rem;
+    height: $line-height-base;;
     margin-bottom: 0;
     overflow: hidden;
-    font-size: .75rem;
-    line-height: 1.5rem;
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
     font-family: 'Open Sans', sans-serif;
     word-wrap: break-word;
 }

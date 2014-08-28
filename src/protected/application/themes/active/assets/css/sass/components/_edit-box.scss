@@ -5,27 +5,27 @@
     z-index: 149;
     min-width: 375px;
     display: none;
-    padding: .75rem;
+    padding: $padding-base;
     background: #fff;
     border: none;
     border-top: 4px solid $brand-primary;
-    border-radius: 2px;
+    border-radius: $border-radius-base;
             box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
 }
 .edit-box header {
-    margin-bottom: .75rem;
-    padding-bottom: .75rem;
+    margin-bottom: $line-height-half;
+    padding-bottom: $padding-base;
     border-bottom: 1px solid #ddd;
 }
 .edit-box header h1 {
-    font-size: 1rem;
+    font-size: $font-size-base;
     line-height: 1rem;
     margin-bottom: 0;
 }
 .edit-box header p {
     margin-bottom: 0;
-    font-size: .75rem;
+    font-size: $font-size-smaller;
 }
 .edit-box footer {
     text-align: right;
@@ -39,7 +39,7 @@
     font-weight: bold;
     height: 2rem;
     margin-left: 7px;
-    padding: 0 .75rem;
+    padding: 0 $padding-base;
     vertical-align: bottom;
     width: auto;
 }

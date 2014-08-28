@@ -6,16 +6,16 @@
     background: #f4f4f4;
 }
 .lista-sem-thumb .objeto h1 {
-    font-size: 1rem;
+    font-size: $font-size-base;
 }
 .lista-sem-thumb .objeto h1 .icone {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: $line-height-base;;
+    height: $line-height-base;;
     margin-right: 0;
     background: #fff;
-    border-radius: 2px;
-    font-size: 1rem;
-    line-height: 1.5rem;
+    border-radius: $border-radius-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
     color: #999;
     border: 1px solid #ddd;
     text-align: center;
@@ -30,7 +30,7 @@
     border: 1px solid $brand-accent;
 }
 .lista-sem-thumb .objeto-meta {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
 }
 .lista-sem-thumb .objeto-meta div {
          box-sizing: border-box;

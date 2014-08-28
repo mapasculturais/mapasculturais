@@ -3,10 +3,10 @@
     margin: 11px 0;
 }
 .atividade {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
+    padding-bottom: $padding-large;
     border-bottom: 1px solid $gray;
 }
 .atividade p {
-    margin-bottom: .75rem;
+    margin-bottom: $line-height-half;
 }

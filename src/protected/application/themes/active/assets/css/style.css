@@ -203,8 +203,8 @@ ins {
 
 blockquote {
   font-style: italic;
-  padding: 0 3em;
-  color: #999;
+  padding: 0 3rem;
+  color: #666666;
 }
 
 blockquote cite,
@@ -214,7 +214,7 @@ blockquote i {
 }
 
 pre {
-  background: #ebebeb;
+  background: #e2e2e2;
   margin-bottom: 1.5rem;
   padding: 1.5rem;
 }
@@ -258,7 +258,7 @@ select {
   border: 1px solid #cccccc;
   border-radius: 2px;
   color: #666666;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -266,7 +266,7 @@ select {
 
 input,
 textarea {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 input,
@@ -279,11 +279,11 @@ select {
 input[type='submit'],
 button[type='submit'] {
   width: auto;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   vertical-align: bottom;
   color: #fff;
   font-weight: bold;
-  font-size: .75rem;
+  font-size: 0.75rem;
   background: black;
   cursor: pointer;
   border: none;
@@ -319,6 +319,7 @@ a {
 }
 
 a:hover {
+  color: black;
   text-decoration: underline;
 }
 
@@ -333,14 +334,14 @@ video {
 /*table*/
 table {
   margin: 0 0 1.5rem;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 th,
 td {
-  padding: .75rem;
+  padding: 0.75rem;
   text-align: center;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #eeeeee;
 }
 
 td {
@@ -355,8 +356,6 @@ tr th {
   text-align: left;
 }
 
-/* =Fonts
--------------------------------------------------------------- */
 @font-face {
   font-family: 'aleo';
   src: url("../fonts/aleo-bold-webfont.eot");
@@ -400,16 +399,16 @@ tr th {
   font-style: italic;
 }
 body {
-  font: 100%/150% "Open Sans", Arial, Helvetica, sans-serif;
+  font: 0.66667 "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 pre {
-  font-family: Verdana, sans-serif;
+  font-family: "Courier New", monospace;
   font-size: 0.75rem;
 }
 
 code {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.75rem;
 }
 
@@ -421,7 +420,7 @@ h5,
 h6 {
   margin-bottom: 1.5rem;
   font-weight: bold;
-  font-family: 'aleo', serif;
+  font-family: "aleo", serif;
   color: black;
 }
 
@@ -442,14 +441,17 @@ h3 {
 
 h4 {
   font-size: 1.5rem;
+  line-height: 1.5rem;
 }
 
 h5 {
-  font-size: 1.375rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
 }
 
 h6 {
   font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 h1 + h2,
@@ -462,7 +464,7 @@ h5 + h6 {
 /* =General classes
 -------------------------------------------------------------- */
 .small {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .bottom {
@@ -582,12 +584,12 @@ h5 + h6 {
 
 #busca-avancada {
   background-color: #e2e2e2;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 #busca-avancada .wrap {
   position: relative;
-  padding: .75rem;
+  padding: 0.75rem;
 }
 
 #busca-avancada input {
@@ -666,9 +668,9 @@ h5 + h6 {
 .filtro-objeto {
   position: relative;
   clear: both;
-  padding: .75rem 0;
+  padding: 0.75rem 0;
   color: black;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 #filtro-eventos {
@@ -689,8 +691,8 @@ h5 + h6 {
 
 .filtro-objeto .icon_close {
   position: absolute;
-  right: .75rem;
-  top: .75rem;
+  right: 0.75rem;
+  top: 0.75rem;
   width: 1.5rem;
   height: 1.5rem;
   line-height: 2.5rem;
@@ -703,7 +705,7 @@ h5 + h6 {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 20%;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   border-left: 1px dotted black;
   line-height: 2rem;
 }
@@ -719,7 +721,7 @@ h5 + h6 {
 
 .filtro .show-label {
   display: inline;
-  font-size: .75rem;
+  font-size: 0.75rem;
   cursor: default;
 }
 
@@ -949,10 +951,10 @@ h5 + h6 {
 
 .lista header {
   margin-bottom: 3rem;
-  padding: .75rem;
+  padding: 0.75rem;
   border-radius: 2px;
   background: #e2e2e2;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .lista header p {
@@ -992,7 +994,7 @@ h5 + h6 {
 
 .objeto h1 {
   margin-bottom: .75rem;
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
   line-height: 1.5rem;
   border-bottom: 1px solid #eeeeee;
 }
@@ -1026,7 +1028,7 @@ h5 + h6 {
   margin-right: 34rem;
   margin-bottom: 0;
   padding: 0 1.5rem 0 7.5rem;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .lista .objeto-meta {
@@ -1097,7 +1099,7 @@ h5 + h6 {
   text-transform: uppercase;
   color: #888;
   letter-spacing: .1em;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   line-height: 1.2rem;
   margin-bottom: .5rem;
 }
@@ -1115,7 +1117,7 @@ h5 + h6 {
   padding: 1.5rem;
   background: #f8f8f8;
   border-radius: 2px;
-  font-size: .875rem;
+  font-size: 0.875rem;
   color: #888;
 }
 
@@ -1128,7 +1130,7 @@ h5 + h6 {
 .servico > p,
 .infos p {
   margin-bottom: 0;
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: #888;
 }
 
@@ -1193,15 +1195,15 @@ h5 + h6 {
 
 .content-do-header .avatar .botao.editar {
   position: absolute;
-  right: .75rem;
-  bottom: .75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
 }
 
 .dono {
-  margin: 1.5rem 0 1.5rem;
+  margin: 1.5rem 0;
   padding-top: 1.5rem;
   border-top: 1px solid #eeeeee;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .dono .avatar {
@@ -1219,7 +1221,7 @@ h5 + h6 {
 
 .regra header {
   margin-bottom: .75rem;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   background: #eeeeee;
   border-radius: 2px;
 }
@@ -1240,7 +1242,7 @@ h5 + h6 {
 
 .toggle-mapa {
   float: right;
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: #666666;
   line-height: 2rem;
 }
@@ -1299,7 +1301,7 @@ h5 + h6 {
 
 #logo-spcultura {
   float: left;
-  padding: .375rem 1.5rem;
+  padding: 0.375rem 1.5rem;
 }
 
 #logo-spcultura img {
@@ -1368,7 +1370,7 @@ h5 + h6 {
 
 .menu > li {
   width: 5rem;
-  padding: .75rem;
+  padding: 0.75rem;
   border-top: 6px solid transparent;
   box-shadow: 1px 0 0 0 #eeeeee inset;
   -webkit-box-shadow: 1px 0 0 0 #eeeeee inset;
@@ -1380,7 +1382,7 @@ h5 + h6 {
 }
 
 .menu > li > a {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.25rem;
   text-align: center;
 }
@@ -1399,7 +1401,7 @@ h5 + h6 {
   position: absolute;
   top: 70px;
   margin: 0;
-  padding: .75rem;
+  padding: 0.75rem;
   list-style: none;
   font-size: .8rem;
   line-height: 1rem;
@@ -1559,7 +1561,7 @@ h5 + h6 {
 
 .usuario .submenu a {
   color: black;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .usuario .submenu a:hover {
@@ -1616,7 +1618,7 @@ h5 + h6 {
 
 .notificacoes .submenu a.notificacao {
   margin-bottom: .75rem;
-  padding: .5rem;
+  padding: 0.5rem;
   background: #f8f8f8;
   border-left: 5px solid #999;
   border-radius: 0 2px 2px 0;
@@ -1875,7 +1877,7 @@ h5 + h6 {
 }
 
 .label-das-estatisticas {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 /* Busca Geral */
@@ -1895,7 +1897,7 @@ h5 + h6 {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border: none;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 #form-de-busca-geral input[type='submit'] {
@@ -1912,7 +1914,7 @@ h5 + h6 {
   height: 2.5rem;
   background: black;
   color: #fff;
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 2.5rem;
   font-weight: bold;
   text-align: left;
@@ -1926,7 +1928,7 @@ h5 + h6 {
 }
 
 #filtro-da-capa li {
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   cursor: pointer;
 }
 
@@ -1982,7 +1984,7 @@ h5 + h6 {
   background: black;
   color: #fff;
   font-weight: normal;
-  font-size: .875rem;
+  font-size: 0.875rem;
   -webkit-transition: top .5s;
   transition: top .5s;
 }
@@ -2003,7 +2005,7 @@ h5 + h6 {
 }
 
 .destaque-content h3 {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5rem;
   font-family: 'Open Sans';
   text-transform: uppercase;
@@ -2074,8 +2076,8 @@ body.editable #main-section {
 #infobox .espaco-dos-eventos {
   background: #e2e2e2;
   border-radius: 2px;
-  padding: .5rem;
-  font-size: .75rem;
+  padding: 0.5rem;
+  font-size: 0.75rem;
 }
 
 #infobox .espaco-dos-eventos .objeto-thumb {
@@ -2097,7 +2099,7 @@ body.editable #main-section {
 }
 
 #infobox .objeto {
-  padding: .75rem;
+  padding: 0.75rem;
 }
 
 #infobox .objeto h1 {
@@ -2107,7 +2109,7 @@ body.editable #main-section {
 #infobox .objeto-thumb {
   position: static;
   float: left;
-  margin: 0 .75rem 1.5rem 0;
+  margin: 0 0.75rem 1.5rem 0;
   width: 60px;
   height: 60px;
 }
@@ -2118,7 +2120,7 @@ body.editable #main-section {
   margin-right: 0;
   margin-bottom: 1.5rem;
   padding: 0;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 #infobox .objeto.evento .objeto-thumb {
@@ -2134,13 +2136,13 @@ body.editable #main-section {
 
 nav.barra-esquerda ul {
   list-style: none;
-  margin: 0 -1.5rem;
-  font-size: .875rem;
+  margin: -1.5rem;
+  font-size: 0.875rem;
 }
 
 nav.barra-esquerda a {
   display: block;
-  padding: .75rem;
+  padding: 0.75rem;
   border-left: #cccccc 6px solid;
   -webkit-transition: all .3s;
   transition: all .3s;
@@ -2192,7 +2194,7 @@ nav.barra-esquerda .icone {
 
 .como-usar-content h2 {
   color: #ff9900;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 
@@ -2212,10 +2214,10 @@ nav.barra-esquerda .icone {
 #header-dos-resultados {
   position: relative;
   min-height: 1.5rem;
-  padding: .75rem;
+  padding: 0.75rem;
   background-color: #eeeeee;
-  font-family: 'aleo', serif;
-  font-size: .875rem;
+  font-family: "aleo", serif;
+  font-size: 0.875rem;
   color: black;
 }
 
@@ -2224,20 +2226,20 @@ nav.barra-esquerda .icone {
   top: .75rem;
   left: .75rem;
   width: 250px;
-  padding-right: .75rem;
+  padding-right: 0.75rem;
 }
 
 #busca-combinada {
   float: right;
   margin-right: .75rem;
-  padding-right: .75rem;
+  padding-right: 0.75rem;
   border-right: 2px solid #d3d3d3;
 }
 
 #filtros-selecionados {
   margin-left: .75rem !important;
   margin-right: 106px;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   border-left: 2px solid #d3d3d3;
   border-right: 2px solid #d3d3d3;
 }
@@ -2294,7 +2296,7 @@ nav.barra-esquerda .icone {
   top: 2.25rem;
   right: -24px;
   width: 400px;
-  padding: .75rem;
+  padding: 0.75rem;
   background: #fff;
   border-radius: 2px;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
@@ -2335,7 +2337,7 @@ nav.barra-esquerda .icone {
   float: left;
   width: auto;
   margin-left: .75rem;
-  padding-left: .75rem;
+  padding-left: 0.75rem;
   border-left: 2px solid #d3d3d3;
 }
 
@@ -2544,13 +2546,13 @@ nav.barra-esquerda .icone {
 
   .barra-esquerda .bloco {
     float: right;
-    margin: 0 .75rem 1.5rem;
+    margin: 0 0.75rem 1.5rem;
     border-bottom: none;
   }
 
   .botoes-de-compartilhar {
     float: left;
-    margin-right: .75rem;
+    margin-right: 0.75rem;
   }
 }
 #atividades .dropdown {
@@ -2583,8 +2585,8 @@ nav.barra-esquerda .icone {
   top: 3.5rem;
   right: -.75rem;
   width: 180px;
-  padding: .75rem;
-  font-size: .75rem;
+  padding: 0.75rem;
+  font-size: 0.75rem;
   background: #fff;
   border-radius: 2px;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
@@ -2659,7 +2661,7 @@ nav.barra-esquerda .icone {
   border-radius: 2px;
   border-style: solid;
   border-width: 1px;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .mensagem.ajuda {
@@ -2774,7 +2776,7 @@ nav.barra-esquerda .icone {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #fff;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 .bloco h3 {
   margin-bottom: .75rem;
@@ -2842,8 +2844,8 @@ nav.barra-esquerda .icone {
 
 .botao {
   height: 1.875rem;
-  padding: 0 .5rem;
-  font-size: .75rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
   line-height: 1.875rem;
 }
 
@@ -2884,8 +2886,8 @@ nav.barra-esquerda .icone {
 }
 
 .botao-grande {
-  padding: .5rem;
-  font-size: .875rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
   text-align: center;
   color: #fff;
   background: black;
@@ -2972,10 +2974,10 @@ nav.barra-esquerda .icone {
 
 .action {
   display: inline-block;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   background: #ff9900;
   border-radius: 2px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: normal;
   -webkit-transition: all .3s;
   transition: all .3s;
@@ -2997,12 +2999,12 @@ nav.barra-esquerda .icone {
 
 .p-dos-botoes {
   border-top: 1px solid #eeeeee;
-  padding: .75rem 0 0;
+  padding: 0.75rem 0 0;
   text-align: right;
 }
 
 table.contratos td {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 /*dropdown*/
@@ -3014,12 +3016,12 @@ table.contratos td {
   background: #e2e2e2;
   color: black;
   border-radius: 2px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.875rem;
 }
 
 .dropdown .placeholder {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   cursor: pointer;
 }
 
@@ -3050,7 +3052,7 @@ table.contratos td {
   -moz-box-sizing: border-box;
   display: none;
   margin: 0;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   background: #e2e2e2;
   border-radius: 2px;
   box-shadow: rgba(0, 0, 0, 0.35) 0 1px 2px 0;
@@ -3091,7 +3093,7 @@ table.contratos td {
 }
 
 .dropdown .submenu-dropdown li {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   margin-bottom: .5rem;
   cursor: pointer;
   -webkit-transition: all .2s;
@@ -3110,7 +3112,7 @@ table.contratos td {
   z-index: 149;
   min-width: 375px;
   display: none;
-  padding: .75rem;
+  padding: 0.75rem;
   background: #fff;
   border: none;
   border-top: 4px solid #ff9900;
@@ -3121,7 +3123,7 @@ table.contratos td {
 
 .edit-box header {
   margin-bottom: .75rem;
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid #ddd;
 }
 
@@ -3133,7 +3135,7 @@ table.contratos td {
 
 .edit-box header p {
   margin-bottom: 0;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .edit-box footer {
@@ -3150,7 +3152,7 @@ table.contratos td {
   font-weight: bold;
   height: 2rem;
   margin-left: 7px;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   vertical-align: bottom;
   width: auto;
 }
@@ -3238,7 +3240,7 @@ table.contratos td {
 
 .form-help {
   margin-bottom: 0;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-style: italic;
   color: #999;
 }
@@ -3393,17 +3395,17 @@ h1 .icone {
 }
 
 .js-dialog h4 {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.5rem;
 }
 
 .js-dialog h5 {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5rem;
 }
 
 .js-dialog h6 {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5rem;
 }
 
@@ -3428,7 +3430,7 @@ h1 .icone {
 
 .js-dialog footer {
   border-top: 1px solid #cccccc;
-  padding-top: .75rem;
+  padding-top: 0.75rem;
 }
 
 .js-metalist-form input[type=text],
@@ -3542,7 +3544,7 @@ h1 .icone {
 }
 
 .privado .icon_lock:before {
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: #cccccc;
 }
 
@@ -3565,7 +3567,7 @@ h1 .icone {
   margin: 0 0 1.5rem;
   border-bottom: 1px solid #eeeeee;
   list-style: none;
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .abas li {
@@ -3601,7 +3603,7 @@ h1 .icone {
 .tags {
   border: 1px solid black;
   margin-bottom: 1.5rem;
-  padding: .75rem;
+  padding: 0.75rem;
   border-radius: 2px;
 }
 
@@ -3609,10 +3611,10 @@ h1 .icone {
   display: inline-block;
   margin-right: 3px;
   margin-bottom: .75rem;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   background-color: #fff;
   border-radius: 2px;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: .7rem;
   line-height: 1.5rem;
   font-weight: normal;
@@ -3704,13 +3706,13 @@ h1 .icone {
 }
 
 .hltip-box .hltip-title {
-  font-family: 'aleo', serif;
-  font-size: .875rem;
+  font-family: "aleo", serif;
+  font-size: 0.875rem;
 }
 
 .hltip-box .hltip-text {
-  padding: .5rem;
-  font-size: .75rem;
+  padding: 0.5rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   text-align: center;
   border-radius: 2px;
@@ -3810,7 +3812,7 @@ h1 .icone {
 
 .venue-status-definition {
   margin-bottom: 0;
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: #888;
 }
 
@@ -3860,7 +3862,7 @@ h1 .icone {
   float: left;
   width: 150px;
   margin-right: .75rem;
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 2px;
   list-style: none;
 }
@@ -3874,7 +3876,7 @@ h1 .icone {
   height: 1.5rem;
   margin-bottom: 0;
   overflow: hidden;
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5rem;
   font-family: 'Open Sans', sans-serif;
   word-wrap: break-word;
@@ -3921,6 +3923,6 @@ h1 .icone {
 
 #boas-vindas-painel {
   border-left: 3px solid #ff9900;
-  padding: .75rem;
+  padding: 0.75rem;
   background: #f8f8f8;
 }

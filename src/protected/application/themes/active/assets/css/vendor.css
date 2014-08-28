@@ -8,7 +8,7 @@
 }
 
 .ui-datepicker .ui-datepicker-header {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   line-height: 2.5rem;
   background: #e2e2e2;
 }
@@ -179,7 +179,7 @@ a.editable-click:hover {
 /* balãozinho*/
 .tip-yellowsimple {
   z-index: 1001;
-  padding: .75rem;
+  padding: 0.75rem;
   background: #fff;
   border: none;
   border-top: 4px solid #ff9900;
@@ -267,11 +267,11 @@ div.ficha-spcultura .editable-buttons-bottom {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
-  padding: 0 1.5rem 0 .5rem;
+  padding: 0 1.5rem 0 0.5rem;
   background-image: none;
   background: black;
   color: #fff;
@@ -320,11 +320,11 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 .select2-results {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .select2-results .select2-result-label {
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
 }
 
 .select2-results .select2-highlighted {
@@ -335,10 +335,10 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .select2-container .select2-choice {
   height: inherit;
-  padding: 0 0 0 .5rem;
+  padding: 0 0 0 0.5rem;
   border: 1px solid #cccccc;
   line-height: 1.5rem;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: normal;
   color: #888;
   border-radius: 2px;
@@ -399,7 +399,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 #camadas-de-entidades {
-  font: 1rem/1.5rem 'Open Sans', Arial, Helvetica, sans-serif;
+  font: 0.66667 "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 #camadas-de-entidades a {
@@ -436,7 +436,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 .leaflet-control-layers-expanded {
-  padding: .75rem;
+  padding: 0.75rem;
   background-color: #ff9900;
 }
 
@@ -452,7 +452,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 .leaflet-control-layers-list label {
-  font-size: .75rem;
+  font-size: 0.75rem;
   margin-bottom: .75rem;
 }
 
@@ -507,7 +507,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-control-command-interior {
   display: block;
-  padding: .5rem;
+  padding: 0.5rem;
   cursor: pointer;
   text-align: center;
   color: #fff;
@@ -547,7 +547,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-draw-actions a {
   font-family: 'Open Sans';
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: bold;
   border-left-color: #fff;
   background-color: black;
@@ -573,7 +573,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 /*label*/
 .leaflet-label {
-  font: .75rem/1.5 'Open Sans', Arial, Helvetica, sans-serif;
+  font: 0.75rem/1.5 "Open Sans", Helvetica, Arial, sans-serif;
   position: absolute;
   z-index: 9999999 !important;
   display: block;
