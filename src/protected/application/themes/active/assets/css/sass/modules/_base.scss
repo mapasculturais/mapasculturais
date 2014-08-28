@@ -1,16 +1,19 @@
-/* =Global Elements
--------------------------------------------------------------- */
+//
+// Base
+// --------------------------------------------------
+
+
 body {
-    background: #fff;
-    color: #333;
+    background: $body-bg;
+    color: $gray-darker;
 }
 
 hr {
-    background-color: #ccc;
+    background-color: $gray;
     border: 1px solid #fff;
     clear: both;
     height: 1px;
-    margin-bottom: 24px;
+    margin-bottom: $line-height-base;
 }
 
 /* HTML5 */
@@ -26,15 +29,15 @@ hgroup {
 
 /* Text elements */
 p {
-    margin-bottom: 1.5rem;
+    margin-bottom: $line-height-base;
 }
 ul {
     list-style: disc;
-    margin: 0 0 1.5rem 1.5em;
+    margin: 0 0 $line-height-base $line-height-base;
 }
 ol {
     list-style: decimal;
-    margin: 0 0 1.5rem 1.5em;
+    margin: 0 0 $line-height-base $line-height-base;
 }
 ol ol {
     list-style: upper-alpha;
@@ -52,13 +55,13 @@ ol ul {
     margin-bottom: 0;
 }
 dl {
-    margin: 0 0 24px 0;
+    margin: 0 0 $line-height-base 0;
 }
 dt {
     font-weight: bold;
 }
 dd {
-    margin-bottom: 24px;
+    margin-bottom: $line-height-base;
 }
 strong {
     font-weight: bold;
@@ -87,12 +90,12 @@ blockquote i {
 }
 pre {
     background: #ebebeb;
-    margin-bottom: 24px;
-    padding: 1.5em;
+    margin-bottom: $line-height-base;
+    padding: $line-height-base;
 }
 abbr,
 acronym {
-    border-bottom: 1px dotted #666;
+    border-bottom: 1px dotted $gray-dark;
     cursor: help;
 }
 address {
@@ -112,7 +115,7 @@ sub {
     top: .5ex;
 }
 label {
-    color: #000;
+    color: $brand-accent;
 }
 input,
 textarea,
@@ -120,9 +123,9 @@ button,
 select {
     padding: 3px 6px;
     background: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid $gray;
     border-radius: 2px;
-    color: #666;
+    color: $gray-dark;
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -145,7 +148,7 @@ button[type='submit'] {
     color: #fff;
     font-weight: bold;
     font-size: .75rem;
-    background: #000;
+    background: $brand-accent;
     cursor: pointer;
     border: none;
 }
@@ -168,7 +171,7 @@ select:focus {
     outline: none;
 }
 a {
-    color: #000;
+    color: $brand-accent;
     text-decoration: none;
     outline: none;
     font-weight: bold;
@@ -194,10 +197,10 @@ th,
 td {
     padding: .75rem;
     text-align: center;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid $gray;
 }
 td {
-    color: #333;
+    color: $gray-darker;
 }
 thead tr th {
     text-align: center;

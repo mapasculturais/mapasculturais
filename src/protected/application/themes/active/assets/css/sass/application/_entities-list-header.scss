@@ -27,22 +27,22 @@
     float: right;
     margin: -1px 1.5rem;
     color: #fff;
-    background: #000;
-    border: 1px solid #000;
+    background: $brand-accent;
+    border: 1px solid $brand-accent;
 }
 #header-dos-eventos {
-    border-left: 3rem solid #b3b921;
-    border-right: 3rem solid #b3b921;
+    border-left: 3rem solid $brand-event;
+    border-right: 3rem solid $brand-event;
 }
 #header-dos-agentes {
-    border-left: 3rem solid #1dabc6;
-    border-right: 3rem solid #1dabc6;
+    border-left: 3rem solid $brand-agent;
+    border-right: 3rem solid $brand-agent;
 }
 #header-dos-espacos {
-    border-left: 3rem solid #e83f96;
-    border-right: 3rem solid #e83f96;
+    border-left: 3rem solid $brand-space;
+    border-right: 3rem solid $brand-space;
 }
 #header-dos-projetos {
-    border-left: 3rem solid #c03;
-    border-right: 3rem solid #c03;
+    border-left: 3rem solid $brand-project;
+    border-right: 3rem solid $brand-project;
 }

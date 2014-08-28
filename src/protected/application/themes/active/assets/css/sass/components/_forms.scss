@@ -2,7 +2,7 @@
     font-weight: bold;
 }
 .js-dialog .label {
-    color: #000;
+    color: $brand-accent;
     font-weight: normal;
 }
 .form-help {
@@ -12,7 +12,7 @@
     color: #999;
 }
 .radio-button {
-    color: #000;
+    color: $brand-accent;
     font-family: 'ElegantIcons';
     speak: none;
     font-weight: normal;

@@ -6,8 +6,8 @@
     width: 100%;
     min-height: 42px;
     padding: .25rem 130px;
-    border-left: 8px solid #f90;
-    background: #e2e2e2;
+    border-left: 8px solid $brand-primary;
+    background: $gray-light;
     text-align: center;
 }
 #editable-entity.editable-entity-edit {
@@ -51,6 +51,6 @@
     color: #fff;
 }
 #funcao-do-agente .submenu-dropdown li:hover {
-    background: #eee;
-    color: #000;
+    background: $gray-lighter;
+    color: $brand-accent;
 }

@@ -19,7 +19,7 @@
     overflow: auto;
     padding: 2rem .75rem .75rem;
     border-radius: 0;
-    background: #eee;
+    background: $gray-lighter;
 }
 #infobox .icon_close {
     position: absolute;
@@ -28,7 +28,7 @@
     cursor: pointer;
 }
 #infobox .espaco-dos-eventos {
-    background: #e2e2e2;
+    background: $gray-light;
     border-radius: 2px;
     padding: .5rem;
     font-size: .75rem;

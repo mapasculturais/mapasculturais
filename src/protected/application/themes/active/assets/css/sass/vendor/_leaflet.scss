@@ -31,14 +31,14 @@
 }
 .leaflet-control-layers {
     color: #fff;
-    background-color: #000;
+    background-color: $brand-accent;
 }
 #mapa .leaflet-control-layers {
     margin-right: 124px !important;
 }
 .leaflet-control-layers-expanded {
     padding: .75rem;
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 .leaflet-control-layers-toggle {
     width: 32px;
@@ -60,13 +60,13 @@
     width: 32px;
     height: 32px;
     color: #fff;
-    background-color: #000;
+    background-color: $brand-accent;
 }
 .leaflet-bar a:hover {
     width: 32px;
     height: 32px;
     color: #fff;
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 .leaflet-bar a:first-child {
     border-radius: 2px 2px 0 0;
@@ -101,11 +101,11 @@
     -webkit-border-radius: 2px;
        -moz-border-radius: 2px;
             border-radius: 2px;
-    background-color: #000;
+    background-color: $brand-accent;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.15);
 }
 .leaflet-control-command-interior:hover {
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 
 .leaflet-draw {
@@ -117,10 +117,10 @@
 }
 .leaflet-draw-tooltip {
     font-family: 'Open Sans';
-    background: #000;
+    background: $brand-accent;
 }
 .leaflet-draw-tooltip:before {
-    border-right-color: #000;
+    border-right-color: $brand-accent;
 }
 .leaflet-draw-actions {
     left: 34px;
@@ -131,18 +131,18 @@
     font-size: .75rem;
     font-weight: bold;
     border-left-color: #fff;
-    background-color: #000;
+    background-color: $brand-accent;
 }
 .leaflet-draw-actions a:hover {
     text-decoration: none;
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 .leaflet-draw-actions li:last-child a {
     -webkit-border-radius: 0 2px 2px 0;
             border-radius: 0 2px 2px 0;
 }
 .leaflet-bar a.leaflet-draw-toolbar-button-enabled {
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 .leaflet-draw-actions-top.leaflet-draw-actions-bottom a {
     line-height: 32px;
@@ -162,9 +162,9 @@
             user-select: none;
     white-space: nowrap;
     color: #fff;
-    border-color: #000;
+    border-color: $brand-accent;
     border-radius: 2px;
-    background: #000;
+    background: $brand-accent;
 }
 .leaflet-label.leaflet-clickable {
     cursor: pointer;
@@ -223,16 +223,16 @@
     height: 42px !important;
     text-align: center;
     text-indent: -1px;
-    color: #000;
+    color: $brand-accent;
     background-repeat: no-repeat;
     background-size: 36px 42px;
 }
 
 
 .vetorial-padrao {
-    stroke: #f90;
+    stroke: $brand-primary;
     fill-opacity: .25;
-    fill: #f90;
+    fill: $brand-primary;
     stroke-opacity: .4;
     stroke-width: 2px;
 }

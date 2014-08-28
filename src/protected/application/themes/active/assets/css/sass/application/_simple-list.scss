@@ -21,13 +21,13 @@
     text-align: center;
 }
 .lista-sem-thumb .objeto h1 .icone:hover {
-    color: #000;
+    color: $brand-accent;
 }
 .lista-sem-thumb .objeto h1 .icone.active,
 .lista-sem-thumb .objeto h1 .icone.active:hover {
     color: #fff;
-    background: #000;
-    border: 1px solid #000;
+    background: $brand-accent;
+    border: 1px solid $brand-accent;
 }
 .lista-sem-thumb .objeto-meta {
     margin-bottom: .75rem;

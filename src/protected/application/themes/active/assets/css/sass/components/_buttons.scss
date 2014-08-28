@@ -22,16 +22,16 @@
 }
 .botao.principal {
     color: #fff;
-    background: #f90;
-    border: 1px solid #f90;
+    background: $brand-primary;
+    border: 1px solid $brand-primary;
 }
 .botao.principal:hover {
     border-color: #e48203;
 }
 .botao.selected,
 .botao.selected:hover {
-    background-color: #000;
-    border: 1px solid #000;
+    background-color: $brand-accent;
+    border: 1px solid $brand-accent;
     color: #fff;
 }
 .botao.simples,
@@ -39,7 +39,7 @@
 .botao.editar,
 .botao.download,
 .botao.excluir {
-    color: #666;
+    color: $gray-dark;
     background: #d8d8d8;
     border: 1px solid #c4c4c4;
 }
@@ -47,7 +47,7 @@
 .botao.editar:hover,
 .botao.download:hover,
 .botao.excluir:hover {
-    color: #333;
+    color: $gray-darker;
     background: #ddd;
     border: 1px solid #999;
 }
@@ -56,11 +56,11 @@
     font-size: .875rem;
     text-align: center;
     color: #fff;
-    background: #000;
+    background: $brand-accent;
 }
 .botao-grande:hover {
-    background: #f90;
-    border-color: #f90;
+    background: $brand-primary;
+    border-color: $brand-primary;
 }
 .adicionar:before,
 .editar:before,
@@ -112,7 +112,7 @@
 }
 .botao-de-icone:hover,
 .botao-de-icone.selected {
-    color: #000;
+    color: $brand-accent;
 }
 .botoes-de-edicao {
     position: absolute;
@@ -128,7 +128,7 @@
 .action {
     display: inline-block;
     padding: 0 .5rem;
-    background: #f90;
+    background: $brand-primary;
     border-radius: 2px;
     font-size: .75rem;
     font-weight: normal;
@@ -137,7 +137,7 @@
 }
 .action:hover {
     text-decoration: none;
-    background: #000;
+    background: $brand-accent;
     color: #fff;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .p-dos-botoes {
-    border-top: 1px solid #eee;
+    border-top: 1px solid $gray-lighter;
     padding: .75rem 0 0;
     text-align: right;
 }

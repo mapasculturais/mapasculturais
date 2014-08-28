@@ -7,13 +7,13 @@
     width: 60px;
     height: 1.5rem;
     border-radius: 2px;
-    border: 1px solid #ccc;
+    border: 1px solid $gray;
 }
 .slider-button {
     display: inline-block;
     width: 30px;
     height: 1.5rem;
-    background: #e2e2e2;
+    background: $gray-light;
     border-radius: 2px;
     -webkit-transition: all .1s ease-in-out;
             transition: all .1s ease-in-out;
@@ -23,5 +23,5 @@
 }
 .slider-button.on {
     margin-left: 30px;
-    background: #000;
+    background: $brand-accent;
 }

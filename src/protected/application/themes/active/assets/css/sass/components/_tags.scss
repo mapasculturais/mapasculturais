@@ -1,6 +1,6 @@
 /*Tags*/
 .tags {
-    border: 1px solid #000;
+    border: 1px solid $brand-accent;
     margin-bottom: 1.5rem;
     padding: .75rem;
     border-radius: 2px;
@@ -16,7 +16,7 @@
     font-size: .7rem;
     line-height: 1.5rem;
     font-weight: normal;
-    color: #000;
+    color: $brand-accent;
     text-transform: uppercase;
     -webkit-transition: all .3s;
             transition: all .3s;
@@ -24,11 +24,11 @@
 }
 .tag:hover {
     color: #fff;
-    background: #000;
+    background: $brand-accent;
     text-decoration: none;
 }
 .tag.selected {
-    background-color: #000;
+    background-color: $brand-accent;
     color: #fff;
     padding-right: .3rem;
 }
@@ -43,16 +43,16 @@
     text-transform: none;
 }
 .tag-evento {
-    background-color: #b3b921;
+    background-color: $brand-event;
 }
 .tag-agente {
-    background-color: #1dabc6;
+    background-color: $brand-agent;
 }
 .tag-espaco {
-    background-color: #e83f96;
+    background-color: $brand-space;
 }
 .tag-projeto {
-    background-color: #c03;
+    background-color: $brand-project;
 }
 .tag-evento,
 .tag-agente,
@@ -65,6 +65,6 @@
 .tag-agente:hover,
 .tag-espaco:hover,
 .tag-projeto:hover {
-    background-color: #000;
+    background-color: $brand-accent;
     color: #fff;
 }

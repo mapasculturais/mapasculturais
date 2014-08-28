@@ -3,7 +3,7 @@
 .como-usar {
     padding-bottom: 3rem;
     margin-bottom: 3rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $gray-lighter;
 }
 .como-usar-img,
 .como-usar-content {
@@ -20,7 +20,7 @@
     padding-left: 3rem;
 }
 .como-usar-content h2 {
-    color: #f90;
+    color: $brand-primary;
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
     font-weight: normal;
 }

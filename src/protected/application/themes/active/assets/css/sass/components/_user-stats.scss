@@ -7,13 +7,13 @@
     width: 50%;
     border: .75rem solid #fff;
     border-radius: 14px;
-    background: #eee;
-    color: #000;
+    background: $gray-lighter;
+    color: $brand-accent;
     -webkit-transition: all .3s;
             transition: all .3s;
 }
 #estatisticas-do-usuario div.box:hover {
-    background: #f90;
+    background: $brand-primary;
 }
 #estatisticas-do-usuario .icone {
     display: block;
@@ -27,14 +27,14 @@
     border-radius: 2px;
 }
 #estatisticas-do-usuario div.box:hover .icon_plus {
-    background: #000;
+    background: $brand-accent;
     color: #fff;
     -webkit-transition: all .3s;
             transition: all .3s;
 }
 #estatisticas-do-usuario div.box:hover .icon_plus:hover {
     background: #fff;
-    color: #000;
+    color: $brand-accent;
 }
 .valor {
     float: left;

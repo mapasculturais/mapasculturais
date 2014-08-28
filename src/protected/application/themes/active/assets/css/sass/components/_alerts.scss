@@ -9,27 +9,27 @@
 .mensagem.ajuda {
     background: #cff;
     border-color: #9be7ee;
-    color: #40b4b4;
+    color: $brand-info;
 }
 .mensagem.alerta {
     background: #ffc;
     border-color: #eed29b;
-    color: #c93;
+    color: $brand-warning;
 }
 .mensagem.erro {
     background: #fcc;
     border-color: #ee9b9b;
-    color: #c33;
+    color: $brand-danger;
 }
 .mensagem.sucesso {
     background: #cfc;
     border-color: #a6dfa6;
-    color: #6c6;
+    color: $brand-success;
 }
 .mensagem.automatica {
-    background: #eee;
+    background: $gray-lighter;
     border-color: #ddd;
-    color: #666;
+    color: $gray-dark;
 }
 .ajuda:before,
 .alerta:before,
@@ -49,17 +49,17 @@
 }
 .ajuda:before {
     content: '\e007';
-    color: #3cc;
+    color: $brand-info;
 }
 .alerta:before {
     content: '\e061';
-    color: #c93;
+    color: $brand-warning;
 }
 .erro:before {
     content: '\e061';
-    color: #c33;
+    color: $brand-danger;
 }
 .sucesso:before {
     content: '\e052';
-    color: #6c6;
+    color: $brand-success;
 }

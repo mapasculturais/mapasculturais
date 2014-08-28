@@ -16,19 +16,19 @@ h1 .icone {
 .icon_check {
     margin-right: .5rem;
     background: #fff;
-    color: #ccc;
+    color: $gray;
     padding: 2px;
     border-radius: 2px;
 }
 .icon_check:hover {
-    color: #000;
+    color: $brand-accent;
 }
 .icon_check.selected {
-    background: #000;
+    background: $brand-accent;
     color: #fff !important;
 }
 .icon_check:hover {
-    color: #000;
+    color: $brand-accent;
 }
 .social_twitter {
     color: #00acee !important;

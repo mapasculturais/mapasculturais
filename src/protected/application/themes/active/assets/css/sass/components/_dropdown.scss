@@ -4,8 +4,8 @@
     display: inline-block;
     height: 2rem;
     margin: 0;
-    background: #e2e2e2;
-    color: #000;
+    background: $gray-light;
+    color: $brand-accent;
     border-radius: 2px;
     font-size: .75rem;
     line-height: 1.875rem;
@@ -40,7 +40,7 @@
     display: none;
     margin: 0;
     padding: .5rem 0;
-    background: #e2e2e2;
+    background: $gray-light;
     border-radius: 2px;
             box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
     -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
@@ -55,7 +55,7 @@
     right: 0;
     left: 0;
     padding-right: .25rem;
-    color: #e2e2e2;
+    color: $gray-light;
     font-family: 'ElegantIcons';
     speak: none;
     font-weight: normal;
@@ -83,6 +83,6 @@
             transition: all .2s;
 }
 .dropdown .submenu-dropdown li:hover {
-    background: #f90;
+    background: $brand-primary;
     color: #fff;
 }

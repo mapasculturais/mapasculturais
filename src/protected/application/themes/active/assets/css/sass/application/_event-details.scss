@@ -4,7 +4,7 @@
 .regra header {
     margin-bottom: .75rem;
     padding: 0 .5rem;
-    background: #eee;
+    background: $gray-lighter;
     border-radius: 2px;
 }
 .regra:last-child {
@@ -21,10 +21,10 @@
 .toggle-mapa {
     float: right;
     font-size: .75rem;
-    color: #666;
+    color: $gray-dark;
     line-height: 2rem;
 }
 .toggle-mapa:hover {
-    color: #333;
+    color: $gray-darker;
     text-decoration: none;
 }

@@ -3,10 +3,10 @@
     position: relative;
     min-height: 1.5rem;
     padding: .75rem;
-    background-color: #eee;
+    background-color: $gray-lighter;
     font-family: 'aleo', serif;
     font-size: .875rem;
-    color: #000;
+    color: $brand-accent;
 }
 #resultados {
     position: absolute;
@@ -46,7 +46,7 @@
 }
 #filtros-selecionados .remover-tudo {
     color: #fff;
-    background: #000;
+    background: $brand-accent;
     padding-right: .3rem;
 }
 #header-dos-resultados .botao-de-icone {
@@ -54,7 +54,7 @@
 }
 #header-dos-resultados .botao-de-icone.active {
     text-decoration: none;
-    background-color: #000;
+    background-color: $brand-accent;
 }
 #header-dos-resultados .icon_map {
     margin-right: 5px;
@@ -91,17 +91,17 @@
     font-size: 1.5rem;
 }
 #compartilhar-url .icone:hover {
-    color: #000;
+    color: $brand-accent;
 }
 #compartilhar-url .info {
     font-weight: normal;
     font-size: .7rem;
-    color: #666;
+    color: $gray-dark;
 }
 #url-da-busca {
     width: 70%;
     margin-bottom: 0;
-    border: 1px solid #ccc;
+    border: 1px solid $gray;
     cursor: default;
 }
 #views {

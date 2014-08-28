@@ -11,7 +11,7 @@
     margin-bottom: 3rem;
     padding: .75rem;
     border-radius: 2px;
-    background: #e2e2e2;
+    background: $gray-light;
     font-size: .75rem;
 }
 .lista header p {
@@ -34,7 +34,7 @@
             transition: all .3s;
 }
 #agenda.lista .objeto {
-    background: #eee;
+    background: $gray-lighter;
 }
 .objeto:hover {
     background: #fff;
@@ -46,7 +46,7 @@
     margin-bottom: .75rem;
     padding-bottom: .75rem;
     line-height: 1.5rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $gray-lighter;
 }
 .lista .objeto h1 {
     font-size: 1.25rem;
@@ -65,7 +65,7 @@
     left: 0;
     width: 6rem;
     height: 6rem;
-    background: #ccc;
+    background: $gray;
 }
 .objeto-resumo {
     float: left;
@@ -84,7 +84,7 @@
     margin-left: -34rem;
     margin-top: -4rem;
     padding-left: 1.5rem;
-    border-left: 1px solid #eee;
+    border-left: 1px solid $gray-lighter;
 }
 #agenda.lista .objeto-meta {
     width: 16.5rem;
@@ -114,15 +114,15 @@
 }
 .agente:hover h1 a,
 .agente .objeto-meta a {
-    color: #1dabc6;
+    color: $brand-agent;
 }
 .espaco:hover h1 a,
 .espaco .objeto-meta a {
-    color: #e83f96;
+    color: $brand-space;
 }
 .projeto:hover h1 a,
 .projeto .objeto-meta a {
-    color: #c03;
+    color: $brand-project;
 }
 
 .objeto.evento .nome-projeto {

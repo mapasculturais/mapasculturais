@@ -1,14 +1,19 @@
+//
+// Datepicker
+// --------------------------------------------------
+
+
 .ui-datepicker {
     display: none;
-    border: 1px solid #ccc;
-    background: #eee;
+    border: 1px solid $gray;
+    background: $gray-lighter;
             box-shadow: 0 1px 2px rgba(0,0,0,.2);
     -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
 }
 .ui-datepicker .ui-datepicker-header {
     padding: 0 .5rem;
     line-height: 2.5rem;
-    background: #e2e2e2;
+    background: $gray-light;
 }
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
@@ -76,10 +81,10 @@
 }
 .ui-datepicker a {
     display: block;
-    color: #666;
+    color: $gray-dark;
 }
 .ui-datepicker a:hover {
-    color: #333;
+    color: $gray-darker;
 }
 .ui-datepicker td a:hover {
     background: #ddd;

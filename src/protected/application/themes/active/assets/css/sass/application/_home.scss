@@ -56,19 +56,19 @@
     background: inherit;
 }
 #nav-intro {
-    background: #f90;
+    background: $brand-primary;
 }
 #nav-eventos {
     background: #aebf3a;
 }
 #nav-agentes {
-    background: #1dabc6;
+    background: $brand-agent;
 }
 #nav-espacos {
-    background: #e83f96;
+    background: $brand-space;
 }
 #nav-projetos {
-    background: #c03;
+    background: $brand-project;
 }
 #nav-desenvolvedores {
     background: #96c;
@@ -77,7 +77,7 @@
 #capa-nav ul a.down {
     width: 40px;
     padding: 0;
-    background: #000;
+    background: $brand-accent;
     text-indent: 0;
     text-align: center;
     font-size: 2rem;
@@ -137,21 +137,21 @@
 }
 .objeto-capa .abas li.active,
 .objeto-capa .abas li:hover {
-    border: 1px solid #000;
+    border: 1px solid $brand-accent;
 }
 .objeto-capa .abas li.active a,
 .objeto-capa .abas li:hover a {
-    color: #000;
+    color: $brand-accent;
 }
 #capa-intro {
-    background: #f90;
+    background: $brand-primary;
 }
 #capa-intro .botao-grande {
     width: 30%;
 }
 #capa-intro .botao-grande:hover {
     background: #fff;
-    color: #000;
+    color: $brand-accent;
 }
 #capa-eventos .box,
 #capa-agentes .box,
@@ -167,22 +167,22 @@
     border-bottom-color: #aebf3a;
 }
 #capa-agentes {
-    background: #1dabc6;
+    background: $brand-agent;
 }
 #capa-agentes .abas li.active {
-    border-bottom-color: #1dabc6;
+    border-bottom-color: $brand-agent;
 }
 #capa-espacos {
-    background: #e83f96;
+    background: $brand-space;
 }
 #capa-espacos .abas li.active {
-    border-bottom-color: #e83f96;
+    border-bottom-color: $brand-space;
 }
 #capa-projetos {
-    background: #c03;
+    background: $brand-project;
 }
 #capa-projetos .abas li.active {
-    border-bottom-color: #c03;
+    border-bottom-color: $brand-project;
 }
 #capa-desenvolvedores {
     background: #96c;
@@ -228,7 +228,7 @@
 /*filtro da home*/
 #filtro-da-capa {
     height: 2.5rem;
-    background: #000;
+    background: $brand-accent;
     color: #fff;
     font-size: .875rem;
     line-height: 2.5rem;
@@ -247,10 +247,10 @@
 }
 #filtro-da-capa .submenu-dropdown {
     top: 48px;
-    background: #000;
+    background: $brand-accent;
 }
 #filtro-da-capa .submenu-dropdown:before {
-    color: #000;
+    color: $brand-accent;
 }
 #filtro-da-capa .icone {
     margin-right: 5px;
@@ -259,19 +259,19 @@
 }
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {
-    background-color: #b3b921;
+    background-color: $brand-event;
 }
 #filtro-de-agentes:hover,
 #filtro-de-agentes:focus {
-    background-color: #1dabc6;
+    background-color: $brand-agent;
 }
 #filtro-de-espacos:hover,
 #filtro-de-espacos:focus {
-    background-color: #e83f96;
+    background-color: $brand-space;
 }
 #filtro-de-projetos:hover,
 #filtro-de-projetos:focus {
-    background-color: #c03;
+    background-color: $brand-project;
 }
 .destaque-aleatorio {
     position: relative;
@@ -286,7 +286,7 @@
     top: 100%;
     bottom: 0;
     padding: 1.5rem;
-    background: #000;
+    background: $brand-accent;
     color: #fff;
     font-weight: normal;
     font-size: .875rem;

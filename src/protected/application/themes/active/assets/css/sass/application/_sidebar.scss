@@ -14,50 +14,50 @@
     width: 25%;
 }
 .barra-lateral.evento {
-    border-top: #b3b921 12px solid;
+    border-top: $brand-event 12px solid;
 }
 .barra-lateral.evento a,
 .barra-lateral.evento .compartilhamentos {
-    color: #b3b921;
+    color: $brand-event;
 }
 .barra-lateral.evento .setinha {
-    border-color: #b3b921 transparent transparent transparent;
+    border-color: $brand-event transparent transparent transparent;
 }
 .barra-lateral.agente {
-    border-top: #1dabc6 12px solid;
+    border-top: $brand-agent 12px solid;
 }
 .barra-lateral.agente a,
 .barra-lateral.agente .compartilhamentos {
-    color: #1dabc6;
+    color: $brand-agent;
 }
 .barra-lateral.agente .setinha {
-    border-color: #1dabc6 transparent transparent transparent;
+    border-color: $brand-agent transparent transparent transparent;
 }
 .barra-lateral.espaco {
-    border-top: #e83f96 12px solid;
+    border-top: $brand-space 12px solid;
 }
 .barra-lateral.espaco a,
 .barra-lateral.espaco .compartilhamentos {
-    color: #e83f96;
+    color: $brand-space;
 }
 .barra-lateral.espaco .setinha {
-    border-color: #e83f96 transparent transparent transparent;
+    border-color: $brand-space transparent transparent transparent;
 }
 .barra-lateral.projeto {
-    border-top: #c03 12px solid;
+    border-top: $brand-project 12px solid;
 }
 .barra-lateral.projeto a,
 .barra-lateral.projeto .compartilhamentos {
-    color: #c03;
+    color: $brand-project;
 }
 .barra-lateral.projeto .setinha {
-    border-color: #c03 transparent transparent transparent;
+    border-color: $brand-project transparent transparent transparent;
 }
 .barra-lateral a.botao.adicionar {
-    color: #666;
+    color: $gray-dark;
 }
 .barra-lateral a.botao.adicionar:hover {
-    color: #000;
+    color: $brand-accent;
 }
 .barra-lateral .avatar {
     float: left;

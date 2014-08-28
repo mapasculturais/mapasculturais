@@ -12,7 +12,7 @@
     margin-right: 3px;
 }
 .ul-dos-blocos li.li-dos-blocos:hover {
-    background: #e2e2e2;
+    background: $gray-light;
     border-radius: 2px;
 }
 .ul-dos-blocos li.li-dos-blocos:hover .botoes {
@@ -21,12 +21,12 @@
 .ul-dos-blocos a.icone,
 .ul-dos-blocos a.editar {
     margin-left: 5px;
-    color: #666;
+    color: $gray-dark;
     cursor: pointer;
 }
 .ul-dos-blocos a.icone:hover,
 .ul-dos-blocos a.editar:hover {
-    color: #333;
+    color: $gray-darker;
 }
 .ul-dos-blocos a.icone {
     font-size: 1.5rem;

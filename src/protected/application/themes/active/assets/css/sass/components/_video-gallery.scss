@@ -16,7 +16,7 @@
 }
 .js-videogallery li:hover,
 .js-videogallery li.active {
-    background: #eee;
+    background: $gray-lighter;
 }
 .js-videogallery li h1 {
     height: 1.5rem;
@@ -39,10 +39,10 @@
     cursor: pointer;
 }
 .js-remove-item {
-    color: #666;
+    color: $gray-dark;
 }
 .js-remove-item:hover {
-    color: #333;
+    color: $gray-darker;
 }
 .js-remove-item:before {
     width: 1rem;

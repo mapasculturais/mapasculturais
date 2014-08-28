@@ -8,7 +8,7 @@
     padding: .75rem;
     background: #fff;
     border: none;
-    border-top: 4px solid #f90;
+    border-top: 4px solid $brand-primary;
     border-radius: 2px;
             box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
@@ -65,7 +65,7 @@
 }
 .edit-box.mc-bottom .mc-arrow {
     top: -20px;
-    border-color: transparent transparent #f90 transparent;
+    border-color: transparent transparent $brand-primary transparent;
 }
 
 

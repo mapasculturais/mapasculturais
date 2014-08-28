@@ -7,7 +7,7 @@
     padding: 1.5rem;
     z-index: 1000;
     background: #fff;
-    border-top: 4px solid #f90;
+    border-top: 4px solid $brand-primary;
     border-radius: 2px;
             box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
@@ -44,7 +44,7 @@
     color: #999;
 }
 .js-dialog .js-close:hover {
-    color: #000;
+    color: $brand-accent;
 }
 .js-dialog input[type=submit],
 .js-dialog button {
@@ -53,7 +53,7 @@
     margin-left: 5px;
 }
 .js-dialog footer {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid $gray;
     padding-top: .75rem;
 }
 .js-metalist-form input[type=text],
@@ -62,16 +62,16 @@
     width: 60%;
 }
 .js-open-dialog.editar {
-    color: #666;
+    color: $gray-dark;
 }
 .js-open-dialog.editar:hover {
-    color: #333;
+    color: $gray-darker;
 }
 .js-dialog .dropdown,
 .js-dialog .dropdown .submenu-dropdown {
     margin-bottom: 1.5rem;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid $gray;
 }
 .js-dialog .dropdown {
     width: 120px;
@@ -87,8 +87,8 @@
     content: none;
 }
 .js-dialog .dropdown .submenu-dropdown li:hover {
-    background: #e2e2e2;
-    color: #000;
+    background: $gray-light;
+    color: $brand-accent;
 }
 .js-dialog .grupo-de-campos {
     float: left;
@@ -97,7 +97,7 @@
     margin-right: 5%;
 }
 .js-dialog .icon_check {
-    border: 1px solid #ccc;
+    border: 1px solid $gray;
 }
 /*ocorrências de eventos*/
 #dialog-event-occurrence .editable {

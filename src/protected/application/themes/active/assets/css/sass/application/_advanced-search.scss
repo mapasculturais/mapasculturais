@@ -9,7 +9,7 @@
     z-index: 151;
 }
 #busca-avancada {
-    background-color: #e2e2e2;
+    background-color: $gray-light;
     font-size: .875rem;
 }
 #busca-avancada .wrap {
@@ -41,7 +41,7 @@
     border: none;
 }
 #filtro-local input[type='text']:focus {
-    border: 1px solid #000;
+    border: 1px solid $brand-accent;
 }
 #form-local {
     display: inline-block;
@@ -54,18 +54,18 @@
     line-height: 32px;
     border-radius: 2px;
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    background-color: #000;
+    background-color: $brand-accent;
     color: #fff;
     text-align: center;
 }
 #proximo-a-mim {
-    background: #000 url(../img/icon-localizacao.png) center no-repeat;
+    background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
 }
 #proximo-a-mim:hover {
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 .botoes-do-mapa.active {
-    background-color: #f90;
+    background-color: $brand-primary;
 }
 
 /*camadas de entidades*/
@@ -81,20 +81,20 @@
     position: relative;
     clear: both;
     padding: .75rem 0;
-    color: #000;
+    color: $brand-accent;
     font-size: .875rem;
 }
 #filtro-eventos {
-    background: #b3b921;
+    background: $brand-event;
 }
 #filtro-agentes {
-    background: #1dabc6;
+    background: $brand-agent;
 }
 #filtro-espacos {
-    background: #e83f96;
+    background: $brand-space;
 }
 #filtro-projetos {
-    background: #c03;
+    background: $brand-project;
 }
 .filtro-objeto .icon_close {
     position: absolute;
@@ -111,7 +111,7 @@
     -moz-box-sizing: border-box;
     width: 20%;
     padding: 0 .75rem;
-    border-left: 1px dotted #000;
+    border-left: 1px dotted $brand-accent;
     line-height: 2rem;
 }
 .filtro:first-child {
@@ -144,8 +144,8 @@
     color: #fff;
 }
 .filtro .dropdown .submenu-dropdown li:hover {
-    background: #eee;
-    color: #000;
+    background: $gray-lighter;
+    color: $brand-accent;
 }
 .lista-de-filtro {
     margin-bottom: 0;
@@ -162,7 +162,7 @@
     content: '\4e';
     margin: .325rem .75rem .325rem 0;
     padding: 2px;
-    background: #e2e2e2;
+    background: $gray-light;
     -webkit-font-smoothing: antialiased;
     font: normal .75rem/.75rem 'ElegantIcons';
     text-align: center;
@@ -170,12 +170,12 @@
     border-radius: 2px;
 }
 .lista-de-filtro li:hover:before {
-    color: #000;
+    color: $brand-accent;
     background: #fff;
 }
 .lista-de-filtro li.selected:before {
     color: #fff;
-    background: #000;
+    background: $brand-accent;
 }
 .lista-de-filtro li span {
     display: inline-block;
@@ -188,7 +188,7 @@
 }
 .filtro-prefeitura .botao {
     color: #fff;
-    background-color: #000;
+    background-color: $brand-accent;
     background-image: url(../img/prefeitura.png);
     background-position: 8px center;
     background-repeat: no-repeat;
@@ -197,6 +197,6 @@
 .filtro-prefeitura .botao:hover,
 .filtro-prefeitura .botao.selected,
 .filtro-prefeitura .botao.selected:hover {
-    background-color: #f90;
-    border-color: #f90;
+    background-color: $brand-primary;
+    border-color: $brand-primary;
 }

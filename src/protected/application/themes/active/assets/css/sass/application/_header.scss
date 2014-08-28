@@ -5,7 +5,7 @@
     top: 0;
     width: 100%;
     z-index: 150;
-    border-top: 6px solid #000;
+    border-top: 6px solid $brand-accent;
     background: #fff;
 }
 #main-header h1 {
@@ -55,7 +55,7 @@
     position: relative;
     float: left;
     margin: -6px 0 0;
-    border-left: 1px solid #000;
+    border-left: 1px solid $brand-accent;
 }
 .menu li {
     position: relative;
@@ -73,8 +73,8 @@
     width: 5rem;
     padding: .75rem;
     border-top: 6px solid transparent;
-            box-shadow: 1px 0 0 0 #eee inset;
-    -webkit-box-shadow: 1px 0 0 0 #eee inset;
+            box-shadow: 1px 0 0 0 $gray-lighter inset;
+    -webkit-box-shadow: 1px 0 0 0 $gray-lighter inset;
 }
 .menu > li:first-child {
             box-shadow: none;
@@ -102,7 +102,7 @@
     list-style: none;
     font-size: .8rem;
     line-height: 1rem;
-    background: #e2e2e2;
+    background: $gray-light;
             box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     border-radius: 2px;
@@ -143,71 +143,71 @@
 }
 #aba-eventos:hover,
 #aba-eventos.active {
-    border-top: 6px solid #b3b921;
-    color: #b3b921;
+    border-top: 6px solid $brand-event;
+    color: $brand-event;
 }
 #aba-agentes:hover,
 #aba-agentes.active {
-    border-top: 6px solid #1dabc6;
-    color: #1dabc6;
+    border-top: 6px solid $brand-agent;
+    color: $brand-agent;
 }
 #aba-espacos:hover,
 #aba-espacos.active {
-    border-top: 6px solid #e83f96;
-    color: #e83f96;
+    border-top: 6px solid $brand-space;
+    color: $brand-space;
 }
 #aba-projetos:hover,
 #aba-projetos.active {
-    border-top: 6px solid #c03;
-    color: #c03;
+    border-top: 6px solid $brand-project;
+    color: $brand-project;
 }
 #aba-eventos.enabled a,
 #aba-eventos.active a,
 #aba-eventos:hover a {
-    color: #b3b921;
+    color: $brand-event;
 }
 #aba-eventos.enabled a div.icone {
-    background-color: #b3b921;
+    background-color: $brand-event;
 }
 #aba-agentes.enabled a,
 #aba-agentes.active a,
 #aba-agentes:hover a {
-    color: #1dabc6;
+    color: $brand-agent;
 }
 #aba-agentes.enabled a div.icone {
-    background-color: #1dabc6;
+    background-color: $brand-agent;
 }
 #aba-espacos.enabled a,
 #aba-espacos.active a,
 #aba-espacos:hover a {
-    color: #e83f96;
+    color: $brand-space;
 }
 #aba-espacos.enabled a div.icone {
-    background-color: #e83f96;
+    background-color: $brand-space;
 }
 #aba-projetos.enabled a,
 #aba-projetos.active a,
 #aba-projetos:hover a {
-    color: #c03;
+    color: $brand-project;
 }
 #aba-projetos.enabled a div.icone {
-    background-color: #c03;
+    background-color: $brand-project;
 }
 .abas-objetos li.enabled a div.icone {
     color: #fff !important;
 }
 .logado {
-    border-right: 1px solid #000;
+    border-right: 1px solid $brand-accent;
 }
 .menu .entrar:hover {
-    border-top: 6px solid #f90;
+    border-top: 6px solid $brand-primary;
 }
 .menu .entrar:hover a {
-    color: #f90;
+    color: $brand-primary;
 }
 .menu .usuario:hover,
 .menu .notificacoes:hover {
-    border-top: 6px solid #f90;
+    border-top: 6px solid $brand-primary;
 }
 .usuario .avatar {
     float: none;
@@ -219,19 +219,19 @@
     left: 50%;
     top: -16px;
     margin-left: -8px;
-    border-color: transparent transparent #f90 transparent;
+    border-color: transparent transparent $brand-primary transparent;
 }
 .usuario .submenu {
     left: -2.5rem;
     width: 10rem;
-    background: #f90;
+    background: $brand-primary;
 }
 .usuario .submenu li {
     position: relative;
     padding-right: 2rem;
 }
 .usuario .submenu a {
-    color: #000;
+    color: $brand-accent;
     padding: .5rem;
 }
 .usuario .submenu a:hover {
@@ -245,13 +245,13 @@
 .notificacoes .submenu {
     left: -110px;
     width: 300px;
-    background: #e2e2e2;
+    background: $gray-light;
 }
 .notificacoes .slimScrollDiv {
     margin-bottom: .75rem;
 }
 .notificacoes:hover > a {
-    color: #f90;
+    color: $brand-primary;
 }
 .notificacoes .icon_check_alt {
     float: right;
@@ -264,12 +264,12 @@
     color: #999;
 }
 #main-nav .notificacoes a.icon_check_alt:hover {
-    color: #f90;
+    color: $brand-primary;
 }
 .notificacoes .setinha {
     left: 142px;
     top: -28px;
-    border-color: transparent transparent #e2e2e2 transparent;
+    border-color: transparent transparent $gray-light transparent;
 }
 .notificacoes .submenu ul {
     overflow: hidden;
@@ -286,6 +286,6 @@
 }
 .notificacoes .submenu a.notificacao:hover,
 .notificacoes .submenu a.notificacao.lida {
-    border-left: 5px solid #f90;
+    border-left: 5px solid $brand-primary;
     background: #fff;
 }
