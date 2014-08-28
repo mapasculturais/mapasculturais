@@ -112,19 +112,17 @@ a img {
   border: none;
 }
 
-/* =Global Elements
--------------------------------------------------------------- */
 body {
-  background: #fff;
-  color: #333;
+  background: white;
+  color: #333333;
 }
 
 hr {
-  background-color: #ccc;
+  background-color: #cccccc;
   border: 1px solid #fff;
   clear: both;
   height: 1px;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 /* HTML5 */
@@ -145,12 +143,12 @@ p {
 
 ul {
   list-style: disc;
-  margin: 0 0 1.5rem 1.5em;
+  margin: 0 0 1.5rem 1.5rem;
 }
 
 ol {
   list-style: decimal;
-  margin: 0 0 1.5rem 1.5em;
+  margin: 0 0 1.5rem 1.5rem;
 }
 
 ol ol {
@@ -173,7 +171,7 @@ ol ul {
 }
 
 dl {
-  margin: 0 0 24px 0;
+  margin: 0 0 1.5rem 0;
 }
 
 dt {
@@ -181,7 +179,7 @@ dt {
 }
 
 dd {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 strong {
@@ -217,13 +215,13 @@ blockquote i {
 
 pre {
   background: #ebebeb;
-  margin-bottom: 24px;
-  padding: 1.5em;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
 }
 
 abbr,
 acronym {
-  border-bottom: 1px dotted #666;
+  border-bottom: 1px dotted #666666;
   cursor: help;
 }
 
@@ -248,7 +246,7 @@ sub {
 }
 
 label {
-  color: #000;
+  color: black;
 }
 
 input,
@@ -257,9 +255,9 @@ button,
 select {
   padding: 3px 6px;
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 2px;
-  color: #666;
+  color: #666666;
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -286,7 +284,7 @@ button[type='submit'] {
   color: #fff;
   font-weight: bold;
   font-size: .75rem;
-  background: #000;
+  background: black;
   cursor: pointer;
   border: none;
 }
@@ -313,7 +311,7 @@ select:focus {
 }
 
 a {
-  color: #000;
+  color: black;
   text-decoration: none;
   outline: none;
   font-weight: bold;
@@ -342,11 +340,11 @@ th,
 td {
   padding: .75rem;
   text-align: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #cccccc;
 }
 
 td {
-  color: #333;
+  color: #333333;
 }
 
 thead tr th {
@@ -424,7 +422,7 @@ h6 {
   margin-bottom: 1.5rem;
   font-weight: bold;
   font-family: 'aleo', serif;
-  color: #000;
+  color: black;
 }
 
 h1 {
@@ -567,7 +565,7 @@ h5 + h6 {
   border-style: solid;
   border-width: 8px;
   line-height: 0;
-  border-color: transparent transparent #000 transparent;
+  border-color: transparent transparent black transparent;
 }
 
 /* =Busca avançada
@@ -623,7 +621,7 @@ h5 + h6 {
 }
 
 #filtro-local input[type='text']:focus {
-  border: 1px solid #000;
+  border: 1px solid black;
 }
 
 #form-local {
@@ -639,7 +637,7 @@ h5 + h6 {
   border-radius: 2px;
   -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  background-color: #000;
+  background-color: black;
   color: #fff;
   text-align: center;
 }
@@ -649,11 +647,11 @@ h5 + h6 {
 }
 
 #proximo-a-mim:hover {
-  background-color: #f90;
+  background-color: #ff9900;
 }
 
 .botoes-do-mapa.active {
-  background-color: #f90;
+  background-color: #ff9900;
 }
 
 /*camadas de entidades*/
@@ -669,7 +667,7 @@ h5 + h6 {
   position: relative;
   clear: both;
   padding: .75rem 0;
-  color: #000;
+  color: black;
   font-size: .875rem;
 }
 
@@ -686,7 +684,7 @@ h5 + h6 {
 }
 
 #filtro-projetos {
-  background: #c03;
+  background: #cc0033;
 }
 
 .filtro-objeto .icon_close {
@@ -706,7 +704,7 @@ h5 + h6 {
   -moz-box-sizing: border-box;
   width: 20%;
   padding: 0 .75rem;
-  border-left: 1px dotted #000;
+  border-left: 1px dotted black;
   line-height: 2rem;
 }
 
@@ -748,8 +746,8 @@ h5 + h6 {
 }
 
 .filtro .dropdown .submenu-dropdown li:hover {
-  background: #eee;
-  color: #000;
+  background: #eeeeee;
+  color: black;
 }
 
 .lista-de-filtro {
@@ -778,13 +776,13 @@ h5 + h6 {
 }
 
 .lista-de-filtro li:hover:before {
-  color: #000;
+  color: black;
   background: #fff;
 }
 
 .lista-de-filtro li.selected:before {
   color: #fff;
-  background: #000;
+  background: black;
 }
 
 .lista-de-filtro li span {
@@ -800,7 +798,7 @@ h5 + h6 {
 
 .filtro-prefeitura .botao {
   color: #fff;
-  background-color: #000;
+  background-color: black;
   background-image: url(../img/prefeitura.png);
   background-position: 8px center;
   background-repeat: no-repeat;
@@ -810,8 +808,8 @@ h5 + h6 {
 .filtro-prefeitura .botao:hover,
 .filtro-prefeitura .botao.selected,
 .filtro-prefeitura .botao.selected:hover {
-  background-color: #f90;
-  border-color: #f90;
+  background-color: #ff9900;
+  border-color: #ff9900;
 }
 
 #editable-entity {
@@ -823,7 +821,7 @@ h5 + h6 {
   width: 100%;
   min-height: 42px;
   padding: .25rem 130px;
-  border-left: 8px solid #f90;
+  border-left: 8px solid #ff9900;
   background: #e2e2e2;
   text-align: center;
 }
@@ -878,8 +876,8 @@ h5 + h6 {
 }
 
 #funcao-do-agente .submenu-dropdown li:hover {
-  background: #eee;
-  color: #000;
+  background: #eeeeee;
+  color: black;
 }
 
 /* header do objeto*/
@@ -915,8 +913,8 @@ h5 + h6 {
   float: right;
   margin: -1px 1.5rem;
   color: #fff;
-  background: #000;
-  border: 1px solid #000;
+  background: black;
+  border: 1px solid black;
 }
 
 #header-dos-eventos {
@@ -935,8 +933,8 @@ h5 + h6 {
 }
 
 #header-dos-projetos {
-  border-left: 3rem solid #c03;
-  border-right: 3rem solid #c03;
+  border-left: 3rem solid #cc0033;
+  border-right: 3rem solid #cc0033;
 }
 
 /* =Listas
@@ -981,7 +979,7 @@ h5 + h6 {
 }
 
 #agenda.lista .objeto {
-  background: #eee;
+  background: #eeeeee;
 }
 
 .objeto:hover {
@@ -996,7 +994,7 @@ h5 + h6 {
   margin-bottom: .75rem;
   padding-bottom: .75rem;
   line-height: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .lista .objeto h1 {
@@ -1019,7 +1017,7 @@ h5 + h6 {
   left: 0;
   width: 6rem;
   height: 6rem;
-  background: #ccc;
+  background: #cccccc;
 }
 
 .objeto-resumo {
@@ -1041,7 +1039,7 @@ h5 + h6 {
   margin-left: -34rem;
   margin-top: -4rem;
   padding-left: 1.5rem;
-  border-left: 1px solid #eee;
+  border-left: 1px solid #eeeeee;
 }
 
 #agenda.lista .objeto-meta {
@@ -1089,7 +1087,7 @@ h5 + h6 {
 
 .projeto:hover h1 a,
 .projeto .objeto-meta a {
-  color: #c03;
+  color: #cc0033;
 }
 
 .objeto.evento .nome-projeto {
@@ -1158,7 +1156,7 @@ h5 + h6 {
   position: relative;
   height: 12rem;
   margin: -4rem -4rem 4rem;
-  background-color: #ccc;
+  background-color: #cccccc;
   background-position: center;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
@@ -1202,7 +1200,7 @@ h5 + h6 {
 .dono {
   margin: 1.5rem 0 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #eeeeee;
   font-size: .875rem;
 }
 
@@ -1222,7 +1220,7 @@ h5 + h6 {
 .regra header {
   margin-bottom: .75rem;
   padding: 0 .5rem;
-  background: #eee;
+  background: #eeeeee;
   border-radius: 2px;
 }
 
@@ -1243,12 +1241,12 @@ h5 + h6 {
 .toggle-mapa {
   float: right;
   font-size: .75rem;
-  color: #666;
+  color: #666666;
   line-height: 2rem;
 }
 
 .toggle-mapa:hover {
-  color: #333;
+  color: #333333;
   text-decoration: none;
 }
 
@@ -1258,7 +1256,7 @@ h5 + h6 {
   position: relative;
   z-index: 100;
   padding: 1.5rem;
-  background: #000;
+  background: black;
   color: #fff;
 }
 
@@ -1287,7 +1285,7 @@ h5 + h6 {
   top: 0;
   width: 100%;
   z-index: 150;
-  border-top: 6px solid #000;
+  border-top: 6px solid black;
   background: #fff;
 }
 
@@ -1350,7 +1348,7 @@ h5 + h6 {
   position: relative;
   float: left;
   margin: -6px 0 0;
-  border-left: 1px solid #000;
+  border-left: 1px solid black;
 }
 
 .menu li {
@@ -1372,8 +1370,8 @@ h5 + h6 {
   width: 5rem;
   padding: .75rem;
   border-top: 6px solid transparent;
-  box-shadow: 1px 0 0 0 #eee inset;
-  -webkit-box-shadow: 1px 0 0 0 #eee inset;
+  box-shadow: 1px 0 0 0 #eeeeee inset;
+  -webkit-box-shadow: 1px 0 0 0 #eeeeee inset;
 }
 
 .menu > li:first-child {
@@ -1469,8 +1467,8 @@ h5 + h6 {
 
 #aba-projetos:hover,
 #aba-projetos.active {
-  border-top: 6px solid #c03;
-  color: #c03;
+  border-top: 6px solid #cc0033;
+  color: #cc0033;
 }
 
 #aba-eventos.enabled a,
@@ -1506,11 +1504,11 @@ h5 + h6 {
 #aba-projetos.enabled a,
 #aba-projetos.active a,
 #aba-projetos:hover a {
-  color: #c03;
+  color: #cc0033;
 }
 
 #aba-projetos.enabled a div.icone {
-  background-color: #c03;
+  background-color: #cc0033;
 }
 
 .abas-objetos li.enabled a div.icone {
@@ -1518,20 +1516,20 @@ h5 + h6 {
 }
 
 .logado {
-  border-right: 1px solid #000;
+  border-right: 1px solid black;
 }
 
 .menu .entrar:hover {
-  border-top: 6px solid #f90;
+  border-top: 6px solid #ff9900;
 }
 
 .menu .entrar:hover a {
-  color: #f90;
+  color: #ff9900;
 }
 
 .menu .usuario:hover,
 .menu .notificacoes:hover {
-  border-top: 6px solid #f90;
+  border-top: 6px solid #ff9900;
 }
 
 .usuario .avatar {
@@ -1545,13 +1543,13 @@ h5 + h6 {
   left: 50%;
   top: -16px;
   margin-left: -8px;
-  border-color: transparent transparent #f90 transparent;
+  border-color: transparent transparent #ff9900 transparent;
 }
 
 .usuario .submenu {
   left: -2.5rem;
   width: 10rem;
-  background: #f90;
+  background: #ff9900;
 }
 
 .usuario .submenu li {
@@ -1560,7 +1558,7 @@ h5 + h6 {
 }
 
 .usuario .submenu a {
-  color: #000;
+  color: black;
   padding: .5rem;
 }
 
@@ -1585,7 +1583,7 @@ h5 + h6 {
 }
 
 .notificacoes:hover > a {
-  color: #f90;
+  color: #ff9900;
 }
 
 .notificacoes .icon_check_alt {
@@ -1600,7 +1598,7 @@ h5 + h6 {
 }
 
 #main-nav .notificacoes a.icon_check_alt:hover {
-  color: #f90;
+  color: #ff9900;
 }
 
 .notificacoes .setinha {
@@ -1626,7 +1624,7 @@ h5 + h6 {
 
 .notificacoes .submenu a.notificacao:hover,
 .notificacoes .submenu a.notificacao.lida {
-  border-left: 5px solid #f90;
+  border-left: 5px solid #ff9900;
   background: #fff;
 }
 
@@ -1697,7 +1695,7 @@ h5 + h6 {
 }
 
 #nav-intro {
-  background: #f90;
+  background: #ff9900;
 }
 
 #nav-eventos {
@@ -1713,7 +1711,7 @@ h5 + h6 {
 }
 
 #nav-projetos {
-  background: #c03;
+  background: #cc0033;
 }
 
 #nav-desenvolvedores {
@@ -1724,7 +1722,7 @@ h5 + h6 {
 #capa-nav ul a.down {
   width: 40px;
   padding: 0;
-  background: #000;
+  background: black;
   text-indent: 0;
   text-align: center;
   font-size: 2rem;
@@ -1797,16 +1795,16 @@ h5 + h6 {
 
 .objeto-capa .abas li.active,
 .objeto-capa .abas li:hover {
-  border: 1px solid #000;
+  border: 1px solid black;
 }
 
 .objeto-capa .abas li.active a,
 .objeto-capa .abas li:hover a {
-  color: #000;
+  color: black;
 }
 
 #capa-intro {
-  background: #f90;
+  background: #ff9900;
 }
 
 #capa-intro .botao-grande {
@@ -1815,7 +1813,7 @@ h5 + h6 {
 
 #capa-intro .botao-grande:hover {
   background: #fff;
-  color: #000;
+  color: black;
 }
 
 #capa-eventos .box,
@@ -1851,11 +1849,11 @@ h5 + h6 {
 }
 
 #capa-projetos {
-  background: #c03;
+  background: #cc0033;
 }
 
 #capa-projetos .abas li.active {
-  border-bottom-color: #c03;
+  border-bottom-color: #cc0033;
 }
 
 #capa-desenvolvedores {
@@ -1912,7 +1910,7 @@ h5 + h6 {
 /*filtro da home*/
 #filtro-da-capa {
   height: 2.5rem;
-  background: #000;
+  background: black;
   color: #fff;
   font-size: .875rem;
   line-height: 2.5rem;
@@ -1934,11 +1932,11 @@ h5 + h6 {
 
 #filtro-da-capa .submenu-dropdown {
   top: 48px;
-  background: #000;
+  background: black;
 }
 
 #filtro-da-capa .submenu-dropdown:before {
-  color: #000;
+  color: black;
 }
 
 #filtro-da-capa .icone {
@@ -1964,7 +1962,7 @@ h5 + h6 {
 
 #filtro-de-projetos:hover,
 #filtro-de-projetos:focus {
-  background-color: #c03;
+  background-color: #cc0033;
 }
 
 .destaque-aleatorio {
@@ -1981,7 +1979,7 @@ h5 + h6 {
   top: 100%;
   bottom: 0;
   padding: 1.5rem;
-  background: #000;
+  background: black;
   color: #fff;
   font-weight: normal;
   font-size: .875rem;
@@ -2033,7 +2031,7 @@ h5 + h6 {
 #main-section {
   position: relative;
   margin-top: 78px;
-  background: #eee;
+  background: #eeeeee;
 }
 
 body.editable #main-section {
@@ -2063,7 +2061,7 @@ body.editable #main-section {
   overflow: auto;
   padding: 2rem .75rem .75rem;
   border-radius: 0;
-  background: #eee;
+  background: #eeeeee;
 }
 
 #infobox .icon_close {
@@ -2143,19 +2141,19 @@ nav.barra-esquerda ul {
 nav.barra-esquerda a {
   display: block;
   padding: .75rem;
-  border-left: #ccc 6px solid;
+  border-left: #cccccc 6px solid;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
 
 nav.barra-esquerda a.active {
   background: #fff;
-  border-left-color: #f90;
+  border-left-color: #ff9900;
 }
 
 nav.barra-esquerda a:hover {
-  background: #f90;
-  border-left-color: #f90;
+  background: #ff9900;
+  border-left-color: #ff9900;
   color: #fff;
   text-decoration: none;
 }
@@ -2170,7 +2168,7 @@ nav.barra-esquerda .icone {
 .como-usar {
   padding-bottom: 3rem;
   margin-bottom: 3rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .como-usar-img,
@@ -2193,7 +2191,7 @@ nav.barra-esquerda .icone {
 }
 
 .como-usar-content h2 {
-  color: #f90;
+  color: #ff9900;
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-weight: normal;
 }
@@ -2215,10 +2213,10 @@ nav.barra-esquerda .icone {
   position: relative;
   min-height: 1.5rem;
   padding: .75rem;
-  background-color: #eee;
+  background-color: #eeeeee;
   font-family: 'aleo', serif;
   font-size: .875rem;
-  color: #000;
+  color: black;
 }
 
 #resultados {
@@ -2263,7 +2261,7 @@ nav.barra-esquerda .icone {
 
 #filtros-selecionados .remover-tudo {
   color: #fff;
-  background: #000;
+  background: black;
   padding-right: .3rem;
 }
 
@@ -2273,7 +2271,7 @@ nav.barra-esquerda .icone {
 
 #header-dos-resultados .botao-de-icone.active {
   text-decoration: none;
-  background-color: #000;
+  background-color: black;
 }
 
 #header-dos-resultados .icon_map {
@@ -2317,19 +2315,19 @@ nav.barra-esquerda .icone {
 }
 
 #compartilhar-url .icone:hover {
-  color: #000;
+  color: black;
 }
 
 #compartilhar-url .info {
   font-weight: normal;
   font-size: .7rem;
-  color: #666;
+  color: #666666;
 }
 
 #url-da-busca {
   width: 70%;
   margin-bottom: 0;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   cursor: default;
 }
 
@@ -2400,24 +2398,24 @@ nav.barra-esquerda .icone {
 }
 
 .barra-lateral.projeto {
-  border-top: #c03 12px solid;
+  border-top: #cc0033 12px solid;
 }
 
 .barra-lateral.projeto a,
 .barra-lateral.projeto .compartilhamentos {
-  color: #c03;
+  color: #cc0033;
 }
 
 .barra-lateral.projeto .setinha {
-  border-color: #c03 transparent transparent transparent;
+  border-color: #cc0033 transparent transparent transparent;
 }
 
 .barra-lateral a.botao.adicionar {
-  color: #666;
+  color: #666666;
 }
 
 .barra-lateral a.botao.adicionar:hover {
-  color: #000;
+  color: black;
 }
 
 .barra-lateral .avatar {
@@ -2462,14 +2460,14 @@ nav.barra-esquerda .icone {
 }
 
 .lista-sem-thumb .objeto h1 .icone:hover {
-  color: #000;
+  color: black;
 }
 
 .lista-sem-thumb .objeto h1 .icone.active,
 .lista-sem-thumb .objeto h1 .icone.active:hover {
   color: #fff;
-  background: #000;
-  border: 1px solid #000;
+  background: black;
+  border: 1px solid black;
 }
 
 .lista-sem-thumb .objeto-meta {
@@ -2563,7 +2561,7 @@ nav.barra-esquerda .icone {
 .atividade {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #cccccc;
 }
 
 .atividade p {
@@ -2637,7 +2635,7 @@ nav.barra-esquerda .icone {
 .js-ajax-upload-progress .bar {
   background: #cfc;
   border-color: #a6dfa6;
-  color: #6c6;
+  color: #66cc66;
   height: 24px;
   border-radius: 3px;
 }
@@ -2673,25 +2671,25 @@ nav.barra-esquerda .icone {
 .mensagem.alerta {
   background: #ffc;
   border-color: #eed29b;
-  color: #c93;
+  color: #cc9933;
 }
 
 .mensagem.erro {
   background: #fcc;
   border-color: #ee9b9b;
-  color: #c33;
+  color: #cc3333;
 }
 
 .mensagem.sucesso {
   background: #cfc;
   border-color: #a6dfa6;
-  color: #6c6;
+  color: #66cc66;
 }
 
 .mensagem.automatica {
-  background: #eee;
+  background: #eeeeee;
   border-color: #ddd;
-  color: #666;
+  color: #666666;
 }
 
 .ajuda:before,
@@ -2713,22 +2711,22 @@ nav.barra-esquerda .icone {
 
 .ajuda:before {
   content: '\e007';
-  color: #3cc;
+  color: #40b4b4;
 }
 
 .alerta:before {
   content: '\e061';
-  color: #c93;
+  color: #cc9933;
 }
 
 .erro:before {
   content: '\e061';
-  color: #c33;
+  color: #cc3333;
 }
 
 .sucesso:before {
   content: '\e052';
-  color: #6c6;
+  color: #66cc66;
 }
 
 /* botoes de editar e excluir itens das ul's da barra lateral*/
@@ -2758,13 +2756,13 @@ nav.barra-esquerda .icone {
 .ul-dos-blocos a.icone,
 .ul-dos-blocos a.editar {
   margin-left: 5px;
-  color: #666;
+  color: #666666;
   cursor: pointer;
 }
 
 .ul-dos-blocos a.icone:hover,
 .ul-dos-blocos a.editar:hover {
-  color: #333;
+  color: #333333;
 }
 
 .ul-dos-blocos a.icone {
@@ -2796,7 +2794,7 @@ nav.barra-esquerda .icone {
 }
 
 .bloco a.adicionar:hover {
-  color: #333;
+  color: #333333;
 }
 
 .bloco a.botao.adicionar {
@@ -2851,8 +2849,8 @@ nav.barra-esquerda .icone {
 
 .botao.principal {
   color: #fff;
-  background: #f90;
-  border: 1px solid #f90;
+  background: #ff9900;
+  border: 1px solid #ff9900;
 }
 
 .botao.principal:hover {
@@ -2861,8 +2859,8 @@ nav.barra-esquerda .icone {
 
 .botao.selected,
 .botao.selected:hover {
-  background-color: #000;
-  border: 1px solid #000;
+  background-color: black;
+  border: 1px solid black;
   color: #fff;
 }
 
@@ -2871,7 +2869,7 @@ nav.barra-esquerda .icone {
 .botao.editar,
 .botao.download,
 .botao.excluir {
-  color: #666;
+  color: #666666;
   background: #d8d8d8;
   border: 1px solid #c4c4c4;
 }
@@ -2880,7 +2878,7 @@ nav.barra-esquerda .icone {
 .botao.editar:hover,
 .botao.download:hover,
 .botao.excluir:hover {
-  color: #333;
+  color: #333333;
   background: #ddd;
   border: 1px solid #999;
 }
@@ -2890,12 +2888,12 @@ nav.barra-esquerda .icone {
   font-size: .875rem;
   text-align: center;
   color: #fff;
-  background: #000;
+  background: black;
 }
 
 .botao-grande:hover {
-  background: #f90;
-  border-color: #f90;
+  background: #ff9900;
+  border-color: #ff9900;
 }
 
 .adicionar:before,
@@ -2958,7 +2956,7 @@ nav.barra-esquerda .icone {
 
 .botao-de-icone:hover,
 .botao-de-icone.selected {
-  color: #000;
+  color: black;
 }
 
 .botoes-de-edicao {
@@ -2975,7 +2973,7 @@ nav.barra-esquerda .icone {
 .action {
   display: inline-block;
   padding: 0 .5rem;
-  background: #f90;
+  background: #ff9900;
   border-radius: 2px;
   font-size: .75rem;
   font-weight: normal;
@@ -2985,7 +2983,7 @@ nav.barra-esquerda .icone {
 
 .action:hover {
   text-decoration: none;
-  background: #000;
+  background: black;
   color: #fff;
 }
 
@@ -2998,7 +2996,7 @@ nav.barra-esquerda .icone {
 }
 
 .p-dos-botoes {
-  border-top: 1px solid #eee;
+  border-top: 1px solid #eeeeee;
   padding: .75rem 0 0;
   text-align: right;
 }
@@ -3014,7 +3012,7 @@ table.contratos td {
   height: 2rem;
   margin: 0;
   background: #e2e2e2;
-  color: #000;
+  color: black;
   border-radius: 2px;
   font-size: .75rem;
   line-height: 1.875rem;
@@ -3101,7 +3099,7 @@ table.contratos td {
 }
 
 .dropdown .submenu-dropdown li:hover {
-  background: #f90;
+  background: #ff9900;
   color: #fff;
 }
 
@@ -3115,7 +3113,7 @@ table.contratos td {
   padding: .75rem;
   background: #fff;
   border: none;
-  border-top: 4px solid #f90;
+  border-top: 4px solid #ff9900;
   border-radius: 2px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
@@ -3184,7 +3182,7 @@ table.contratos td {
 
 .edit-box.mc-bottom .mc-arrow {
   top: -20px;
-  border-color: transparent transparent #f90 transparent;
+  border-color: transparent transparent #ff9900 transparent;
 }
 
 .edit-box.mc-left .mc-arrow {
@@ -3234,7 +3232,7 @@ table.contratos td {
 }
 
 .js-dialog .label {
-  color: #000;
+  color: black;
   font-weight: normal;
 }
 
@@ -3246,7 +3244,7 @@ table.contratos td {
 }
 
 .radio-button {
-  color: #000;
+  color: black;
   font-family: 'ElegantIcons';
   speak: none;
   font-weight: normal;
@@ -3291,22 +3289,22 @@ h1 .icone {
 .icon_check {
   margin-right: .5rem;
   background: #fff;
-  color: #ccc;
+  color: #cccccc;
   padding: 2px;
   border-radius: 2px;
 }
 
 .icon_check:hover {
-  color: #000;
+  color: black;
 }
 
 .icon_check.selected {
-  background: #000;
+  background: black;
   color: #fff !important;
 }
 
 .icon_check:hover {
-  color: #000;
+  color: black;
 }
 
 .social_twitter {
@@ -3338,7 +3336,7 @@ h1 .icone {
   height: 4.5rem;
   margin-right: .75rem;
   margin-bottom: 1.5rem;
-  background: #ccc;
+  background: #cccccc;
 }
 
 .item-da-galeria .botoes-de-edicao {
@@ -3361,7 +3359,7 @@ h1 .icone {
   float: left;
   margin-right: .75rem;
   margin-bottom: 1.5rem;
-  background: #ccc;
+  background: #cccccc;
 }
 
 /* =Modal
@@ -3373,7 +3371,7 @@ h1 .icone {
   padding: 1.5rem;
   z-index: 1000;
   background: #fff;
-  border-top: 4px solid #f90;
+  border-top: 4px solid #ff9900;
   border-radius: 2px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
@@ -3418,7 +3416,7 @@ h1 .icone {
 }
 
 .js-dialog .js-close:hover {
-  color: #000;
+  color: black;
 }
 
 .js-dialog input[type=submit],
@@ -3429,7 +3427,7 @@ h1 .icone {
 }
 
 .js-dialog footer {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #cccccc;
   padding-top: .75rem;
 }
 
@@ -3440,18 +3438,18 @@ h1 .icone {
 }
 
 .js-open-dialog.editar {
-  color: #666;
+  color: #666666;
 }
 
 .js-open-dialog.editar:hover {
-  color: #333;
+  color: #333333;
 }
 
 .js-dialog .dropdown,
 .js-dialog .dropdown .submenu-dropdown {
   margin-bottom: 1.5rem;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
 }
 
 .js-dialog .dropdown {
@@ -3472,7 +3470,7 @@ h1 .icone {
 
 .js-dialog .dropdown .submenu-dropdown li:hover {
   background: #e2e2e2;
-  color: #000;
+  color: black;
 }
 
 .js-dialog .grupo-de-campos {
@@ -3483,7 +3481,7 @@ h1 .icone {
 }
 
 .js-dialog .icon_check {
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
 }
 
 /*ocorrências de eventos*/
@@ -3545,7 +3543,7 @@ h1 .icone {
 
 .privado .icon_lock:before {
   font-size: .75rem;
-  color: #ccc;
+  color: #cccccc;
 }
 
 .compartilhamentos {
@@ -3565,7 +3563,7 @@ h1 .icone {
 /* Abas */
 .abas {
   margin: 0 0 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
   list-style: none;
   font-size: .875rem;
 }
@@ -3574,17 +3572,17 @@ h1 .icone {
   float: left;
   margin-bottom: -1px;
   padding: 5px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
 
 .abas li:hover {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid black;
 }
 
 .abas li.active {
-  border-bottom: 1px solid #f90;
+  border-bottom: 1px solid #ff9900;
 }
 
 .abas a {
@@ -3596,12 +3594,12 @@ h1 .icone {
 
 .abas li.active a,
 .abas li:hover a {
-  color: #000;
+  color: black;
 }
 
 /*Tags*/
 .tags {
-  border: 1px solid #000;
+  border: 1px solid black;
   margin-bottom: 1.5rem;
   padding: .75rem;
   border-radius: 2px;
@@ -3618,7 +3616,7 @@ h1 .icone {
   font-size: .7rem;
   line-height: 1.5rem;
   font-weight: normal;
-  color: #000;
+  color: black;
   text-transform: uppercase;
   -webkit-transition: all .3s;
   transition: all .3s;
@@ -3627,12 +3625,12 @@ h1 .icone {
 
 .tag:hover {
   color: #fff;
-  background: #000;
+  background: black;
   text-decoration: none;
 }
 
 .tag.selected {
-  background-color: #000;
+  background-color: black;
   color: #fff;
   padding-right: .3rem;
 }
@@ -3661,7 +3659,7 @@ h1 .icone {
 }
 
 .tag-projeto {
-  background-color: #c03;
+  background-color: #cc0033;
 }
 
 .tag-evento,
@@ -3676,7 +3674,7 @@ h1 .icone {
 .tag-agente:hover,
 .tag-espaco:hover,
 .tag-projeto:hover {
-  background-color: #000;
+  background-color: black;
   color: #fff;
 }
 
@@ -3684,7 +3682,7 @@ h1 .icone {
 .hltip-box {
   min-width: 60px;
   max-width: 160px;
-  border-color: #000;
+  border-color: black;
 }
 
 .hltip-box .hltip-arrow-top {
@@ -3693,7 +3691,7 @@ h1 .icone {
   border-style: solid;
   border-width: 6px;
   line-height: 0;
-  border-color: transparent transparent #000 transparent;
+  border-color: transparent transparent black transparent;
 }
 
 .hltip-box .hltip-arrow-bottom {
@@ -3702,7 +3700,7 @@ h1 .icone {
   border-style: solid;
   border-width: 6px;
   line-height: 0;
-  border-color: #000 transparent transparent transparent;
+  border-color: black transparent transparent transparent;
 }
 
 .hltip-box .hltip-title {
@@ -3717,21 +3715,21 @@ h1 .icone {
   text-align: center;
   border-radius: 2px;
   color: #fff;
-  background-color: #000;
+  background-color: black;
   -webkit-box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
   box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
 }
 
 .hltip-erro .hltip-arrow-top {
-  border-color: transparent transparent #c33 transparent;
+  border-color: transparent transparent #cc3333 transparent;
 }
 
 .hltip-erro .hltip-arrow-bottom {
-  border-color: #c33 transparent transparent transparent;
+  border-color: #cc3333 transparent transparent transparent;
 }
 
 .hltip-erro .hltip-text {
-  background: #c33;
+  background: #cc3333;
   color: #fff;
 }
 
@@ -3745,14 +3743,14 @@ h1 .icone {
   width: 50%;
   border: .75rem solid #fff;
   border-radius: 14px;
-  background: #eee;
-  color: #000;
+  background: #eeeeee;
+  color: black;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
 
 #estatisticas-do-usuario div.box:hover {
-  background: #f90;
+  background: #ff9900;
 }
 
 #estatisticas-do-usuario .icone {
@@ -3769,7 +3767,7 @@ h1 .icone {
 }
 
 #estatisticas-do-usuario div.box:hover .icon_plus {
-  background: #000;
+  background: black;
   color: #fff;
   -webkit-transition: all .3s;
   transition: all .3s;
@@ -3777,7 +3775,7 @@ h1 .icone {
 
 #estatisticas-do-usuario div.box:hover .icon_plus:hover {
   background: #fff;
-  color: #000;
+  color: black;
 }
 
 .valor {
@@ -3806,7 +3804,7 @@ h1 .icone {
   border-radius: 1rem;
   text-align: center;
   line-height: 2rem;
-  color: #eee;
+  color: #eeeeee;
   background-color: #e83f96;
 }
 
@@ -3842,7 +3840,7 @@ h1 .icone {
   font-family: 'ElegantIcons';
   font-weight: normal;
   font-style: normal;
-  color: #666;
+  color: #666666;
   position: absolute;
   top: 0;
   left: 0;
@@ -3869,7 +3867,7 @@ h1 .icone {
 
 .js-videogallery li:hover,
 .js-videogallery li.active {
-  background: #eee;
+  background: #eeeeee;
 }
 
 .js-videogallery li h1 {
@@ -3897,11 +3895,11 @@ h1 .icone {
 }
 
 .js-remove-item {
-  color: #666;
+  color: #666666;
 }
 
 .js-remove-item:hover {
-  color: #333;
+  color: #333333;
 }
 
 .js-remove-item:before {
@@ -3918,11 +3916,11 @@ h1 .icone {
   width: 100%;
   height: 20rem;
   margin-bottom: 1.5rem;
-  background: #ccc;
+  background: #cccccc;
 }
 
 #boas-vindas-painel {
-  border-left: 3px solid #f90;
+  border-left: 3px solid #ff9900;
   padding: .75rem;
   background: #f8f8f8;
 }
