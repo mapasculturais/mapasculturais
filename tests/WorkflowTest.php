@@ -86,10 +86,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
             $this->user = $user1;
             
             $entity = $this->getNewEntity($class);
-            if($class == 'Agent')
-                $entity->user = $user1;
-            else
-                $entity->owner = $user1->profile;
+            $entity->owner = $user1->profile;
             
             $entity->save(true);
             

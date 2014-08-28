@@ -235,25 +235,19 @@ class Agent extends \MapasCulturais\Entity
     }
     
     function setOwner(Agent $parent = null){
-        if($parent){
-            $this->setParent($parent);
-        }else{
-            $this->setParent();
-        }
+        $this->setParent($parent);
     }
     
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner){
-            $this->setParent($owner);
-        }else{
-            $this->setParent();
-        }
+        $this->setParent($owner);
     }
     
-    function setUser($user){
-        $this->checkPermission('modify');
-        $this->user = $user;
+    function setUser(User $user){
+        if(!$this->user || $this->user->id != $user->id){
+            $this->checkPermission('modify');
+            $this->user = $user;
+        }
     }
     
     function setParent(Agent $parent = null){
@@ -269,7 +263,6 @@ class Agent extends \MapasCulturais\Entity
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!$app->isWorkflowEnabled)
                     throw $e;
-                echo "\n--------->>NO CATCH\n\n\n\n";
                 $ar = new \MapasCulturais\Entities\RequestAuthority();
                 $ar->targetEntity = $this;
                 
@@ -282,6 +275,8 @@ class Agent extends \MapasCulturais\Entity
                 }
                 $ar->destinationAgent = $parent;
                 $ar->save(true);
+                
+                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
             }
         }
     }
