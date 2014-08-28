@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}")"/../ && pwd )"
+
 CDIR=$(pwd)
 
 cd $DIR
@@ -24,6 +25,16 @@ psql -f sp-shapefile-sql/sp_subprefeitura.sql -U mapasculturais -d mapasculturai
 
 rm -rf sp-shapefile-sql
 
+cd src/
+
+echo "starting php -S on port 8081"
+MAPASCULTURAIS_CONFIG_FILE="conf-test.php" php -S 0.0.0.0:8081 &
+PID_OF_PHP=$!
+cd ..
+
+echo 'running tests...'
 phpunit tests/
 
+echo "stopping php -S"
+kill $PID_OF_PHP
 cd $CDIR
