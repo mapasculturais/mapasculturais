@@ -14,13 +14,13 @@
     <body <?php body_properties() ?> >
        <?php body_header(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
-            <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
+            <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php $this->asset('img/logo-spcultura.png'); ?>" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
                 <ul id="menu-secundario">
                     <li><a href="<?php echo $app->createUrl('site', 'page', array('sobre')) ?>">Sobre o SP Cultura</a></li>
                     <li><a href="<?php echo $app->createUrl('site', 'page', array('como-usar')) ?>">Como usar</a></li>
                 </ul>
-                <h1 id="logo-smc"><a href="http://www.prefeitura.sp.gov.br" target="_blank"><img src="<?php echo $assetURL ?>/img/logo-prefeitura.png" /></a></h1>
+                <h1 id="logo-smc"><a href="http://www.prefeitura.sp.gov.br" target="_blank"><img src="<?php $this->asset('img/logo-prefeitura.png'); ?>" /></a></h1>
             </nav>
             <nav id="main-nav" class="alignright clearfix">
                 <ul class="menu abas-objetos clearfix">
@@ -122,7 +122,7 @@
                                     <?php if ($app->user->profile->avatar): ?>
                                         <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
                                     <?php else: ?>
-                                        <img src="<?php echo $app->assetUrl; ?>/img/avatar.png" />
+                                        <img src="<?php $this->asset('img/avatar.png'); ?>" />
                                     <?php endif; ?>
                                 </div>
                             </a>
