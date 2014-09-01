@@ -69,7 +69,9 @@
 }
 
 body {
-    font: $font-size-base/$line-height-base /*16px/24px*/ $font-family-base;
+    font-size: $font-size-base; // 16px
+    line-height: $line-height-base; // 24px
+    font-family: $font-family-base;
 }
 pre {
     font-family: $font-family-monospace;

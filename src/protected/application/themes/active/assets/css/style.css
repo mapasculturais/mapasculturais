@@ -399,7 +399,9 @@ tr th {
   font-style: italic;
 }
 body {
-  font: 0.66667 "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 pre {
@@ -605,7 +607,7 @@ h5 + h6 {
 #filtro-local {
   position: absolute;
   z-index: 150;
-  left: 0rem;
+  left: 0;
   height: 1.875rem;
 }
 
@@ -993,7 +995,7 @@ h5 + h6 {
 }
 
 .objeto h1 {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   line-height: 1.5rem;
   border-bottom: 1px solid #eeeeee;
@@ -1220,7 +1222,7 @@ h5 + h6 {
 }
 
 .regra header {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding: 0 0.5rem;
   background: #eeeeee;
   border-radius: 2px;
@@ -1581,7 +1583,7 @@ h5 + h6 {
 }
 
 .notificacoes .slimScrollDiv {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .notificacoes:hover > a {
@@ -1617,7 +1619,7 @@ h5 + h6 {
 }
 
 .notificacoes .submenu a.notificacao {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding: 0.5rem;
   background: #f8f8f8;
   border-left: 5px solid #999;
@@ -2473,7 +2475,7 @@ nav.barra-esquerda .icone {
 }
 
 .lista-sem-thumb .objeto-meta {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .lista-sem-thumb .objeto-meta div {
@@ -2567,7 +2569,7 @@ nav.barra-esquerda .icone {
 }
 
 .atividade p {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .agentes .avatar {
@@ -2779,7 +2781,7 @@ nav.barra-esquerda .icone {
   font-size: 0.875rem;
 }
 .bloco h3 {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   font-size: .70rem;
   line-height: 1.5rem;
   font-family: 'Opens Sans', sans-serif;
@@ -2806,7 +2808,7 @@ nav.barra-esquerda .icone {
 .search-agent {
   position: relative;
   min-height: 3rem;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding: .75rem 0 .75rem 3.75rem;
 }
 
@@ -3122,7 +3124,7 @@ table.contratos td {
 }
 
 .edit-box header {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #ddd;
 }
@@ -3488,7 +3490,7 @@ h1 .icone {
 
 /*ocorrências de eventos*/
 #dialog-event-occurrence .editable {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .horario-da-ocorrencia {
@@ -3515,7 +3517,7 @@ h1 .icone {
 }
 
 .grupo-descricao-automatica .mensagem {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .grupo-descricao-automatica .botao {
@@ -3610,7 +3612,7 @@ h1 .icone {
 .tag {
   display: inline-block;
   margin-right: 3px;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding: 0 0.5rem;
   background-color: #fff;
   border-radius: 2px;
@@ -3795,7 +3797,7 @@ h1 .icone {
 }
 
 .venue-status {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   font-weight: bold;
 }
 
