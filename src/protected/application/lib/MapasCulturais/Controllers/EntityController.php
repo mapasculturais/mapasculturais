@@ -417,6 +417,14 @@ abstract class EntityController extends \MapasCulturais\Controller{
         App::i()->stop();
     }
 
+    protected function apiAddHeaderMetadata($data){
+        $response_meta = array(
+            'count' => count($data)
+        );
+
+        header('API-Metadata: ' . json_encode($response_meta));
+    }
+
     /**
      * Ouputs an API Item Reponse
      *
@@ -680,8 +688,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
 
             $dql_where = implode($op, $dqls);
-            
-                
+
+
 
             if($metadata_class)
                 $metadata_class = ", $metadata_class m";
@@ -715,34 +723,34 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             if($app->config['app.log.apiDql'])
                 $app->log->debug("API DQL: ".$final_dql);
-            
+
             $query = $app->em->createQuery($final_dql);
-            
+
             // cache
             if($app->config['app.useApiCache']){
                 $query->useResultCache(true, $app->config['app.apiCache.lifetime']);
             }
-            
+
             $query->setParameters($this->_apiFindParamList);
-            
+
             $processEntity = function($r) use($append_files_cb, $select){
-                
+
                 $entity = array();
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
                     try{
                         if(strpos($prop, '.')){
-                            
+
                             $props = explode('.',$prop);
                             $current_object = $r;
                             foreach($props as $p){
                                 $current_object = $current_object->$p;
-                                
+
                                 if(!is_object($current_object))
                                     break;
                             }
-                            
+
                             $prop_value = $current_object;
                         }else{
                             $prop_value = $r->$prop;
@@ -762,7 +770,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                             $carray[array_pop($props)] = $prop_value;
                         }else{
                             $entity[$prop] = $prop_value;
-                        }                        
+                        }
                     }  catch (\Exception $e){ }
                 }
                 return $entity;
@@ -770,9 +778,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             if($findOne){
                 $query->setMaxResults(1);
-                
+
                 if($r = $query->getOneOrNullResult()){
-                    
+
                     if($permissions){
                         foreach($permissions as $perm){
                             if(!$r->canUser(trim($perm))){
@@ -781,7 +789,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                             }
                         }
                     }
-                    
+
                     if($r)
                         $entity = $processEntity($r);
                 }else{
@@ -789,26 +797,27 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 }
                 return $entity;
             }else{
-                
+
                 $rs = $query->getResult();
-                
-                
+
+
                 $result = array();
-                
+
                 if(is_array($permissions)){
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
                         foreach($permissions as $perm)
                             if(!$entity->canUser($perm))
                                 return false;
-                            
+
                         return true;
                     }));
                 }
-                
+
                 if($counting)
                     return count($rs);
-                
-                
+
+                $this->apiAddHeaderMetadata($rs);
+
                 if($page && $limit){
                     $offset = (($page - 1) * $limit);
                     $rs = array_slice($rs, $offset, $limit);
@@ -816,7 +825,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);
-                
+
                 return $result;
             }
         }
