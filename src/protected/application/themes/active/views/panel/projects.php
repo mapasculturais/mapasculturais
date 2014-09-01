@@ -12,13 +12,13 @@ $this->layout = 'panel'
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>
-            <?php $this->part('panel/part-project', array('entity' => $entity)); ?>
+            <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedProjects as $entity): ?>
-            <?php $this->part('panel/part-project', array('entity' => $entity)); ?>
+            <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #lixeira-->
