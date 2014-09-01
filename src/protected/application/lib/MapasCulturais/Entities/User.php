@@ -8,12 +8,12 @@ use MapasCulturais\App;
 
 /**
  * User
- * 
+ *
  * @property-read \MapasCulturais\Entities\Agent[] $agents Active Agents
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
- * 
+ *
  * @ORM\Table(name="usr")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\User")
@@ -280,6 +280,11 @@ class User extends \MapasCulturais\Entity
     }
     function getDisabledProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
+    }
+
+    function getNotifications(){
+        $app = App::i();
+        return $app->repo('Notification')->findBy(array('user' => $this), array('createTimestamp' => 'DESC'));
     }
 
     //============================================================= //

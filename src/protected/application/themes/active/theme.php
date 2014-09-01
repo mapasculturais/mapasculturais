@@ -1,7 +1,58 @@
 <?php
 use MapasCulturais\App;
+use MapasCulturais\Entities;
+use MapasCulturais\Entities\Notification;
 
 $app = App::i();
+
+/* === NOTIFICATIONS  === */
+
+// RequestAuthority
+$app->hook('workflow(RequestChangeOwnership).create', function() use($app){
+    $notification = new Notification;
+
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> quer passar a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para seu agente <strong>{$this->destinationAgent->name}</strong>";
+
+    else
+        $notification->message = "O agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</strong> está requisitando a propriedade do seu {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+
+
+    $notification->user = $this->requestedUser;
+    $notification->request = $this;
+    $notification->save(true);
+
+});
+
+$app->hook('workflow(RequestChangeOwnership).approve', function() use($app){
+    $notification = new Notification;
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> aceitou receber a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+    else
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+
+    $notification->user = $this->requesterUser;
+    $notification->request = $this;
+    $notification->save(true);
+});
+
+
+$app->hook('workflow(RequestChangeOwnership).reject', function() use($app){
+    $notification = new Notification;
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> rejeitou a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+    else
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> não cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+
+    $notification->user = $this->requesterUser;
+    $notification->request = $this;
+    $notification->save(true);
+});
+
+/* ---------------------- */
+
+
+
 
 function is_editable() {
     return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
@@ -10,7 +61,7 @@ function is_editable() {
 function mapasculturais_head($entity = null){
     $app = App::i();
     $site_name = $app->siteName;
-    
+
     $title = htmlentities($app->view->getTitle($entity));
     $image_url = $app->view->asset('img/share.png', false);
     if($entity){
@@ -20,7 +71,7 @@ function mapasculturais_head($entity = null){
     }else{
         $description = htmlentities($app->siteDescription);
     }
-    
+
     ?>
     <!-- for Google -->
     <meta name="description" content="<?php echo $description ?>" />
@@ -29,32 +80,32 @@ function mapasculturais_head($entity = null){
     <meta name="author" content="<?php echo $site_name ?>" />
     <meta name="copyright" content="<?php echo $site_name ?>" />
     <meta name="application-name" content="<?php echo $site_name ?>" />
-    
+
     <!-- for Google+ -->
-    <meta itemprop="name" content="<?php echo $title ?>"> 
-    <meta itemprop="description" content="<?php echo $description ?>"> 
+    <meta itemprop="name" content="<?php echo $title ?>">
+    <meta itemprop="description" content="<?php echo $description ?>">
     <meta itemprop="image" content="<?php echo $image_url ?>">
-    
+
     <!-- for Twitter -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="<?php echo $title;?>" />
     <meta name="twitter:description" content="<?php echo $description ?>" />
     <meta name="twitter:image" content="<?php echo $image_url ?>" />
-    
+
     <!-- for Facebook -->
-    <meta property="og:title" content="<?php echo $title ?>" /> 
-    <meta property="og:type" content="article" /> 
+    <meta property="og:title" content="<?php echo $title ?>" />
+    <meta property="og:type" content="article" />
     <meta property="og:image" content="<?php echo $image_url ?>" />
-    <meta property="og:description" content="<?php echo $description ?>" /> 
-    <meta property="og:site_name" content="<?php echo $site_name ?>" /> 
+    <meta property="og:description" content="<?php echo $description ?>" />
+    <meta property="og:site_name" content="<?php echo $site_name ?>" />
     <?php if($entity): ?>
         <meta property="og:url" content="<?php echo $entity->singleUrl; ?>" />
-        <meta property="article:published_time" content="<?php echo $entity->createTimestamp->format('Y-m-d') ?>" /> 
-        <meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" /> 
+        <meta property="article:published_time" content="<?php echo $entity->createTimestamp->format('Y-m-d') ?>" />
+        <meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" />
     <?php endif; ?>
 
     <?php $app->applyHook('mapasculturais.head'); ?>
-        
+
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
@@ -67,8 +118,8 @@ function mapasculturais_head($entity = null){
             },
             <?php if($entity && is_editable()): ?>
             entity: {
-                id: <?php echo $entity->id ? $entity->id : 'null' ?>, 
-                ownerId: <?php echo $entity->owner->id ? $entity->owner->id : 'null' ?>, 
+                id: <?php echo $entity->id ? $entity->id : 'null' ?>,
+                ownerId: <?php echo $entity->owner->id ? $entity->owner->id : 'null' ?>,
                 ownerUserId: <?php echo $entity->ownerUser->id ? $entity->ownerUser->id : 'null' ?>
             },
             <?php endif; ?>
@@ -398,19 +449,19 @@ $app->hook('entity(event).save:before', function() {
 
 $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
     $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
-        
+
     $class = $this->getClassName();
-    
-    $joins .= "LEFT JOIN 
-                MapasCulturais\Entities\TermRelation 
-                    tr 
-                WITH 
-                    tr.objectType = '$class' AND 
+
+    $joins .= "LEFT JOIN
+                MapasCulturais\Entities\TermRelation
+                    tr
+                WITH
+                    tr.objectType = '$class' AND
                     tr.objectId = e.id
-                    LEFT JOIN 
-                        tr.term 
-                            t 
-                        WITH 
+                    LEFT JOIN
+                        tr.term
+                            t
+                        WITH
                             t.taxonomy = '{$taxonomy->id}'";
 });
 
@@ -428,6 +479,6 @@ $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
 });
 
 $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR lower(p.name) LIKE lower(:keyword) 
+    $where .= " OR lower(p.name) LIKE lower(:keyword)
                 OR lower(m.value) LIKE lower(:keyword)";
 });

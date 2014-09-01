@@ -46,7 +46,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      * @var \MapasCulturais\App
      */
     protected $app;
-    
+
     protected $entities = [
         'Agent' => 'agents',
         'Space' => 'spaces',
@@ -70,14 +70,14 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
                 $this->setUserId ($value);
         }
     }
-    
-    
+
+
     function getNewEntity($class, $user = null){
         if(!is_null($user)){
             $_user = $this->app->user->is('guest') ? null : $this->app->user;
             $this->user = $user;
         }
-            
+
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
@@ -87,19 +87,19 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $entity->name = "Test $class "  . uniqid();
         $entity->type = $type;
         $entity->shortDescription = 'A litle short description';
-        
+
         if(!is_null($user)){
             $this->user = $_user;
         }
         return $entity;
     }
-    
+
     function assertPermissionDenied($callable, $msg = ''){
         $exception = null;
         try{
             $callable = \Closure::bind($callable, $this);
             $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
+        } catch (\Exception $ex) {
             $exception = $ex;
         }
 
@@ -112,20 +112,20 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         try{
             $callable = \Closure::bind($callable, $this);
             $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
+        } catch (\Exception $ex) {
             $exception = $ex;
             $msg .= '(message: "' . $ex->getMessage() . '")';
         }
 
         $this->assertEmpty($exception, $msg);
     }
-    
+
     function assertAuthorizationRequestCreated($callable, $msg = ''){
         $exception = null;
         try{
             $callable = \Closure::bind($callable, $this);
             $callable();
-        } catch (MapasCulturais\Exceptions\WorkflowRequest $ex) {
+        } catch (\Exception $ex) {
             $exception = $ex;
         }
 
@@ -140,7 +140,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     *
      * @param type $user_id
      * @param type $index
      * @return MapasCulturais\Entities\User

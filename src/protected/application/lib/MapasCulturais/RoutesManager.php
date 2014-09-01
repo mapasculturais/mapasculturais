@@ -106,7 +106,7 @@ class RoutesManager{
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-                    
+
                     if($app->config['slim.debug']){
                         if(App::i()->request()->isAjax())
                             $app->halt(403, $app->txt('Permission Denied: ' . $e));
@@ -115,6 +115,9 @@ class RoutesManager{
                     }else{
                         $app->halt(403, $app->txt('Permission Denied'));
                     }
+                }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
+                    $app->stop();
+                    $app->halt(202, __FILE__ . '::' . __LINE__);
                 }
             }else{
                 $app->pass();

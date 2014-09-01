@@ -12,15 +12,15 @@ class RequestEventProject extends Request{
     function getRequestMessage() {
         return __METHOD__;
     }
-    
-    function getApproveMessage() {        
+
+    function getApproveMessage() {
         return __METHOD__;
     }
-    
+
     function getRejectMessage() {
         return __METHOD__;
     }
-            
+
     function _doApproveAction() {
 
     }

@@ -545,7 +545,7 @@ MapasCulturais.Search = {
                         results: function (data, page) {
                             var more = data.length == MapasCulturais.Search.limit;
                             // notice we return the value of more so Select2 knows if more results can be loaded
-                            
+
                             return {results: data, more: more};
                         }
                     },
@@ -726,13 +726,13 @@ MapasCulturais.Search = {
 
             onClear: function($selector){
             },
-            
+
             ajaxData: function(searchParams){
-                searchParams['@permissions'] = '@control';
+//                searchParams['@permissions'] = '@control';
                 return searchParams;
             }
         },
-        
+
         chooseSpace: {
             onSave: function($selector){
                 var entity = $selector.data('entity'),
@@ -766,7 +766,7 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
-                
+
                 if($selector.data('value')){
                     searchParams.id = '!in('+$selector.data('value')+')';
                 }
@@ -775,7 +775,7 @@ MapasCulturais.Search = {
                 //    searchParams.owner = 'in(@me.spaces)';
 
                 searchParams['@select'] += ',shortDescription';
-                searchParams['@permissions'] += '@control';
+//                searchParams['@permissions'] += '@control';
                 return searchParams;
             }
         },
@@ -843,9 +843,9 @@ MapasCulturais.Search = {
 
             onClear: function($selector){
             },
-            
+
             ajaxData: function(searchParams, $selector){
-                searchParams['@permissions'] = '@control';
+//                searchParams['@permissions'] = '@control';
                 return searchParams;
             }
         },
@@ -861,9 +861,9 @@ MapasCulturais.Search = {
 
             onClear: function($selector){
             },
-            
+
             ajaxData: function(searchParams, $selector){
-                searchParams['@permissions'] = '@control';
+//                searchParams['@permissions'] = '@control';
                 return searchParams;
             }
         },
@@ -950,7 +950,7 @@ MapasCulturais.Search = {
                     searchParams.id = '!in('+excludedIds.toString()+')';
 
                 searchParams['@select'] += ',shortDescription';
-                searchParams['@permissions'] = '@control';
+//                searchParams['@permissions'] = '@control';
                 //searchParams['user'] = 'EQ(@User:' + MapasCulturais.entity.ownerUserId + ')';
                 return searchParams;
             }

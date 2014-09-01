@@ -72,13 +72,40 @@ ALTER TABLE ONLY request
 ALTER TABLE ONLY request
     ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);
 
-CREATE INDEX requested_user_index 
+CREATE INDEX requested_user_index
     ON request USING btree (requested_user_id, object_type, object_id);
 
-CREATE INDEX requester_user_index 
+CREATE INDEX requester_user_index
     ON request USING btree (requester_user_id, object_type, object_id);
-        
 
+
+
+
+CREATE SEQUENCE notification_id_seq
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
+
+CREATE TABLE notification(
+                id integer DEFAULT nextval('notification_id_seq'::regclass) NOT NULL,
+                user_id integer NOT NULL,
+                request_id integer DEFAULT NULL,
+                message text NOT NULL,
+                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+                action_timestamp timestamp without time zone DEFAULT NULL,
+                status smallint NOT NULL
+            );
+
+ALTER TABLE ONLY notification
+                ADD CONSTRAINT notification_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY notification
+                ADD CONSTRAINT notification_user_fk FOREIGN KEY (user_id) REFERENCES usr(id);
+
+ALTER TABLE ONLY notification
+                ADD CONSTRAINT notification_request_fk FOREIGN KEY (request_id) REFERENCES request(id);
 --
 -- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: -
 --
@@ -991,7 +1018,7 @@ ALTER TABLE ONLY agent
     ADD CONSTRAINT usr_agent_fk FOREIGN KEY (user_id) REFERENCES usr(id);
 
 
-ALTER TABLE ONLY agent 
+ALTER TABLE ONLY agent
     ADD CONSTRAINT agent_agent_fk FOREIGN KEY (parent_id) REFERENCES agent(id);
 
 

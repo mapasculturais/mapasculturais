@@ -7,23 +7,24 @@ use MapasCulturais\App;
 
 /**
  * Notification
- * 
+ *
  * @property \MapasCulturais\Entities\User $user
- * 
- * @property-read \MapasCulturais\Request $request The request that generate this notification
- * 
+ *
+ * @property \MapasCulturais\Request $request The request that generates this notification
+ * @property string $message The notification message
+ * @property int $status The notification status
+ *
  * @ORM\Table(name="notification")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class Notification extends \MapasCulturais\Entity{
     const STATUS_PENDING = 1;
-    const STATUS_APPROVED = 2;
-    const STATUS_REJECTED = 3;
-    
+    const STATUS_VIEWED = 2;
+
     /**
      * @var integer
-     * 
+     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
@@ -52,7 +53,7 @@ class Notification extends \MapasCulturais\Entity{
      * @ORM\Column(name="message", type="text", nullable=false)
      */
     protected $message = "";
-    
+
     /**
      * @var integer
      *
@@ -69,7 +70,7 @@ class Notification extends \MapasCulturais\Entity{
      * })
      */
     protected $user;
-    
+
     /**
      * @var \MapasCulturais\Entities\User
      *
@@ -79,12 +80,16 @@ class Notification extends \MapasCulturais\Entity{
      * })
      */
     protected $request;
-    
-    
+
+
     function getOwnerUser() {
         return $this->user;
     }
-    
+
+    protected function canUserCreate($user){
+        return !$user->is('guest');
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
