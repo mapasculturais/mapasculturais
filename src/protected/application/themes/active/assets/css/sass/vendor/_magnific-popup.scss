@@ -1,5 +1,5 @@
 .mfp-bg {
-    background-color: #000;
+    background-color: $brand-accent;
     opacity: 0.9;
 }
 
@@ -15,7 +15,7 @@
 .mfp-image-holder .mfp-close {
     padding: 0;
     opacity: 1;
-    color: #f90;
+    color: $brand-primary;
 }
 
 .mfp-image-holder .mfp-close:hover {
@@ -29,7 +29,7 @@ button.mfp-arrow {
     width: 40px;
     height: 40px;
     margin-top: -20px;
-    background: #f90;
+    background: $brand-primary;
     color: #fff;
     text-align: center;
     line-height: 40px;
@@ -43,7 +43,7 @@ button.mfp-arrow:active {
 
 button.mfp-arrow:hover {
     background: #fff;
-    color: #f90;
+    color: $brand-primary;
 }
 
 button.mfp-arrow-right {

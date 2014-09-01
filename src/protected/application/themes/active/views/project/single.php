@@ -151,16 +151,16 @@ add_entity_properties_metadata_to_js($entity);
 
 
         <!-- Video Gallery BEGIN -->
-        <?php $app->view->part('parts/video-gallery.php', array('entity'=>$entity)); ?>
+        <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
         <!-- Video Gallery END -->
 
         <!-- Image Gallery BEGIN -->
-        <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
+        <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
+        <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
@@ -270,7 +270,7 @@ add_entity_properties_metadata_to_js($entity);
     </div>
     <!--#inscricoes-->
 
-    <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="barra-lateral projeto barra-direita">
     <div class="setinha"></div>
@@ -278,7 +278,7 @@ add_entity_properties_metadata_to_js($entity);
         <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
-    <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
+    <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="bloco">
@@ -297,10 +297,10 @@ add_entity_properties_metadata_to_js($entity);
         </div>
     <?php endif; ?>
     <!-- Downloads BEGIN -->
-    <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
+    <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
 
     <!-- Link List BEGIN -->
-    <?php $app->view->part('parts/link-list.php', array('entity'=>$entity)); ?>
+    <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->
 </div>

@@ -1,0 +1,73 @@
+/* =Barra lateral
+-------------------------------------------------------------- */
+.barra-lateral {
+    float: left;
+    position: relative;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: $padding-large;
+}
+.barra-esquerda {
+    width: 15%;
+}
+.barra-direita {
+    width: 25%;
+}
+.barra-lateral.evento {
+    border-top: $brand-event 12px solid;
+}
+.barra-lateral.evento a,
+.barra-lateral.evento .compartilhamentos {
+    color: $brand-event;
+}
+.barra-lateral.evento .setinha {
+    border-color: $brand-event transparent transparent transparent;
+}
+.barra-lateral.agente {
+    border-top: $brand-agent 12px solid;
+}
+.barra-lateral.agente a,
+.barra-lateral.agente .compartilhamentos {
+    color: $brand-agent;
+}
+.barra-lateral.agente .setinha {
+    border-color: $brand-agent transparent transparent transparent;
+}
+.barra-lateral.espaco {
+    border-top: $brand-space 12px solid;
+}
+.barra-lateral.espaco a,
+.barra-lateral.espaco .compartilhamentos {
+    color: $brand-space;
+}
+.barra-lateral.espaco .setinha {
+    border-color: $brand-space transparent transparent transparent;
+}
+.barra-lateral.projeto {
+    border-top: $brand-project 12px solid;
+}
+.barra-lateral.projeto a,
+.barra-lateral.projeto .compartilhamentos {
+    color: $brand-project;
+}
+.barra-lateral.projeto .setinha {
+    border-color: $brand-project transparent transparent transparent;
+}
+.barra-lateral a.botao.adicionar {
+    color: $gray-dark;
+}
+.barra-lateral a.botao.adicionar:hover {
+    color: $brand-accent;
+}
+.barra-lateral .avatar {
+    float: left;
+    width: 3rem;
+    height: 3rem;
+    margin-right: .75rem;
+    background-size: cover;
+}
+.barra-lateral .setinha {
+    top: 0;
+    left: 50%;
+    margin-left: -8px;
+}

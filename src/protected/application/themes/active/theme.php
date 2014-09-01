@@ -113,7 +113,6 @@ function body_footer(){
 $app->hook('view.render(<<agent|space|project|event>>/single):before', function() use ($app) {
     $app->enqueueScript('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
     $app->enqueueStyle('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/magnific-popup.css');
-    $app->enqueueStyle('app', 'magnific-popup', '/css/magnific-popup.css');
 });
 
 $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
@@ -141,6 +140,7 @@ $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueStyle('vendor', 'x-editable-tip', '/vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
 
     $app->enqueueStyle('app', 'style', '/css/style.css');
+    $app->enqueueStyle('app', 'vendor', '/css/vendor.css');
 
     $app->enqueueScript('vendor', 'mustache', '/vendor/mustache.js');
     $app->enqueueScript('vendor', 'jquery', '/vendor/jquery/jquery-2.0.3.min.js');
@@ -193,7 +193,6 @@ function add_map_assets() {
     //Pure CSS Tooltips (Hint - https://github.com/chinchang/hint.css)
     //$app->enqueueStyle('vendor', 'hint', 'http://cdn.jsdelivr.net/hint.css/1.3.0/hint.min.css');
     //Mapa das Singles
-    $app->enqueueStyle('app', 'map', '/css/map.css');
     $app->enqueueScript('app', 'map', '/js/map.js');
 }
 
@@ -310,7 +309,7 @@ function add_agent_relations_to_js($entity){
  * @param type $add_description_input
  */
 function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
-    App::i()->view->part('parts/ajax-uploader', array(
+    App::i()->view->part('ajax-uploader', array(
         'file_owner' => $file_owner,
         'file_group' => $group_name,
         'response_action' => $response_action,

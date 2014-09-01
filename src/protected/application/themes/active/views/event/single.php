@@ -375,15 +375,15 @@ add_occurrence_frequencies_to_js();
 
 
         <!-- Video Gallery BEGIN -->
-        <?php $app->view->part('parts/video-gallery.php', array('entity' => $entity)); ?>
+        <?php $this->part('video-gallery.php', array('entity' => $entity)); ?>
         <!-- Video Gallery END -->
 
         <!-- Image Gallery BEGIN -->
-        <?php $app->view->part('parts/gallery.php', array('entity' => $entity)); ?>
+        <?php $this->part('gallery.php', array('entity' => $entity)); ?>
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre.aba-content -->
-    <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
 <div class="barra-lateral evento barra-direita">
@@ -393,16 +393,16 @@ add_occurrence_frequencies_to_js();
     <?php endif; ?>
     
     <!-- Related Agents BEGIN -->
-    <?php $app->view->part('parts/related-agents.php', array('entity' => $entity)); ?>
+    <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
     <!-- Related Agents END -->
 
 
     <!-- Downloads BEGIN -->
-    <?php $app->view->part('parts/downloads.php', array('entity' => $entity)); ?>
+    <?php $this->part('downloads.php', array('entity' => $entity)); ?>
     <!-- Downloads END -->
 
     <!-- Link List BEGIN -->
-    <?php $app->view->part('parts/link-list.php', array('entity' => $entity)); ?>
+    <?php $this->part('link-list.php', array('entity' => $entity)); ?>
     <!-- Link List END -->
 </div>
 <?php if (is_editable()): ?>

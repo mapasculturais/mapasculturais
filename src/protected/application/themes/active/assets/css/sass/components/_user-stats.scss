@@ -1,0 +1,50 @@
+#estatisticas-do-usuario {
+    margin-bottom: $line-height-base;
+}
+#estatisticas-do-usuario div.box {
+    display: block;
+    float: left;
+    width: 50%;
+    border: .75rem solid #fff;
+    border-radius: 14px;
+    background: $gray-lighter;
+    color: $brand-accent;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+}
+#estatisticas-do-usuario div.box:hover {
+    background: $brand-primary;
+}
+#estatisticas-do-usuario .icone {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+#estatisticas-do-usuario .icon_plus {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    background: #ddd;
+    border-radius: $border-radius-base;
+}
+#estatisticas-do-usuario div.box:hover .icon_plus {
+    background: $brand-accent;
+    color: #fff;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+}
+#estatisticas-do-usuario div.box:hover .icon_plus:hover {
+    background: #fff;
+    color: $brand-accent;
+}
+.valor {
+    float: left;
+    line-height: 4rem;
+    font-size: 4rem;
+    font-weight: normal;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+}
+.valor:hover {
+    text-decoration: none;
+    color: #fff;
+}

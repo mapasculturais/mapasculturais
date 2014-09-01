@@ -56,7 +56,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='li-dos-blocos'>
              data-metalist-title-label="Título" data-metalist-value-label="Endereço (com http://)" data-metalist-description-label="Descrição">
             <?php if($this->controller->action == 'create'): ?>
                 <span class="js-dialog-disabled" data-message="Para adicionar links você primeiro deve salvar."></span>
-            <?php else: $app->view->part('parts/metalist-form.template.html'); endif; ?>
+            <?php else: $this->part('metalist-form.template.html'); endif; ?>
         </div>
     </div>
 <?php endif; ?>

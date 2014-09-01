@@ -183,18 +183,18 @@ add_angular_entity_assets($entity);
         <?php endif; ?>
         <!--.descricao-->
         <!-- Video Gallery BEGIN -->
-            <?php $app->view->part('parts/video-gallery.php', array('entity'=>$entity)); ?>
+            <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
         <!-- Video Gallery END -->
         <!-- Image Gallery BEGIN -->
-            <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
+            <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
+        <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-    <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="barra-lateral agente barra-direita">
     <div class="setinha"></div>
@@ -203,7 +203,7 @@ add_angular_entity_assets($entity);
     <?php endif; ?>
     
     <!-- Related Agents BEGIN -->
-        <?php $this->part('parts/related-agents.php', array('entity'=>$entity)); ?>
+        <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
 
     <?php if(count($entity->spaces) > 0): ?>
@@ -228,10 +228,10 @@ add_angular_entity_assets($entity);
     -->
 
     <!-- Downloads BEGIN -->
-        <?php $this->part('parts/downloads.php', array('entity'=>$entity)); ?>
+        <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
 
     <!-- Link List BEGIN -->
-        <?php $this->part('parts/link-list.php', array('entity'=>$entity)); ?>
+        <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->
 </div>

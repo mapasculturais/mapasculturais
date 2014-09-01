@@ -1,0 +1,70 @@
+/*Tags*/
+.tags {
+    border: 1px solid $brand-accent;
+    margin-bottom: $line-height-base;
+    padding: $padding-base;
+    border-radius: $border-radius-base;
+}
+.tag {
+    display: inline-block;
+    margin-right: 3px;
+    margin-bottom: $line-height-half;
+    padding: 0 $padding-small;
+    background-color: #fff;
+    border-radius: $border-radius-base;
+    font-family: $font-family-base;
+    font-size: .7rem;
+    line-height: $line-height-base;
+    font-weight: normal;
+    color: $brand-accent;
+    text-transform: uppercase;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+    cursor: pointer;
+}
+.tag:hover {
+    color: #fff;
+    background: $brand-accent;
+    text-decoration: none;
+}
+.tag.selected {
+    background-color: $brand-accent;
+    color: #fff;
+    padding-right: .3rem;
+}
+.tag.selected:after {
+    content: '\4d';
+    width: 1rem;
+    height: 1rem;
+    font-size: $font-size-base;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    vertical-align: middle;
+    text-transform: none;
+}
+.tag-evento {
+    background-color: $brand-event;
+}
+.tag-agente {
+    background-color: $brand-agent;
+}
+.tag-espaco {
+    background-color: $brand-space;
+}
+.tag-projeto {
+    background-color: $brand-project;
+}
+.tag-evento,
+.tag-agente,
+.tag-espaco,
+.tag-projeto {
+    padding-right: .3rem;
+    color: #fff;
+}
+.tag-evento:hover,
+.tag-agente:hover,
+.tag-espaco:hover,
+.tag-projeto:hover {
+    background-color: $brand-accent;
+    color: #fff;
+}

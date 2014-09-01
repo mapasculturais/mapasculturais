@@ -1,0 +1,113 @@
+/* header dos resultados*/
+#header-dos-resultados {
+    position: relative;
+    min-height: $line-height-base;;
+    padding: $padding-base;
+    background-color: $gray-lighter;
+    font-family: $headings-font-family;
+    font-size: $font-size-small;
+    color: $brand-accent;
+}
+#resultados {
+    position: absolute;
+    top: .75rem;
+    left: .75rem;
+    width: 250px;
+    padding-right: $padding-base;
+}
+
+#busca-combinada {
+    float: right;
+    margin-right: .75rem;
+    padding-right: $padding-base;
+    border-right: 2px solid #d3d3d3;
+}
+#filtros-selecionados {
+    margin-left: .75rem !important;
+    margin-right: 106px;
+    padding: 0 $padding-base;
+    border-left: 2px solid #d3d3d3;
+    border-right: 2px solid #d3d3d3;
+}
+#filtros-selecionados .tag {
+    margin-bottom: 0;
+}
+#filtros-selecionados .tag:after {
+    content: '\4d';
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-top: -3px;
+    font-size: $font-size-base;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    vertical-align: middle;
+    text-transform: none;
+}
+#filtros-selecionados .remover-tudo {
+    color: #fff;
+    background: $brand-accent;
+    padding-right: .3rem;
+}
+#header-dos-resultados .botao-de-icone {
+    float: right;
+}
+#header-dos-resultados .botao-de-icone.active {
+    text-decoration: none;
+    background-color: $brand-accent;
+}
+#header-dos-resultados .icon_map {
+    margin-right: 5px;
+}
+#ferramentas {
+    float: right;
+}
+#compartilhar {
+    position: relative;
+    float: left;
+}
+#compartilhar-url {
+    position: absolute;
+    z-index: 100;
+    display: none;
+    top: 2.25rem;
+    right: -24px;
+    width: 400px;
+    padding: $padding-base;
+    background: #fff;
+    border-radius: $border-radius-base;
+            box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
+    -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
+}
+#compartilhar-url .setinha {
+    right: 28px;
+    top: -16px;
+    border-color: transparent transparent #fff transparent;
+}
+#compartilhar-url .icone {
+    width: $line-height-base;;
+    height: $line-height-base;;
+    margin-left: .75rem;
+    font-size: 1.5rem;
+}
+#compartilhar-url .icone:hover {
+    color: $brand-accent;
+}
+#compartilhar-url .info {
+    font-weight: normal;
+    font-size: .7rem;
+    color: $gray-dark;
+}
+#url-da-busca {
+    width: 70%;
+    margin-bottom: 0;
+    border: 1px solid $gray;
+    cursor: default;
+}
+#views {
+    float: left;
+    width: auto;
+    margin-left: .75rem;
+    padding-left: $padding-base;
+    border-left: 2px solid #d3d3d3;
+}
