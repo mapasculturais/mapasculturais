@@ -4,7 +4,6 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Entities;
 
 class User extends \MapasCulturais\Repository{
-    use \MapasCulturais\Traits\RepositoryCache;
 
     protected $_isCreating = false;
 
@@ -26,7 +25,7 @@ class User extends \MapasCulturais\Repository{
     public function createByAuthResponse($response){
         $this->_isCreating = true;
         $app = \MapasCulturais\App::i();
-        
+
          // cria o usuário
         $user = new Entities\User;
         $user->authProvider = $response['auth']['provider'];
