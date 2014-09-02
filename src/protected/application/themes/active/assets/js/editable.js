@@ -135,15 +135,15 @@ MapasCulturais.Editables = {
             this.setButton(editableEntitySelector);
             this.initTaxonomies();
             this.initTypes();
-            
+
             if(MapasCulturais.request.controller === 'space')
                 this.initSpacePublicEditable();
         }
     },
-    
+
     initSpacePublicEditable: function(){
         $('#editable-space-status').on('hidden', function(e, reason) {
-            
+
             if($(this).editable('getValue', true) == '1'){
                 $('#editable-space-status').html('<div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
             }else{
@@ -272,6 +272,17 @@ MapasCulturais.Editables = {
 
     setButton : function (editableEntitySelector){
         var $submitButton = $($(editableEntitySelector).data('submit-button-selector'));
+
+        //Ctr+S:save
+        $(document.body).on('keydown', function(event){
+            if(event.ctrlKey && event.keyCode === 83){
+                event.preventDefault();
+                event.stopPropagation();
+                $submitButton.trigger('click');
+            }
+        });
+        $submitButton.html($submitButton.html()+' (Ctrl+S)');
+
         $submitButton.click(function(){
             if($submitButton.data('clicked'))
                 return false;
