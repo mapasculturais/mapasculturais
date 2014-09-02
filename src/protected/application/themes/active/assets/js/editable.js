@@ -31,7 +31,6 @@ jQuery(function(){
         return false;
     });
 
-
     //Máscaras de telefone
     var masks = ['(00) 00000-0000', '(00) 0000-00009'];
 
@@ -43,7 +42,33 @@ jQuery(function(){
                }
             });
         }
+    });
 
+    //Display Default Shortcuts on Editable Buttons and Focus on select2 input
+    $('.editable').on('shown', function(e, editable) {
+        editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
+        //textarea display default Ctrl+Enter and Esc shortcuts
+        switch (editable.input.type.trim()) {
+            case 'text|select':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Enter)');
+                break;
+            case 'textarea':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                break;
+            case 'select2':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                setTimeout(function() {
+                    editable.container.$form.find('.select2-input')
+                        .focus()
+                        .on('keydown', function(e){
+                            if(e.which == 13 && e.ctrlKey) {
+                                editable.container.$form.find('.editable-submit').click();
+                            }
+                        });
+                }, 100);
+                break;
+        }
+        
         //Experimental Tab Index
         if(window.tabEnabled) {
             var $el = editable.$element;
@@ -66,9 +91,7 @@ jQuery(function(){
                     $el.parents().nextAll(":has(.editable):first").find(".editable:first").editable('show');
             });
         }
-
     });
-
 
     if($('.js-verified').length){
         $('.js-verified').click(function(){
