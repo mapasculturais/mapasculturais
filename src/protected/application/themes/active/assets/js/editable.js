@@ -326,7 +326,6 @@ MapasCulturais.Editables = {
                     type: action == 'create' ? 'post' : 'post'//'put'
                 },
                 success: function(response){
-                    $submitButton.data('clicked',false);
                     if(response.error){
                         var $field = null;
                         var errors = '';
@@ -371,7 +370,6 @@ MapasCulturais.Editables = {
                             }
                         }
 
-
                     }else{
 
                         if($('.js-sp_distrito').length > 0      && response['sp_distrito'])         $('.js-sp_distrito').html(response['sp_distrito']);
@@ -395,7 +393,7 @@ MapasCulturais.Editables = {
                         if(action === 'create')
                             location.href = MapasCulturais.Editables.baseTarget+'/edit/'+response.id;
                     }
-
+                    $submitButton.data('clicked',false);
                 },
                 error : function(response){
                     $submitButton.data('clicked',false);
