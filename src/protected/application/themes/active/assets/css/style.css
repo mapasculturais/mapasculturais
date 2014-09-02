@@ -1186,6 +1186,7 @@ h5 + h6 {
   min-height: 9rem;
   padding-left: 10.5rem;
 }
+
 .content-do-header .avatar {
   position: absolute;
   left: 0;
@@ -1193,6 +1194,7 @@ h5 + h6 {
   height: 9rem;
   margin: 0;
 }
+
 .content-do-header .avatar .botao.editar {
   position: absolute;
   right: 0.75rem;
