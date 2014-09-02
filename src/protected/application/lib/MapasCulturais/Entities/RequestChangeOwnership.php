@@ -45,6 +45,20 @@ class RequestChangeOwnership extends Request{
         return in_array(App::i()->user->id, array($this->targetEntity->ownerUser->id, $this->destinationAgent->user->id));
     }
 
+    protected function canUserApprove($user){
+        if($this->getType() === self::TYPE_REQUEST)
+            return $this->targetEntity->owner->canUser('@control', $user);
+        else
+            return $this->destinationAgent->canUser('@control', $user);
+    }
+
+    protected function canUserReject($user){
+        if($this->getType() === self::TYPE_REQUEST)
+            return $this->targetEntity->owner->canUser('@control', $user);
+        else
+            return $this->destinationAgent->canUser('@control', $user);
+    }
+
 
     function getType(){
         if($this->targetEntity->ownerUser->id === $this->requesterUser->id)

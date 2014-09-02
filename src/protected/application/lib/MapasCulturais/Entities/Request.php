@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @property \MapasCulturais\Entities\User $requestedUser
  *
  * @property-read \MapasCulturais\Entity $targetEntity The target entity of the requested action
+ * @property-read string $requestType The request type
  *
  * @ORM\Table(name="request")
  * @ORM\Entity
@@ -132,12 +133,15 @@ abstract class Request extends \MapasCulturais\Entity{
         $this->checkPermission("approve");
         $app = App::i();
 
+        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:before');
+        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:before', array($this));
+
         $app->disableAccessControl();
         $this->_doApproveAction();
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve', array($this));
+        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:after');
+        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:after', array($this));
 
         // create the notificarion
         $notification = new Notification();
@@ -150,15 +154,42 @@ abstract class Request extends \MapasCulturais\Entity{
         $this->checkPermission("reject");
         $app = App::i();
 
+        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:before');
+        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:before', array($this));
+
         $app->disableAccessControl();
         $this->_doRejectAction();
         $app->enableAccessControl();
 
-        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject', array($this));
+        $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:after');
+        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:after', array($this));
+    }
+
+    function getRequestType(){
+        return str_replace('MapasCulturais\Entities\Request', '', $this->getClassName());
+    }
+
+    function getControllerId(){
+        return 'request' . $this->getRequestType();
+    }
+
+    function getApproveUrl(){
+        return App::i()->createUrl($this->getControllerId(), 'approve', array($this->id));
+    }
+
+    function getRejectUrl(){
+        return App::i()->createUrl($this->getControllerId(), 'approve', array($this->id));
     }
 
     protected function canUserCreate($user){
+        return $this->targetEntity->canUser('@control', $user);
+    }
+
+    protected function canUserApprove($user){
+        return $this->targetEntity->canUser('@control', $user);
+    }
+
+    protected function canUserReject($user){
         return $this->targetEntity->canUser('@control', $user);
     }
 

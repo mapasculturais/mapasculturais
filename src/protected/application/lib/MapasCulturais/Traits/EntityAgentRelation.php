@@ -28,19 +28,19 @@ trait EntityAgentRelation {
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
             return array();
-        
+
         $params = array(
             'owner' => $this,
             'in' => array(Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED)
         );
-        
+
         $dql_has_control = '';
-        
+
         if(is_bool($has_control)){
             $params['has_control'] = $has_control;
             $dql_has_control = "ar.hasControl = :has_control AND";
         }
-        
+
         $dql = "
             SELECT
                 ar,
@@ -107,7 +107,13 @@ trait EntityAgentRelation {
     function getUsersWithControl(){
         $result = array($this->getOwnerUser());
         $relations = $this->getAgentRelations(true);
-        
+
+        if($this->getClassName() !== 'MapasCulturais\Entities\Agent' || !$this->isUserProfile)
+            $result = array_merge ($result, $this->owner->getUsersWithControl());
+
+        if($this->usesNested() && $this->parent)
+            $result = array_merge ($result, $this->parent->getUsersWithControl());
+
         foreach($relations as $relation){
             $result[] = $relation->agent->user;
         }
@@ -118,10 +124,10 @@ trait EntityAgentRelation {
         foreach($this->getUsersWithControl() as $u)
             if($u->id == $user->id)
                 return true;
-            
+
         if($this->usesOwnerAgent() && $this->owner->userHasControl($user))
             return true;
-            
+
         if($this->usesNested() && is_object($this->parent) && $this->parent->userHasControl($user))
             return true;
 
@@ -139,10 +145,10 @@ trait EntityAgentRelation {
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
-        
+
         if($has_control)
             $relation->hasControl = true;
-        
+
         $relation->save($flush);
 
         return $relation;

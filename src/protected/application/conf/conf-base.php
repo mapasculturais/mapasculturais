@@ -11,7 +11,7 @@ $base_url = $prot_part . $host_part;
 return array(
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
-    
+
     'vectorLayersPath' => 'geojson',
 
     // development, staging, production
@@ -23,7 +23,7 @@ return array(
 
     'app.siteName' => 'Mapas Culturais',
     'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
-    
+
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
 
@@ -47,7 +47,7 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    
+
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
@@ -120,7 +120,11 @@ return array(
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
-            'como-usar' => array('site',    'page', array('como-usar'))
+            'como-usar' => array('site',    'page', array('como-usar')),
+
+            // workflow actions
+            'aprovar-mudanca-de-propriedade' => array('requestChangeOwnership', 'approve'),
+            'rejeitar-mudanca-de-propriedade' => array('requestChangeOwnership', 'reject'),
         ),
         'controllers' => array(
             'painel'         => 'panel',

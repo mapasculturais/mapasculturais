@@ -9,30 +9,30 @@ $app = App::i();
 
 // RequestAuthority
 $app->hook('workflow(RequestChangeOwnership).create', function() use($app){
-    $notification = new Notification;
+    foreach($this->destinationAgent->usersWithControl as $user){
+        $notification = new Notification;
 
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> quer passar a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para seu agente <strong>{$this->destinationAgent->name}</strong>";
+        if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
+            $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> quer passar a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para o agente <strong>{$this->destinationAgent->name}</strong>";
 
-    else
-        $notification->message = "O agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</strong> está requisitando a propriedade do seu {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+        else
+            $notification->message = "O agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a> está requisitando a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
 
 
-    $notification->user = $this->requestedUser;
-    $notification->request = $this;
-    $notification->save(true);
-
+        $notification->user = $user;
+        $notification->request = $this;
+        $notification->save(true);
+    }
 });
 
 $app->hook('workflow(RequestChangeOwnership).approve', function() use($app){
     $notification = new Notification;
     if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> aceitou receber a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> aceitou receber a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
     else
-        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
 
     $notification->user = $this->requesterUser;
-    $notification->request = $this;
     $notification->save(true);
 });
 
@@ -40,12 +40,11 @@ $app->hook('workflow(RequestChangeOwnership).approve', function() use($app){
 $app->hook('workflow(RequestChangeOwnership).reject', function() use($app){
     $notification = new Notification;
     if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> rejeitou a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> rejeitou a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
     else
-        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</strong> não cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+        $notification->message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> não cedeu a propriedade do {$this->targetEntity->entityType} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
 
     $notification->user = $this->requesterUser;
-    $notification->request = $this;
     $notification->save(true);
 });
 

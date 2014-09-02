@@ -35,7 +35,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read mixed $notFound Callable to be invoked if no matching routes are found
  *
  * @property-read array $config
- * 
+ *
  * @property-read bool $isAccessControlEnabled is access control enabled?
  * @property-read bool $isWorkflowEnabled is the workflow enabled?
  *
@@ -122,7 +122,7 @@ class App extends \Slim\Slim{
     protected $_hooks = array();
     protected $_excludeHooks = array();
 
-    
+
     protected $isAccessControlEnabled = true;
     protected $isWorkflowEnabled = true;
 
@@ -522,6 +522,12 @@ class App extends \Slim\Slim{
             $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
             $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
 
+            //workflow controllers
+            $this->registerController('requestChangeOwnership', 'MapasCulturais\Controllers\Request');
+            $this->registerController('requestChildEntity',     'MapasCulturais\Controllers\Request');
+            $this->registerController('requestEventOccurrence', 'MapasCulturais\Controllers\Request');
+            $this->registerController('requestEventProject',    'MapasCulturais\Controllers\Request');
+
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -864,7 +870,7 @@ class App extends \Slim\Slim{
     }
 
     protected $_hookCache = array();
-    
+
     /**
      * Get hook listeners
      *
@@ -955,14 +961,14 @@ class App extends \Slim\Slim{
         }
     }
 
-    
+
     function _getHookCallables($name) {
         $exclude_list = array();
         $result = array();
-//        
+//
 //        if(isset($this->_hookCache[$name]))
 //            return $this->_hookCache[$name];
-        
+
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
                 $exclude_list = array_merge($callables);
@@ -978,7 +984,7 @@ class App extends \Slim\Slim{
                 }
             }
         }
-        
+
         $this->_hookCache[$name] = $result;
 
         return $result;
@@ -1066,7 +1072,7 @@ class App extends \Slim\Slim{
     public function getSiteName(){
         return $this->_config['app.siteName'];
     }
-    
+
     public function getSiteDescription(){
         return $this->_config['app.siteDescription'];
     }
