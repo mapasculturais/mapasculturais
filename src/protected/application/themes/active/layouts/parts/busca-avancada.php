@@ -42,7 +42,7 @@
             <!--#busca-->
             <div class="filtro">
                 <label class="show-label" for="data-de-inicio">Entre</label>
-                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> <label class="show-label">a</label>
+                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> <label class="show-label">e</label>
                 <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" />
             </div>
             <!--.filtro-->
@@ -186,7 +186,7 @@
                         </span>
                     </span>
                     <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numSpaces, 'space') && numResults(numEvents.events, 'event')">,</span>
-                    <span ng-if="data.global.viewMode === 'map' && numResults(numEvents.events, 'event')">{{numResults(numEvents.events, 'event')}} evento<span ng-show="numResults(numEvents.events, 'event')!==1">s</span>
+                    <span ng-if="data.global.viewMode === 'map' && numResults(numEvents.events, 'event')">{{numEvents.events}} evento<span ng-show="numEvents.events!==1">s</span>
                         em {{numResults(numEvents.spaces, 'event')}} espaço<span ng-show="numResults(numEvents.spaces, 'event')!==1">s</span>
                         <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
                             ({{resultsNotInMap.event}})

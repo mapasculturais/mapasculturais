@@ -1,0 +1,26 @@
+nav.barra-esquerda ul {
+    list-style: none;
+    margin: 0 -$line-height-base;
+    font-size: $font-size-small;
+}
+nav.barra-esquerda a {
+    display: block;
+    padding: $padding-base;
+    border-left: $gray 6px solid;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+}
+nav.barra-esquerda a.active {
+    background: #fff;
+    border-left-color: $brand-primary;
+}
+nav.barra-esquerda a:hover {
+    background: $brand-primary;
+    border-left-color: $brand-primary;
+    color: #fff;
+    text-decoration: none;
+}
+nav.barra-esquerda .icone {
+    vertical-align: initial;
+    margin-right: 5px;
+}

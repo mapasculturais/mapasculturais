@@ -116,7 +116,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -268,7 +268,7 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserCreate($user){
-        if(is_null($user) || $user->is('guest'))
+        if($user->is('guest'))
             return true;
         else
             return $this->genericPermissionVerification($user);
@@ -280,6 +280,13 @@ class Agent extends \MapasCulturais\Entity
             return false;
         else
             return parent::canUserRemove($user);
+    }
+    
+    protected function canUserDestroy($user){
+        if($this->isUserProfile)
+            return false;
+        else
+            return $user->is('superAdmin');
     }
 
     protected function canUserChangeOwner($user){

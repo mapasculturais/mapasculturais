@@ -12,13 +12,13 @@ $this->layout = 'panel'
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSpaces as $entity): ?>
-            <?php $this->part('panel/part-space', array('entity' => $entity)); ?>
+            <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedSpaces as $entity): ?>
-            <?php $this->part('panel/part-space', array('entity' => $entity)); ?>
+            <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
 </div>

@@ -1,0 +1,211 @@
+//
+// Base
+// --------------------------------------------------
+
+
+body {
+    background: $body-bg;
+    color: $text-color;
+}
+
+hr {
+    background-color: $gray;
+    border: 1px solid #fff;
+    clear: both;
+    height: 1px;
+    margin-bottom: $line-height-base;
+}
+
+/* HTML5 */
+section,
+article,
+header,
+footer,
+nav,
+aside,
+hgroup {
+    display: block;
+}
+
+/* Text elements */
+p {
+    margin-bottom: $line-height-base;
+}
+ul {
+    list-style: disc;
+    margin: 0 0 $line-height-base $line-height-base;
+}
+ol {
+    list-style: decimal;
+    margin: 0 0 $line-height-base $line-height-base;
+}
+ol ol {
+    list-style: upper-alpha;
+}
+ol ol ol {
+    list-style: lower-roman;
+}
+ol ol ol ol {
+    list-style: lower-alpha;
+}
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+    margin-bottom: 0;
+}
+dl {
+    margin: 0 0 $line-height-base 0;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    margin-bottom: $line-height-base;
+}
+strong {
+    font-weight: bold;
+}
+cite,
+em,
+i {
+    font-style: italic;
+}
+big {
+    font-size: 131.25%;
+}
+ins {
+    background: #f66;
+    text-decoration: none;
+}
+blockquote {
+    font-style: italic;
+    padding: 0 3rem;
+    color: $gray-dark;
+}
+blockquote cite,
+blockquote em,
+blockquote i {
+    font-style: normal;
+}
+pre {
+    background: $gray-light;
+    margin-bottom: $line-height-base;
+    padding: $line-height-base;
+}
+abbr,
+acronym {
+    border-bottom: 1px dotted $gray-dark;
+    cursor: help;
+}
+address {
+    font-style: normal;
+}
+sup,
+sub {
+    height: 0;
+    line-height: 1;
+    position: relative;
+    vertical-align: baseline;
+}
+sup {
+    bottom: 1ex;
+}
+sub {
+    top: .5ex;
+}
+label {
+    color: $brand-accent;
+}
+input,
+textarea,
+button,
+select {
+    padding: 3px 6px;
+    background: #fff;
+    border: 1px solid $gray;
+    border-radius: $border-radius-base;
+    color: $gray-dark;
+    font-family: $font-family-base;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+input,
+textarea {
+    font-size: $font-size-smaller;
+}
+input,
+button,
+select {
+    height: 2rem;
+    margin: 0 0 .75rem;
+}
+input[type='submit'],
+button[type='submit'] {
+    width: auto;
+    padding: 0 $padding-base;
+    vertical-align: bottom;
+    color: #fff;
+    font-weight: bold;
+    font-size: $font-size-smaller;
+    background: $brand-accent;
+    cursor: pointer;
+    border: none;
+}
+input[type='submit']:hover,
+button[type='submit']:hover {
+            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+}
+input[type='radio'],
+input[type='checkbox'] {
+    width: auto;
+    height: auto;
+    margin: 0;
+    vertical-align: baseline;
+}
+input:focus,
+textarea:focus,
+button:focus,
+select:focus {
+    outline: none;
+}
+a {
+    color: $link-color;
+    text-decoration: none;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+a:hover {
+    color: $link-hover-color;
+    text-decoration: underline;
+}
+img,
+embed,
+object,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/*table*/
+table {
+    margin: 0 0 $line-height-base;
+    font-size: $font-size-smaller;
+}
+th,
+td {
+    padding: $padding-base;
+    text-align: center;
+    border-bottom: $thin-row;
+}
+td {
+    color: $gray-darker;
+}
+thead tr th {
+    text-align: center;
+}
+tr th {
+    text-align: left;
+}

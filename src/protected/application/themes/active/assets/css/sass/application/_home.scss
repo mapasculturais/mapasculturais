@@ -1,0 +1,317 @@
+/* =Capa
+-------------------------------------------------------------- */
+#capa-marca-dagua {
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    right: 0;
+    top: 102px;
+    bottom: 0;
+    background-image: url(../img/fundo.png);
+    background-position: 80% bottom;
+    background-repeat: no-repeat;
+}
+#capa-nav {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    bottom: 0;
+}
+#capa-nav ul {
+    margin: -160px 0 0;
+    list-style: none;
+}
+#capa-nav ul li {
+    position: relative;
+}
+#capa-nav ul li a {
+    position: relative;
+    z-index: 100;
+    display: block;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    background: inherit;
+    line-height: 40px;
+    text-align: center;
+}
+#capa-nav ul li:hover a {
+    text-decoration: none;
+}
+.nav-title {
+    position: absolute;
+    z-index: 90;
+    top: 0;
+    display: block;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 40px;
+    margin-left: -200px /*overriden by js */;
+    padding: 0 8px;
+    color: #fff;
+    line-height: 40px;
+    font-weight: bold;
+    background: inherit;
+}
+#nav-intro {
+    background: $brand-primary;
+}
+#nav-eventos {
+    background: #aebf3a;
+}
+#nav-agentes {
+    background: $brand-agent;
+}
+#nav-espacos {
+    background: $brand-space;
+}
+#nav-projetos {
+    background: $brand-project;
+}
+#nav-desenvolvedores {
+    background: #96c;
+}
+#capa-nav ul a.up,
+#capa-nav ul a.down {
+    width: 40px;
+    padding: 0;
+    background: $brand-accent;
+    text-indent: 0;
+    text-align: center;
+    font-size: 2rem;
+}
+.up {
+    border-top-right-radius: 2px;
+}
+.down {
+    border-bottom-right-radius: 2px;
+}
+.ver-mais {
+    font-size: 4rem;
+    text-align: center;
+    position: relative;
+    z-index: 51;
+}
+.objeto-capa {
+    float: none;
+    width: 75%;
+    padding: 2rem 12.5%;
+    color: #fff;
+}
+.objeto-capa h1,
+.objeto-capa h2,
+.objeto-capa h3,
+.objeto-capa h4,
+.objeto-capa h5,
+.objeto-capa h6 {
+    color: #fff;
+}
+.objeto-capa h1 .icone {
+    vertical-align: initial;
+}
+.objeto-capa .botao-grande {
+    margin-bottom: $line-height-base;
+}
+.objeto-capa .box {
+    position: relative;
+    z-index: 100;
+}
+.objeto-capa .box h4 {
+    font-family: 'Open Sans';
+    font-size: $font-size-base;
+}
+.objeto-capa .abas {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+.objeto-capa .abas li {
+    margin-left: 4px;
+    border-radius: 2px 2px 0 0 ;
+    border: 1px solid rgba(255,255,255, .4);
+    border-bottom: none;
+}
+.objeto-capa .abas li a {
+    color: #fff;
+}
+.objeto-capa .abas li.active,
+.objeto-capa .abas li:hover {
+    border: 1px solid $brand-accent;
+}
+.objeto-capa .abas li.active a,
+.objeto-capa .abas li:hover a {
+    color: $brand-accent;
+}
+#capa-intro {
+    background: $brand-primary;
+}
+#capa-intro .botao-grande {
+    width: 30%;
+}
+#capa-intro .botao-grande:hover {
+    background: #fff;
+    color: $brand-accent;
+}
+#capa-eventos .box,
+#capa-agentes .box,
+#capa-espacos .box,
+#capa-projetos .box {
+    float: left;
+    width: 50%;
+}
+#capa-eventos {
+    background: #aebf3a;
+}
+#capa-eventos .abas li.active {
+    border-bottom-color: #aebf3a;
+}
+#capa-agentes {
+    background: $brand-agent;
+}
+#capa-agentes .abas li.active {
+    border-bottom-color: $brand-agent;
+}
+#capa-espacos {
+    background: $brand-space;
+}
+#capa-espacos .abas li.active {
+    border-bottom-color: $brand-space;
+}
+#capa-projetos {
+    background: $brand-project;
+}
+#capa-projetos .abas li.active {
+    border-bottom-color: $brand-project;
+}
+#capa-desenvolvedores {
+    background: #96c;
+}
+.estatisticas {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: $line-height-base;
+    padding-left: 5px;
+    border-left: 1px solid #fff;
+}
+.estatistica {
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: bold;
+}
+.label-das-estatisticas {
+    font-size: $font-size-smaller;
+}
+/* Busca Geral */
+#form-de-busca-geral {
+    text-align: center;
+}
+#form-de-busca-geral input:focus {
+    outline: none;
+}
+#form-de-busca-geral .campo-de-busca {
+    width: 500px;
+    height: 2.5rem;
+    margin-right: 5px;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: none;
+    font-size: $font-size-small;
+}
+#form-de-busca-geral input[type='submit'] {
+    height: 2.5rem;
+}
+#form-de-busca-geral .icon_check {
+    vertical-align: middle;
+    margin-left: .5rem;
+}
+/*filtro da home*/
+#filtro-da-capa {
+    height: 2.5rem;
+    background: $brand-accent;
+    color: #fff;
+    font-size: $font-size-small;
+    line-height: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+}
+#filtro-da-capa .placeholder:after {
+    margin-left: .75rem;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+    color: #fff;
+}
+#filtro-da-capa li {
+    padding: 0 $padding-base;
+    cursor: pointer;
+}
+#filtro-da-capa .submenu-dropdown {
+    top: 48px;
+    background: $brand-accent;
+}
+#filtro-da-capa .submenu-dropdown:before {
+    color: $brand-accent;
+}
+#filtro-da-capa .icone {
+    margin-right: 5px;
+    vertical-align: initial;
+    font-size: $font-size-base;
+}
+#filtro-de-eventos:hover,
+#filtro-de-eventos:focus {
+    background-color: $brand-event;
+}
+#filtro-de-agentes:hover,
+#filtro-de-agentes:focus {
+    background-color: $brand-agent;
+}
+#filtro-de-espacos:hover,
+#filtro-de-espacos:focus {
+    background-color: $brand-space;
+}
+#filtro-de-projetos:hover,
+#filtro-de-projetos:focus {
+    background-color: $brand-project;
+}
+.destaque-aleatorio {
+    position: relative;
+    margin-bottom: $line-height-base;
+    margin-top: 4.5rem;
+    border-radius: $border-radius-base;
+    overflow: hidden;
+}
+.destaque-content {
+    display: block;
+    position: absolute;
+    top: 100%;
+    bottom: 0;
+    padding: $padding-large;
+    background: $brand-accent;
+    color: #fff;
+    font-weight: normal;
+    font-size: $font-size-small;
+    -webkit-transition: top .5s;
+            transition: top .5s;
+}
+.destaque-content:hover {
+    text-decoration: none;
+}
+.destaque-aleatorio:hover .destaque-content {
+    top: 0;
+    -webkit-transition: top .5s;
+            transition: top .5s;
+}
+.destaque-aleatorio img {
+    display: block;
+    width: 100%;
+}
+.destaque-content h3 {
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
+    font-family: 'Open Sans';
+    text-transform: uppercase;
+}
+.destaque-content h2 {
+    font-size: 1.5rem;
+    line-height: $line-height-base;
+}

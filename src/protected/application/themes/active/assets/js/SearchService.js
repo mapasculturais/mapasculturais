@@ -121,9 +121,9 @@
                    var otherRequestEntity = 'event';
                    var otherRequestAction = 'findByLocation';
 
-                   numCountRequests+=2;
-                   activeRequests+=2;
-                   $rootScope.spinnerCount+=2;
+                   numCountRequests++;
+                   activeRequests++;
+                   $rootScope.spinnerCount++;
 
                    countResults['event'] = {};
 
@@ -136,33 +136,13 @@
                        endCountRequest();
                    });
 
-                   apiCount(requestEntity, sData, requestAction).success(function(rs){
-                       numCountSuccessRequests++;
-                       activeRequests--;
-                       $rootScope.spinnerCount--;
-
-                       countResults['event'].spaces = rs;
-                       endCountRequest();
-                   });
-
-                }else{
-                    // DEFAULT CASE
-                    numCountRequests++;
-                    activeRequests++;
-                    $rootScope.spinnerCount ++ ;
-                    apiCount(requestEntity, sData, requestAction).success(function(rs){
-                        numCountSuccessRequests++;
-                        activeRequests--;
-                        $rootScope.spinnerCount--;
-                        countResults[entity] = rs;
-                        endCountRequest();
-                    });
                 }
 
                 numRequests++;
                 activeRequests++;
                 $rootScope.spinnerCount++;
-                apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs){
+                apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
+                    var metadata = JSON.parse(header('API-Metadata'));
                     numSuccessRequests++;
                     activeRequests--;
                     $rootScope.spinnerCount--;
@@ -170,6 +150,14 @@
                     results[entity] = rs;
 
                     endRequest();
+
+                    if(requestEntity === 'space' && requestAction === 'findByEvents')
+                        countResults[entity].spaces = metadata.count;
+                    else
+                        countResults[entity] = metadata.count;
+                    numCountSuccessRequests++;
+                    numCountRequests++;
+                    endCountRequest();
                 });
 
             }

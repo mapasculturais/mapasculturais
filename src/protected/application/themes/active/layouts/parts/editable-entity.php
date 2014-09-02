@@ -12,7 +12,7 @@ if(is_editable()){
 ?>
 
 <div id="editable-entity" class="clearfix sombra <?php echo $classes ?>" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>" data-submit-button-selector="#submitButton">
-    <h1 id="logo-spcultura-peq"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php echo $assetURL ?>/img/logo-spcultura.png" /></a></h1>
+    <h1 id="logo-spcultura-peq"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php $this->asset('img/logo-spcultura.png'); ?>" /></a></h1>
     <?php if (is_editable()): ?>
         <script type="text/javascript">
             MapasCulturais.Messages.help('Os ícones de lápis indicam conteúdos editáveis.');
@@ -75,6 +75,9 @@ if(is_editable()){
                 <a href="<?php echo $entity->deleteUrl ?>" class="botao selected">Excluir</a>
             <?php elseif ($entity->canUser('undelete') && $entity->status < 0): ?>
                 <a href="<?php echo $entity->undeleteUrl ?>" class="botao selected">Recuperar</a>
+                <?php if($entity->canUser('destroy')): ?>
+                    <a class="botao selected" href="<?php echo $entity->destroyUrl; ?>">Excluir Definitivamente</a>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

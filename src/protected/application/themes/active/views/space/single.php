@@ -68,7 +68,7 @@ add_angular_entity_assets($entity);
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--space.png" />
+                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
@@ -139,11 +139,11 @@ add_angular_entity_assets($entity);
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres foi diminuido para 400 caracteres e seu texto atual tem <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será truncado ao salvar. </div>
+                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $entity->shortDescription; ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
             <div class="servico">
                 <?php if(is_editable()): ?>
@@ -219,7 +219,7 @@ add_angular_entity_assets($entity);
 
         <?php if ( is_editable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Espaço" data-emptytext="Insira uma descrição do espaço" ><?php echo $entity->longDescription; ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Espaço" data-emptytext="Insira uma descrição do espaço" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
 
         <?php if ( is_editable() || $entity->criterios ): ?>
@@ -228,20 +228,20 @@ add_angular_entity_assets($entity);
         <?php endif; ?>
 
         <!-- Video Gallery BEGIN -->
-        <?php $app->view->part('parts/video-gallery.php', array('entity'=>$entity)); ?>
+        <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
         <!-- Video Gallery END -->
 
         <!-- Image Gallery BEGIN -->
-        <?php $app->view->part('parts/gallery.php', array('entity'=>$entity)); ?>
+        <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
     <div id="agenda" class="aba-content lista">
-        <?php $this->part('parts/agenda', array('entity' => $entity)); ?>
+        <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
-    <?php $this->part('parts/owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="barra-lateral espaco barra-direita">
     <div class="setinha"></div>
@@ -249,7 +249,7 @@ add_angular_entity_assets($entity);
         <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
-    <?php $app->view->part('parts/related-agents.php', array('entity'=>$entity)); ?>
+    <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="bloco">
@@ -268,10 +268,10 @@ add_angular_entity_assets($entity);
         </div>
     <?php endif; ?>
     <!-- Downloads BEGIN -->
-    <?php $app->view->part('parts/downloads.php', array('entity'=>$entity)); ?>
+    <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
 
     <!-- Link List BEGIN -->
-    <?php $app->view->part('parts/link-list.php', array('entity'=>$entity)); ?>
+    <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->
 </div>

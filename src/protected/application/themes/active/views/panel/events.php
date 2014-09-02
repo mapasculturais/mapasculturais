@@ -12,13 +12,13 @@ $this->layout = 'panel'
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledEvents as $entity): ?>
-            <?php $this->part('panel/part-event', array('entity' => $entity)); ?>
+            <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedEvents as $entity): ?>
-            <?php $this->part('panel/part-event', array('entity' => $entity)); ?>
+            <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
 </div>

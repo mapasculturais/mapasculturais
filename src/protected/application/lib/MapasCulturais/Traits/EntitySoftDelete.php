@@ -25,10 +25,8 @@ trait EntitySoftDelete{
 
         $this->status = $entity_class::STATUS_TRASH;
         
-        $em = App::i()->em;
-        $em->persist($this);
-        if($flush)
-            $em->flush();
+        $this->save($flush);
+        
         
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
     }
@@ -45,19 +43,32 @@ trait EntitySoftDelete{
         
         $this->status = $entity_class::STATUS_ENABLED;
 
-        $em = App::i()->em;
-        $em->persist($this);
-        if($flush)
-            $em->flush();
+        $this->save($flush);
         
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:after');
     }
 
     function destroy($flush = false){
+        $this->checkPermission('destroy');
+        $hook_class_path = $this->getHookClassPath();
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:before');
+        
         parent::delete($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').destroy:after');
     }
 
     function getUndeleteUrl(){
         return App::i()->createUrl($this->controllerId, 'undelete', array($this->id));
+    }
+    
+    function getDestroyUrl(){
+        return App::i()->createUrl($this->controllerId, 'destroy', array($this->id));
+    }
+    
+    protected function canUserDestroy($user){
+        return $user->is('superAdmin');
     }
 }

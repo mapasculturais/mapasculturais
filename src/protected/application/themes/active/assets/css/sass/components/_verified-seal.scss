@@ -1,0 +1,29 @@
+.oficial {
+    display: block;
+    width: 89px;
+    height: 72px;
+    margin: 0 auto;
+    background: url(../img/brasao-pb.png) no-repeat center;
+    text-indent: -9999px;
+}
+.oficial.inactive {
+    opacity: .2;
+}
+.oficial.active {
+    background: url(../img/brasao.png) no-repeat center;
+}
+
+.bloco--verified:before {
+    width: 1rem;
+    height: 1rem;
+    content: '\6c';
+    font-size: $font-size-base;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-style: normal;
+    color: $gray-dark;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
