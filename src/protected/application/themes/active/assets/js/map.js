@@ -357,8 +357,12 @@ MapasCulturais.Map.initialize = function(initializerOptions) {
 
             $('.js-editable').on('save', function(e, params) {
                 if ($(this).data('edit') == 'endereco') {
-                    geocoder.geocode({'address': params.newValue + ', Brasil'}, geocode_callback);
+                    $(this).trigger('changeAddress', params.newValue);
                 }
+            });
+
+            $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
+                geocoder.geocode({'address': strAddress + ', Brasil'}, geocode_callback);
             });
 
             //Mais controles
