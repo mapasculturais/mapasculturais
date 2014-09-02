@@ -12,13 +12,13 @@ $this->layout = 'panel'
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledAgents as $entity): ?>
-            <?php $this->part('panel/part-agent', array('entity' => $entity)); ?>
+            <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($app->user->trashedAgents as $entity): ?>
-            <?php $this->part('panel/part-agent', array('entity' => $entity)); ?>
+            <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
     </div>
     <!-- #lixeira-->

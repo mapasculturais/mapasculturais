@@ -1,0 +1,27 @@
+/*botão slider (sim/não)*/
+.slider-frame {
+    position: relative;
+    float: right;
+    display: inline-block;
+    margin: 0 auto;
+    width: 60px;
+    height: $line-height-base;;
+    border-radius: $border-radius-base;
+    border: 1px solid $gray;
+}
+.slider-button {
+    display: inline-block;
+    width: 30px;
+    height: $line-height-base;;
+    background: $gray-light;
+    border-radius: $border-radius-base;
+    -webkit-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.slider-button.on {
+    margin-left: 30px;
+    background: $brand-accent;
+}

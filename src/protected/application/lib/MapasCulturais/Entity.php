@@ -95,10 +95,10 @@ abstract class Entity implements \JsonSerializable{
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
     }
-    
+
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
-        
+
         $properties = is_string($properties) ? explode(',',$properties) : $properties;
         if(is_array($properties)){
             foreach($properties as $prop){
@@ -130,16 +130,16 @@ abstract class Entity implements \JsonSerializable{
                     case 'terms':
                         if($this->usesTaxonomies())
                             $e->terms = $this->getTerms();
-                        
+
                     break;
-                    
+
                     default:
                         $e->$prop = $this->$prop;
                     break;
                 }
             }
         }
-        
+
         return $e;
     }
 
@@ -155,7 +155,7 @@ abstract class Entity implements \JsonSerializable{
 
     /**
      * Returns the owner User of this entity
-     * 
+     *
      * @return \MapasCulturais\Entities\User
      */
     function getOwnerUser(){
@@ -165,16 +165,16 @@ abstract class Entity implements \JsonSerializable{
             return $app->user;
 
         $owner = $this->owner;
-        
+
         $user = $owner->getOwnerUser();
-        
+
         return $user;
     }
-    
+
     protected function fetchByStatus($collection, $status){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
                 return array();
-        
+
         $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
         return $collection->matching($criteria);
     }
@@ -191,14 +191,14 @@ abstract class Entity implements \JsonSerializable{
 
         if($this->usesAgentRelation() && $this->userHasControl($user))
             return true;
-        
+
         return false;
     }
 
     protected function canUserRemove($user){
         if($user->is('guest'))
             return false;
-        
+
         if($user->is('admin') || $this->getOwnerUser()->id == $user->id)
             return true;
 
@@ -206,30 +206,25 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function canUser($action, $userOrAgent = null){
-        
+
         if(App::i()->isRunningUpdates())
             return true;
 
         if(App::i()->repo('User')->isCreating())
             return true;
-        
-        $user = is_null($userOrAgent) ? App::i()->user : $userOrAgent->getOwnerUser();
 
-        if($user && $user->is('superAdmin'))
-            return true;
+        $user = is_null($userOrAgent) ? App::i()->user : $userOrAgent->getOwnerUser();
 
         if(is_null($user))
             $user = new GuestUser;
-        
+
         if(strtolower($action) === '@control' && $this->usesAgentRelation())
-            return $this->userHasControl($user);
+            return $this->userHasControl($user) || $user->is('admin');
 
         if(method_exists($this, 'canUser' . $action)){
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> EXISTS");
             $method = 'canUser' . $action;
             return $this->$method($user);
         }else{
-//            \MapasCulturais\App::i()->log->info(get_called_class() . ': '.__METHOD__ . "( $action ) --> ELSE");
             return $this->genericPermissionVerification($user);
         }
     }
@@ -267,21 +262,21 @@ abstract class Entity implements \JsonSerializable{
     public static function getPropertiesMetadata(){
         $class_metadata = App::i()->em->getClassMetadata(get_called_class())->fieldMappings;
         $class_relations = App::i()->em->getClassMetadata(get_called_class())->getAssociationMappings();
-        
+
         $data_array = array();
-        
+
         $class = self::getClassName();
-        
+
         foreach ($class_metadata as $key => $value){
             $metadata = array(
                 'isMetadata' => false,
                 'isEntityRelation' => false,
-                
+
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
                 'length' => $value['length']
             );
-            
+
             if($key[0] == '_'){
                 $prop = substr($key, 1);
                 if(method_exists($class, 'get' . $prop)){
@@ -297,17 +292,17 @@ abstract class Entity implements \JsonSerializable{
             $data_array[$key] = array(
                 'isMetadata' => false,
                 'isEntityRelation' => true,
-                
+
                 'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
                 'isOwningSide' => $value['isOwningSide']
             );
         }
-        
+
         if($class::usesMetadata()){
             $data_array = $data_array + $class::getMetadataMetadata();
         }
-        
-        
+
+
         return $data_array;
     }
 
@@ -405,13 +400,13 @@ abstract class Entity implements \JsonSerializable{
             $this->saveTerms();
             $app->em->flush();
         }
-        
+
         // delete the entity cache
         $repo = $this->repo();
         if($repo->usesCache())
             $repo->deleteEntityCache($this->id);
-                
-                
+
+
     }
 
     /**
@@ -537,20 +532,20 @@ abstract class Entity implements \JsonSerializable{
         $errors = $this->_validationErrors;
         $class = get_called_class();
         foreach($class::$validations as $property => $validations){
-            
+
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
 
-           
+
             foreach($validations as $validation => $error_message){
                 $validation = trim($validation);
 
                 $ok = true;
-                
-             
+
+
                 if($validation == 'required'){
                     $ok = (bool) $this->$property;
-                    
+
                 }elseif($validation == 'unique'){
                     $ok = $this->validateUniquePropertyValue($property);
 
@@ -566,7 +561,7 @@ abstract class Entity implements \JsonSerializable{
                         $errors[$property] = array();
 
                     $errors[$property][] = App::txt($error_message);
-                    
+
                 }
             }
         }
@@ -636,6 +631,11 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
 
+        $repo = $app->repo($this->className);
+        if($repo->usesCache()){
+            $repo->deleteEntityCache($this->id);
+        }
+
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
     }
@@ -692,6 +692,10 @@ abstract class Entity implements \JsonSerializable{
     public function postRemove($args = null){
         $hook_class_path = $this->getHookClassPath();
         $app = App::i();
+        $repo = $app->repo($this->className);
+        if($repo->usesCache())
+            $repo->deleteEntityCache($this->id);
+
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
     }

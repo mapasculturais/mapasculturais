@@ -205,6 +205,10 @@ trait EntityMetadata{
         }
     }
 
+    function getChangedMetadata(){
+        return self::$_changedMetadata[$this->__metadata__tmpId];
+    }
+
     /**
      * Sets the value of the metadata with the given key.
      *
@@ -248,8 +252,8 @@ trait EntityMetadata{
         }
         //var_dump(array($meta_key, $value, $meta->value));
         if($meta->value != $value){
-            self::$_changedMetadata[$this->__metadata__tmpId][$meta_key] = $meta_key;
-            $meta->value = $value;
+            self::$_changedMetadata[$this->__metadata__tmpId][$meta_key] = array('key'=> $meta_key, 'oldValue'=> $meta->value, 'newValue'=> $value);
+           $meta->value = $value;
         }
 
         self::$_metadata[$this->__metadata__tmpId][$meta_key] = $meta;
@@ -297,7 +301,7 @@ trait EntityMetadata{
         $this->_initMetadataArrays();
 
         $saved = false;
-        foreach(self::$_changedMetadata[$this->__metadata__tmpId] as $meta_key){
+        foreach(self::$_changedMetadata[$this->__metadata__tmpId] as $meta_key=>$meta_value){
             $saved = true;
             self::$_metadata[$this->__metadata__tmpId][$meta_key]->save();
         }

@@ -34,14 +34,7 @@
             if(!paginating)
                 $rootScope.resetPagination();
 
-            // cancel all active requests
-            if(canceler){
-                canceler.resolve();
-                $rootScope.spinnerCount -= activeRequests;
-                activeRequests = 0;
-            }
-
-            canceler = $q.defer();
+            console.log('entrou aqui', data.global);
 
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
@@ -121,9 +114,9 @@
                    var otherRequestEntity = 'event';
                    var otherRequestAction = 'findByLocation';
 
-                   numCountRequests+=2;
-                   activeRequests+=2;
-                   $rootScope.spinnerCount+=2;
+                   numCountRequests++;
+                   activeRequests++;
+                   $rootScope.spinnerCount++;
 
                    countResults['event'] = {};
 
@@ -136,33 +129,13 @@
                        endCountRequest();
                    });
 
-                   apiCount(requestEntity, sData, requestAction).success(function(rs){
-                       numCountSuccessRequests++;
-                       activeRequests--;
-                       $rootScope.spinnerCount--;
-
-                       countResults['event'].spaces = rs;
-                       endCountRequest();
-                   });
-
-                }else{
-                    // DEFAULT CASE
-                    numCountRequests++;
-                    activeRequests++;
-                    $rootScope.spinnerCount ++ ;
-                    apiCount(requestEntity, sData, requestAction).success(function(rs){
-                        numCountSuccessRequests++;
-                        activeRequests--;
-                        $rootScope.spinnerCount--;
-                        countResults[entity] = rs;
-                        endCountRequest();
-                    });
                 }
 
                 numRequests++;
                 activeRequests++;
                 $rootScope.spinnerCount++;
-                apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs){
+                apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
+                    var metadata = JSON.parse(header('API-Metadata'));
                     numSuccessRequests++;
                     activeRequests--;
                     $rootScope.spinnerCount--;
@@ -170,6 +143,14 @@
                     results[entity] = rs;
 
                     endRequest();
+
+                    if(requestEntity === 'space' && requestAction === 'findByEvents')
+                        countResults[entity].spaces = metadata.count;
+                    else
+                        countResults[entity] = metadata.count;
+                    numCountSuccessRequests++;
+                    numCountRequests++;
+                    endCountRequest();
                 });
 
             }
@@ -307,7 +288,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+                return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
             function apiCount(entity, searchData, action) {
@@ -318,7 +299,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+                return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         }
 

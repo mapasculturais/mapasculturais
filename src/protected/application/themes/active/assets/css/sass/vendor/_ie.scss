@@ -1,0 +1,23 @@
+/* =IE fixes
+-------------------------------------------------------------- */
+
+.ie .dropdown .placeholder {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ie .dropdown .placeholder:after {
+    margin-top: 1.25rem;
+}
+
+.ie #filtro-da-capa .placeholder {
+    width: 124px;
+}
+
+.ie .botao.editar:before {
+    margin-top: 1rem;
+}
+
+.ie .abas-objetos li.active:after {
+    margin-top: 1px;
+}
