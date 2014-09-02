@@ -24,6 +24,6 @@ psql -f sp-shapefile-sql/sp_subprefeitura.sql -U mapasculturais -d mapasculturai
 
 rm -rf sp-shapefile-sql
 
-phpunit tests/
+src/protected/vendor/phpunit/phpunit/phpunit tests/
 
 cd $CDIR
