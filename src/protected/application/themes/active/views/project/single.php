@@ -63,7 +63,7 @@ add_entity_properties_metadata_to_js($entity);
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--project.png" />
+                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
