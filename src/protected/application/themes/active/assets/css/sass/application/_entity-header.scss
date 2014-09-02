@@ -25,16 +25,16 @@
     position: relative;
     min-height: 9rem;
     padding-left: 10.5rem;
-}
-.content-do-header .avatar {
-    position: absolute;
-    left: 0;
-    width: 9rem;
-    height: 9rem;
-    margin: 0;
-}
-.content-do-header .avatar .botao.editar {
-    position: absolute;
-    right: $line-height-half;
-    bottom: $line-height-half;
+    .avatar {
+        position: absolute;
+        left: 0;
+        width: 9rem;
+        height: 9rem;
+        margin: 0;
+        .botao.editar {
+            position: absolute;
+            right: $line-height-half;
+            bottom: $line-height-half;
+        }
+    }
 }
