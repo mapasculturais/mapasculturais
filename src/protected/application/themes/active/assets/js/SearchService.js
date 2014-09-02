@@ -34,14 +34,7 @@
             if(!paginating)
                 $rootScope.resetPagination();
 
-            // cancel all active requests
-            if(canceler){
-                canceler.resolve();
-                $rootScope.spinnerCount -= activeRequests;
-                activeRequests = 0;
-            }
-
-            canceler = $q.defer();
+            console.log('entrou aqui', data.global);
 
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
@@ -295,7 +288,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+                return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
             }
 
             function apiCount(entity, searchData, action) {
@@ -306,7 +299,7 @@
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', timeout: canceler.promise, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+                return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
             }
         }
 
