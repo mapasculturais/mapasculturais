@@ -51,29 +51,29 @@ class SpaceMeta extends \MapasCulturais\Entity
 
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', [$args]);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:after', [$args]);
     }
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:before', [$args]);
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:after', [$args]);
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:before', [$args]);
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:after', [$args]);
     }
 
     //============================================================= //

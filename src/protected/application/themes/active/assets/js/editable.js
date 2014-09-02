@@ -31,7 +31,6 @@ jQuery(function(){
         return false;
     });
 
-
     //Máscaras de telefone
     var masks = ['(00) 00000-0000', '(00) 0000-00009'];
 
@@ -43,7 +42,33 @@ jQuery(function(){
                }
             });
         }
+    });
 
+    //Display Default Shortcuts on Editable Buttons and Focus on select2 input
+    $('.editable').on('shown', function(e, editable) {
+        editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
+        //textarea display default Ctrl+Enter and Esc shortcuts
+        switch (editable.input.type.trim()) {
+            case 'text|select':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Enter)');
+                break;
+            case 'textarea':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                break;
+            case 'select2':
+                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                setTimeout(function() {
+                    editable.container.$form.find('.select2-input')
+                        .focus()
+                        .on('keydown', function(e){
+                            if(e.which == 13 && e.ctrlKey) {
+                                editable.container.$form.find('.editable-submit').click();
+                            }
+                        });
+                }, 100);
+                break;
+        }
+        
         //Experimental Tab Index
         if(window.tabEnabled) {
             var $el = editable.$element;
@@ -66,9 +91,7 @@ jQuery(function(){
                     $el.parents().nextAll(":has(.editable):first").find(".editable:first").editable('show');
             });
         }
-
     });
-
 
     if($('.js-verified').length){
         $('.js-verified').click(function(){
@@ -272,6 +295,17 @@ MapasCulturais.Editables = {
 
     setButton : function (editableEntitySelector){
         var $submitButton = $($(editableEntitySelector).data('submit-button-selector'));
+
+        //Ctr+S:save
+        $(document.body).on('keydown', function(event){
+            if(event.ctrlKey && event.keyCode === 83){
+                event.preventDefault();
+                event.stopPropagation();
+                $submitButton.trigger('click');
+            }
+        });
+        $submitButton.html($submitButton.html()+' (Ctrl+S)');
+
         $submitButton.click(function(){
             if($submitButton.data('clicked'))
                 return false;
@@ -341,6 +375,12 @@ MapasCulturais.Editables = {
                         if($('.js-sp_distrito').length > 0      && response['sp_distrito'])         $('.js-sp_distrito').html(response['sp_distrito']);
                         if($('.js-sp_regiao').length > 0        && response['sp_regiao'])           $('.js-sp_regiao').html(response['sp_regiao']);
                         if($('.js-sp_subprefeitura').length > 0 && response['sp_subprefeitura'])    $('.js-sp_subprefeitura').html(response['sp_subprefeitura']);
+
+                        var $endereco = $('.js-editable[data-edit="endereco"]');
+                        if($endereco.length && response['endereco']){
+                            $endereco.editable('setValue', response['endereco']);
+                            $endereco.trigger('changeAddress', response['endereco']);
+                        }
 
                         MapasCulturais.Messages.success('Edições salvas.');
 

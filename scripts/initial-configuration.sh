@@ -26,3 +26,9 @@ $PWD/src/protected/application/lib/MapasCulturais/DoctrineProxies
 mkdir $PWD/src/protected/application/lib/MapasCulturais/DoctrineProxies
 sudo chown -R $USER:${WEBGROUP} $PWD/src/protected/application/lib/MapasCulturais/DoctrineProxies
 sudo chmod 770 $PWD/src/protected/application/lib/MapasCulturais/DoctrineProxies
+
+echo "Generating Doctrine ORM  Proxy Classes
+"
+cd $PWD/src/protected/tools
+
+REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies

@@ -3,9 +3,8 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 
 class Space extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword,
-        Traits\RepositoryCache;
-    
+    use Traits\RepositoryKeyword;
+
     public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
             return array();
