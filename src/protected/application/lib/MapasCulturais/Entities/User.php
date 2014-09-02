@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use Doctrine\Common\Collections\Criteria;
 
 
 /**
@@ -80,16 +81,15 @@ class User extends \MapasCulturais\Entity
     /**
      *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
     protected $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-
 
     public function __construct() {
         parent::__construct();
@@ -107,14 +107,13 @@ class User extends \MapasCulturais\Entity
     }
 
     public function getProfile(){
-        $agent = App::i()->repo('Agent')->findOneBy(array(
-            'user' => $this,
-            'isUserProfile' => true
-        ));
+
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("isUserProfile", true));
+        $agents = $this->agents->matching($criteria);
+        $agent = $agents[0];
+
         if(!$agent){
-            $agent = App::i()->repo('Agent')->findOneBy(array(
-                'user' => $this
-            ),array('id'=>'ASC'));
+            $agent = $this->agents[0];
         }
         return $agent;
     }

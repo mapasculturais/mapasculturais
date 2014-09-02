@@ -14,7 +14,7 @@ psql -f db/schema.sql -U mapasculturais -d mapasculturais_test
 psql -f db/test-data.sql -U mapasculturais -d mapasculturais_test
 
 
-tar xf db/sp-shapefile-sql.tar.xz 
+tar xf db/sp-shapefile-sql.tar.xz
 
 psql -c "DROP table IF EXISTS sp_regiao;" -U mapasculturais -d mapasculturais_test
 psql -f sp-shapefile-sql/sp_regiao.sql -U mapasculturais -d mapasculturais_test
@@ -33,7 +33,7 @@ PID_OF_PHP=$!
 cd ..
 
 echo 'running tests...'
-phpunit tests/
+src/protected/vendor/phpunit/phpunit/phpunit tests/
 
 echo "stopping php -S"
 kill $PID_OF_PHP

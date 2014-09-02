@@ -149,7 +149,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -238,10 +238,12 @@ class Agent extends \MapasCulturais\Entity
         $this->setParent($parent);
     }
 
+
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
         $this->setParent($owner);
     }
+
 
     function setUser(User $user){
         if(!$this->user || $this->user->id != $user->id){
@@ -273,6 +275,7 @@ class Agent extends \MapasCulturais\Entity
                 $ar->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+
             }
         }
     }

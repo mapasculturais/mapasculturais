@@ -140,7 +140,7 @@ add_occurrence_frequencies_to_js();
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                 <div class="avatar">
-                    <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--event.png" />
+                    <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
                 <?php endif; ?>
                 <?php if (is_editable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
@@ -153,13 +153,13 @@ add_occurrence_frequencies_to_js();
 
 
                 <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
+                <?php if (is_editable() || $entity->subTitle): ?>
+                    <h4 class="event-subtitle">
+                        <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                    </h4>
+                <?php endif; ?>
                 <div class="objeto-meta">
                     <div>
-                        <p>
-                            <?php if (is_editable() || $entity->subTitle): ?>
-                                <span class="js-editable" data-edit="subTitle" data-original-title="Sub-Título" data-emptytext="Insira um sub-título para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
-                            <?php endif; ?>
-                        </p>
                         <span class="label">Linguagens: </span>
                         <?php if (is_editable()): ?>
                             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>

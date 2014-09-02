@@ -68,7 +68,7 @@ add_angular_entity_assets($entity);
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
                     <div class="avatar">
-                        <img class="js-avatar-img" src="<?php echo $app->assetUrl ?>/img/avatar--space.png" />
+                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
             <?php endif; ?>
                 <?php if(is_editable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
@@ -97,7 +97,7 @@ add_angular_entity_assets($entity);
              ><?php if($entity->parent) echo $entity->parent->name; ?></span>
 
             <?php elseif($entity->parent): ?>
-                <span><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></span>
+                <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
             <?php endif; ?>
 
             <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>

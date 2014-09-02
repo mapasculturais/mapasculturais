@@ -31,7 +31,7 @@ $template = "<li id='video-{{id}}'>
         <?php if($videos): foreach($videos as $video): ?>
             <li id="video-<?php echo $video->id ?>">
                 <a class="js-metalist-item-display" data-videolink="<?php echo $video->value;?>" title="<?php echo $video->title;?>">
-                    <img src="<?php echo $assetURL?>/img/spinner_192.gif" alt="" class="thumbnail_med_wide"/>
+                    <img src="<?php $this->asset('img/spinner_192.gif'); ?>" alt="" class="thumbnail_med_wide"/>
                     <h1 class="title"><?php echo $video->title;?></h1>
                 </a>
                 <?php if(is_editable()): ?>

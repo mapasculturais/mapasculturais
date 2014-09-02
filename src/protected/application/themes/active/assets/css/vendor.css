@@ -399,7 +399,9 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 #camadas-de-entidades {
-  font: 0.66667 "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 #camadas-de-entidades a {
