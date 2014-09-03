@@ -304,7 +304,6 @@ MapasCulturais.Editables = {
                 $submitButton.trigger('click');
             }
         });
-        $submitButton.html($submitButton.html()+' (Ctrl+S)');
 
         $submitButton.click(function(){
             if($submitButton.data('clicked'))
