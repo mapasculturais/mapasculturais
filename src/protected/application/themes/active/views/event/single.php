@@ -88,8 +88,7 @@ add_occurrence_frequencies_to_js();
 <div class="barra-esquerda barra-lateral evento">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-        <?php if(is_editable()): ?>
+    <?php if(is_editable()): ?>
         <div class="widget">
             <h3 class="subtitulo">Projeto</h3>
             <a class="js-search js-include-editable"
@@ -110,12 +109,35 @@ add_occurrence_frequencies_to_js();
                 <?php echo $entity->project ? $entity->project->name : ''; ?>
             </a>
         </div>
-        <?php elseif($entity->project): ?>
+    <?php elseif($entity->project): ?>
         <div class="widget">
             <h3 class="subtitulo">Projeto</h3>
             <span><a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a></span>
         </div>
+    <?php endif; ?>
+    <div class="widget">
+        <h3>Linguagens</h3>
+        <?php if (is_editable()): ?>
+            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+        <?php else: ?>
+            <?php foreach ($entity->terms['linguagem'] as $i => $term): ; ?>
+                <a class="tag tag-evento" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
+            <?php endforeach; ?>
         <?php endif; ?>
+    </div>
+    <?php if (is_editable() || !empty($entity->terms['tag'])): ?>
+        <div class="widget">
+            <h3>Tags</h3>
+            <?php if (is_editable()): ?>
+                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
+            <?php else: ?>
+                <?php foreach ($entity->terms['tag'] as $i => $term): ; ?>
+                    <a class="tag tag-evento" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="col-60 main-content evento">
     <header class="main-content-header">
@@ -138,52 +160,31 @@ add_occurrence_frequencies_to_js();
             <?php if ($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-                <?php else: ?>
-                <div class="avatar">
-                    <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
-                <?php endif; ?>
-                <?php if (is_editable()): ?>
-                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
-                    <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
-                        <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-                    </div>
-                <?php endif; ?>
+                    <?php else: ?>
+                    <div class="avatar">
+                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
+                    <?php endif; ?>
+                    <?php if (is_editable()): ?>
+                        <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                        <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
+                            <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <!--.avatar-->
-
-
+                <div class="entity-type">
+                    <div class="icone icon_calendar"></div>
+                    <a href="#">Evento</a>
+                </div>
+                <!--.entity-type-->
                 <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
                 <?php if (is_editable() || $entity->subTitle): ?>
-                    <h4 class="event-subtitle">
-                        <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
-                    </h4>
-                <?php endif; ?>
-                <div class="objeto-meta">
-                    <div>
-                        <span class="label">Linguagens: </span>
-                        <?php if (is_editable()): ?>
-                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
-                        <?php else: ?>
-                            <?php foreach ($entity->terms['linguagem'] as $i => $term): if ($i) echo ': '; ?>
-                                <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    <div>
-                        <?php if (is_editable() || !empty($entity->terms['tag'])): ?>
-                            <span class="label">Tags: </span>
-                            <?php if (is_editable()): ?>
-                                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
-                            <?php else: ?>
-                                <?php foreach ($entity->terms['tag'] as $i => $term): if ($i) echo '; '; ?>
-                                    <a href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <!--.objeto-meta-->
-            </div>
+                <h4 class="event-subtitle">
+                    <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                </h4>
+            <?php endif; ?>
+        </div>
+        <!--.content-do-header-->
     </header>
     <!--.main-content-header-->
     <div id="sobre" class="aba-content">
