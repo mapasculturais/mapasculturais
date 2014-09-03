@@ -35,7 +35,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read mixed $notFound Callable to be invoked if no matching routes are found
  *
  * @property-read array $config
- * 
+ *
  * @property-read bool $isAccessControlEnabled is access control enabled?
  * @property-read bool $isWorkflowEnabled is the workflow enabled?
  *
@@ -122,7 +122,7 @@ class App extends \Slim\Slim{
     protected $_hooks = array();
     protected $_excludeHooks = array();
 
-    
+
     protected $isAccessControlEnabled = true;
     protected $isWorkflowEnabled = true;
 
@@ -186,6 +186,20 @@ class App extends \Slim\Slim{
         }
 
 
+        // =============== CACHE =============== //
+        if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
+            $this->_cache = $config['app.cache'];
+        }else{
+            $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
+        }
+
+
+
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
+
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
@@ -243,7 +257,7 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
-        $doctrine_config->setQueryCacheImpl(new \Doctrine\Common\Cache\ApcCache());
+        $doctrine_config->setQueryCacheImpl($this->_cache);
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
@@ -263,22 +277,6 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
-
-
-        // =============== CACHE =============== //
-        if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
-            $this->_cache = $config['app.cache'];
-        }else{
-            $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-        }
-
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
-
 
 
         // ============= STORAGE =============== //
@@ -521,6 +519,12 @@ class App extends \Slim\Slim{
             $this->registerController('file',           'MapasCulturais\Controllers\File');
             $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
             $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
+
+            //workflow controllers
+            $this->registerController('requestChangeOwnership', 'MapasCulturais\Controllers\Request');
+            $this->registerController('requestChildEntity',     'MapasCulturais\Controllers\Request');
+            $this->registerController('requestEventOccurrence', 'MapasCulturais\Controllers\Request');
+            $this->registerController('requestEventProject',    'MapasCulturais\Controllers\Request');
 
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
@@ -864,7 +868,7 @@ class App extends \Slim\Slim{
     }
 
     protected $_hookCache = array();
-    
+
     /**
      * Get hook listeners
      *
@@ -955,14 +959,14 @@ class App extends \Slim\Slim{
         }
     }
 
-    
+
     function _getHookCallables($name) {
         $exclude_list = array();
         $result = array();
-//        
+//
 //        if(isset($this->_hookCache[$name]))
 //            return $this->_hookCache[$name];
-        
+
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
                 $exclude_list = array_merge($callables);
@@ -978,7 +982,7 @@ class App extends \Slim\Slim{
                 }
             }
         }
-        
+
         $this->_hookCache[$name] = $result;
 
         return $result;
@@ -1066,7 +1070,7 @@ class App extends \Slim\Slim{
     public function getSiteName(){
         return $this->_config['app.siteName'];
     }
-    
+
     public function getSiteDescription(){
         return $this->_config['app.siteDescription'];
     }

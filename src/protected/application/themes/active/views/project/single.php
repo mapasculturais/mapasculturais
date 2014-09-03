@@ -92,7 +92,7 @@ add_entity_properties_metadata_to_js($entity);
              ><?php if($entity->parent) echo $entity->parent->name; ?></span>
 
             <?php elseif($entity->parent): ?>
-                <h4><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
+                <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
             <?php endif; ?>
 
             <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>

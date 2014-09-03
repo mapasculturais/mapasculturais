@@ -55,9 +55,8 @@ trait EntityGeoLocation{
      * @param \MapasCulturais\Types\GeoPoint|array $location
      */
     function setLocation($location){
-
+        $x = $y = null;
         if(!($location instanceof GeoPoint)){
-            $x = $y = null;
             if(is_array($location) && key_exists('x', $location) && key_exists('y', $location)){
                 $x = $location['x'];
                 $y = $location['y'];
@@ -84,6 +83,15 @@ trait EntityGeoLocation{
         }
 
         $this->location = $location;
+    }
+
+
+    function locationEquals($location){
+        if($this->location instanceof GeoPoint && $location instanceof GeoPoint){
+            if($this->location->latitude == $location->latitude && $this->location->longitude == $location->longitude)
+                return true;
+        }
+        return false;
     }
 
 }

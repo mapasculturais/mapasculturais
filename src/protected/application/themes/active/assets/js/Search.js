@@ -356,7 +356,7 @@
 
             $rootScope.pagination[entity]++;
             // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
-            if($rootScope.pagination[entity] > 2)
+            if($rootScope.pagination[entity] > 1)
                 $rootScope.$emit('resultPagination', $scope.data);
         };
 

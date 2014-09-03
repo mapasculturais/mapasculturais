@@ -365,10 +365,17 @@ tr th {
 }
 @font-face {
   font-family: 'aleo';
-  src: url("../fonts/aleo-bolditalic-webfont.eot");
-  src: url("../fonts/aleo-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/aleo-bolditalic-webfont.woff") format("woff"), url("../fonts/aleo-bolditalic-webfont.ttf") format("truetype"), url("../fonts/aleo-bolditalic-webfont.svg#aleobolditalic") format("svg");
-  font-weight: bold;
-  font-style: italic;
+  src: url("../fonts/aleo-regular-webfont.eot");
+  src: url("../fonts/aleo-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/aleo-regular-webfont.woff") format("woff"), url("../fonts/aleo-regular-webfont.ttf") format("truetype"), url("../fonts/aleo-regular-webfont.svg#aleoregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'aleo';
+  src: url("../fonts/aleo-light-webfont.eot");
+  src: url("../fonts/aleo-light-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/aleo-light-webfont.woff") format("woff"), url("../fonts/aleo-light-webfont.ttf") format("truetype"), url("../fonts/aleo-light-webfont.svg#aleolight") format("svg");
+  font-weight: 100;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
@@ -421,9 +428,17 @@ h4,
 h5,
 h6 {
   margin-bottom: 1.5rem;
-  font-weight: bold;
+  font-weight: normal;
   font-family: "aleo", serif;
   color: black;
+}
+h1 > a,
+h2 > a,
+h3 > a,
+h4 > a,
+h5 > a,
+h6 > a {
+  font-weight: normal;
 }
 
 h1 {
@@ -454,13 +469,6 @@ h5 {
 h6 {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-
-h1 + h2,
-h2 + h3,
-h4 + h5,
-h5 + h6 {
-  margin-top: 1.5rem;
 }
 
 /* =General classes
@@ -1186,7 +1194,6 @@ h5 + h6 {
   min-height: 9rem;
   padding-left: 10.5rem;
 }
-
 .content-do-header .avatar {
   position: absolute;
   left: 0;
@@ -1194,11 +1201,25 @@ h5 + h6 {
   height: 9rem;
   margin: 0;
 }
-
 .content-do-header .avatar .botao.editar {
   position: absolute;
   right: 0.75rem;
   bottom: 0.75rem;
+}
+.content-do-header > h2 {
+  margin-bottom: 0;
+}
+.content-do-header .event-subtitle, .content-do-header .entity-parent-title {
+  font-weight: 100;
+}
+.content-do-header .event-subtitle > a, .content-do-header .entity-parent-title > a {
+  font-weight: 100;
+}
+.content-do-header .entity-parent-title {
+  margin-bottom: 0;
+}
+.content-do-header .entity-parent-title:after {
+  content: ' »';
 }
 
 .dono {
@@ -2218,8 +2239,7 @@ nav.barra-esquerda .icone {
   min-height: 1.5rem;
   padding: 0.75rem;
   background-color: #eeeeee;
-  font-family: "aleo", serif;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: black;
 }
 
@@ -2784,7 +2804,8 @@ nav.barra-esquerda .icone {
   margin-bottom: 0.75rem;
   font-size: .70rem;
   line-height: 1.5rem;
-  font-family: 'Opens Sans', sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: #888;
@@ -3708,7 +3729,6 @@ h1 .icone {
 }
 
 .hltip-box .hltip-title {
-  font-family: "aleo", serif;
   font-size: 0.875rem;
 }
 

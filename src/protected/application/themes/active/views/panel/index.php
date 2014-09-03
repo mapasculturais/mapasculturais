@@ -69,11 +69,11 @@ $this->layout = 'panel'
         <?php foreach ($app->user->notifications as $notification): ?>
             <div class="atividade clearfix">
                 <p>
-                    <span class="small">Em <?php echo $notification->createTimestamp->format('d/m/Y - h:i') ?></span><br/>
+                    <span class="small">Em <?php echo $notification->createTimestamp->format('d/m/Y - H:i') ?></span><br/>
                     <?php echo $notification->message ?>
                 </p>
                 <?php if($notification->request): ?>
-                    <div><a class="action" href="#">aceitar</a> <a class="action" href="#">rejeitar</a></div>
+                    <div><a class="action" href="<?php echo $notification->request->approveUrl ?>">aceitar</a> <a class="action" href="<?php echo $notification->request->rejectUrl ?>">rejeitar</a></div>
                 <?php endif ?>
             </div>
         <?php endforeach; ?>

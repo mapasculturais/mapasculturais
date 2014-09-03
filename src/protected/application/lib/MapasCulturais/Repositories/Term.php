@@ -2,8 +2,7 @@
 namespace MapasCulturais\Repositories;
 
 class Term extends \MapasCulturais\Repository{
-    use \MapasCulturais\Traits\RepositoryCache;
-    
+
     /**
      * Returns an array with all terms of the given taxonomy slug as strings.
      *
