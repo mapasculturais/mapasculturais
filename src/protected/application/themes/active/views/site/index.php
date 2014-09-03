@@ -148,7 +148,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
         <ul class="abas clearfix">
             <li class="active"><a href="#event-terms">Linguagem</a></li>
         </ul>
-        <div id="event-terms" class="tags">
+        <div id="event-terms" class="tag-box">
             <?php foreach ($event_linguagens as $i => $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
             <?php endforeach; ?>
@@ -192,12 +192,12 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
             <li class="active"><a href="#agent-terms">Área de atuação</a></li>
             <li><a href="#agent-types">Tipo</a></li>
         </ul>
-        <div id="agent-terms" class="tags">
+        <div id="agent-terms" class="tag-box">
             <?php foreach ($agent_areas as $i => $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(agent:(areas:!(<?php echo $i ?>)),global:(enabled:(agent:!t),filterEntity:agent))"><?php echo $t ?></a>
             <?php endforeach; ?>
         </div>
-        <div id="agent-types" class="tags">
+        <div id="agent-types" class="tag-box">
             <?php foreach ($agent_types as $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(agent:(type:<?php echo $t->id ?>),global:(enabled:(agent:!t),filterEntity:agent))"><?php echo $t->name ?></a>
             <?php endforeach; ?>
@@ -241,12 +241,12 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
             <li class="active"><a href="#space-terms">Área de atuação</a></li>
             <li><a href="#space-types">Tipo</a></li>
         </ul>
-        <div id="space-terms" class="tags">
+        <div id="space-terms" class="tag-box">
             <?php foreach ($space_areas as $i => $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(areas:!(<?php echo $i ?>)),global:(enabled:(space:!t),filterEntity:space))"><?php echo $t ?></a>
             <?php endforeach; ?>
         </div>
-        <div id="space-types" class="tags">
+        <div id="space-types" class="tag-box">
             <?php foreach ($space_types as $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(types:!(<?php echo $t->id ?>)),global:(enabled:(space:!t),filterEntity:space))"><?php echo $t->name ?></a>
             <?php endforeach; ?>
@@ -290,7 +290,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
         <ul class="abas clearfix">
             <li class="active"><a href="#project-types">Tipo</a></li>
         </ul>
-        <div id="project-types"  class="tags">
+        <div id="project-types"  class="tag-box">
             <?php foreach ($project_types as $t): ?>
                 <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(project:(types:!(<?php echo $t->id ?>)),global:(enabled:(project:!t),filterEntity:project,viewMode:list))"><?php echo $t->name ?></a>
             <?php endforeach; ?>
