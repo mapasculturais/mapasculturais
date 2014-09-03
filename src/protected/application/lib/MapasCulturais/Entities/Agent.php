@@ -265,12 +265,9 @@ class Agent extends \MapasCulturais\Entity
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!$app->isWorkflowEnabled)
                     throw $e;
+                
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->targetEntity = $this;
-
-                $ar->requesterUser = $app->user;
-                $ar->requestedUser = $parent->user;
-
                 $ar->destinationAgent = $parent;
                 $ar->save(true);
 

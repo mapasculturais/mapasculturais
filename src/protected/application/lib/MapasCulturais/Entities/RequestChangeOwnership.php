@@ -21,28 +21,25 @@ class RequestChangeOwnership extends Request{
         else
             return null;
     }
+    
+    function getType(){
+        return $this->metadata['type'];
+    }
 
     function setDestinationAgent(\MapasCulturais\Entities\Agent $agent){
         $this->metadata['agentId'] = $agent->id;
+        $this->metadata['type'] = $agent->owner->canUser('@control') ? self::TYPE_REQUEST : self::TYPE_GIVE;
     }
 
     function _doApproveAction() {
         $entity = $this->targetEntity;
-
-        if($entity->getClassName() === 'MapasCulturais\Entities\Agent'){
-            if($entity->user->id === $this->requesterUser->id){
-                $entity->user = $this->requestedUser;
-            }else{
-                $entity->user = $this->requesterUser;
-            }
-        }else{
-            $entity->owner = $this->destinationAgent;
-        }
+        $entity->owner = $this->destinationAgent;
         $entity->save();
     }
 
     protected function canUserCreate($user) {
-        return in_array(App::i()->user->id, array($this->targetEntity->ownerUser->id, $this->destinationAgent->user->id));
+        return $this->getType() === self::TYPE_REQUEST ? 
+                $this->destinationAgent->canUser('@control', $user) : $this->targetEntity->owner->canUser('@control', $user);
     }
 
     protected function canUserApprove($user){
@@ -57,13 +54,5 @@ class RequestChangeOwnership extends Request{
             return $this->targetEntity->owner->canUser('@control', $user);
         else
             return $this->destinationAgent->canUser('@control', $user);
-    }
-
-
-    function getType(){
-        if($this->targetEntity->ownerUser->id === $this->requesterUser->id)
-            return self::TYPE_GIVE;
-        else
-            return self::TYPE_REQUEST;
     }
 }

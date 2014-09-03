@@ -68,7 +68,7 @@ return array(
         $term->save(true);
     },
 
-<<<<<<< HEAD
+
     // workflow
 
     'create authoriaztion_request schema' => function() use($app, $conn){
@@ -87,7 +87,6 @@ return array(
         $conn->executeQuery("
             CREATE TABLE request(
                 id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
-                requested_user_id integer NOT NULL,
                 requester_user_id integer NOT NULL,
                 object_type character varying(255) NOT NULL,
                 object_id integer NOT NULL,
@@ -103,20 +102,11 @@ return array(
             ALTER TABLE ONLY request
                 ADD CONSTRAINT request_pk PRIMARY KEY (id);");
 
-        echo "creating fk requested_user_fk\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY request
-                ADD CONSTRAINT requested_user_fk FOREIGN KEY (requested_user_id) REFERENCES usr(id);");
 
         echo "creating fk requester_user_fk\n";
         $conn->executeQuery("
             ALTER TABLE ONLY request
                 ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);");
-
-        echo "creating index requested_user_index\n";
-        $conn->executeQuery("
-            CREATE INDEX requested_user_index
-                ON request USING btree (requested_user_id, object_type, object_id);");
 
         echo "creating index requester_user_index\n";
         $conn->executeQuery("
@@ -168,7 +158,7 @@ return array(
                 ADD CONSTRAINT notification_request_fk FOREIGN KEY (request_id) REFERENCES request(id);");
 
         $conn->commit();
-=======
+    },
 
     'Update Addresses of Children of Parent Spaces' => function() use ($app){
         $parentSpaces = $app->em->createQuery('SELECT s FROM \MapasCulturais\Entities\Space s WHERE s.parent IS NULL')->getResult();
@@ -205,6 +195,6 @@ return array(
         //$cleanQuery = $app->em->createQuery('SELECT s FROM \MapasCulturais\Entities\Space s WHERE s.name LIKE \'% #UPDATING#%\'')->getResult();
         
         return false;
->>>>>>> master
+
     }
 );

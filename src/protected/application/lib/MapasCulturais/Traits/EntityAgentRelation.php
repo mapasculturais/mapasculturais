@@ -106,17 +106,34 @@ trait EntityAgentRelation {
 
     function getUsersWithControl(){
         $result = array($this->getOwnerUser());
-        $relations = $this->getAgentRelations(true);
+        $ids = array($result[0]->id);
+        
+        $addInResult = function($users) use($result, $ids){
+            foreach($users as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
+        };
 
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent' || !$this->isUserProfile)
-            $result = array_merge ($result, $this->owner->getUsersWithControl());
+            $addInResult($this->owner->getUsersWithControl());
+        
 
         if($this->usesNested() && $this->parent)
-            $result = array_merge ($result, $this->parent->getUsersWithControl());
-
+            $addInResult($this->parent->getUsersWithControl());
+            
+        $relations = $this->getAgentRelations(true);
+        
         foreach($relations as $relation){
-            $result[] = $relation->agent->user;
+            $u = $relation->agent->user;
+            if(!in_array($u->id, $ids)){
+                $ids[] = $u->id;
+                $result[] = $u;
+            }
         }
+        
         return $result;
     }
 

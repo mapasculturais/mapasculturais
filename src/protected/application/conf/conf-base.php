@@ -123,8 +123,8 @@ return array(
             'como-usar' => array('site',    'page', array('como-usar')),
 
             // workflow actions
-            'aprovar-mudanca-de-propriedade' => array('requestChangeOwnership', 'approve'),
-            'rejeitar-mudanca-de-propriedade' => array('requestChangeOwnership', 'reject'),
+            'aprovar-notificacao' => array('notification', 'approve'),
+            'rejeitar-notificacao' => array('notification', 'reject'),
         ),
         'controllers' => array(
             'painel'         => 'panel',

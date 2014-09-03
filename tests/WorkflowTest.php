@@ -99,17 +99,18 @@ class WorkflowTest extends MapasCulturais_TestCase{
             } catch (MapasCulturais\Exceptions\WorkflowRequest $e) {
                 $request = $e->request;
             }
-
-            $this->assertNotNull($request, "asserting that the request was created");
+            
+            $this->assertInstanceOf('MapasCulturais\Entities\RequestChangeOwnership', $request, "asserting that the request was created");
 
             $this->assertEquals ($user1->id, $entity->ownerUser->id, "Asserting that BEFORE the request is approved, de owner was NOT changed");
 
             $this->user = $user2;
 
             $this->assertFalse($entity->canUser('remove'), "Asserting that the user that will receive the $class CANNOT remove it BEFORE the request is approved");
-            $this->assertFalse($entity->canUser('remove'), "Asserting that the user that will receive the $class CANNOT modify it BEFORE the request is approved");
+            $this->assertFalse($entity->canUser('modify'), "Asserting that the user that will receive the $class CANNOT modify it BEFORE the request is approved");
 
             $this->assertPermissionGranted(function() use($request){
+                
                 $request->approve();
             }, 'Asserting that the user that was requested CAN approve the request');
 

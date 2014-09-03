@@ -521,10 +521,7 @@ class App extends \Slim\Slim{
             $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
 
             //workflow controllers
-            $this->registerController('requestChangeOwnership', 'MapasCulturais\Controllers\Request');
-            $this->registerController('requestChildEntity',     'MapasCulturais\Controllers\Request');
-            $this->registerController('requestEventOccurrence', 'MapasCulturais\Controllers\Request');
-            $this->registerController('requestEventProject',    'MapasCulturais\Controllers\Request');
+            $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');

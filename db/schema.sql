@@ -52,7 +52,6 @@ CREATE SEQUENCE request_id_seq
 
 CREATE TABLE request(
     id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
-    requested_user_id integer NOT NULL,
     requester_user_id integer NOT NULL,
     object_type character varying(255) NOT NULL,
     object_id integer NOT NULL,
@@ -66,14 +65,10 @@ CREATE TABLE request(
 ALTER TABLE ONLY request
     ADD CONSTRAINT request_pk PRIMARY KEY (id);
 
-ALTER TABLE ONLY request
-    ADD CONSTRAINT requested_user_fk FOREIGN KEY (requested_user_id) REFERENCES usr(id);
 
 ALTER TABLE ONLY request
     ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);
 
-CREATE INDEX requested_user_index
-    ON request USING btree (requested_user_id, object_type, object_id);
 
 CREATE INDEX requester_user_index
     ON request USING btree (requester_user_id, object_type, object_id);

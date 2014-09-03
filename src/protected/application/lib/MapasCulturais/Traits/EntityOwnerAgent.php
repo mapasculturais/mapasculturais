@@ -51,10 +51,6 @@ trait EntityOwnerAgent{
 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->targetEntity = $this;
-
-                $ar->requesterUser = $app->user;
-                $ar->requestedUser = $owner->getOwnerUser();
-
                 $ar->destinationAgent = $owner;
                 $ar->save(true);
 

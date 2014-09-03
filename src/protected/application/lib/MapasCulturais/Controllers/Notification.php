@@ -1,15 +1,17 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use MapasCulturais\App;
+
 /**
  * Request Controller
  *
  * By default this controller is registered with the id 'file'.
  *
- * @property-read \MapasCulturais\Entities\Request $requestedEntity The requested request entity
+ * @property-read \MapasCulturais\Entities\Notification $requestedEntity The requested request entity
  *
  */
-class Request extends EntityController {
+class Notification extends EntityController {
 
     function POST_index() {
         App::i()->pass();
@@ -37,10 +39,22 @@ class Request extends EntityController {
 
     function ALL_approve(){
         $this->requireAuthentication();
+        
+        $app = App::i();
 
-        $request = $this->requestedEntity;
+        $notification = $this->requestedEntity;
+        
+        if(!$notification || !$notification->request)
+            $app->pass();
 
+        $request = $notification->request;
+        
         $request->approve();
+        
+        
+        $app->disableAccessControl();
+        $request->delete(true);
+        $app->enableAccessControl();
 
         if($this->isAjax()){
             $this->json(true);
@@ -53,10 +67,21 @@ class Request extends EntityController {
     function ALL_reject(){
         $this->requireAuthentication();
 
-        $request = $this->requestedEntity;
+        $app = App::i();
+        
+        $notification = $this->requestedEntity;
+        
+        if(!$notification || !$notification->request)
+            $app->pass();
+
+        $request = $notification->request;
 
         $request->reject();
-
+        
+        $app->disableAccessControl();
+        $request->delete(true);
+        $app->enableAccessControl();
+        
         if($this->isAjax()){
             $this->json(true);
         }else{
