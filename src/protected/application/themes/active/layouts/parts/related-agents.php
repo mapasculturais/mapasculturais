@@ -3,13 +3,13 @@ if($this->controller->action === 'create')
     return;
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
-    <div class="bloco textright" ng-if="isEditable">
+    <div class="widget textright" ng-if="isEditable">
         <edit-box id="new-related-agent-group" position="left" title="Adicionar grupo de agentes" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
             <input type="text" ng-model="data.newGroupName" placeholder="Nome do grupo de agentes"/>
         </edit-box>
         <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">adicionar grupo de agentes</a>
     </div>
-    <div class="bloco" ng-repeat="group in groups">
+    <div class="widget" ng-repeat="group in groups">
         <h3 class="subtitulo">{{group.name}}</h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="(i, relation) in group.relations">

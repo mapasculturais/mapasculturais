@@ -275,13 +275,13 @@ add_entity_properties_metadata_to_js($entity);
 <div class="barra-lateral projeto barra-direita">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
-        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>
+        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
-        <div class="bloco">
+        <div class="widget">
             <?php if($entity->children): ?>
             <h3 class="subtitulo">Sub-projetos</h3>
             <ul class="js-slimScroll">

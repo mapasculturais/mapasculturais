@@ -90,7 +90,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         <?php if(is_editable()): ?>
-        <div class="bloco">
+        <div class="widget">
             <h3 class="subtitulo">Projeto</h3>
             <a class="js-search js-include-editable"
                 data-field-name='projectId'
@@ -111,7 +111,7 @@ add_occurrence_frequencies_to_js();
             </a>
         </div>
         <?php elseif($entity->project): ?>
-        <div class="bloco">
+        <div class="widget">
             <h3 class="subtitulo">Projeto</h3>
             <span><a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a></span>
         </div>
@@ -389,7 +389,7 @@ add_occurrence_frequencies_to_js();
 <div class="barra-lateral evento barra-direita">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
-        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
+        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
     <?php endif; ?>
     
     <!-- Related Agents BEGIN -->

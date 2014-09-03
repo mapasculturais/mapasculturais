@@ -1,9 +1,9 @@
-<div class="bloco staging-hidden">
+<div class="widget staging-hidden">
 	<h3 class="subtitulo">Compartilhamentos</h3>
 	<div class="compartilhamentos">000</div>
 </div>
 
-<div class="bloco">
+<div class="widget">
 	<h3 class="subtitulo">Compartilhar</h3>
 	<div class="fb-share-button botoes-de-compartilhar" data-href="<?php echo $entity->singleUrl; ?>" data-type="button_count"></div>
 	<div class="botoes-de-compartilhar">
@@ -25,7 +25,7 @@
 </div>
 
 <?php if (is_editable() || $entity->twitter || $entity->facebook || $entity->googleplus): ?>
-    <div class="bloco">
+    <div class="widget">
         <h3 class="subtitulo">Seguir</h3>
 
         <?php if (is_editable() || $entity->twitter): ?>

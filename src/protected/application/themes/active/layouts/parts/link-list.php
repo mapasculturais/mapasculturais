@@ -2,7 +2,7 @@
 $links = $entity->getMetaLists('links');
 
 
-$template = "<li id='link-{{id}}' data-item-id='{{id}}' class='li-dos-blocos'>
+$template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'>
                 <a class='js-metalist-item-display' href='{{value}}'>{{title}}</a>
                 <div class='botoes'>
                     <a class='editar js-open-editbox hltip'
@@ -17,7 +17,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='li-dos-blocos'>
 ?>
 
 <?php if (is_editable() || $links): ?>
-    <div class="bloco" ng-non-bindable>
+    <div class="widget" ng-non-bindable>
         <h3 class="subtitulo">Links</h3>
         <?php if(is_editable()): ?>
             <a class="adicionar js-open-editbox hltip" data-target="#editbox-links" href="#"
@@ -29,10 +29,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='li-dos-blocos'>
                title="Clique para adicionar links">
             </a>
         <?php endif; ?>
-        <ul class="js-metalist ul-dos-blocos js-slimScroll">
+        <ul class="js-metalist widget-list js-slimScroll">
             <?php if($links): foreach($links as $link): ?>
-                <li id="link-<?php echo $link->id ?>" class="<?php if(is_editable()) echo 'li-dos-blocos'; ?>" >
-                    <a class="js-metalist-item-display" href="<?php echo $link->value;?>"><?php echo $link->title;?></a>
+                <li id="link-<?php echo $link->id ?>" class="widget-list-item<?php if(is_editable()) echo ' is-editable'; ?>" >
+                    <a class="js-metalist-item-display" href="<?php echo $link->value;?>"><span><?php echo $link->title;?></span></a>
                     <?php if(is_editable()): ?>
                         <div class="botoes">
                             <a class="editar js-open-editbox hltip"

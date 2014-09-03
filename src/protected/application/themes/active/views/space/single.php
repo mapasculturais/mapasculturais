@@ -21,7 +21,7 @@ add_angular_entity_assets($entity);
 <div class="barra-esquerda barra-lateral espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <div class="bloco">
+    <div class="widget">
         <h3 class="subtitulo">Status</h3>
         <?php if(is_editable()): ?>
             <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
@@ -246,13 +246,13 @@ add_angular_entity_assets($entity);
 <div class="barra-lateral espaco barra-direita">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
-        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
+        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
-        <div class="bloco">
+        <div class="widget">
             <?php if($entity->children): ?>
             <h3 class="subtitulo">Sub-espaços</h3>
             <ul class="js-slimScroll">
