@@ -81,8 +81,6 @@
 }
 .editar:before {
     content: '\6c';
-    -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-            transform: matrix(-1, 0, 0, 1, 0, 0);
 }
 .excluir:before {
     content: '\e051';
@@ -92,8 +90,6 @@
 }
 .botao.editar:before {
     margin-right: 5px;
-    -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-            transform: matrix(-1, 0, 0, 1, 0, 0);
     line-height: 1.875rem;
 }
 .botao.adicionar:before,
