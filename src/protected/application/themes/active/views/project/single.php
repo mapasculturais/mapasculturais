@@ -37,18 +37,7 @@ add_entity_properties_metadata_to_js($entity);
 <div class="barra-esquerda barra-lateral projeto">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
-        <div class="widget">
-            <h3>Tags</h3>
-            <?php if(is_editable()): ?>
-                <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
-            <?php else: ?>
-                <?php foreach($entity->terms['tag'] as $i => $term): ?>
-                    <a class="tag tag-project" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
-                <?php endforeach; ?>
-            <?php endif;?>
-        </div>
-    <?php endif;?>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 
