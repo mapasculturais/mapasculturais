@@ -26,7 +26,7 @@ add_angular_entity_assets($entity);
         <?php if(is_editable()): ?>
             <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
         <?php else: ?>
-            <?php foreach($entity->terms['area'] as $i => $term): ;?>
+            <?php foreach($entity->terms['area'] as $i => $term): ?>
                 <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
             <?php endforeach; ?>
         <?php endif;?>
@@ -38,7 +38,7 @@ add_angular_entity_assets($entity);
             <?php if(is_editable()): ?>
                 <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
             <?php else: ?>
-                <?php foreach($entity->terms['tag'] as $i => $term): ; ?>
+                <?php foreach($entity->terms['tag'] as $i => $term): ?>
                     <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
                 <?php endforeach; ?>
             <?php endif;?>
