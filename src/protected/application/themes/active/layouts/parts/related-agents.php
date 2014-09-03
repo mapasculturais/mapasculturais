@@ -10,7 +10,7 @@ if($this->controller->action === 'create')
         <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">adicionar grupo de agentes</a>
     </div>
     <div class="widget" ng-repeat="group in groups">
-        <h3 class="subtitulo">{{group.name}}</h3>
+        <h3>{{group.name}}</h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="(i, relation) in group.relations">
                 <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">

@@ -18,7 +18,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
 
 <?php if (is_editable() || $links): ?>
     <div class="widget" ng-non-bindable>
-        <h3 class="subtitulo">Links</h3>
+        <h3>Links</h3>
         <?php if(is_editable()): ?>
             <a class="adicionar js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"

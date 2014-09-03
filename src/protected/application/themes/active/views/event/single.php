@@ -90,7 +90,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if(is_editable()): ?>
         <div class="widget">
-            <h3 class="subtitulo">Projeto</h3>
+            <h3>Projeto</h3>
             <a class="js-search js-include-editable"
                 data-field-name='projectId'
                 data-emptytext="Selecione um projeto"
@@ -111,7 +111,7 @@ add_occurrence_frequencies_to_js();
         </div>
     <?php elseif($entity->project): ?>
         <div class="widget">
-            <h3 class="subtitulo">Projeto</h3>
+            <h3>Projeto</h3>
             <a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
         </div>
     <?php endif; ?>

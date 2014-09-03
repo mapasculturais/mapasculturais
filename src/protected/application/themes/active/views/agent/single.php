@@ -22,7 +22,7 @@ add_angular_entity_assets($entity);
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
-        <h3 class="subtitulo">Área de atuação</h3>
+        <h3>Área de atuação</h3>
         <?php if(is_editable()): ?>
             <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
         <?php else: ?>
@@ -34,7 +34,7 @@ add_angular_entity_assets($entity);
     
     <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
         <div class="widget">
-            <h3 class="subtitulo">Tags</h3>
+            <h3>Tags</h3>
             <?php if(is_editable()): ?>
                 <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
             <?php else: ?>
@@ -209,7 +209,7 @@ add_angular_entity_assets($entity);
 
     <?php if(count($entity->spaces) > 0): ?>
     <div class="widget">
-        <h3 class="subtitulo">Espaços do agente</h3>
+        <h3>Espaços do agente</h3>
         <ul class="widget-list js-slimScroll">
             <?php foreach($entity->spaces as $space): ?>
             <li class="widget-list-item"><a href="<?php echo $app->createUrl('space', 'single', array('id' => $space->id)) ?>"><span><?php echo $space->name; ?></span></a></li>
@@ -219,7 +219,7 @@ add_angular_entity_assets($entity);
     <?php endif; ?>
     <!--
     <div class="widget">
-        <h3 class="subtitulo">Projetos do agente</h3>
+        <h3>Projetos do agente</h3>
         <ul>
             <li><a href="#">Projeto 1</a></li>
             <li><a href="#">Projeto 2</a></li>

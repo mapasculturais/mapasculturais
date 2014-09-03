@@ -280,7 +280,7 @@ add_entity_properties_metadata_to_js($entity);
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
             <?php if($entity->children): ?>
-            <h3 class="subtitulo">Sub-projetos</h3>
+            <h3>Sub-projetos</h3>
             <ul class="js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
                 <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>

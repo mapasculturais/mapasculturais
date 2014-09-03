@@ -22,7 +22,7 @@ add_angular_entity_assets($entity);
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
-        <h3 class="subtitulo">Status</h3>
+        <h3>Status</h3>
         <?php if(is_editable()): ?>
             <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
                 <?php if ($entity->public) : ?>
@@ -250,7 +250,7 @@ add_angular_entity_assets($entity);
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
             <?php if($entity->children): ?>
-            <h3 class="subtitulo">Sub-espaços</h3>
+            <h3>Sub-espaços</h3>
             <ul class="js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
                 <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
