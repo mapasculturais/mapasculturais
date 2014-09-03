@@ -38,6 +38,15 @@
             bottom: $line-height-half;
         }
     }
+    .entity-type {
+        .icone {
+            vertical-align: baseline;
+        }
+        a {
+            font-size: $font-size-smaller;
+            text-transform: uppercase;
+        }
+    }
     > h2 {
         margin-bottom: 0;
     }
