@@ -112,7 +112,7 @@ add_occurrence_frequencies_to_js();
     <?php elseif($entity->project): ?>
         <div class="widget">
             <h3 class="subtitulo">Projeto</h3>
-            <span><a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a></span>
+            <a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
         </div>
     <?php endif; ?>
     <div class="widget">
@@ -120,7 +120,7 @@ add_occurrence_frequencies_to_js();
         <?php if (is_editable()): ?>
             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
-            <?php foreach ($entity->terms['linguagem'] as $i => $term): ; ?>
+            <?php foreach ($entity->terms['linguagem'] as $i => $term): ?>
                 <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -131,7 +131,7 @@ add_occurrence_frequencies_to_js();
             <?php if (is_editable()): ?>
                 <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
             <?php else: ?>
-                <?php foreach ($entity->terms['tag'] as $i => $term): ; ?>
+                <?php foreach ($entity->terms['tag'] as $i => $term): ?>
                     <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
