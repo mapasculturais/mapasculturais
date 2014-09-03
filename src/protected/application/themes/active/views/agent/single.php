@@ -80,13 +80,13 @@ add_angular_entity_assets($entity);
                 <?php endif; ?>
             </div>
             <!--.avatar-->
-            <div class="objeto-meta">
-                <div>
-                    <span class="label">Tipo: </span>
-                    <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'><?php echo $entity->type->name; ?></a>
-                </div>
+            <div class="entity-type">
+                <div class="icone icon_profile"></div>
+                <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'>
+                    <?php echo $entity->type->name; ?>
+                </a>
             </div>
-            <!--.objeto-meta-->
+            <!--.entity-type-->
             <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
         </div>
     </header>
