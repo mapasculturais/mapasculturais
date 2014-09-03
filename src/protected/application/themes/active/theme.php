@@ -10,17 +10,23 @@ $app = App::i();
 // RequestAuthority
 $app->hook('workflow(RequestChangeOwnership).create', function() use($app){
     $entity_type = strtolower($this->targetEntity->entityType);
-    
+
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
+        $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> quer passar a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para o agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a>";
+    else
+        $message = "<a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a> está requisitando a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
+
     foreach($this->destinationAgent->usersWithControl as $user){
         $notification = new Notification;
-
-        if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-            $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> quer passar a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para o agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a>";
-        else
-            $message = "<a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a> está requisitando a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
-
-
         $notification->user = $user;
+        $notification->message = $message;
+        $notification->request = $this;
+        $notification->save(true);
+    }
+
+    if(!$app->user->equals($this->targetEntity->ownerUser)){
+        $notification = new Notification;
+        $notification->user = $this->targetEntity->ownerUser;
         $notification->message = $message;
         $notification->request = $this;
         $notification->save(true);
@@ -29,43 +35,57 @@ $app->hook('workflow(RequestChangeOwnership).create', function() use($app){
 
 $app->hook('workflow(RequestChangeOwnership).approve:before', function() use($app){
     $entity_type = strtolower($this->targetEntity->entityType);
-    
+
     if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
         $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> aceitou a mudança de propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a> para o agente <a href=\"{$this->destinationAgent->singleUrl}\">{$this->destinationAgent->name}</a>";
     else
         $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> cedeu a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
 
-    
+
     $users = array();
-    
+
     // o usuário que fez a requisição recebe notificação
     $users[] = $this->requesterUser;
-    
+
     // se o usuário que fez a requisição não é o dono da entidade, ele também recebe a notificação
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE && $this->requesterUser->id !== $this->targetEntity->ownerUser->id)
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE && !$this->requesterUser->equals($this->targetEntity->ownerUser->id))
         $users[] = $this->targetEntity->ownerUser;
-    
+
+    // se o usuário que está aprovando a requisição não é o dono do agente de destino, notifica o dono do agente de destino
+    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE && !$this->requesterUser->equals($this->targetEntity->ownerUser->id))
+        $users[] = $this->destinationAgent->ownerUser;
+
     // se o usuário que fez a requisição não é o dono da entidade, ele também recebe a notificação
-    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST && $this->destinationAgent->user->id !== $app->user->id)
+    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST && !$this->destinationAgent->user->equals($app->user->id))
         $users[] = $this->destinationAgent->user;
-    
-    
-    
+
+    // se o usuário que está aprovando a requisição não é o dono da entidade, notifica o dono da entidade
+    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST && !$this->targetEntity->ownerUser->equals($app->user->id))
+        $users[] = $this->targetEntity->user;
+
+    $notified_user_ids = array();
+
     foreach($users as $u){
+        // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
+        if(in_array($u->id, $notified_user_ids))
+                continue;
+
+        $notified_user_ids[] = $u->id;
+
         $notification = new Notification;
         $notification->message = $message;
         $notification->user = $u;
         $notification->save(true);
     }
-    
+
 });
 
 
 $app->hook('workflow(RequestChangeOwnership).reject:before', function() use($app){
     $notification = new Notification;
-    
+
     $entity_type = strtolower($this->targetEntity->entityType);
-    
+
     if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
         $message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> rejeitou a propriedade do {$entity_type} <a href=\"{$this->targetEntity->singleUrl}\">{$this->targetEntity->name}</a>";
     else
@@ -74,9 +94,9 @@ $app->hook('workflow(RequestChangeOwnership).reject:before', function() use($app
     $notification->user = $this->requesterUser;
     $notification->message = $message;
     $notification->save(true);
-    
-    
-    if($app->user->id !== $this->targetEntity->ownerUser->id && $this->requesterUser->id !== $this->targetEntity->ownerUser->id){
+
+
+    if($app->user->id !== $this->targetEntity->ownerUser->id && !$this->requesterUser->equals($this->targetEntity->ownerUser->id)){
         // if the user that approve the request is not the onwer user of the entity, notify the owner
         $notification2 = new Notification;
         $notification2->message = $message;

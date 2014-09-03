@@ -51,8 +51,8 @@
                 </ul>
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
-                    <?php if ($app->auth->isUserAuthenticated()): ?>
-                        <li class="notificacoes staging-hidden">
+                    <?php if ($app->auth->isUserAuthenticated() && $app->user->notifications): ?>
+                        <li class="notificacoes">
                             <a href="#">
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>
@@ -65,48 +65,29 @@
                                         <a href="#" class="hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
                                     </div>
                                     <ul>
+                                        <?php foreach($app->user->notifications as $notification): ?>
                                         <li>
                                             <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
+                                                <?php echo $notification->message ?>.<br />
+                                                <span class="small">Há <?php
+                                                    $diff = $notification->createTimestamp->diff(new DateTime());
+                                                    if($diff->y)
+                                                        echo $diff->y . ($diff->y > 1 ? ' anos' : ' ano');
+                                                    else if($diff->m)
+                                                        echo $diff->m . ($diff->m > 1 ? ' meses' : ' mês');
+                                                    else if($diff->d)
+                                                        echo $diff->d . ($diff->d > 1 ? ' dias' : ' dia');
+                                                    else if($diff->h)
+                                                        echo $diff->h . ($diff->h > 1 ? ' horas' : ' hora');
+                                                    else if($diff->i)
+                                                        echo $diff->i . ($diff->i > 1 ? ' minutos' : ' minuto');
+                                                    else
+                                                        echo $diff->s . ($diff->s > 1 ? ' segundos' : ' segundo');
+
+                                                ?></span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano quer adicionar um evento em seu espaço.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao lida clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
+                                        <?php endforeach; ?>
                                     </ul>
                                     <a href="#">
                                         Ver todas atividades

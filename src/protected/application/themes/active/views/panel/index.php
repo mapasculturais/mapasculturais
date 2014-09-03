@@ -50,7 +50,8 @@ $this->layout = 'panel'
         </div>
 
     </section>
-    <section id="atividades" class="staging-hidden">
+    <?php if($app->user->notifications): ?>
+    <section id="atividades">
         <header class="clearfix">
             <h2 class="alignleft">Atividades</h2>
             <div id="status-das-atividades" class="dropdown alignright">
@@ -64,8 +65,6 @@ $this->layout = 'panel'
             </div>
         </header>
 
-        <?php echo count($app->user->notifications); ?>
-
         <?php foreach ($app->user->notifications as $notification): ?>
             <div class="atividade clearfix">
                 <p>
@@ -74,10 +73,13 @@ $this->layout = 'panel'
                 </p>
                 <?php if ($notification->request): ?>
                     <div><a class="action" href="<?php echo $notification->approveUrl ?>">aceitar</a> <a class="action" href="<?php echo $notification->rejectUrl ?>">rejeitar</a></div>
+                <?php else: ?>
+                    <div><a class="action" href="<?php echo $notification->deleteUrl ?>">ok</a></div>
                 <?php endif ?>
             </div>
         <?php endforeach; ?>
     </section>
+    <?php endif; ?>
 </div>
 <div class="ficha barra-direita">
 
