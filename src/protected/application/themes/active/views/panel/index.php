@@ -72,7 +72,10 @@ $this->layout = 'panel'
                     <?php echo $notification->message ?>
                 </p>
                 <?php if ($notification->request): ?>
-                    <div><a class="action" href="<?php echo $notification->approveUrl ?>">aceitar</a> <a class="action" href="<?php echo $notification->rejectUrl ?>">rejeitar</a></div>
+                    <div>
+                        <?php if($notification->request->canUser('approve')): ?><a class="action" href="<?php echo $notification->approveUrl ?>">aceitar</a><?php endif; ?>
+                        <?php if($notification->request->canUser('reject')): ?><a class="action" href="<?php echo $notification->rejectUrl ?>">rejeitar</a><?php endif; ?>
+                    </div>
                 <?php else: ?>
                     <div><a class="action" href="<?php echo $notification->deleteUrl ?>">ok</a></div>
                 <?php endif ?>

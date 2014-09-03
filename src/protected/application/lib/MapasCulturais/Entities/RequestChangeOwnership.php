@@ -21,7 +21,7 @@ class RequestChangeOwnership extends Request{
         else
             return null;
     }
-    
+
     function getType(){
         return $this->metadata['type'];
     }
@@ -38,7 +38,7 @@ class RequestChangeOwnership extends Request{
     }
 
     protected function canUserCreate($user) {
-        return $this->getType() === self::TYPE_REQUEST ? 
+        return $this->getType() === self::TYPE_REQUEST ?
                 $this->destinationAgent->canUser('@control', $user) : $this->targetEntity->owner->canUser('@control', $user);
     }
 
@@ -53,6 +53,6 @@ class RequestChangeOwnership extends Request{
         if($this->getType() === self::TYPE_REQUEST)
             return $this->targetEntity->owner->canUser('@control', $user);
         else
-            return $this->destinationAgent->canUser('@control', $user);
+            return $this->destinationAgent->canUser('@control', $user) || $this->targetEntity->ownerUser->canUser('@control');
     }
 }
