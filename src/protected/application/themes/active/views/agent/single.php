@@ -21,7 +21,7 @@ add_angular_entity_assets($entity);
 <div class="barra-esquerda barra-lateral agente">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <div class="bloco">
+    <div class="widget">
         <h3 class="subtitulo">Área de atuação</h3>
         <?php if(is_editable()): ?>
             <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
@@ -33,7 +33,7 @@ add_angular_entity_assets($entity);
     </div>
     
     <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
-        <div class="bloco">
+        <div class="widget">
             <h3 class="subtitulo">Tags</h3>
             <?php if(is_editable()): ?>
                 <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
@@ -80,7 +80,6 @@ add_angular_entity_assets($entity);
                 <?php endif; ?>
             </div>
             <!--.avatar-->
-            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
             <div class="objeto-meta">
                 <div>
                     <span class="label">Tipo: </span>
@@ -88,6 +87,7 @@ add_angular_entity_assets($entity);
                 </div>
             </div>
             <!--.objeto-meta-->
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
         </div>
     </header>
     <ul class="abas clearfix clear">
@@ -200,7 +200,7 @@ add_angular_entity_assets($entity);
 <div class="barra-lateral agente barra-direita">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
-        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>
+        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>
     <?php endif; ?>
     
     <!-- Related Agents BEGIN -->
@@ -208,17 +208,17 @@ add_angular_entity_assets($entity);
     <!-- Related Agents END -->
 
     <?php if(count($entity->spaces) > 0): ?>
-    <div class="bloco">
+    <div class="widget">
         <h3 class="subtitulo">Espaços do agente</h3>
-        <ul class="js-slimScroll">
+        <ul class="widget-list js-slimScroll">
             <?php foreach($entity->spaces as $space): ?>
-            <li><a href="<?php echo $app->createUrl('space', 'single', array('id' => $space->id)) ?>"><?php echo $space->name; ?></a></li>
+            <li class="widget-list-item"><a href="<?php echo $app->createUrl('space', 'single', array('id' => $space->id)) ?>"><span><?php echo $space->name; ?></span></a></li>
             <?php endforeach; ?>
         </ul>
     </div>
     <?php endif; ?>
     <!--
-    <div class="bloco">
+    <div class="widget">
         <h3 class="subtitulo">Projetos do agente</h3>
         <ul>
             <li><a href="#">Projeto 1</a></li>
