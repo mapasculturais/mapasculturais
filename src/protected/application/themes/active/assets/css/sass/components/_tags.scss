@@ -37,22 +37,22 @@
         text-transform: none;
     }
 }
-.tag-evento {
+.tag-event {
     background-color: $brand-event;
 }
-.tag-agente {
+.tag-agent {
     background-color: $brand-agent;
 }
-.tag-espaco {
+.tag-space {
     background-color: $brand-space;
 }
-.tag-projeto {
+.tag-project {
     background-color: $brand-project;
 }
-.tag-evento,
-.tag-agente,
-.tag-espaco,
-.tag-projeto {
+.tag-event,
+.tag-agent,
+.tag-space,
+.tag-project {
     color: #fff;
 }
 .tag-clear {

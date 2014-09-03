@@ -121,7 +121,7 @@ add_occurrence_frequencies_to_js();
             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
             <?php foreach ($entity->terms['linguagem'] as $i => $term): ; ?>
-                <a class="tag tag-evento" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
+                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
@@ -132,7 +132,7 @@ add_occurrence_frequencies_to_js();
                 <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag']) ?></span>
             <?php else: ?>
                 <?php foreach ($entity->terms['tag'] as $i => $term): ; ?>
-                    <a class="tag tag-evento" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
+                    <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
