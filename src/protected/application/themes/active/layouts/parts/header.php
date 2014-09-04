@@ -51,7 +51,8 @@
                 </ul>
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
-                    <?php if ($app->auth->isUserAuthenticated() && $app->user->notifications): ?>
+                    <?php if ($app->auth->isUserAuthenticated()): ?>
+                        <?php if($app->user->notifications): ?>
                         <li class="notificacoes">
                             <a href="#">
                                 <div class="icone icon_comment"></div>
@@ -97,6 +98,7 @@
                             <!--.submenu-->
                         </li>
                         <!--.notificacoes-->
+                    <?php endif; ?>
                         <li class="usuario">
                             <a href="<?php echo $app->createUrl('panel'); ?>">
                                 <div class="avatar">
