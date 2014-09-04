@@ -740,7 +740,7 @@ h6 {
   height: 144px;
 }
 
-.filtro .tag {
+.filtro .tag, .filtro .tag-selected {
   margin-bottom: 0;
 }
 
@@ -1200,11 +1200,32 @@ h6 {
   width: 9rem;
   height: 9rem;
   margin: 0;
+  overflow: hidden;
 }
 .content-do-header .avatar .botao.editar {
   position: absolute;
   right: 0.75rem;
   bottom: 0.75rem;
+}
+.content-do-header .entity-type .icone {
+  vertical-align: baseline;
+}
+.content-do-header .entity-type a {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: inherit;
+}
+.content-do-header .project-type {
+  color: #cc0033;
+}
+.content-do-header .agent-type {
+  color: #1dabc6;
+}
+.content-do-header .event-type {
+  color: #b3b921;
+}
+.content-do-header .space-type {
+  color: #e83f96;
 }
 .content-do-header > h2 {
   margin-bottom: 0;
@@ -2037,6 +2058,13 @@ h6 {
   line-height: 1.5rem;
 }
 
+.tag-box {
+  border: 1px solid black;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border-radius: 2px;
+}
+
 .main-content {
   float: left;
   width: 60%;
@@ -2155,13 +2183,13 @@ body.editable #main-section {
   transition: all linear 1s;
 }
 
-nav.barra-esquerda ul {
+nav.sidebar-left ul {
   list-style: none;
   margin: -1.5rem;
   font-size: 0.875rem;
 }
 
-nav.barra-esquerda a {
+nav.sidebar-left a {
   display: block;
   padding: 0.75rem;
   border-left: #cccccc 6px solid;
@@ -2169,19 +2197,19 @@ nav.barra-esquerda a {
   transition: all .3s;
 }
 
-nav.barra-esquerda a.active {
+nav.sidebar-left a.active {
   background: #fff;
   border-left-color: #ff9900;
 }
 
-nav.barra-esquerda a:hover {
+nav.sidebar-left a:hover {
   background: #ff9900;
   border-left-color: #ff9900;
   color: #fff;
   text-decoration: none;
 }
 
-nav.barra-esquerda .icone {
+nav.sidebar-left .icone {
   vertical-align: initial;
   margin-right: 5px;
 }
@@ -2235,56 +2263,27 @@ nav.barra-esquerda .icone {
 #header-dos-resultados {
   position: relative;
   min-height: 1.5rem;
-  padding: 0.75rem;
+  padding: 0 123px 0 0;
   background-color: #eeeeee;
   font-size: 0.75rem;
   color: black;
 }
 
 #resultados {
-  position: absolute;
-  top: .75rem;
-  left: .75rem;
-  width: 250px;
-  padding-right: 0.75rem;
-}
-
-#busca-combinada {
-  float: right;
-  margin-right: .75rem;
-  padding-right: 0.75rem;
+  display: inline-block;
+  margin: 0.75rem 0;
+  padding: 0 0.75rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   border-right: 2px solid #d3d3d3;
 }
 
 #filtros-selecionados {
-  margin-left: .75rem !important;
-  margin-right: 106px;
-  padding: 0 0.75rem;
-  border-left: 2px solid #d3d3d3;
-  border-right: 2px solid #d3d3d3;
-}
-
-#filtros-selecionados .tag {
-  margin-bottom: 0;
-}
-
-#filtros-selecionados .tag:after {
-  content: '\4d';
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  margin-top: -3px;
-  font-size: 1rem;
-  line-height: 1rem;
-  font-family: 'ElegantIcons';
-  vertical-align: middle;
-  text-transform: none;
-}
-
-#filtros-selecionados .remover-tudo {
-  color: #fff;
-  background: black;
-  padding-right: .3rem;
+  vertical-align: top;
+  margin: 0.75rem 0 0;
+  padding: 0 0.75rem;
 }
 
 #header-dos-resultados .botao-de-icone {
@@ -2302,6 +2301,14 @@ nav.barra-esquerda .icone {
 
 #ferramentas {
   float: right;
+  width: 123px;
+  margin: 0.75rem 0;
+  padding: 0 0.75rem;
+  margin-right: -123px;
+  border-left: 2px solid #d3d3d3;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #compartilhar {
@@ -2363,7 +2370,7 @@ nav.barra-esquerda .icone {
 
 /* =Barra lateral
 -------------------------------------------------------------- */
-.barra-lateral {
+.sidebar {
   float: left;
   position: relative;
   -webkit-box-sizing: border-box;
@@ -2371,76 +2378,13 @@ nav.barra-esquerda .icone {
   -moz-box-sizing: border-box;
   padding: 1.5rem;
 }
-
-.barra-esquerda {
-  width: 15%;
-}
-
-.barra-direita {
-  width: 25%;
-}
-
-.barra-lateral.evento {
-  border-top: #b3b921 12px solid;
-}
-
-.barra-lateral.evento a,
-.barra-lateral.evento .compartilhamentos {
-  color: #b3b921;
-}
-
-.barra-lateral.evento .setinha {
-  border-color: #b3b921 transparent transparent transparent;
-}
-
-.barra-lateral.agente {
-  border-top: #1dabc6 12px solid;
-}
-
-.barra-lateral.agente a,
-.barra-lateral.agente .compartilhamentos {
-  color: #1dabc6;
-}
-
-.barra-lateral.agente .setinha {
-  border-color: #1dabc6 transparent transparent transparent;
-}
-
-.barra-lateral.espaco {
-  border-top: #e83f96 12px solid;
-}
-
-.barra-lateral.espaco a,
-.barra-lateral.espaco .compartilhamentos {
-  color: #e83f96;
-}
-
-.barra-lateral.espaco .setinha {
-  border-color: #e83f96 transparent transparent transparent;
-}
-
-.barra-lateral.projeto {
-  border-top: #cc0033 12px solid;
-}
-
-.barra-lateral.projeto a,
-.barra-lateral.projeto .compartilhamentos {
-  color: #cc0033;
-}
-
-.barra-lateral.projeto .setinha {
-  border-color: #cc0033 transparent transparent transparent;
-}
-
-.barra-lateral a.botao.adicionar {
+.sidebar a.botao.adicionar {
   color: #666666;
 }
-
-.barra-lateral a.botao.adicionar:hover {
+.sidebar a.botao.adicionar:hover {
   color: black;
 }
-
-.barra-lateral .avatar {
+.sidebar .avatar {
   float: left;
   width: 3rem;
   height: 3rem;
@@ -2448,11 +2392,58 @@ nav.barra-esquerda .icone {
   -webkit-background-size: cover;
   background-size: cover;
 }
-
-.barra-lateral .setinha {
+.sidebar .setinha {
   top: 0;
   left: 50%;
   margin-left: -8px;
+}
+
+.sidebar-left {
+  width: 15%;
+}
+
+.sidebar-right {
+  width: 25%;
+}
+
+.sidebar.evento {
+  border-top: #b3b921 12px solid;
+}
+.sidebar.evento .widget-list-item > a {
+  color: #b3b921;
+}
+.sidebar.evento .setinha {
+  border-color: #b3b921 transparent transparent transparent;
+}
+
+.sidebar.agente {
+  border-top: #1dabc6 12px solid;
+}
+.sidebar.agente .widget-list-item > a {
+  color: #1dabc6;
+}
+.sidebar.agente .setinha {
+  border-color: #1dabc6 transparent transparent transparent;
+}
+
+.sidebar.espaco {
+  border-top: #e83f96 12px solid;
+}
+.sidebar.espaco .widget-list-item > a {
+  color: #e83f96;
+}
+.sidebar.espaco .setinha {
+  border-color: #e83f96 transparent transparent transparent;
+}
+
+.sidebar.projeto {
+  border-top: #cc0033 12px solid;
+}
+.sidebar.projeto .widget-list-item > a {
+  color: #cc0033;
+}
+.sidebar.projeto .setinha {
+  border-color: #cc0033 transparent transparent transparent;
 }
 
 .header-do-painel .botao.adicionar {
@@ -2513,8 +2504,8 @@ nav.barra-esquerda .icone {
   }
 }
 @media screen and (max-width: 1408px) and (min-width: 1056px) {
-  .barra-esquerda,
-  .barra-direita {
+  .sidebar-left,
+  .sidebar-right {
     width: 20%;
   }
 }
@@ -2523,22 +2514,22 @@ nav.barra-esquerda .icone {
     width: 4rem;
   }
 
-  .barra-direita.barra-lateral {
+  .sidebar-right.sidebar {
     border-top: none;
   }
 
-  .barra-direita.barra-lateral .setinha {
+  .sidebar-right.sidebar .setinha {
     display: none;
   }
 }
 @media screen and (max-width: 1054px) and (min-width: 844px) {
-  .barra-esquerda,
-  .barra-direita {
+  .sidebar-left,
+  .sidebar-right {
     width: 25%;
     float: right;
   }
 
-  .barra-esquerda {
+  .sidebar-left {
     padding-bottom: 0;
     margin-bottom: 0;
   }
@@ -2548,23 +2539,23 @@ nav.barra-esquerda .icone {
   }
 }
 @media screen and (max-width: 843px) {
-  .barra-esquerda,
-  .barra-direita,
+  .sidebar-left,
+  .sidebar-right,
   .main-content {
     clear: both;
     float: none;
     width: 100%;
   }
 
-  .barra-esquerda.barra-lateral {
+  .sidebar-left.sidebar {
     border-top: none;
   }
 
-  .barra-esquerda.barra-lateral .setinha {
+  .sidebar-left.sidebar .setinha {
     display: none;
   }
 
-  .barra-esquerda .bloco {
+  .sidebar-left .widget {
     float: right;
     margin: 0 0.75rem 1.5rem;
     border-bottom: none;
@@ -2751,54 +2742,14 @@ nav.barra-esquerda .icone {
   color: #66cc66;
 }
 
-/* botoes de editar e excluir itens das ul's da barra lateral*/
-.ul-dos-blocos li.li-dos-blocos {
-  position: relative;
-  min-height: 1.5rem;
-  padding: 0 4rem 0 3px;
-}
-
-.ul-dos-blocos li.li-dos-blocos .botoes {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-right: 3px;
-}
-
-.ul-dos-blocos li.li-dos-blocos:hover {
-  background: #e2e2e2;
-  border-radius: 2px;
-}
-
-.ul-dos-blocos li.li-dos-blocos:hover .botoes {
-  display: inline-block;
-}
-
-.ul-dos-blocos a.icone,
-.ul-dos-blocos a.editar {
-  margin-left: 5px;
-  color: #666666;
-  cursor: pointer;
-}
-
-.ul-dos-blocos a.icone:hover,
-.ul-dos-blocos a.editar:hover {
-  color: #333333;
-}
-
-.ul-dos-blocos a.icone {
-  font-size: 1.5rem;
-}
-
-.bloco {
+.widget {
   position: relative;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #fff;
   font-size: 0.875rem;
 }
-.bloco h3 {
+.widget > h3 {
   margin-bottom: 0.75rem;
   font-size: .70rem;
   line-height: 1.5rem;
@@ -2808,20 +2759,64 @@ nav.barra-esquerda .icone {
   text-transform: uppercase;
   color: #888;
 }
-
-.bloco a.adicionar {
+.widget a.adicionar {
   position: absolute;
   top: 0;
   right: 0;
   color: #999;
 }
-
-.bloco a.adicionar:hover {
+.widget a.adicionar:hover {
   color: #333333;
 }
-
-.bloco a.botao.adicionar {
+.widget a.adicionar.botao {
   position: static;
+}
+
+.widget-list {
+  margin: 0;
+}
+.widget-list .widget-list-item {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.widget-list .widget-list-item > a {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.widget-list .widget-list-item > a span {
+  white-space: nowrap;
+}
+.widget-list .is-editable {
+  padding-right: 4rem;
+  min-height: 1.5rem;
+}
+.widget-list .is-editable .botoes {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 3px;
+}
+.widget-list .is-editable:hover {
+  background: #e2e2e2;
+  border-radius: 2px;
+}
+.widget-list .is-editable:hover .botoes {
+  display: inline-block;
+}
+.widget-list a.icone,
+.widget-list a.editar {
+  margin-left: 5px;
+  color: #666666;
+  cursor: pointer;
+}
+.widget-list a.icone:hover,
+.widget-list a.editar:hover {
+  color: #333333;
+}
+.widget-list a.icone {
+  font-size: 1.5rem;
 }
 
 .search-agent {
@@ -2940,9 +2935,6 @@ nav.barra-esquerda .icone {
 
 .editar:before {
   content: '\6c';
-  -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-  -ms-transform: matrix(-1, 0, 0, 1, 0, 0);
-  transform: matrix(-1, 0, 0, 1, 0, 0);
 }
 
 .excluir:before {
@@ -2955,9 +2947,6 @@ nav.barra-esquerda .icone {
 
 .botao.editar:before {
   margin-right: 5px;
-  -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-  -ms-transform: matrix(-1, 0, 0, 1, 0, 0);
-  transform: matrix(-1, 0, 0, 1, 0, 0);
   line-height: 1.875rem;
 }
 
@@ -3621,17 +3610,10 @@ h1 .icone {
 }
 
 /*Tags*/
-.tags {
-  border: 1px solid black;
-  margin-bottom: 1.5rem;
-  padding: 0.75rem;
-  border-radius: 2px;
-}
-
-.tag {
+.tag, .tag-selected {
   display: inline-block;
-  margin-right: 3px;
-  margin-bottom: 0.75rem;
+  margin-right: .25rem;
+  margin-bottom: .25rem;
   padding: 0 0.5rem;
   background-color: #fff;
   border-radius: 2px;
@@ -3645,23 +3627,21 @@ h1 .icone {
   transition: all .3s;
   cursor: pointer;
 }
-
-.tag:hover {
+.tag:hover, .tag-selected:hover {
   color: #fff;
   background: black;
   text-decoration: none;
 }
 
-.tag.selected {
-  background-color: black;
-  color: #fff;
+.tag-selected {
   padding-right: .3rem;
 }
-
-.tag.selected:after {
+.tag-selected:after {
   content: '\4d';
+  display: inline-block;
   width: 1rem;
   height: 1rem;
+  margin-top: -3px;
   font-size: 1rem;
   line-height: 1rem;
   font-family: 'ElegantIcons';
@@ -3669,36 +3649,32 @@ h1 .icone {
   text-transform: none;
 }
 
-.tag-evento {
+.tag-event {
   background-color: #b3b921;
 }
 
-.tag-agente {
+.tag-agent {
   background-color: #1dabc6;
 }
 
-.tag-espaco {
+.tag-space {
   background-color: #e83f96;
 }
 
-.tag-projeto {
+.tag-project {
   background-color: #cc0033;
 }
 
-.tag-evento,
-.tag-agente,
-.tag-espaco,
-.tag-projeto {
-  padding-right: .3rem;
+.tag-event,
+.tag-agent,
+.tag-space,
+.tag-project {
   color: #fff;
 }
 
-.tag-evento:hover,
-.tag-agente:hover,
-.tag-espaco:hover,
-.tag-projeto:hover {
-  background-color: black;
+.tag-clear {
   color: #fff;
+  background: black;
 }
 
 /*tips*/
@@ -3853,7 +3829,7 @@ h1 .icone {
   background: url(../img/brasao.png) no-repeat center;
 }
 
-.bloco--verified:before {
+.widget--verified:before {
   width: 1rem;
   height: 1rem;
   content: '\6c';

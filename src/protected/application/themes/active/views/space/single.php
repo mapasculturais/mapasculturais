@@ -18,11 +18,11 @@ add_angular_entity_assets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="barra-esquerda barra-lateral espaco">
+<div class="sidebar-left sidebar espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <div class="bloco">
-        <h3 class="subtitulo">Status</h3>
+    <div class="widget">
+        <h3>Status</h3>
         <?php if(is_editable()): ?>
             <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
                 <?php if ($entity->public) : ?>
@@ -43,6 +43,17 @@ add_angular_entity_assets($entity);
             <?php endif; ?>
         <?php endif; ?>
     </div>
+    <div class="widget">
+        <h3>Área de atuação</h3>
+        <?php if(is_editable()): ?>
+            <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
+        <?php else: ?>
+            <?php foreach($entity->terms['area'] as $i => $term): ?>
+                <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
+            <?php endforeach; ?>
+        <?php endif;?>
+    </div>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <article class="main-content espaco">
@@ -78,7 +89,10 @@ add_angular_entity_assets($entity);
                 <?php endif; ?>
             </div>
             <!--.avatar-->
-
+            <div class="entity-type space-type">
+                <div class="icone icon_building"></div>
+                <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
+            </div>
             <?php if(is_editable() && $entity->canUser('modifyParent')): ?>
             <span  class="js-search js-include-editable"
                    data-field-name='parentId'
@@ -100,36 +114,7 @@ add_angular_entity_assets($entity);
                 <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
             <?php endif; ?>
 
-            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-            <div class="objeto-meta">
-                <div>
-                    <span class="label">Área de atuação: </span>
-                    <?php if(is_editable()): ?>
-                        <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
-                    <?php else: ?>
-                        <?php foreach($entity->terms['area'] as $i => $term): if($i) echo '; '; ?>
-                            <a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
-                        <?php endforeach; ?>
-                    <?php endif;?>
-                </div>
-                <div>
-                    <span class="label">Tipo: </span>
-                    <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
-                </div>
-                <div>
-                    <?php if(is_editable() || !empty($entity->terms['tag'])): ?>
-                        <span class="label">Tags: </span>
-                        <?php if(is_editable()): ?>
-                            <span class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
-                        <?php else: ?>
-                            <?php foreach($entity->terms['tag'] as $i => $term): if($i) echo '; ';
-                                ?><a href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[tags][]=<?php echo $term ?>"><?php echo $term ?></a><?php
-                                endforeach; ?>
-                        <?php endif;?>
-                    <?php endif;?>
-                </div>
-            </div>
-            <!--.objeto-meta-->
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>                
         </div>
     </header>
     <ul class="abas clearfix">
@@ -243,21 +228,21 @@ add_angular_entity_assets($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="barra-lateral espaco barra-direita">
+<div class="sidebar espaco sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
-        <div class="bloco">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
+        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
-        <div class="bloco">
+        <div class="widget">
             <?php if($entity->children): ?>
-            <h3 class="subtitulo">Sub-espaços</h3>
-            <ul class="js-slimScroll">
+            <h3>Sub-espaços</h3>
+            <ul class="js-slimScroll widget-list">
                 <?php foreach($entity->children as $space): ?>
-                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>

@@ -193,7 +193,7 @@ var hl;
 
 
 
-        $('.tags div').slimScroll({
+        $('.tag-box div').slimScroll({
             position: 'right',
             distance: '0px',
             color: '#000',
@@ -225,7 +225,7 @@ var hl;
                 height: '192px'
             });
 
-            $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({height: 'initial', maxHeight: 192});
+            $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({height: 'initial', maxHeight: 216});
         });
 
         $('#compartilhar a.social_share').click(function() {

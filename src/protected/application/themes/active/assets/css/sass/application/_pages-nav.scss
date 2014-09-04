@@ -1,26 +1,26 @@
-nav.barra-esquerda ul {
+nav.sidebar-left ul {
     list-style: none;
     margin: 0 -$line-height-base;
     font-size: $font-size-small;
 }
-nav.barra-esquerda a {
+nav.sidebar-left a {
     display: block;
     padding: $padding-base;
     border-left: $gray 6px solid;
     -webkit-transition: all .3s;
             transition: all .3s;
 }
-nav.barra-esquerda a.active {
+nav.sidebar-left a.active {
     background: #fff;
     border-left-color: $brand-primary;
 }
-nav.barra-esquerda a:hover {
+nav.sidebar-left a:hover {
     background: $brand-primary;
     border-left-color: $brand-primary;
     color: #fff;
     text-decoration: none;
 }
-nav.barra-esquerda .icone {
+nav.sidebar-left .icone {
     vertical-align: initial;
     margin-right: 5px;
 }

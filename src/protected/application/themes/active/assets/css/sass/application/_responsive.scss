@@ -7,8 +7,8 @@
     }
 }
 @media screen and (max-width: 1408px) and (min-width: 1056px) {
-    .barra-esquerda,
-    .barra-direita {
+    .sidebar-left,
+    .sidebar-right {
         width: 20%;
     }
 }
@@ -16,20 +16,20 @@
     .menu > li {
         width: 4rem;
     }
-    .barra-direita.barra-lateral {
+    .sidebar-right.sidebar {
         border-top: none;
     }
-    .barra-direita.barra-lateral .setinha {
+    .sidebar-right.sidebar .setinha {
         display: none;
     }
 }
 @media screen and (max-width: 1054px) and (min-width: 844px) {
-    .barra-esquerda,
-    .barra-direita {
+    .sidebar-left,
+    .sidebar-right {
         width: 25%;
         float: right;
     }
-    .barra-esquerda {
+    .sidebar-left {
         padding-bottom: 0;
         margin-bottom: 0;
     }
@@ -38,20 +38,20 @@
     }
 }
 @media screen and (max-width: 843px) {
-    .barra-esquerda,
-    .barra-direita,
+    .sidebar-left,
+    .sidebar-right,
     .main-content {
         clear: both;
         float: none;
         width: 100%;
     }
-    .barra-esquerda.barra-lateral {
+    .sidebar-left.sidebar {
         border-top: none;
     }
-    .barra-esquerda.barra-lateral .setinha {
+    .sidebar-left.sidebar .setinha {
         display: none;
     }
-    .barra-esquerda .bloco {
+    .sidebar-left .widget {
         float: right;
         margin: 0 $line-height-half $line-height-base;
         border-bottom: none;

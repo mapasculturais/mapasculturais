@@ -1,4 +1,4 @@
-<nav id="nav-do-painel" class="barra-esquerda barra-lateral painel">
+<nav id="nav-do-painel" class="sidebar-left sidebar painel">
     <ul>
         <?php $app->applyHookBoundTo($this, 'panel.menu:before') ?>
     	<li><a <?php if($this->template == 'panel/index') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel') ?>"><span class="icone icon_house"></span> Início</a></li>

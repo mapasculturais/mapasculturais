@@ -1,52 +1,24 @@
 /* header dos resultados*/
 #header-dos-resultados {
     position: relative;
-    min-height: $line-height-base;;
-    padding: $padding-base;
+    min-height: $line-height-base;
+    padding: 0 123px 0 0;
     background-color: $gray-lighter;
     font-size: $font-size-smaller;
     color: $brand-accent;
 }
 #resultados {
-    position: absolute;
-    top: .75rem;
-    left: .75rem;
-    width: 250px;
-    padding-right: $padding-base;
-}
-
-#busca-combinada {
-    float: right;
-    margin-right: .75rem;
-    padding-right: $padding-base;
+    display: inline-block;
+    margin: $padding-base 0;
+    padding: 0 $padding-base;
+    box-sizing: border-box;
     border-right: 2px solid #d3d3d3;
 }
 #filtros-selecionados {
-    margin-left: .75rem !important;
-    margin-right: 106px;
-    padding: 0 $padding-base;
-    border-left: 2px solid #d3d3d3;
-    border-right: 2px solid #d3d3d3;
-}
-#filtros-selecionados .tag {
-    margin-bottom: 0;
-}
-#filtros-selecionados .tag:after {
-    content: '\4d';
     display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    margin-top: -3px;
-    font-size: $font-size-base;
-    line-height: 1rem;
-    font-family: 'ElegantIcons';
-    vertical-align: middle;
-    text-transform: none;
-}
-#filtros-selecionados .remover-tudo {
-    color: #fff;
-    background: $brand-accent;
-    padding-right: .3rem;
+    vertical-align: top;
+    margin: $padding-base 0 0;
+    padding: 0 $padding-base;
 }
 #header-dos-resultados .botao-de-icone {
     float: right;
@@ -60,6 +32,12 @@
 }
 #ferramentas {
     float: right;
+    width: 123px;
+    margin: $padding-base 0;
+    padding: 0 $padding-base;
+    margin-right: -123px;
+    border-left: 2px solid #d3d3d3;
+    box-sizing: border-box;
 }
 #compartilhar {
     position: relative;
