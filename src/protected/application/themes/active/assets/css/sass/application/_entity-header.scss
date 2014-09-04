@@ -45,8 +45,22 @@
         a {
             font-size: $font-size-smaller;
             text-transform: uppercase;
+            color: inherit;
         }
     }
+    .project-type {
+        color: $brand-project;
+    }
+    .agent-type {
+        color: $brand-agent;
+    }
+    .event-type {
+        color: $brand-event;
+    }
+    .space-type {
+        color: $brand-space;
+    }
+
     > h2 {
         margin-bottom: 0;
     }
