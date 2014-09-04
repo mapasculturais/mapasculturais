@@ -1,7 +1,7 @@
 <?php $downloads = $entity->getFiles('downloads'); ?>
 <?php if (is_editable() || $downloads): ?>
     <div class="widget">
-        <h3 class="subtitulo <?php if(is_editable()) echo 'editando' ?>">Downloads</h3>
+        <h3 class="<?php if(is_editable()) echo 'editando' ?>">Downloads</h3>
         <?php if(is_editable()): ?>
             <a class="adicionar js-open-editbox hltip" data-target="#editbox-download-file" href="#" title="Clique para adicionar arquivo para download"></a>
             <div id="editbox-download-file" class="js-editbox mc-left" title="Adicionar Arquivo" data-submit-label="Enviar">
@@ -10,7 +10,7 @@
         <?php endif; ?>
         <ul class="widget-list js-downloads js-slimScroll">
             <?php if(is_array($downloads)): foreach($downloads as $download): ?>
-                <li id="file-<?php echo $download->id ?>" class="widget-list-item <?php if(is_editable()) echo 'is-editable' ?>">
+                <li id="file-<?php echo $download->id ?>" class="widget-list-item<?php if(is_editable()) echo ' is-editable'; ?>" >
                     <a href="<?php echo $download->url;?>"><span><?php echo $download->description ? $download->description : $download->name;?></span></a>
                     <?php if(is_editable()): ?>
                         <div class="botoes">
