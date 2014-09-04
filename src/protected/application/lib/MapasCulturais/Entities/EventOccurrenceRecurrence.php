@@ -48,7 +48,7 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\EventOccurrence
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id")
      * })

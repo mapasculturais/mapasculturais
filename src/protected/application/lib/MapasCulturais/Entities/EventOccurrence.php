@@ -56,29 +56,6 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     );
 
-    function validateFrequency($value) {
-        if ($this->flag_day_on === false) return false;
-        if (in_array($value, ['daily', 'weekly', 'monthly'])) {
-            return !is_null($this->until);
-        }
-
-        return true;
-    }
-
-    static function convert($value='', $format='Y-m-d H:i')
-    {
-        if ($value === null || $value instanceof \DateTime) {
-            return $value;
-        }
-
-        $d = \DateTime::createFromFormat($format, $value);
-        if ($d && $d->format($format) == $value) {
-            return $d;
-        } else {
-            return $value;
-        }
-    }
-
     private $flag_day_on = true;
 
     /**
@@ -99,29 +76,12 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $_startsOn;
 
-    function setStartsOn($value) {
-        $this->_startsOn = self::convert($value, 'Y-m-d');
-    }
-
-    function getStartsOn() {
-        return $this->_startsOn;
-    }
-
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_on", type="date", nullable=true)
      */
     protected $_endsOn;
-
-    function setEndsOn($value) {
-        $this->_endsOn = self::convert($value, 'Y-m-d');
-    }
-
-    function getEndsOn() {
-        return $this->_endsOn;
-    }
 
 
     /**
@@ -131,40 +91,12 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $_startsAt;
 
-    function setStartsAt($value) {
-        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
-    }
-
-    function getStartsAt() {
-        return $this->_startsAt;
-    }
-
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_at", type="datetime", nullable=true)
      */
     protected $_endsAt;
-
-    function setEndsAt($value) {
-        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
-    }
-
-    function getEndsAt() {
-        return $this->_endsAt;
-    }
-
-    function getDuration() {
-        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
-            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
-            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
-            $interval = $endsAtCopy->diff($startsAtCopy);
-            return $interval;
-        }else{
-            return null;
-        }
-    }
 
     /**
      * @var frequency
@@ -193,14 +125,6 @@ class EventOccurrence extends \MapasCulturais\Entity
      * @ORM\Column(name="until", type="date", nullable=true)
      */
     protected $_until;
-
-    function setUntil($value) {
-        $this->_until = self::convert($value, 'Y-m-d');
-    }
-
-    function getUntil() {
-        return $this->_until;
-    }
 
     /**
      * @var string
@@ -244,6 +168,90 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $spaceId;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rule", type="text", nullable=false)
+     */
+    protected $_rule;
+
+
+    function validateFrequency($value) {
+        if ($this->flag_day_on === false) return false;
+        if (in_array($value, ['daily', 'weekly', 'monthly'])) {
+            return !is_null($this->until);
+        }
+
+        return true;
+    }
+
+    static function convert($value='', $format='Y-m-d H:i')
+    {
+        if ($value === null || $value instanceof \DateTime) {
+            return $value;
+        }
+
+        $d = \DateTime::createFromFormat($format, $value);
+        if ($d && $d->format($format) == $value) {
+            return $d;
+        } else {
+            return $value;
+        }
+    }
+
+    function setStartsOn($value) {
+        $this->_startsOn = self::convert($value, 'Y-m-d');
+    }
+
+    function getStartsOn() {
+        return $this->_startsOn;
+    }
+
+    function setEndsOn($value) {
+        $this->_endsOn = self::convert($value, 'Y-m-d');
+    }
+
+    function getEndsOn() {
+        return $this->_endsOn;
+    }
+    
+
+    function setStartsAt($value) {
+        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
+    }
+
+    function getStartsAt() {
+        return $this->_startsAt;
+    }
+
+
+    function setEndsAt($value) {
+        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
+    }
+
+    function getEndsAt() {
+        return $this->_endsAt;
+    }
+
+    function getDuration() {
+        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
+            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
+            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
+            $interval = $endsAtCopy->diff($startsAtCopy);
+            return $interval;
+        }else{
+            return null;
+        }
+    }
+
+    function setUntil($value) {
+        $this->_until = self::convert($value, 'Y-m-d');
+    }
+
+    function getUntil() {
+        return $this->_until;
+    }
+    
     function getRecurrences() {
         if ($this->id) {
             return App::i()->repo('EventOccurrenceRecurrence')->findBy(['eventOccurrence'=> $this]);
@@ -260,13 +268,6 @@ class EventOccurrence extends \MapasCulturais\Entity
     function getPrice(){
         return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="rule", type="text", nullable=false)
-     */
-    protected $_rule;
 
     function setRule($value) {
         if ($value === '') {
@@ -357,8 +358,6 @@ class EventOccurrence extends \MapasCulturais\Entity
                     break;
             }
         }
-
-
     }
 
     function getRule() {
@@ -410,6 +409,22 @@ class EventOccurrence extends \MapasCulturais\Entity
             return true;
 
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+    }
+    
+    function save($flush = false) {
+        try{
+            parent::save($flush);
+            
+        }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+            
+            $request = new RequestEventOccurrence;
+            $request->targetEntity = $this->event;
+            $request->destinationSpace = $this->space;
+            $request->rule = $this->_rule;
+            $request->save(true);
+            
+            throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+        }
     }
 
     //============================================================= //

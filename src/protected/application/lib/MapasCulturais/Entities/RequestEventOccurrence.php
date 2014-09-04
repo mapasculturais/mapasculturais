@@ -9,19 +9,33 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class RequestEventOccurrence extends Request{
-    function getRequestMessage() {
-        return __METHOD__;
+    
+    function setDestinationSpace(Space $e){
+        $this->metadata['spaceId'] = $e->id;
     }
-
-    function getApproveMessage() {
-        return __METHOD__;
+    
+    function getDestinationSpace(){
+        return App::i()->repo('Space')->find($this->metadata['spaceId']);
     }
-
-    function getRejectMessage() {
-        return __METHOD__;
+    
+    function setRule($rule){
+        $this->metadata['rule'] = $rule;
     }
-
+    
+    function getRule(){
+        return json_decode($this->metadata['rule']);
+    }
+    
     function _doApproveAction() {
-
+        $occ = $this->generateOccurrence();
+        $occ->save(true);
+    }
+    
+    protected function generateOccurrence(){
+        $occ = new EventOccurrence;
+        $occ->event = $this->targetEntity;
+        $occ->space = $this->destinationSpace;
+        $occ->rule = $this->rule;
+        return $occ;
     }
 }
