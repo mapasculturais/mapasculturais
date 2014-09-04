@@ -1211,12 +1211,10 @@ h6 {
 }
 .content-do-header .event-subtitle, .content-do-header .entity-parent-title {
   font-weight: 100;
+  margin-bottom: 0;
 }
 .content-do-header .event-subtitle > a, .content-do-header .entity-parent-title > a {
   font-weight: 100;
-}
-.content-do-header .entity-parent-title {
-  margin-bottom: 0;
 }
 .content-do-header .entity-parent-title:after {
   content: ' »';

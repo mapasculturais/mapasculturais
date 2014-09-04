@@ -243,8 +243,6 @@ add_occurrence_frequencies_to_js();
             </div>
             <!--.servico-->
             <div class="servico ocorrencia clearfix">
-                <h6>Este evento ocorre em:</h6>
-
                 <?php
 
                 //Event->getOccurrencesGroupedBySpace()
