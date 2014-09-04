@@ -117,12 +117,6 @@
 }
 
 .editable:after {
-  display: inline-block;
-  -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-  -ms-transform: matrix(-1, 0, 0, 1, 0, 0);
-  transform: matrix(-1, 0, 0, 1, 0, 0);
-  width: 1rem;
-  height: 1rem;
   margin-left: 5px;
   content: '\6c';
   font-size: 1rem;
@@ -251,7 +245,7 @@ div.ficha-spcultura .editable-buttons-bottom {
   min-width: 400px;
 }
 
-.barra-lateral .select2-container {
+.sidebar .select2-container {
   max-width: 100%;
 }
 

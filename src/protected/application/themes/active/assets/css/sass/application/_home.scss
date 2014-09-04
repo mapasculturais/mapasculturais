@@ -315,3 +315,9 @@
     font-size: 1.5rem;
     line-height: $line-height-base;
 }
+.tag-box {
+    border: 1px solid $brand-accent;
+    margin-bottom: $line-height-base;
+    padding: $padding-base;
+    border-radius: $border-radius-base;
+}

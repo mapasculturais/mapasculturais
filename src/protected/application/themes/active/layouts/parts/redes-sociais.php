@@ -1,10 +1,5 @@
-<div class="bloco staging-hidden">
-	<h3 class="subtitulo">Compartilhamentos</h3>
-	<div class="compartilhamentos">000</div>
-</div>
-
-<div class="bloco">
-	<h3 class="subtitulo">Compartilhar</h3>
+<div class="widget">
+	<h3>Compartilhar</h3>
 	<div class="fb-share-button botoes-de-compartilhar" data-href="<?php echo $entity->singleUrl; ?>" data-type="button_count"></div>
 	<div class="botoes-de-compartilhar">
 		<a href="https://twitter.com/share?url=<?php echo $entity->singleUrl; ?>" class="twitter-share-button" data-lang="en">Tweet</a>
@@ -25,8 +20,8 @@
 </div>
 
 <?php if (is_editable() || $entity->twitter || $entity->facebook || $entity->googleplus): ?>
-    <div class="bloco">
-        <h3 class="subtitulo">Seguir</h3>
+    <div class="widget">
+        <h3>Seguir</h3>
 
         <?php if (is_editable() || $entity->twitter): ?>
         <a class="icone social_twitter js-editable" data-edit="twitter" data-notext="true" data-original-title="Perfil no Twitter"

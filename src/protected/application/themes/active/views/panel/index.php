@@ -84,6 +84,6 @@ $this->layout = 'panel'
     </section>
     <?php endif; ?>
 </div>
-<div class="ficha barra-direita">
+<div class="ficha sidebar-right">
 
 </div>

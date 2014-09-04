@@ -31,12 +31,36 @@
         width: 9rem;
         height: 9rem;
         margin: 0;
+        overflow: hidden;
         .botao.editar {
             position: absolute;
             right: $line-height-half;
             bottom: $line-height-half;
         }
     }
+    .entity-type {
+        .icone {
+            vertical-align: baseline;
+        }
+        a {
+            font-size: $font-size-smaller;
+            text-transform: uppercase;
+            color: inherit;
+        }
+    }
+    .project-type {
+        color: $brand-project;
+    }
+    .agent-type {
+        color: $brand-agent;
+    }
+    .event-type {
+        color: $brand-event;
+    }
+    .space-type {
+        color: $brand-space;
+    }
+
     > h2 {
         margin-bottom: 0;
     }
