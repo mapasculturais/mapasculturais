@@ -118,11 +118,21 @@ trait EntityAgentRelation {
         };
 
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent' || !$this->isUserProfile)
-            $addInResult($this->owner->getUsersWithControl());
+            foreach($this->owner->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
         
 
         if($this->usesNested() && $this->parent)
-            $addInResult($this->parent->getUsersWithControl());
+            foreach($this->parent->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
             
         $relations = $this->getAgentRelations(true);
         
