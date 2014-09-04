@@ -66,46 +66,10 @@
                                     </div>
                                     <ul>
                                         <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
+                                            <p class="notificacao clearfix">
+                                                <a href="#">Fulano</a> aprovou seu <a href="#">evento</a> no <a href="#">teatro</a>.<br />
                                                 <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano quer adicionar um evento em seu espaço.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao lida clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="notificacao clearfix">
-                                                Fulano aprovou seu evento no teatro.<br />
-                                                <span class="small">Há 00min.</span>
-                                            </a>
+                                            </p>
                                         </li>
                                     </ul>
                                     <a href="#">
