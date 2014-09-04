@@ -18,7 +18,7 @@ add_angular_entity_assets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="barra-esquerda barra-lateral espaco">
+<div class="sidebar-left sidebar espaco">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
@@ -89,7 +89,7 @@ add_angular_entity_assets($entity);
                 <?php endif; ?>
             </div>
             <!--.avatar-->
-            <div class="entity-type">
+            <div class="entity-type space-type">
                 <div class="icone icon_building"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
             </div>
@@ -228,7 +228,7 @@ add_angular_entity_assets($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="barra-lateral espaco barra-direita">
+<div class="sidebar espaco sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
@@ -240,9 +240,9 @@ add_angular_entity_assets($entity);
         <div class="widget">
             <?php if($entity->children): ?>
             <h3>Sub-espaços</h3>
-            <ul class="js-slimScroll">
+            <ul class="js-slimScroll widget-list">
                 <?php foreach($entity->children as $space): ?>
-                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>

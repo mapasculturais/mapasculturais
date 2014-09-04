@@ -1,5 +1,5 @@
 <?php $app->enqueueScript('app', 'page', '/js/page.js', array('mapasculturais')) ?>
-<nav id="nav-da-pagina" class="barra-esquerda barra-lateral">
+<nav id="nav-da-pagina" class="sidebar-left sidebar">
     <?php echo $left ?>
 </nav>
 <!--#nav-do-painel-->
@@ -8,6 +8,6 @@
 </div>
 <!--.main-content-->
 
-<div class="barra-direita barra-lateral">
+<div class="sidebar-right sidebar">
     <?php echo $right ?>
 </div>

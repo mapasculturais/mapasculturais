@@ -85,7 +85,7 @@ add_occurrence_frequencies_to_js();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<div class="barra-esquerda barra-lateral evento">
+<div class="sidebar-left sidebar evento">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if(is_editable()): ?>
@@ -161,7 +161,7 @@ add_occurrence_frequencies_to_js();
                     <?php endif; ?>
                 </div>
                 <!--.avatar-->
-                <div class="entity-type">
+                <div class="entity-type event-type">
                     <div class="icone icon_calendar"></div>
                     <a href="#">Evento</a>
                 </div>
@@ -376,7 +376,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
-<div class="barra-lateral evento barra-direita">
+<div class="sidebar evento sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>

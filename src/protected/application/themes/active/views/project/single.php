@@ -34,7 +34,7 @@ add_entity_properties_metadata_to_js($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="barra-esquerda barra-lateral projeto">
+<div class="sidebar-left sidebar projeto">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
@@ -74,7 +74,7 @@ add_entity_properties_metadata_to_js($entity);
                 <?php endif; ?>
             </div>
             <!--.avatar-->
-            <div class="entity-type">
+            <div class="entity-type project-type">
                 <div class="icone icon_document_alt"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='project' data-value='<?php echo $entity->type ?>'>
                     <?php echo $entity->type? $entity->type->name : ''; ?>
@@ -258,7 +258,7 @@ add_entity_properties_metadata_to_js($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="barra-lateral projeto barra-direita">
+<div class="sidebar projeto sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>

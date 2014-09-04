@@ -135,6 +135,6 @@ $this->layout = 'panel'
         </div>
     </section>
 </div>
-<div class="ficha barra-direita">
+<div class="ficha sidebar-right">
 
 </div>
