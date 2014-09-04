@@ -416,14 +416,17 @@ class EventOccurrence extends \MapasCulturais\Entity
             parent::save($flush);
             
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
-            
-            $request = new RequestEventOccurrence;
-            $request->targetEntity = $this->event;
-            $request->destinationSpace = $this->space;
-            $request->rule = $this->_rule;
-            $request->save(true);
-            
-            throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+            if(App::i()->isWorkflowEnabled){
+                $request = new RequestEventOccurrence;
+                $request->targetEntity = $this->event;
+                $request->destinationSpace = $this->space;
+                $request->rule = $this->_rule;
+                $request->save(true);
+
+                throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+            }else{
+                throw $e;
+            }
         }
     }
 

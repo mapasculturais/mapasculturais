@@ -779,6 +779,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->user = $user0;
         
         $event = $this->getNewEntity('Event');
+        $event->owner = $user0->profile;
         $event->save();
         
         $this->assertPermissionDenied(function() use($event, $space, $rule){
@@ -817,6 +818,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $public_space->save();
         
         $this->user = $user1;
+        
+        $event = $this->getNewEntity('Event');
+        $event->owner = $user1->profile;
+        $event->save();
+        
         
         $this->assertPermissionGranted(function() use($event, $public_space, $rule){
             $occ = new \MapasCulturais\Entities\EventOccurrence;
