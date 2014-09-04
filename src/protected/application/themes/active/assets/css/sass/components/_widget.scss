@@ -4,7 +4,7 @@
     padding-bottom: $padding-large;
     border-bottom: 1px solid #fff;
     font-size: $font-size-small;
-	h3 {
+	> h3 {
 	    margin-bottom: $line-height-half;
 	    font-size: .70rem;
 	    line-height: $line-height-base;
@@ -31,8 +31,8 @@
     margin: 0;
     .widget-list-item {
         position: relative;
-        min-height: $line-height-base;
-        >a {
+        padding-bottom: $padding-small;
+        > a {
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -44,6 +44,7 @@
     }
     .is-editable {
         padding-right: 4rem;
+        min-height: $line-height-base;
         .botoes {
             display: none;
             position: absolute;
