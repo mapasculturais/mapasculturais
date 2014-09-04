@@ -9,16 +9,9 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class RequestChildEntity extends Request{
-    function getRequestMessage() {
-        return __METHOD__;
-    }
-
-    function getApproveMessage() {
-        return __METHOD__;
-    }
-
-    function getRejectMessage() {
-        return __METHOD__;
+    
+    function getRequestDescription() {
+        return App::i()->txt('Request for create a child ' . strtolower($this->targetEntity->getEntityType()));
     }
 
     function _doApproveAction() {

@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Exceptions;
 
+/**
+ * @property-read MapasCulturais\Entities\Request $request The request that throw this exception
+ */
 class WorkflowRequest extends \Exception{
     protected $request = null;
     
@@ -9,7 +12,7 @@ class WorkflowRequest extends \Exception{
         parent::__construct($request->getRequestMessage());
     }
     public function __get($name){
-        if($name = 'request')
+        if($name == 'request')
                 return $this->request;
     }
 }

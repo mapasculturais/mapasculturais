@@ -94,21 +94,29 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     }
     
     protected function canUserCreate($user){
+        $app = \MapasCulturais\App::i();
+        
+        $agent_control = !$app->isWorkflowEnabled || $this->agent->canUser('@control', $user);
+        
         if($this->hasControl)
-            return $this->owner->canUser('createAgentRelationWithControl');
+            return $this->owner->canUser('createAgentRelationWithControl', $user) && $agent_control;
         else
-            return $this->owner->canUser('createAgentRelation');
+            return $this->owner->canUser('createAgentRelation', $user) && $agent_control;
     }
 
     protected function canUserRemove($user){
+        $app = \MapasCulturais\App::i();
+        
+        $agent_control = $app->isWorkflowEnabled && $this->agent->canUser('@control', $user);
+        
         if($user->id == $this->agent->getOwnerUser()->id)
             return true;
         
         else if($this->hasControl)
-            return $this->owner->canUser('removeAgentRelationWithControl', $user);
+            return $this->owner->canUser('removeAgentRelationWithControl', $user) || $agent_control;
         
         else
-            return $this->owner->canUser('removeAgentRelation', $user);
+            return $this->owner->canUser('removeAgentRelation', $user) || $agent_control;
     }
 
     protected function canUserChangeControl($user){
@@ -120,6 +128,17 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
     public function _setTarget(\MapasCulturais\Entity $target){
         $this->objectId = $target->id;
+    }
+    
+    function save($flush = false) {
+        try{
+            parent::save($flush);
+        }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+           if(!\MapasCulturais\App::i()->isWorkflowEnabled)
+               throw $e;
+           
+           
+        }
     }
 
 }

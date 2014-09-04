@@ -119,7 +119,9 @@ abstract class Request extends \MapasCulturais\Entity{
     function getTargetEntity(){
         return App::i()->repo($this->objectType)->find($this->objectId);
     }
-
+    
+    abstract function getRequestDescription();
+    
     protected function getMetadata(){
         return unserialize($this->_metadata);
     }

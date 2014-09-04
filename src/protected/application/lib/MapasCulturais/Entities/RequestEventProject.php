@@ -9,16 +9,9 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class RequestEventProject extends Request{
-    function getRequestMessage() {
-        return __METHOD__;
-    }
-
-    function getApproveMessage() {
-        return __METHOD__;
-    }
-
-    function getRejectMessage() {
-        return __METHOD__;
+    
+    function getRequestDescription() {
+        return App::i()->txt('Request for associate the event to a project');
     }
 
     function _doApproveAction() {

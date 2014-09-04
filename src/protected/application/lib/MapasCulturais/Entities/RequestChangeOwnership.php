@@ -14,7 +14,10 @@ class RequestChangeOwnership extends Request{
     const TYPE_GIVE = 'give';
     const TYPE_REQUEST = 'request';
 
-
+    function getRequestDescription() {
+        return App::i()->txt('Request for change the ownership of the ' . strtolower($this->targetEntity->getEntityType()));
+    }
+    
     function getDestinationAgent(){
         if(isset($this->metadata['agentId']))
             return App::i()->repo('Agent')->find($this->metadata['agentId']);

@@ -10,6 +10,10 @@ use MapasCulturais\App;
  */
 class RequestEventOccurrence extends Request{
     
+    function getRequestDescription() {
+        return App::i()->txt('Request for create an occurrence of a event in a space');
+    }
+    
     function setDestinationSpace(Space $e){
         $this->metadata['spaceId'] = $e->id;
     }
