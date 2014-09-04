@@ -1,73 +1,69 @@
 /* =Barra lateral
 -------------------------------------------------------------- */
-.barra-lateral {
+.sidebar {
     float: left;
     position: relative;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: $padding-large;
+    a.botao.adicionar {
+        color: $gray-dark;
+    }
+    a.botao.adicionar:hover {
+        color: $brand-accent;
+    }
+    .avatar {
+        float: left;
+        width: 3rem;
+        height: 3rem;
+        margin-right: .75rem;
+        background-size: cover;
+    }
+    .setinha {
+        top: 0;
+        left: 50%;
+        margin-left: -8px;
+    }
 }
-.barra-esquerda {
+.sidebar-left {
     width: 15%;
 }
-.barra-direita {
+.sidebar-right {
     width: 25%;
 }
-.barra-lateral.evento {
+.sidebar.evento {
     border-top: $brand-event 12px solid;
+    .widget-list-item > a {
+        color: $brand-event;
+    }
+    .setinha {
+        border-color: $brand-event transparent transparent transparent;
+    }
 }
-.barra-lateral.evento a,
-.barra-lateral.evento .compartilhamentos {
-    color: $brand-event;
-}
-.barra-lateral.evento .setinha {
-    border-color: $brand-event transparent transparent transparent;
-}
-.barra-lateral.agente {
+.sidebar.agente {
     border-top: $brand-agent 12px solid;
+    .widget-list-item > a {
+        color: $brand-agent;
+    }
+    .setinha {
+        border-color: $brand-agent transparent transparent transparent;
+    }
 }
-.barra-lateral.agente a,
-.barra-lateral.agente .compartilhamentos {
-    color: $brand-agent;
-}
-.barra-lateral.agente .setinha {
-    border-color: $brand-agent transparent transparent transparent;
-}
-.barra-lateral.espaco {
+.sidebar.espaco {
     border-top: $brand-space 12px solid;
+    .widget-list-item > a {
+        color: $brand-space;
+    }
+    .setinha {
+        border-color: $brand-space transparent transparent transparent;
+    }
 }
-.barra-lateral.espaco a,
-.barra-lateral.espaco .compartilhamentos {
-    color: $brand-space;
-}
-.barra-lateral.espaco .setinha {
-    border-color: $brand-space transparent transparent transparent;
-}
-.barra-lateral.projeto {
+.sidebar.projeto {
     border-top: $brand-project 12px solid;
-}
-.barra-lateral.projeto a,
-.barra-lateral.projeto .compartilhamentos {
-    color: $brand-project;
-}
-.barra-lateral.projeto .setinha {
-    border-color: $brand-project transparent transparent transparent;
-}
-.barra-lateral a.botao.adicionar {
-    color: $gray-dark;
-}
-.barra-lateral a.botao.adicionar:hover {
-    color: $brand-accent;
-}
-.barra-lateral .avatar {
-    float: left;
-    width: 3rem;
-    height: 3rem;
-    margin-right: .75rem;
-    background-size: cover;
-}
-.barra-lateral .setinha {
-    top: 0;
-    left: 50%;
-    margin-left: -8px;
+    .widget-list-item > a {
+        color: $brand-project;
+    }
+    .setinha {
+        border-color: $brand-project transparent transparent transparent;
+    }
 }
