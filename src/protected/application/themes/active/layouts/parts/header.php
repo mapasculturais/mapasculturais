@@ -68,7 +68,7 @@
                                     <ul>
                                         <?php foreach($app->user->notifications as $notification): ?>
                                         <li>
-                                            <a href="#" class="notificacao clearfix">
+                                            <p class="notificacao clearfix">
                                                 <?php echo $notification->message ?>.<br />
                                                 <span class="small">Há <?php
                                                     $diff = $notification->createTimestamp->diff(new DateTime());
@@ -86,7 +86,7 @@
                                                         echo $diff->s . ($diff->s > 1 ? ' segundos' : ' segundo');
 
                                                 ?></span>
-                                            </a>
+                                            </p>
                                         </li>
                                         <?php endforeach; ?>
                                     </ul>

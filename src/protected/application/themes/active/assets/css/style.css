@@ -1332,11 +1332,9 @@ h6 {
   border-top: 6px solid black;
   background: #fff;
 }
-
 #main-header h1 {
   margin-bottom: 0;
 }
-
 #main-header h1 img {
   display: block;
 }
@@ -1345,7 +1343,6 @@ h6 {
   float: left;
   padding: 0.375rem 1.5rem;
 }
-
 #logo-spcultura img {
   width: 138px;
 }
@@ -1357,7 +1354,6 @@ h6 {
 #logo-smc {
   clear: both;
 }
-
 #logo-smc img {
   width: 90px;
   margin: 0 auto;
@@ -1370,22 +1366,15 @@ h6 {
   font-size: .70rem;
   text-transform: uppercase;
 }
-
 #menu-secundario li {
   display: inline-block;
   margin-left: 10px;
 }
-
 #menu-secundario li:first-child {
   margin-left: 0;
 }
-
 #menu-secundario li a {
   font-weight: normal;
-}
-
-#main-nav a:hover {
-  text-decoration: none;
 }
 
 .menu {
@@ -1394,41 +1383,33 @@ h6 {
   margin: -6px 0 0;
   border-left: 1px solid black;
 }
-
-.menu li {
-  position: relative;
-  float: left;
-  list-style-type: none;
-}
-
-.menu li:hover .submenu {
-  display: block;
-}
-
-.menu a {
-  display: block;
-  vertical-align: middle;
-}
-
 .menu > li {
+  position: relative;
+  list-style-type: none;
+  float: left;
   width: 5rem;
   padding: 0.75rem;
   border-top: 6px solid transparent;
   box-shadow: 1px 0 0 0 #eeeeee inset;
   -webkit-box-shadow: 1px 0 0 0 #eeeeee inset;
 }
-
+.menu > li:hover .submenu {
+  display: block;
+}
 .menu > li:first-child {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
-
 .menu > li > a {
+  display: block;
+  vertical-align: middle;
   font-size: 0.75rem;
   line-height: 1.25rem;
   text-align: center;
 }
-
+.menu > li > a:hover {
+  text-decoration: none;
+}
 .menu > li div.icone {
   width: 1.5rem;
   height: 1.5rem;
@@ -1436,35 +1417,6 @@ h6 {
   font-size: 1rem;
   line-height: 1.5rem;
   border-radius: 2px;
-}
-
-.submenu {
-  display: none;
-  position: absolute;
-  top: 70px;
-  margin: 0;
-  padding: 0.75rem;
-  list-style: none;
-  font-size: .8rem;
-  line-height: 1rem;
-  background: #e2e2e2;
-  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 2px;
-}
-
-.submenu li {
-  float: none;
-  line-height: 1.5rem;
-}
-
-.submenu li.row {
-  margin: .5rem;
-  border-top: 1px solid #fff;
-}
-
-.submenu a {
-  font-weight: normal;
 }
 
 /* Abas dos objetos */
@@ -1563,16 +1515,39 @@ h6 {
   border-right: 1px solid black;
 }
 
-.menu .entrar:hover {
+.entrar:hover {
   border-top: 6px solid #ff9900;
 }
-
-.menu .entrar:hover a {
+.entrar:hover:hover > a {
   color: #ff9900;
 }
 
-.menu .usuario:hover,
-.menu .notificacoes:hover {
+.submenu {
+  display: none;
+  position: absolute;
+  top: 70px;
+  margin: 0;
+  padding: 0.75rem;
+  list-style: none;
+  font-size: .8rem;
+  line-height: 1rem;
+  background: #e2e2e2;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+.submenu li {
+  float: none;
+  position: relative;
+  line-height: 1.5rem;
+}
+.submenu li.row {
+  margin: .5rem;
+  border-top: 1px solid #fff;
+}
+
+.usuario:hover,
+.notificacoes:hover {
   border-top: 6px solid #ff9900;
 }
 
@@ -1582,55 +1557,50 @@ h6 {
   height: 3rem;
   margin: 0 auto;
 }
-
 .usuario .setinha {
   left: 50%;
   top: -16px;
   margin-left: -8px;
   border-color: transparent transparent #ff9900 transparent;
 }
-
 .usuario .submenu {
   left: -2.5rem;
   width: 10rem;
   background: #ff9900;
 }
-
 .usuario .submenu li {
   position: relative;
   padding-right: 2rem;
 }
-
 .usuario .submenu a {
+  display: block;
+  vertical-align: middle;
   color: black;
   padding: 0.5rem;
+  font-weight: normal;
 }
-
 .usuario .submenu a:hover {
   color: #fff;
+  text-decoration: none;
 }
-
 .usuario .submenu .adicionar {
   position: absolute;
   right: 0;
   top: 0;
 }
 
+.notificacoes:hover > a {
+  color: #ff9900;
+}
 .notificacoes .submenu {
   left: -110px;
   width: 300px;
   background: #e2e2e2;
 }
-
-.notificacoes .slimScrollDiv {
+.notificacoes .submenu .slimScrollDiv {
   margin-bottom: 0.75rem;
 }
-
-.notificacoes:hover > a {
-  color: #ff9900;
-}
-
-.notificacoes .icon_check_alt {
+.notificacoes .submenu .icon_check_alt {
   float: right;
   display: inline-block;
   width: 1.25rem;
@@ -1640,34 +1610,28 @@ h6 {
   vertical-align: middle;
   color: #999;
 }
-
-#main-nav .notificacoes a.icon_check_alt:hover {
+.notificacoes .submenu .icon_check_alt:hover {
   color: #ff9900;
 }
-
-.notificacoes .setinha {
+.notificacoes .submenu .setinha {
   left: 142px;
   top: -28px;
   border-color: transparent transparent #e2e2e2 transparent;
 }
-
 .notificacoes .submenu ul {
   overflow: hidden;
   width: 100%;
   height: 316px;
   margin: 0 1rem 0 0;
 }
-
-.notificacoes .submenu a.notificacao {
+.notificacoes .submenu .notificacao {
   margin-bottom: 0.75rem;
   padding: 0.5rem;
   background: #f8f8f8;
   border-left: 5px solid #999;
   border-radius: 0 2px 2px 0;
 }
-
-.notificacoes .submenu a.notificacao:hover,
-.notificacoes .submenu a.notificacao.lida {
+.notificacoes .submenu .notificacao:hover, .notificacoes .submenu .notificacao.lida {
   border-left: 5px solid #ff9900;
   background: #fff;
 }
