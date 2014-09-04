@@ -46,7 +46,7 @@ add_entity_properties_metadata_to_js($entity);
         <div
             <?php if($header = $entity->getFile('header')): ?>
                  style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-                 <?php else: ?>
+                 <?php elseif(is_editable()): ?>
                  class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>
         >
