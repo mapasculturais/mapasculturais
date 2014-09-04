@@ -38,4 +38,13 @@ class RequestEventOccurrence extends Request{
         $occ->rule = $this->rule;
         return $occ;
     }
+    
+    
+    protected function canUserApprove($user){
+        return $this->getDestinationSpace()->canUser('@control', $user);
+    }
+    
+    protected function canUserReject($user){
+        return $this->getDestinationSpace()->canUser('@control', $user);
+    }
 }
