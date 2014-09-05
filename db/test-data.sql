@@ -74,44 +74,6 @@ SELECT pg_catalog.setval('agent_relation_id_seq', 1, true);
 
 
 --
--- Data for Name: authority_request; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY authority_request (id, owner_type, owner_id, object_type, object_id, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Name: authority_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('authority_request_id_seq', 1, true);
-
-
---
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY comment (id, parent_id, agent_id, object_type, object_id, content, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY contract (id, object_id, object_type, agent_id, from_date, to_date, amount, is_verified) FROM stdin;
-\.
-
-
---
--- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('contract_id_seq', 1, true);
-
-
---
 -- Data for Name: db_update; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
@@ -280,13 +242,6 @@ COPY metalist (id, object_type, object_id, grp, title, description, value, creat
 --
 
 SELECT pg_catalog.setval('metalist_id_seq', 1, true);
-
-
---
--- Name: occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('occurrence_id_seq', 100000, true);
 
 
 --

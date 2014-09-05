@@ -76,18 +76,11 @@ ALTER TABLE ONLY request
 CREATE INDEX requester_user_index
     ON request USING btree (requester_user_id, origin_type, origin_id);
 
-CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid)
+CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid);
 
-
-CREATE SEQUENCE notification_id_seq
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
 
 CREATE TABLE notification(
-                id integer DEFAULT nextval('notification_id_seq'::regclass) NOT NULL,
+                id integer NOT NULL,
                 user_id integer NOT NULL,
                 request_id integer DEFAULT NULL,
                 message text NOT NULL,
@@ -95,6 +88,25 @@ CREATE TABLE notification(
                 action_timestamp timestamp without time zone DEFAULT NULL,
                 status smallint NOT NULL
             );
+
+
+--
+-- Name: space_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notification_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
 
 ALTER TABLE ONLY notification
                 ADD CONSTRAINT notification_pk PRIMARY KEY (id);
@@ -601,14 +613,8 @@ ALTER TABLE ONLY agent_relation ALTER COLUMN id SET DEFAULT nextval('agent_relat
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authority_request ALTER COLUMN id SET DEFAULT nextval('authority_request_id_seq'::regclass);
+ALTER TABLE ONLY notification ALTER COLUMN id SET DEFAULT nextval('notification_id_seq'::regclass);
 
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY contract ALTER COLUMN id SET DEFAULT nextval('contract_id_seq'::regclass);
 
 
 --
@@ -675,14 +681,6 @@ ALTER TABLE ONLY agent
 
 ALTER TABLE ONLY agent_relation
     ADD CONSTRAINT agent_relation_pkey PRIMARY KEY (id);
-
-
---
--- Name: authority_request_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY authority_request
-    ADD CONSTRAINT authority_request_pk PRIMARY KEY (id);
 
 
 --
@@ -834,13 +832,6 @@ ALTER TABLE ONLY usr
 --
 
 CREATE INDEX agent_relation_all ON agent_relation USING btree (agent_id, object_type, object_id);
-
-
---
--- Name: authority_request_idx; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX authority_request_idx ON authority_request USING btree (object_type, object_id);
 
 
 --

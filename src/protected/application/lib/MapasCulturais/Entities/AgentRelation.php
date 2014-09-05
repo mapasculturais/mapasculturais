@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  *
  * @property-read int $id The Id of the relation.
+ * @property string $group Agent relation group name.
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  *
@@ -137,7 +138,12 @@ abstract class AgentRelation extends \MapasCulturais\Entity
            if(!\MapasCulturais\App::i()->isWorkflowEnabled)
                throw $e;
            
+           $request = new RequestAgentRelation;
+           $request->agentRelation = $this;
+           $request->save(true);
            
+           throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+       
         }
     }
 
