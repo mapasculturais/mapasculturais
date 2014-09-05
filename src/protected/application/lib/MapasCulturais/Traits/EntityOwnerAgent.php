@@ -50,8 +50,8 @@ trait EntityOwnerAgent{
                     throw $e;
 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
-                $ar->targetEntity = $this;
-                $ar->destinationAgent = $owner;
+                $ar->origin = $this;
+                $ar->destination = $owner;
                 $ar->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);

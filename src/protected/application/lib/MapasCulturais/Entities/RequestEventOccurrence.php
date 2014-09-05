@@ -5,6 +5,8 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
 /**
+ * @property \MapasCulturais\Entities\Space $destination The space where event occurrence will be created
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
@@ -12,14 +14,6 @@ class RequestEventOccurrence extends Request{
     
     function getRequestDescription() {
         return App::i()->txt('Request for create an occurrence of a event in a space');
-    }
-    
-    function setDestinationSpace(Space $e){
-        $this->metadata['spaceId'] = $e->id;
-    }
-    
-    function getDestinationSpace(){
-        return App::i()->repo('Space')->find($this->metadata['spaceId']);
     }
     
     function setRule($rule){
@@ -37,18 +31,18 @@ class RequestEventOccurrence extends Request{
     
     protected function generateOccurrence(){
         $occ = new EventOccurrence;
-        $occ->event = $this->targetEntity;
-        $occ->space = $this->destinationSpace;
+        $occ->event = $this->origin;
+        $occ->space = $this->destination;
         $occ->rule = $this->rule;
         return $occ;
     }
     
     
     protected function canUserApprove($user){
-        return $this->getDestinationSpace()->canUser('@control', $user);
+        return $this->destination->canUser('@control', $user);
     }
     
     protected function canUserReject($user){
-        return $this->getDestinationSpace()->canUser('@control', $user);
+        return $this->destination->canUser('@control', $user);
     }
 }

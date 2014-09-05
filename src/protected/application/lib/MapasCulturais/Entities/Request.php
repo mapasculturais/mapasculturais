@@ -10,7 +10,8 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\Entities\User $requesterUser
  *
- * @property-read \MapasCulturais\Entity $targetEntity The target entity of the requested action
+ * @property \MapasCulturais\Entity $origin The origin entity of the requested action
+ * @property \MapasCulturais\Entity $destination The destination entity of the requested action
  * @property-read string $requestType The request type
  *
  * @ORM\Table(name="request")
@@ -22,7 +23,8 @@ use MapasCulturais\App;
         "ChangeOwnerchip"   = "\MapasCulturais\Entities\RequestChangeOwnership",
         "EventOccurrence"   = "\MapasCulturais\Entities\RequestEventOccurrence",
         "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
-        "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity"
+        "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
+        "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation"
    })
  * @ORM\HasLifecycleCallbacks
  */
@@ -41,20 +43,41 @@ abstract class Request extends \MapasCulturais\Entity{
      * @ORM\SequenceGenerator(sequenceName="request_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="request_uid", type="string", length=32, nullable=false)
+     */
+    protected $requestUid;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="object_type", type="string", length=255, nullable=false)
+     * @ORM\Column(name="origin_type", type="string", length=255, nullable=false)
      */
-    protected $objectType;
+    protected $originType;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
+     * @ORM\Column(name="origin_id", type="integer", nullable=false)
      */
-    protected $objectId;
+    protected $originId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="destination_type", type="string", length=255, nullable=false)
+     */
+    protected $destinationType;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="destination_id", type="integer", nullable=false)
+     */
+    protected $destinationId;
 
     /**
      * @var \DateTime
@@ -111,13 +134,22 @@ abstract class Request extends \MapasCulturais\Entity{
         return $this->requesterUser;
     }
 
-    function setTargetEntity(\MapasCulturais\Entity $entity){
-        $this->objectType = $entity->getClassName();
-        $this->objectId = $entity->id;
+    function setOrigin(\MapasCulturais\Entity $entity){
+        $this->originType = $entity->getClassName();
+        $this->originId   = $entity->id;
     }
 
-    function getTargetEntity(){
-        return App::i()->repo($this->objectType)->find($this->objectId);
+    function getOrigin(){
+        return App::i()->repo($this->originType)->find($this->originId);
+    }
+
+    function setDestination(\MapasCulturais\Entity $entity){
+        $this->destinationType = $entity->getClassName();
+        $this->destinationId   = $entity->id;
+    }
+
+    function getDestination(){
+        return App::i()->repo($this->destinationType)->find($this->destinationId);
     }
     
     abstract function getRequestDescription();
@@ -131,7 +163,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app = App::i();
         
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:before');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:before', array($this));
+        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:before', array($this));
 
         $app->disableAccessControl();
         $this->_doApproveAction();
@@ -142,7 +174,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:after');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:after', array($this));
+        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:after', array($this));
 
     }
 
@@ -151,7 +183,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app = App::i();
         
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:before');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:before', array($this));
+        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:before', array($this));
 
         $app->disableAccessControl();
         $this->_doRejectAction();
@@ -162,7 +194,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:after');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:after', array($this));
+        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:after', array($this));
     }
 
     function getRequestType(){
@@ -170,26 +202,42 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     protected function canUserCreate($user){
-        return $this->targetEntity->canUser('@control', $user);
+        return $this->origin->canUser('@control', $user);
     }
 
     protected function canUserApprove($user){
-        return $this->targetEntity->canUser('@control', $user);
+        return $this->origin->canUser('@control', $user);
     }
 
     protected function canUserReject($user){
-        return $this->targetEntity->canUser('@control', $user);
+        return $this->origin->canUser('@control', $user);
     }
 
     protected function _doRejectAction() { }
 
     abstract protected function _doApproveAction();
 
+    function generateUid(){
+        return md5(json_encode(array(
+            $this->originType,
+            $this->originId,
+            $this->destinationType,
+            $this->destinationId,
+            $this->metadata
+        )));
+    }
+    
+    function save($flush = false) {
+        $this->requestUid = $this->generateUid();
+        parent::save($flush);
+    }
+
+
     /** @ORM\PostPersist */
     public function _applyPostPersistHooks(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').create');
-        $app->applyHookBoundTo($this->targetEntity, 'entity(' . $this->targetEntity->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').create', array($this));
+        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').create', array($this));
 
         $this->_createNotifications();
     }

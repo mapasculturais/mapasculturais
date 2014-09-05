@@ -125,10 +125,14 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         try{
             $callable = \Closure::bind($callable, $this);
             $callable();
-        } catch (\Exception $ex) {
+        }catch (\Exception $ex) {
             $exception = $ex;
         }
 
+        if(is_object($exception) && substr(get_class($exception),0,9) === 'Doctrine\\'){
+            throw $exception;
+        }
+            
         $this->assertInstanceOf('MapasCulturais\Exceptions\WorkflowRequest', $exception, $msg);
     }
 

@@ -87,9 +87,12 @@ return array(
         $conn->executeQuery("
             CREATE TABLE request(
                 id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
+                request_uid character varying(32) NOT NULL,
                 requester_user_id integer NOT NULL,
-                object_type character varying(255) NOT NULL,
-                object_id integer NOT NULL,
+                origin_object_type character varying(255) NOT NULL,
+                origin_object_id integer NOT NULL,
+                destination_object_type character varying(255) NOT NULL,
+                destination_object_id integer NOT NULL,
                 metadata text,
                 type character varying(255) NOT NULL,
                 create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
@@ -111,8 +114,12 @@ return array(
         echo "creating index requester_user_index\n";
         $conn->executeQuery("
             CREATE INDEX requester_user_index
-                ON request USING btree (requester_user_id, object_type, object_id);");
+                ON request USING btree (requester_user_id, origin_object_type, origin_object_id);");
 
+        echo "creating unique index request_uid\n";
+        $conn->executeQuery("
+            CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid)");
+        
         echo "drop table authority_request\n";
         $conn->executeQuery("DROP TABLE authority_request");
 

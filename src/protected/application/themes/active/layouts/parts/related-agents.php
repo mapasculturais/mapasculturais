@@ -1,9 +1,6 @@
 <?php 
 if($this->controller->action === 'create')
     return;
-
-foreach($entity->usersWithControl as $u)
-    echo '<div>' . $u->profile->name . '</div>';
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="widget" ng-if="isEditable">

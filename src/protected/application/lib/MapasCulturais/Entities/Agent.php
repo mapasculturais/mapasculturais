@@ -267,8 +267,8 @@ class Agent extends \MapasCulturais\Entity
                     throw $e;
                 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
-                $ar->targetEntity = $this;
-                $ar->destinationAgent = $parent;
+                $ar->origin = $this;
+                $ar->destination = $parent;
                 $ar->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
