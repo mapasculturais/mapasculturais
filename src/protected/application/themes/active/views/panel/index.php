@@ -74,7 +74,14 @@ $this->layout = 'panel'
                 <?php if ($notification->request): ?>
                     <div>
                         <?php if($notification->request->canUser('approve')): ?><a class="action" href="<?php echo $notification->approveUrl ?>">aceitar</a><?php endif; ?>
-                        <?php if($notification->request->canUser('reject')): ?><a class="action" href="<?php echo $notification->rejectUrl ?>">rejeitar</a><?php endif; ?>
+                        <?php if($notification->request->canUser('reject')): ?>
+                            <?php if($notification->request->requesterUser->equals($app->user)): ?>
+                                <a class="action" href="<?php echo $notification->rejectUrl ?>">cancelar</a>
+                                <a class="action" href="<?php echo $notification->deleteUrl ?>">ok</a>
+                            <?php else: ?>
+                                <a class="action" href="<?php echo $notification->rejectUrl ?>">rejeitar</a>
+                            <?php endif ;?>
+                        <?php endif; ?>
                     </div>
                 <?php else: ?>
                     <div><a class="action" href="<?php echo $notification->deleteUrl ?>">ok</a></div>

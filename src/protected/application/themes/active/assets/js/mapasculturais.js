@@ -628,14 +628,14 @@ MapasCulturais.Search = {
         var entitiyControllers = {
             'default':{
                 name: 'ilike(*'+term.replace(' ', '*')+'*)', //search term
-                '@select': 'id,name,metadata,files,terms,type',
+                '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
                 '@order':'name ASC'// page number
             },
             'agent':{ //apenas adicionei a shortDescription
                 name: 'ilike(*'+term.replace(' ', '*')+'*)', //search term,
-                '@select': 'id,name,metadata,files,terms,type',
+                '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
                 '@order':'name ASC'// page number
@@ -728,7 +728,8 @@ MapasCulturais.Search = {
             },
 
             ajaxData: function(searchParams){
-//                searchParams['@permissions'] = '@control';
+                searchParams['@permissions'] = '@control';
+                console.log(searchParams);
                 return searchParams;
             }
         },

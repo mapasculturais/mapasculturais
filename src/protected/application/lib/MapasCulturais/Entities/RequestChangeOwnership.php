@@ -15,7 +15,7 @@ class RequestChangeOwnership extends Request{
     const TYPE_REQUEST = 'request';
 
     function getRequestDescription() {
-        return App::i()->txt('Request for change the ownership of the ' . strtolower($this->origin->getEntityType()));
+        return App::i()->txt('Request for change the ownership of the ') . strtolower($this->origin->getEntityType());
     }
 
     function getType(){
@@ -24,7 +24,7 @@ class RequestChangeOwnership extends Request{
 
     function setDestination(\MapasCulturais\Entity $agent){
         $this->metadata['type'] = $agent->owner->canUser('@control') ? self::TYPE_REQUEST : self::TYPE_GIVE;
-        
+
         parent::setDestination($agent);
     }
 

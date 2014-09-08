@@ -6,82 +6,95 @@ use MapasCulturais\Entities\Notification;
 $app = App::i();
 
 /* === NOTIFICATIONS  === */
+// para todos os requests
+$app->hook('workflow(<<*>>).create', function() use($app){
+    $requester = $app->user;
+    $profile = $requester->profile;
+
+    $origin = $this->origin;
+    $destination = $this->destination;
+
+    $origin_type  = strtolower($origin->entityType);
+    $origin_url   = $origin->singleUrl;
+    $origin_name  = $origin->name;
+
+    $destination_url  = $destination->singleUrl;
+    $destination_name = $destination->name;
+
+
+    switch($this->getClassName()){
+        case "MapasCulturais\Entities\RequestAgentRelation":
+            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer relacioanr o agente <a href=\"{$destination_url}\">{$destination_name}</a> ao {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a>.";
+            $message_to_requester = "Sua requisição para relacionar o agente <a href=\"{$destination_url}\">{$destination_name}</a> ao {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> foi enviada.";
+        break;
+        case "MapasCulturais\Entities\RequestChangeOwnership":
+            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> está requisitando a mudança de propriedade do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> para o agente <a href=\"{$destination_url}\">{$destination_name}</a>.";
+            $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> para o agente <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+        break;
+        case "MapasCulturais\Entities\RequestChildEntity":
+            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer que o {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> seja um {$origin_type} filho de <a href=\"{$destination_url}\">{$destination_name}</a>.";;
+            $message_to_requester = "Sua requisição para fazer do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> um {$origin_type} filho de <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+        break;
+        case "MapasCulturais\Entities\RequestEventOccurrence":
+            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer adicionar o evento <a href=\"{$origin_url}\">{$origin_name}</a> que ocorre <em>{$origin->rule->description}</em> no espaço <a href=\"{$destination_url}\">{$destination_name}</a>.";
+            $message_to_requester = "Sua requisição para criar a ocorrência do evento <a href=\"{$origin_url}\">{$origin_name}</a> no espaço <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+        break;
+        case "MapasCulturais\Entities\RequestEventProject":
+            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer relacionar o evento <a href=\"{$origin_url}\">{$origin_name}</a> ao projeto <a href=\"{$destination_url}\">{$destination_name}</a>.";
+            $message_to_requester = "Sua requisição para associar o evento <a href=\"{$origin_url}\">{$origin_name}</a> ao projeto <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+        break;
+        default:
+            $message_to_requester = "Sua requisição foi enviada.";
+        break;
+    }
+
+    // message to requester user
+    $notification = new Notification;
+    $notification->user = $requester;
+    $notification->message = $message_to_requester;
+    $notification->request = $this;
+    $notification->save(true);
+
+    foreach($destination->usersWithControl as $user){
+        $notification = new Notification;
+        $notification->user = $user;
+        $notification->message = $message;
+        $notification->request = $this;
+        $notification->save(true);
+    }
+
+    if(!$requester->equals($origin->ownerUser)){
+        $notification = new Notification;
+        $notification->user = $origin->ownerUser;
+        $notification->message = $message;
+        $notification->request = $this;
+        $notification->save(true);
+    }
+});
 
 // Requests to create agent relation
-
-$app->hook('workflow(RequestAgentRelation).create', function() use($app){
-    $agent = $app->user->profile;
-    
-    $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> quer relacionar o {$this->destination->entityType} <a href=\"{$this->destination->singleUrl}\">{$this->destination->name}</a> ao agente <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a>";
-
-    foreach($this->destination->usersWithControl as $user){
-        $notification = new Notification;
-        $notification->user = $user;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-
-    if(!$app->user->equals($this->origin->ownerUser)){
-        $notification = new Notification;
-        $notification->user = $this->origin->ownerUser;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-
-});
-
-// Requests to create event occurrence in spaces
-
-$app->hook('workflow(RequestEventOccurrence).create', function() use($app){
-    $agent = $app->user->profile;
-    $event = $this->origin;
-    $space = $this->destination;
-    
-    $description = $this->rule->description;
-    
-    $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> quer adicionar o evento <a href=\"{$event->singleUrl}\">{$event->name}</a> que ocorre <em>{$description}</em> no espaço <a href=\"{$space->singleUrl}\">{$space->name}</a>";
-
-    foreach($space->usersWithControl as $user){
-        $notification = new Notification;
-        $notification->user = $user;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-
-    if(!$app->user->equals($this->origin->ownerUser)){
-        $notification = new Notification;
-        $notification->user = $this->origin->ownerUser;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-
-});
 
 $app->hook('workflow(RequestEventOccurrence).approve:before', function() use($app){
     $agent = $app->user->profile;
     $event = $this->origin;
     $space = $this->destination;
-    
+
     $description = $this->rule->description;
-    
+
     $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> autorizou o evento <a href=\"{$event->singleUrl}\">{$event->name}</a> que ocorre <em>{$description}</em> no espaço <a href=\"{$space->singleUrl}\">{$space->name}</a>";
 
     $users = array();
-    
+
     $users[] = $this->requesterUser;
-    
+
     // se não foi o dono do evento que fez a requisição, notifica o dono
     if(!$event->ownerUser->equals($this->requesterUser))
         $users[] = $space->ownerUser;
-    
+
     // se não é o dono do espaço que está aprovando, notifica o dono
     if(!$space->ownerUser->equals($app->user))
         $users[] = $space->ownerUser;
-    
+
     $notified_user_ids = array();
 
     foreach($users as $u){
@@ -102,23 +115,23 @@ $app->hook('workflow(RequestEventOccurrence).reject:before', function() use($app
     $agent = $app->user->profile;
     $event = $this->origin;
     $space = $this->destination;
-    
+
     $description = $this->rule->description;
-    
+
     $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> rejeitou o evento <a href=\"{$event->singleUrl}\">{$event->name}</a> que ocorre <em>{$description}</em> no espaço <a href=\"{$space->singleUrl}\">{$space->name}</a>";
 
     $users = array();
-    
+
     $users[] = $this->requesterUser;
-    
+
     // se não foi o dono do evento que fez a requisição, notifica o dono
     if(!$event->ownerUser->equals($this->requesterUser))
         $users[] = $space->ownerUser;
-    
+
     // se não é o dono do espaço que está rejeitando, notifica o dono
     if(!$space->ownerUser->equals($app->user))
         $users[] = $space->ownerUser;
-    
+
     $notified_user_ids = array();
 
     foreach($users as $u){
@@ -138,30 +151,6 @@ $app->hook('workflow(RequestEventOccurrence).reject:before', function() use($app
 
 
 // Requests to change ownership of entities
-$app->hook('workflow(RequestChangeOwnership).create', function() use($app){
-    $entity_type = strtolower($this->origin->entityType);
-
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> quer passar a propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a> para o agente <a href=\"{$this->destination->singleUrl}\">{$this->destination->name}</a>";
-    else
-        $message = "<a href=\"{$this->destination->singleUrl}\">{$this->destination->name}</a> está requisitando a propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a>";
-
-    foreach($this->destination->usersWithControl as $user){
-        $notification = new Notification;
-        $notification->user = $user;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-
-    if(!$app->user->equals($this->origin->ownerUser)){
-        $notification = new Notification;
-        $notification->user = $this->origin->ownerUser;
-        $notification->message = $message;
-        $notification->request = $this;
-        $notification->save(true);
-    }
-});
 
 $app->hook('workflow(RequestChangeOwnership).approve:before', function() use($app){
     $entity_type = strtolower($this->origin->entityType);

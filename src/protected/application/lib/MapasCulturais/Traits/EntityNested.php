@@ -17,7 +17,7 @@ trait EntityNested{
         $class = get_called_class();
         return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED);
     }
-    
+
     function setParentId($parent_id){
         if($parent_id)
             $parent = $this->repo()->find($parent_id);
@@ -28,36 +28,48 @@ trait EntityNested{
     }
 
     function setParent($parent){
-        if(!is_object($parent))
+        if(!is_object($parent) || (is_object($this->parent) && $this->parent->equals($parent)))
             return;
-        $parent->checkPermission('createChild');
-        
-        $error1 = App::txt('O pai não pode ser o filho.');
-        $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
+        try{
+            $parent->checkPermission('createChild');
 
-        if(!key_exists('parent', $this->_validationErrors))
-            $this->_validationErrors['parent'] = array();
+            $error1 = App::txt('O pai não pode ser o filho.');
+            $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
 
-        if($parent && $parent->id === $this->id){
-            $this->_validationErrors['parent'][] = $error1;
-        }elseif(key_exists('parent', $this->_validationErrors) && in_array($error1, $this->_validationErrors['parent'])){
-            $key = array_search($error, $this->_validationErrors['parent']);
-            unset($this->_validationErrors['parent'][$key]);
+            if(!key_exists('parent', $this->_validationErrors))
+                $this->_validationErrors['parent'] = array();
+
+            if($parent && $parent->id === $this->id){
+                $this->_validationErrors['parent'][] = $error1;
+            }elseif(key_exists('parent', $this->_validationErrors) && in_array($error1, $this->_validationErrors['parent'])){
+                $key = array_search($error, $this->_validationErrors['parent']);
+                unset($this->_validationErrors['parent'][$key]);
+            }
+
+            if($parent && $parent->className !== $this->className){
+                $this->_validationErrors['parent'][] = $error2;
+            }elseif(key_exists('parent', $this->_validationErrors) && in_array($error2, $this->_validationErrors['parent'])){
+                $key = array_search($error, $this->_validationErrors['parent']);
+                unset($this->_validationErrors['parent'][$key]);
+            }
+
+            if(!$this->_validationErrors['parent'])
+                unset($this->_validationErrors['parent']);
+
+            $this->parent = $parent;
+        }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+            if(!App::i()->isWorkflowEnabled)
+                throw $e;
+
+            $request = new \MapasCulturais\Entities\RequestChildEntity;
+            $request->origin = $this;
+            $request->destination = $parent;
+            $request->save(true);
+
+            throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
         }
-
-        if($parent && $parent->className !== $this->className){
-            $this->_validationErrors['parent'][] = $error2;
-        }elseif(key_exists('parent', $this->_validationErrors) && in_array($error2, $this->_validationErrors['parent'])){
-            $key = array_search($error, $this->_validationErrors['parent']);
-            unset($this->_validationErrors['parent'][$key]);
-        }
-
-        if(!$this->_validationErrors['parent'])
-            unset($this->_validationErrors['parent']);
-
-        $this->parent = $parent;
     }
-    
+
     /**
      * @return array of ids
      */
@@ -67,7 +79,7 @@ trait EntityNested{
             $result[] = $child->id;
             $result = array_merge($result, $child->getChildrenIds());
         }
-        
+
         return $result;
     }
 }
