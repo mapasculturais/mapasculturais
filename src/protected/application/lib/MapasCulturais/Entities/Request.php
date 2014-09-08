@@ -163,8 +163,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app = App::i();
         
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:before');
-        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:before', array($this));
-
+        
         $app->disableAccessControl();
         $this->_doApproveAction();
         
@@ -174,8 +173,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:after');
-        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').approve:after', array($this));
-
+        
     }
 
     function reject(){
@@ -183,8 +181,7 @@ abstract class Request extends \MapasCulturais\Entity{
         $app = App::i();
         
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:before');
-        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:before', array($this));
-
+        
         $app->disableAccessControl();
         $this->_doRejectAction();
         
@@ -194,7 +191,6 @@ abstract class Request extends \MapasCulturais\Entity{
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:after');
-        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').reject:after', array($this));
     }
 
     function getRequestType(){
@@ -229,7 +225,11 @@ abstract class Request extends \MapasCulturais\Entity{
     
     function save($flush = false) {
         $this->requestUid = $this->generateUid();
-        parent::save($flush);
+        if($request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid))){
+            $request->_applyPostPersistHooks();
+        }else{
+            parent::save($flush);
+        }
     }
 
 
@@ -237,8 +237,7 @@ abstract class Request extends \MapasCulturais\Entity{
     public function _applyPostPersistHooks(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').create');
-        $app->applyHookBoundTo($this->origin, 'entity(' . $this->origin->getHookClassPath() . ').workflow(' . $this->getHookClassPath() . ').create', array($this));
-
+        
         $this->_createNotifications();
     }
 
