@@ -2,17 +2,22 @@
 namespace MapasCulturais\Exceptions;
 
 /**
- * @property-read MapasCulturais\Entities\Request $request The request that throw this exception
+ * @property-read MapasCulturais\Entities\Request[] $requests The request that throw this exception
  */
 class WorkflowRequest extends \Exception{
-    protected $request = null;
+    protected $requests = null;
     
-    public function __construct(\MapasCulturais\Entities\Request $request) {
-        $this->request = $request;
-        parent::__construct($request->getRequestMessage());
+    function __construct(array $requests) {
+        $this->requests = $requests;
+        
+        parent::__construct();
     }
-    public function __get($name){
-        if($name == 'request')
-                return $this->request;
+    function __get($name){
+        if($name == 'requests')
+            return $this->requests;
+    }
+    
+    function addRequest(\MapasCulturais\Entities\Request $request){
+        $this->requests[] = $request;
     }
 }

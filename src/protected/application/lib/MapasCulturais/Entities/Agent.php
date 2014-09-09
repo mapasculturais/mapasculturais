@@ -264,7 +264,7 @@ class Agent extends \MapasCulturais\Entity
         return $this->_newParent !== false ? $this->_newParent : $this->parent;
     }
     
-    function save($flush = false) {
+    protected function _saveNested($flush = false) {
         if($this->_newParent !== false){
             $app = App::i();
             try{
@@ -286,11 +286,10 @@ class Agent extends \MapasCulturais\Entity
                 $ar->destination = $destination;
                 $ar->save(true);
                 
-                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
 
             }
         }
-        parent::save($flush);
     }
 
     function jsonSerialize() {

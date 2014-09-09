@@ -90,7 +90,7 @@ trait EntityNested{
                 $request->destination = $this->_newParent;
                 $request->save(true);
 
-                throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
             }
         }
     }

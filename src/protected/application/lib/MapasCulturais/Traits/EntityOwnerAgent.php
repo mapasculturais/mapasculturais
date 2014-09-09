@@ -60,7 +60,7 @@ trait EntityOwnerAgent{
                 $ar->destination = $this->_newOwner;
                 $ar->save(true);
 
-                throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
 
             }
         }

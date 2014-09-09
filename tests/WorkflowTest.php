@@ -97,7 +97,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
 
                 $entity->save();
             } catch (MapasCulturais\Exceptions\WorkflowRequest $e) {
-                $request = $e->request;
+                $request = $e->requests[0];
             }
             
             $this->assertInstanceOf('MapasCulturais\Entities\RequestChangeOwnership', $request, "asserting that the request was created");

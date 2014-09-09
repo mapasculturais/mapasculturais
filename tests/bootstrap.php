@@ -125,7 +125,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         try{
             $callable = \Closure::bind($callable, $this);
             $callable();
-        }catch (\Exception $ex) {
+        }catch (\MapasCulturais\Exceptions\WorkflowRequest $ex) {
             $exception = $ex;
         }
 
