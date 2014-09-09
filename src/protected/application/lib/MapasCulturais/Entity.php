@@ -382,6 +382,13 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
+        
+        if($this->usesNested())
+            $this->_saveNested();
+        
+        if($this->usesOwnerAgent())
+            $this->_saveOwnerAgent();
+        
 
         if($app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW)
             $this->checkPermission('create');
@@ -397,6 +404,7 @@ abstract class Entity implements \JsonSerializable{
             $this->saveMetadata();
             $app->em->flush();
         }
+        
         if($this->usesTaxonomies()){
             $this->saveTerms();
             $app->em->flush();

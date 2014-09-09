@@ -73,7 +73,7 @@ trait EntityNested{
     }
     
     
-    function save($flush = false){
+    protected function _saveNested(){
         if($this->_newParent !== false){
             try{
                 if($this->_newParent)
@@ -93,6 +93,5 @@ trait EntityNested{
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
             }
         }
-        parent::save($flush);
     }
 }

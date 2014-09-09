@@ -31,18 +31,24 @@ trait EntityOwnerAgent{
 
         $this->setOwner($owner);
     }
+    
+    private $_newOwner = false;
 
     /**
      * Set the owner by providing the agent
      *
      * @param \MapasCulturais\Entities\Agent $owner
      */
-
-    function setOwner($owner){
-        if(!$this->owner || $owner->id != $this->owner->id){
+    function setOwner(\MapasCulturais\Entities\Agent $owner){
+        $this->_newOwner = $owner;
+    }
+    
+    protected function _saveOwnerAgent(){
+        if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
                 $this->checkPermission('changeOwner');
-                $owner->checkPermission('modify');
+                $this->_newOwner->checkPermission('modify');
+                $this->owner = $this->_newOwner;
 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 $app = App::i();
@@ -51,14 +57,12 @@ trait EntityOwnerAgent{
 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->origin = $this;
-                $ar->destination = $owner;
+                $ar->destination = $this->_newOwner;
                 $ar->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
 
             }
-
-            $this->owner = $owner;
         }
     }
 
