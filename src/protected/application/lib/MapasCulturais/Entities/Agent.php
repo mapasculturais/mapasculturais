@@ -244,37 +244,53 @@ class Agent extends \MapasCulturais\Entity
         $this->setParent($owner);
     }
 
-
+    private $_newUser = false;
+    
     function setUser(User $user){
-        if(!$this->user || $this->user->id != $user->id){
-            $this->checkPermission('modify');
-            $this->user = $user;
-        }
+        $this->_newUser = $user;
+        if($this->_newParent === false)
+            $this->_newParent = $user->profile;
     }
+    
+    private $_newParent = false;
 
     function setParent(Agent $parent = null){
-        if($parent != $this->parent){
+        $this->_newParent = $parent;
+        if($parent)
+            $this->setUser($parent->user);
+    }
+    
+    function getParent(){
+        return $this->_newParent !== false ? $this->_newParent : $this->parent;
+    }
+    
+    function save($flush = false) {
+        if($this->_newParent !== false){
             $app = App::i();
             try{
                 $this->checkPermission('changeOwner');
-                if(!is_null($parent)){
-                    $parent->checkPermission('modify');
-                    if($parent->id != $this->id)
-                        $this->setUser($parent->user);
+                if($this->_newParent){
+                    $this->_newParent->checkPermission('@control');
+                    $this->parent = $this->_newParent;
+                    $this->user = $this->_newUser;
                 }
+                
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!$app->isWorkflowEnabled)
                     throw $e;
                 
+                $destination = $this->_newParent;
+                
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->origin = $this;
-                $ar->destination = $parent;
+                $ar->destination = $destination;
                 $ar->save(true);
-
+                
                 throw new \MapasCulturais\Exceptions\WorkflowRequest($ar);
 
             }
         }
+        parent::save($flush);
     }
 
     function jsonSerialize() {
