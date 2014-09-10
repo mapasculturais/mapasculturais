@@ -21,30 +21,33 @@ $app->hook('workflow(<<*>>).create', function() use($app){
     $destination_url  = $destination->singleUrl;
     $destination_name = $destination->name;
 
+    $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+    $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+    $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
     switch($this->getClassName()){
         case "MapasCulturais\Entities\RequestAgentRelation":
-            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer relacioanr o agente <a href=\"{$destination_url}\">{$destination_name}</a> ao {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a>.";
-            $message_to_requester = "Sua requisição para relacionar o agente <a href=\"{$destination_url}\">{$destination_name}</a> ao {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> foi enviada.";
+            $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
+            $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestChangeOwnership":
-            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> está requisitando a mudança de propriedade do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> para o agente <a href=\"{$destination_url}\">{$destination_name}</a>.";
-            $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> para o agente <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+            $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+            $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} {$origin_link} para o agente {$destination_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestChildEntity":
-            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer que o {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> seja um {$origin_type} filho de <a href=\"{$destination_url}\">{$destination_name}</a>.";;
-            $message_to_requester = "Sua requisição para fazer do {$origin_type} <a href=\"{$origin_url}\">{$origin_name}</a> um {$origin_type} filho de <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+            $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";;
+            $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestEventOccurrence":
-            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer adicionar o evento <a href=\"{$origin_url}\">{$origin_name}</a> que ocorre <em>{$origin->rule->description}</em> no espaço <a href=\"{$destination_url}\">{$destination_name}</a>.";
-            $message_to_requester = "Sua requisição para criar a ocorrência do evento <a href=\"{$origin_url}\">{$origin_name}</a> no espaço <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+            $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+            $message_to_requester = "Sua requisição para criar a ocorrência do evento {$origin_link} no espaço {$destination_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestEventProject":
-            $message = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a> quer relacionar o evento <a href=\"{$origin_url}\">{$origin_name}</a> ao projeto <a href=\"{$destination_url}\">{$destination_name}</a>.";
-            $message_to_requester = "Sua requisição para associar o evento <a href=\"{$origin_url}\">{$origin_name}</a> ao projeto <a href=\"{$destination_url}\">{$destination_name}</a> foi enviada.";
+            $message = "{$profile_link} quer relacionar o evento {$origin_link} ao projeto {$destination_link}.";
+            $message_to_requester = "Sua requisição para associar o evento {$origin_link} ao projeto {$destination_link} foi enviada.";
         break;
         default:
-            $message_to_requester = "Sua requisição foi enviada.";
+            $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
         break;
     }
 
@@ -72,28 +75,68 @@ $app->hook('workflow(<<*>>).create', function() use($app){
     }
 });
 
-// Requests to create agent relation
+$app->hook('workflow(<<*>>).approve:before', function() use($app){
+    $requester = $app->user;
+    $profile = $requester->profile;
 
-$app->hook('workflow(RequestEventOccurrence).approve:before', function() use($app){
-    $agent = $app->user->profile;
-    $event = $this->origin;
-    $space = $this->destination;
+    $origin = $this->origin;
+    $destination = $this->destination;
 
-    $description = $this->rule->description;
+    $origin_type  = strtolower($origin->entityType);
+    $origin_url   = $origin->singleUrl;
+    $origin_name  = $origin->name;
 
-    $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> autorizou o evento <a href=\"{$event->singleUrl}\">{$event->name}</a> que ocorre <em>{$description}</em> no espaço <a href=\"{$space->singleUrl}\">{$space->name}</a>";
+    $destination_url  = $destination->singleUrl;
+    $destination_name = $destination->name;
+
+    $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+    $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+    $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+
+    switch($this->getClassName()){
+        case "MapasCulturais\Entities\RequestAgentRelation":
+            $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestChangeOwnership":
+            $message = "{$profile_link} aceitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestChildEntity":
+            $message = "{$profile_link} aceitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestEventOccurrence":
+            $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestEventProject":
+            $message = "{$profile_link} aceitou relacionar o evento {$origin_link} ao projeto {$destination_link}.";
+        break;
+        default:
+            $message = "A requisição foi aprovada.";
+        break;
+    }
 
     $users = array();
 
+    // notifica quem fez a requisição
     $users[] = $this->requesterUser;
 
-    // se não foi o dono do evento que fez a requisição, notifica o dono
-    if(!$event->ownerUser->equals($this->requesterUser))
-        $users[] = $space->ownerUser;
+    if($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+        // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
+        if(!$destination->ownerUser->equals($this->requesterUser))
+            $users[] = $destination->ownerUser;
 
-    // se não é o dono do espaço que está aprovando, notifica o dono
-    if(!$space->ownerUser->equals($app->user))
-        $users[] = $space->ownerUser;
+        // se não é o dono da entidade de origem que está aprovando, notifica o dono
+        if(!$origin->ownerUser->equals($app->user))
+            $users[] = $origin->ownerUser;
+
+    }else{
+        // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
+        if(!$origin->ownerUser->equals($this->requesterUser))
+            $users[] = $origin->ownerUser;
+
+        // se não é o dono da entidade de destino que está aprovando, notifica o dono
+        if(!$destination->ownerUser->equals($app->user))
+            $users[] = $destination->ownerUser;
+    }
 
     $notified_user_ids = array();
 
@@ -111,26 +154,87 @@ $app->hook('workflow(RequestEventOccurrence).approve:before', function() use($ap
     }
 });
 
-$app->hook('workflow(RequestEventOccurrence).reject:before', function() use($app){
-    $agent = $app->user->profile;
-    $event = $this->origin;
-    $space = $this->destination;
 
-    $description = $this->rule->description;
+$app->hook('workflow(<<*>>).reject:before', function() use($app){
+    $requester = $app->user;
+    $profile = $requester->profile;
 
-    $message = "<a href=\"{$agent->singleUrl}\">{$agent->name}</a> rejeitou o evento <a href=\"{$event->singleUrl}\">{$event->name}</a> que ocorre <em>{$description}</em> no espaço <a href=\"{$space->singleUrl}\">{$space->name}</a>";
+    $origin = $this->origin;
+    $destination = $this->destination;
+
+    $origin_type  = strtolower($origin->entityType);
+    $origin_url   = $origin->singleUrl;
+    $origin_name  = $origin->name;
+
+    $destination_url  = $destination->singleUrl;
+    $destination_name = $destination->name;
+
+    $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+    $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+    $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+
+    switch($this->getClassName()){
+        case "MapasCulturais\Entities\RequestAgentRelation":
+            $message = $origin->canUser('@control') ?
+                "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}." :
+                "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestChangeOwnership":
+            if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+                $message = $this->requesterUser->equals($requester) ?
+                    "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
+                    "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+            }else{
+                $message = $this->requesterUser->equals($requester) ?
+                    "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
+                    "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+            }
+        break;
+        case "MapasCulturais\Entities\RequestChildEntity":
+            $message = $origin->canUser('@control') ?
+                "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
+                "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestEventOccurrence":
+            $message = $origin->canUser('@control') ?
+                "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}." :
+                "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+        break;
+        case "MapasCulturais\Entities\RequestEventProject":
+            $message = $origin->canUser('@control') ?
+                "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
+                "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
+        break;
+        default:
+            $message = $origin->canUser('@control') ?
+                "A requisição foi cancelada." :
+                "A requisição foi rejeitada.";
+        break;
+    }
 
     $users = array();
 
+    // notifica quem fez a requisição
     $users[] = $this->requesterUser;
 
-    // se não foi o dono do evento que fez a requisição, notifica o dono
-    if(!$event->ownerUser->equals($this->requesterUser))
-        $users[] = $space->ownerUser;
+    if($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+        // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
+        if(!$destination->ownerUser->equals($this->requesterUser))
+            $users[] = $destination->ownerUser;
 
-    // se não é o dono do espaço que está rejeitando, notifica o dono
-    if(!$space->ownerUser->equals($app->user))
-        $users[] = $space->ownerUser;
+        // se não é o dono da entidade de origem que está aprovando, notifica o dono
+        if(!$origin->ownerUser->equals($app->user))
+            $users[] = $origin->ownerUser;
+
+    }else{
+        // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
+        if(!$origin->ownerUser->equals($this->requesterUser))
+            $users[] = $origin->ownerUser;
+
+        // se não é o dono da entidade de destino que está aprovando, notifica o dono
+        if(!$destination->ownerUser->equals($app->user))
+            $users[] = $destination->ownerUser;
+    }
 
     $notified_user_ids = array();
 
@@ -148,81 +252,6 @@ $app->hook('workflow(RequestEventOccurrence).reject:before', function() use($app
     }
 });
 
-
-
-// Requests to change ownership of entities
-
-$app->hook('workflow(RequestChangeOwnership).approve:before', function() use($app){
-    $entity_type = strtolower($this->origin->entityType);
-
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> aceitou a mudança de propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a> para o agente <a href=\"{$this->destination->singleUrl}\">{$this->destination->name}</a>";
-    else
-        $message = "<a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> cedeu a propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a>";
-
-
-    $users = array();
-
-    // o usuário que fez a requisição recebe notificação
-    $users[] = $this->requesterUser;
-
-    // se o usuário que fez a requisição não é o dono da entidade, ele também recebe a notificação
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE && !$this->requesterUser->equals($this->origin->ownerUser))
-        $users[] = $this->origin->ownerUser;
-
-    // se o usuário que está aprovando a requisição não é o dono do agente de destino, notifica o dono do agente de destino
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE && !$this->requesterUser->equals($this->origin->ownerUser))
-        $users[] = $this->destination->ownerUser;
-
-    // se o usuário que fez a requisição não é o dono da entidade, ele também recebe a notificação
-    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST && !$this->destination->user->equals($app->user))
-        $users[] = $this->destination->user;
-
-    // se o usuário que está aprovando a requisição não é o dono da entidade, notifica o dono da entidade
-    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST && !$this->origin->ownerUser->equals($app->user))
-        $users[] = $this->origin->user;
-
-    $notified_user_ids = array();
-
-    foreach($users as $u){
-        // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-        if(in_array($u->id, $notified_user_ids))
-                continue;
-
-        $notified_user_ids[] = $u->id;
-
-        $notification = new Notification;
-        $notification->message = $message;
-        $notification->user = $u;
-        $notification->save(true);
-    }
-
-});
-
-
-$app->hook('workflow(RequestChangeOwnership).reject:before', function() use($app){
-    $notification = new Notification;
-
-    $entity_type = strtolower($this->origin->entityType);
-
-    if($this->type === Entities\RequestChangeOwnership::TYPE_GIVE)
-        $message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> rejeitou a propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a>";
-    else
-        $message = "O usuário <a href=\"{$app->user->profile->singleUrl}\">{$app->user->profile->name}</a> não cedeu a propriedade do {$entity_type} <a href=\"{$this->origin->singleUrl}\">{$this->origin->name}</a>";
-
-    $notification->user = $this->requesterUser;
-    $notification->message = $message;
-    $notification->save(true);
-
-
-    if(!$app->user->equals($this->origin->ownerUser) && !$this->requesterUser->equals($this->origin->ownerUser)){
-        // if the user that approve the request is not the onwer user of the entity, notify the owner
-        $notification2 = new Notification;
-        $notification2->message = $message;
-        $notification2->user = $this->origin->ownerUser;
-        $notification2->save(true);
-    }
-});
 
 /* ---------------------- */
 
