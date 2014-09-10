@@ -59,7 +59,7 @@
     background: $brand-primary;
 }
 #nav-eventos {
-    background: #aebf3a;
+    background: $brand-event;
 }
 #nav-agentes {
     background: $brand-agent;
@@ -161,10 +161,10 @@
     width: 50%;
 }
 #capa-eventos {
-    background: #aebf3a;
+    background: $brand-event;
 }
 #capa-eventos .abas li.active {
-    border-bottom-color: #aebf3a;
+    border-bottom-color: $brand-event;
 }
 #capa-agentes {
     background: $brand-agent;
