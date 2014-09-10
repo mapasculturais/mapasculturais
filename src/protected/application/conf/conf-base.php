@@ -11,7 +11,7 @@ $base_url = $prot_part . $host_part;
 return array(
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
-    
+
     'vectorLayersPath' => 'geojson',
 
     // development, staging, production
@@ -23,7 +23,11 @@ return array(
 
     'app.siteName' => 'Mapas Culturais',
     'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
-    
+
+
+    'api.accessControlAllowOrigin' => '*',
+
+
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
 
@@ -47,7 +51,7 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    
+
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
