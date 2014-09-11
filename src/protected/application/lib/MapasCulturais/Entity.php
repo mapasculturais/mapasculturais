@@ -213,9 +213,6 @@ abstract class Entity implements \JsonSerializable{
         if(!$app->isAccessControlEnabled())
             return true;
 
-        if($app->repo('User')->isCreating())
-            return true;
-
         $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation())

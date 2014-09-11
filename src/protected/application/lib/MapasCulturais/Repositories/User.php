@@ -5,14 +5,13 @@ use MapasCulturais\Entities;
 
 class User extends \MapasCulturais\Repository{
 
-    protected $_isCreating = false;
-
     /**
      * Retorna um usuário pelo auth_uid e auth_provider
      * @param string $auth_uid
      * @param int $auth_provider
      * @return \MapasCulturais\Entities\User|null
      */
+    
     public function getByAuth($auth_provider, $auth_uid){
         $user_query = $this->_em->createQuery('SELECT u FROM MapasCulturais\Entities\User u WHERE u.authProvider=:auth_provider AND u.authUid = :auth_uid');
 
@@ -23,10 +22,11 @@ class User extends \MapasCulturais\Repository{
     }
 
     public function createByAuthResponse($response){
-        $this->_isCreating = true;
         $app = \MapasCulturais\App::i();
-
-         // cria o usuário
+        
+        $app->disableAccessControl();
+    
+        // cria o usuário
         $user = new Entities\User;
         $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
@@ -44,15 +44,11 @@ class User extends \MapasCulturais\Repository{
             $agent->name = 'Sem nome';
 
 
-        $app->em->persist($agent);
-
-        $app->em->flush();
-        $this->_isCreating = false;
+        $this->_em->persist($agent);
+        $this->_em->flush();
+        
+        $app->enableAccessControl();
 
         return $user;
-    }
-
-    public function isCreating(){
-        return $this->_isCreating;
     }
 }
