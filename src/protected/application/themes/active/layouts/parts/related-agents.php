@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($this->controller->action === 'create')
     return;
 ?>
@@ -12,14 +12,15 @@ if($this->controller->action === 'create')
     <div class="widget" ng-repeat="group in groups">
         <h3>{{group.name}}</h3>
         <div class="agentes clearfix">
-            <div class="avatar" ng-repeat="(i, relation) in group.relations">
+            <div class="avatar" ng-repeat="(i, relation) in group.relations" ng-class="{pending: relation.status < 0}">
                 <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">
                     <img ng-src="{{avatarUrl(relation.agent)}}" />
                 </a>
                 <img ng-if="isEditable" ng-src="{{avatarUrl(relation.agent)}}" />
-                
+
                 <div class="descricao-do-agente">
                     <h1><a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a></h1>
+                    <small ng-if="relation.status < 0">Aguardando confirmação.</small>
                     <div class="objeto-meta">
                         <div ng-if="relation.agent.terms.area">
                             <span class="label">área de atuação:</span>
@@ -39,7 +40,7 @@ if($this->controller->action === 'create')
                 </div>
             </div>
             <div ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="Adicionar Integrante a este Grupo"></div>
-            
+
             <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="Adicionar agente relacionado" spinner-condition="spinners[group.name]" cancel-label="Cancelar" close-on-cancel='true'>
                 <find-entity entity="agent" no-results-text="Nenhum agente encontrado" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
             </edit-box>

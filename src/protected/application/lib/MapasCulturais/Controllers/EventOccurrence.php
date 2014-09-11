@@ -49,8 +49,7 @@ class EventOccurrence extends EntityController {
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);
         } else {
-            $occurrence->save(true);
-            $this->json($occurrence);
+            $this->_finishRequest($occurrence);
         }
     }
 

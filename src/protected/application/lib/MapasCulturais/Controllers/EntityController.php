@@ -1,7 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use \MapasCulturais\App;
+use MapasCulturais\App;
+use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
  * This is the base class to Entity Controllers
@@ -126,6 +127,26 @@ abstract class EntityController extends \MapasCulturais\Controller{
         return $this->getFields();
     }
 
+    protected function _finishRequest($entity, $isAjax = false){
+        $app = App::i();
+        $status = 200;
+        try{
+            $entity->save(true);
+        }  catch (WorkflowRequest $e){
+            $status = 202;
+            $reqs = array();
+            foreach($e->requests as $request){
+                $reqs[] = $request->getRequestDescription();
+            }
+
+            header('CreatedRequests: ' . json_encode($reqs));
+        }
+        if($app->request->isAjax() || $isAjax){
+            $this->json($entity, $status);
+        }else{
+            $app->redirect($app->request()->getReferer(), $status);
+        }
+    }
 
     // ============= ACTIONS =============== //
 
@@ -168,8 +189,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 
@@ -296,8 +316,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 

@@ -39,7 +39,7 @@ $app->hook('workflow(<<*>>).create', function() use($app){
             $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestEventOccurrence":
-            $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+            $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
             $message_to_requester = "Sua requisição para criar a ocorrência do evento {$origin_link} no espaço {$destination_link} foi enviada.";
         break;
         case "MapasCulturais\Entities\RequestEventProject":
@@ -104,7 +104,7 @@ $app->hook('workflow(<<*>>).approve:before', function() use($app){
             $message = "{$profile_link} aceitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
         break;
         case "MapasCulturais\Entities\RequestEventOccurrence":
-            $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+            $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
         break;
         case "MapasCulturais\Entities\RequestEventProject":
             $message = "{$profile_link} aceitou relacionar o evento {$origin_link} ao projeto {$destination_link}.";
@@ -197,7 +197,7 @@ $app->hook('workflow(<<*>>).reject:before', function() use($app){
         break;
         case "MapasCulturais\Entities\RequestEventOccurrence":
             $message = $origin->canUser('@control') ?
-                "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}." :
+                "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
                 "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
         break;
         case "MapasCulturais\Entities\RequestEventProject":
@@ -546,7 +546,7 @@ function add_agent_relations_to_js($entity){
         ?>
         <script type="text/javascript">
             MapasCulturais.entity = MapasCulturais.entity || {};
-            MapasCulturais.entity.agentRelations = <?php echo json_encode($entity->getAgentRelationsGrouped()); ?>;
+            MapasCulturais.entity.agentRelations = <?php echo json_encode($entity->getAgentRelationsGrouped(null, is_editable())); ?>;
         </script>
         <?php
     });

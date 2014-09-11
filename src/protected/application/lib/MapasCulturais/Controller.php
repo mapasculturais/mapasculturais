@@ -313,10 +313,10 @@ abstract class Controller{
      *
      * @param mixed $data
      */
-    public function json($data){
-        App::i()->contentType('application/json');
-
-        echo json_encode($data);
+    public function json($data, $status = 200){
+        $app = App::i();
+        $app->contentType('application/json');
+        $app->halt($status, json_encode($data));
     }
 
     /**

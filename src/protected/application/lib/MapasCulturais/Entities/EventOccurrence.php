@@ -214,7 +214,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     function getEndsOn() {
         return $this->_endsOn;
     }
-    
+
 
     function setStartsAt($value) {
         $this->_startsAt = self::convert($value, 'Y-m-d H:i');
@@ -251,7 +251,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     function getUntil() {
         return $this->_until;
     }
-    
+
     function getRecurrences() {
         if ($this->id) {
             return App::i()->repo('EventOccurrenceRecurrence')->findBy(['eventOccurrence'=> $this]);
@@ -410,21 +410,21 @@ class EventOccurrence extends \MapasCulturais\Entity
 
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
-    
+
     function save($flush = false) {
         try{
             parent::save($flush);
-            
+
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
             if(!App::i()->isWorkflowEnabled())
                 throw $e;
             $request = new RequestEventOccurrence;
-            $request->targetEntity = $this->event;
-            $request->destinationSpace = $this->space;
+            $request->origin = $this->event;
+            $request->destination = $this->space;
             $request->rule = $this->_rule;
             $request->save(true);
 
-            throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
+            throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
         }
     }
 

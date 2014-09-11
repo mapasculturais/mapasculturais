@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 
 /**
  * AgentRelation
@@ -30,6 +31,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     use \MapasCulturais\Traits\EntityMetadata,
         \MapasCulturais\Traits\EntityFiles;
 
+    const STATUS_PENDING = -5;
 
     /**
      * @var integer
@@ -90,15 +92,15 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
         $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl');
-        
+
         return $result;
     }
-    
+
     protected function canUserCreate($user){
-        $app = \MapasCulturais\App::i();
-        
+        $app = App::i();
+
         $agent_control = !$app->isWorkflowEnabled() || $this->agent->canUser('@control', $user);
-        
+
         if($this->hasControl)
             return $this->owner->canUser('createAgentRelationWithControl', $user) && $agent_control;
         else
@@ -106,16 +108,16 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     }
 
     protected function canUserRemove($user){
-        $app = \MapasCulturais\App::i();
-        
+        $app = App::i();
+
         $agent_control = $app->isWorkflowEnabled() && $this->agent->canUser('@control', $user);
-        
+
         if($user->id == $this->agent->getOwnerUser()->id)
             return true;
-        
+
         else if($this->hasControl)
             return $this->owner->canUser('removeAgentRelationWithControl', $user) || $agent_control;
-        
+
         else
             return $this->owner->canUser('removeAgentRelation', $user) || $agent_control;
     }
@@ -130,21 +132,32 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     public function _setTarget(\MapasCulturais\Entity $target){
         $this->objectId = $target->id;
     }
-    
+
     function save($flush = false) {
         try{
             parent::save($flush);
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-           if(!\MapasCulturais\App::i()->isWorkflowEnabled())
+           if(!App::i()->isWorkflowEnabled())
                throw $e;
-           
+
+           $app = App::i();
+           $app->disableAccessControl();
+           $this->status = self::STATUS_PENDING;
+           parent::save($flush);
+           $app->enableAccessControl();
+
            $request = new RequestAgentRelation;
            $request->agentRelation = $this;
            $request->save(true);
-           
-           throw new \MapasCulturais\Exceptions\WorkflowRequest($request);
-       
+
+           throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
+
         }
     }
 
+    function delete($flush = false) {
+        $this->checkPermission('remove');
+
+        parent::delete($flush);
+    }
 }
