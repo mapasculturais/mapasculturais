@@ -116,7 +116,11 @@ class RoutesManager{
                         $app->halt(403, $app->txt('Permission Denied'));
                     }
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
-                    $app->halt(202, $e->request->requestDescription . ' ' . $app->txt('created') );
+                    $requests = array_map(function($e){ return $e->requestDescription; }, $e->requests);
+                    if($app->request()->isAjax())
+                        $app->halt(202, json_encode($requests) );
+                    else
+                        $app->halt(202, $app->txt('Created requests: ') . implode(',',$requests) );
                 }
             }else{
                 $app->pass();
