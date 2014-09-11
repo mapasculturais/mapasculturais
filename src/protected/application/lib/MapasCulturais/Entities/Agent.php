@@ -245,13 +245,13 @@ class Agent extends \MapasCulturais\Entity
     }
 
     private $_newUser = false;
-    
+
     function setUser(User $user){
         $this->_newUser = $user;
         if($this->_newParent === false)
             $this->_newParent = $user->profile;
     }
-    
+
     private $_newParent = false;
 
     function setParent(Agent $parent = null){
@@ -259,11 +259,11 @@ class Agent extends \MapasCulturais\Entity
         if($parent)
             $this->setUser($parent->user);
     }
-    
+
     function getParent(){
         return $this->_newParent !== false ? $this->_newParent : $this->parent;
     }
-    
+
     protected function _saveNested($flush = false) {
         if($this->_newParent !== false){
             $app = App::i();
@@ -274,17 +274,16 @@ class Agent extends \MapasCulturais\Entity
                     $this->parent = $this->_newParent;
                     $this->user = $this->_newUser;
                 }
-                
+
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!$app->isWorkflowEnabled)
                     throw $e;
-                
+
                 $destination = $this->_newParent;
-                
+
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->origin = $this;
                 $ar->destination = $destination;
-                $ar->save(true);
                 
                 throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
 

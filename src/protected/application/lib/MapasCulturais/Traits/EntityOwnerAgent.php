@@ -31,7 +31,7 @@ trait EntityOwnerAgent{
 
         $this->setOwner($owner);
     }
-    
+
     private $_newOwner = false;
 
     /**
@@ -42,7 +42,7 @@ trait EntityOwnerAgent{
     function setOwner(\MapasCulturais\Entities\Agent $owner){
         $this->_newOwner = $owner;
     }
-    
+
     protected function _saveOwnerAgent(){
         if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
@@ -58,7 +58,6 @@ trait EntityOwnerAgent{
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->origin = $this;
                 $ar->destination = $this->_newOwner;
-                $ar->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
 

@@ -381,7 +381,7 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
-        
+
 
         $requests = array();
         if(method_exists($this, '_saveNested')){
@@ -391,7 +391,7 @@ abstract class Entity implements \JsonSerializable{
                 $requests[] = $e->request;
             }
         }
-        
+
         if(method_exists($this, '_saveOwnerAgent')){
             try{
                 $this->_saveOwnerAgent();
@@ -399,16 +399,16 @@ abstract class Entity implements \JsonSerializable{
                 $requests[] = $e->request;
             }
         }
-        
+
         $IS_NEW = $app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
-        
+
         try{
-        
+
             if($IS_NEW)
                 $this->checkPermission('create');
             else
                 $this->checkPermission('modify');
-        
+
             $app->em->persist($this);
 
             if($flush)
@@ -433,8 +433,10 @@ abstract class Entity implements \JsonSerializable{
             if(!$requests)
                 throw $e;
         }
-        
+
         if($requests){
+            foreach($requests as $request)
+                $request->save($flush);
             $e = new Exceptions\WorkflowRequest($requests);
             throw $e;
         }

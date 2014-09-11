@@ -116,7 +116,7 @@ class RoutesManager{
                         $app->halt(403, $app->txt('Permission Denied'));
                     }
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
-                    $app->halt(202, $e->request->requestDescription . ' ' . $app->txt('created') );
+                    $app->halt(202);
                 }
             }else{
                 $app->pass();

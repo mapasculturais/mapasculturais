@@ -28,7 +28,7 @@ trait EntityNested{
     }
 
     private $_newParent = null;
-    
+
     function setParent(\MapasCulturais\Entity $parent = null){
         if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
@@ -71,16 +71,16 @@ trait EntityNested{
 
         return $result;
     }
-    
-    
+
+
     protected function _saveNested(){
         if($this->_newParent !== false){
             try{
                 if($this->_newParent)
                     $this->_newParent->checkPermission('createChild');
-                
+
                 $this->parent = $this->_newParent;
-                
+
             }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!App::i()->isWorkflowEnabled)
                     throw $e;
@@ -88,7 +88,6 @@ trait EntityNested{
                 $request = new \MapasCulturais\Entities\RequestChildEntity;
                 $request->origin = $this;
                 $request->destination = $this->_newParent;
-                $request->save(true);
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
             }
