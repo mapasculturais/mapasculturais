@@ -276,7 +276,7 @@ class Agent extends \MapasCulturais\Entity
                 }
                 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-                if(!$app->isWorkflowEnabled)
+                if(!$app->isWorkflowEnabled())
                     throw $e;
                 
                 $destination = $this->_newParent;

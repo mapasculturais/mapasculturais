@@ -97,7 +97,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     protected function canUserCreate($user){
         $app = \MapasCulturais\App::i();
         
-        $agent_control = !$app->isWorkflowEnabled || $this->agent->canUser('@control', $user);
+        $agent_control = !$app->isWorkflowEnabled() || $this->agent->canUser('@control', $user);
         
         if($this->hasControl)
             return $this->owner->canUser('createAgentRelationWithControl', $user) && $agent_control;
@@ -108,7 +108,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     protected function canUserRemove($user){
         $app = \MapasCulturais\App::i();
         
-        $agent_control = $app->isWorkflowEnabled && $this->agent->canUser('@control', $user);
+        $agent_control = $app->isWorkflowEnabled() && $this->agent->canUser('@control', $user);
         
         if($user->id == $this->agent->getOwnerUser()->id)
             return true;
@@ -135,7 +135,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         try{
             parent::save($flush);
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-           if(!\MapasCulturais\App::i()->isWorkflowEnabled)
+           if(!\MapasCulturais\App::i()->isWorkflowEnabled())
                throw $e;
            
            $request = new RequestAgentRelation;

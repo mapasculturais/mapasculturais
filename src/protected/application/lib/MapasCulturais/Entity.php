@@ -210,7 +210,7 @@ abstract class Entity implements \JsonSerializable{
 
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
-        if(!$app->isAccessControlEnabled)
+        if(!$app->isAccessControlEnabled())
             return true;
 
         if($app->repo('User')->isCreating())

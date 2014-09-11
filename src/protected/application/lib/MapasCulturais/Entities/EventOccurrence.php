@@ -416,7 +416,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             parent::save($flush);
             
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
-            if(!App::i()->isWorkflowEnabled)
+            if(!App::i()->isWorkflowEnabled())
                 throw $e;
             $request = new RequestEventOccurrence;
             $request->targetEntity = $this->event;
