@@ -82,7 +82,7 @@ trait EntityNested{
                 $this->parent = $this->_newParent;
 
             }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
-                if(!App::i()->isWorkflowEnabled)
+                if(!App::i()->isWorkflowEnabled())
                     throw $e;
 
                 $request = new \MapasCulturais\Entities\RequestChildEntity;

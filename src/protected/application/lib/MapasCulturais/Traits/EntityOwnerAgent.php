@@ -52,7 +52,7 @@ trait EntityOwnerAgent{
 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 $app = App::i();
-                if(!$app->isWorkflowEnabled)
+                if(!$app->isWorkflowEnabled())
                     throw $e;
 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;

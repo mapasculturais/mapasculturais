@@ -36,8 +36,6 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  *
  * @property-read array $config
  *
- * @property-read bool $isAccessControlEnabled is access control enabled?
- * @property-read bool $isWorkflowEnabled is the workflow enabled?
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
@@ -123,8 +121,8 @@ class App extends \Slim\Slim{
     protected $_excludeHooks = array();
 
 
-    protected $isAccessControlEnabled = true;
-    protected $isWorkflowEnabled = true;
+    protected $_accessControlEnabled = true;
+    protected $_workflowEnabled = true;
 
     /**
      * Initializes the application instance.
@@ -428,19 +426,27 @@ class App extends \Slim\Slim{
     }
 
     function enableAccessControl(){
-        $this->isAccessControlEnabled = true;
+        $this->_accessControlEnabled = true;
     }
 
     function disableAccessControl(){
-        $this->isAccessControlEnabled = false;
+        $this->_accessControlEnabled = false;
+    }
+    
+    function isAccessControlEnabled(){
+        return $this->_accessControlEnabled;
     }
 
     function enableWorkflow(){
-        $this->isWorkflowEnabled = true;
+        $this->_workflowEnabled = true;
     }
 
     function disableWorkflow(){
-        $this->isWorkflowEnabled = false;
+        $this->_workflowEnabled = false;
+    }
+    
+    function isWorkflowEnabled(){
+        return $this->_workflowEnabled;
     }
 
     protected function _dbUpdates(){
