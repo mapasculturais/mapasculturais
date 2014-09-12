@@ -4,6 +4,7 @@ namespace MapasCulturais;
 $app = App::i();
 $em = $app->em;
 $conn = $em->getConnection();
+
 return array(
     'alter table space add column public' => function() use ($conn){
         $conn->executeQuery('ALTER TABLE space ADD COLUMN public BOOLEAN NOT NULL DEFAULT false;');
@@ -119,7 +120,7 @@ return array(
         echo "creating unique index request_uid\n";
         $conn->executeQuery("
             CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid)");
-        
+
         echo "drop table authority_request\n";
         $conn->executeQuery("DROP TABLE authority_request");
 
@@ -200,8 +201,13 @@ return array(
             "UPDATE space_meta SET value = REPLACE(value, ' #UPDATING#', '') WHERE key = 'endereco'", new \Doctrine\ORM\Query\ResultSetMapping()
         )->getOneOrNullResult();
         //$cleanQuery = $app->em->createQuery('SELECT s FROM \MapasCulturais\Entities\Space s WHERE s.name LIKE \'% #UPDATING#%\'')->getResult();
-        
+
         return false;
 
+    },
+
+    'alter table event_occurrence add column status' => function () use ($conn){
+        $conn->executeQuery('ALTER TABLE event_occurrence ADD COLUMN status integer NOT NULL DEFAULT 1;');
+        $conn->executeQuery("CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (status);");
     }
 );
