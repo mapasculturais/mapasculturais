@@ -100,7 +100,5 @@ return array(
         $cleanQuery = $app->em->createNativeQuery(
             "UPDATE space_meta SET value = REPLACE(value, ' #UPDATING#', '') WHERE key = 'endereco'", new \Doctrine\ORM\Query\ResultSetMapping()
         )->getOneOrNullResult();
-        //$cleanQuery = $app->em->createQuery('SELECT s FROM \MapasCulturais\Entities\Space s WHERE s.name LIKE \'% #UPDATING#%\'')->getResult();
-        return false;
     }
 );
