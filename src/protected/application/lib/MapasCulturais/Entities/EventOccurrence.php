@@ -16,6 +16,7 @@ use MapasCulturais\App;
  */
 class EventOccurrence extends \MapasCulturais\Entity
 {
+    const STATUS_PENDING = -5;
 
     protected static $validations = array(
         'startsOn' => array(
@@ -175,6 +176,12 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $_rule;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=false)
+     */
+    protected $status = self::STATUS_ENABLED;
 
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
@@ -364,10 +371,6 @@ class EventOccurrence extends \MapasCulturais\Entity
         return json_decode($this->_rule);
     }
 
-    function translateFrequency($key){
-        //if()
-    }
-
     function jsonSerialize() {
         return array(
             'id' => $this->id,
@@ -388,6 +391,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'event' => $this->event ? array('id' => $this->event->id, 'name' => $this->event->name, 'shortDescription' => $this->event->shortDescription, 'avatar' => $this->space->avatar) : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
+            'status' => $this->status
         );
     }
 
@@ -418,13 +422,30 @@ class EventOccurrence extends \MapasCulturais\Entity
         }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
             if(!App::i()->isWorkflowEnabled())
                 throw $e;
+
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->status = self::STATUS_PENDING;
+            parent::save($flush);
+            $app->enableAccessControl();
+
             $request = new RequestEventOccurrence;
             $request->origin = $this->event;
             $request->destination = $this->space;
-            $request->rule = $this->_rule;
+            $request->eventOccurrence = $this;
             $request->save(true);
 
             throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
+        }
+    }
+
+    /** @ORM\PreRemove */
+    function _removeRequests(){
+        if($this->status === self::STATUS_PENDING){
+            $request = App::i()->repo('RequestEventOccurrence')->findByEventOccurrence($this);
+            if($request)
+                foreach ($requests as $req)
+                    $req->delete();
         }
     }
 

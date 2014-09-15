@@ -474,7 +474,6 @@ MapasCulturais.Video = {
             });
         }else if(videoData.parsedURL.attr('host').indexOf('vimeo') != -1){
             videoData.provider = 'vimeo';
-            console.log(videoData.parsedURL);
             var tmpArray = videoData.parsedURL.attr('path').split('/');
             videoData.videoID = tmpArray[tmpArray.length-1];
             $.getJSON('http://www.vimeo.com/api/v2/video/'+videoData.videoID+'.json?callback=?', {format: "json"}, function(data) {
@@ -550,7 +549,6 @@ MapasCulturais.Search = {
                         }
                     },
                     formatResult: function(entity){
-                        console.log('formatResult', entity);
                         var format = $selector.data('selection-format');
                         if(MapasCulturais.Search.formats[format] && MapasCulturais.Search.formats[format].result)
                             return MapasCulturais.Search.formats[format].result(entity, $selector);
@@ -559,13 +557,11 @@ MapasCulturais.Search = {
                     }, // omitted for brevity, see the source of this page
 
                     formatSelection: function(entity){
-                        console.log('formatSelection', entity);
                         var format = $selector.data('selection-format');
                         return MapasCulturais.Search.formats[format].selection(entity, $selector);
                     }, // omitted for brevity, see the source of this page
 
                     formatNoMatches: function(term){
-                        console.log('formatNoMatches', term);
                         var format = $selector.data('selection-format');
                         return MapasCulturais.Search.formats[format].noMatches(term, $selector);
                     },
@@ -729,7 +725,6 @@ MapasCulturais.Search = {
 
             ajaxData: function(searchParams){
                 searchParams['@permissions'] = '@control';
-                console.log(searchParams);
                 return searchParams;
             }
         },

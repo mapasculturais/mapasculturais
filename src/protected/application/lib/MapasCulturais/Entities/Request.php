@@ -43,7 +43,7 @@ abstract class Request extends \MapasCulturais\Entity{
      * @ORM\SequenceGenerator(sequenceName="request_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
-    
+
     /**
      * @var string
      *
@@ -110,7 +110,7 @@ abstract class Request extends \MapasCulturais\Entity{
      */
     protected $requesterUser;
 
-    
+
     /**
      *
      * @var \MapasCulturais\Entities\Notification[] User Roles
@@ -151,9 +151,9 @@ abstract class Request extends \MapasCulturais\Entity{
     function getDestination(){
         return App::i()->repo($this->destinationType)->find($this->destinationId);
     }
-    
+
     abstract function getRequestDescription();
-    
+
     protected function getMetadata(){
         return unserialize($this->_metadata);
     }
@@ -161,33 +161,33 @@ abstract class Request extends \MapasCulturais\Entity{
     function approve(){
         $this->checkPermission("approve");
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:before');
-        
+
         $app->disableAccessControl();
         $this->_doApproveAction();
-        
+
         $this->status = self::STATUS_APPROVED;
         $this->save(true);
-        
+
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').approve:after');
-        
+
     }
 
     function reject(){
         $this->checkPermission("reject");
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:before');
-        
+
         $app->disableAccessControl();
         $this->_doRejectAction();
-        
+
         $this->status = self::STATUS_REJECTED;
         $this->save(true);
-        
+
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:after');
@@ -213,16 +213,20 @@ abstract class Request extends \MapasCulturais\Entity{
 
     abstract protected function _doApproveAction();
 
-    function generateUid(){
+    static function generateRequestUid($originType, $originId, $destinationType, $destinationId, $metadata){
         return md5(json_encode(array(
-            $this->originType,
-            $this->originId,
-            $this->destinationType,
-            $this->destinationId,
-            $this->metadata
+            $originType,
+            $originId,
+            $destinationType,
+            $destinationId,
+            $metadata
         )));
     }
-    
+
+    function generateUid(){
+        return self::generateRequestUid($this->originType, $this->originId, $this->destinationType, $this->destinationId, $this->metadata);
+    }
+
     function save($flush = false) {
         $this->requestUid = $this->generateUid();
         if($request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid))){
@@ -237,7 +241,7 @@ abstract class Request extends \MapasCulturais\Entity{
     public function _applyPostPersistHooks(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').create');
-        
+
         $this->_createNotifications();
     }
 
