@@ -21,16 +21,7 @@ add_angular_entity_assets($entity);
 <div class="sidebar-left sidebar agente">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <div class="widget">
-        <h3>Área de atuação</h3>
-        <?php if(is_editable()): ?>
-            <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
-        <?php else: ?>
-            <?php foreach($entity->terms['area'] as $i => $term): ?>
-                <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
-            <?php endforeach; ?>
-        <?php endif;?>
-    </div>    
+    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
@@ -87,7 +78,7 @@ add_angular_entity_assets($entity);
             <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                 <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
-    
+
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
@@ -190,7 +181,7 @@ add_angular_entity_assets($entity);
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>
     <?php endif; ?>
-    
+
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->

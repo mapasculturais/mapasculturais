@@ -43,16 +43,7 @@ add_angular_entity_assets($entity);
             <?php endif; ?>
         <?php endif; ?>
     </div>
-    <div class="widget">
-        <h3>Área de atuação</h3>
-        <?php if(is_editable()): ?>
-            <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
-        <?php else: ?>
-            <?php foreach($entity->terms['area'] as $i => $term): ?>
-                <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search')?>#taxonomies[area][]=<?php echo $term ?>"><?php echo $term ?></a>
-            <?php endforeach; ?>
-        <?php endif;?>
-    </div>
+    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
@@ -104,7 +95,7 @@ add_angular_entity_assets($entity);
                    data-selection-template="#agent-response-template"
                    data-no-result-template="#agent-response-no-results-template"
                    data-selection-format="parentSpace"
-                   data-allow-clear="1",
+                   data-allow-clear="1"
                    title="Selecionar espaço pai"
                    data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                    data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
@@ -114,7 +105,7 @@ add_angular_entity_assets($entity);
                 <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
             <?php endif; ?>
 
-            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>                
+            <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
         </div>
     </header>
     <ul class="abas clearfix">
