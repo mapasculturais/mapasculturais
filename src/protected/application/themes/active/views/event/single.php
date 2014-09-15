@@ -120,9 +120,10 @@ add_occurrence_frequencies_to_js();
         <?php if (is_editable()): ?>
             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
-            <?php foreach ($entity->terms['linguagem'] as $i => $term): ?>
-                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>#taxonomies[linguagem][]=<?php echo $term ?>"><?php echo $term ?></a>
-            <?php endforeach; ?>
+            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
+                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
+            <?php endif; endforeach; ?>
         <?php endif; ?>
     </div>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
@@ -379,7 +380,7 @@ add_occurrence_frequencies_to_js();
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
     <?php endif; ?>
-    
+
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
     <!-- Related Agents END -->

@@ -73,7 +73,7 @@
             keyword: '',
             linguagens: [],
             from: moment().format('YYYY-MM-DD'),
-            to: moment().add(1, 'week').format('YYYY-MM-DD'),
+            to: moment().add(1, 'month').format('YYYY-MM-DD'),
             classificacaoEtaria: [],
             isVerified: false
         },

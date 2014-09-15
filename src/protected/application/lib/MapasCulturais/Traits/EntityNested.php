@@ -33,6 +33,7 @@ trait EntityNested{
         if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
 
+
         $error1 = App::txt('O pai não pode ser o filho.');
         $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
 
