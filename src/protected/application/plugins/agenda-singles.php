@@ -40,7 +40,7 @@ $app->hook('GET(<<agent|space|project>>.agendaSingle)', function() use ($app) {
     if(empty($events)){
         $app->stop();
     }
-    $this->part('agenda-content', array('events'=>$events, 'entity'=>$entity));
+    $app->view->part('agenda-content', array('events'=>$events, 'entity'=>$entity));
 });
 
 $app->hook('view.render(<<agent|space|project>>/<<single|edit>>):before', function() use ($app) {
