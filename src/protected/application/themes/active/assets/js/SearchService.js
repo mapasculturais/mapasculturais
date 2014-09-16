@@ -34,8 +34,6 @@
             if(!paginating)
                 $rootScope.resetPagination();
 
-            console.log('entrou aqui', data.global);
-
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
                 if(data.global.enabled.agent){
