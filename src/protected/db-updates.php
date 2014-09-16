@@ -69,105 +69,6 @@ return array(
         $term->save(true);
     },
 
-
-    // workflow
-
-    'create authoriaztion_request schema' => function() use($app, $conn){
-        $conn->beginTransaction();
-
-        echo "creating sequence request_id_seq\n";
-        $conn->executeQuery("
-            CREATE SEQUENCE request_id_seq
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;");
-
-        echo "creating table request\n";
-        $conn->executeQuery("
-            CREATE TABLE request(
-                id integer DEFAULT nextval('request_id_seq'::regclass) NOT NULL,
-                request_uid character varying(32) NOT NULL,
-                requester_user_id integer NOT NULL,
-                origin_type character varying(255) NOT NULL,
-                origin_id integer NOT NULL,
-                destination_type character varying(255) NOT NULL,
-                destination_id integer NOT NULL,
-                metadata text,
-                type character varying(255) NOT NULL,
-                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-                action_timestamp timestamp without time zone DEFAULT NULL,
-                status smallint NOT NULL
-            )");
-
-        echo "creating primary key\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY request
-                ADD CONSTRAINT request_pk PRIMARY KEY (id);");
-
-
-        echo "creating fk requester_user_fk\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY request
-                ADD CONSTRAINT requester_user_fk FOREIGN KEY (requester_user_id) REFERENCES usr(id);");
-
-        echo "creating index requester_user_index\n";
-        $conn->executeQuery("
-            CREATE INDEX requester_user_index
-                ON request USING btree (requester_user_id, origin_type, origin_id);");
-
-        echo "creating unique index request_uid\n";
-        $conn->executeQuery("
-            CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid)");
-
-        echo "drop table authority_request\n";
-        $conn->executeQuery("DROP TABLE authority_request");
-
-        $conn->commit();
-    },
-
-    'create table notification' => function() use ($conn){
-        $conn->beginTransaction();
-        echo "creating sequence notification_id_seq\n";
-        $conn->executeQuery("
-            CREATE SEQUENCE notification_id_seq
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;");
-
-        echo "creating table notification\n";
-        $conn->executeQuery("
-            CREATE TABLE notification(
-                id integer DEFAULT nextval('notification_id_seq'::regclass) NOT NULL,
-                user_id integer NOT NULL,
-                request_id integer DEFAULT NULL,
-                message text NOT NULL,
-                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-                action_timestamp timestamp without time zone DEFAULT NULL,
-                status smallint NOT NULL
-            );");
-
-        echo "creating primary key\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY notification
-                ADD CONSTRAINT notification_pk PRIMARY KEY (id);");
-
-        echo "creating fk notification_user_fk\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY notification
-                ADD CONSTRAINT notification_user_fk FOREIGN KEY (user_id) REFERENCES usr(id);");
-
-        echo "creating fk notification_request_fk\n";
-        $conn->executeQuery("
-            ALTER TABLE ONLY notification
-                ADD CONSTRAINT notification_request_fk FOREIGN KEY (request_id) REFERENCES request(id);");
-
-        $conn->commit();
-    },
-
     'Update Addresses of Children of Parent Spaces' => function() use ($app){
         $parentSpaces = $app->em->createQuery('SELECT s FROM \MapasCulturais\Entities\Space s WHERE s.parent IS NULL')->getResult();
         //echo count($parentSpaces);
@@ -337,4 +238,5 @@ return array(
             ");
 
     }
+
 );
