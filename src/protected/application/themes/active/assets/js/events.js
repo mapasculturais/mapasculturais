@@ -107,6 +107,9 @@ MapasCulturais.EventOccurrenceManager = {
                     return;
 
                 }
+
+                response.pending = xhr.status === 202;
+
                 var isEditing = $form.data('action') == 'edit';
                 var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-item');
 

@@ -442,8 +442,8 @@ class EventOccurrence extends \MapasCulturais\Entity
     /** @ORM\PreRemove */
     function _removeRequests(){
         if($this->status === self::STATUS_PENDING){
-            $request = App::i()->repo('RequestEventOccurrence')->findByEventOccurrence($this);
-            if($request)
+            $requests = App::i()->repo('RequestEventOccurrence')->findByEventOccurrence($this);
+            if($requests)
                 foreach ($requests as $req)
                     $req->delete();
         }
