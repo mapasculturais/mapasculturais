@@ -462,7 +462,8 @@ function add_angular_entity_assets($entity){
 
     $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     $app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
-    $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents'));
+    $app->enqueueScript('app', 'change-owner', '/js/ChangeOwner.js');
+    $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
     if(!is_editable())
         return;
 
