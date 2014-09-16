@@ -18,7 +18,12 @@ class Html extends \MapasCulturais\ApiOutput{
         'tag'=>'Tags',
         'area'=>'Áreas',
         'classificacaoEtaria'=>'Classificação Etária',
-        'project'=>'Projeto'
+        'project'=>'Projeto',
+
+        'MapasCulturais\Entities\Agent'=>'Agente',
+        'MapasCulturais\Entities\Space'=>'Espaço',
+        'MapasCulturais\Entities\Event'=>'Evento',
+        'MapasCulturais\Entities\Project'=>'Projeto'
     ];
 
     protected function getContentType() {
@@ -162,11 +167,15 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
+        if(!key_exists('type',$data[0]))
+            die('@select entity type property is mandatory. Aborting');
+        $singular_object_name = $this->translate[$data[0]['type']->entity_class];
+        $plural_object_name = $singular_object_name.'s';
         ?>
         <!DOCTYPE html>
         <html>
             <head>
-                <title><?php echo sprintf(App::txts("%s $singular_object_name found.", "%s $plural_object_name found.", count($data)), count($data)) ?></title>
+                <title><?php echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></title>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
@@ -174,7 +183,9 @@ class Html extends \MapasCulturais\ApiOutput{
                 </style>
             </head>
             <body>
-                <h1><?php echo sprintf(App::txts("%s $singular_object_name found.", "%s $plural_object_name found.", count($data)), count($data)) ?></h1>
+                <h1><?php
+
+                echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
                 <?php $this->printTable($data) ?>
             </body>
         </html>
