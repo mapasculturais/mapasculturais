@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ''
-echo "MAPAS CULTURAIS: Debian-Based Distros Install Script"
+echo "MAPAS CULTURAIS: Debian-based distributions install script"
 echo ''
 echo 'Please use this script as a document for installing MAPAS CULTURAIS dependencies in your distribution:'
 echo ''
