@@ -33,9 +33,10 @@ if (is_editable() || "$entity" != "$owner"):
             <div class="clearfix staging-hidden">
                 <?php if (!is_editable() && !$app->user->is('guest')): ?>
                     <a class="action" href="#">Reportar erro</a>
-                    <a class="action" ng-click="editbox.open('changeOwner', $event)">Reivindicar propriedade</a>
-                    <edit-box id="changeOwner" position="top">
-                        <find-entity entity="agent" no-results-text="Nenhum agente encontrado" description="" ></find-entity>
+                    <a class="action" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedade</a>
+                    
+                    <edit-box id="editbox-change-owner" position="bottom" title="Reivindicar propriedade" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="spinner">
+                        <find-entity entity="agent" no-results-text="Nenhum agente encontrado" select="requestEntity" spinner-condition="spinner" ></find-entity>
                     </edit-box>
                 <?php endif; ?>
             </div>

@@ -80,7 +80,11 @@
 
     module.controller('ChangeOwnerController', ['$scope', '$rootScope', 'ChangeOwnerService', 'EditBox', function($scope, $rootScope, ChangeOwnerService, EditBox) {
         $scope.editbox = EditBox;
+        
+        $scope.spinner = false;
 
-
+        $scope.requestEntity = function(e){
+            console.log(e);
+        };
     }]);
 })(angular);
