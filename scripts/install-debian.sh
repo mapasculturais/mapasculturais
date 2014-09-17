@@ -36,7 +36,7 @@ echo "MAPAS CULTURAIS: Running initial-configuration.sh"
 echo ""
 
 echo "MAPAS CULTURAIS: Please edit src/protected/application/conf/config.php"
-cp $PWD/src/protected/application/conf/config.template.php $PWD/src/protected/application/conf/config.php
+cp ../src/protected/application/conf/config.template.php ../src/protected/application/conf/config.php
 echo ""
 
 echo "MAPAS CULTURAIS: Install Finished"
