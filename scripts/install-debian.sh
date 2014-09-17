@@ -31,12 +31,13 @@ composer.phar --working-dir=../src/protected install --prefer-dist
 echo "MAPAS CULTURAIS: Setting up mapasculturais PostgreSQL Database"
 ./install.sh
 
-echo "MAPAS CULTURAIS: Running initial-configuration.sh"
-./initial-configuration.sh
-echo ""
 
 echo "MAPAS CULTURAIS: Please edit src/protected/application/conf/config.php"
 cp ../src/protected/application/conf/config.template.php ../src/protected/application/conf/config.php
+echo ""
+
+echo "MAPAS CULTURAIS: Running initial-configuration.sh"
+./initial-configuration.sh
 echo ""
 
 echo "MAPAS CULTURAIS: Install Finished"
