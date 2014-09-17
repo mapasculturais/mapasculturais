@@ -4,7 +4,7 @@ echo "MAPAS CULTURAIS: Debian-Based Distros Install Script"
 echo ''
 echo 'Please use this script as a document for installing MAPAS CULTURAIS dependencies in your distribution:'
 echo ''
-echo 'curl apache2 php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts'
+echo 'git ssh openssh-server curl apache2 php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts'
 echo ''1
 echo -n "MAPAS CULTURAIS: Press Enter to continue, or Ctrl-C to abort."
 read enter
@@ -16,7 +16,7 @@ sudo ./apt.postgresql.org.sh
 echo "MAPAS CULTURAIS: Installing Dependencies. Please confirm."
 echo ''
 
-sudo apt-get install curl apache2 php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
+sudo apt-get install git ssh openssh-server curl apache2 php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 
 echo "MAPAS CULTURAIS: Checking Composer Dependency Manager for PHP"
 if ! type composer.phar 2>/dev/null; then
