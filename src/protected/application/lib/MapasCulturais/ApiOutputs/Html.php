@@ -167,10 +167,12 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
-        if(!key_exists('type',$data[0]))
-            die('@select entity type property is mandatory. Aborting');
-        $singular_object_name = $this->translate[$data[0]['type']->entity_class];
-        $plural_object_name = $singular_object_name.'s';
+        if($data){
+            if(!key_exists('type',$data[0]))
+                die('@select entity type property is mandatory. Aborting');
+            $singular_object_name = $this->translate[$data[0]['type']->entity_class];
+            $plural_object_name = $singular_object_name.'s';
+        }
         ?>
         <!DOCTYPE html>
         <html>
