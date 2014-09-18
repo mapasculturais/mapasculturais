@@ -981,7 +981,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 $value = ($_repo && $_id) ? $_repo->find($_id) : null;
 
-            }elseif($value[0] == '@'){
+            }elseif(strlen($value) && $value[0] == '@'){
                 $value = null;
             }
 
