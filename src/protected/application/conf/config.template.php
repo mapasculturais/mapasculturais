@@ -37,10 +37,10 @@ return array_merge($config,
 
         'app.cache' => new \Doctrine\Common\Cache\ArrayCache(),
 
-        /*
+        
         'auth.provider' => 'Fake',
         'auth.config' => array(),
-        // */
+
 
         'plugins.enabled' => array(
             'agenda-singles',
