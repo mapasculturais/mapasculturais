@@ -1,54 +1,177 @@
 Guia do Desenvolvedor
 =====================
+O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.
 
+- [Introdução](#introdução)
+    - [Bibliotecas PHP utilizadas](#bibliotecas-php-utilizadas)
+    - [Bibliotecas Javascript utilizadas](#bibliotecas-javascript-utilizadas)
 - [Arquivo de Configuração](#arquivo-de-configuracao)
+- [App](#app)
+- [Traits](#traits)
+    - [Traits Genéricos](#traits-genéricos)
 - [Model](#model)
 - [Controller](#controller)
-- [EntityController](#entitycontroller)
 - [View](#view)
     - [Temas](#temas)
       - [theme.php](theme-php)
-      - [Estrutura de pastas](#estrutura-de-pastas)
-    - [Páginas](#Páginas)
-    - [Layouts](#Layouts)
-    - [Visões](#Visões)
-    - [Partes](#Partes)
-    - [Assets](#Assets)
+      - [Estrutura de pastas do tema](#estrutura-de-pastas-do-tema)
+    - [Páginas](#páginas)
+    - [Layouts](#layouts)
+    - [Visões](#visões)
+    - [Partes](#partes)
+    - [Assets](#assets)
     - [Variáveis Acessíveis](#variáveis-acessíveis)
     - [Verificando se um usuário está logado](#verificando-se-um-usuário-está-logado)
 - [Autenticação]()
+- [Roles]()
 - [Log]()
 - [Cache]()
 - [Outputs da API]()
+- [Exceções]()
 
+## Introdução
+O mínimo requerido para rodar o Mapas Culturais é PHP >= 5.4, PostgreSQL >= 9.1 com PostGIS >= 2.1.
+
+As seguintes extensões do PHP são requeridas: *gd, apc, zip, curl, pgsql, phar, pdo_pgsql*.
+
+
+### Bibliotecas PHP Utilizadas
+Ver arquivo [composer.json](../src/protected/composer.json)
+- [Slim](https://packagist.org/packages/slim/slim) - Microframework em cima do qual foi escria a classe [App](#app) do MapasCulturais.
+- [Doctrine/ORM](https://packagist.org/packages/doctrine/orm) - ORM utilizado para o mapeamento das entidades.
+- [Opauth/OpenId](https://packagist.org/packages/opauth/openid) - Utilizado para autenticação via OpenId.
+- [respect/validation](https://packagist.org/packages/respect/validation) - Utilizado para as validações das propriedades e metadados das entidades.
+- [smottt/wideimage](https://packagist.org/packages/smottt/wideimage) - Utilizado para *transformar* imagens (criar thumbnails, por exemplo).
+- [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) - Utilizado para testes.
+- [creof/doctrine2-spatial](https://packagist.org/packages/creof/doctrine2-spatial) - Faz o mapeamento de várias procedures do PostGIS para o doctrine.
+- [mustache/mustache](https://packagist.org/packages/mustache/mustache) - Utilizado para renderizar alguns templates.
+- [phpoffice/phpword](https://packagist.org/packages/phpoffice/phpword) - Utilizado para criar .docs ou .xls onde necessário.
+- [michelf/php-markdown](https://packagist.org/packages/michelf/php-markdown) - Utilizado para renderizar os markdowns das [páginas](#páginas)
+
+### Bibliotecas Javascript Utilizadas
+Ver [bibliotecas javascript utilizadas no tema](#bibliotecas-javascript-utilizadas-no-tema).
 
 ## Arquivo de Configuração
 
-## Model
+## App
 
+## Traits
+Os [traits](http://php.net/manual/pt_BR/language.oop5.traits.php) ficam no namespace **MapasCulturais\Traits** e seus arquivos na pasta [src/protected/application/lib/MapasCulturais/Traits](../src/protected/application/lib/MapasCulturais/Traits). 
+
+Se houver no nome do trait um prefixo (*Entity, Controller ou Repository*) significa que este trait só deve ser utilizado em classes que estendam a classe com o nome do prefixo dentro do namespace MapasCulturais (ex: o trait *EntityAvatar* só deve ser utilizado em classes que estendem a classe *MapasCulturais\Entity*). Já se não houver um prefixo significa que é um [trait genérico](#traits-genéricos) e que pode ser utilizado em qualquer classe (exemplos: Singleton e MagigGetter).
+
+
+### Traits Genéricos
+Os traits genéricos podem ser usados em qualquer classe do sistema.
+
+#### Singleton
+Implementa o design pattern [singleton](http://pt.wikipedia.org/wiki/Singleton). É utilizada nas classes **App**, **GuestUser**, **ApiOutput**, **Controller** entre outras.
+
+#### MagicGetter
+#### MagicSetter
+#### MagicCallers
+
+
+## Model
+As classes de modelo ficam no namespace **MapasCulturais\Entities** e seus arquivos dentro da pasta [src/protected/application/lib/MapasCulturais/Entities](../src/protected/application/lib/MapasCulturais/Entities). 
+
+Estas classes devem estender a classe abstrata [MapasCulturais\Entity](#classe-entity) e usar os [Docblock Annotations](http://docs.doctrine-project.org/en/latest/reference/annotations-reference.html) do [Doctrine](http://docs.doctrine-project.org/en/latest/index.html) para fazer o [mapeamento](http://docs.doctrine-project.org/en/latest/reference/basic-mapping.html) com a representação desta entidade no banco de dados (geralmente uma tabela). 
+
+Estas podem também usar os [traits criados para entidades](#traits-das-entidades) (os que têm o prefixo **Entity** no nome, como por exmplo o *EntityFiles*, que é para ser usado em entidades que têm arquivos anexos).
+
+### Classe Entity
+A classe abstrata [MapasCulturais\Entity](../src/protected/application/lib/MapasCulturais/Entity.php) é a classe que serve de base para todoas as entidades do sistema. Implementa uma série de métodos úteis para, entre outros, [verificação de permissões](#verificação-de-permissões), serialização e [validações](#validações).
+
+### Traits das Entidades
+
+- **EntityAgentRelation** - Deve ser usado em entidades que podem ter agentes relacionados. Requer uma entidade auxiliar com o mesmo nome da entidade acrescida do sufixo AgentRelation (exemplo: para a entidade *Event*, uma classe *EventAgentRelation*).
+- **EntityFiles** - Deve ser usado em entidades que podem ter arquivos anexados.
+- **EntityAvatar** - Deve ser usado em entidades que tenham avatar. Requer o trait *EntityFiles*.
+- **EntityGeoLocation** - Deve ser usado em entidades georreferenciadas. Requer as propriedades *location*, do tipo *point*, e *_geoLocation*, do tipo *geography*.
+- **EntityMetadata** - Deve ser usado em entidades que tenham metadados. Requer de uma entidade auxiliar. Se existir no mesmo namespace uma classe com o nome da entidade acrescida do sufixo *Meta* (exemplo: para a entidade *Agent*, uma classe *AgentMeta*), esta será usada, senão a entidade Metadata será usada como auxiliar.
+- **EntityMetaLists** - Deve ser usado em entidades que tenham metadados com múltiplos valores por chave. (exemplo de uso: links).
+- **EntityNested** - Deve ser usado em entidades hierarquicas. Requer as [associações autoreferenciadas](http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#one-to-many-self-referencing) *children* e *parent*.
+- **EntityOwnerAgent** - Deve ser usado em entidades que tenham a associação [ManyToOne](http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#many-to-one-unidirectional) *owner* apontando para a entidade *MapasCulturais\Entity\Agent*. Requer também um mapeamento do tipo *int* chamado *_ownerId* que representa o id do agente que é dono desta entidade.
+- **EntitySoftDelete** - Usado em entidades que necessitem de lixeira. Requer um mapeamento do tipo *int* chamado *status*.
+- **EntityTaxonomies** - Deve ser usado em entidades que precisem de taxonomias (tags, área de atuação, etc.).
+- **EntityTypes** - Deve ser usado em entidades que tenham tipos. Requer um mapeamento do tipo *int* chamado *_type*. 
+- **EntityVerifiable** - Deve ser usado em entidades *verificáveis*, o seja, que podem ser marcadas como *oficiais* pelos admins ou membros da equipe.
+
+### Verificação de Permissões
+A verificação das permissões são feitas através do método **checkPermission** passando como parâmetro para este o nome da ação que você deseja checar se o usuário tem ou não permissão para executar. Este método, por ua vez, chama o método [canUser](#método-canuser) que retornará um booleando *true* se o usuário pode executar a ação ou *false* se o usuário não pode executar a ação. Caso o usuário não possa executar a ação, o método **checkPermission** lançará uma exceção do tipo [PermissionDenied](#permissiondenied).
+
+#### Método canUser
+O método **canUser** recebe como primeiro parâmetro o nome da ação e opcionalmente, como segundo parâmetro, um usuário. Se nenhum usuário for enviado, será usado o usuário logado ou *guest*. O retorno desta função é um booleano indicando se o usuário pode ou não executar a ação.
+
+Este método procurará por um método auxilar chamado *canUser acrescido do nome da ação* (exemplo: para a ação **remove**, um método chamado **canUserRemove**) e caso não ache será usado o método [genericPermissionVerification](#método-genericpermissionverification).
+
+No exemplo a seguir dizemos que somente admins podem alterar o satatus da entidade Exemplo.
+```PHP
+class Exemplo extends MapasCulturais\Entity{
+    use MapasCulturais\Traits\MagicSetter
+    ....
+    ....
+    protected $_status = 0;
+    
+    function setStatus($status){
+        $this->checkPermission('modifyStatus');
+        $this->_status = $status;
+        $this->save();
+    }
+    
+    protected function canUserModifyStatus($user){
+        if($user->is("admin"))
+            return true;
+        else
+            return false;
+    }
+}
+
+```
+
+#### Método genericPermissionVerification
+Este método é utilizado sempre que uma checagem de permissão é feita e o método **canUser** não encontra um método auxiliar com o nome da ação. 
+
+O corpo deste método é o seguinte:
+```PHP
+protected function genericPermissionVerification($user){
+    if($user->is('guest'))
+        return false;
+    
+    if($user->is('admin'))
+        return true;
+    
+    if($this->getOwnerUser()->id == $user->id)
+        return true;
+    
+    if($this->usesAgentRelation() && $this->userHasControl($user))
+        return true;
+    
+    return false;
+}
+
+```
+
+### Validações das Entidades
 
 ## Controller
-
-### Actions
-### Método render
-### Método partial
-### Retornando um JSON
-### Requisitando autenticação
-### Checando permissão
-
-
-
-## EntityController
 
 ## View
 
 ### Temas
 Por enquanto ainda não temos resolvida a estrutura para múltiplos temas. O que temos é um tema único dentro da pasta **src/protected/application/themes/active**, que será modificado para aceitar configurações.
 
+#### Bibliotecas Javascript utilizadas no tema
+Por enquanto ainda não utilizamos um gerenciador de pacotes para as bibliotecas Javascript. Estas ficam na [pasta assets/vendor/](#estrutura-de-pastas-do-tema).
+ - [AngularJS](https://angularjs.org/)
+ - [jQuery](http://jquery.com/)
+ - 
+
+
 #### theme.php
 Este arquivo fica na pasta raíz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](api.md).
 
-#### Estrutura de pastas
+#### Estrutura de pastas do tema
 dentro da pasta raíz do tema
 - **assets/** - *onde deve ficar tudo que é acessível pelo público dentro da url **/public** do site*
   - **css/**
@@ -278,4 +401,6 @@ Para saber se um usuário está logado você pode verificar se o usuário não �
 <?php endif; ?>
 ```
 
+## Exceções
 
+### PermissionDenied
