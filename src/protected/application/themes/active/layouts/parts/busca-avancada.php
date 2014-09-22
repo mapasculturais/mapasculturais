@@ -166,9 +166,29 @@
         </div>
         <!--#filtro-espacos-->
         <!--#busca-avancada-->
+        <style>
+            /*TODO MOVER PARA O LOCAL PADRAO DE ESTILOS*/
+
+            #ferramentas{
+                width:auto;
+            }
+            #exportar-resultados{
+                position:relative;
+                float: left;
+            }
+            #exportar-resultados a {
+                width:10px;
+            }
+            .compartilhar-changed{
+                margin-left: .75rem;
+                padding-left: 0.75rem;
+                border-left: 2px solid #d3d3d3;
+            }
+        </style>
         <div id="header-dos-resultados" class="clearfix">
-            <div id="ferramentas">
-                <div id="compartilhar">
+            <div id="ferramentas" style="">
+                <div id="exportar-resultados" ng-if="data.global.viewMode === 'list'"><a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a></div>
+                <div id="compartilhar" ng-class="{'compartilhar-changed':data.global.viewMode==='list'}">
                     <a class="botao-de-icone icone social_share"></a>
                     <form id="compartilhar-url">
                         <div class="setinha"></div>
@@ -185,7 +205,7 @@
                     <a class="hltip botao-de-icone icone icon_map"              ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
                 </div>
             </div>
-            <!--#ferramentas-->      
+            <!--#ferramentas-->
             <div id="resultados">
                 <span ng-show="spinnerCount > 0" style="display:inline">
                     <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>

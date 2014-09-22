@@ -281,12 +281,20 @@
                 action = action || 'find';
                 searchData['@order'] = 'name ASC';
                 delete searchData['@count'];
-                var querystring = "";
+
+                var querystring = '';
+                var queryString_apiExport = '';
+                var basicUrl = MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?';
 
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
+                    if(att != '@page' && att!='@limit')
+                        queryString_apiExport += "&"+att+"="+searchData[att];
                 }
-                return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring, data:searchData});
+
+                $rootScope.apiURL = basicUrl+queryString_apiExport;
+
+                return $http({method: 'GET', cache:true, url:basicUrl+querystring , data:searchData});
             }
 
             function apiCount(entity, searchData, action) {
