@@ -446,11 +446,14 @@ class App extends \Slim\Slim{
                 $new_updates = true;
                 echo "\nApplying db update \"$name\":";
                 echo "\n-------------------------------------------------------------------------------------------------------\n";
-
-                if($function() !== false){
-                    $up = new Entities\DbUpdate();
-                    $up->name = $name;
-                    $up->save();
+                try{
+                    if($function() !== false){
+                        $up = new Entities\DbUpdate();
+                        $up->name = $name;
+                        $up->save();
+                    }
+                }catch(\Exception $e){
+                    echo "\nERROR " . $e . "\n";
                 }
                 echo "\n-------------------------------------------------------------------------------------------------------\n\n";
             }
