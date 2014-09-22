@@ -14,10 +14,6 @@ use MapasCulturais\App;
  */
 class RequestAgentRelation extends Request{
 
-    function getRequestDescription() {
-        return App::i()->txt('Request for create an agent relation');
-    }
-
     function setAgentRelation(AgentRelation $relation){
         $this->destination = $relation->agent;
         $this->origin = $relation->owner;
@@ -34,7 +30,7 @@ class RequestAgentRelation extends Request{
 
     function _doApproveAction() {
         $relation = $this->getAgentRelation();
-        $relation->status = 1;
+        $relation->status = AgentRelation::STATUS_ENABLED;
         $relation->save(true);
     }
 

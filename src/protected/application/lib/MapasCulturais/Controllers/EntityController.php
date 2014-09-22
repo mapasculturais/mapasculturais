@@ -136,7 +136,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $status = 202;
             $reqs = array();
             foreach($e->requests as $request){
-                $reqs[] = $request->getRequestDescription();
+                $reqs[] = $request->getRequestType();
             }
 
             header('CreatedRequests: ' . json_encode($reqs));

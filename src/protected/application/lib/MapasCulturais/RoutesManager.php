@@ -116,7 +116,7 @@ class RoutesManager{
                         $app->halt(403, $app->txt('Permission Denied'));
                     }
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
-                    $requests = array_map(function($e){ return $e->requestDescription; }, $e->requests);
+                    $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
                     if($app->request()->isAjax())
                         $app->halt(202, json_encode($requests) );
                     else

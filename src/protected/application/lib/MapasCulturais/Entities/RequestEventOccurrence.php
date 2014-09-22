@@ -12,10 +12,6 @@ use MapasCulturais\App;
  */
 class RequestEventOccurrence extends Request{
 
-    function getRequestDescription() {
-        return App::i()->txt('Request for create an occurrence of a event in a space');
-    }
-
     function setEventOccurrence(EventOccurrence $eo){
         $this->metadata['event_occurrence_id'] = $eo->id;
         $this->metadata['rule'] = $eo->rule;

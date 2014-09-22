@@ -113,7 +113,7 @@ abstract class Request extends \MapasCulturais\Entity{
 
     /**
      *
-     * @var \MapasCulturais\Entities\Notification[] User Roles
+     * @var \MapasCulturais\Entities\Notification[] Notifications
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="remove", orphanRemoval=true)
      */
     protected $notifications;
@@ -151,8 +151,6 @@ abstract class Request extends \MapasCulturais\Entity{
     function getDestination(){
         return App::i()->repo($this->destinationType)->find($this->destinationId);
     }
-
-    abstract function getRequestDescription();
 
     protected function getMetadata(){
         return unserialize($this->_metadata);

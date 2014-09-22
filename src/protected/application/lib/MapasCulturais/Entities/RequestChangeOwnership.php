@@ -14,10 +14,6 @@ class RequestChangeOwnership extends Request{
     const TYPE_GIVE = 'give';
     const TYPE_REQUEST = 'request';
 
-    function getRequestDescription() {
-        return App::i()->txt('Request for change the ownership of the ') . strtolower($this->origin->getEntityType());
-    }
-
     function getType(){
         return $this->metadata['type'];
     }
