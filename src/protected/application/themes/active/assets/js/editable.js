@@ -68,7 +68,7 @@ jQuery(function(){
                 }, 100);
                 break;
         }
-        
+
         //Experimental Tab Index
         if(window.tabEnabled) {
             var $el = editable.$element;
@@ -322,7 +322,18 @@ MapasCulturais.Editables = {
                 url: target,
                 ajaxOptions: {
                     dataType: 'json', //assuming json response
-                    type: action == 'create' ? 'post' : 'post'//'put'
+                    type: action == 'create' ? 'post' : 'post',//'put',
+                    statusCode: {
+                        202: function(response, statusText, r) {
+                            var createdRequests = JSON.parse(r.getResponseHeader('CreatedRequests')),
+                                typeName = MapasCulturais.entity.getTypeName(),
+                                parentName = '';
+                            if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
+                                parentName = $('[data-field-name="parentId"]').text();
+                                MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+parentName+'</strong> foi enviada.');
+                            }
+                        }
+                    }
                 },
                 success: function(response){
                     if(response.error){
@@ -395,6 +406,7 @@ MapasCulturais.Editables = {
                     $submitButton.data('clicked',false);
                 },
                 error : function(response){
+                    alert('asd');
                     $submitButton.data('clicked',false);
                     if(response.status === 401)
                         MapasCulturais.auth.require(function(){

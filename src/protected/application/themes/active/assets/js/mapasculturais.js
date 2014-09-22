@@ -52,6 +52,17 @@ $(function(){
         }
     }
 
+    if(MapasCulturais.entity){
+        MapasCulturais.entity.getTypeName = function(){
+            switch(MapasCulturais.request.controller){
+                case 'agent' : return 'agente'; break;
+                case 'space' : return 'espaço'; break;
+                case 'event' : return 'evento'; break;
+                case 'project' : return 'projeto'; break;
+            }
+        };
+    }
+
 });
 
 MapasCulturais.auth = {
