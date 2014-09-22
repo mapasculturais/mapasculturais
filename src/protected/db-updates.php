@@ -63,9 +63,10 @@ return array(
 
     'rename taxonomy term "Livre e Literatura" to "Livro e Literatura"' => function() use($app) {
         $term = $app->repo('Term')->findOneBy(array('term' => "Livre e Literatura"));
-        $term->dump();
-        $term->term = 'Livro e Literatura';
-        $term->save(true);
+        if($term){
+            $term->term = 'Livro e Literatura';
+            $term->save(true);
+        }
     },
 
     'Update Addresses of Children of Parent Spaces' => function() use ($app){
