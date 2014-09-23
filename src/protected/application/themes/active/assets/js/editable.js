@@ -406,7 +406,6 @@ MapasCulturais.Editables = {
                     $submitButton.data('clicked',false);
                 },
                 error : function(response){
-                    alert('asd');
                     $submitButton.data('clicked',false);
                     if(response.status === 401)
                         MapasCulturais.auth.require(function(){
