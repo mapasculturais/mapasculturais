@@ -296,27 +296,6 @@ SELECT pg_catalog.setval('role_id_seq', 123, true);
 
 
 --
--- Name: sp_distrito_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_distrito_gid_seq', 96, true);
-
-
---
--- Name: sp_regiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_regiao_gid_seq', 8, true);
-
-
---
--- Name: sp_subprefeitura_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_subprefeitura_gid_seq', 32, true);
-
-
---
 -- Name: space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
 --
 
@@ -336,17 +315,17 @@ COPY space_meta (object_id, key, value) FROM stdin;
 --
 
 COPY term (id, taxonomy, term, description) FROM stdin;
-2	2	Antropologia	
-3	2	Arqueologia	
+2	2	Antropologia
+3	2	Arqueologia
 4	2	Arquitetura-Urbanismo	
-5	2	Arquivo	
-6	2	Artesanato	
-7	2	Artes Visuais	
-8	2	Cultura Negra	
-9	2	Fotografia	
-10	2	Jogos Eletrônicos	
-11	2	Circo	
-12	2	Filosofia	
+5	2	Arquivo
+6	2	Artesanato
+7	2	Artes Visuais
+8	2	Cultura Negra
+9	2	Fotografia
+10	2	Jogos Eletrônicos
+11	2	Circo
+12	2	Filosofia
 \.
 
 
