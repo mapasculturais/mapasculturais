@@ -548,6 +548,7 @@ function add_agent_relations_to_js($entity){
         <script type="text/javascript">
             MapasCulturais.entity = MapasCulturais.entity || {};
             MapasCulturais.entity.agentRelations = <?php echo json_encode($entity->getAgentRelationsGrouped(null, is_editable())); ?>;
+            MapasCulturais.entity.userHasControl = <?php echo $entity->canUser('@control') ? 'true' : 'false' ?>;
         </script>
         <?php
     });

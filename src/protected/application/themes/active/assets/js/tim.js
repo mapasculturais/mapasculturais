@@ -25,7 +25,7 @@ var hl;
 
         var header_animation_status = 0;
 
-        if ($('#editable-entity').length) {
+        if ($('#editable-entity').length && $('#editable-entity').is(':visible')) {
             $('#main-section').css('margin-top', headerHeight + $('#editable-entity').outerHeight(true));
         }
 

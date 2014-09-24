@@ -25,66 +25,59 @@
 
             entityId: entityId,
 
-            getUrl: function(action){
-                return baseUrl + controllerId + '/' + action + '/' + entityId;
+            getUrl: function(){
+                return baseUrl + controllerId + '/changeOwner/' + entityId;
             },
 
-            create: function(group, agentId){
-                return $http.post(this.getUrl('createAgentRelation'), {group: group, agentId: agentId}).
-                        success(function(data, status){
-                            if(status === 202){
-                                MapasCulturais.Messages.alert('Sua requisição para relacionar o agente <strong>' + data.agent.name + '</strong> foi enviada.');
-                            }
-                            $rootScope.$emit('relatedAgent.created', data);
-                        }).
-                        error(function(data, status){
-                            $rootScope.$emit('error', { message: "Cannot create related agent", data: data, status: status });
-                        });
-            },
-
-            remove: function(group, agentId){
-                return $http.post(this.getUrl('removeAgentRelation'), {group: group, agentId: agentId}).
+            setOwnerTo: function(agentId){
+                return $http.post(this.getUrl(), {ownerId: agentId}).
                     success(function(data, status){
-                        $rootScope.$emit('relatedAgent.removed', data);
+                        $rootScope.$emit('changedOwner', { message: "The entity owner was changed", data: data, status: status });
                     }).
                     error(function(data, status){
-                        $rootScope.$emit('error', { message: "Cannot remove related agent", data: data, status: status });
+                        $rootScope.$emit('error', { message: "Cannot change the owner", data: data, status: status });
                     });
-            },
-
-            giveControl: function(agentId){
-                return this.setControl(agentId, true);
-            },
-
-            removeControl: function(agentId){
-                return this.setControl(agentId, false);
-            },
-
-            setControl: function(agentId, hasControl){
-                return $http({
-                    method: 'POST',
-                    url: this.getUrl('setRelatedAgentControl'),
-                    data: {agentId: agentId, hasControl: hasControl}
-                }).success(function(data, status){
-                    $rootScope.$emit(hasControl ? 'relatedAgent.controlGiven' : 'relatedAgent.controlRemoved', data);
-                }).error(function(data, status){
-                    $rootScope.$emit('error', {
-                        message: hasControl ? "Cannot give control to related agent" : "Cannot remove control of related agent",
-                        data: data,
-                        status: status
-                    });
-                });
             }
         };
     }]);
 
-    module.controller('ChangeOwnerController', ['$scope', '$rootScope', 'ChangeOwnerService', 'EditBox', function($scope, $rootScope, ChangeOwnerService, EditBox) {
+    module.controller('ChangeOwnerController', ['$scope', '$rootScope', '$timeout', 'ChangeOwnerService', 'EditBox', function($scope, $rootScope, $timeout, ChangeOwnerService, EditBox) {
         $scope.editbox = EditBox;
-        
-        $scope.spinner = false;
+        $scope.data = {
+            spinner: false,
+            apiQuery: {
+                '@permissions': MapasCulturais.entity.userHasControl ? '!@control' : '@control'
+            }
+        };
+
+        var adjustBoxPosition = function(){
+            setTimeout(function(){
+                $('#change-owner-button').click();
+            });
+        };
+
+        $rootScope.$on('repeatDone:findEntity:find-entity-change-owner', adjustBoxPosition);
+        $scope.$watch('data.spinner', function(ov, nv){
+            if(ov && !nv)
+                adjustBoxPosition();
+        });
 
         $scope.requestEntity = function(e){
-            console.log(e);
+            ChangeOwnerService.setOwnerTo(e.id).success(function(data, status){
+                if(status === 202){
+                    MapasCulturais.Messages.alert('Sua requisição foi para mudança de propriedade da entidade para o agente <strong>'+e.name+'</strong> foi enviada.');
+                }else{
+                    $('.js-owner-name').html('<a href="' + e.singleUrl + '">' + e.name + '</a>');
+                    $('.js-owner-description').html(e.shortDescription);
+                    try{
+                        $('.js-owner-avatar').attr('src', e['@files:avatar.avatarSmall'].url);
+                    }catch(e){
+                        $('.js-owner-avatar').attr('src', MapasCulturais.defaultAvatarURL);
+                    }
+                }
+            });
+
+
         };
     }]);
 })(angular);
