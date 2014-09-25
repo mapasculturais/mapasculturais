@@ -7,7 +7,7 @@
         var baseUrl = MapasCulturais.baseURL + '/api/';
         function extend (query){
             return angular.extend(query, {
-                "@select": 'id,name,type,shortDescription,terms,avatar',
+                "@select": 'id,name,type,shortDescription,terms',
                 "@files": '(avatar.avatarSmall):url',
                 "@order": 'name'
             });
@@ -119,7 +119,8 @@
                 noResultsText: '@',
                 filter: '=',
                 select: '=',
-//                apiQuery: '='
+                onRepeatDone: '=',
+                apiQuery: '='
             },
 
             link: function($scope, el, attrs){
@@ -130,6 +131,8 @@
                 $scope.searchText = '';
 
                 $scope.noEntityFound = false;
+
+
 
                 $scope.avatarUrl = function(entity){
                     if(entity['@files:avatar.avatarSmall'])
@@ -144,7 +147,7 @@
 
                     var s = $scope.searchText.trim().replace(' ', '*');
 
-                    var query = {}; //angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
+                    var query = angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
 
                     query.name = 'ILIKE(*' + s + '*)';
 
@@ -309,7 +312,16 @@
                     }
                 };
             }
-        }
+        };
+    }]);
+
+
+    app.directive('onRepeatDone', ['$rootScope', function($rootScope) {
+        return function($scope, element, attrs) {
+            if ($scope.$last) {
+                $rootScope.$emit('repeatDone:' + attrs.onRepeatDone);
+            }
+        };
     }]);
 
 

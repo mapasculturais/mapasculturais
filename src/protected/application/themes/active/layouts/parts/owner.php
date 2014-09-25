@@ -4,7 +4,7 @@ if (is_editable() || "$entity" != "$owner"):
     if ($entity->isUserProfile)
         return;
     ?>
-    <footer class="meta" ng-controller="ChangeOwnerController">
+    <footer id='entity-owner' class="meta" ng-controller="ChangeOwnerController">
         <div class="dono clearfix js-owner">
             <p class="small bottom">Publicado por</p>
 
@@ -24,19 +24,25 @@ if (is_editable() || "$entity" != "$owner"):
                     title="Repassar propriedade"
                     ><?php echo $owner->name ?></h4>
                 <?php else: ?>
-                <h4><a href="<?php echo $app->createUrl('agent', 'single', array($owner->id)) ?>"><?php echo $owner->name ?></a></h4>
+                <h4 class='js-owner-name'><a href="<?php echo $app->createUrl('agent', 'single', array($owner->id)) ?>"><?php echo $owner->name ?></a></h4>
             <?php endif; ?>
 
             <img src="<?php echo $avatar_url; ?>" class="avatar js-owner-avatar" />
 
             <p class="descricao-do-agente js-owner-description"><?php echo nl2br($owner->shortDescription); ?></p>
-            <div class="clearfix staging-hidden">
+            <div class="clearfix">
                 <?php if (!is_editable() && !$app->user->is('guest')): ?>
-                    <a class="action" href="#">Reportar erro</a>
-                    <a class="action" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedade</a>
-                    
-                    <edit-box id="editbox-change-owner" position="bottom" title="Reivindicar propriedade" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="spinner">
-                        <find-entity entity="agent" no-results-text="Nenhum agente encontrado" select="requestEntity" spinner-condition="spinner" ></find-entity>
+                    <a class="action staging-hidden" href="#">Reportar erro</a>
+                    <?php if($entity->canUser('@control')): ?>
+                        <a id="change-owner-button" class="action" ng-click="editbox.open('editbox-change-owner', $event)">Ceder propriedade</a>
+                    <?php else: ?>
+                        <a id="change-owner-button" class="action" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedade</a>
+                    <?php endif; ?>
+                    <style>
+                        #editbox-change-owner .edit-box { max-width:350px; }
+                    </style>
+                    <edit-box id="editbox-change-owner" position="right" title="Selecione o agente para o qual você deseja passar a propriedade deste <?php echo strtolower($entity->getEntityType()) ?>" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.spinner">
+                        <find-entity id='find-entity-change-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
                     </edit-box>
                 <?php endif; ?>
             </div>

@@ -802,9 +802,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                     if($permissions){
                         foreach($permissions as $perm){
-                            if(!$r->canUser(trim($perm))){
-                                $r = null;
-                                break;
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($r->canUser(substr($perm, 1))){
+                                    $r = null;
+                                    break;
+                                }
+                            }else{
+                                if(!$r->canUser($perm)){
+                                    $r = null;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -824,9 +832,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 if(is_array($permissions)){
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                        foreach($permissions as $perm)
-                            if(!$entity->canUser($perm))
-                                return false;
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($entity->canUser(substr($perm,1)))
+                                    return false;
+                            }else{
+                                if(!$entity->canUser($perm))
+                                    return false;
+                            }
+                        }
 
                         return true;
                     }));

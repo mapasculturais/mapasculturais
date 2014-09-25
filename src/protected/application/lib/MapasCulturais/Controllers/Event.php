@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Event Controller
@@ -10,12 +11,13 @@ use MapasCulturais\App;
  *
  */
 class Event extends EntityController {
-    use \MapasCulturais\Traits\ControllerUploads,
-        \MapasCulturais\Traits\ControllerTypes,
-        \MapasCulturais\Traits\ControllerMetaLists,
-        \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable,
-        \MapasCulturais\Traits\ControllerSoftDelete;
+    use Traits\ControllerUploads,
+        Traits\ControllerTypes,
+        Traits\ControllerMetaLists,
+        Traits\ControllerAgentRelation,
+        Traits\ControllerVerifiable,
+        Traits\ControllerSoftDelete,
+        Traits\ControllerChangeOwner;
 
     /**
      * Creates a new Event
@@ -79,11 +81,11 @@ class Event extends EntityController {
         $occurrences_readable = array();
 
         $events = $app->repo('Event')->findBySpace($space, $date_from, $date_to);
-        
+
         $event_ids = array_map(function($e) {
             return $e->id;
         }, $events);
-        
+
 
         foreach($events as $e){
             $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
@@ -102,7 +104,7 @@ class Event extends EntityController {
         if($event_ids){
             $event_data = $query_data;
             $event_data['id'] = 'IN(' . implode(',', $event_ids) .')';
-            
+
             $result = $this->apiQuery($event_data);
 
             if(is_array($result)){
