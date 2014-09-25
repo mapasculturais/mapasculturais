@@ -209,14 +209,6 @@ var hl;
             alwaysVisible: true,
             railVisible: true
         });
-        $('.notificacoes .submenu ul').slimScroll({
-            position: 'right',
-            distance: '0px',
-            color: '#000',
-            height: '316px',
-            alwaysVisible: true,
-            railVisible: true
-        });
         $('.js-slimScroll').each(function() {
             $(this).slimScroll({
                 position: 'right',

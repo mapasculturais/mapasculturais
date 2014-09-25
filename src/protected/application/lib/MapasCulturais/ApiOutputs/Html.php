@@ -56,7 +56,7 @@ class Html extends \MapasCulturais\ApiOutput{
                     <?php foreach($item as $k => $v): ?><?php
                         if($k==='terms'){
                             if(property_exists($v, 'area')){ ?><th><?php echo mb_convert_encoding($this->translate['area'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
-                            if(property_exists($v, 'area')){ ?><th><?php echo mb_convert_encoding($this->translate['tag'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
+                            if(property_exists($v, 'tag')){ ?><th><?php echo mb_convert_encoding($this->translate['tag'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
 
                         }elseif(strpos($k,'@files')===0){
                             continue;
@@ -167,9 +167,7 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
-        if($data){
-            if(!key_exists('type',$data[0]))
-                die('@select entity type property is mandatory. Aborting');
+        if($data && key_exists('type',$data[0]) && !empty($data[0]['type']) ){
             $singular_object_name = $this->translate[$data[0]['type']->entity_class];
             $plural_object_name = $singular_object_name.'s';
         }

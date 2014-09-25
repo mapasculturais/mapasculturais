@@ -52,9 +52,9 @@
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
                     <?php if ($app->auth->isUserAuthenticated()): ?>
-                        <?php if($app->user->notifications): ?>
-                        <li class="notificacoes">
-                            <a href="#">
+
+                        <li ng-if="true" class="notificacoes" ng-controller="NotificationController">
+                            <a>
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>
                             </a>
@@ -63,34 +63,24 @@
                                     <div class="setinha"></div>
                                     <div class="clearfix">
                                         <h6 class="alignleft">Notificações</h6>
-                                        <a href="#" class="hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
+                                        <a href="#" style="display:none" class="staging-hidden hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
                                     </div>
                                     <ul>
-                                        <?php foreach($app->user->notifications as $notification): ?>
-                                        <li>
+                                        <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
                                             <p class="notificacao clearfix">
-                                                <?php echo $notification->message ?>.<br />
-                                                <span class="small">Há <?php
-                                                    $diff = $notification->createTimestamp->diff(new DateTime());
-                                                    if($diff->y)
-                                                        echo $diff->y . ($diff->y > 1 ? ' anos' : ' ano');
-                                                    else if($diff->m)
-                                                        echo $diff->m . ($diff->m > 1 ? ' meses' : ' mês');
-                                                    else if($diff->d)
-                                                        echo $diff->d . ($diff->d > 1 ? ' dias' : ' dia');
-                                                    else if($diff->h)
-                                                        echo $diff->h . ($diff->h > 1 ? ' horas' : ' hora');
-                                                    else if($diff->i)
-                                                        echo $diff->i . ($diff->i > 1 ? ' minutos' : ' minuto');
-                                                    else
-                                                        echo $diff->s . ($diff->s > 1 ? ' segundos' : ' segundo');
-
-                                                ?></span>
+                                                <span ng-bind-html="notification.message"></span>
+                                                <br>
+                                                <span ng-if="notification.isRequest">
+                                                    <a class="action" ng-click="approve(notification.id)">aceitar</a>
+                                                    <a class="action" ng-click="reject(notification.id)">rejeitar</a>
+                                                </span>
+                                                <span ng-if="!notification.isRequest">
+                                                    <a class="action" ng-click="delete(notification.id)">ok</a>
+                                                </span>
                                             </p>
                                         </li>
-                                        <?php endforeach; ?>
                                     </ul>
-                                    <a href="#">
+                                    <a href="<?php echo $app->createUrl('panel');?>">
                                         Ver todas atividades
                                     </a>
                                 </li>
@@ -98,7 +88,7 @@
                             <!--.submenu-->
                         </li>
                         <!--.notificacoes-->
-                    <?php endif; ?>
+
                         <li class="usuario">
                             <a href="<?php echo $app->createUrl('panel'); ?>">
                                 <div class="avatar">

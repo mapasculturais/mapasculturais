@@ -125,6 +125,13 @@ abstract class Request extends \MapasCulturais\Entity{
      */
     protected $metadata = array();
 
+
+    private $_origin = null;
+
+    private $_destination = null;
+
+
+
     public function __construct() {
         $this->requesterUser = App::i()->user;
         parent::__construct();
@@ -135,21 +142,31 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     function setOrigin(\MapasCulturais\Entity $entity){
+        $this->_origin = $entity;
+
         $this->originType = $entity->getClassName();
         $this->originId   = $entity->id;
     }
 
     function getOrigin(){
-        return App::i()->repo($this->originType)->find($this->originId);
+        if($this->_origin)
+            return $this->_origin;
+        else
+            return App::i()->repo($this->originType)->find($this->originId);
     }
 
     function setDestination(\MapasCulturais\Entity $entity){
+        $this->_destination = $entity;
+
         $this->destinationType = $entity->getClassName();
         $this->destinationId   = $entity->id;
     }
 
     function getDestination(){
-        return App::i()->repo($this->destinationType)->find($this->destinationId);
+        if($this->_destination)
+            return $this->_destination;
+        else
+            return App::i()->repo($this->destinationType)->find($this->destinationId);
     }
 
     protected function getMetadata(){

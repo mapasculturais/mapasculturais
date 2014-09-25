@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'angularSpinner', 'ngSanitize']);
+    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'angularSpinner', 'ngSanitize']);
 
     app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
         var baseUrl = MapasCulturais.baseURL + '/api/';
@@ -143,9 +143,9 @@
                         $timeout.cancel(timeouts.find);
 
                     var s = $scope.searchText.trim().replace(' ', '*');
-                    
+
                     var query = {}; //angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
-                    
+
                     query.name = 'ILIKE(*' + s + '*)';
 
                     timeouts.find = $timeout(function(){

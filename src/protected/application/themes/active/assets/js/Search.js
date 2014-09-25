@@ -137,7 +137,7 @@
         return skeleton;
     };
 
-    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'FindOneService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date']);
+    var app = angular.module('search', ['ng-mapasculturais', 'SearchService', 'FindOneService', 'SearchMap', 'SearchSpatial', 'rison', 'infinite-scroll', 'ui.date', 'Notifications']);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService){
         $scope.defaultLocationRadius = defaultLocationRadius;

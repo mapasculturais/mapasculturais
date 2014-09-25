@@ -84,13 +84,17 @@ class Notification extends \MapasCulturais\Entity{
     function getOwnerUser() {
         return $this->user;
     }
-    
+
     function getApproveUrl(){
         return $this->getController()->createUrl('approve', array($this->id));
     }
-    
+
     function getRejectUrl(){
         return $this->getController()->createUrl('reject', array($this->id));
+    }
+
+    function getIsRequest(){
+        return (bool) $this->request;
     }
 
     protected function canUserCreate($user){

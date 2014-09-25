@@ -313,6 +313,7 @@ function mapasculturais_head($entity = null){
     <script type="text/javascript">
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
+            userId: <?php echo $app->user->is('guest') ? 'null' : $app->user->id; ?>,
             vectorLayersURL: "<?php echo $app->baseUrl . $app->config['vectorLayersPath']; ?>",
             assetURL: '<?php echo $app->assetUrl ?>',
             request: {
@@ -413,6 +414,10 @@ $app->hook('view.render(<<*>>):before', function() use($app) {
     $app->enqueueScript('vendor', 'poshytip', '/vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
     $app->enqueueScript('vendor', 'x-editable', '/vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
     $app->enqueueScript('app', 'editable', '/js/editable.js', array('mapasculturais'));
+
+    $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
+    $app->enqueueScript('app', 'notifications', '/js/Notifications.js', array('mapasculturais'));
+
 
     if ($app->config('mode') == 'staging')
         $app->enqueueStyle('app', 'staging', '/css/staging.css', array('style'));
