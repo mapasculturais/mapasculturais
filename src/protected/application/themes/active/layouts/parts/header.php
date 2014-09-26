@@ -53,7 +53,8 @@
                 <ul class="menu logado clearfix">
                     <?php if ($app->auth->isUserAuthenticated()): ?>
 
-                        <li ng-if="true" class="notificacoes" ng-controller="NotificationController">
+                        <li class="notificacoes" ng-controller="NotificationController" ng-hide="data.length==0">
+
                             <a>
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>

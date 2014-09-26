@@ -12,7 +12,7 @@
         service.get = function (){
             var deferred = $q.defer();
             $http.get(
-                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,createTimestamp,message,approveUrl'
+                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,createTimestamp,message,approveUrl&user=eq(@me)'
             ).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
@@ -34,10 +34,15 @@
         return service;
     }]);
 
-    module.controller('NotificationController', ['$log', '$sce', '$scope', '$rootScope', 'NotificationService', function($log, $sce, $scope, $rootScope, NotificationService){
+    module.controller('NotificationController', ['$log', '$sce', '$scope', '$rootScope', '$interval', 'NotificationService', function($log, $sce, $scope, $rootScope, $interval, NotificationService){
+
         $scope.panelURI = MapasCulturais.baseURL+'panel';
-        $scope.data = [];
-        console.log('NotificationController');
+        
+        MapasCulturais.notifications.forEach(function(value,index){
+            MapasCulturais.notifications[index].message = $sce.trustAsHtml(value.message);
+        });
+        $scope.data = MapasCulturais.notifications;
+
         var getNotifications = function (){
             console.log('getNotifications');
             NotificationService.get().then(function(data){
@@ -48,7 +53,10 @@
                 $scope.data = data;
             });
         };
-        getNotifications();
+
+        $interval(function(){
+            getNotifications();
+        }, 60*1000);
 
         $scope.approve = function(id){
             NotificationService.updateOne(id,'approve').then(getNotifications);

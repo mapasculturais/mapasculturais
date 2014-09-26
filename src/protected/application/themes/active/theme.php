@@ -8,6 +8,15 @@ $app = App::i();
 /* === NOTIFICATIONS  === */
 // para todos os requests
 $app->hook('workflow(<<*>>).create', function() use($app){
+
+    if($this->notifications){
+        $app->disableAccessControl();
+        foreach($this->notifications as $n){
+            $n->delete();
+        }
+        $app->enableAccessControl();
+    }
+
     $requester = $app->user;
     $profile = $requester->profile;
 
@@ -328,8 +337,13 @@ function mapasculturais_head($entity = null){
                 ownerUserId: <?php echo $entity->ownerUser->id ? $entity->ownerUser->id : 'null' ?>
             },
             <?php endif; ?>
-            mode: "<?php echo $app->config('mode'); ?>"
+            mode: "<?php echo $app->config('mode'); ?>",
+            <?php if(!$app->user->is('guest')): ?>
+                notifications: <?php echo json_encode($app->user->notifications); ?>
+            <?php endif; ?>
+
         };
+
     </script>
     <?php
     $app->printStyles('vendor');
