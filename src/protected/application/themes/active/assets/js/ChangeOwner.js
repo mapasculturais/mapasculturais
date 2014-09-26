@@ -65,7 +65,7 @@
         $scope.requestEntity = function(e){
             ChangeOwnerService.setOwnerTo(e.id).success(function(data, status){
                 if(status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição foi para mudança de propriedade da entidade para o agente <strong>'+e.name+'</strong> foi enviada.');
+                    MapasCulturais.Messages.alert('Sua requisição foi para mudança de propriedade deste ' + MapasCulturais.entity.getTypeName() + ' para o agente <strong>'+e.name+'</strong> foi enviada.');
                 }else{
                     $('.js-owner-name').html('<a href="' + e.singleUrl + '">' + e.name + '</a>');
                     $('.js-owner-description').html(e.shortDescription);
@@ -77,7 +77,7 @@
                 }
             });
 
-
+            EditBox.close('editbox-change-owner');
         };
     }]);
 })(angular);
