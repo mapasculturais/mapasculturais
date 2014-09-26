@@ -101,6 +101,9 @@ class Notification extends \MapasCulturais\Entity{
         return !$user->is('guest');
     }
 
+
+
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

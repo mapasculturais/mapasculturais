@@ -71,13 +71,23 @@
                                             <p class="notificacao clearfix">
                                                 <span ng-bind-html="notification.message"></span>
                                                 <br>
-                                                <span ng-if="notification.isRequest">
-                                                    <a class="action" ng-click="approve(notification.id)">aceitar</a>
-                                                    <a class="action" ng-click="reject(notification.id)">rejeitar</a>
+
+                                                <a ng-if="notification.request.permissionTo.approve" class="action" ng-click="approve(notification.id)">aceitar</a>
+
+                                                <span ng-if="notification.request.permissionTo.reject">
+                                                    <span ng-if="notification.request.requesterUser.id===MapasCulturais.userId">
+                                                        <a class="action" ng-click="reject(notification.id)">cancelar</a>
+                                                        <a class="action" ng-click="delete(notification.id)">ok</a>
+                                                    </span>
+                                                    <span ng-if="notification.request.requesterUser.id!==MapasCulturais.userId">
+                                                        <a class="action" ng-click="reject(notification.id)">rejeitar</a>
+                                                    </span>
                                                 </span>
+
                                                 <span ng-if="!notification.isRequest">
                                                     <a class="action" ng-click="delete(notification.id)">ok</a>
                                                 </span>
+
                                             </p>
                                         </li>
                                     </ul>

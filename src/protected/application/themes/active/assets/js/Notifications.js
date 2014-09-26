@@ -12,7 +12,7 @@
         service.get = function (){
             var deferred = $q.defer();
             $http.get(
-                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,createTimestamp,message,approveUrl&user=eq(@me)'
+                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id&user=eq(@me)'
             ).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
@@ -37,7 +37,8 @@
     module.controller('NotificationController', ['$log', '$sce', '$scope', '$rootScope', '$interval', 'NotificationService', function($log, $sce, $scope, $rootScope, $interval, NotificationService){
 
         $scope.panelURI = MapasCulturais.baseURL+'panel';
-        
+        $scope.MapasCulturais = MapasCulturais;
+
         MapasCulturais.notifications.forEach(function(value,index){
             MapasCulturais.notifications[index].message = $sce.trustAsHtml(value.message);
         });

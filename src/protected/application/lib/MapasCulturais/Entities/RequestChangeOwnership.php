@@ -44,8 +44,8 @@ class RequestChangeOwnership extends Request{
 
     protected function canUserReject($user){
         if($this->getType() === self::TYPE_REQUEST)
-            return $this->origin->owner->canUser('@control', $user);
+            return $this->destination->canUser('@control', $user);
         else
-            return $this->destination->canUser('@control', $user) || $this->origin->ownerUser->canUser('@control');
+            return $this->origin->owner->canUser('@control', $user) || $this->origin->ownerUser->canUser('@control');
     }
 }

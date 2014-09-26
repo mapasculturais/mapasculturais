@@ -39,19 +39,20 @@ class Notification extends EntityController {
 
     function ALL_approve(){
         $this->requireAuthentication();
-        
+
         $app = App::i();
 
         $notification = $this->requestedEntity;
-        
+
         if(!$notification || !$notification->request)
             $app->pass();
 
         $request = $notification->request;
-        
+
         $request->approve();
-        
-        
+
+        $app->em->refresh($request);
+
         $app->disableAccessControl();
         $request->delete(true);
         $app->enableAccessControl();
@@ -68,20 +69,22 @@ class Notification extends EntityController {
         $this->requireAuthentication();
 
         $app = App::i();
-        
+
         $notification = $this->requestedEntity;
-        
+
         if(!$notification || !$notification->request)
             $app->pass();
 
         $request = $notification->request;
 
         $request->reject();
-        
+
+        $app->em->refresh($request);
+
         $app->disableAccessControl();
         $request->delete(true);
         $app->enableAccessControl();
-        
+
         if($this->isAjax()){
             $this->json(true);
         }else{

@@ -339,7 +339,12 @@ function mapasculturais_head($entity = null){
             <?php endif; ?>
             mode: "<?php echo $app->config('mode'); ?>",
             <?php if(!$app->user->is('guest')): ?>
-                notifications: <?php echo json_encode($app->user->notifications); ?>
+                notifications: <?php
+                echo json_encode( $app->controller('notification')->apiQuery( array(
+                    '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
+                    'user' => 'eq(@me)'
+                )));
+                ?>
             <?php endif; ?>
 
         };
