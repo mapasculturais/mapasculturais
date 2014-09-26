@@ -1,0 +1,102 @@
+(function(angular){
+    "use strict";
+
+    var module = angular.module('Notifications', []);
+
+    module.factory('NotificationService', ['$log','$http', '$q', '$rootScope', function($log, $http, $q, $rootScope){
+
+        var service = {};
+
+        service.url = MapasCulturais.baseURL + 'notification/';
+
+        service.get = function (){
+            var deferred = $q.defer();
+            $http.get(
+                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,createTimestamp,message,approveUrl'
+            ).success(function(data){
+                deferred.resolve(data);
+            }).error(function(){
+                deferred.reject('There was an error');
+            });
+            return deferred.promise;
+        };
+        service.updateOne = function(id, action){
+            var deferred = $q.defer();
+            $http.get(
+                service.url+action+'/'+id)
+            .success(function(data){
+                deferred.resolve(data);
+            }).error(function(){
+                deferred.reject('There was an error');
+            });
+            return deferred.promise;
+        };
+        return service;
+    }]);
+
+    module.controller('NotificationController', ['$log', '$sce', '$scope', '$rootScope', 'NotificationService', function($log, $sce, $scope, $rootScope, NotificationService){
+        $scope.panelURI = MapasCulturais.baseURL+'panel';
+        $scope.data = [];
+        console.log('NotificationController');
+        var getNotifications = function (){
+            console.log('getNotifications');
+            NotificationService.get().then(function(data){
+                console.log(data);
+                data.forEach(function(value,index){
+                    data[index].message = $sce.trustAsHtml(value.message);
+                });
+                $scope.data = data;
+            });
+        };
+        getNotifications();
+
+        $scope.approve = function(id){
+            NotificationService.updateOne(id,'approve').then(getNotifications);
+        };
+        $scope.reject = function(id){
+            NotificationService.updateOne(id,'reject').then(getNotifications);
+        };
+        $scope.delete = function(id){
+            NotificationService.updateOne(id,'delete').then(getNotifications);
+        };
+
+        $scope.adjustScroll = function(){
+            $('.notificacoes .submenu ul').slimScroll({
+                position: 'right',
+                distance: '0px',
+                color: '#000',
+                height: '316px',
+                alwaysVisible: true,
+                railVisible: true
+            });
+        };
+    }]);
+
+    module.directive('onLastRepeat', function() {
+        return function(scope, element, attrs) {
+            if (scope.$last) { // all are rendered
+                scope.$evalAsync(attrs.onLastRepeat);
+            }
+        };
+    });
+
+    angular.element(document).ready(function(){
+        var app = null;
+        //checks existence of default search and Entity (singles') angular modules
+        ['search', 'Entity'].forEach(function(moduleName){
+            if(!app){
+                try{
+                    app = angular.module(moduleName);
+                }catch(e){}
+            }
+        });
+        //if not found, bootstraps notification modules
+        if(!app)
+            angular.bootstrap(document, ['Notifications']);
+        app = angular.module('Notifications');
+        console.log(app);
+    });
+
+})(angular);
+
+
