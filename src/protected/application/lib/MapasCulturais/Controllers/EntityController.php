@@ -760,14 +760,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $prop = trim($prop);
                     try{
                         if(strpos($prop, '.')){
-
                             $props = explode('.',$prop);
                             $current_object = $r;
-                            foreach($props as $p){
-                                $current_object = $current_object->$p;
-
-                                if(!is_object($current_object))
+                            foreach($props as $pk => $p){
+                                if($p === 'permissionTo' && $pk === count($props) - 2){
+                                    $current_object = $current_object->canUser($props[$pk + 1]);
                                     break;
+                                }else{
+                                    $current_object = $current_object->$p;
+
+                                    if(!is_object($current_object))
+                                        break;
+
+                                }
                             }
 
                             $prop_value = $current_object;
