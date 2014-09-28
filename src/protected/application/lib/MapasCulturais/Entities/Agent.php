@@ -29,7 +29,9 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityNested;
+        Traits\EntityNested {
+            Traits\EntityNested::setParent as netedSetParent;
+        }
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -252,10 +254,8 @@ class Agent extends \MapasCulturais\Entity
             $this->_newParent = $user->profile;
     }
 
-    private $_newParent = false;
-
     function setParent(Agent $parent = null){
-        $this->_newParent = $parent;
+        $this->nestedSetParent($parent);
         if($parent)
             $this->setUser($parent->user);
     }
