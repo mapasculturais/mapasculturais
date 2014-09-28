@@ -437,6 +437,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     protected function apiAddHeaderMetadata($data){
+        if (headers_sent())
+            return;
+        
         $response_meta = array(
             'count' => count($data)
         );
@@ -1005,7 +1008,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         }else{
             $app = App::i();
             if(trim($value) === '@me'){
-                $value = $app->user;
+                $value = $app->user->is('guest') ? null : $app->user;
             }elseif(strpos($value,'@me.') === 0){
                 $v = str_replace('@me.', '', $value);
                 $value = $app->user->$v;
