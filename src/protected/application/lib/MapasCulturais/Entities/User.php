@@ -281,9 +281,33 @@ class User extends \MapasCulturais\Entity
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 
-    function getNotifications(){
-        $app = App::i();
-        return $app->repo('Notification')->findBy(array('user' => $this), array('createTimestamp' => 'DESC'));
+    function getNotifications($status = null){
+        if(is_null($status)){
+            $status_operator =  '>';
+            $status = '0';
+            
+        }else{
+            $status_operator =  '=';
+        }
+        $dql = "
+            SELECT
+                e
+            FROM
+                MapasCulturais\Entities\Notification e
+            WHERE
+                e.status $status_operator :status AND
+                e.user = :user
+            ORDER BY
+                e.createTimestamp ASC
+        ";
+        $query = App::i()->em->createQuery($dql);
+
+        $query->setParameter('user', $this);
+        $query->setParameter('status', $status);
+
+        $entityList = $query->getResult();
+        return $entityList;
+        
     }
 
     //============================================================= //
