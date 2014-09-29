@@ -61,17 +61,14 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->user = 'normal';
 
         $another_user = $this->getRandomEntity('User', 'e.id != ' . $app->user->id);
-
+        
         foreach($this->entities as $class => $plural){
             $this->assertPermissionDenied(function() use ($class, $another_user){
                 $entity = $this->getNewEntity($class);
-
-                if($class === 'Agent'){
-                    $entity->user = $another_user;
-                }else
-                    $entity->ownerId = $another_user->profile->id;
-
+                
+                $entity->owner = $another_user->profile;
                 $entity->save(true);
+                
             }, "Asserting that a normal user CANNOT create $plural to another user.");
         }
 
@@ -84,10 +81,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($class, $another_user){
                 $entity = $this->getNewEntity($class);
 
-                if($class === 'Agent')
-                    $entity->user = $another_user;
-                else
-                    $entity->ownerId = $another_user->profile->id;
+                $entity->owner = $another_user->profile;
 
                 $entity->save(true);
             }, "Asserting that a super admin user CAN create $plural to another user.");

@@ -27,7 +27,7 @@ trait EntityNested{
         $this->setParent($parent);
     }
 
-    private $_newParent = null;
+    protected $_newParent = false;
 
     function setParent(\MapasCulturais\Entity $parent = null){
         if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
@@ -89,6 +89,7 @@ trait EntityNested{
                 $request = new \MapasCulturais\Entities\RequestChildEntity;
                 $request->origin = $this;
                 $request->destination = $this->_newParent;
+                $this->_newParent = false;
 
                 throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
             }

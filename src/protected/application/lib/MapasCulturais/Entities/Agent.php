@@ -229,8 +229,8 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getOwner(){
-        if($this->parent){
-            return $this->parent;
+        if($parent = $this->getParent()){
+            return $parent;
         }else{
             return $this->user ? $this->user->profile : App::i()->user->profile;
         }
@@ -266,6 +266,9 @@ class Agent extends \MapasCulturais\Entity
 
     protected function _saveNested($flush = false) {
         if($this->_newParent !== false){
+            if(is_object($this->parent) && is_object($this->_newParent) && $this->parent->equals($this->_newParent) || is_null($this->parent) && is_null($this->_newParent))
+                    return;
+            
             $app = App::i();
             try{
                 $this->checkPermission('changeOwner');
@@ -280,6 +283,7 @@ class Agent extends \MapasCulturais\Entity
                     throw $e;
 
                 $destination = $this->_newParent;
+                $this->_newParent = false;
 
                 $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
                 $ar->origin = $this;

@@ -88,17 +88,20 @@ class WorkflowTest extends MapasCulturais_TestCase{
             $entity->owner = $user1->profile;
 
             $entity->save(true);
+            
+            $this->app->em->refresh($entity);
 
             $request = null;
 
             // create the request
             try{
                 $entity->owner = $user2->profile;
-
                 $entity->save();
             } catch (MapasCulturais\Exceptions\WorkflowRequest $e) {
                 $request = $e->requests[0];
             }
+            
+            echo "\n{$user1->profile->id} |||| {$user2->profile->id}";
             
             $this->assertInstanceOf('MapasCulturais\Entities\RequestChangeOwnership', $request, "asserting that the request was created");
 
