@@ -7,7 +7,7 @@
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <?php mapasculturais_head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
-        <script src="<?php echo $assetURL ?>/js/html5.js" type="text/javascript"></script>
+        <script src="<?php $this->asset('js/html5.js'); ?>" type="text/javascript"></script>
         <![endif]-->
     </head>
 
