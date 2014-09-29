@@ -8,7 +8,8 @@ class Event extends \MapasCulturais\Repository{
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         if($space instanceof \MapasCulturais\Entities\Space){
-            $ids = $space->id;
+            $ids = $space->getChildrenIds();
+            $ids[] = $space->id;
 
         }elseif($space && is_array($space) && is_object($space[0]) ){
             $ids = array(-1);
