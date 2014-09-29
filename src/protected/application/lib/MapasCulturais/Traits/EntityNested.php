@@ -27,17 +27,12 @@ trait EntityNested{
         $this->setParent($parent);
     }
 
-    function setParent($parent){
+    private $_newParent = null;
 
-        //Added this case to remove parent from the entity
-        if($parent === null){
-            $this->parent = null;
+    function setParent(\MapasCulturais\Entity $parent = null){
+        if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
-        }elseif(!is_object($parent)){
-            return;
-        }
 
-        $parent->checkPermission('createChild');
 
         $error1 = App::txt('O pai não pode ser o filho.');
         $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
@@ -62,7 +57,7 @@ trait EntityNested{
         if(!$this->_validationErrors['parent'])
             unset($this->_validationErrors['parent']);
 
-        $this->parent = $parent;
+        $this->_newParent = $parent;
     }
 
     /**
@@ -76,5 +71,27 @@ trait EntityNested{
         }
 
         return $result;
+    }
+
+
+    protected function _saveNested(){
+        if($this->_newParent !== false){
+            try{
+                if($this->_newParent)
+                    $this->_newParent->checkPermission('createChild');
+
+                $this->parent = $this->_newParent;
+
+            }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+                if(!App::i()->isWorkflowEnabled())
+                    throw $e;
+
+                $request = new \MapasCulturais\Entities\RequestChildEntity;
+                $request->origin = $this;
+                $request->destination = $this->_newParent;
+
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
+            }
+        }
     }
 }

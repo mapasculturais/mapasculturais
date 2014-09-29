@@ -33,6 +33,7 @@ add_occurrence_frequencies_to_js();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         <div class="infos">
+            {{#pending}}<span class="pending">Aguardando confirmação</span>{{/pending}}
             <p><span class="label">Descrição Legível: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
@@ -281,6 +282,7 @@ add_occurrence_frequencies_to_js();
 
                                 foreach ($occurrences as $occurrence) {
                                     $templateData = json_decode(json_encode($occurrence));
+                                    $templateData->pending = $occurrence->status === MapasCulturais\Entities\EventOccurrence::STATUS_PENDING;
                                     if(!is_object($templateData->rule))
                                         $templateData->rule = new stdclass;
                                     $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
@@ -295,6 +297,9 @@ add_occurrence_frequencies_to_js();
                                 }
 
                             }else{
+                                $occurrences = array_filter($occurrences, function($e){
+                                    return $e->status > 0;
+                                });
 
                                 $spaces = getOccurrencesBySpace($occurrences);
 

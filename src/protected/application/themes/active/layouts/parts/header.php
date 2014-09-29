@@ -52,8 +52,10 @@
                 <!--.menu.abas-objetos-->
                 <ul class="menu logado clearfix">
                     <?php if ($app->auth->isUserAuthenticated()): ?>
-                        <li class="notificacoes staging-hidden">
-                            <a href="#">
+
+                        <li class="notificacoes" ng-controller="NotificationController" ng-hide="data.length==0">
+
+                            <a>
                                 <div class="icone icon_comment"></div>
                                 <div>Notificações</div>
                             </a>
@@ -62,17 +64,34 @@
                                     <div class="setinha"></div>
                                     <div class="clearfix">
                                         <h6 class="alignleft">Notificações</h6>
-                                        <a href="#" class="hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
+                                        <a href="#" style="display:none" class="staging-hidden hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
                                     </div>
                                     <ul>
-                                        <li>
+                                        <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
                                             <p class="notificacao clearfix">
-                                                <a href="#">Fulano</a> aprovou seu <a href="#">evento</a> no <a href="#">teatro</a>.<br />
-                                                <span class="small">Há 00min.</span>
+                                                <span ng-bind-html="notification.message"></span>
+                                                <br>
+
+                                                <a ng-if="notification.request.permissionTo.approve" class="action" ng-click="approve(notification.id)">aceitar</a>
+
+                                                <span ng-if="notification.request.permissionTo.reject">
+                                                    <span ng-if="notification.request.requesterUser.id===MapasCulturais.userId">
+                                                        <a class="action" ng-click="reject(notification.id)">cancelar</a>
+                                                        <a class="action" ng-click="delete(notification.id)">ok</a>
+                                                    </span>
+                                                    <span ng-if="notification.request.requesterUser.id!==MapasCulturais.userId">
+                                                        <a class="action" ng-click="reject(notification.id)">rejeitar</a>
+                                                    </span>
+                                                </span>
+
+                                                <span ng-if="!notification.isRequest">
+                                                    <a class="action" ng-click="delete(notification.id)">ok</a>
+                                                </span>
+
                                             </p>
                                         </li>
                                     </ul>
-                                    <a href="#">
+                                    <a href="<?php echo $app->createUrl('panel');?>">
                                         Ver todas atividades
                                     </a>
                                 </li>
@@ -80,6 +99,7 @@
                             <!--.submenu-->
                         </li>
                         <!--.notificacoes-->
+
                         <li class="usuario">
                             <a href="<?php echo $app->createUrl('panel'); ?>">
                                 <div class="avatar">

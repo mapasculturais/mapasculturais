@@ -20,19 +20,15 @@ trait ControllerAgentRelation{
 
         $owner = $this->repository->find($this->data['id']);
 
+
         if(key_exists('agentId', $this->postData)){
             $agent = $app->repo('Agent')->find($this->data['agentId']);
         }else{
-            $agent = new \MapasCulturais\Entities\Agent;
-            $agent->status = key_exists('invite', $this->postData) && $this->postData['invite'] ? Agent::STATUS_INVITED : Agent::STATUS_RELATED;
-
-            foreach($this->postData['agent'] as $prop => $val){
-                $agent->$prop = $val;
-            }
-            $agent->save(true);
+            $app->pass();
         }
 
-        $this->json($owner->createAgentRelation($agent, $this->postData['group'], $has_control));
+        $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        $this->_finishRequest($relation, true);
 
     }
 
@@ -61,7 +57,7 @@ trait ControllerAgentRelation{
     public function POST_setRelatedAgentControl(){
         $this->requireAuthentication();
         $app = App::i();
-        
+
         if(!$this->urlData['id'])
             $app->pass();
 

@@ -24,9 +24,7 @@ return array(
     'app.siteName' => 'Mapas Culturais',
     'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
 
-
     'api.accessControlAllowOrigin' => '*',
-
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -56,7 +54,12 @@ return array(
     'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
-    'app.apiCache.lifetime' => 600,
+    'app.apiCache.lifetime' => 120,
+    
+    'app.apiCache.lifetimeByController' => array(
+        'notification' => 0,
+        'event' => 25
+    ),
 
     'app.useRegisterCache' => true,
     'app.registerCache.lifeTime' => 600,
@@ -124,7 +127,11 @@ return array(
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
-            'como-usar' => array('site',    'page', array('como-usar'))
+            'como-usar' => array('site',    'page', array('como-usar')),
+
+            // workflow actions
+            'aprovar-notificacao' => array('notification', 'approve'),
+            'rejeitar-notificacao' => array('notification', 'reject'),
         ),
         'controllers' => array(
             'painel'         => 'panel',

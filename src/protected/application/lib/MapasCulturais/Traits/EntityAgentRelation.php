@@ -21,26 +21,28 @@ trait EntityAgentRelation {
         return $this->getClassName() . 'AgentRelation';
     }
 
-    function getAgentRelations($has_control = null){
+    function getAgentRelations($has_control = null, $include_pending_relations = false){
         if(!$this->id)
             return array();
 
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
             return array();
-        
+
         $params = array(
             'owner' => $this,
+            'statuses' => $include_pending_relations ? array($relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING) : array($relation_class::STATUS_ENABLED),
             'in' => array(Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED)
         );
-        
+
         $dql_has_control = '';
-        
+
         if(is_bool($has_control)){
             $params['has_control'] = $has_control;
             $dql_has_control = "ar.hasControl = :has_control AND";
         }
-        
+
+
         $dql = "
             SELECT
                 ar,
@@ -52,7 +54,7 @@ trait EntityAgentRelation {
                 JOIN a.user u
             WHERE
                 ar.owner = :owner AND
-                ar.status > 0 AND
+                ar.status IN (:statuses) AND
                 $dql_has_control
                 a.status IN (:in)
             ORDER BY a.name";
@@ -71,11 +73,9 @@ trait EntityAgentRelation {
      * If the group name is given returns all agents related to this entity with the given group, otherwise
      * returns all related agents grouped by the group name.
      *
-     * @todo Terminar esta função.
-     *
      * @return \MapasCulturais\Entities\Agent[] The Agents related to this entity.
      */
-    function getRelatedAgents($group = null, $return_relations = false){
+    function getRelatedAgents($group = null, $return_relations = false, $include_pending_relations = false){
         if(!$this->id)
             return array();
 
@@ -85,7 +85,7 @@ trait EntityAgentRelation {
 
         $result = array();
 
-        foreach ($this->getAgentRelations() as $agentRelation)
+        foreach ($this->getAgentRelations(null, $include_pending_relations) as $agentRelation)
             $result[$agentRelation->group][] = $return_relations ? $agentRelation : $agentRelation->agent;
 
         ksort($result);
@@ -99,18 +99,42 @@ trait EntityAgentRelation {
 
     }
 
-    function getAgentRelationsGrouped($group = null){
-        return $this->getRelatedAgents($group, true);
+    function getAgentRelationsGrouped($group = null, $include_pending_relations = false){
+        return $this->getRelatedAgents($group, true, $include_pending_relations);
 
     }
 
     function getUsersWithControl(){
         $result = array($this->getOwnerUser());
-        $relations = $this->getAgentRelations(true);
-        
-        foreach($relations as $relation){
-            $result[] = $relation->agent->user;
+        $ids = array($result[0]->id);
+        if($this->getClassName() !== 'MapasCulturais\Entities\Agent' || !$this->isUserProfile && !$this->owner->equals($this)){
+            foreach($this->getOwner()->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
         }
+
+        if($this->usesNested() && $this->parent && !$this->parent->equals($this)){
+            foreach($this->parent->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
+        }
+
+        $relations = $this->getAgentRelations(true);
+
+        foreach($relations as $relation){
+            $u = $relation->agent->user;
+            if(!in_array($u->id, $ids)){
+                $ids[] = $u->id;
+                $result[] = $u;
+            }
+        }
+
         return $result;
     }
 
@@ -118,32 +142,28 @@ trait EntityAgentRelation {
         foreach($this->getUsersWithControl() as $u)
             if($u->id == $user->id)
                 return true;
-            
+
         if($this->usesOwnerAgent() && $this->owner->userHasControl($user))
             return true;
-            
+
         if($this->usesNested() && is_object($this->parent) && $this->parent->userHasControl($user))
             return true;
 
         return false;
     }
 
-    function createAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $has_control = false, $flush = true){
-        $this->checkPermission('createAgentRelation');
-
-        if($has_control)
-            $this->checkPermission('createAgentRelationWithControl');
-
+    function createAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $has_control = false, $save = true, $flush = true){
         $relation_class = $this->getAgentRelationEntityClassName();
         $relation = new $relation_class;
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
-        
+
         if($has_control)
             $relation->hasControl = true;
-        
-        $relation->save($flush);
+
+        if($save)
+            $relation->save($flush);
 
         return $relation;
     }
@@ -153,12 +173,7 @@ trait EntityAgentRelation {
         $repo = App::i()->repo($relation_class);
         $relation = $repo->findOneBy(array('group' => $group, 'agent' => $agent, 'owner' => $this));
         if($relation){
-            $this->checkPermission('removeAgentRelation');
-            if($relation->hasControl)
-                $this->checkPermission('removeAgentRelationWithControl');
-
             $relation->delete($flush);
-
        }
     }
 

@@ -3,6 +3,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Agent Controller
@@ -11,12 +12,13 @@ use MapasCulturais\App;
  *
  */
 class Agent extends EntityController {
-    use \MapasCulturais\Traits\ControllerUploads,
-        \MapasCulturais\Traits\ControllerTypes,
-        \MapasCulturais\Traits\ControllerMetaLists,
-        \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable,
-        \MapasCulturais\Traits\ControllerSoftDelete;
+    use Traits\ControllerUploads,
+        Traits\ControllerTypes,
+        Traits\ControllerMetaLists,
+        Traits\ControllerAgentRelation,
+        Traits\ControllerVerifiable,
+        Traits\ControllerSoftDelete,
+        Traits\ControllerChangeOwner;
 
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();

@@ -25,7 +25,7 @@ var hl;
 
         var header_animation_status = 0;
 
-        if ($('#editable-entity').length) {
+        if ($('#editable-entity').length && $('#editable-entity').is(':visible')) {
             $('#main-section').css('margin-top', headerHeight + $('#editable-entity').outerHeight(true));
         }
 
@@ -206,14 +206,6 @@ var hl;
             distance: '3px',
             color: '#000',
             height: '222px',
-            alwaysVisible: true,
-            railVisible: true
-        });
-        $('.notificacoes .submenu ul').slimScroll({
-            position: 'right',
-            distance: '0px',
-            color: '#000',
-            height: '316px',
             alwaysVisible: true,
             railVisible: true
         });

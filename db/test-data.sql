@@ -74,44 +74,6 @@ SELECT pg_catalog.setval('agent_relation_id_seq', 1, true);
 
 
 --
--- Data for Name: authority_request; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY authority_request (id, owner_type, owner_id, object_type, object_id, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Name: authority_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('authority_request_id_seq', 1, true);
-
-
---
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY comment (id, parent_id, agent_id, object_type, object_id, content, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY contract (id, object_id, object_type, agent_id, from_date, to_date, amount, is_verified) FROM stdin;
-\.
-
-
---
--- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('contract_id_seq', 1, true);
-
-
---
 -- Data for Name: db_update; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
@@ -283,13 +245,6 @@ SELECT pg_catalog.setval('metalist_id_seq', 1, true);
 
 
 --
--- Name: occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('occurrence_id_seq', 100000, true);
-
-
---
 -- Data for Name: project_event; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
@@ -341,27 +296,6 @@ SELECT pg_catalog.setval('role_id_seq', 123, true);
 
 
 --
--- Name: sp_distrito_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_distrito_gid_seq', 96, true);
-
-
---
--- Name: sp_regiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_regiao_gid_seq', 8, true);
-
-
---
--- Name: sp_subprefeitura_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_subprefeitura_gid_seq', 32, true);
-
-
---
 -- Name: space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
 --
 
@@ -381,17 +315,17 @@ COPY space_meta (object_id, key, value) FROM stdin;
 --
 
 COPY term (id, taxonomy, term, description) FROM stdin;
-2	2	Antropologia	
-3	2	Arqueologia	
+2	2	Antropologia
+3	2	Arqueologia
 4	2	Arquitetura-Urbanismo	
-5	2	Arquivo	
-6	2	Artesanato	
-7	2	Artes Visuais	
-8	2	Cultura Negra	
-9	2	Fotografia	
-10	2	Jogos Eletrônicos	
-11	2	Circo	
-12	2	Filosofia	
+5	2	Arquivo
+6	2	Artesanato
+7	2	Artes Visuais
+8	2	Cultura Negra
+9	2	Fotografia
+10	2	Jogos Eletrônicos
+11	2	Circo
+12	2	Filosofia
 \.
 
 

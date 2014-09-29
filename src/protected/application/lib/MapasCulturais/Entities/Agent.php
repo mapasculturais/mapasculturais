@@ -29,7 +29,9 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityNested;
+        Traits\EntityNested {
+            Traits\EntityNested::setParent as netedSetParent;
+        }
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -187,6 +189,7 @@ class Agent extends \MapasCulturais\Entity
     */
     protected $__metadata = array();
 
+
     /**
      * Constructor
      */
@@ -233,30 +236,57 @@ class Agent extends \MapasCulturais\Entity
         }
     }
 
-    function setOwnerId($owner_id){
-        $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner){
-            $this->setParent($owner);
-        }else{
-            $this->setParent();
-        }
+    function setOwner(Agent $parent = null){
+        $this->setParent($parent);
     }
 
-    function setUser($user){
-        $this->checkPermission('modify');
-        $this->user = $user;
+
+    function setOwnerId($owner_id){
+        $owner = App::i()->repo('Agent')->find($owner_id);
+        $this->setParent($owner);
+    }
+
+    private $_newUser = false;
+
+    function setUser(User $user){
+        $this->_newUser = $user;
+        if($this->_newParent === false)
+            $this->_newParent = $user->profile;
     }
 
     function setParent(Agent $parent = null){
-        if($parent != $this->parent){
-            $this->checkPermission('changeOwner');
-            $parent->checkPermission('modify');
-            $this->parent = $parent;
-            if(!is_null($parent)){
-                if($parent->id == $this->id)
-                    $this->parent = null;
+        $this->nestedSetParent($parent);
+        if($parent)
+            $this->setUser($parent->user);
+    }
 
-                $this->setUser($parent->user);
+    function getParent(){
+        return $this->_newParent !== false ? $this->_newParent : $this->parent;
+    }
+
+    protected function _saveNested($flush = false) {
+        if($this->_newParent !== false){
+            $app = App::i();
+            try{
+                $this->checkPermission('changeOwner');
+                if($this->_newParent){
+                    $this->_newParent->checkPermission('@control');
+                    $this->parent = $this->_newParent;
+                    $this->user = $this->_newUser;
+                }
+
+            }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+                if(!$app->isWorkflowEnabled())
+                    throw $e;
+
+                $destination = $this->_newParent;
+
+                $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
+                $ar->origin = $this;
+                $ar->destination = $destination;
+                
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
+
             }
         }
     }
@@ -281,7 +311,7 @@ class Agent extends \MapasCulturais\Entity
         else
             return parent::canUserRemove($user);
     }
-    
+
     protected function canUserDestroy($user){
         if($this->isUserProfile)
             return false;

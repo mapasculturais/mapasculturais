@@ -313,21 +313,25 @@ abstract class Controller{
      *
      * @param mixed $data
      */
-    public function json($data){
-        App::i()->contentType('application/json');
-
-        echo json_encode($data);
+    public function json($data, $status = 200){
+        $app = App::i();
+        $app->contentType('application/json');
+        $app->halt($status, json_encode($data));
     }
 
     /**
      * Sets the response content type to application/json and prints a json of array('error' => true, 'data' => $data)
      *
      * @param mixed $data
+     *
+     * @TODO Alterar o status padrão para 400. será necessário alterar os js para esperar este retorno.
      */
-    public function errorJson($data){
-        App::i()->contentType('application/json');
+    public function errorJson($data, $status = 200){
+        $app = App::i();
 
-        echo json_encode(array('error' => true, 'data' => $data));
+        $app->contentType('application/json');
+
+        $app->halt($status, json_encode(array('error' => true, 'data' => $data)));
     }
 
     /**

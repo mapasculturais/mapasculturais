@@ -11,7 +11,10 @@ define('AUTOLOAD_TTL', 60 * 5);
 
 require_once __DIR__."/../vendor/autoload.php";
 
-$config = include __DIR__.'/conf/config.php';
+if(isset($_SERVER['MAPASCULTURAIS_CONFIG_FILE']))
+    $config = include __DIR__.'/conf/' . $_SERVER['MAPASCULTURAIS_CONFIG_FILE'];
+else
+    $config = include __DIR__.'/conf/config.php';
 
 // create the App instance
 $app = App::i()->init($config);

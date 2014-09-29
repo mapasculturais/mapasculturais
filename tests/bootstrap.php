@@ -47,6 +47,13 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      */
     protected $app;
 
+    protected $entities = [
+        'Agent' => 'agents',
+        'Space' => 'spaces',
+        'Event' => 'events',
+        'Project' => 'projects'
+    ];
+
     public function __construct($name = NULL, array $data = array(), $dataName = '') {
         $this->app = MapasCulturais\App::i();
         $this->backupGlobals = false;
@@ -64,6 +71,71 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         }
     }
 
+
+    function getNewEntity($class, $user = null){
+        if(!is_null($user)){
+            $_user = $this->app->user->is('guest') ? null : $this->app->user;
+            $this->user = $user;
+        }
+
+        $app = MapasCulturais\App::i();
+        $classname = 'MapasCulturais\Entities\\' . $class;
+
+        $type = array_shift($app->getRegisteredEntityTypes($classname));
+
+        $entity = new $classname;
+        $entity->name = "Test $class "  . uniqid();
+        $entity->type = $type;
+        $entity->shortDescription = 'A litle short description';
+
+        if(!is_null($user)){
+            $this->user = $_user;
+        }
+        return $entity;
+    }
+
+    function assertPermissionDenied($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        } catch (\Exception $ex) {
+            $exception = $ex;
+        }
+
+        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $exception, $msg);
+    }
+
+
+    function assertPermissionGranted($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        } catch (\Exception $ex) {
+            $exception = $ex;
+            $msg .= '(message: "' . $ex->getMessage() . '")';
+        }
+
+        $this->assertEmpty($exception, $msg);
+    }
+
+    function assertAuthorizationRequestCreated($callable, $msg = ''){
+        $exception = null;
+        try{
+            $callable = \Closure::bind($callable, $this);
+            $callable();
+        }catch (\MapasCulturais\Exceptions\WorkflowRequest $ex) {
+            $exception = $ex;
+        }
+
+        if(is_object($exception) && substr(get_class($exception),0,9) === 'Doctrine\\'){
+            throw $exception;
+        }
+            
+        $this->assertInstanceOf('MapasCulturais\Exceptions\WorkflowRequest', $exception, $msg);
+    }
+
     public function setUserId($user_id = null){
         if(!is_null($user_id))
             $this->app->auth->authenticatedUser = $this->getUser($user_id);
@@ -72,7 +144,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     *
      * @param type $user_id
      * @param type $index
      * @return MapasCulturais\Entities\User

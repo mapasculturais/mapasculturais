@@ -6,34 +6,6 @@ require_once __DIR__.'/bootstrap.php';
  * @author rafael
  */
 class PermissionsTest extends MapasCulturais_TestCase{
-    protected $entities = [
-        'Agent' => 'agents',
-        'Space' => 'spaces',
-        'Event' => 'events',
-        'Project' => 'projects'
-    ];
-
-    function getNewEntity($class, $user = null){
-        if(!is_null($user)){
-            $_user = $this->app->user->is('guest') ? null : $this->app->user;
-            $this->user = $user;
-        }
-            
-        $app = MapasCulturais\App::i();
-        $classname = 'MapasCulturais\Entities\\' . $class;
-
-        $type = array_shift($app->getRegisteredEntityTypes($classname));
-
-        $entity = new $classname;
-        $entity->name = "Test $class "  . uniqid();
-        $entity->type = $type;
-        $entity->shortDescription = 'A litle short description';
-        
-        if(!is_null($user)){
-            $this->user = $_user;
-        }
-        return $entity;
-    }
 
     function getRandomEntity($_class, $where = null){
         $app = MapasCulturais\App::i();
@@ -49,35 +21,8 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
     }
 
-    function assertPermissionDenied($callable, $msg = ''){
-        echo "\n$msg\n";
-        $exception = null;
-        try{
-            $callable = \Closure::bind($callable, $this);
-            $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
-            $exception = $ex;
-        }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $exception, $msg);
-    }
-
-
-    function assertPermissionGranted($callable, $msg = ''){
-        echo "\n$msg\n";
-        $exception = null;
-        try{
-            $callable = \Closure::bind($callable, $this);
-            $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
-            $exception = $ex;
-            $msg .= '(message: "' . $ex->getMessage() . '")';
-        }
-
-        $this->assertEmpty($exception, $msg);
-    }
-
     function testCanUserCreate(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $app = MapasCulturais\App::i();
 
@@ -147,11 +92,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->save(true);
             }, "Asserting that a super admin user CAN create $plural to another user.");
         }
+        $this->app->enableWorkflow();
     }
 
-
-
+    
     function testCanUserModify(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         /*
          * Asserting thar guest users cannot modify entities
@@ -208,12 +154,16 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }
         }
 
-
+        $this->app->enableWorkflow();
     }
 
-    function testCanUserRemove(){ }
+    function testCanUserRemove(){ 
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
+    }
 
     function testCanUserVerifyEntity(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $app = $this->app;
 
@@ -305,11 +255,16 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->save(true);
             }, "Asserting that a staff user CAN verify their own $plural.");
         }
+        $this->app->enableWorkflow();
     }
 
-    function testCanUserViewPrivateData(){ }
+    function testCanUserViewPrivateData(){
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
+    }
 
     function testAgentRelationsPermissions(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         // create agent relation without control
 
@@ -798,9 +753,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
         
         $this->resetTransactions();
+        $this->app->enableWorkflow();
     }
     
     function testEventOccurrencePermissions(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         
         $rule = array(
@@ -822,6 +779,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->user = $user0;
         
         $event = $this->getNewEntity('Event');
+        $event->owner = $user0->profile;
         $event->save();
         
         $this->assertPermissionDenied(function() use($event, $space, $rule){
@@ -852,8 +810,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
         
-        
-
         // Assert that a normal user CAN create an event occurrence in public spaces that he don't have control
         $this->user = $user0;
         $public_space = $this->getNewEntity('Space');
@@ -862,6 +818,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $public_space->save();
         
         $this->user = $user1;
+        
+        $event = $this->getNewEntity('Event');
+        $event->owner = $user1->profile;
+        $event->save();
+        
         
         $this->assertPermissionGranted(function() use($event, $public_space, $rule){
             $occ = new \MapasCulturais\Entities\EventOccurrence;
@@ -873,10 +834,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence in public spaces that he don't have control");
         
-        
+        $this->app->enableWorkflow();
     }
     
     function testProjectEventCreation(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         // assert that a user WITHOUT control of a project CANNOT create events to this project
         $user1 = $this->getUser('normal', 0);
@@ -905,9 +867,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event->project = $project;
             $event->save();
         }, 'Asserting that a user WITH control of a project CAN create events to this project');
+        $this->app->enableWorkflow();
     }
 
     function testProjectRegistrationPermissions(){
+        $this->app->disableWorkflow();
         
         $this->resetTransactions();
         $user1 = $this->getUser('normal', 0);
@@ -945,18 +909,21 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $project->register($user2->profile);
 
         }, "Asserting that a normal user CANNOT register in a project with registration closed");
-    
+        $this->app->enableWorkflow();
     }
     
     function testFilesPermissions(){
-
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
     }
 
     function testMetalistPermissions(){
-
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
     }
 
     function testCanUserAddRemoveRole(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $roles = ['staff', 'admin', 'superAdmin'];
 
@@ -1069,6 +1036,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $user->removeRole($role);
             }, "Asserting that super admin user CAN remove the role $role of a user");
         }
+        $this->app->enableWorkflow();
     }
     
     function testSoftDeleteDestroy(){

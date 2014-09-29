@@ -127,7 +127,7 @@ class Event extends \MapasCulturais\Entity
      * })
      */
     protected $project = null;
-    
+
     private $_projectChanged = false;
 
     /**
@@ -143,17 +143,17 @@ class Event extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
     protected $__metadata = array();
-    
+
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
-        
+
         if($can && $this->project){
             return $this->project->userHasControl($user);
         }else{
             return $can;
         }
     }
-    
+
     protected function canUserModify($user){
         $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
         if($this->_projectChanged && $can && $this->project){
@@ -170,7 +170,7 @@ class Event extends \MapasCulturais\Entity
             return true;
         }
     }
-    
+
     function setProject($project){
         if($project)
             $this->setProjectId($project->id);
@@ -181,11 +181,11 @@ class Event extends \MapasCulturais\Entity
     function setProjectId($projectId){
         if(!$projectId){
             $this->project = null;
-            
+
         }elseif(!$this->project || $this->project->id != $projectId){
             $this->_projectChanged = true;
             $project = App::i()->repo('Project')->find($projectId);
-            
+
             $this->project = $project;
         }
     }
@@ -238,7 +238,7 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
-        
+
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
@@ -300,11 +300,11 @@ class Event extends \MapasCulturais\Entity
                 eo.starts_on, eo.starts_at";
 
         $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
-        
+
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        
+
         $query->setParameters(array(
             'date_from' => $date_from,
             'date_to' => $date_to,

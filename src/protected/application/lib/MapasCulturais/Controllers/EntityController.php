@@ -1,7 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use \MapasCulturais\App;
+use MapasCulturais\App;
+use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
  * This is the base class to Entity Controllers
@@ -126,6 +127,26 @@ abstract class EntityController extends \MapasCulturais\Controller{
         return $this->getFields();
     }
 
+    protected function _finishRequest($entity, $isAjax = false){
+        $app = App::i();
+        $status = 200;
+        try{
+            $entity->save(true);
+        }  catch (WorkflowRequest $e){
+            $status = 202;
+            $reqs = array();
+            foreach($e->requests as $request){
+                $reqs[] = $request->getRequestType();
+            }
+
+            header('CreatedRequests: ' . json_encode($reqs));
+        }
+        if($app->request->isAjax() || $isAjax){
+            $this->json($entity, $status);
+        }else{
+            $app->redirect($app->request()->getReferer(), $status);
+        }
+    }
 
     // ============= ACTIONS =============== //
 
@@ -168,8 +189,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 
@@ -296,8 +316,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 
@@ -418,6 +437,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     protected function apiAddHeaderMetadata($data){
+        if (headers_sent())
+            return;
+        
         $response_meta = array(
             'count' => count($data)
         );
@@ -486,6 +508,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
         }else{
             return false;
         }
+    }
+    
+    public function getApiCacheLifetime(){
+        $app = App::i();
+        $default_lifetime = $app->config['app.apiCache.lifetime'];
+        $by_controller_lifetime = $app->config['app.apiCache.lifetimeByController'];
+        
+        if(isset($by_controller_lifetime[$this->id]))
+            return (int) $by_controller_lifetime[$this->id];
+        else
+            return (int) $default_lifetime;
     }
 
     public function apiQuery($qdata, $options = array()){
@@ -727,8 +760,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $query = $app->em->createQuery($final_dql);
 
             // cache
-            if($app->config['app.useApiCache']){
-                $query->useResultCache(true, $app->config['app.apiCache.lifetime']);
+            if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
+                $query->useResultCache(true, $this->getApiCacheLifetime());
             }
 
             $query->setParameters($this->_apiFindParamList);
@@ -741,14 +774,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $prop = trim($prop);
                     try{
                         if(strpos($prop, '.')){
-
                             $props = explode('.',$prop);
                             $current_object = $r;
-                            foreach($props as $p){
-                                $current_object = $current_object->$p;
-
-                                if(!is_object($current_object))
+                            foreach($props as $pk => $p){
+                                if($p === 'permissionTo' && $pk === count($props) - 2){
+                                    $current_object = $current_object->canUser($props[$pk + 1]);
                                     break;
+                                }else{
+                                    $current_object = $current_object->$p;
+
+                                    if(!is_object($current_object))
+                                        break;
+
+                                }
                             }
 
                             $prop_value = $current_object;
@@ -783,9 +821,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                     if($permissions){
                         foreach($permissions as $perm){
-                            if(!$r->canUser(trim($perm))){
-                                $r = null;
-                                break;
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($r->canUser(substr($perm, 1))){
+                                    $r = null;
+                                    break;
+                                }
+                            }else{
+                                if(!$r->canUser($perm)){
+                                    $r = null;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -805,9 +851,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 if(is_array($permissions)){
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                        foreach($permissions as $perm)
-                            if(!$entity->canUser($perm))
-                                return false;
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($entity->canUser(substr($perm,1)))
+                                    return false;
+                            }else{
+                                if(!$entity->canUser($perm))
+                                    return false;
+                            }
+                        }
 
                         return true;
                     }));
@@ -966,7 +1019,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         }else{
             $app = App::i();
             if(trim($value) === '@me'){
-                $value = $app->user;
+                $value = $app->user->is('guest') ? null : $app->user;
             }elseif(strpos($value,'@me.') === 0){
                 $v = str_replace('@me.', '', $value);
                 $value = $app->user->$v;

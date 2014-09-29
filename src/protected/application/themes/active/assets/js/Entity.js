@@ -1,13 +1,13 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('Entity', ['RelatedAgents', 'angularSpinner', 'ngSanitize']);
+    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'angularSpinner', 'ngSanitize']);
 
     app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
         var baseUrl = MapasCulturais.baseURL + '/api/';
         function extend (query){
             return angular.extend(query, {
-                "@select": 'id,name,type,shortDescription,terms,avatar',
+                "@select": 'id,name,type,shortDescription,terms',
                 "@files": '(avatar.avatarSmall):url',
                 "@order": 'name'
             });
@@ -101,7 +101,7 @@
         };
     }]);
 
-    app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents){
+    app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents, ChangeOwner){
         $scope.openEditBox = function(editboxId){
 
         };
@@ -118,10 +118,13 @@
                 entity: '@',
                 noResultsText: '@',
                 filter: '=',
-                select: '='
+                select: '=',
+                onRepeatDone: '=',
+                apiQuery: '='
             },
 
             link: function($scope, el, attrs){
+                
                 $scope.attrs = attrs;
 
                 $scope.result = [];
@@ -143,9 +146,13 @@
 
                     var s = $scope.searchText.trim().replace(' ', '*');
 
+                    var query = angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
+
+                    query.name = 'ILIKE(*' + s + '*)';
+
                     timeouts.find = $timeout(function(){
                         $scope.spinnerCondition = true;
-                        FindService.find($scope.entity, { name: 'ILIKE(*' + s + '*)' }, function(data,status){
+                        FindService.find($scope.entity, query, function(data, status){
                             $scope.processResult(data, status);
                             $scope.spinnerCondition = false;
                         });
@@ -166,6 +173,10 @@
 
                     $scope.result = data;
                 };
+                
+                $(el).on('find', function(){
+                    $scope.find();
+                });
             }
         };
     }]);
@@ -183,22 +194,22 @@
 
             }else if($box.hasClass('mc-right')){
                 $box.position({
-                    my: 'left-20 center',
+                    my: 'left+20 center',
                     at: 'right center',
                     of: target
                 });
 
             }else if($box.hasClass('mc-top')){
                 $box.position({
-                    my: 'center top-20',
-                    at: 'center bottom',
+                    my: 'center bottom-20',
+                    at: 'center top',
                     of: target
                 });
 
             }else if($box.hasClass('mc-bottom')){
                 $box.position({
-                    my: 'center bottom-20',
-                    at: 'center top',
+                    my: 'center top+20',
+                    at: 'center bottom',
                     of: target
                 });
             }
@@ -231,6 +242,9 @@
 
                 var $box = $('#' + editboxId).find('>div.edit-box');
                 $box.show();
+                
+                $('#' + editboxId).trigger('open');
+                
                 var $firstInput = $box.find('input:first,select:first,textarea:first');
                 $firstInput.focus();
                 setPosition($box, $event.target);
@@ -265,6 +279,7 @@
 
             scope: {
                 spinnerCondition: '=',
+                onOpen: '=',
                 onSubmit: '=',
                 onCancel: '='
             },
@@ -303,8 +318,21 @@
                         $scope.onCancel();
                     }
                 };
+                
+                if(angular.isFunction($scope.onOpen)){
+                    $('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
+                }
             }
-        }
+        };
+    }]);
+
+
+    app.directive('onRepeatDone', ['$rootScope', function($rootScope) {
+        return function($scope, element, attrs) {
+            if ($scope.$last) {
+                $rootScope.$emit('repeatDone:' + attrs.onRepeatDone);
+            }
+        };
     }]);
 
 

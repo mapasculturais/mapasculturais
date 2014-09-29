@@ -69,8 +69,7 @@ abstract class Entity implements \JsonSerializable{
      * Creates the new empty entity object adding an empty point to properties of type 'point' and,
      * if the createTimestamp property exists, a DateTime object with the current date and time.
      *
-     * @hook **entity.new** - Executed when the __construct method of any entity is called.
-     * @hook **entity({$entity_class}).new** - Executed when the __construct method of the $entity_class is called.
+     * @hook **entity(<<Entity>>).new** - Executed when the __construct method of the $entity_class is called.
      */
     public function __construct() {
         $app = App::i();
@@ -94,6 +93,10 @@ abstract class Entity implements \JsonSerializable{
 
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
+    }
+
+    function equals($entity){
+        return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
     }
 
     function simplify($properties = 'id,name'){
@@ -206,17 +209,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function canUser($action, $userOrAgent = null){
-
-        if(App::i()->isRunningUpdates())
+        $app = App::i();
+        if(!$app->isAccessControlEnabled())
             return true;
 
-        if(App::i()->repo('User')->isCreating())
-            return true;
-
-        $user = is_null($userOrAgent) ? App::i()->user : $userOrAgent->getOwnerUser();
-
-        if(is_null($user))
-            $user = new GuestUser;
+        $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation())
             return $this->userHasControl($user) || $user->is('admin');
@@ -371,8 +368,8 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-		return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
-	}
+	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+    }
 
     /**
      * Persist the Entity optionally flushing
@@ -382,31 +379,64 @@ abstract class Entity implements \JsonSerializable{
     public function save($flush = false){
         $app = App::i();
 
-        if($app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW)
-            $this->checkPermission('create');
-        else
-            $this->checkPermission('modify');
 
-        $app->em->persist($this);
-
-        if($flush)
-            $app->em->flush();
-
-        if($this->usesMetadata()){
-            $this->saveMetadata();
-            $app->em->flush();
-        }
-        if($this->usesTaxonomies()){
-            $this->saveTerms();
-            $app->em->flush();
+        $requests = array();
+        if(method_exists($this, '_saveNested')){
+            try{
+                $this->_saveNested();
+            }  catch (Exceptions\WorkflowRequestTransport $e){
+                $requests[] = $e->request;
+            }
         }
 
-        // delete the entity cache
-        $repo = $this->repo();
-        if($repo->usesCache())
-            $repo->deleteEntityCache($this->id);
+        if(method_exists($this, '_saveOwnerAgent')){
+            try{
+                $this->_saveOwnerAgent();
+            }  catch (Exceptions\WorkflowRequestTransport $e){
+                $requests[] = $e->request;
+            }
+        }
 
+        $IS_NEW = $app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
 
+        try{
+
+            if($IS_NEW)
+                $this->checkPermission('create');
+            else
+                $this->checkPermission('modify');
+
+            $app->em->persist($this);
+
+            if($flush)
+                $app->em->flush();
+
+            if($this->usesMetadata()){
+                $this->saveMetadata();
+                $app->em->flush();
+            }
+
+            if($this->usesTaxonomies()){
+                $this->saveTerms();
+                $app->em->flush();
+            }
+
+            // delete the entity cache
+            $repo = $this->repo();
+            if($repo->usesCache())
+                $repo->deleteEntityCache($this->id);
+
+        }catch(Exceptions\PermissionDenied $e){
+            if(!$requests)
+                throw $e;
+        }
+
+        if($requests){
+            foreach($requests as $request)
+                $request->save($flush);
+            $e = new Exceptions\WorkflowRequest($requests);
+            throw $e;
+        }
     }
 
     /**

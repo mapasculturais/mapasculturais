@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Project Controller
@@ -11,12 +12,13 @@ use MapasCulturais\App;
  *  @property-read \MapasCulturais\Entities\Project $requestedEntity The Requested Entity
  */
 class Project extends EntityController {
-    use \MapasCulturais\Traits\ControllerUploads,
-        \MapasCulturais\Traits\ControllerTypes,
-        \MapasCulturais\Traits\ControllerMetaLists,
-        \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable,
-        \MapasCulturais\Traits\ControllerSoftDelete;
+    use Traits\ControllerUploads,
+        Traits\ControllerTypes,
+        Traits\ControllerMetaLists,
+        Traits\ControllerAgentRelation,
+        Traits\ControllerVerifiable,
+        Traits\ControllerSoftDelete,
+        Traits\ControllerChangeOwner;
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
