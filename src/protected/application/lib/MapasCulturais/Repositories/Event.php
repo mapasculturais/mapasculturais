@@ -5,11 +5,12 @@ use MapasCulturais\Traits;
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryCache;
-    
+
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
-        
+
         if($space instanceof \MapasCulturais\Entities\Space){
-            $ids = $space->id;
+            $ids = $space->getChildrenIds();
+            $ids[] = $space->id;
 
         }elseif($space && is_array($space) && is_object($space[0]) ){
             $ids = array(-1);
@@ -86,7 +87,7 @@ class Event extends \MapasCulturais\Repository{
 
         return $result;
     }
-    
+
     public function findByProject($project, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         if($project instanceof \MapasCulturais\Entities\Project){
@@ -217,7 +218,7 @@ class Event extends \MapasCulturais\Repository{
                         WHERE
                             object_type = 'MapasCulturais\Entities\Event' AND
                             agent_id = :agent_id
-                    ) OR 
+                    ) OR
 
                     e.agent_id = :agent_id
                 )
@@ -295,7 +296,7 @@ class Event extends \MapasCulturais\Repository{
                 eo.starts_on, eo.starts_at";
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-        
+
         $app = \MapasCulturais\App::i();
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
