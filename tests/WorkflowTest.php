@@ -88,8 +88,6 @@ class WorkflowTest extends MapasCulturais_TestCase{
             $entity->owner = $user1->profile;
 
             $entity->save(true);
-            
-            $this->app->em->refresh($entity);
 
             $request = null;
 
@@ -97,12 +95,13 @@ class WorkflowTest extends MapasCulturais_TestCase{
             try{
                 $entity->owner = $user2->profile;
                 $entity->save();
+
             } catch (MapasCulturais\Exceptions\WorkflowRequest $e) {
                 $request = $e->requests[0];
             }
-            
-            echo "\n{$user1->profile->id} |||| {$user2->profile->id}";
-            
+
+
+
             $this->assertInstanceOf('MapasCulturais\Entities\RequestChangeOwnership', $request, "asserting that the request was created");
 
             $this->assertEquals ($user1->id, $entity->ownerUser->id, "Asserting that BEFORE the request is approved, de owner was NOT changed");
@@ -113,7 +112,7 @@ class WorkflowTest extends MapasCulturais_TestCase{
             $this->assertFalse($entity->canUser('modify'), "Asserting that the user that will receive the $class CANNOT modify it BEFORE the request is approved");
 
             $this->assertPermissionGranted(function() use($request){
-                
+
                 $request->approve();
             }, 'Asserting that the user that was requested CAN approve the request');
 
