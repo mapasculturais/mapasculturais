@@ -42,6 +42,7 @@
     }]);
 
     module.controller('ChangeOwnerController', ['$scope', '$rootScope', '$timeout', 'ChangeOwnerService', 'EditBox', function($scope, $rootScope, $timeout, ChangeOwnerService, EditBox) {
+        var adjustingBoxPosition = false;
         $scope.editbox = EditBox;
         $scope.data = {
             spinner: false,
@@ -52,11 +53,14 @@
 
         var adjustBoxPosition = function(){
             setTimeout(function(){
+                adjustingBoxPosition = true;
                 $('#change-owner-button').click();
+                adjustingBoxPosition = false;
             });
         };
 
         $rootScope.$on('repeatDone:findEntity:find-entity-change-owner', adjustBoxPosition);
+        
         $scope.$watch('data.spinner', function(ov, nv){
             if(ov && !nv)
                 adjustBoxPosition();
@@ -79,5 +83,11 @@
 
             EditBox.close('editbox-change-owner');
         };
+        
+        $('#editbox-change-owner').on('open', function(){
+            if(!adjustingBoxPosition)
+                $('#find-entity-change-owner').trigger('find');
+        });
+        
     }]);
 })(angular);

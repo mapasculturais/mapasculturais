@@ -45,9 +45,7 @@
         $scope.data = MapasCulturais.notifications;
 
         var getNotifications = function (){
-            console.log('getNotifications');
             NotificationService.get().then(function(data){
-                console.log(data);
                 data.forEach(function(value,index){
                     data[index].message = $sce.trustAsHtml(value.message);
                 });
@@ -103,7 +101,6 @@
         if(!app)
             angular.bootstrap(document, ['Notifications']);
         app = angular.module('Notifications');
-        console.log(app);
     });
 
 })(angular);

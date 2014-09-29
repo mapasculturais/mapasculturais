@@ -108,7 +108,7 @@ trait EntityAgentRelation {
         $result = array($this->getOwnerUser());
         $ids = array($result[0]->id);
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent' || !$this->isUserProfile && !$this->owner->equals($this)){
-            foreach($this->owner->getUsersWithControl() as $u){
+            foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
                     $ids[] = $u->id;
                     $result[] = $u;

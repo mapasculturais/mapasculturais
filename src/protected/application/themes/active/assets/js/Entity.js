@@ -124,6 +124,7 @@
             },
 
             link: function($scope, el, attrs){
+                
                 $scope.attrs = attrs;
 
                 $scope.result = [];
@@ -131,8 +132,6 @@
                 $scope.searchText = '';
 
                 $scope.noEntityFound = false;
-
-
 
                 $scope.avatarUrl = function(entity){
                     if(entity['@files:avatar.avatarSmall'])
@@ -174,6 +173,10 @@
 
                     $scope.result = data;
                 };
+                
+                $(el).on('find', function(){
+                    $scope.find();
+                });
             }
         };
     }]);
@@ -239,6 +242,9 @@
 
                 var $box = $('#' + editboxId).find('>div.edit-box');
                 $box.show();
+                
+                $('#' + editboxId).trigger('open');
+                
                 var $firstInput = $box.find('input:first,select:first,textarea:first');
                 $firstInput.focus();
                 setPosition($box, $event.target);
@@ -273,6 +279,7 @@
 
             scope: {
                 spinnerCondition: '=',
+                onOpen: '=',
                 onSubmit: '=',
                 onCancel: '='
             },
@@ -311,6 +318,10 @@
                         $scope.onCancel();
                     }
                 };
+                
+                if(angular.isFunction($scope.onOpen)){
+                    $('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
+                }
             }
         };
     }]);

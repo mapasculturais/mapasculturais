@@ -59,7 +59,7 @@ $app->hook('workflow(<<*>>).create', function() use($app){
             $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
         break;
     }
-
+    
     // message to requester user
     $notification = new Notification;
     $notification->user = $requester;
@@ -67,7 +67,16 @@ $app->hook('workflow(<<*>>).create', function() use($app){
     $notification->request = $this;
     $notification->save(true);
 
+    $notified_user_ids = array($requester->id);
+
+    
     foreach($destination->usersWithControl as $user){
+         // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
+        if(in_array($user->id, $notified_user_ids))
+                continue;
+        
+        $notified_user_ids[] = $user->id;
+        
         $notification = new Notification;
         $notification->user = $user;
         $notification->message = $message;
@@ -75,7 +84,7 @@ $app->hook('workflow(<<*>>).create', function() use($app){
         $notification->save(true);
     }
 
-    if(!$requester->equals($origin->ownerUser)){
+    if(!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)){
         $notification = new Notification;
         $notification->user = $origin->ownerUser;
         $notification->message = $message;
@@ -223,15 +232,17 @@ $app->hook('workflow(<<*>>).reject:before', function() use($app){
 
     $users = array();
 
-    // notifica quem fez a requisição
-    $users[] = $this->requesterUser;
+    if(!$app->user->equals($this->requesterUser)){
+        // notifica quem fez a requisição
+        $users[] = $this->requesterUser;
+    }
 
     if($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
         // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
         if(!$destination->ownerUser->equals($this->requesterUser))
             $users[] = $destination->ownerUser;
 
-        // se não é o dono da entidade de origem que está aprovando, notifica o dono
+        // se não é o dono da entidade de origem que está rejeitando, notifica o dono
         if(!$origin->ownerUser->equals($app->user))
             $users[] = $origin->ownerUser;
 
@@ -240,7 +251,7 @@ $app->hook('workflow(<<*>>).reject:before', function() use($app){
         if(!$origin->ownerUser->equals($this->requesterUser))
             $users[] = $origin->ownerUser;
 
-        // se não é o dono da entidade de destino que está aprovando, notifica o dono
+        // se não é o dono da entidade de destino que está rejeitando, notifica o dono
         if(!$destination->ownerUser->equals($app->user))
             $users[] = $destination->ownerUser;
     }
@@ -342,7 +353,7 @@ function mapasculturais_head($entity = null){
                 notifications: <?php
                 echo json_encode( $app->controller('notification')->apiQuery( array(
                     '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
-                    'user' => 'eq(@me)'
+                    'user' => 'EQ(@me)'
                 )));
                 ?>
             <?php endif; ?>
