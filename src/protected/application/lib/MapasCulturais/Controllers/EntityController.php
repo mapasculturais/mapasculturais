@@ -509,6 +509,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
             return false;
         }
     }
+    
+    public function getApiCacheLifetime(){
+        $app = App::i();
+        $default_lifetime = $app->config['app.apiCache.lifetime'];
+        $by_controller_lifetime = $app->config['app.apiCache.lifetimeByController'];
+        
+        if(isset($by_controller_lifetime[$this->id]))
+            return (int) $by_controller_lifetime[$this->id];
+        else
+            return (int) $default_lifetime;
+    }
 
     public function apiQuery($qdata, $options = array()){
         $this->_apiFindParamList = array();
@@ -749,8 +760,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $query = $app->em->createQuery($final_dql);
 
             // cache
-            if($app->config['app.useApiCache']){
-                $query->useResultCache(true, $app->config['app.apiCache.lifetime']);
+            if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
+                $query->useResultCache(true, $this->getApiCacheLifetime());
             }
 
             $query->setParameters($this->_apiFindParamList);

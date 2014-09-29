@@ -54,7 +54,12 @@ return array(
     'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
-    'app.apiCache.lifetime' => 600,
+    'app.apiCache.lifetime' => 120,
+    
+    'app.apiCache.lifetimeByController' => array(
+        'notification' => 0,
+        'event' => 25
+    ),
 
     'app.useRegisterCache' => true,
     'app.registerCache.lifeTime' => 600,
