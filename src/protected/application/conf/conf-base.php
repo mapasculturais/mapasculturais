@@ -9,6 +9,11 @@ if(substr($host_part,-1) !== '/') $host_part .= '/';
 $base_url = $prot_part . $host_part;
 
 return array(
+    // theme namespaces
+    'theme.namespaces' => array(
+        'MapasCulturais\Themes' => THEMES_PATH
+    ),
+
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
 
@@ -55,7 +60,7 @@ return array(
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
-    
+
     'app.apiCache.lifetimeByController' => array(
         'notification' => 0,
         'event' => 25

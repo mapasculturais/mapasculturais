@@ -1,8 +1,12 @@
 <?php
 namespace MapasCulturais\Themes\Base;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 abstract class Theme{
+    use Traits\MagicGetter,
+        Traits\MagicSetter,
+        Traits\Singleton;
 
     protected $jsObject = array();
 
@@ -50,4 +54,9 @@ abstract class Theme{
 
         $app->applyHook('mapasculturais.scripts');
     }
+
+    /**
+     * @return \MapasCulturais\Themes\Base\AssetManager Asset Manager
+     */
+    abstract function getAssetManager();
 }
