@@ -121,10 +121,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionDenied(function() use ($class, $another_user){
                 $entity = $this->getNewEntity($class);
 
-                if($class === 'Agent'){
-                    $entity->user = $another_user;
-                }else
-                    $entity->ownerId = $another_user->profile->id;
+                $entity->owner = $another_user->profile;
 
                 $entity->save(true);
             }, "Asserting that a normal user CANNOT create $plural to another user.");

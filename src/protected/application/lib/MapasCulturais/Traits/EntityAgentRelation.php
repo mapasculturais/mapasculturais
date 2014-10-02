@@ -106,15 +106,42 @@ trait EntityAgentRelation {
 
     function getUsersWithControl(){
         $result = array($this->getOwnerUser());
-        $relations = $this->getAgentRelations(true);
-        
-        foreach($relations as $relation){
-            $result[] = $relation->agent->user;
+        $ids = array($result[0]->id);
+        if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
+            foreach($this->getOwner()->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
         }
+
+        if($this->usesNested() && $this->getParent() && !$this->getParent()->equals($this)){
+            foreach($this->getParent()->getUsersWithControl() as $u){
+                if(!in_array($u->id, $ids)){
+                    $ids[] = $u->id;
+                    $result[] = $u;
+                }
+            }
+        }
+
+        $relations = $this->getAgentRelations(true);
+
+        foreach($relations as $relation){
+            $u = $relation->agent->user;
+            if(!in_array($u->id, $ids)){
+                $ids[] = $u->id;
+                $result[] = $u;
+            }
+        }
+
         return $result;
     }
 
     function userHasControl($user){
+        if($user->is('admin'))
+            return true;
+        
         foreach($this->getUsersWithControl() as $u)
             if($u->id == $user->id)
                 return true;
