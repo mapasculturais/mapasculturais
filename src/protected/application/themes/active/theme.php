@@ -59,7 +59,7 @@ $app->hook('workflow(<<*>>).create', function() use($app){
             $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
         break;
     }
-    
+
     // message to requester user
     $notification = new Notification;
     $notification->user = $requester;
@@ -69,14 +69,14 @@ $app->hook('workflow(<<*>>).create', function() use($app){
 
     $notified_user_ids = array($requester->id);
 
-    
+
     foreach($destination->usersWithControl as $user){
          // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
         if(in_array($user->id, $notified_user_ids))
                 continue;
-        
+
         $notified_user_ids[] = $user->id;
-        
+
         $notification = new Notification;
         $notification->user = $user;
         $notification->message = $message;
@@ -707,7 +707,7 @@ $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
 });
 
 $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR lower(t.term) LIKE lower(:keyword) ";
+    $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
 });
 
 $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
@@ -720,6 +720,6 @@ $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
 });
 
 $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR lower(p.name) LIKE lower(:keyword)
-                OR lower(m.value) LIKE lower(:keyword)";
+    $where .= " OR unaccent(lower(p.name)) LIKE unaccent(lower(:keyword)(
+                OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
 });
