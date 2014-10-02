@@ -14,10 +14,8 @@ trait EntityOwnerAgent{
      * @return \MapasCulturais\Entities\Agent
      */
     function getOwner(){
-        if(!$this->id) 
-            return App::i()->user->profile;
-        
-        return $this->owner;
+        return $this->owner ? $this->owner : App::i()->user->profile;
+
     }
 
     /**

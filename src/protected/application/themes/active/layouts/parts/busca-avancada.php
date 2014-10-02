@@ -187,10 +187,15 @@
         </style>
         <div id="header-dos-resultados" class="clearfix">
             <div id="ferramentas" style="">
-                <div id="exportar-resultados" ng-if="data.global.viewMode === 'list'"><a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a></div>
-                <div id="compartilhar" ng-class="{'compartilhar-changed':data.global.viewMode==='list'}">
+                <div id="exportar-resultados" data-toggle="busca-popover">
+                    <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                    <div class="busca-popover">
+                        <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                    </div>
+                </div>
+                <div id="compartilhar" class="compartilhar-changed">
                     <a class="botao-de-icone icone social_share"></a>
-                    <form id="compartilhar-url">
+                    <form id="compartilhar-url" class="busca-popover">
                         <div class="setinha"></div>
                         <label for="url-da-busca">Compartilhar esse resultado: </label>
                         <input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" />

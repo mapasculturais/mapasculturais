@@ -43,7 +43,7 @@
     position: relative;
     float: left;
 }
-#compartilhar-url {
+.busca-popover{ 
     position: absolute;
     z-index: 100;
     display: none;
@@ -56,21 +56,21 @@
             box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
 }
-#compartilhar-url .setinha {
+.busca-popover .setinha {
     right: 28px;
     top: -16px;
     border-color: transparent transparent #fff transparent;
 }
-#compartilhar-url .icone {
+.busca-popover .icone {
     width: $line-height-base;;
     height: $line-height-base;;
     margin-left: .75rem;
     font-size: 1.5rem;
 }
-#compartilhar-url .icone:hover {
+.busca-popover .icone:hover {
     color: $brand-accent;
 }
-#compartilhar-url .info {
+.busca-popover.info {
     font-weight: normal;
     font-size: .7rem;
     color: $gray-dark;
