@@ -192,6 +192,29 @@ class App extends \Slim\Slim{
         }
 
 
+        spl_autoload_register(function($class) use ($config){
+            $cache_id = "AUTOLOAD_CLASS:$class";
+            if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
+                $path = $this->cache->fetch($cache_id);
+                require_once $path;
+                return true;
+            }
+
+            foreach($config['namespaces'] as $namespace => $base_dir){
+                if(strpos($class, $namespace) === 0){
+                    $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
+                    echo "ENTROU AQUI<br>";
+                    if(\file_exists($path)){
+                        require_once $path;
+                        if($config['app.useRegisteredAutoloadCache'])
+                            $this->cache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                        return true;
+                    }
+                }
+            }
+
+        });
+
 
         // creates runtime cache component
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
@@ -432,7 +455,7 @@ class App extends \Slim\Slim{
     function disableAccessControl(){
         $this->_accessControlEnabled = false;
     }
-    
+
     function isAccessControlEnabled(){
         return $this->_accessControlEnabled;
     }
@@ -444,7 +467,7 @@ class App extends \Slim\Slim{
     function disableWorkflow(){
         $this->_workflowEnabled = false;
     }
-    
+
     function isWorkflowEnabled(){
         return $this->_workflowEnabled;
     }

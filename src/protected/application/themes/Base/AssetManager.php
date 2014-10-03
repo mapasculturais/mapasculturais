@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Themes\Base;
 
+use MapasCulturais\App;
+
 abstract class AssetManager{
     /**
      *
@@ -68,47 +70,96 @@ abstract class AssetManager{
     }
 
     function printScripts($group){
-        $asset_url = \MapasCulturais\App::i()->getAssetUrl();
+        $app = App::i();
 
-        $files = $this->_publishScripts($group);
+        $url = null;
+
+        if($app->config['app.useAssetsUrlCache']){
+            $keys = array_keys($this->_enqueuedScripts[$group]);
+            sort($keys);
+            $cache_id = "ASSETS_SCRIPTS:$group:" . implode(':', $keys);
+            if($app->cache->contains($cache_id)){
+                echo $app->cache->fetch($cache_id);
+                return;
+            }
+        }
+
+        $asset_url = $app->getAssetUrl();
+
+        $urls = $this->_publishScripts($group);
 
         $scripts = '';
 
-        foreach ($files as $source){
+        foreach ($urls as $source){
             if(!preg_match('#^http://|https://|//#', $source))
                 $url = $asset_url . $source;
             $scripts .= "\n <script type='text/javascript' src='{$url}'></script>";
         }
+
+        if($app->config['app.useAssetsUrlCache'])
+            $app->cache->save ($cache_id, $scripts, $app->config['app.assetsUrlCache.lifetime']);
 
         echo $scripts;
 
     }
 
     function printStyles($group){
-        $asset_url = \MapasCulturais\App::i()->getAssetUrl();
+        $app = App::i();
 
-        $files = $this->_publishStyles($group);
+        $url = null;
+
+        if($app->config['app.useAssetsUrlCache']){
+            $keys = array_keys($this->_enqueuedScripts[$group]);
+            sort($keys);
+            $cache_id = "ASSETS_STYLES:$group:" . implode(':', $keys);
+            if($app->cache->contains($cache_id)){
+                echo $app->cache->fetch($cache_id);
+                return;
+            }
+        }
+
+        $asset_url = $app->getAssetUrl();
+
+        $urls = $this->_publishStyles($group);
+
         $styles = '';
-        foreach ($files as $source){
+
+        foreach ($urls as $source){
             if(!preg_match('#^http://|https://|//#', $source))
                 $url = $asset_url . $source;
             $styles .= "\n <link href='{$url}' media='all' rel='stylesheet' type='text/css' />";
         }
 
+        if($app->config['app.useAssetsUrlCache'])
+            $app->cache->save ($cache_id, $styles, $app->config['app.assetsUrlCache.lifetime']);
+
         echo $styles;
     }
 
     function assetUrl($asset, $print = true){
-        $asset_url = $this->_publishAsset($asset);
+        $app = App::i();
+
+        $cache_id = "ASSET_URL:$asset";
+
+        if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
+            $asset_url = $app->cache->fetch($cache_id);
+
+        }else{
+            $asset_url = App::i()->getAssetUrl() . $this->_publishAsset($asset);
+
+            if($app->config['app.useAssetsUrlCache'])
+                $app->cache->save ($cache_id, $asset_url, $app->config['app.assetsUrlCache.lifetime']);
+
+        }
+
         if($print)
             echo $asset_url;
         else
             return $asset_url;
+
     }
 
-    protected function _publishAsset($asset){
-        // copia o asset para a pasta public
-    }
+    abstract protected function _publishAsset($asset);
 
     abstract protected function _publishScripts($group);
 

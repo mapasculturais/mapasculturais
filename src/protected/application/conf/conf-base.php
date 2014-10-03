@@ -10,7 +10,7 @@ $base_url = $prot_part . $host_part;
 
 return array(
     // theme namespaces
-    'theme.namespaces' => array(
+    'namespaces' => array(
         'MapasCulturais\Themes' => THEMES_PATH
     ),
 
@@ -30,6 +30,18 @@ return array(
     'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
 
     'api.accessControlAllowOrigin' => '*',
+
+
+    'themes.active' => 'MapasCulturais\Themes\Mapas1',
+    'themes.assetManager' => new \MapasCulturais\Themes\Base\AssetManagers\Assetic(array(
+        'mergeScripts' => false,
+        'mergeStyles' => false,
+        'filters' => array(
+            'styles' => array(),
+            'scripts' => array()
+        )
+    )),
+
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -54,6 +66,13 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+
+    'app.useRegisteredAutoloadCache' => true,
+    'app.registeredAutoloadCache.lifetime' => 0,
+
+    'app.useAssetsUrlCache' => true,
+    'app.assetsUrlCache.lifetime' => 0,
+
 
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,

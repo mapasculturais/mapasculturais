@@ -55,8 +55,21 @@ abstract class Theme{
         $app->applyHook('mapasculturais.scripts');
     }
 
+    function getAssetsFolders(){
+        $class = get_called_class();
+        $folders = array();
+        while($class !== __CLASS__){
+            $folders[] = $class::getThemeFolder() . '/assets/';
+            $class = get_parent_class($class);
+        }
+
+        return $folders;
+    }
+
     /**
      * @return \MapasCulturais\Themes\Base\AssetManager Asset Manager
      */
     abstract function getAssetManager();
+
+    abstract static function getThemeFolder();
 }
