@@ -1,8 +1,8 @@
 <?php
 namespace SpCultura;
-use MapasCulturais\Themes\MapasV1;
+use MapasCulturais\Themes\BaseV1;
 
-class Theme extends MapasV1\Theme{
+class Theme extends BaseV1\Theme{
     static function getThemeFolder() {
         return __DIR__;
     }

@@ -1,7 +1,7 @@
 <?php
-namespace MapasCulturais\Themes\Base\AssetManagers;
+namespace MapasCulturais\AssetManagers;
 
-class Assetic extends \MapasCulturais\Themes\Base\AssetManager{
+class Assetic extends \MapasCulturais\AssetManager{
     
     protected function _createAssetCollection($assets){
         $result = array();

@@ -1,7 +1,5 @@
 <?php
-namespace MapasCulturais\Themes\Base;
-
-use MapasCulturais\App;
+namespace MapasCulturais;
 
 abstract class AssetManager{
     /**

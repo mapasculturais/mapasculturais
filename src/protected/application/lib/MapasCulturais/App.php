@@ -16,7 +16,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
  * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
- * @property-read \MapasCulturais\View $view The MapasCulturais View object
+ * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
  * @property-read String $projectRegistrationAgentRelationGroupName Project Registration Agent Relation Group Name
@@ -154,36 +154,7 @@ class App extends \Slim\Slim{
             error_reporting(E_ALL ^ E_STRICT);
 
         session_start();
-
-        $config['app.mode'] = key_exists('app.mode', $config) ? $config['app.mode'] : 'production';
-
-        $this->_config = $config;
-
-        $this->_config['path.layouts'] = APPLICATION_PATH.'themes/active/layouts/';
-        $this->_config['path.templates'] = APPLICATION_PATH.'themes/active/views/';
-        $this->_config['path.metadata_inputs'] = APPLICATION_PATH.'themes/active/metadata-inputs/';
-
-        if(!key_exists('app.sanitize_filename_function', $this->_config))
-                $this->_config['app.sanitize_filename_function'] = null;
-
-        parent::__construct(array(
-            'log.level' => $config['slim.log.level'],
-            'log.enabled' => $config['slim.log.enabled'],
-            'debug' => $config['slim.debug'],
-            'templates.path' => $this->_config['path.templates'],
-            'view' => new View(),
-            'mode' => $this->_config['app.mode']
-        ));
-
-        $config = $this->_config;
-
-        // custom log writer
-        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
-            $log = $this->getLog();
-            $log->setWriter($config['slim.log.writer']);
-        }
-
-
+        
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -203,7 +174,7 @@ class App extends \Slim\Slim{
             foreach($config['namespaces'] as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
-                    echo "ENTROU AQUI<br>";
+                    
                     if(\file_exists($path)){
                         require_once $path;
                         if($config['app.useRegisteredAutoloadCache'])
@@ -214,6 +185,36 @@ class App extends \Slim\Slim{
             }
 
         });
+
+        $config['app.mode'] = key_exists('app.mode', $config) ? $config['app.mode'] : 'production';
+
+        $this->_config = $config;
+
+        $this->_config['path.layouts'] = APPLICATION_PATH.'themes/active/layouts/';
+        $this->_config['path.templates'] = APPLICATION_PATH.'themes/active/views/';
+        $this->_config['path.metadata_inputs'] = APPLICATION_PATH.'themes/active/metadata-inputs/';
+
+        if(!key_exists('app.sanitize_filename_function', $this->_config))
+                $this->_config['app.sanitize_filename_function'] = null;
+        
+        $theme_class = $config['themes.active'].'\Theme';
+
+        parent::__construct(array(
+            'log.level' => $config['slim.log.level'],
+            'log.enabled' => $config['slim.log.enabled'],
+            'debug' => $config['slim.debug'],
+            'templates.path' => $this->_config['path.templates'],
+            'view' => new $theme_class($config['themes.assetManager']),
+            'mode' => $this->_config['app.mode']
+        ));
+
+        $config = $this->_config;
+
+        // custom log writer
+        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
+            $log = $this->getLog();
+            $log->setWriter($config['slim.log.writer']);
+        }
 
 
         // creates runtime cache component

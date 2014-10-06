@@ -32,13 +32,19 @@ return array(
     'api.accessControlAllowOrigin' => '*',
 
 
-    'themes.active' => 'MapasCulturais\Themes\Mapas1',
-    'themes.assetManager' => new \MapasCulturais\Themes\Base\AssetManagers\Assetic(array(
+    'themes.active' => 'MapasCulturais\Themes\BaseV1',
+    'themes.assetManager' => new \MapasCulturais\AssetManagers\Assetic(array(
         'mergeScripts' => false,
         'mergeStyles' => false,
         'filters' => array(
             'styles' => array(),
-            'scripts' => array()
+            'scripts' => array(),
+            // '.png' => array(new \Assetic\Filter\OptiPngFilter),
+            // '.jpeg' => array(new \Assetic\Filter\JpegoptimFilter),
+            '.css' => array(new \Assetic\Filter\UglifyCssFilter),
+            '.js' => array(new \Assetic\Filter\UglifyJs2Filter),
+            // '.less' => array(new \Assetic\Filter\LessFilter),
+            // '.scss' => array(new \Assetic\Filter\Sass\SassFilter('/path/to/sass'))
         )
     )),
 

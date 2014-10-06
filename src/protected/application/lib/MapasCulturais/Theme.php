@@ -20,9 +20,10 @@ use MapasCulturais\App;
  * @hook **view.render:after ($template_name, $html)** - executed after the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name, $html)** - executed after the render of the template and the layout
  */
-class View extends \Slim\View {
+abstract class Theme extends \Slim\View {
     use Traits\MagicGetter,
-        Traits\MagicSetter;
+        Traits\MagicSetter,
+        Traits\MagicCallers;
 
     /**
      * The controller that is using this view object.
@@ -48,6 +49,10 @@ class View extends \Slim\View {
      */
     protected $_partial = false;
     
+    protected $_path = array();
+    
+    protected $_assetManager = null;
+    
     /**
      * CSS Classes to print in body tag
      * @var array 
@@ -59,12 +64,40 @@ class View extends \Slim\View {
      * @var array 
      */
     protected $bodyProperties =  null;
+    
+    protected $jsObject = null;
+    
+    /**
+     *
+     * @var \ArrayObject
+     */
+    protected $assetsFolders = null;
+    
 
-    public function __construct() {
+    public function __construct(AssetManager $asset_manager) {
         parent::__construct();
         
-        $this->bodyClasses = new \ArrayObject();
-        $this->bodyProperties = new \ArrayObject();
+        $this->_assetManager = $asset_manager;
+        
+        $app = App::i();
+        
+        $this->bodyClasses = new \ArrayObject;
+        $this->bodyProperties = new \ArrayObject;
+        
+        $this->jsObject = new \ArrayObject;
+        $this->jsObject['baseURL'] = $app->baseUrl;
+        $this->jsObject['assetURL'] = $app->assetUrl;
+        
+        $class = get_called_class();
+        $folders = array();
+        while($class !== __CLASS__){
+            if(!method_exists($class, 'getThemeFolder'))
+                throw new \Exception ("getThemeFolder method is required for theme classes and is not present in {$class} class");
+                $folders[] = $class::getThemeFolder() . '/assets/';
+            $class = get_parent_class($class);
+        }
+        
+        $this->assetsFolders = new \ArrayObject(array_reverse($folders));
     }
     /**
      * Sets partial property.
@@ -273,6 +306,14 @@ class View extends \Slim\View {
         return $title;
     }
     
+    function addAssetPath($path){
+        $this->assetsFolders[] = (string) $path;
+    }
+    
+    function getAssetManager(){
+        return $this->_assetManager;
+    }
+    
     function asset($file, $print = true){
         $url = App::i()->getAssetUrl() . '/' . $file;
         if($print)
@@ -286,5 +327,44 @@ class View extends \Slim\View {
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);
+    }
+
+    function isEditable(){
+        return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
+    }
+
+    function bodyBegin(){
+        App::i()->applyHook('mapasculturais.body:before');
+    }
+
+    function bodyEnd(){
+        App::i()->applyHook('mapasculturais.body:after');
+    }
+
+    function bodyProperties(){
+        $app = App::i();
+
+        $body_properties = array();
+
+        foreach ($this->bodyProperties as $key => $val)
+            $body_properties[] = "{$key}=\"$val\"";
+
+        $body_properties[] = 'class="' . implode(' ', $this->bodyClasses->getArrayCopy()) . '"';
+
+        echo implode(' ', $body_properties);;
+    }
+
+    function head(){
+        $app = App::i();
+
+        $app->applyHook('mapasculturais.head');
+
+        $app->printStyles('vendor');
+        $app->printStyles('fonts');
+        $app->printStyles('app');
+        $app->printScripts('vendor');
+        $app->printScripts('app');
+
+        $app->applyHook('mapasculturais.scripts');
     }
 }
