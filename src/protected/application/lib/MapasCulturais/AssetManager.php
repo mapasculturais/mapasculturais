@@ -14,6 +14,12 @@ abstract class AssetManager{
      */
     protected $_enqueuedStyles = array();
 
+    protected $_config = array();
+
+    function __construct(array $config = array()) {
+        $this->_config = $config;
+    }
+
 
     function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
         if(!key_exists($group, $this->_enqueuedScripts))
@@ -134,7 +140,7 @@ abstract class AssetManager{
         echo $styles;
     }
 
-    function assetUrl($asset, $print = true){
+    function assetUrl($asset){
         $app = App::i();
 
         $cache_id = "ASSET_URL:$asset";
@@ -143,18 +149,29 @@ abstract class AssetManager{
             $asset_url = $app->cache->fetch($cache_id);
 
         }else{
-            $asset_url = App::i()->getAssetUrl() . $this->_publishAsset($asset);
+            $asset_url = $this->_publishAsset($asset);
 
             if($app->config['app.useAssetsUrlCache'])
                 $app->cache->save ($cache_id, $asset_url, $app->config['app.assetsUrlCache.lifetime']);
 
         }
 
-        if($print)
-            echo $asset_url;
-        else
-            return $asset_url;
+        return $asset_url;
 
+    }
+
+    function _getPublishedAssetFilename($asset_filename){
+        $pathinfo = pathinfo($asset_filename);
+        $ftime = filemtime($asset_filename);
+        return $pathinfo['filename'] . '-' . $ftime . '.' . $pathinfo['extension'];
+    }
+
+    function _getPublishedScriptsGroupFilename($group, $content){
+        return $group . '-' . md5($content) . '.js';
+    }
+
+    function _getPublishedStylesGroupFilename($group, $content){
+        return $group . '-' . md5($content) . '.css';
     }
 
     abstract protected function _publishAsset($asset);

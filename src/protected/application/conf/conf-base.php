@@ -36,16 +36,16 @@ return array(
     'themes.assetManager' => new \MapasCulturais\AssetManagers\Assetic(array(
         'mergeScripts' => false,
         'mergeStyles' => false,
-        'filters' => array(
-            'styles' => array(),
-            'scripts' => array(),
-            // '.png' => array(new \Assetic\Filter\OptiPngFilter),
-            // '.jpeg' => array(new \Assetic\Filter\JpegoptimFilter),
-            '.css' => array(new \Assetic\Filter\UglifyCssFilter),
-            '.js' => array(new \Assetic\Filter\UglifyJs2Filter),
-            // '.less' => array(new \Assetic\Filter\LessFilter),
-            // '.scss' => array(new \Assetic\Filter\Sass\SassFilter('/path/to/sass'))
-        )
+        
+        'filters.styles' => array(), // filters applied to styles groups
+        'filters.scripts' => array(), // filters applied to scripts groups
+        // 'filters.css' => array(new \Assetic\Filter\UglifyCssFilter),
+        // 'filters.js' => array(new \Assetic\Filter\UglifyJs2Filter),
+        // 'filters.less' => array(new \Assetic\Filter\LessFilter),
+        // 'filters.scss' => array(new \Assetic\Filter\Sass\SassFilter('/path/to/sass')),
+        // 'filters.png' => array(new \Assetic\Filter\OptiPngFilter),
+        // 'filters.jpeg' => array(new \Assetic\Filter\JpegoptimFilter),
+
     )),
 
 

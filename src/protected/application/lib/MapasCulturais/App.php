@@ -154,7 +154,7 @@ class App extends \Slim\Slim{
             error_reporting(E_ALL ^ E_STRICT);
 
         session_start();
-        
+
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -174,7 +174,7 @@ class App extends \Slim\Slim{
             foreach($config['namespaces'] as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
-                    
+
                     if(\file_exists($path)){
                         require_once $path;
                         if($config['app.useRegisteredAutoloadCache'])
@@ -196,7 +196,7 @@ class App extends \Slim\Slim{
 
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
-        
+
         $theme_class = $config['themes.active'].'\Theme';
 
         parent::__construct(array(
@@ -1167,7 +1167,7 @@ class App extends \Slim\Slim{
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'public';
+        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'public/';
     }
 
     /**

@@ -48,56 +48,54 @@ abstract class Theme extends \Slim\View {
      * @var bool
      */
     protected $_partial = false;
-    
-    protected $_path = array();
-    
+
     protected $_assetManager = null;
-    
+
     /**
      * CSS Classes to print in body tag
-     * @var array 
+     * @var array
      */
     protected $bodyClasses = null;
-    
+
     /**
      * Properties of body tag
-     * @var array 
+     * @var array
      */
     protected $bodyProperties =  null;
-    
+
     protected $jsObject = null;
-    
+
     /**
      *
      * @var \ArrayObject
      */
-    protected $assetsFolders = null;
-    
+    protected $path = null;
+
 
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
-        
+
         $this->_assetManager = $asset_manager;
-        
+
         $app = App::i();
-        
+
         $this->bodyClasses = new \ArrayObject;
         $this->bodyProperties = new \ArrayObject;
-        
+
         $this->jsObject = new \ArrayObject;
         $this->jsObject['baseURL'] = $app->baseUrl;
         $this->jsObject['assetURL'] = $app->assetUrl;
-        
+
         $class = get_called_class();
         $folders = array();
         while($class !== __CLASS__){
             if(!method_exists($class, 'getThemeFolder'))
                 throw new \Exception ("getThemeFolder method is required for theme classes and is not present in {$class} class");
-                $folders[] = $class::getThemeFolder() . '/assets/';
+                $folders[] = $class::getThemeFolder() . '/';
             $class = get_parent_class($class);
         }
-        
-        $this->assetsFolders = new \ArrayObject(array_reverse($folders));
+
+        $this->path = new \ArrayObject(array_reverse($folders));
     }
     /**
      * Sets partial property.
@@ -179,13 +177,13 @@ abstract class Theme extends \Slim\View {
 
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
-        
-        
-        if ($this->controller){ 
+
+
+        if ($this->controller){
             $this->bodyClasses[] = "controller-{$this->controller->id}";
             $this->bodyClasses[] = "action-{$this->controller->action}";
         }
-	if (isset($entity)) 
+	if (isset($entity))
             $this->bodyClasses[] = 'entity';
 
         // render the template
@@ -287,7 +285,7 @@ abstract class Theme extends \Slim\View {
 
         echo $this->partialRender($template, $data);
     }
-    
+
     function getTitle($entity = null){
         $app = App::i();
         $title = '';
@@ -305,23 +303,34 @@ abstract class Theme extends \Slim\View {
 
         return $title;
     }
-    
-    function addAssetPath($path){
-        $this->assetsFolders[] = (string) $path;
+
+    function addPath($path){
+        if(substr($path,-1) !== '/') $path .= '/';
+
+        $this->path[] = (string) $path;
     }
-    
+
     function getAssetManager(){
         return $this->_assetManager;
     }
-    
+
+    function getAssetFilename($file){
+        $path = array_reverse($this->path->getArrayCopy());
+        foreach($path as $dir){
+            if(file_exists($dir . 'assets/' . $file)){
+                return $dir . 'assets/'. $file;
+            }
+        }
+    }
+
     function asset($file, $print = true){
-        $url = App::i()->getAssetUrl() . '/' . $file;
+        $url = $this->getAssetManager()->assetUrl($file);
         if($print)
             echo $url;
-        
+
         return $url;
     }
-    
+
     function renderMarkdown($markdown){
         $app = App::i();
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
@@ -330,7 +339,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        return (bool) preg_match('#^\w+/(create|edit)$#', App::i()->view->template);
+        return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
     }
 
     function bodyBegin(){
@@ -342,8 +351,6 @@ abstract class Theme extends \Slim\View {
     }
 
     function bodyProperties(){
-        $app = App::i();
-
         $body_properties = array();
 
         foreach ($this->bodyProperties as $key => $val)
@@ -351,20 +358,12 @@ abstract class Theme extends \Slim\View {
 
         $body_properties[] = 'class="' . implode(' ', $this->bodyClasses->getArrayCopy()) . '"';
 
-        echo implode(' ', $body_properties);;
+        echo implode(' ', $body_properties);
     }
 
     function head(){
         $app = App::i();
 
         $app->applyHook('mapasculturais.head');
-
-        $app->printStyles('vendor');
-        $app->printStyles('fonts');
-        $app->printStyles('app');
-        $app->printScripts('vendor');
-        $app->printScripts('app');
-
-        $app->applyHook('mapasculturais.scripts');
     }
 }
