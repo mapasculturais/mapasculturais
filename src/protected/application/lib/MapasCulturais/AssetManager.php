@@ -88,15 +88,11 @@ abstract class AssetManager{
             }
         }
 
-        $asset_url = $app->getAssetUrl();
-
         $urls = $this->_publishScripts($group);
 
         $scripts = '';
 
-        foreach ($urls as $source){
-            if(!preg_match('#^http://|https://|//#', $source))
-                $url = $asset_url . $source;
+        foreach ($urls as $url){
             $scripts .= "\n <script type='text/javascript' src='{$url}'></script>";
         }
 
@@ -128,9 +124,7 @@ abstract class AssetManager{
 
         $styles = '';
 
-        foreach ($urls as $source){
-            if(!preg_match('#^http://|https://|//#', $source))
-                $url = $asset_url . $source;
+        foreach ($urls as $url){
             $styles .= "\n <link href='{$url}' media='all' rel='stylesheet' type='text/css' />";
         }
 

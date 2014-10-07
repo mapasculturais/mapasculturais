@@ -33,18 +33,14 @@ return array(
 
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
-    'themes.assetManager' => new \MapasCulturais\AssetManagers\Assetic(array(
-        'mergeScripts' => false,
+    'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
+        'publishPath' => BASE_PATH . 'public/',
+        
+        'mergeScripts' => true,
         'mergeStyles' => false,
         
-        'filters.styles' => array(), // filters applied to styles groups
-        'filters.scripts' => array(), // filters applied to scripts groups
-        // 'filters.css' => array(new \Assetic\Filter\UglifyCssFilter),
-        // 'filters.js' => array(new \Assetic\Filter\UglifyJs2Filter),
-        // 'filters.less' => array(new \Assetic\Filter\LessFilter),
-        // 'filters.scss' => array(new \Assetic\Filter\Sass\SassFilter('/path/to/sass')),
-        // 'filters.png' => array(new \Assetic\Filter\OptiPngFilter),
-        // 'filters.jpeg' => array(new \Assetic\Filter\JpegoptimFilter),
+        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -c -m -p 4',
+        'process.css' => 'uglifycss {IN} > {OUT}'
 
     )),
 

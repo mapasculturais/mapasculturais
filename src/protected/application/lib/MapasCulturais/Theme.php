@@ -310,8 +310,28 @@ abstract class Theme extends \Slim\View {
         $this->path[] = (string) $path;
     }
 
+    /**
+     * 
+     * @return \MapasCulturais\AssetManager
+     */
     function getAssetManager(){
         return $this->_assetManager;
+    }
+    
+    function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
+        $this->_assetManager->enqueueScript($group, $script_name, $script_filename, $dependences);
+    }
+    
+    function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
+        $this->_assetManager->enqueueStyle($group, $style_name, $style_filename, $dependences, $media);
+    }
+    
+    function printScripts($group){
+        $this->_assetManager->printScripts($group);
+    }
+    
+    function printStyles($group){
+        $this->_assetManager->printStyles($group);
     }
 
     function getAssetFilename($file){
