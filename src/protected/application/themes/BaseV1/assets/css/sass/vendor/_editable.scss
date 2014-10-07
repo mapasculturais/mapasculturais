@@ -1,0 +1,239 @@
+/* =Editable
+-------------------------------------------------------------- */
+.editable {
+    display: inline-block;
+    padding: 0 3px;
+    border-radius: $border-radius-base;
+}
+.editable:hover {
+    background: $gray-light;
+}
+.editable:after {
+    margin-left: 5px;
+    content: '\6c';
+    font-size: $font-size-base;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-style: normal;
+    vertical-align: initial;
+    text-transform: none;
+    color: $gray-dark;
+}
+.editable:hover:after {
+    color: $gray-darker;
+}
+.editable-empty,
+.editable-empty:hover,
+.editable-empty:focus {
+    font-style: normal;
+    color: inherit;
+}
+.editable-click,
+a.editable-click,
+a.editable-click:hover {
+    border-bottom: none;
+}
+.editable-unsaved {
+    font-weight: normal;
+    background: #ffc;
+}
+/*nos grupos relacionados*/
+.agentes-relacionados .editable {
+    width: 3rem;
+    height: 3rem;
+    background: #d8d8d8;
+    text-align: center;
+    line-height: 3rem;
+}
+.agentes-relacionados .editable:after {
+    content: '\e050';
+    color: $gray-dark;
+    margin-left: 0;
+}
+.agentes-relacionados .editable:hover:after {
+    color: $gray-darker;
+}
+
+/* balãozinho*/
+.tip-yellowsimple {
+    z-index: 1001;
+    padding: $padding-base;
+    background: #fff;
+    border: none;
+    border-top: 4px solid $brand-primary;
+    border-radius: $border-radius-base;
+            box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
+    -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
+}
+.tip-yellowsimple .tip-inner {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+.tip-yellowsimple .tip-arrow-bottom,
+.tip-yellowsimple .tip-arrow-top,
+.tip-yellowsimple .tip-arrow-left,
+.tip-yellowsimple .tip-arrow-right {
+    background-image: url(../img/setinhas-editable.png);
+}
+.tip-yellowsimple .tip-arrow-top {
+    margin-top: -10px;
+}
+/*campos de formulário*/
+.editable-input input,
+.editable-input select,
+.editable-buttons button {
+    margin-bottom: 0;
+}
+.editable-buttons button.editable-cancel {
+    padding: 3px;
+}
+.editable-buttons button.editable-cancel .icon_close {
+    font-size: 1.5rem;
+}
+.editable-buttons.editable-buttons-bottom {
+    text-align: right;
+}
+div.ficha-spcultura .editable-buttons-bottom {
+    float: left;
+}
+.input-shortDescription,
+.input-longDescription {
+    width: 871px;
+}
+.label.space-search {
+    color: $brand-accent;
+    background-color: transparent;
+}/*verficar se está sendo usado*/
+.select2-input {
+    min-width: 150px;
+}
+.select2-container {
+    max-width: 300px;
+}
+.input-large {
+    min-width: 400px;
+}
+.sidebar .select2-container {
+    max-width: 100%;
+}
+.select2-container-multi .select2-choices {
+    border: 1px solid $gray !important;
+    border-radius: $border-radius-base;
+    background: none !important;
+}
+.select2-container-multi .select2-choices .select2-search-field input {
+    padding: 3px 6px;
+    margin: -1px 0;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-family: $font-family-base;
+}
+.select2-container-multi .select2-choices .select2-search-choice {
+    padding: 0 $padding-large 0 $padding-small;
+    background-image: none;
+    background: $brand-accent;
+    color: #fff;
+    border: none;
+    border-radius: $border-radius-base;
+    line-height: $line-height-base;
+    font-size: .7rem;
+    text-transform: uppercase;
+}
+.select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid $gray;
+            box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.select2-container-multi .select2-search-choice-close {
+    height: 1rem;
+    width: 1rem;
+    top: 0;
+    right: 3px;
+    left: auto;
+    background: none;
+}
+.select2-container-multi .select2-search-choice-close:before {
+    content: '\4d';
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-style: normal;
+    vertical-align: initial;
+    text-transform: none;
+    color: #fff;
+}
+.select2-drop-active {
+    border: 1px solid $gray;
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+}
+.select2-drop.select2-drop-above.select2-drop-active {
+    border-top: 1px solid $gray;
+}
+.select2-results {
+    font-size: $font-size-smaller;
+}
+.select2-results .select2-result-label {
+    padding: 0 $padding-base;
+}
+.select2-results .select2-highlighted {
+    background: $gray-lighter;
+    color: $brand-accent;
+    border-radius: $border-radius-base;
+}
+.select2-container .select2-choice {
+    height: inherit;
+    padding: 0 0 0 $padding-small;
+    border: 1px solid $gray;
+    line-height: $line-height-base;
+    font-size: $font-size-smaller;
+    font-weight: normal;
+    color: #888;
+    border-radius: $border-radius-base;
+    background-color: #fff;
+    background-image: none;
+}
+.select2-container .select2-choice .select2-arrow {
+    width: $line-height-base;;
+    border-left: none;
+    border-radius: 0;
+    background: none;
+    background-image: none;
+}
+.select2-container .select2-choice .select2-arrow:before {
+    content: '\33';
+    display: inline-block;
+    width: $line-height-base;;
+    speak: none;
+    line-height: $line-height-base;
+    font-size: $font-size-base;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    cursor: pointer;
+}
+.select2-container .select2-choice .select2-arrow b {
+    display: none;
+}
+/*busca*/
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+    border: 1px solid $gray;
+    background-image: none;
+}
+.select2-container.select2-drop-above .select2-choice {
+    border-radius: 0 0 2px 2px;
+    background-image: none;
+}
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-selection-limit {
+    background: none;
+}

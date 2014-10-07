@@ -1,0 +1,49 @@
+/*ícones*/
+.icone {
+    display: inline-block;
+    vertical-align: middle;
+}
+a.icone:hover {
+    text-decoration: none;
+}
+h1 .icone {
+    width: 2rem;
+    height: 2rem;
+    margin-right: .75rem;
+    font-size: 2rem;
+    line-height: inherit;
+}
+.icon_check {
+    margin-right: .5rem;
+    background: #fff;
+    color: $gray;
+    padding: 2px;
+    border-radius: $border-radius-base;
+}
+.icon_check:hover {
+    color: $brand-accent;
+}
+.icon_check.selected {
+    background: $brand-accent;
+    color: #fff !important;
+}
+.icon_check:hover {
+    color: $brand-accent;
+}
+.social_twitter {
+    color: #00acee !important;
+}
+.social_facebook {
+    color: #3b5998 !important;
+}
+.social_googleplus {
+    color: #dd4b39 !important;
+}
+.icone.icon_download {
+    margin-right: .5rem;
+    width: 1rem;
+    height: 1rem;
+}
+.icone.icon_download:before {
+    font-size: $font-size-base;
+}

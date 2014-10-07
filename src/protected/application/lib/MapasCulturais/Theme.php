@@ -191,6 +191,7 @@ abstract class Theme extends \Slim\View {
         if(strtolower(substr($templatePath, -4)) !== '.php')
                 $templatePath .= '.php';
 
+        die($this->templatesDirectory);
         $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
 
         $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', array('template' => $template_name));
@@ -333,14 +334,18 @@ abstract class Theme extends \Slim\View {
     function printStyles($group){
         $this->_assetManager->printStyles($group);
     }
-
-    function getAssetFilename($file){
+    
+    protected function _resolveFilename($folder, $file){
         $path = array_reverse($this->path->getArrayCopy());
         foreach($path as $dir){
-            if(file_exists($dir . 'assets/' . $file)){
-                return $dir . 'assets/'. $file;
+            if(file_exists($dir . $folder . $file)){
+                return $dir . $folder . $file;
             }
         }
+    }
+
+    function getAssetFilename($file){
+        return $this->_resolveFilename('assets/', $file);
     }
 
     function asset($file, $print = true){
