@@ -1,4 +1,4 @@
-<?php $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle() ?>
+t<?php $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle() ?>
 <!DOCTYPE html>
 <html lang="pt-BR" dir="ltr">
     <head>

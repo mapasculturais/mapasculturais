@@ -60,7 +60,7 @@
         };
 
         $rootScope.$on('repeatDone:findEntity:find-entity-change-owner', adjustBoxPosition);
-        
+
         $scope.$watch('data.spinner', function(ov, nv){
             if(ov && !nv)
                 adjustBoxPosition();
@@ -83,11 +83,11 @@
 
             EditBox.close('editbox-change-owner');
         };
-        
+
         $('#editbox-change-owner').on('open', function(){
             if(!adjustingBoxPosition)
                 $('#find-entity-change-owner').trigger('find');
         });
-        
+
     }]);
 })(angular);

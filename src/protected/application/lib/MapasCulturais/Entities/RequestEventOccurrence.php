@@ -43,12 +43,4 @@ class RequestEventOccurrence extends Request{
         $eo->delete(true);
         parent::_doRejectAction();
     }
-
-    protected function canUserApprove($user){
-        return $this->destination->canUser('@control', $user);
-    }
-
-    protected function canUserReject($user){
-        return $this->destination->canUser('@control', $user) || $this->origin->canUser('@control');
-    }
 }

@@ -221,7 +221,7 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     protected function canUserReject($user){
-        return $this->origin->canUser('@control', $user) || $this->destination->canUser('@control', $user);
+        return $this->canUserApprove($user) || $this->canUserReject($user);
     }
 
     protected function _doRejectAction() { }
