@@ -95,18 +95,6 @@ class App extends \Slim\Slim{
     protected $_config = array();
 
     /**
-     *
-     * @var type
-     */
-    protected $_enqueuedScripts = array();
-
-    /**
-     *
-     * @var type
-     */
-    protected $_enqueuedStyles = array();
-
-    /**
      * The Application Registry.
      *
      * Here is stored the registered controllers, entity types, entity type groups, entity metadata definitions, file groups definitions and taxonomy definitions.
@@ -332,9 +320,8 @@ class App extends \Slim\Slim{
 
         $this->_auth->setCookies();
 
-        // run theme theme.php
-        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
-            include ACTIVE_THEME_PATH . 'theme.php';
+        // initialize theme
+        $this->view->init();
 
         // ===================================== //
 
@@ -354,99 +341,6 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
-    }
-
-    public function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
-        if(!key_exists($group, $this->_enqueuedScripts))
-                $this->_enqueuedScripts[$group] = array();
-
-        $this->_enqueuedScripts[$group][$script_name] = array($script_name, $script_filename, $dependences);
-    }
-
-    public function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
-        if(!key_exists($group, $this->_enqueuedStyles))
-                $this->_enqueuedStyles[$group] = array();
-
-        $this->_enqueuedStyles[$group][$style_name] = array($style_name, $style_filename, $dependences, $media);
-    }
-
-    public function addScriptToArray($group, $script, array &$array){
-        if(!in_array($script[1], $array)){
-            foreach ($script[2] as $dep)
-                if(key_exists($dep, $this->_enqueuedScripts[$group]))
-                    $this->addScriptToArray ($group, $this->_enqueuedScripts[$group][$dep], $array);
-                else
-                    throw new \Exception(sprintf(App::txt('Missing script dependence: %s depends on %s'),$script[0],$dep));
-
-            $array[] = $script[1];
-        }
-    }
-
-    public function addStylesToArray($group, $script, array &$array){
-
-        if(!in_array($script[1], $array)){
-            foreach ($script[2] as $dep)
-                if(key_exists($dep, $this->_enqueuedStyles[$group]))
-                    $this->addScriptToArray ($group, $this->_enqueuedStyles[$group][$dep], $array);
-                else
-                    throw new \Exception(sprintf(App::txt('Missing script dependence: %s depends on %s'),$script[0],$dep));
-
-            $array[] = $script[1];
-        }
-    }
-
-    public function printStyles($group){
-        if(!key_exists($group, $this->_enqueuedStyles))
-            return;
-
-        $sources = array();
-        foreach($this->_enqueuedStyles[$group] as $script)
-            $this->addStylesToArray ($group, $script, $sources);
-
-        if(!$sources){
-            echo "";
-            return;
-        }
-
-        $styles = "";
-
-        foreach ($sources as $source){
-            if(!preg_match('#^http://|https://|//#', $source))
-                $source = $this->getAssetUrl() . $source;
-            $styles .= "\n<link href='$source'  media='all' rel='stylesheet' type='text/css' />";
-        }
-
-        echo $styles;
-    }
-
-    public function printScripts($group){
-        if(!key_exists($group, $this->_enqueuedScripts))
-            return;
-
-        $sources = array();
-        foreach($this->_enqueuedScripts[$group] as $script)
-            $this->addScriptToArray ($group, $script, $sources);
-
-        if(!$sources){
-            echo "";
-            return;
-        }
-
-        $scripts = "";
-
-        foreach ($sources as $source){
-            if(!preg_match('#^http://|https://|//#', $source)){
-                $hash = '';
-                $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
-                if(file_exists($fullfilepath))
-                    $hash = '?v='.md5_file ($fullfilepath);
-
-                $source = $this->getAssetUrl() . $source . $hash;
-            }
-            $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
-        }
-
-        echo $scripts;
     }
 
     function enableAccessControl(){

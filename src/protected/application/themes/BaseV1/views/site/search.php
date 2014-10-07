@@ -47,7 +47,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
 
 
 ?>
-<?php add_map_assets(); ?>
+<?php $this->includeMapAssets(); ?>
 
     <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post">

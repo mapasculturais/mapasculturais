@@ -10,10 +10,11 @@ if(is_editable()){
 
     add_entity_properties_metadata_to_js($entity);
 }
-add_map_assets();
+
+$this->includeMapAssets();
 
 add_agent_relations_to_js($entity);
-add_angular_entity_assets($entity);
+$this->includeAngularEntityAssets($entity);
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>

@@ -35,10 +35,10 @@ return array(
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . 'public/',
-        
-        'mergeScripts' => true,
+
+        'mergeScripts' => false,
         'mergeStyles' => false,
-        
+
         'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -c -m -p 4',
         'process.css' => 'uglifycss {IN} > {OUT}'
 

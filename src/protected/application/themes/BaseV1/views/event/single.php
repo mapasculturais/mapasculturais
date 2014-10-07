@@ -17,12 +17,12 @@ if (is_editable()) {
 $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
 
 add_agent_relations_to_js($entity);
-add_angular_entity_assets($entity);
+$this->includeAngularEntityAssets($entity);
 
 $app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
 $app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
-add_map_assets();
+$this->includeMapAssets();
 
 add_occurrence_frequencies_to_js();
 ?>
