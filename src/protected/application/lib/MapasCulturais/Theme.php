@@ -63,6 +63,10 @@ abstract class Theme extends \Slim\View {
      */
     protected $bodyProperties =  null;
 
+    /**
+     *
+     * @var \ArrayObject
+     */
     protected $jsObject = null;
 
     /**
@@ -71,6 +75,7 @@ abstract class Theme extends \Slim\View {
      */
     protected $path = null;
 
+    abstract protected function _init();
 
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
@@ -97,6 +102,14 @@ abstract class Theme extends \Slim\View {
 
         $this->path = new \ArrayObject(array_reverse($folders));
     }
+
+    function init(){
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'theme.init:before');
+        $this->_init();
+        $app->applyHookBoundTo($this, 'theme.init:after');
+    }
+
     /**
      * Sets partial property.
      *
@@ -172,8 +185,8 @@ abstract class Theme extends \Slim\View {
     public function fullRender($template){
         $app = App::i();
 
-        $baseURL = $app->baseUrl;
-        $assetURL = $app->assetUrl;
+        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
@@ -183,23 +196,26 @@ abstract class Theme extends \Slim\View {
             $this->bodyClasses[] = "controller-{$this->controller->id}";
             $this->bodyClasses[] = "action-{$this->controller->action}";
         }
+
 	if (isset($entity))
             $this->bodyClasses[] = 'entity';
 
         // render the template
-        $templatePath = $this->templatesDirectory . '/' . $template;
+        $templatePath = $this->_resolveFilename('views', $template_filename);
+
         if(strtolower(substr($templatePath, -4)) !== '.php')
                 $templatePath .= '.php';
 
-        die($this->templatesDirectory);
-        $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
+
+        $template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $templatePath);
 
         $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', array('template' => $template_name));
 
         $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
 
         // render the layout with template
-        $layoutPath = $app->config['path.layouts'] . '/' . $this->_layout;
+        $layoutPath = $this->_resolveFilename('layouts', $layout_filename);
+
         if(strtolower(substr($layoutPath, -4)) !== '.php')
                 $layoutPath .= '.php';
 
@@ -236,8 +252,7 @@ abstract class Theme extends \Slim\View {
     public function partialRender($template, $data = array()){
         $app = App::i();
 
-        $baseURL = $app->baseUrl;
-        $assetURL = $app->assetUrl;
+        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
 
         if(is_array($data))
             extract($data);
@@ -245,8 +260,11 @@ abstract class Theme extends \Slim\View {
             foreach($this->data->keys() as $k)
                 $$k = $this->data->get($k);
 
+
         // render the template
-        $templatePath = $this->templatesDirectory . '/' . $template;
+        $templatePath = $this->_resolveFilename('views', $template_filename);
+
+
         if(strtolower(substr($templatePath, -4)) !== '.php' && strtolower(substr($templatePath, -5)) !== '.html')
                 $templatePath .= '.php';
 
@@ -312,36 +330,40 @@ abstract class Theme extends \Slim\View {
     }
 
     /**
-     * 
+     *
      * @return \MapasCulturais\AssetManager
      */
     function getAssetManager(){
         return $this->_assetManager;
     }
-    
+
     function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
         $this->_assetManager->enqueueScript($group, $script_name, $script_filename, $dependences);
     }
-    
+
     function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
         $this->_assetManager->enqueueStyle($group, $style_name, $style_filename, $dependences, $media);
     }
-    
+
     function printScripts($group){
         $this->_assetManager->printScripts($group);
     }
-    
+
     function printStyles($group){
         $this->_assetManager->printStyles($group);
     }
-    
+
     protected function _resolveFilename($folder, $file){
+        if(!substr($folder, -1) !== '/') $folder .= '/';
+
         $path = array_reverse($this->path->getArrayCopy());
         foreach($path as $dir){
             if(file_exists($dir . $folder . $file)){
                 return $dir . $folder . $file;
             }
         }
+
+        return null;
     }
 
     function getAssetFilename($file){

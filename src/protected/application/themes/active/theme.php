@@ -59,7 +59,7 @@ $app->hook('workflow(<<*>>).create', function() use($app){
             $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
         break;
     }
-    
+
     // message to requester user
     $notification = new Notification;
     $notification->user = $requester;
@@ -69,14 +69,14 @@ $app->hook('workflow(<<*>>).create', function() use($app){
 
     $notified_user_ids = array($requester->id);
 
-    
+
     foreach($destination->usersWithControl as $user){
          // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
         if(in_array($user->id, $notified_user_ids))
                 continue;
-        
+
         $notified_user_ids[] = $user->id;
-        
+
         $notification = new Notification;
         $notification->user = $user;
         $notification->message = $message;
@@ -396,10 +396,7 @@ function body_footer(){
     <?php
 }
 
-$app->hook('view.render(<<agent|space|project|event>>/single):before', function() use ($app) {
-    $app->enqueueScript('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
-    $app->enqueueStyle('vendor', 'magnific-popup', '/vendor/Magnific-Popup-0.9.9/magnific-popup.css');
-});
+
 
 $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', function() use($app){
      $app->hook('mapasculturais.body:before', function(){ ?>
@@ -418,100 +415,9 @@ $app->hook('controller(<<agent|project|space|event>>).render(<<single|edit>>)', 
      <?php });
 });
 
-$app->hook('view.render(<<*>>):before', function() use($app) {
-    $app->enqueueStyle('fonts', 'elegant', '/css/elegant-font.css');
-
-    $app->enqueueStyle('vendor', 'select2', '/vendor/select2/select2.css');
-    $app->enqueueStyle('vendor', 'x-editable', '/vendor/x-editable/jquery-editable/css/jquery-editable.css', array('select2'));
-    $app->enqueueStyle('vendor', 'x-editable-tip', '/vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
-
-    $app->enqueueStyle('app', 'style', '/css/style.css');
-    $app->enqueueStyle('app', 'vendor', '/css/vendor.css');
-
-    $app->enqueueScript('vendor', 'mustache', '/vendor/mustache.js');
-    $app->enqueueScript('vendor', 'jquery', '/vendor/jquery/jquery-2.0.3.min.js');
-    $app->enqueueScript('vendor', 'jquery-slimscroll', '/vendor/jquery.slimscroll.min.js');
-    $app->enqueueScript('vendor', 'jquery-form', '/vendor/jquery.form.min.js', array('jquery'));
-    $app->enqueueScript('vendor', 'jquery-mask', '/vendor/jquery.mask.min.js', array('jquery'));
-    $app->enqueueScript('vendor', 'purl', '/vendor/purl/purl.js', array('jquery'));
-
-    $app->enqueueScript('app', 'tim', '/js/tim.js');
-    $app->enqueueScript('app', 'mapasculturais', '/js/mapasculturais.js', array('tim'));
-
-    $app->enqueueScript('vendor', 'select2', '/vendor/select2-3.5.0/select2.min.js', array('jquery'));
-    $app->enqueueScript('vendor', 'select2-BR', '/js/select2_locale_pt-BR-edit.js', array('select2'));
-
-    $app->enqueueScript('vendor', 'poshytip', '/vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
-    $app->enqueueScript('vendor', 'x-editable', '/vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
-    $app->enqueueScript('app', 'editable', '/js/editable.js', array('mapasculturais'));
-
-    $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
-    $app->enqueueScript('app', 'notifications', '/js/Notifications.js', array('mapasculturais'));
 
 
-    if ($app->config('mode') == 'staging')
-        $app->enqueueStyle('app', 'staging', '/css/staging.css', array('style'));
-});
 
-function add_map_assets() {
-    $app = App::i();
-    //Leaflet -a JavaScript library for mobile-friendly maps
-    $app->enqueueStyle('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.3/leaflet.css');
-    $app->enqueueScript('vendor', 'leaflet', '/vendor/leaflet/lib/leaflet-0.7.3/leaflet.js');
-    //Leaflet Vector Layers
-    $app->enqueueScript('vendor', 'leaflet-vector-layers', '/vendor/leaflet-vector-layers/dist/lvector.js', array('leaflet'));
-    //Conjuntos de Marcadores
-    $app->enqueueStyle('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/MarkerCluster.css', array('leaflet'));
-    $app->enqueueStyle('vendor', 'leaflet-marker-cluster-d', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/MarkerCluster.Default.css', array('leaflet-marker-cluster'));
-    $app->enqueueScript('vendor', 'leaflet-marker-cluster', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.markercluster-master/dist/leaflet.markercluster.js', array('leaflet'));
-    //Controle de Full Screen
-    $app->enqueueStyle('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.css', array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-fullscreen', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.js', array('leaflet'));
-    //Leaflet Label Plugin
-    //$app->enqueueStyle( 'vendor', 'leaflet-label',           '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-label/leaflet.label.css',                                         array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-label', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.label-master/dist/leaflet.label.js', array('leaflet'));
-    //Leaflet Draw
-    $app->enqueueStyle('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw.css', array('leaflet'));
-    $app->enqueueScript('vendor', 'leaflet-draw', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw.js', array('leaflet'));
-
-    //Google Maps API. In dev mode, test internet connection to avoid waiting for host timeout when working without connection
-//    if ($app->config('mode') !== 'development' || @fsockopen("maps.google.com", 80))
-        $app->enqueueScript('vendor', 'google-maps-api', 'http://maps.google.com/maps/api/js?v=3.2&sensor=false');
-
-    //Leaflet Plugins (Google)false');
-    $app->enqueueScript('vendor', 'leaflet-google-tile', '/vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-plugins-master/layer/tile/Google.js', array('leaflet'));
-    //Pure CSS Tooltips (Hint - https://github.com/chinchang/hint.css)
-    //$app->enqueueStyle('vendor', 'hint', 'http://cdn.jsdelivr.net/hint.css/1.3.0/hint.min.css');
-    //Mapa das Singles
-    $app->enqueueScript('app', 'map', '/js/map.js');
-}
-
-function add_angular_entity_assets($entity){
-    $app = App::i();
-    $app->enqueueScript('vendor', 'jquery-ui-position', '/vendor/jquery-ui.position.min.js', array('jquery'));
-
-    $app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
-    $app->enqueueScript('vendor', 'angular-sanitize', '/vendor/angular-sanitize.min.js', array('angular'));
-    $app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-    $app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
-
-    $app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-    $app->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
-    $app->enqueueScript('app', 'change-owner', '/js/ChangeOwner.js');
-    $app->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
-    if(!is_editable())
-        return;
-
-    App::i()->hook('mapasculturais.scripts', function() use($app, $entity) {
-        $isEntityOwner = $entity->ownerUser->id === $app->user->id;
-        ?>
-        <script type="text/javascript">
-            MapasCulturais.entity = MapasCulturais.entity || {};
-            MapasCulturais.entity.canUserCreateRelatedAgentsWithControl = <?php echo $entity->canUser('createAgentRelationWithControl') ? 'true' : 'false' ?>;
-        </script>
-        <?php
-    });
-}
 
 function add_entity_properties_metadata_to_js($entity) {
     $class = $entity->className;
@@ -598,29 +504,6 @@ function add_agent_relations_to_js($entity){
  * @param type $response_target
  * @param type $response_template
  * @param type $response_transform
- * @param type $add_description_input
- */
-function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
-    App::i()->view->part('ajax-uploader', array(
-        'file_owner' => $file_owner,
-        'file_group' => $group_name,
-        'response_action' => $response_action,
-        'response_target' => $response_target,
-        'response_template' => $response_template,
-        'response_transform' => $response_transform,
-        'add_description' => $add_description_input,
-        'file_types' => $file_types
-    ));
-}
-
-/**
- *
- * @param type $file_owner
- * @param type $group_name
- * @param type $response_action
- * @param type $response_target
- * @param type $response_template
- * @param type $response_transform
  * @param type $add_description_input1
  */
 function add_metalist_manager($object, $metalist_group, $metalist_action, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false) {
@@ -643,83 +526,3 @@ function add_metalist_manager($object, $metalist_group, $metalist_action, $respo
 
   });
  */
-
-
-$app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
-
-    $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-    $rsm->addScalarResult('nome', 'nome');
-
-    $x = $this->location->longitude;
-    $y = $this->location->latitude;
-
-    $whereContains = 'WHERE ST_Contains(the_geom, ST_Transform(ST_GeomFromText(\'POINT(' . $x . ' ' . $y . ')\',4326),4326))';
-
-    $strNativeQuery = 'SELECT nome FROM "sp_regiao" ' . $whereContains;
-    $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-    $this->sp_regiao = $query->getOneOrNullResult()['nome'];
-
-    $strNativeQuery = 'SELECT nome FROM "sp_subprefeitura" ' . $whereContains;
-    $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-    $this->sp_subprefeitura = $query->getOneOrNullResult()['nome'];
-
-    $strNativeQuery = 'SELECT nome_distr AS nome FROM "sp_distrito" ' . $whereContains;
-    $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-    $this->sp_distrito = $query->getOneOrNullResult()['nome'];
-});
-
-// sempre que insere uma imagem cria o avatarSmall
-$app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
-    $this->transform('avatarSmall');
-    $this->transform('avatarBig');
-});
-
-$app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
-    $this->transform('header');
-});
-
-$app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
-    $this->transform('galleryThumb');
-    $this->transform('galleryFull');
-});
-
-$app->hook('entity(event).save:before', function() {
-    $this->type = 1;
-});
-
-
-$app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
-    $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
-
-    $class = $this->getClassName();
-
-    $joins .= "LEFT JOIN
-                MapasCulturais\Entities\TermRelation
-                    tr
-                WITH
-                    tr.objectType = '$class' AND
-                    tr.objectId = e.id
-                    LEFT JOIN
-                        tr.term
-                            t
-                        WITH
-                            t.taxonomy = '{$taxonomy->id}'";
-});
-
-$app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR lower(t.term) LIKE lower(:keyword) ";
-});
-
-$app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
-    $joins .= " LEFT JOIN e.project p
-                LEFT JOIN MapasCulturais\Entities\EventMeta m
-                    WITH
-                        m.key = 'subTitle' AND
-                        m.owner = e
-                ";
-});
-
-$app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR lower(p.name) LIKE lower(:keyword)
-                OR lower(m.value) LIKE lower(:keyword)";
-});

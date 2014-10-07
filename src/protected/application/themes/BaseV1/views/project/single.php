@@ -12,7 +12,7 @@ if(is_editable()){
 
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
-    
+
     $app->hook('mapasculturais.scripts', function() use ($app, $entity){
 
         $ids = array_map(function($e){
@@ -28,7 +28,7 @@ if(is_editable()){
 }
 
 add_agent_relations_to_js($entity);
-add_angular_entity_assets($entity);
+$this->includeAngularEntityAssets($entity);
 
 add_entity_properties_metadata_to_js($entity);
 ?>
@@ -188,7 +188,7 @@ add_entity_properties_metadata_to_js($entity);
                 <?php endif; ?>
             </p>
         </div>
-        
+
         <?php if($this->controller->action == 'edit'): ?>
             <p id="upload-registration-button" <?php if($registrationForm): ?>class="oculto"<?php endif; ?>>
                 <a class="botao adicionar simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>

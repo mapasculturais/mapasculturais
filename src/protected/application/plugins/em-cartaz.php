@@ -1,5 +1,5 @@
 <?php
-
+$app = MapasCulturais\App::i();
 //plugin Em Cartaz
 // TODO: Mover arquivo de template de views/panel/em-cartaz.php para a pasta de plugins
 
@@ -24,7 +24,7 @@ $app->hook('panel.menu:after', function() use ($app){
         return;
 
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
-    
+
     $url = $app->createUrl('panel', 'em-cartaz');
     echo "<li><a class='$a_class' href='$url'><span class='icone icon_star'></span> Em Cartaz</a></li>";
 });
