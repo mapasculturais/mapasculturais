@@ -720,6 +720,6 @@ $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
 });
 
 $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
-    $where .= " OR unaccent(lower(p.name)) LIKE unaccent(lower(:keyword)(
+    $where .= " OR unaccent(lower(p.name)) LIKE unaccent(lower(:keyword))
                 OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
 });
