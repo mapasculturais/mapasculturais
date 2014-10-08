@@ -106,10 +106,13 @@ abstract class AssetManager{
     function printStyles($group){
         $app = App::i();
 
+        if(!isset($this->_enqueuedStyles[$group]))
+            return;
+
         $url = null;
 
         if($app->config['app.useAssetsUrlCache']){
-            $keys = array_keys($this->_enqueuedScripts[$group]);
+            $keys = array_keys($this->_enqueuedStyles[$group]);
             sort($keys);
             $cache_id = "ASSETS_STYLES:$group:" . implode(':', $keys);
             if($app->cache->contains($cache_id)){
@@ -167,6 +170,8 @@ abstract class AssetManager{
     function _getPublishedStylesGroupFilename($group, $content){
         return $group . '-' . md5($content) . '.css';
     }
+
+    abstract function publishFolder($dir);
 
     abstract protected function _publishAsset($asset);
 

@@ -16,20 +16,23 @@ class Theme extends MapasCulturais\Theme{
 
         $app = App::i();
 
-        $app->printStyles('vendor');
-        $app->printStyles('fonts');
-        $app->printStyles('app');
+        $this->printStyles('vendor');
+        $this->printStyles('fonts');
+        $this->printStyles('app');
+
         $app->applyHook('mapasculturais.styles');
 
-        $app->printScripts('vendor');
-        $app->printScripts('app');
+        $this->printScripts('vendor');
+        $this->printScripts('app');
+
         $app->applyHook('mapasculturais.scripts');
     }
 
     protected function _init(){
         $app = App::i();
 
-        $app->hook('view.render(<<*>>):before', function() use($app) {
+        $app->hook('view.render(<<*>>):before', function() {
+            $this->addDocumentMetas();
             $this->includeCommonAssets();
         });
 
@@ -117,7 +120,60 @@ class Theme extends MapasCulturais\Theme{
         });
     }
 
+
+    function addDocumentMetas(){
+        $app = App::i();
+        $entity = $this->controller->requiredEntity;
+
+        $site_name = $app->siteName;
+        $title = $app->view->getTitle($entity);
+        $image_url = $app->view->asset('img/share.png', false);
+        if($entity){
+            $description = $entity->shortDescription ? $entity->shortDescription : $title;
+            if($entity->avatar)
+                $image_url = $entity->avatar->transform('avatarBig')->url;
+        }else{
+            $description = $app->siteDescription;
+        }
+
+        // for google
+        $this->documentMeta[] = array( "name" => 'description',         'content' => $description );
+        $this->documentMeta[] = array( "name" => 'keywords',            'content' => $site_name );
+        $this->documentMeta[] = array( "name" => 'author',              'content' => $site_name );
+        $this->documentMeta[] = array( "name" => 'copyright',           'content' => $site_name );
+        $this->documentMeta[] = array( "name" => 'application-name',    'content' => $site_name );
+
+        // for google+
+        $this->documentMeta[] = array( "itemprop" => 'author',          'content' => $title );
+        $this->documentMeta[] = array( "itemprop" => 'description',     'content' => $description );
+        $this->documentMeta[] = array( "itemprop" => 'image',           'content' => $image_url );
+
+        // for twitter
+        $this->documentMeta[] = array( "name" => 'twitter:card',        'content' => $site_name );
+        $this->documentMeta[] = array( "name" => 'twitter:title',       'content' => $title );
+        $this->documentMeta[] = array( "name" => 'twitter:description', 'content' => $description );
+        $this->documentMeta[] = array( "name" => 'twitter:image',       'content' => $image_url );
+
+        // for facebook
+        $this->documentMeta[] = array( "property" => 'og:image',        'content' => $title );
+        $this->documentMeta[] = array( "property" => 'og:type',         'content' => 'article' );
+        $this->documentMeta[] = array( "property" => 'og:image',        'content' => $image_url );
+        $this->documentMeta[] = array( "property" => 'og:description',  'content' => $description );
+        $this->documentMeta[] = array( "property" => 'og:site_name',    'content' => $site_name );
+
+        if($entity){
+            $this->documentMeta[] = array( "property" => 'og:url',              'content' => $entity->singleUrl );
+            $this->documentMeta[] = array( "property" => 'og:published_time',   'content' => $entity->createTimestamp->format('Y-m-d'));
+
+            // @TODO: modified time is not implemented
+            // $this->documentMeta[] = array( "property" => 'og:modified_time',   'content' => $entity->modifiedTimestamp->format('Y-m-d'));
+        }
+
+    }
+
     function includeCommonAssets(){
+        $this->getAssetManager()->publishFolder('fonts/');
+
         $this->enqueueStyle('fonts', 'elegant', 'css/elegant-font.css');
 
         $this->enqueueStyle('vendor', 'select2', 'vendor/select2/select2.css');
@@ -148,8 +204,8 @@ class Theme extends MapasCulturais\Theme{
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('mapasculturais'));
 
 
-        if ($app->config('mode') == 'staging')
-            $app->enqueueStyle('app', 'staging', 'css/staging.css', array('style'));
+        if (App::i()->config('mode') == 'staging')
+            $this->enqueueStyle('app', 'staging', 'css/staging.css', array('style'));
     }
 
     function includeMapAssets() {

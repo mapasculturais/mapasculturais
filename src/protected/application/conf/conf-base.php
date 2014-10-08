@@ -8,6 +8,8 @@ $host_part = @$_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 if(substr($host_part,-1) !== '/') $host_part .= '/';
 $base_url = $prot_part . $host_part;
 
+$num_folders = count(explode('/',BASE_PATH . 'public'));
+
 return array(
     // theme namespaces
     'namespaces' => array(
@@ -36,12 +38,13 @@ return array(
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . 'public/',
 
-        'mergeScripts' => false,
-        'mergeStyles' => false,
+        'mergeScripts' => true,
+        'mergeStyles' => true,
 
-        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -c -m -p 4',
-        'process.css' => 'uglifycss {IN} > {OUT}'
+        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -c -m -p ' . $num_folders,
+        'process.css' => 'uglifycss {IN} > {OUT}',
 
+        'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
     )),
 
 

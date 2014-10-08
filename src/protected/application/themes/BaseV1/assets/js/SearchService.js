@@ -260,15 +260,22 @@
             }
 
             function apiFind(entity, searchData, page, action) {
-                if(data.global.viewMode === 'list'){
-                    searchData['@select'] = 'id,singleUrl,name,type,shortDescription,terms';
-                    if(entity === 'space')
-                        searchData['@select'] += ',endereco,acessibilidade';
-                    else if(entity === 'project')
-                        searchData['@select'] += ',registrationFrom,registrationTo';
-                    else if(entity === 'event')
-                        searchData['@select'] += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
+                var selectData = 'id,singleUrl,name,type,shortDescription,terms';
+                var apiExportURL = MapasCulturais.baseURL + 'api/';
 
+                if(entity === 'space'){
+                    if(action === 'find') {
+                        selectData += ',endereco,acessibilidade';
+                    }else{
+                        selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
+                        apiExportURL += 'event/findByLocation/?';
+                    }
+                }else if (entity === 'project'){
+                    selectData += ',registrationFrom,registrationTo';
+                }
+
+                if(data.global.viewMode === 'list'){
+                    searchData['@select'] = selectData;
                     searchData['@files'] = '(avatar.avatarMedium):url';
                     if(page) {
                         searchData['@page'] = page;
@@ -283,18 +290,22 @@
                 delete searchData['@count'];
 
                 var querystring = '';
-                var queryString_apiExport = '';
-                var basicUrl = MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?';
+                var queryString_apiExport = '@select='+selectData;
+
+                //removes type column from event export
+                if(apiExportURL.indexOf('event/findByLocation') !== -1)
+                    queryString_apiExport = queryString_apiExport.replace(',type','');
+                else
+                    apiExportURL += entity + '/' + action + '/?';
 
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
-                    if(att != '@page' && att!='@limit')
+                    if(att != '@select' && att!='@page' && att!='@limit')
                         queryString_apiExport += "&"+att+"="+searchData[att];
                 }
+                $rootScope.apiURL = apiExportURL+queryString_apiExport;
 
-                $rootScope.apiURL = basicUrl+queryString_apiExport;
-
-                return $http({method: 'GET', cache:true, url:basicUrl+querystring , data:searchData});
+                return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 
             function apiCount(entity, searchData, action) {

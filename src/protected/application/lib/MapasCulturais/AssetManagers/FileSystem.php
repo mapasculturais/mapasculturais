@@ -14,7 +14,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
             'mergeStyles' => false,
 
             'process.js' => '',
-            'process.css' => ''
+            'process.css' => '',
+
+            'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
         ), $config));
 
     }
@@ -23,11 +25,13 @@ class FileSystem extends \MapasCulturais\AssetManager{
         $command = str_replace(array(
                 '{IN}',
                 '{OUT}',
-                '{FILENAME}'
+                '{FILENAME}',
+                '{PUBLISH_PATH}'
             ), array(
                 $input_files,
                 $this->_config['publishPath'] . $output_file,
-                $output_file
+                $output_file,
+                $this->_config['publishPath']
             ), $command_pattern);
 
         exec($command);
@@ -48,6 +52,12 @@ class FileSystem extends \MapasCulturais\AssetManager{
             $extension = strtolower($info['extension']);
 
             $output_file = $this->_getPublishedAssetFilename($asset_filename);
+
+            if(in_array($extension, array('jpg', 'png', 'gif')))
+                $output_file = "img/$output_file";
+            else
+                $output_file = "$extension/$output_file";
+
             if(isset($this->_config["process.{$extension}"])){
                 $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
             }else{
@@ -55,6 +65,16 @@ class FileSystem extends \MapasCulturais\AssetManager{
             }
 
             return $app->assetUrl . $output_file;
+        }
+    }
+
+    function publishFolder($dir){
+        $app = App::i();
+        $cache_id = __METHOD__ . '::' . $dir;
+        if(!$app->cache->contains($cache_id)){
+            $in = App::i()->view->getAssetFilename($dir);
+            $this->_exec($this->_config['publishFolderCommand'], $in, $dir);
+            $app->cache->save($cache_id, '1');
         }
     }
 
@@ -103,7 +123,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
             }else{
                 $output_file = $this->_getPublishedStylesGroupFilename($group, $content);
             }
-
+            $output_file = "$extension/$output_file";
             if($process_pattern){
                 $input_files = implode(' ', $assets);
                 $this->_exec($process_pattern, $input_files, $output_file);

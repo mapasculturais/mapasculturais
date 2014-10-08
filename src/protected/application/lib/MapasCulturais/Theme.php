@@ -51,15 +51,17 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
+    protected $documentMeta = null;
+
     /**
      * CSS Classes to print in body tag
-     * @var array
+     * @var  \ArrayObject
      */
     protected $bodyClasses = null;
 
     /**
      * Properties of body tag
-     * @var array
+     * @var  \ArrayObject
      */
     protected $bodyProperties =  null;
 
@@ -84,6 +86,7 @@ abstract class Theme extends \Slim\View {
 
         $app = App::i();
 
+        $this->documentMeta = new \ArrayObject;
         $this->bodyClasses = new \ArrayObject;
         $this->bodyProperties = new \ArrayObject;
 
@@ -353,6 +356,18 @@ abstract class Theme extends \Slim\View {
         $this->_assetManager->printStyles($group);
     }
 
+    function printDocumentMeta(){
+        foreach($this->documentMeta as $metacfg){
+            $meta = "\n <meta";
+            foreach($metacfg as $prop => $val){
+                $val = htmlentities($val);
+                $meta .= " {$prop}=\"{$val}\"";
+            }
+            $meta .= ' />';
+            echo $meta;
+        }
+    }
+
     protected function _resolveFilename($folder, $file){
         if(!substr($folder, -1) !== '/') $folder .= '/';
 
@@ -367,7 +382,10 @@ abstract class Theme extends \Slim\View {
     }
 
     function getAssetFilename($file){
-        return $this->_resolveFilename('assets/', $file);
+        $filename = $this->_resolveFilename('assets', $file);
+        if(!$filename) throw new \Exception('Asset not found: ' . $file);
+
+        return $filename;
     }
 
     function asset($file, $print = true){
@@ -412,5 +430,8 @@ abstract class Theme extends \Slim\View {
         $app = App::i();
 
         $app->applyHook('mapasculturais.head');
+
+        $this->printDocumentMeta();
+
     }
 }

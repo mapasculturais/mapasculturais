@@ -5,14 +5,14 @@
         <meta charset="UTF-8" />
         <title><?php echo $title == $app->siteName ? $title : "{$app->siteName} - {$title}"; ?></title>
         <link rel="profile" href="http://gmpg.org/xfn/11" />
-        <?php mapasculturais_head(isset($entity) ? $entity : null); ?>
+        <?php $this->head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
         <script src="<?php $this->asset('js/html5.js'); ?>" type="text/javascript"></script>
         <![endif]-->
     </head>
 
-    <body <?php body_properties() ?> >
-       <?php body_header(); ?>
+    <body <?php $this->bodyProperties() ?> >
+       <?php $this->bodyBegin(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <h1 id="logo-spcultura"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php $this->asset('img/logo-spcultura.png'); ?>" /></a></h1>
             <nav id="about-nav" class="alignright clearfix">
@@ -150,7 +150,7 @@
             </nav>
         </header>
         <section id="main-section" class="clearfix">
-            <?php if (is_editable()): ?>
+            <?php if ($this->isEditable()): ?>
                 <div id="ajax-response-errors" class="js-dialog" title="Corrija os erros abaixo e tente novamente.">
                     <div class="js-dialog-content"></div>
                 </div>

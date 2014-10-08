@@ -85,6 +85,7 @@ MapasCulturais.EventOccurrenceManager = {
     init : function(selector) {
         $(selector).ajaxForm({
             success: function (response, statusText, xhr, $form)  {
+
                 $form.find('.erro').not('.mensagem').remove();
                 if(response.error){
                     var $element = null,
@@ -106,6 +107,9 @@ MapasCulturais.EventOccurrenceManager = {
                     return;
 
                 }
+
+                response.pending = xhr.status === 202;
+
                 var isEditing = $form.data('action') == 'edit';
                 var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-item');
 
@@ -128,6 +132,11 @@ MapasCulturais.EventOccurrenceManager = {
                 //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
+
+
+                if(xhr.status === 202){
+                    MapasCulturais.Messages.alert('Sua requisição para criar a ocorrência do evento no espaço <strong>' + response.space.name + '</strong> foi enviada.');
+                }
 
             },
             error: function(xhr, textStatus, errorThrown, $form) {

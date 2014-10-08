@@ -4,7 +4,7 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepic
 $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
 ?>
 <style>
-    .emcartaz-datepicker{!
+    .emcartaz-datepicker{
         border:none;
         width:90px;
         cursor:pointer;
