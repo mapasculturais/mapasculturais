@@ -2,17 +2,14 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
-if(is_editable()){
-    add_entity_types_to_js($entity);
-    add_taxonoy_terms_to_js('area');
+if($this->isEditable()){
+    $this->addEntityTypesToJs($entity);
+    $this->addTaxonoyTermsToJs('area');
 
-    add_taxonoy_terms_to_js('tag');
-
-    add_entity_properties_metadata_to_js($entity);
+    $this->addTaxonoyTermsToJs('tag');
 }
 $this->includeMapAssets();
 
-add_agent_relations_to_js($entity);
 $this->includeAngularEntityAssets($entity);
 
 ?>
@@ -31,14 +28,14 @@ $this->includeAngularEntityAssets($entity);
         <div
             <?php if($header = $entity->getFile('header')): ?>
                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-            <?php elseif(is_editable()): ?>
+            <?php elseif($this->isEditable()): ?>
                 class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>
         >
-        <?php if(is_editable()): ?>
+        <?php if($this->isEditable()): ?>
             <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
             <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
             </div>
         <?php endif; ?>
         </div>
@@ -51,10 +48,10 @@ $this->includeAngularEntityAssets($entity);
                     <div class="avatar">
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--agent.png'); ?>" />
             <?php endif; ?>
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
-                        <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                        <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -75,18 +72,18 @@ $this->includeAngularEntityAssets($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
-            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+            <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                 <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
             <div class="servico">
 
-                <?php if(is_editable() || $entity->site): ?>
+                <?php if($this->isEditable() || $entity->site): ?>
                     <p><span class="label">Site:</span>
-                    <?php if(is_editable()): ?>
+                    <?php if($this->isEditable()): ?>
                         <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span></p>
                     <?php else: ?>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
@@ -94,7 +91,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
 
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Completo ou Razão Social" data-emptytext="Insira seu nome completo ou razão social"><?php echo $entity->nomeCompleto; ?></span></p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">CPF/CNPJ:</span> <span class="js-editable" data-edit="documento" data-original-title="CPF/CNPJ" data-emptytext="Insira o CPF ou CNPJ com pontos, hífens e barras"><?php echo $entity->documento; ?></span></p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Idade/Tempo:</span> <span class="js-editable" data-edit="idade" data-original-title="Idade/Tempo" data-emptytext="Insira sua idade ou tempo de existência"><?php echo $entity->idade; ?></span></p>
@@ -102,11 +99,11 @@ $this->includeAngularEntityAssets($entity);
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Email:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
 
-                <?php if(is_editable() || $entity->telefonePublico): ?>
+                <?php if($this->isEditable() || $entity->telefonePublico): ?>
                 <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>
                 <?php endif; ?>
 
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                 <?php endif; ?>
@@ -114,12 +111,12 @@ $this->includeAngularEntityAssets($entity);
 
 
             <?php $lat = $entity->location->latitude; $lng = $entity->location->longitude; ?>
-            <?php if ( is_editable() || ($entity->precisao && $lat && $lng) ): ?>
+            <?php if ( $this->isEditable() || ($entity->precisao && $lat && $lng) ): ?>
                 <!--.servico-->
                 <div class="servico clearfix">
                     <div class="infos">
 
-                        <?php if(is_editable()): ?>
+                        <?php if($this->isEditable()): ?>
                             <p class="privado">
                                 <span class="icone icon_lock"></span><span class="label">Localização:</span>
                                 <span class="js-editable" data-edit="precisao" id="map-precisionOption" data-onchange="precisionChange" data-truevalue="Precisa"><?php echo $entity->precisao; ?></span>
@@ -135,14 +132,14 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                     <!--.infos-->
                     <div class="mapa">
-                        <?php if(is_editable()): ?>
+                        <?php if($this->isEditable()): ?>
                             <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
                         <?php endif; ?>
                         <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
                         </div>
                         <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
                         <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
-                        <?php if(is_editable()): ?>
+                        <?php if($this->isEditable()): ?>
                         <script>
                             $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
                         </script>
@@ -157,9 +154,9 @@ $this->includeAngularEntityAssets($entity);
         </div>
         <!--.ficha-spcultura-->
 
-        <?php if ( is_editable() || $entity->longDescription ): ?>
+        <?php if ( $this->isEditable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Agente" data-emptytext="Insira uma descrição do agente" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Agente" data-emptytext="Insira uma descrição do agente" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
         <!--.descricao-->
         <!-- Video Gallery BEGIN -->

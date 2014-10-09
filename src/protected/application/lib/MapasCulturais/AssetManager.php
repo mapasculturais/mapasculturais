@@ -121,8 +121,6 @@ abstract class AssetManager{
             }
         }
 
-        $asset_url = $app->getAssetUrl();
-
         $urls = $this->_publishStyles($group);
 
         $styles = '';
@@ -160,7 +158,11 @@ abstract class AssetManager{
     function _getPublishedAssetFilename($asset_filename){
         $pathinfo = pathinfo($asset_filename);
         $ftime = filemtime($asset_filename);
-        return $pathinfo['filename'] . '-' . $ftime . '.' . $pathinfo['extension'];
+
+        if(strtolower($pathinfo['extension']) === 'js' || strtolower($pathinfo['extension']) === 'css')
+            return $pathinfo['filename'] . '-' . $ftime . '.' . $pathinfo['extension'];
+        else
+            return $pathinfo['filename'] . '.' . $pathinfo['extension'];
     }
 
     function _getPublishedScriptsGroupFilename($group, $content){

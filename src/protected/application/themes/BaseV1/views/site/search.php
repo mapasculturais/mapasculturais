@@ -5,47 +5,32 @@ $this->bodyProperties['ng-app'] = "search";
 $this->bodyProperties['ng-controller'] = "SearchController";
 $this->bodyProperties['ng-class'] = "{'infobox-open': showInfobox()}";
 
-add_taxonoy_terms_to_js('area');
-add_taxonoy_terms_to_js('linguagem');
-add_entity_types_to_js('MapasCulturais\Entities\Space');
-add_entity_types_to_js('MapasCulturais\Entities\Agent');
-add_entity_types_to_js('MapasCulturais\Entities\Project');
+$this->addTaxonoyTermsToJs('area');
+$this->addTaxonoyTermsToJs('linguagem');
 
+$this->addEntityTypesToJs('MapasCulturais\Entities\Space');
+$this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
+$this->addEntityTypesToJs('MapasCulturais\Entities\Project');
 
-$app->enqueueScript('vendor', 'angular', '/vendor/angular.js');
-$app->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
-$app->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
-$app->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-$app->enqueueScript('app', 'SearchService', '/js/SearchService.js');
-$app->enqueueScript('app', 'FindOneService', '/js/FindOneService.js');
-$app->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js');
-$app->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js');
-$app->enqueueScript('app', 'Search', '/js/Search.js');
+$this->includeAngularJsAssets();
+$this->includeMomentJsAssets();
+$this->includeAngularSpinnerAssets();
+$this->includeDatepickerAssets();
 
-$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
-$app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
+$this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
+$this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
 
-$app->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-$app->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+$this->enqueueScript('app', 'SearchService', '/js/SearchService.js', array('ng-mapasculturais'));
+$this->enqueueScript('app', 'FindOneService', '/js/FindOneService.js', array('ng-mapasculturais'));
+$this->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js', array('ng-mapasculturais'));
+$this->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js', array('ng-mapasculturais'));
 
+$this->enqueueScript('app', 'Search', '/js/Search.js', array('ng-mapasculturais', 'SearchSpatial', 'SearchMapController', 'FindOneService', 'SearchService'));
 
-$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-$app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+$this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
 
-$app->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
-
-$app->hook('mapasculturais.scripts', function() use($app){
-    $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
-
-    ?>
-    <script type="text/javascript">
-    MapasCulturais.classificacoesEtarias = <?php echo json_encode(array_values($def->config['options'])); ?>;
-    </script>
-    <?php
-});
-
-
-
+$def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
+$this->jsObject['classificacoesEtarias'] = array_values($def->config['options']);
 ?>
 <?php $this->includeMapAssets(); ?>
 

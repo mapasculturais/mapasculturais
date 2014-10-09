@@ -1,11 +1,11 @@
 <?php
+
 namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
 
-
-class Theme extends MapasCulturais\Theme{
+class Theme extends MapasCulturais\Theme {
 
     static function getThemeFolder() {
         return __DIR__;
@@ -22,18 +22,21 @@ class Theme extends MapasCulturais\Theme{
 
         $app->applyHook('mapasculturais.styles');
 
+        $this->_printJsObject();
+
         $this->printScripts('vendor');
         $this->printScripts('app');
 
         $app->applyHook('mapasculturais.scripts');
     }
 
-    protected function _init(){
+    protected function _init() {
         $app = App::i();
 
         $app->hook('view.render(<<*>>):before', function() {
             $this->addDocumentMetas();
             $this->includeCommonAssets();
+            $this->_populateJsObject();
         });
 
         $app->hook('view.render(<<agent|space|project|event>>/single):before', function() {
@@ -83,7 +86,7 @@ class Theme extends MapasCulturais\Theme{
         });
 
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins){
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins) {
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
             $class = $this->getClassName();
@@ -101,11 +104,11 @@ class Theme extends MapasCulturais\Theme{
                                     t.taxonomy = '{$taxonomy->id}'";
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where){
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where) {
             $where .= " OR lower(t.term) LIKE lower(:keyword) ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins){
+        $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins) {
             $joins .= " LEFT JOIN e.project p
                         LEFT JOIN MapasCulturais\Entities\EventMeta m
                             WITH
@@ -114,64 +117,62 @@ class Theme extends MapasCulturais\Theme{
                         ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where){
+        $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where) {
             $where .= " OR lower(p.name) LIKE lower(:keyword)
                         OR lower(m.value) LIKE lower(:keyword)";
         });
     }
 
-
-    function addDocumentMetas(){
+    function addDocumentMetas() {
         $app = App::i();
         $entity = $this->controller->requiredEntity;
 
         $site_name = $app->siteName;
         $title = $app->view->getTitle($entity);
         $image_url = $app->view->asset('img/share.png', false);
-        if($entity){
+        if ($entity) {
             $description = $entity->shortDescription ? $entity->shortDescription : $title;
-            if($entity->avatar)
+            if ($entity->avatar)
                 $image_url = $entity->avatar->transform('avatarBig')->url;
-        }else{
+        }else {
             $description = $app->siteDescription;
         }
 
         // for google
-        $this->documentMeta[] = array( "name" => 'description',         'content' => $description );
-        $this->documentMeta[] = array( "name" => 'keywords',            'content' => $site_name );
-        $this->documentMeta[] = array( "name" => 'author',              'content' => $site_name );
-        $this->documentMeta[] = array( "name" => 'copyright',           'content' => $site_name );
-        $this->documentMeta[] = array( "name" => 'application-name',    'content' => $site_name );
+        $this->documentMeta[] = array("name" => 'description', 'content' => $description);
+        $this->documentMeta[] = array("name" => 'keywords', 'content' => $site_name);
+        $this->documentMeta[] = array("name" => 'author', 'content' => $site_name);
+        $this->documentMeta[] = array("name" => 'copyright', 'content' => $site_name);
+        $this->documentMeta[] = array("name" => 'application-name', 'content' => $site_name);
 
         // for google+
-        $this->documentMeta[] = array( "itemprop" => 'author',          'content' => $title );
-        $this->documentMeta[] = array( "itemprop" => 'description',     'content' => $description );
-        $this->documentMeta[] = array( "itemprop" => 'image',           'content' => $image_url );
+        $this->documentMeta[] = array("itemprop" => 'author', 'content' => $title);
+        $this->documentMeta[] = array("itemprop" => 'description', 'content' => $description);
+        $this->documentMeta[] = array("itemprop" => 'image', 'content' => $image_url);
 
         // for twitter
-        $this->documentMeta[] = array( "name" => 'twitter:card',        'content' => $site_name );
-        $this->documentMeta[] = array( "name" => 'twitter:title',       'content' => $title );
-        $this->documentMeta[] = array( "name" => 'twitter:description', 'content' => $description );
-        $this->documentMeta[] = array( "name" => 'twitter:image',       'content' => $image_url );
+        $this->documentMeta[] = array("name" => 'twitter:card', 'content' => $site_name);
+        $this->documentMeta[] = array("name" => 'twitter:title', 'content' => $title);
+        $this->documentMeta[] = array("name" => 'twitter:description', 'content' => $description);
+        $this->documentMeta[] = array("name" => 'twitter:image', 'content' => $image_url);
 
         // for facebook
-        $this->documentMeta[] = array( "property" => 'og:image',        'content' => $title );
-        $this->documentMeta[] = array( "property" => 'og:type',         'content' => 'article' );
-        $this->documentMeta[] = array( "property" => 'og:image',        'content' => $image_url );
-        $this->documentMeta[] = array( "property" => 'og:description',  'content' => $description );
-        $this->documentMeta[] = array( "property" => 'og:site_name',    'content' => $site_name );
+        $this->documentMeta[] = array("property" => 'og:image', 'content' => $title);
+        $this->documentMeta[] = array("property" => 'og:type', 'content' => 'article');
+        $this->documentMeta[] = array("property" => 'og:image', 'content' => $image_url);
+        $this->documentMeta[] = array("property" => 'og:description', 'content' => $description);
+        $this->documentMeta[] = array("property" => 'og:site_name', 'content' => $site_name);
 
-        if($entity){
-            $this->documentMeta[] = array( "property" => 'og:url',              'content' => $entity->singleUrl );
-            $this->documentMeta[] = array( "property" => 'og:published_time',   'content' => $entity->createTimestamp->format('Y-m-d'));
+        if ($entity) {
+            $this->documentMeta[] = array("property" => 'og:url', 'content' => $entity->singleUrl);
+            $this->documentMeta[] = array("property" => 'og:published_time', 'content' => $entity->createTimestamp->format('Y-m-d'));
 
             // @TODO: modified time is not implemented
             // $this->documentMeta[] = array( "property" => 'og:modified_time',   'content' => $entity->modifiedTimestamp->format('Y-m-d'));
         }
-
     }
 
-    function includeCommonAssets(){
+    function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('fonts', 'elegant', 'css/elegant-font.css');
@@ -243,54 +244,149 @@ class Theme extends MapasCulturais\Theme{
         $this->enqueueScript('app', 'map', 'js/map.js');
     }
 
-    function includeAngularEntityAssets($entity){
-        $this->enqueueScript('vendor', 'jquery-ui-position', '/vendor/jquery-ui.position.min.js', array('jquery'));
+    function includeAngularEntityAssets($entity) {
+        $this->enqueueScript('vendor', 'jquery-ui-position', 'vendor/jquery-ui.position.min.js', array('jquery'));
 
-        $this->enqueueScript('vendor', 'angular', '/vendor/angular.js');
-        $this->enqueueScript('vendor', 'angular-sanitize', '/vendor/angular-sanitize.min.js', array('angular'));
-        $this->enqueueScript('vendor', 'spin.js', '/vendor/spin.min.js', array('angular'));
-        $this->enqueueScript('vendor', 'angularSpinner', '/vendor/angular-spinner.min.js', array('spin.js'));
+        $this->includeAngularJsAssets();
+        $this->includeAngularSpinnerAssets();
 
-        $this->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
-        $this->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js');
-        $this->enqueueScript('app', 'change-owner', '/js/ChangeOwner.js');
+        $this->enqueueScript('vendor', 'angular-sanitize', 'vendor/angular-sanitize.min.js', array('angular'));
+
+        $this->enqueueScript('app', 'change-owner', '/js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
 
-        if(!$this->isEditable())
+        if (!$this->isEditable())
             return;
 
-        if(isset($this->jsObject['entity']))
+        if (isset($this->jsObject['entity']))
             $this->jsObject['entity']['canUserCreateRelatedAgentsWithControl'] = $entity->canUser('createAgentRelationWithControl');
         else
             $this->jsObject['entity'] = array('canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'));
-
     }
 
-    function includeGalleryAssets(){
+    function includeAngularSpinnerAssets(){
+        $this->enqueueScript('vendor', 'spin.js', 'vendor/spin.min.js', array('angular'));
+        $this->enqueueScript('vendor', 'angularSpinner', 'vendor/angular-spinner.min.js', array('spin.js'));
+    }
+
+    function includeGalleryAssets() {
         $this->enqueueScript('vendor', 'magnific-popup', 'vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.min.js', array('jquery'));
         $this->enqueueStyle('vendor', 'magnific-popup', 'vendor/Magnific-Popup-0.9.9/magnific-popup.css');
     }
 
-    /**
-    *
-    * @param type $file_owner
-    * @param type $group_name
-    * @param type $response_action
-    * @param type $response_target
-    * @param type $response_template
-    * @param type $response_transform
-    * @param type $add_description_input
-    */
-   function add_ajax_uploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
-       App::i()->view->part('ajax-uploader', array(
-           'file_owner' => $file_owner,
-           'file_group' => $group_name,
-           'response_action' => $response_action,
-           'response_target' => $response_target,
-           'response_template' => $response_template,
-           'response_transform' => $response_transform,
-           'add_description' => $add_description_input,
-           'file_types' => $file_types
-       ));
-   }
+    function includeMomentJsAssets(){
+        $this->enqueueScript('vendor', 'momentjs', 'vendor/moment.js');
+        $this->enqueueScript('vendor', 'momentjs-pt-br', 'vendor/moment.pt-br.js',array('momentjs'));
+    }
+
+    function includeDatepickerAssets(){
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker', 'vendor/jquery-ui.datepicker.js', array('jquery'));
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', 'vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+    }
+
+    function includeAngularJsAssets(){
+        $this->enqueueScript('vendor', 'angular', 'vendor/angular.js');
+        $this->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
+    }
+
+    protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
+
+        if ($print_script_tag)
+            echo "\n<script type=\"text/javascript\">\n";
+
+        echo " var {$var_name} = " . json_encode($this->jsObject) . ';';
+
+        if ($print_script_tag)
+            echo "\n</script>\n";
+    }
+
+    function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
+        $this->part('ajax-uploader', array(
+            'file_owner' => $file_owner,
+            'file_group' => $group_name,
+            'response_action' => $response_action,
+            'response_target' => $response_target,
+            'response_template' => $response_template,
+            'response_transform' => $response_transform,
+            'add_description' => $add_description_input,
+            'file_types' => $file_types
+        ));
+    }
+
+    function getOccurrenceFrequencies() {
+        return array(
+            'once' => 'uma vez',
+            'daily' => 'todos os dias',
+            'weekly' => 'semanal',
+            'monthly' => 'mensal',
+        );
+    }
+
+    protected function _populateJsObject(){
+
+        $app = App::i();
+        $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
+        $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
+        $this->jsObject['request'] = array(
+            'controller' => $this->controller->id,
+            'action' => $this->controller->action
+        );
+
+        if ($entity = $this->controller->requestedEntity) {
+            $this->jsObject['request']['id'] = $entity->id;
+            if ($this->isEditable()) {
+                $this->jsObject['entity'] = array(
+                    'id' => $entity->id,
+                    'ownerId' => $entity->owner->id, // ? $entity->owner->id : null,
+                    'ownerUserId' => $entity->ownerUser->id,
+                    'definition' => $entity->getPropertiesMetadata(),
+                    'userHasControl' => $entity->canUser('@control')
+                );
+            }
+        }
+
+        if (!$app->user->is('guest')) {
+            $this->jsObject['notifications'] = $app->controller('notification')->apiQuery(array(
+                '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
+                'user' => 'EQ(@me)'
+            ));
+        }
+    }
+
+    function addOccurrenceFrequenciesToJs() {
+        $this->jsObject['frequencies'] = $this->getOccurrenceFrequencies();
+    }
+
+    function addEntityTypesToJs($entity) {
+
+        $controller = App::i()->getControllerByEntity($entity);
+        $types = $controller->types;
+
+        usort($types, function($a, $b) {
+            if ($a->name > $b->name)
+                return 1;
+            elseif ($a->name < $b->name)
+                return -1;
+            else
+                return 0;
+        });
+
+        if(!isset($this->jsObject['entityTypes']))
+            $this->jsObject['entityTypes'] = array();
+
+        $this->jsObject['entityTypes'][$controller->id] = $types;
+
+    }
+
+    function addTaxonoyTermsToJs($taxonomy_slug) {
+        $terms = App::i()->repo('Term')->getTermsAsString($taxonomy_slug);
+        if(!isset($this->jsObject['taxonomyTerms']))
+            $this->jsObject['taxonomyTerms'] = array();
+
+        $this->jsObject['taxonomyTerms'][$taxonomy_slug] = $terms;
+    }
+
+    function addRelatedAgentsToJs($entity){
+        $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
+    }
 }

@@ -6,9 +6,9 @@ $registrationForm = $entity->getFile('registrationForm');
 
 $this->bodyProperties['ng-app'] = "Entity";
 
-if(is_editable()){
-    add_entity_types_to_js($entity);
-    add_taxonoy_terms_to_js('tag');
+if($this->isEditable()){
+    $this->addEntityTypesToJs($entity);
+    $this->addTaxonoyTermsToJs('tag');
 
     $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
     //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
@@ -26,11 +26,7 @@ if(is_editable()){
         <?php
     });
 }
-
-add_agent_relations_to_js($entity);
 $this->includeAngularEntityAssets($entity);
-
-add_entity_properties_metadata_to_js($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -46,14 +42,14 @@ add_entity_properties_metadata_to_js($entity);
         <div
             <?php if($header = $entity->getFile('header')): ?>
                  style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-                 <?php elseif(is_editable()): ?>
+                 <?php elseif($this->isEditable()): ?>
                  class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>
         >
-            <?php if(is_editable()): ?>
+            <?php if($this->isEditable()): ?>
                 <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php add_ajax_uploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                    <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -66,10 +62,10 @@ add_entity_properties_metadata_to_js($entity);
                     <div class="avatar">
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
             <?php endif; ?>
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
-                        <?php add_ajax_uploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                        <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -80,7 +76,7 @@ add_entity_properties_metadata_to_js($entity);
                     <?php echo $entity->type? $entity->type->name : ''; ?>
                 </a>
             </div>
-            <?php if(is_editable() && $entity->canUser('modifyParent')): ?>
+            <?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
             <span  class="js-search js-include-editable"
                    data-field-name='parentId'
                    data-emptytext="Selecionar projeto pai"
@@ -111,17 +107,17 @@ add_entity_properties_metadata_to_js($entity);
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
-            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+            <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                 <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
             <div class="servico">
-                <?php if(is_editable() || $entity->site): ?>
+                <?php if($this->isEditable() || $entity->site): ?>
                     <p><span class="label">Site:</span>
-                    <?php if(is_editable()): ?>
+                    <?php if($this->isEditable()): ?>
                         <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span></p>
                     <?php else: ?>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
@@ -130,9 +126,9 @@ add_entity_properties_metadata_to_js($entity);
             </div>
         </div>
 
-        <?php if ( is_editable() || $entity->longDescription ): ?>
+        <?php if ( $this->isEditable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
 
 
@@ -151,29 +147,29 @@ add_entity_properties_metadata_to_js($entity);
     <!-- #agenda -->
 
     <div id="inscricoes" class="aba-content">
-        <?php if(is_editable() || $entity->registrationFrom || $entity->registrationTo): ?>
-            <?php if(is_editable()): ?>
+        <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
+            <?php if($this->isEditable()): ?>
                 <p>
                     Utilize este espaço caso queira abrir inscrições para este projeto para Agentes Culturais cadastrados na plataforma.
                 </p>
             <?php endif; ?>
             <p>
-                <?php if(is_editable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if(is_editable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
-                <?php if(is_editable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
-                <?php if(is_editable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
+                <?php if($this->isEditable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
+                <?php if($this->isEditable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
+                <?php if($this->isEditable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
+                <?php if($this->isEditable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
             </p>
         <?php endif; ?>
 
-        <?php if($entity->introInscricoes || is_editable()): ?>
+        <?php if($entity->introInscricoes || $this->isEditable()): ?>
         <div id="intro-das-inscricoes">
-            <?php if(is_editable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
+            <?php if($this->isEditable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
             <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->introInscricoes; ?></p>
         </div>
         <?php endif; ?>
 
         <div>
-            <?php if (is_editable()): ?>
+            <?php if ($this->isEditable()): ?>
                 <p>
                     <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
                     Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.
@@ -182,7 +178,7 @@ add_entity_properties_metadata_to_js($entity);
             <p class="js-ficha-inscricao">
                 <?php if($registrationForm): ?>
                     <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a>
-                    <?php if(is_editable()): ?>
+                    <?php if($this->isEditable()): ?>
                         <a class='botao excluir simples js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-remove-callback="$('#upload-registration-button').removeClass('oculto');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -194,12 +190,12 @@ add_entity_properties_metadata_to_js($entity);
                 <a class="botao adicionar simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
             </p>
             <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição" data-success-callback="$('#upload-registration-button').addClass('oculto');">
-                <?php add_ajax_uploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao',''
+                <?php $this->ajaxUploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao',''
                         . '<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a> '
                         . '<a class="botao excluir simples js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-remove-callback="$(\'#upload-registration-button\').removeClass(\'oculto\');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>','',false,'.doc, .xls, .pdf'); ?>
             </div>
         <?php endif; ?>
-        <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !is_editable()): ?>
+        <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
             <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
 
             <div id="dialog-registration-form" class="js-dialog" title="Inscrição">

@@ -2,29 +2,25 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
-if (is_editable()) {
-    add_entity_types_to_js($entity);
-    add_taxonoy_terms_to_js('tag');
-    add_taxonoy_terms_to_js('linguagem');
+if ($this->isEditable()) {
+    $this->addEntityTypesToJs($entity);
+    $this->addTaxonoyTermsToJs('tag');
+    $this->addTaxonoyTermsToJs('linguagem');
 
-    add_entity_properties_metadata_to_js($entity);
+    $this->addOccurrenceFrequenciesToJs();
 
-    $app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+    $this->includeMomentJsAssets();
+    $this->includeDatepickerAssets();
+
 }
 
-$app->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+$this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
 
-add_agent_relations_to_js($entity);
 $this->includeAngularEntityAssets($entity);
-
-$app->enqueueScript('vendor', 'momentjs', '/vendor/moment.js');
-$app->enqueueScript('vendor', 'momentjs-pt-br', '/vendor/moment.pt-br.js',array('momentjs'));
 
 $this->includeMapAssets();
 
-add_occurrence_frequencies_to_js();
+
 ?>
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
@@ -41,7 +37,7 @@ add_occurrence_frequencies_to_js();
                 <p><span class="label">Duração:</span> {{rule.duration}} min</p>
             {{/rule.duration}}
             <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
-            <?php if(is_editable()): ?>
+            <?php if($this->isEditable()): ?>
                 <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
@@ -52,7 +48,7 @@ add_occurrence_frequencies_to_js();
         <!-- .infos -->
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
         <!-- .mapa -->
-        <?php if(is_editable()): ?>
+        <?php if($this->isEditable()): ?>
             <div class="clear">
                 <a class="editar botao js-open-dialog hltip"
                    data-dialog="#dialog-event-occurrence"
@@ -89,7 +85,7 @@ add_occurrence_frequencies_to_js();
 <div class="sidebar-left sidebar evento">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php if(is_editable()): ?>
+    <?php if($this->isEditable()): ?>
         <div class="widget">
             <h3>Projeto</h3>
             <a class="js-search js-include-editable"
@@ -118,7 +114,7 @@ add_occurrence_frequencies_to_js();
     <?php endif; ?>
     <div class="widget">
         <h3>Linguagens</h3>
-        <?php if (is_editable()): ?>
+        <?php if ($this->isEditable()): ?>
             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
             <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
@@ -135,14 +131,14 @@ add_occurrence_frequencies_to_js();
         <div
         <?php if ($header = $entity->getFile('header')): ?>
                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-            <?php elseif(is_editable()): ?>
+            <?php elseif($this->isEditable()): ?>
                 class="imagem-do-header js-imagem-do-header"
             <?php endif; ?>
             >
-                <?php if (is_editable()): ?>
+                <?php if ($this->isEditable()): ?>
                 <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php add_ajax_uploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                    <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -155,10 +151,10 @@ add_occurrence_frequencies_to_js();
                     <div class="avatar">
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
                     <?php endif; ?>
-                    <?php if (is_editable()): ?>
+                    <?php if ($this->isEditable()): ?>
                         <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
                         <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
-                            <?php add_ajax_uploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                            <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -169,7 +165,7 @@ add_occurrence_frequencies_to_js();
                 </div>
                 <!--.entity-type-->
                 <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-                <?php if (is_editable() || $entity->subTitle): ?>
+                <?php if ($this->isEditable() || $entity->subTitle): ?>
                 <h4 class="event-subtitle">
                     <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
                 </h4>
@@ -180,22 +176,22 @@ add_occurrence_frequencies_to_js();
     <!--.main-content-header-->
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
-            <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+            <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                 <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
             <p>
-                <?php if (is_editable() || $entity->shortDescription): ?>
+                <?php if ($this->isEditable() || $entity->shortDescription): ?>
                     <span class="label">Descrição Curta:</span><br>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo is_editable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 <?php endif; ?>
             </p>
             <div class="servico">
 
-                <?php if (is_editable() || $entity->registrationInfo): ?>
+                <?php if ($this->isEditable() || $entity->registrationInfo): ?>
                     <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
                 <?php endif; ?>
 
-                <?php if (is_editable() || $entity->classificacaoEtaria): ?>
+                <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
                     <?php
                     /*Agente padrão da Giovanna editando atrações da Virada*/
                     if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
@@ -205,29 +201,29 @@ add_occurrence_frequencies_to_js();
                     <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                 <?php endif; ?>
 
-                <?php if (is_editable() || $entity->site): ?>
+                <?php if ($this->isEditable() || $entity->site): ?>
                     <p><span class="label">Site:</span>
-                        <?php if (is_editable()): ?>
+                        <?php if ($this->isEditable()): ?>
                             <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe o endereço do site do evento"><?php echo $entity->site; ?></span></p>
                     <?php else: ?>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if(is_editable() || $entity->telefonePublico): ?>
+                <?php if($this->isEditable() || $entity->telefonePublico): ?>
                     <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                 <?php endif; ?>
 
-                <?php if(is_editable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
+                <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                     <br>
                     <p>
                         <span>Acessibilidade:</span>
 
-                        <?php if(is_editable() || $entity->traducaoLibras): ?>
+                        <?php if($this->isEditable() || $entity->traducaoLibras): ?>
                             <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
                         <?php endif; ?>
 
-                        <?php if(is_editable() || $entity->descricaoSonora): ?>
+                        <?php if($this->isEditable() || $entity->descricaoSonora): ?>
                             <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                         <?php endif; ?>
                     </p>
@@ -268,17 +264,17 @@ add_occurrence_frequencies_to_js();
 
                 $occurrences = $entity->occurrences ? $entity->occurrences->toArray() :  array();
                 ?>
-                <?php if (is_editable() || $occurrences): ?>
+                <?php if ($this->isEditable() || $occurrences): ?>
                     <div class="js-event-occurrence">
 
                         <?php
 
-                        $screenFrequencies = getOccurrenceFrequencies();
+                        $screenFrequencies = $this->getOccurrenceFrequencies();
                         $mustache = new Mustache_Engine();
 
                         if ($occurrences) {
 
-                            if (is_editable()) {
+                            if ($this->isEditable()) {
 
                                 foreach ($occurrences as $occurrence) {
                                     $templateData = json_decode(json_encode($occurrence));
@@ -341,7 +337,7 @@ add_occurrence_frequencies_to_js();
                 <?php endif; ?>
             </div>
             <!--.servico.ocorrencia-->
-            <?php if(is_editable()): ?>
+            <?php if($this->isEditable()): ?>
                 <div class="textright">
                     <a class="botao adicionar js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
                        data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
@@ -362,9 +358,9 @@ add_occurrence_frequencies_to_js();
         </div>
         <!--.ficha-spcultura-->
 
-        <?php if ( is_editable() || $entity->longDescription ): ?>
+        <?php if ( $this->isEditable() || $entity->longDescription ): ?>
             <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo is_editable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
         <?php endif; ?>
 
 
@@ -399,7 +395,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('link-list.php', array('entity' => $entity)); ?>
     <!-- Link List END -->
 </div>
-<?php if (is_editable()): ?>
+<?php if ($this->isEditable()): ?>
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
     <form action="{{formAction}}" method="POST">
         <div class="mensagem erro escondido"></div>

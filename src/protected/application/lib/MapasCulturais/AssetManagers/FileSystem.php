@@ -40,6 +40,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
     protected function _publishAsset($asset_filename) {
         $app = App::i();
 
+        if(preg_match('#^(\/\/|https?)#', $asset_filename))
+            return $asset_filename;
+
         $asset_filename = $app->view->getAssetFilename($asset_filename);
         if(!$asset_filename)
             return '';
@@ -112,9 +115,14 @@ class FileSystem extends \MapasCulturais\AssetManager{
             $theme = $app->view;
             $content = "";
 
-            $assets = array_map(function($e) use($theme, &$content){
+            $assets = array_map(function($e) use($theme, &$content, &$result){
+                if(preg_match('#^(\/\/|https?)#', $e)){
+                    $result[] = $e;
+                    return ;
+                }
                 $filename = $theme->getAssetFilename($e);
                 $content .= file_get_contents($filename)."\n";
+
                 return $filename;
             }, $ordered);
 

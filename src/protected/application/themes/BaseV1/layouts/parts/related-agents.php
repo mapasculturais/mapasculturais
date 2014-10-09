@@ -1,6 +1,9 @@
 <?php
 if($this->controller->action === 'create')
     return;
+
+$this->addRelatedAgentsToJs($entity);
+$this->enqueueScript('app', 'related-agents', '/js/RelatedAgents.js', array('ng-mapasculturais'));
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="widget" ng-if="isEditable">
