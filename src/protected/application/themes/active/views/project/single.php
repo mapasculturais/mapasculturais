@@ -112,7 +112,7 @@ add_entity_properties_metadata_to_js($entity);
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if(is_editable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
@@ -204,7 +204,7 @@ add_entity_properties_metadata_to_js($entity);
 
             <div id="dialog-registration-form" class="js-dialog" title="Inscrição">
                 <form class="js-ajax-upload" method="POST" data-action="project-registration" action="<?php echo $app->createUrl('project', 'register', array($entity->id)); ?>" enctype="multipart/form-data">
-                    <div class="mensagem erro"></div>
+                    <div class="alert danger"></div>
                 <h4 class="js-search js-xedit"
                            data-field-name='agentId'
                            data-emptytext="Selecione um agente"

@@ -86,7 +86,7 @@ MapasCulturais.EventOccurrenceManager = {
         $(selector).ajaxForm({
             success: function (response, statusText, xhr, $form)  {
 
-                $form.find('.erro').not('.mensagem').remove();
+                $form.find('.danger').not('.alert').remove();
                 if(response.error){
                     var $element = null,
                         message;
@@ -95,11 +95,11 @@ MapasCulturais.EventOccurrenceManager = {
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="erro hltip" data-hltip-classes="hltip-erro" title="Erro:'+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
-                    $form.find('div.mensagem.erro').html('Corrija os erros indicados abaixo.')
+                    $form.find('div.alert.danger').html('Corrija os erros indicados abaixo.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -143,12 +143,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parent().scrollTop(0);
 
                 if(xhr.status === 403){
-                    $form.find('div.mensagem.erro').html('Você não tem permissão para criar eventos nesse espaço.')
+                    $form.find('div.alert.danger').html('Você não tem permissão para criar eventos nesse espaço.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }else{
-                    $form.find('div.mensagem.erro').html('Erro inesperado.')
+                    $form.find('div.alert.danger').html('Erro inesperado.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
