@@ -1,6 +1,8 @@
 MapasCulturais = MapasCulturais || {};
 
 $(function(){
+//    $.fn.select2.defaults.separator = '; ';
+//    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -544,6 +546,10 @@ MapasCulturais.Search = {
                 type:'select2',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
+//                    multiple: $selector.data('multiple'),
+//                    tokenSeparators: [";",";"],
+//                    separator:'; ',
+//                    viewseparator: '; ',
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 0,

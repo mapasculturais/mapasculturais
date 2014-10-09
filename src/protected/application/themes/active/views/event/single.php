@@ -102,6 +102,7 @@ add_occurrence_frequencies_to_js();
                 data-selection-template="#agent-response-template"
                 data-no-result-template="#agent-response-no-results-template"
                 data-selection-format="chooseProject"
+                data-multiple="true"
                 data-allow-clear="1"
                 data-auto-open="true"
                 data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
