@@ -334,6 +334,11 @@ function mapasculturais_head($entity = null){
         var MapasCulturais = {
             baseURL: '<?php echo $app->baseUrl ?>',
             userId: <?php echo $app->user->is('guest') ? 'null' : $app->user->id; ?>,
+            roles: <?php $roles = []; if(!$app->user->is('guest'))
+                foreach($app->user->roles as $r)
+                    $roles[] = $r->name;
+                echo json_encode($roles);
+            ?>,
             vectorLayersURL: "<?php echo $app->baseUrl . $app->config['vectorLayersPath']; ?>",
             assetURL: '<?php echo $app->assetUrl ?>',
             request: {

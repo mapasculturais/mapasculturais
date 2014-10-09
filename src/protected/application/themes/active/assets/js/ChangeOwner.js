@@ -50,6 +50,9 @@
                 '@permissions': MapasCulturais.entity.userHasControl ? '!@control' : '@control'
             }
         };
+        if(MapasCulturais.roles.indexOf('superAdmin') !== -1){
+            $scope.data.apiQuery['@permissions'] = '@control';
+        }
 
         var adjustBoxPosition = function(){
             setTimeout(function(){
