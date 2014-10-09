@@ -29,6 +29,15 @@ trait EntityNested{
 
     protected $_newParent = false;
 
+    function getParent(){
+        if($this->_newParent !== false){
+            return $this->_newParent;
+        }else{
+            return $this->parent;
+        }
+
+    }
+
     function setParent(\MapasCulturais\Entity $parent = null){
         if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
