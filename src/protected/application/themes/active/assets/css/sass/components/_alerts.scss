@@ -1,40 +1,40 @@
-.mensagem {
+.alert {
     margin-bottom: $line-height-base;
     padding: .25rem .75rem;
     border-radius: $border-radius-base;
     border-style: solid;
     border-width: 1px;
     font-size: $font-size-smaller;
+    &.info {
+        background: #cff;
+        border-color: #9be7ee;
+        color: $brand-info;
+    }
+    &.warning {
+        background: #ffc;
+        border-color: #eed29b;
+        color: $brand-warning;
+    }
+    &.danger {
+        background: #fcc;
+        border-color: #ee9b9b;
+        color: $brand-danger;
+    }
+    &.success {
+        background: #cfc;
+        border-color: #a6dfa6;
+        color: $brand-success;
+    }
+    &.automatic {
+        background: $gray-lighter;
+        border-color: #ddd;
+        color: $gray-dark;
+    }
 }
-.mensagem.ajuda {
-    background: #cff;
-    border-color: #9be7ee;
-    color: $brand-info;
-}
-.mensagem.alerta {
-    background: #ffc;
-    border-color: #eed29b;
-    color: $brand-warning;
-}
-.mensagem.erro {
-    background: #fcc;
-    border-color: #ee9b9b;
-    color: $brand-danger;
-}
-.mensagem.sucesso {
-    background: #cfc;
-    border-color: #a6dfa6;
-    color: $brand-success;
-}
-.mensagem.automatica {
-    background: $gray-lighter;
-    border-color: #ddd;
-    color: $gray-dark;
-}
-.ajuda:before,
-.alerta:before,
-.erro:before,
-.sucesso:before {
+.info:before,
+.warning:before,
+.danger:before,
+.success:before {
     display: inline-block;
     width: 1rem;
     height: inherit;
@@ -47,19 +47,19 @@
     font-weight: normal;
     font-style: none;
 }
-.ajuda:before {
+.info:before {
     content: '\e007';
     color: $brand-info;
 }
-.alerta:before {
+.warning:before {
     content: '\e061';
     color: $brand-warning;
 }
-.erro:before {
+.danger:before {
     content: '\e061';
     color: $brand-danger;
 }
-.sucesso:before {
+.success:before {
     content: '\e052';
     color: $brand-success;
 }

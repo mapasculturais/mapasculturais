@@ -142,7 +142,7 @@
             });
 
             map.on('locationerror', function(e) {
-                /* @TODO mensagem de erro para o usuário */
+                /* @TODO alert de erro para o usuário */
 //                console.log(e.message);
             });
 

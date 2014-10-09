@@ -356,7 +356,7 @@ MapasCulturais.Editables = {
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
-                                    var errorHtml = '<span title="'+'Erro: ' + response.data[p][k]+'" class="erro hltip js-response-error" data-hltip-classes="hltip-erro"></span>';
+                                    var errorHtml = '<span title="'+'Erro: ' + response.data[p][k]+'" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
                                     $field.parent().append(errorHtml);
                                 }else{
                                     unknow_errors.push(response.data[p][k]);
@@ -367,7 +367,7 @@ MapasCulturais.Editables = {
                                 $field.editable('show');
                             }
                             $field.on('save', function(){
-                                $(this).parent().find('.erro.hltip').remove();
+                                $(this).parent().find('.danger.hltip').remove();
                             });
                         }
 
@@ -398,7 +398,7 @@ MapasCulturais.Editables = {
                                 css('background-color','').
                                 removeClass('editable-unsaved').
                                 parent().
-                                removeClass('erro');
+                                removeClass('danger');
 
                         if(action === 'create')
                             location.href = MapasCulturais.Editables.baseTarget+'/edit/'+response.id;
@@ -460,7 +460,7 @@ MapasCulturais.AjaxUploader = {
                     MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), false);
                     var group = $form.data('group');
                     var error_message = typeof response.data == 'string' ? response.data : response.data[group];
-                    $form.find('div.mensagem.erro').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
+                    $form.find('div.alert.danger').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
                     return;
                 }
 
@@ -549,7 +549,7 @@ MapasCulturais.MetalistManager = {
                 //por enquanto validando apenas o vídeo contendo vimeo ou youtube e o link contendo algum protocolo...
                 var group = $form.parents('.js-editbox').data('metalist-group');
                 var $linkField = $form.find('input.js-metalist-value');
-                var $errorTag = $form.find('.mensagem.erro');
+                var $errorTag = $form.find('.alert.danger');
                 $errorTag.html('');
 
                 if(group === 'videos'){
