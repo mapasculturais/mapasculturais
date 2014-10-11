@@ -4,10 +4,10 @@ if($this->controller->action === 'create')
 
 
 $videos = $entity->getMetaLists('videos');
-
+$spinner_url = $this->asset("img/spinner_192.gif", false);
 $template = "<li id='video-{{id}}'>
                 <a class='js-metalist-item-display' href='#video' data-videolink='{{value}}'>
-                    <img src='{$assetURL}/img/spinner_192.gif' class='thumbnail_med_wide'/>
+                    <img src='{$spinner_url}' class='thumbnail_med_wide'/>
                     <h1 class='title'>{{title}}</h1>
                 </a>
                 <div class='botoes-de-edicao'>
@@ -21,7 +21,7 @@ $template = "<li id='video-{{id}}'>
                 </div>
             </li>";
 ?>
-<?php if (is_editable() || $videos): ?>
+<?php if ($this->isEditable() || $videos): ?>
     <h3>Vídeos</h3>
     <a name="video"></a>
     <div id="video-player" class="video" ng-non-bindable>
@@ -34,7 +34,7 @@ $template = "<li id='video-{{id}}'>
                     <img src="<?php $this->asset('img/spinner_192.gif'); ?>" alt="" class="thumbnail_med_wide"/>
                     <h1 class="title"><?php echo $video->title;?></h1>
                 </a>
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                     <div class="botoes-de-edicao">
                         <a class="js-open-editbox editar hltip"
                            data-dialog-title="Editar Vídeo"
@@ -59,9 +59,11 @@ $template = "<li id='video-{{id}}'>
      data-metalist-title-label="Título" data-metalist-value-label="Endereço do vídeo (Youtube ou Vimeo)" data-metalist-description-label="Descrição">
     <?php if($this->controller->action == 'create'): ?>
         <span class="js-dialog-disabled" data-message="Para adicionar vídeos você primeiro deve salvar."></span>
-    <?php else: $this->part('metalist-form.template.html'); endif; ?>
+    <?php else: ?>
+        <?php $this->part('metalist-form-template'); ?>
+    <?php endif; ?>
 </div>
-<?php if(is_editable()): ?>
+<?php if($this->isEditable()): ?>
     <p class="p-dos-botoes" ng-non-bindable>
         <a class="botao adicionar js-open-editbox" href="#"
            data-dialog-title="Adicionar Vídeo"

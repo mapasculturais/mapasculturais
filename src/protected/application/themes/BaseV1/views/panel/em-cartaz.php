@@ -1,7 +1,6 @@
 <?php
 $this->layout = 'panel';
-$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-$app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+$this->includeDatepickerAssets();
 ?>
 <style>
     .emcartaz-datepicker{

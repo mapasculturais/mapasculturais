@@ -16,10 +16,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
             </li>";
 ?>
 
-<?php if (is_editable() || $links): ?>
+<?php if ($this->isEditable() || $links): ?>
     <div class="widget" ng-non-bindable>
         <h3>Links</h3>
-        <?php if(is_editable()): ?>
+        <?php if($this->isEditable()): ?>
             <a class="adicionar js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                data-response-target="ul.js-metalist"
@@ -31,9 +31,9 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
         <?php endif; ?>
         <ul class="js-metalist widget-list js-slimScroll">
             <?php if($links): foreach($links as $link): ?>
-                <li id="link-<?php echo $link->id ?>" class="widget-list-item<?php if(is_editable()) echo ' is-editable'; ?>" >
+                <li id="link-<?php echo $link->id ?>" class="widget-list-item<?php if($this->isEditable()) echo ' is-editable'; ?>" >
                     <a class="js-metalist-item-display" href="<?php echo $link->value;?>"><span><?php echo $link->title;?></span></a>
-                    <?php if(is_editable()): ?>
+                    <?php if($this->isEditable()): ?>
                         <div class="botoes">
                             <a class="editar js-open-editbox hltip"
                                data-target="#editbox-links"
@@ -56,7 +56,9 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
              data-metalist-title-label="Título" data-metalist-value-label="Endereço (com http://)" data-metalist-description-label="Descrição">
             <?php if($this->controller->action == 'create'): ?>
                 <span class="js-dialog-disabled" data-message="Para adicionar links você primeiro deve salvar."></span>
-            <?php else: $this->part('metalist-form.template.html'); endif; ?>
+            <?php else: ?>
+                <?php $this->part('metalist-form-template'); ?>
+            <?php endif; ?>
         </div>
     </div>
 <?php endif; ?>

@@ -1,5 +1,5 @@
 <?php
-if (is_editable() || "$entity" != "$owner"):
+if ($this->isEditable() || "$entity" != "$owner"):
     $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar.png";
     if ($entity->isUserProfile)
         return;
@@ -8,7 +8,7 @@ if (is_editable() || "$entity" != "$owner"):
         <div class="dono clearfix js-owner">
             <p class="small bottom">Publicado por</p>
 
-            <?php if (is_editable() && $entity->canUser('changeOwner')): ?>
+            <?php if ($this->isEditable() && $entity->canUser('changeOwner')): ?>
                 <h4 class="js-search js-include-editable"
                     data-field-name='ownerId'
                     data-emptytext="Selecione um agente"
@@ -31,7 +31,7 @@ if (is_editable() || "$entity" != "$owner"):
 
             <p class="descricao-do-agente js-owner-description"><?php echo nl2br($owner->shortDescription); ?></p>
             <div class="clearfix">
-                <?php if (!is_editable() && !$app->user->is('guest')): ?>
+                <?php if (!$this->isEditable() && !$app->user->is('guest')): ?>
                     <a class="action staging-hidden" href="#">Reportar erro</a>
                     <?php if($entity->canUser('@control')): ?>
                         <a id="change-owner-button" class="action" ng-click="editbox.open('editbox-change-owner', $event)">Ceder propriedade</a>

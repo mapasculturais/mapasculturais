@@ -10,8 +10,7 @@ if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
 
-    $app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-    //$app->enqueueStyle('vendor',  'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.min.css');
+    $this->includeDatepickerAssets();
 
     $app->hook('mapasculturais.scripts', function() use ($app, $entity){
 

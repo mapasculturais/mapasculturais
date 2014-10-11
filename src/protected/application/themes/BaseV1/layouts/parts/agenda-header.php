@@ -1,6 +1,5 @@
 <?php
-$app->enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
-$app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
+$this->includeDatepickerAssets();
 ?>
 <style>
     .agenda-singles-datepicker{
@@ -13,10 +12,10 @@ $app->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', '/vendor/jquery-ui.d
         text-align: center;
         margin: 0 3px;
     }
-    
-    img.spinner { 
-        float:right; 
-        display:none; 
+
+    img.spinner {
+        float:right;
+        display:none;
     }
 </style>
 <header class="clearfix">

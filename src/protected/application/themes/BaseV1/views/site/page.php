@@ -1,4 +1,6 @@
-<?php $app->enqueueScript('app', 'page', '/js/page.js', array('mapasculturais')) ?>
+<?php
+$this->enqueueScript('app', 'page', 'js/page.js', array('mapasculturais'));
+?>
 <nav id="nav-da-pagina" class="sidebar-left sidebar">
     <?php echo $left ?>
 </nav>

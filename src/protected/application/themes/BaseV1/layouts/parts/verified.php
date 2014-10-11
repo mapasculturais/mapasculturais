@@ -1,4 +1,4 @@
-<?php if(is_editable() && $entity->canUser('verify')): ?>
+<?php if($this->isEditable() && $entity->canUser('verify')): ?>
 <input id="is-verified-input" type="hidden" class="js-editable" data-edit="isVerified" data-value="<?php echo $entity->isVerified ? '1' : '0'?>"/>
 <div class="widget widget--verified">
     <a href="#"

@@ -6,7 +6,7 @@ sort($areas);
 ?>
 <div class="widget">
     <h3>Área de atuação</h3>
-    <?php if(is_editable()): ?>
+    <?php if($this->isEditable()): ?>
         <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
     <?php else: ?>
         <?php

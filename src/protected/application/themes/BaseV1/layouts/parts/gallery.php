@@ -3,13 +3,13 @@ if($this->controller->action === 'create')
     return;
 ?>
 <?php $gallery = $entity->getFiles('gallery'); ?>
-<?php if (is_editable() || $gallery): ?>
+<?php if ($this->isEditable() || $gallery): ?>
     <h3>Galeria</h3>
     <div class="clearfix js-gallery">
         <?php if($gallery): foreach($gallery as $img): ?>
             <div id="file-<?php echo $img->id ?>" class="item-da-galeria" >
                 <a href="<?php echo $img->url; ?>"><img src="<?php echo $img->transform('galleryThumb')->url; ?>" /></a>
-                <?php if(is_editable()): ?>
+                <?php if($this->isEditable()): ?>
                 <div class="botoes-de-edicao">
                     <a data-href="<?php echo $img->deleteUrl?>" data-target="#file-<?php echo $img->id ?>" class="icone icon_close_alt hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir"></a>
                 </div>
@@ -17,7 +17,7 @@ if($this->controller->action === 'create')
             </div>
         <?php endforeach; endif;?>
     </div>
-    <?php if(is_editable()): ?>
+    <?php if($this->isEditable()): ?>
         <p class="p-dos-botoes">
             <a class="botao adicionar js-open-editbox" data-target="#editbox-gallery-image" href="#">adicionar imagem</a>
             <div id="editbox-gallery-image" class="js-editbox mc-top" title="Adicionar Imagem na Galeria">

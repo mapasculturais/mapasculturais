@@ -1,4 +1,6 @@
 <?php
+$this->jsObject['spinner'] = $this->asset('img/spinner_192.gif', false);
+
 $app = \MapasCulturais\App::i();
 $em = $app->em;
 
@@ -20,7 +22,7 @@ $num_verified_events = $app->controller('Event')->apiQueryByLocation(array(
     '@from' => date('Y-m-d'),
     '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
     'isVerified' => 'EQ(true)'
-)); 
+));
 
 $num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 $num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();

@@ -3,10 +3,10 @@ $entityClass = get_class($entity);
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $tags = $entity->terms['tag'];
 ?>
-<?php if(is_editable() || !empty($tags)): ?>
+<?php if($this->isEditable() || !empty($tags)): ?>
     <div class="widget">
         <h3>Tags</h3>
-        <?php if(is_editable()): ?>
+        <?php if($this->isEditable()): ?>
             <span id="term-area" class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-restrict="true" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
         <?php else: ?>
             <?php
