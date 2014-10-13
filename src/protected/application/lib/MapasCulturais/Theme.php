@@ -341,10 +341,20 @@ abstract class Theme extends \Slim\View {
     }
 
     function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
+        $app = App::i();
+        if($app->config['app.log.assets']){
+            $dep = implode(', ', $dependences);
+            $app->log->debug("enqueueScript ({$group}) {$script_name} : {$script_filename} ({$dep})");
+        }
         $this->_assetManager->enqueueScript($group, $script_name, $script_filename, $dependences);
     }
 
     function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
+        $app = App::i();
+        if($app->config['app.log.assets']){
+            $dep = implode(', ', $dependences);
+            $app->log->debug("enqueueScript ({$group}) {$style_name} : {$style_filename} ({$dep})");
+        }
         $this->_assetManager->enqueueStyle($group, $style_name, $style_filename, $dependences, $media);
     }
 

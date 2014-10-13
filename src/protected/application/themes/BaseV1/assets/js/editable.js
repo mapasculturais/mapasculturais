@@ -231,7 +231,7 @@ MapasCulturais.Editables = {
     },
 
     createAll : function (){
-        var entity = MapasCulturais.Editables.entity;
+        var entity = MapasCulturais.entity.definition;
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);

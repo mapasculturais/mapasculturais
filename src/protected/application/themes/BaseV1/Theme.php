@@ -33,10 +33,18 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
+        $this->jsObject['templateUrl'] = array();
+        $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
+
         $app->hook('view.render(<<*>>):before', function() {
             $this->addDocumentMetas();
             $this->includeCommonAssets();
             $this->_populateJsObject();
+        });
+
+        $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
+            $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
+            $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         });
 
         $app->hook('view.render(<<agent|space|project|event>>/single):before', function() {
@@ -199,14 +207,21 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('vendor', 'poshytip', 'vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
         $this->enqueueScript('vendor', 'x-editable', 'vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
-        $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
 
         $this->enqueueScript('vendor', 'angular', 'vendor/angular.js');
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('mapasculturais'));
 
+        if($this->isEditable())
+            $this->includeEditableEntityAssets ();
+
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('style'));
+    }
+
+    function includeEditableEntityAssets(){
+        $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
+
     }
 
     function includeMapAssets() {

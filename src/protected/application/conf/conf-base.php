@@ -68,6 +68,7 @@ return array(
     'app.log.translations' => false,
     'app.log.apiCache' => false,
     'app.log.apiDql' => false,
+    'app.log.assets' => true,
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),

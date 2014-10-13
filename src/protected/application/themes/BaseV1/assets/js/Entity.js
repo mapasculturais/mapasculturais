@@ -112,7 +112,7 @@
 
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
+            templateUrl: MapasCulturais.templateUrl.findEntity,
             scope:{
                 spinnerCondition: '=',
                 entity: '@',
@@ -124,7 +124,7 @@
             },
 
             link: function($scope, el, attrs){
-                
+
                 $scope.attrs = attrs;
 
                 $scope.result = [];
@@ -173,7 +173,7 @@
 
                     $scope.result = data;
                 };
-                
+
                 $(el).on('find', function(){
                     $scope.find();
                 });
@@ -242,9 +242,9 @@
 
                 var $box = $('#' + editboxId).find('>div.edit-box');
                 $box.show();
-                
+
                 $('#' + editboxId).trigger('open');
-                
+
                 var $firstInput = $box.find('input:first,select:first,textarea:first');
                 $firstInput.focus();
                 setPosition($box, $event.target);
@@ -274,7 +274,7 @@
     app.directive('editBox', ['EditBox', function(EditBox) {
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.assetURL + '/js/directives/edit-box.html',
+            templateUrl: MapasCulturais.templateUrl.editBox,
             transclude: true,
 
             scope: {
@@ -295,7 +295,7 @@
 
                 $scope.args = attrs;
 
-                $scope.spinnerUrl = MapasCulturais.assetURL + '/img/spinner.gif';
+                $scope.spinnerUrl = MapasCulturais.spinnerUrl;
 
                 $scope.classes = {
                     'mc-bottom': attrs.position === 'bottom' || !attrs.position,
@@ -318,7 +318,7 @@
                         $scope.onCancel();
                     }
                 };
-                
+
                 if(angular.isFunction($scope.onOpen)){
                     $('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
                 }
