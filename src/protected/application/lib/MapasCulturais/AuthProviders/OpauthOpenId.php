@@ -33,13 +33,13 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         $opauth = new \Opauth($opauth_config, false );
 
         $this->opauth = $opauth;
-        
+
         if($config['logout_url']){
             $app->hook('auth.logout:after', function() use($app, $config){
                 $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
             });
         }
-        
+
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
@@ -199,6 +199,8 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
                 App::i()->repo('user')->createByAuthResponse($response);
 
                 $user = $this->_getAuthenticatedUser();
+
+                $this->_setRedirectPath($user->profile->editUrl);
             }
             $this->_setAuthenticatedUser($user);
 
