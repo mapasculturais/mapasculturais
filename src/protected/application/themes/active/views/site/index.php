@@ -20,7 +20,7 @@ $num_verified_events = $app->controller('Event')->apiQueryByLocation(array(
     '@from' => date('Y-m-d'),
     '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
     'isVerified' => 'EQ(true)'
-)); 
+));
 
 $num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
 $num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
@@ -53,7 +53,7 @@ $project_types = $app->getRegisteredEntityTypes($class_project);
  * @param type $entity_class
  * @return \MapasCulturais\Entity
  */
-function findOneVerifiedEntityWithImages($entity_class){
+function findOneVerifiedEntityWithImages($entity_class, $file_group = 'gallery'){
     $app = \MapasCulturais\App::i();
 
     $file_class = 'MapasCulturais\Entities\File';
@@ -68,34 +68,56 @@ function findOneVerifiedEntityWithImages($entity_class){
         e.status > 0 AND
         e.isVerified = TRUE AND
         f.objectType = '$entity_class' AND
-        f.group = 'gallery'
+        f.group = '$file_group'
     ";
+
+    if($entity_class === 'MapasCulturais\Entities\Event'){
+        $events = $app->controller('Event')->apiQueryByLocation(array(
+            '@from' => date('Y-m-d'),
+            '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
+            'isVerified' => 'EQ(true)',
+            '@select' => 'id'
+        ));
+        $event_ids = array_map(function($item){
+            return $item['id'];
+        }, $events);
+
+        $dql .= ' AND f.objectId IN ('.  implode(',', $event_ids).')';
+    }
+
 
 
     $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
     if($ids){
         $id = $ids[array_rand($ids)]['id'];
         return $app->repo($entity_class)->find($id);
+    }elseif($file_group === 'gallery'){
+        return findOneVerifiedEntityWithImages($entity_class, 'avatar');
     }else{
         return null;
     }
 }
 
+function getImageUrl($entity){
+    if(key_exists('gallery', $entity->files)){
+        return $entity->files['gallery'][array_rand($entity->files['gallery'])]->transform('galleryFull')->url;
+    }elseif(key_exists('avatar', $entity->files)){
+        return $entity->files['avatar']->transform('galleryFull')->url;
+    }
+
+}
+
 $agent = findOneVerifiedEntityWithImages($class_agent);
-if($agent)
-    $agent_img_url = $agent->files['gallery'][array_rand($agent->files['gallery'])]->transform('galleryFull')->url;
+if($agent) $agent_img_url = getImageUrl($agent);
 
 $space = findOneVerifiedEntityWithImages($class_space);
-if($space)
-    $space_img_url = $space->files['gallery'][array_rand($space->files['gallery'])]->transform('galleryFull')->url;
+if($space) $space_img_url = getImageUrl($space);
 
 $event = findOneVerifiedEntityWithImages($class_event);
-if($event)
-    $event_img_url = $event->files['gallery'][array_rand($event->files['gallery'])]->transform('galleryFull')->url;
+if($event) $event_img_url = getImageUrl($event);
 
 $project = findOneVerifiedEntityWithImages($class_project);
-if($project)
-    $project_img_url = $project->files['gallery'][array_rand($project->files['gallery'])]->transform('galleryFull')->url;
+if($project) $project_img_url = getImageUrl($project);
 
 
 $url_search_agents = $app->createUrl('site', 'search')."##(global:(enabled:(agent:!t),filterEntity:agent))";
