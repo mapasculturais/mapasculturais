@@ -3772,36 +3772,33 @@ h1 .icone {
   color: #888;
 }
 
-.oficial {
-  display: block;
+.widget-verified {
+  text-align: center;
+}
+
+.verified-seal {
+  display: inline-block;
+  position: relative;
   width: 89px;
   height: 72px;
-  margin: 0 auto;
-  background: url(../img/brasao-pb.png) no-repeat center;
-  text-indent: -9999px;
+  background-image: url(../img/unverified-seal.png);
+  background-repeat: no-repeat;
+  background-position: center;
 }
-
-.oficial.inactive {
+.verified-seal.inactive {
   opacity: .2;
 }
-
-.oficial.active {
-  background: url(../img/brasao.png) no-repeat center;
+.verified-seal.active {
+  background-image: url(../img/verified-seal.png);
 }
-
-.widget--verified:before {
-  width: 1rem;
-  height: 1rem;
-  content: '\6c';
-  font-size: 1rem;
-  line-height: 1rem;
-  font-family: 'ElegantIcons';
-  font-weight: normal;
-  font-style: normal;
-  color: #666666;
+.verified-seal.editable {
+  padding-top: 1rem;
+  background-position: center 1rem;
+}
+.verified-seal.editable:after {
+  margin-left: -.5rem;
   position: absolute;
   top: 0;
-  left: 0;
 }
 
 /* galeria de vídeos */
