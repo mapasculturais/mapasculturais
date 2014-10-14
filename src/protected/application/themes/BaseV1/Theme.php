@@ -33,6 +33,8 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
+        $this->jsObject['assets'] = array();
+
         $this->jsObject['templateUrl'] = array();
         $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
 
@@ -193,8 +195,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle('app', 'vendor', 'css/vendor.css');
 
         $this->enqueueScript('vendor', 'mustache', 'vendor/mustache.js');
-        $this->enqueueScript('vendor', 'jquery', 'vendor/jquery/jquery-2.0.3.min.js');
-        $this->enqueueScript('vendor', 'jquery-slimscroll', 'vendor/jquery.slimscroll.min.js');
+        $this->enqueueScript('vendor', 'jquery', 'vendor/jquery/jquery-2.1.1.js');
+        $this->enqueueScript('vendor', 'jquery-slimscroll', 'vendor/jquery.slimscroll.js', array('jquery'));
         $this->enqueueScript('vendor', 'jquery-form', 'vendor/jquery.form.min.js', array('jquery'));
         $this->enqueueScript('vendor', 'jquery-mask', 'vendor/jquery.mask.min.js', array('jquery'));
         $this->enqueueScript('vendor', 'purl', 'vendor/purl/purl.js', array('jquery'));
@@ -209,7 +211,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'x-editable', 'vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
 
         $this->enqueueScript('vendor', 'angular', 'vendor/angular.js');
-        $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('mapasculturais'));
+
+        $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
+
+        $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
 
         if($this->isEditable())
             $this->includeEditableEntityAssets ();
@@ -224,10 +229,49 @@ class Theme extends MapasCulturais\Theme {
 
     }
 
+    function includeSearchAssets(){
+        $this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
+        $this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
+
+        $this->enqueueScript('app', 'SearchService', '/js/SearchService.js', array('ng-mapasculturais', 'SearchSpatial'));
+        $this->enqueueScript('app', 'FindOneService', '/js/FindOneService.js', array('ng-mapasculturais', 'SearchSpatial'));
+        $this->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js', array('ng-mapasculturais', 'map'));
+        $this->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js', array('ng-mapasculturais', 'map'));
+
+        $this->enqueueScript('app', 'Search', '/js/Search.js', array('ng-mapasculturais', 'SearchSpatial', 'SearchMapController', 'FindOneService', 'SearchService'));
+
+        $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+
+    }
+
     function includeMapAssets() {
+        $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
+        $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false);
+        $this->jsObject['assets']['iconZoomIn'] = $this->asset('img/icon-zoom-in.png', false);
+        $this->jsObject['assets']['iconZoomOut'] = $this->asset('img/icon-zoom-out.png', false);
+        $this->jsObject['assets']['layers'] = $this->asset('img/layers.png', false);
+        $this->jsObject['assets']['iconCircle'] = $this->asset('img/icon-circulo.png', false);
+
+        $this->jsObject['assets']['pinShadow'] = $this->asset('img/pin-sombra.png', false);
+        $this->jsObject['assets']['pinMarker'] = $this->asset('img/marker-icon.png', false);
+
+        $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agente.png', false);
+        $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-espaco.png', false);
+        $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-evento.png', false);
+
+        $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agente.png', false);
+        $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-evento.png', false);
+        $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-espaco.png', false);
+
+        $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agente-evento.png', false);
+        $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-espaco-evento.png', false);
+        $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-agente.png', false);
+
+        $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
+
         //Leaflet -a JavaScript library for mobile-friendly maps
         $this->enqueueStyle('vendor', 'leaflet', 'vendor/leaflet/lib/leaflet-0.7.3/leaflet.css');
-        $this->enqueueScript('vendor', 'leaflet', 'vendor/leaflet/lib/leaflet-0.7.3/leaflet.js');
+        $this->enqueueScript('vendor', 'leaflet', 'vendor/leaflet/lib/leaflet-0.7.3/leaflet-src.js');
 
         //Leaflet Vector Layers
         $this->enqueueScript('vendor', 'leaflet-vector-layers', 'vendor/leaflet-vector-layers/dist/lvector.js', array('leaflet'));
@@ -257,9 +301,10 @@ class Theme extends MapasCulturais\Theme {
         //$this->enqueueStyle('vendor', 'hint', 'http://cdn.jsdelivr.net/hint.css/1.3.0/hint.min.css');
         //Mapa das Singles
         $this->enqueueScript('app', 'map', 'js/map.js');
+
     }
 
-    function includeAngularEntityAssets($entity) {
+    function includeAngularEntityAssets($entity){
         $this->enqueueScript('vendor', 'jquery-ui-position', 'vendor/jquery-ui.position.min.js', array('jquery'));
 
         $this->includeAngularJsAssets();
@@ -267,16 +312,18 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('vendor', 'angular-sanitize', 'vendor/angular-sanitize.min.js', array('angular'));
 
-        $this->enqueueScript('app', 'change-owner', '/js/ChangeOwner.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity', '/js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
+        $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
 
-        if (!$this->isEditable())
+        if(!$this->isEditable()){
             return;
+        }
 
-        if (isset($this->jsObject['entity']))
+        if(isset($this->jsObject['entity'])){
             $this->jsObject['entity']['canUserCreateRelatedAgentsWithControl'] = $entity->canUser('createAgentRelationWithControl');
-        else
+        }else{
             $this->jsObject['entity'] = array('canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'));
+        }
     }
 
     function includeAngularSpinnerAssets(){
@@ -297,11 +344,6 @@ class Theme extends MapasCulturais\Theme {
     function includeDatepickerAssets(){
         $this->enqueueScript('vendor', 'jquery-ui-datepicker', 'vendor/jquery-ui.datepicker.js', array('jquery'));
         $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', 'vendor/jquery-ui.datepicker-pt-BR.min.js', array('jquery'));
-    }
-
-    function includeAngularJsAssets(){
-        $this->enqueueScript('vendor', 'angular', 'vendor/angular.js');
-        $this->enqueueScript('app', 'ng-mapasculturais', '/js/ng-mapasculturais.js');
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {

@@ -20,7 +20,7 @@ jQuery(document).ready(function() {
     var app = angular.module('ng-mapasculturais', []);
     app.config(["$httpProvider", function($httpProvider) {
 
-            $httpProvider.responseInterceptors.push(function($q, $rootScope) {
+            $httpProvider.responseInterceptors.push(['$q', '$rootScope', function($q, $rootScope) {
 
                 return function(promise) {
                     $rootScope.$broadcast("event:startProgress");
@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
                         );
 
                 };
-            });
+            }]);
         }]);
 })(angular);
 

@@ -1,5 +1,5 @@
 <?php
-include('parts/header.php');
-include('parts/panel-nav.php');
+$this->part('header');
+$this->part('panel-nav');
 echo $TEMPLATE_CONTENT;
-include('parts/footer.php');
+$this->part('footer');

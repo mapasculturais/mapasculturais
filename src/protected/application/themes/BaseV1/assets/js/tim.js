@@ -1,4 +1,4 @@
-var hl;
+
 (function($) {
 
     // Analytivs
@@ -210,6 +210,7 @@ var hl;
             railVisible: true
         });
         $('.js-slimScroll').each(function() {
+            
             $(this).slimScroll({
                 position: 'right',
                 distance: '0px',

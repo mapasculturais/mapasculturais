@@ -189,7 +189,6 @@ abstract class Theme extends \Slim\View {
         $app = App::i();
 
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
-        $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
@@ -215,6 +214,8 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', array('template' => $template_name));
 
         $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
+
+        $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         // render the layout with template
         $layoutPath = $this->_resolveFilename('layouts', $layout_filename);
@@ -252,7 +253,7 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function partialRender($template, $data = array()){
+    public function partialRender($template, $data = array(), $_is_part = false){
         $app = App::i();
 
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
@@ -265,7 +266,11 @@ abstract class Theme extends \Slim\View {
 
 
         // render the template
-        $templatePath = $this->_resolveFilename('views', $template_filename);
+        if($_is_part){
+            $templatePath = $this->_resolveFilename('layouts', 'parts/' . $template_filename);
+        }else{
+            $templatePath = $this->_resolveFilename('views', $template_filename);
+        }
 
 
         if(strtolower(substr($templatePath, -4)) !== '.php' && strtolower(substr($templatePath, -5)) !== '.html')
@@ -302,10 +307,7 @@ abstract class Theme extends \Slim\View {
      * @param array $data Data to be passed to template part.
      */
     public function part($template, $data = array()){
-        if(strpos($template, '/') === false)
-                $template = '../layouts/parts/' . $template;
-
-        echo $this->partialRender($template, $data);
+        echo $this->partialRender($template, $data, true);
     }
 
     function getTitle($entity = null){

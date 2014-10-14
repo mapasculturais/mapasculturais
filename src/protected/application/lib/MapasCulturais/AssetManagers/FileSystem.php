@@ -21,7 +21,16 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     }
 
+    protected function _mkAssetDir($output_file){
+        $path = dirname($this->_config['publishPath'] . $output_file);
+
+        if(!is_dir($path))
+            mkdir($path,0777,true);
+    }
+
     protected function _exec($command_pattern, $input_files, $output_file){
+        $this->_mkAssetDir($output_file);
+
         $command = str_replace(array(
                 '{IN}',
                 '{OUT}',
@@ -34,9 +43,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
                 $this->_config['publishPath']
             ), $command_pattern);
 
+        App::i()->log->debug('assets >>>>>> ' . $command);
         exec($command);
     }
-
     protected function _publishAsset($asset_filename) {
         $app = App::i();
 
@@ -64,6 +73,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
             if(isset($this->_config["process.{$extension}"])){
                 $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
             }else{
+                $this->_mkAssetDir($output_file);
                 copy($asset_filename, $this->_config['publishPath'] . $output_file);
             }
 

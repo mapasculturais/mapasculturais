@@ -2,7 +2,6 @@
 (function(angular) {
     var app = angular.module('SearchMap', ['ng-mapasculturais', 'FindOneService']);
     app.controller('SearchMapController', ['$window', '$scope', '$rootScope', 'FindOneService', function($window, $scope, $rootScope, FindOneService) {
-
         $scope.init = function (){
 
             if($scope.data.global.map && $scope.data.global.map.zoom){
@@ -44,14 +43,14 @@
 
             $rootScope.$on('searchCountResultsReady', function(ev, results){
                 //remove drawing if more than one
-                if(leaflet.map.drawnItems){
+                if($window.leaflet.map.drawnItems){
                     if(!$scope.data.global.locationFilters.enabled)  {
-                        leaflet.map.drawnItems.clearLayers();
-                        if(window.leaflet.locationMarker) { leaflet.map.removeLayer(window.leaflet.locationMarker);}
-                    }else if(Object.keys(leaflet.map.drawnItems._layers).length > 1) {
+                        $window.leaflet.map.drawnItems.clearLayers();
+                        if($window.leaflet.locationMarker) { $window.leaflet.map.removeLayer($window.leaflet.locationMarker);}
+                    }else if(Object.keys($window.leaflet.map.drawnItems._layers).length > 1) {
                         var lastLayer = $scope.map.drawnItems.getLayers().pop();
-                        leaflet.map.drawnItems.clearLayers();
-                        leaflet.map.drawnItems.addLayer(lastLayer);
+                        $window.leaflet.map.drawnItems.clearLayers();
+                        $window.leaflet.map.drawnItems.addLayer(lastLayer);
                     }
                 }
             });
@@ -130,9 +129,6 @@
         $scope.updateMap = function(){
             if($scope.resultLayer){
                 $scope.resultLayer.clearLayers();
-
-
-
             }
             $scope.resultLayer = new L.markerClusterGroup({
                 spiderfyOnMaxZoom: true,
@@ -172,6 +168,7 @@
 
             $scope.resultLayer.addLayers($scope.markers);
 
+
             var __c = 0;
             var _addLayer = $scope.resultLayer._addLayer;
 
@@ -189,8 +186,10 @@
                 return r;
             };
 
-            $scope.resultLayer.addTo($scope.map);
-            $rootScope.resultLayer = $scope.resultLayer;
+            angular.element(document).ready(function(){
+                $scope.resultLayer.addTo($scope.map);
+                $rootScope.resultLayer = $scope.resultLayer;
+            });
 
             $scope.resultLayer.on('clusterclick', function (a) {
                 if(a.layer._childCount <= 6)
@@ -199,11 +198,7 @@
                     a.layer.zoomToBounds();
                 }
             });
-
-
         };
-
-
         $scope.init();
 
     }]);

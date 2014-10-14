@@ -5,12 +5,12 @@
         var map = null;
 
         angular.element(document).ready(function() {
-            map = window.leaflet.map;
+            map = $window.leaflet.map;
             if(!map) return;
             map.invalidateSize();
             var drawnItems = new L.FeatureGroup();
             map.addLayer(drawnItems);
-            window.leaflet.map.drawnItems = drawnItems;
+            $window.leaflet.map.drawnItems = drawnItems;
 
 
             if($scope.data.global.locationFilters.enabled){
@@ -95,7 +95,7 @@
                     layer.bindPopup('A popup!');
                 }
 
-                if(window.leaflet.locationMarker) window.leaflet.map.removeLayer(window.leaflet.locationMarker);
+                if($window.leaflet.locationMarker) $window.leaflet.map.removeLayer($window.leaflet.locationMarker);
                 drawnItems.addLayer(layer);
 
                 //ESCONDE O CONTROLE PARA POSTERIORMENTE USAR O BOTÃO (NÃO CONSEGUI SETAR OS EVENTOS DO DRAW CIRCLE SEM ESTE CONTROLE
@@ -132,12 +132,12 @@
                 };
                 $scope.$apply();
 
-                if(window.leaflet.locationMarker) {
-                    window.leaflet.map.removeLayer(window.leaflet.locationMarker);
-                    window.leaflet.map.removeLayer(window.leaflet.locationCircle);
+                if($window.leaflet.locationMarker) {
+                    $window.leaflet.map.removeLayer($window.leaflet.locationMarker);
+                    $window.leaflet.map.removeLayer($window.leaflet.locationCircle);
                 }
-                window.leaflet.locationMarker = marker;
-                window.leaflet.locationCircle = circle;
+                $window.leaflet.locationMarker = marker;
+                $window.leaflet.locationCircle = circle;
 
             });
 
@@ -151,7 +151,7 @@
 
 
         $scope.filterNeighborhood = function (){
-            window.leaflet.map.locate({setView : true, maxZoom:13});
+            $window.leaflet.map.locate({setView : true, maxZoom:13});
         };
 
 
@@ -187,15 +187,15 @@
                     var location = results[0].geometry.location;
                     var foundLocation = new L.latLng(location.lat(), location.lng());
 
-                    window.leaflet.map.setView(foundLocation, 13);
+                    $window.leaflet.map.setView(foundLocation, 13);
 
-                    if(window.leaflet.locationMarker) {
-                        window.leaflet.map.removeLayer(window.leaflet.locationMarker);
-                        window.leaflet.map.removeLayer(window.leaflet.locationCircle);
+                    if($window.leaflet.locationMarker) {
+                        $window.leaflet.map.removeLayer($window.leaflet.locationMarker);
+                        $window.leaflet.map.removeLayer($window.leaflet.locationCircle);
                     }
-                    window.leaflet.locationMarker = new L.marker(foundLocation, $window.leaflet.iconOptions['location']).addTo(window.leaflet.map);
-                    window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius, {className : 'vetorial-padrao'})
-                            .addTo(window.leaflet.map.drawnItems);
+                    $window.leaflet.locationMarker = new L.marker(foundLocation, $window.leaflet.iconOptions['location']).addTo($window.leaflet.map);
+                    $window.leaflet.locationCircle = L.circle(foundLocation, $scope.defaultLocationRadius, {className : 'vetorial-padrao'})
+                            .addTo($window.leaflet.map.drawnItems);
 
                     $scope.data.global.locationFilters = {
                         enabled : 'address',

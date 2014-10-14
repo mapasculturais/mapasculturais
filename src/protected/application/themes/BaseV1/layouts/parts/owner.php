@@ -1,6 +1,6 @@
 <?php
 if ($this->isEditable() || "$entity" != "$owner"):
-    $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : "{$app->assetUrl}/img/avatar.png";
+    $avatar_url = $owner->avatar ? $owner->avatar->transform('avatarSmall')->url : $this->asset('img/avatar.png', false);
     if ($entity->isUserProfile)
         return;
     ?>

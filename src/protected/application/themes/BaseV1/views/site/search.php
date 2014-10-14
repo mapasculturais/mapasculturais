@@ -17,17 +17,7 @@ $this->includeMomentJsAssets();
 $this->includeAngularSpinnerAssets();
 $this->includeDatepickerAssets();
 
-$this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison/angular-rison.min.js');
-$this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.min.js');
-
-$this->enqueueScript('app', 'SearchService', '/js/SearchService.js', array('ng-mapasculturais'));
-$this->enqueueScript('app', 'FindOneService', '/js/FindOneService.js', array('ng-mapasculturais'));
-$this->enqueueScript('app', 'SearchMapController', '/js/SearchMap.js', array('ng-mapasculturais'));
-$this->enqueueScript('app', 'SearchSpatial', '/js/SearchSpatial.js', array('ng-mapasculturais'));
-
-$this->enqueueScript('app', 'Search', '/js/Search.js', array('ng-mapasculturais', 'SearchSpatial', 'SearchMapController', 'FindOneService', 'SearchService'));
-
-$this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR'));
+$this->includeSearchAssets();
 
 $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');
 $this->jsObject['classificacoesEtarias'] = array_values($def->config['options']);
