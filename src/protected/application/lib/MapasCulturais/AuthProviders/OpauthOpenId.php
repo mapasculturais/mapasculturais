@@ -204,7 +204,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             $this->_setAuthenticatedUser($user);
 
             App::i()->applyHook('auth.successful');
-            return true;U
+            return true;
         } else {
             $this->_setAuthenticatedUser();
             App::i()->applyHook('auth.failed');
