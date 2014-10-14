@@ -26,7 +26,7 @@
     border: 1px solid $brand-primary;
 }
 .botao.principal:hover {
-    border-color: #e48203;
+    border-color: darken($brand-primary, 10%);
 }
 .botao.selected,
 .botao.selected:hover {

@@ -2832,7 +2832,7 @@ nav.sidebar-left .icone {
 }
 
 .botao.principal:hover {
-  border-color: #e48203;
+  border-color: #cc7a00;
 }
 
 .botao.selected,
@@ -3691,61 +3691,55 @@ h1 .icone {
   color: #fff;
 }
 
-#estatisticas-do-usuario {
+#user-stats {
   margin-bottom: 1.5rem;
 }
-
-#estatisticas-do-usuario div.box {
+#user-stats div.box {
   display: block;
   float: left;
-  width: 50%;
-  border: .75rem solid #fff;
+  width: 25%;
+  border: 0.75rem solid white;
   border-radius: 14px;
   background: #eeeeee;
   color: black;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
-
-#estatisticas-do-usuario div.box:hover {
+#user-stats div.box:hover {
   background: #ff9900;
 }
-
-#estatisticas-do-usuario .icone {
-  display: block;
-  font-size: 2rem;
-  margin-bottom: 3rem;
-}
-
-#estatisticas-do-usuario .icon_plus {
-  margin-top: 2rem;
-  margin-bottom: 0;
-  background: #ddd;
-  border-radius: 2px;
-}
-
-#estatisticas-do-usuario div.box:hover .icon_plus {
+#user-stats div.box:hover .icon_plus {
   background: black;
   color: #fff;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
-
-#estatisticas-do-usuario div.box:hover .icon_plus:hover {
+#user-stats div.box:hover .icon_plus:hover {
   background: #fff;
   color: black;
 }
+#user-stats .icone {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+#user-stats .icone.icon_plus {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  background: #e2e2e2;
+  border-radius: 2px;
+}
 
-.valor {
+.user-stats-value {
   float: left;
-  line-height: 4rem;
-  font-size: 4rem;
+  line-height: 2.5rem;
+  font-size: 2.5rem;
   font-weight: normal;
   -webkit-transition: all .3s;
   transition: all .3s;
 }
 
-.valor:hover {
+.user-stats-value:hover {
   text-decoration: none;
   color: #fff;
 }
