@@ -82,7 +82,10 @@ function findOneVerifiedEntityWithImages($entity_class, $file_group = 'gallery')
             return $item['id'];
         }, $events);
 
-        $dql .= ' AND f.objectId IN ('.  implode(',', $event_ids).')';
+        if($event_ids)
+            $dql .= ' AND f.objectId IN ('.  implode(',', $event_ids).')';
+        else
+            return null;
     }
 
 
