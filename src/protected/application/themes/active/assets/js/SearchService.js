@@ -272,6 +272,8 @@
                     }
                 }else if (entity === 'project'){
                     selectData += ',registrationFrom,registrationTo';
+                }else if(entity === 'event'){
+                    selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                 }
 
                 if(data.global.viewMode === 'list'){
