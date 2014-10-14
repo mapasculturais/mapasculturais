@@ -196,9 +196,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             if(!$user){
                 $response = $this->_getResponse();
 
-                App::i()->repo('user')->createByAuthResponse($response);
-
-                $user = $this->_getAuthenticatedUser();
+                $user = App::i()->repo('user')->createByAuthResponse($response);
 
                 $this->_setRedirectPath($user->profile->editUrl);
             }
