@@ -203,7 +203,7 @@ abstract class Theme extends \Slim\View {
             $this->bodyClasses[] = 'entity';
 
         // render the template
-        $templatePath = $this->_resolveFilename('views', $template_filename);
+        $templatePath = $this->resolveFilename('views', $template_filename);
 
         if(strtolower(substr($templatePath, -4)) !== '.php')
                 $templatePath .= '.php';
@@ -218,7 +218,7 @@ abstract class Theme extends \Slim\View {
         $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         // render the layout with template
-        $layoutPath = $this->_resolveFilename('layouts', $layout_filename);
+        $layoutPath = $this->resolveFilename('layouts', $layout_filename);
 
         if(strtolower(substr($layoutPath, -4)) !== '.php')
                 $layoutPath .= '.php';
@@ -267,9 +267,9 @@ abstract class Theme extends \Slim\View {
 
         // render the template
         if($_is_part){
-            $templatePath = $this->_resolveFilename('layouts', 'parts/' . $template_filename);
+            $templatePath = $this->resolveFilename('layouts', 'parts/' . $template_filename);
         }else{
-            $templatePath = $this->_resolveFilename('views', $template_filename);
+            $templatePath = $this->resolveFilename('views', $template_filename);
         }
 
 
@@ -380,7 +380,7 @@ abstract class Theme extends \Slim\View {
         }
     }
 
-    protected function _resolveFilename($folder, $file){
+    function resolveFilename($folder, $file){
         if(!substr($folder, -1) !== '/') $folder .= '/';
 
         $path = array_reverse($this->path->getArrayCopy());
@@ -394,7 +394,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function getAssetFilename($file){
-        $filename = $this->_resolveFilename('assets', $file);
+        $filename = $this->resolveFilename('assets', $file);
         if(!$filename) throw new \Exception('Asset not found: ' . $file);
 
         return $filename;
