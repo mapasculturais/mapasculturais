@@ -1061,7 +1061,7 @@ class App extends \Slim\Slim{
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'public/';
+        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
     }
 
     /**

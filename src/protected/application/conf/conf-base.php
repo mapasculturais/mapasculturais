@@ -18,6 +18,7 @@ return array(
 
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
+    'base.assetUrl' => '/assets/',
 
     'vectorLayersPath' => 'geojson',
 
@@ -36,12 +37,12 @@ return array(
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
-        'publishPath' => BASE_PATH . 'public/',
+        'publishPath' => BASE_PATH . 'assets/',
 
         'mergeScripts' => true,
         'mergeStyles' => true,
 
-        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -c -m -p ' . $num_folders,
+        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -m -p ' . $num_folders,
         'process.css' => 'uglifycss {IN} > {OUT}',
 
         'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
