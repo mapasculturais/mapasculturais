@@ -402,14 +402,22 @@ abstract class Theme extends \Slim\View {
 
     function asset($file, $print = true){
         $url = $this->getAssetManager()->assetUrl($file);
-        if($print)
+        if($print){
             echo $url;
+        }
 
         return $url;
     }
 
     function renderMarkdown($markdown){
         $app = App::i();
+        $matches = array();
+        if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $markdown, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $markdown = str_replace($tag, $this->asset($matches[1][$i], false), $markdown);
+            }
+        }        
+        
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);

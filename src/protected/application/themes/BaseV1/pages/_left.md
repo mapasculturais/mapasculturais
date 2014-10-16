@@ -1,2 +1,2 @@
-- [Sobre o SP Cultura](/sobre/)
+- [Sobre o Mapas Culturais](/sobre/)
 - [Como usar](/como-usar/)
