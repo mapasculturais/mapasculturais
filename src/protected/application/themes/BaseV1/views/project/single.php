@@ -10,7 +10,6 @@ if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
 
-    $this->includeDatepickerAssets();
 
     $app->hook('mapasculturais.scripts', function() use ($app, $entity){
 

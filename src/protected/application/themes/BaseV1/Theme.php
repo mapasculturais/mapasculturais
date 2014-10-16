@@ -33,10 +33,23 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
-        $app->hook('view.render(<<*>>):before', function() {
+        $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
+            
+            $this->jsObject['mapsDefaults'] = array(
+                'zoomMax' => $app->config['maps.zoom.max'],
+                'zoomMin' => $app->config['maps.zoom.min'],
+                'zoomDefault' => $app->config['maps.zoom.default'],
+                'zoomPrecise' => $app->config['maps.zoom.precise'],
+                'zoomApproximate' => $app->config['maps.zoom.approximate'],
+                
+                'includeGoogleLayers' => $app->config['maps.includeGoogleLayers'],
+                
+                'latitude' => $app->config['maps.center'][0],
+                'longitude'  => $app->config['maps.center'][1]
+            );
 
         
             $this->addDocumentMetas();
@@ -48,10 +61,6 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
             $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
             $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
-        });
-
-        $app->hook('view.render(<<agent|space|project|event>>/single):before', function() {
-            $this->includeGalleryAssets();
         });
 
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
@@ -325,35 +334,24 @@ class Theme extends MapasCulturais\Theme {
 
     function includeAngularEntityAssets($entity){
 
-        $this->includeAngularJsAssets();
-        $this->includeAngularSpinnerAssets();
-
-        
         $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'related-agents', 'change-owner'));
 
         if(!$this->isEditable()){
             return;
         }
-
-        if(isset($this->jsObject['entity'])){
-            $this->jsObject['entity']['canUserCreateRelatedAgentsWithControl'] = $entity->canUser('createAgentRelationWithControl');
-        }else{
-            $this->jsObject['entity'] = array('canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'));
-        }
-    }
-
-    function includeAngularSpinnerAssets(){
         
-    }
-
-    function includeGalleryAssets() {
-    }
-
-    function includeMomentJsAssets(){
-    }
-
-    function includeDatepickerAssets(){
+        $this->jsObject['request']['id'] = $entity->id;
+        
+        $this->jsObject['entity'] = array(
+            'id' => $entity->id,
+            'ownerId' => $entity->owner->id, // ? $entity->owner->id : null,
+            'ownerUserId' => $entity->ownerUser->id,
+            'definition' => $entity->getPropertiesMetadata(),
+            'userHasControl' => $entity->canUser('@control'),
+            'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
+            
+        );
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
@@ -399,18 +397,6 @@ class Theme extends MapasCulturais\Theme {
             'action' => $this->controller->action
         );
 
-        if ($entity = $this->controller->requestedEntity) {
-            $this->jsObject['request']['id'] = $entity->id;
-            if ($this->isEditable()) {
-                $this->jsObject['entity'] = array(
-                    'id' => $entity->id,
-                    'ownerId' => $entity->owner->id, // ? $entity->owner->id : null,
-                    'ownerUserId' => $entity->ownerUser->id,
-                    'definition' => $entity->getPropertiesMetadata(),
-                    'userHasControl' => $entity->canUser('@control')
-                );
-            }
-        }
 
         if (!$app->user->is('guest')) {
             $this->jsObject['notifications'] = $app->controller('notification')->apiQuery(array(

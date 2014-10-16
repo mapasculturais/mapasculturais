@@ -58,6 +58,8 @@
         }
 
         //jQuery(document).ready(function() {
+        
+            var config = MapasCulturais.mapsDefaults;
 
             var mapSelector = initializerOptions.mapSelector;
 
@@ -69,38 +71,32 @@
                     $('#' + mapId).parent().hide();
                     $dataTarget.editable('setValue', [0, 0]);
                 }
-                if (!isPrecise) {
-                    mapMarkerLayer.setIcon(new L.divIcon({className: 'marker-circle-icon', iconSize: new L.Point(circle._radius * 2, circle._radius * 2)}));
-                    map.addLayer(circle);
-                    setTimeout(function() {
-                        map.setZoom(14);
-                    });
-                } else {
+                if (isPrecise) {
                     mapMarkerLayer.setIcon(MapasCulturais.Map.iconOptions[MapasCulturais.request.controller].icon);
                     map.removeLayer(circle);
                     setTimeout(function() {
-                        map.setZoom(16);
+                        map.setZoom(config.zoomPrecise);
                     }, 200);
+                } else {
+                    mapMarkerLayer.setIcon(new L.divIcon({className: 'marker-circle-icon', iconSize: new L.Point(circle._radius * 2, circle._radius * 2)}));
+                    map.addLayer(circle);
+                    setTimeout(function() {
+                        map.setZoom(config.zoomApproximate);
+                    });
                 }
             };
 
 
             $(mapSelector).each(function() {
-
-
-                // });
-
-
-
                 var id = $(this).attr('id');
                 var isEditable = initializerOptions.isMapEditable===false ? false : MapasCulturais.isEditable;
                 if (!isEditable)
                     $('#' + id + ':active').css({'cursor': 'default'});
                 var $dataTarget = $('#' + id + '-target');
                 var isPositionDefined = $(this).data('lat') ? true : false;
-                var defaultZoom = isPositionDefined ? 16 : 10;
-                var defaultLocateMaxZoom = 16;
-                var defaultAproximatePrecisionZoom = 14;
+                var defaultZoom = isPositionDefined ? config.zoomPrecise : config.zoomDefault;
+                var defaultLocateMaxZoom = config.zoomPrecise;
+                var defaultAproximatePrecisionZoom = config.zoomApproximate;
                 var defaultMaxCircleRadius = 1000;
                 var $dataPrecisionOption = $('#' + id + '-precisionOption');
                 //var dataPrecisionOptionFieldName = $dataPrecisionOption.data('edit'); //precisao
@@ -110,8 +106,7 @@
                 //$('#mapa-precisionOption').editable('getValue')[$('#mapa-precisionOption').data('edit')];
                 var isPrecise = (dataPrecisionValue == dataPrecisionTrueValue);
                 var defaultCircleStrokeWeight = 2;
-                var saoPaulo = new L.LatLng(-23.54894, -46.63882);
-                var mapCenter = isPositionDefined ? new L.LatLng($(this).data('lat'), $(this).data('lng')) : saoPaulo;
+                var mapCenter = isPositionDefined ? new L.LatLng($(this).data('lat'), $(this).data('lng')) : new L.LatLng(config.latitude, config.longitude);
                 var options = $(this).data('options') ? $(this).data('options') : {dragging: true, zoomControl: true, doubleClickZoom: true, scrollWheelZoom: true};
 
                 var locateMeControl = initializerOptions.locateMeControl ? true : false;
@@ -124,11 +119,12 @@
 
                 options.zoom = defaultZoom;
                 options.zoomControl = false;
-                options.minZoom = 3;
+                options.minZoom = config.zoomMin;
                 var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                     attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
-                    maxZoom: 18
+                    maxZoom: config.zoomMax
                 });
+                
                 var map = new L.Map(id, options).addLayer(openStreetMap);
                 $(this).data('leaflet-map', map);
                 var timeout;
@@ -351,7 +347,7 @@
                     if (status == google.maps.GeocoderStatus.OK) {
                         var location = results[0].geometry.location;
                         var foundLocation = new L.latLng(location.lat(), location.lng());
-                        map.setView(foundLocation, 15);
+                        map.setView(foundLocation, isPrecise ? config.zoomPrecisse : config.zoomApproximate);
                         marker.setLatLng(foundLocation);
                     }
                 }
@@ -396,7 +392,7 @@
                 var camadasBase = {};
                 camadasBase['OpenStreetMap'] = openStreetMap;
 
-                if(typeof google !== 'undefined') {
+                if(config.includeGoogleLayers && typeof google !== 'undefined') {
                     var googleSatelite = new L.Google();
 
                     var googleMapa = new L.Google();

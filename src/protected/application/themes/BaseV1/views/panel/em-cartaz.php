@@ -1,7 +1,4 @@
-<?php
-$this->layout = 'panel';
-$this->includeDatepickerAssets();
-?>
+<?php $this->layout = 'panel'; ?>
 <style>
     .emcartaz-datepicker{
         border:none;

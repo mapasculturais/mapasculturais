@@ -1,6 +1,3 @@
-<?php
-$this->includeDatepickerAssets();
-?>
 <style>
     .agenda-singles-datepicker{
         border:none;
