@@ -43,7 +43,6 @@ class FileSystem extends \MapasCulturais\AssetManager{
                 $this->_config['publishPath']
             ), $command_pattern);
 
-        App::i()->log->debug('assets >>>>>> ' . $command);
         exec($command);
     }
     protected function _publishAsset($asset_filename) {

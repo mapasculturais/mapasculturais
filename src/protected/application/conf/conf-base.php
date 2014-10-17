@@ -47,16 +47,27 @@ return array(
 
         'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
     )),
-    
+
 //    'map.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
-    'maps.zoom.default' => 3,
+    'maps.zoom.default' => 5,
     'maps.zoom.approximate' => 14,
     'maps.zoom.precise' => 16,
     'maps.zoom.max' => 18,
-    'maps.zoom.min' => 3,
+    'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
-    
+
+    'app.hierarchy' => array(
+        'país',
+        'região',
+        'estado',
+        'mesorregião',
+        'microrregião',
+        'município',
+        'zona',
+        'subprefeitura',
+        'distrito'
+    ),
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -78,7 +89,7 @@ return array(
     'app.log.translations' => false,
     'app.log.apiCache' => false,
     'app.log.apiDql' => false,
-    'app.log.assets' => true,
+    'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),

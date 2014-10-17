@@ -376,6 +376,89 @@ return array(
             \$BODY$;
             ");
 
-    }
+    },
+//
+//    'create table geo_division' => function() use($conn){
+//        echo 'creating table geo_division';
+//        $conn->executeQuery("
+//            CREATE TABLE geo_division (
+//                id integer DEFAULT nextval('geo_division_id_seq'::regclass) NOT NULL,
+//                parent_id integer,
+//                type character varying(32) NOT NULL,
+//                cod character varying(32),
+//                name character varying(128) NOT NULL,
+//                geom geometry,
+//                CONSTRAINT enforce_dims_geom CHECK ((st_ndims(geom) = 2)),
+//                CONSTRAINT enforce_geotype_geom CHECK (((geometrytype(geom) = 'MULTIPOLYGON'::text) OR (geom IS NULL))),
+//                CONSTRAINT enforce_srid_geom CHECK ((st_srid(geom) = 4326))
+//            );
+//        ");
+//
+//        echo 'creating geo_division primary key';
+//        $conn->executeQuery("
+//            ALTER TABLE ONLY geo_division
+//                ADD CONSTRAINT geo_divisions_pkey PRIMARY KEY (id);
+//        ");
+//
+//        echo 'creating index geo_division';
+//        $conn->executeQuery("CREATE INDEX geo_divisions_geom_idx ON geo_division USING gist (geom);");
+//
+//
+//        echo 'creating geo_division_id_seq';
+//        $conn->executeQuery("
+//            CREATE SEQUENCE geo_division_id_seq
+//                START WITH 1
+//                INCREMENT BY 1
+//                NO MINVALUE
+//                NO MAXVALUE
+//                CACHE 1;
+//        ");
+//    },
+//
+//    'migrate sp geo data to geo_division table - teste 1' => function () use($conn) {
+//        $data = array();
+//
+//        $data = $conn->fetchAll("SELECT * FROM sp_regiao ORDER BY cod_reg_8 ASC");
+//        foreach($data as $item){
+//            $conn->executeQuery("
+//                INSERT INTO geo_division (
+//                    type, cod, name, geom
+//                ) VALUES (
+//                    'região', '{$item['cod_reg_8']}', '{$item['nome']}', '{$item['the_geom']}'
+//                );" );
+//
+//        }
+//
+//        $regioes = array();
+//        foreach($conn->fetchAll("SELECT id, cod FROM geo_division") as $reg)
+//            $regioes[$reg['cod']] = $reg['id'];
+//
+//        $data = $conn->fetchAll("SELECT * FROM sp_subprefeitura");
+//        foreach($data as $item){
+//            $data[$reg['cod_reg']] = array(
+//                'parent_id' => $regioes[$item['cod_subpre']],
+//                'type' => 'região',
+//                'cod' =>  $item['cod'],
+//                'name' => $item['nome'],
+//                'geom' => $item['the_geom']
+//            );
+//        }
+//
+//        $subprefeituras = array();
+//        foreach($conn->fetchAll("SELECT id, cod FROM geo_division WHERE type='subprefeitura'") as $sp)
+//            $subprefeituras[$sp['cod']] = $sp['id'];
+//
+//        $data = $conn->fetchAll("SELECT * FROM sp_distrito ORDER BY cod_reg_8 ASC");
+//        foreach($data as $item){
+//            $data[$reg['cod_reg']] = array(
+//                'parent_id' => $regioes[$item['cod_subpre']],
+//                'type' => 'região',
+//                'cod' =>  $item['cod'],
+//                'name' => $item['nome'],
+//                'geom' => $item['the_geom']
+//            );
+//        }
+//        return false;
+//    }
 
 );
