@@ -174,7 +174,7 @@
                     $scope.result = data;
                 };
 
-                $(el).on('find', function(){
+                jQuery(el).on('find', function(){
                     $scope.find();
                 });
             }
@@ -225,7 +225,7 @@
 
                 this.openEditboxes[editboxId] = false;
 
-                var $box = $('#' + editboxId);
+                var $box = jQuery('#' + editboxId);
                 var $submitInput = $box.find('input:text');
                 $submitInput.on('keyup', function(event){
                     if(event.keyCode === 13){
@@ -240,10 +240,10 @@
 
                 this.openEditboxes[editboxId] = true;
 
-                var $box = $('#' + editboxId).find('>div.edit-box');
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.show();
 
-                $('#' + editboxId).trigger('open');
+                jQuery('#' + editboxId).trigger('open');
 
                 var $firstInput = $box.find('input:first,select:first,textarea:first');
                 $firstInput.focus();
@@ -256,12 +256,12 @@
 
                 this.openEditboxes[editboxId] = false;
 
-                var $box = $('#' + editboxId).find('>div.edit-box');
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.hide();
             }
         };
 
-        $('body').on('keyup', 'edit-box', function(event){
+        jQuery('body').on('keyup', 'edit-box', function(event){
             if(event.keyCode === 27){
                 editBox.close(this.id);
             }
@@ -320,7 +320,7 @@
                 };
 
                 if(angular.isFunction($scope.onOpen)){
-                    $('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
+                    jQuery('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
                 }
             }
         };

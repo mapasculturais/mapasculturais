@@ -1413,6 +1413,8 @@ Sizzle.contains = function( context, elem ) {
 };
 
 Sizzle.attr = function( elem, name ) {
+
+
 	// Set document vars if needed
 	if ( ( elem.ownerDocument || elem ) !== document ) {
 		setDocument( elem );
@@ -1423,6 +1425,9 @@ Sizzle.attr = function( elem, name ) {
 		val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
 			fn( elem, name, !documentIsHTML ) :
 			undefined;
+
+//        if(typeof elem.getAttribute !== 'function')
+//            return null;
 
 	return val !== undefined ?
 		val :

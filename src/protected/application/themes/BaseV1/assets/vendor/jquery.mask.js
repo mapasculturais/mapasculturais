@@ -70,8 +70,8 @@
                     else if (cSelStart || cSelStart === '0') {
                         pos = cSelStart;
                     }
-                    
-                    return pos;    
+
+                    return pos;
                 } catch (e) {}
             },
             setCaret: function(pos) {
@@ -125,11 +125,11 @@
                     translation = jMask.translation[mask[i]];
 
                     if (translation) {
-                        
+
                         pattern = translation.pattern.toString().replace(/.{1}$|^.{1}/g, "");
                         optional = translation.optional;
                         recursive = translation.recursive;
-                        
+
                         if (recursive) {
                             maskChunks.push(mask[i]);
                             oRecursive = {digit: mask[i], pattern: pattern};
@@ -141,9 +141,9 @@
                         maskChunks.push(mask[i].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
                     }
                 }
-                
+
                 r = maskChunks.join("");
-                
+
                 if (oRecursive) {
                     r = r.replace(new RegExp("(" + oRecursive.digit + "(.*" + oRecursive.digit + ")?)"), "($1)?")
                          .replace(new RegExp(oRecursive.digit, "g"), oRecursive.pattern);
@@ -157,8 +157,8 @@
             },
             val: function(v) {
                 var isInput = el.is('input');
-                return arguments.length > 0 
-                    ? (isInput ? el.val(v) : el.text(v)) 
+                return arguments.length > 0
+                    ? (isInput ? el.val(v) : el.text(v))
                     : (isInput ? el.val() : el.text());
             },
             getMCharsBeforeCount: function(index, onCleanVal) {
@@ -260,7 +260,7 @@
                         if (!skipMaskChars) {
                             buf[addMethod](maskDigit);
                         }
-                        
+
                         if (valDigit === maskDigit) {
                             v += offset;
                         }
@@ -268,12 +268,12 @@
                         m += offset;
                     }
                 }
-                
+
                 var lastMaskCharDigit = mask.charAt(lastMaskChar);
                 if (maskLen === valLen + 1 && !jMask.translation[lastMaskCharDigit]) {
                     buf.push(lastMaskCharDigit);
                 }
-                
+
                 return buf.join("");
             },
             callbacks: function (e) {
@@ -303,7 +303,7 @@
             var caret;
             p.destroyEvents();
             p.val(jMask.getCleanVal()).removeAttr('maxlength');
-            
+
             caret = p.getCaret();
             p.setCaret(caret - p.getMCharsBeforeCount(caret));
             return el;
@@ -338,16 +338,16 @@
             if (options.placeholder) {
                 el.attr('placeholder' , options.placeholder);
             }
-            
+
             el.attr('autocomplete', 'off');
             p.destroyEvents();
             p.events();
-            
+
             var caret = p.getCaret();
 
             p.val(p.getMasked());
             p.setCaret(caret + p.getMCharsBeforeCount(caret, true));
-            
+
         }();
 
     };
@@ -384,7 +384,7 @@
                     return $(this).data('mask', new Mask(this, mask, options));
                 }
             };
-        
+
         this.each(maskFunction);
 
         if (selector && !watchers[selector]) {
