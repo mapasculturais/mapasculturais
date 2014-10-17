@@ -1,6 +1,3 @@
-<?php
-$this->includeDatepickerAssets();
-?>
 <style>
     .emcartaz-datepicker{
         border:none;

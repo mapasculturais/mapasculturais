@@ -41,11 +41,13 @@ class Site extends \MapasCulturais\Controller {
         
         
         
-        $filename = ACTIVE_THEME_PATH . 'pages/' . $page_name . '.md';
+        $filename = $app->view->resolveFilename('pages', $page_name . '.md');
         
         if(file_exists($filename)){
-            $left = $view->renderMarkdown(file_get_contents(ACTIVE_THEME_PATH . 'pages/_left.md'));
-            $right = $view->renderMarkdown(file_get_contents(ACTIVE_THEME_PATH . 'pages/_right.md'));
+            $left_filename = $app->view->resolveFilename('pages', '_left.md');
+            $right_filename = $app->view->resolveFilename('pages', '_right.md');
+            $left = $view->renderMarkdown(file_get_contents($left_filename));
+            $right = $view->renderMarkdown(file_get_contents($right_filename));
             
             $content = '';
             

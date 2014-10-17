@@ -12,11 +12,6 @@ $this->addEntityTypesToJs('MapasCulturais\Entities\Space');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Project');
 
-$this->includeAngularJsAssets();
-$this->includeMomentJsAssets();
-$this->includeAngularSpinnerAssets();
-$this->includeDatepickerAssets();
-
 $this->includeSearchAssets();
 
 $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCulturais\Entities\Event');

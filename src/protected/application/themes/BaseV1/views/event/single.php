@@ -9,9 +9,6 @@ if ($this->isEditable()) {
 
     $this->addOccurrenceFrequenciesToJs();
 
-    $this->includeMomentJsAssets();
-    $this->includeDatepickerAssets();
-
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));

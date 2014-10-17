@@ -1,6 +1,7 @@
-
 (function($) {
-
+    // to prevent jQuery bug
+    $(document).unbind('DOMNodeInserted.mask');
+    
     // Analytivs
     if(MapasCulturais.mode !== 'development'){
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
