@@ -7,7 +7,7 @@ $tags = $entity->terms['tag'];
     <div class="widget">
         <h3>Tags</h3>
         <?php if(is_editable()): ?>
-            <span id="term-area" class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-restrict="true" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
+            <span id="term-area" class="js-editable-taxonomy" data-original-title="Tags" data-emptytext="Insira tags" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
         <?php else: ?>
             <?php
             foreach($tags as $i => $t): ?>
