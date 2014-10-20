@@ -242,6 +242,14 @@ return array(
 
     },
 
+    'Fix Merge of "Update Addresses of Children of Parent Spaces" #UPDATING#'=>function () use ($app) {
+        echo 'Fixing using query:';
+        echo "\nUPDATE space SET name = REPLACE(name, ' #UPDATING#', '') WHERE name ILIKE '%#UPDATING#%'";
+        $cleanQuery = $app->em->createNativeQuery(
+            "UPDATE space SET name = REPLACE(name, ' #UPDATING#', '') WHERE name ILIKE '%#UPDATING#%'", new \Doctrine\ORM\Query\ResultSetMapping()
+        )->getOneOrNullResult();
+    },
+
     'alter table event_occurrence add column status' => function () use ($conn){
         $conn->executeQuery('ALTER TABLE event_occurrence ADD COLUMN status integer NOT NULL DEFAULT 1;');
         $conn->executeQuery("CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (status);");
