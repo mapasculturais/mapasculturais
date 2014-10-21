@@ -285,48 +285,6 @@
                         );
                 };
 
-
-                var subprefs = new lvector.PRWSF({
-                    url: MapasCulturais.vectorLayersURL,
-                    geotable: '"sp_subprefeitura"',
-                    fields: "gid,nome",
-                    //where: 'true',
-                    geomFieldName: "ST_SimplifyPreserveTopology(the_geom,0.001)",
-                    uniqueField: "gid",
-                    srid: 4326,
-                    showAll: true,
-                    mouseoverEvent: function(feature, event) {
-                        var labelText = feature.properties.nome ? feature.properties.nome : feature.properties.nome_distr;
-                        feature.vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
-                        map.showLabel(feature.vector.label.setLatLng(feature.vector.getCenter()));
-                    },
-                    singlePopup: true,
-                    symbology: {
-                        type: "single",
-                        vectorOptions: {
-                            // fillColor: "rgba(255,255,0,0.8)",
-                            // fillOpacity: 0.2,
-                            // weight: 1.0,
-                            // color: "rgba(255,255,0,0.8)",
-                            // opacity: 1
-                            //     //clickable: true
-                            className : 'vetorial-sp'
-                        }
-                    }
-                });
-
-
-
-                $('#buttonSubprefs').click(function() {
-                    subprefs.setMap(map);
-                });
-                $('#buttonSubprefs_off').click(function() {
-                    subprefs.setMap(null);
-                });
-
-
-
-
                 /*Esconde os controles antigos por enquanto*/
                 $('.btn-group[data-toggle="buttons-radio"],#buttonLocateMe').hide();
                 $('#buttonSubprefs, #buttonSubprefs_off').hide();
@@ -420,47 +378,77 @@
                     };
                 }
 
-                var regioes = {onAdd:function(map){return;}, onRemove:function(map){return;}};
-                var subprefeituras = {onAdd:function(map){return;}, onRemove:function(map){return;}};
-                var distritos = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+                /*
+                 $.getJSON('http://localhost:8000/geojson/v1/ws_geo_attributequery.php', {
+                     parameters: "type='subprefeitura'",
+                     geotable: 'geo_division',
+                     fields: 'id,name,st_asgeojson(transform(ST_SimplifyPreserveTopology(geom,0.001),4326)) as geojson',
+                     format: 'json'
+                 }, function(r){console.log(r)})
+                */
+
+
+                var geoDivisions = new lvector.PRWSF({
+                    url: MapasCulturais.vectorLayersURL,
+                    geotable: '"geo_division"',
+                    fields: "id,name",
+                    //where: 'true',
+                    geomFieldName: "ST_SimplifyPreserveTopology(geom,0.001)",
+                    uniqueField: "id",
+                    srid: 4326,
+                    showAll: true,
+                    mouseoverEvent: function(feature, event) {
+                        var labelText = feature.properties.name;
+                        feature.vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
+                        map.showLabel(feature.vector.label.setLatLng(feature.vector.getCenter()));
+                    },
+                    singlePopup: true,
+                    symbology: {
+                        type: "single",
+                        vectorOptions: {
+                            // @TODO: rename this class
+                            className : 'vetorial-sp'
+                        }
+                    }
+                });
 
                 /*Controles*/
                 (new L.Control.FullScreen({position: 'bottomright', title: 'Tela Cheia'})).addTo(map);
                 (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
-                var layersControl = new L.Control.Layers(
-                    camadasBase,
-                    {
-                        '<span class="js-sp-geo" data-geot="regiao" data-fds="gid,nome">Regiões</span>': regioes,
-                        '<span class="js-sp-geo" data-geot="subprefeitura" data-fds="gid,nome">Subprefeituras</span>': subprefeituras,
-                        '<span class="js-sp-geo" data-geot="distrito" data-fds="gid,nome_distr">Distritos</span>': distritos
-                    }
-                );
+                var geoDivisionsObj = {};
+                MapasCulturais.geoDivisionsHierarchy.forEach(function(div){
+                    geoDivisionsObj['<span class="js-geo-division" data-type="' + div + '">' + div + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+                });
+
+                var layersControl = new L.Control.Layers(camadasBase, geoDivisionsObj);
+
                 layersControl.addTo(map);
+                function setGeoChecboxes(type) {
+                    $('.js-geo-division').each(function () {
+                        if ($(this).data('type') != type)
+                            $(this).parents('label').find('input:checkbox').prop('checked', false);
+                    });
+                }
 
-
-                $('.js-sp-geo').each(function(){
+                $('.js-geo-division').each(function(){
                     var $checkbox = $(this).parents('label').find('input:checkbox');
-                    var geotable = $(this).data('geot');
-                    var fields = $(this).data('fds');
+                    var type = $(this).data('type');
 
                     $checkbox.on('click', function(event){
-                        subprefs.setMap(null);
+                        geoDivisions.setMap(null);
 
                         if ($(this).prop('checked') === true) {
-                            $('.js-sp-geo').not('[data-geot="'+geotable+'"]').each(function(){
-                                $(this).parents('label').find('input:checkbox').prop('checked', false);
-                            });
+                            setGeoChecboxes(type);
 
-                            subprefs.options.geotable = '"sp_'+geotable+'"';
-                            subprefs.options.fields = fields;
-                            subprefs.setMap(map);
+                            geoDivisions.options.where = "type='" + type + "'";
+                            geoDivisions.options.geoDivisionType = type;
+                            geoDivisions.setMap(map);
                         } else {
-                            subprefs.setMap(null);
+                            geoDivisions.setMap(null);
                         }
                     });
                 });
-
-                subprefs._makeJsonpRequest = function(url){
+                geoDivisions._makeJsonpRequest = function(url){
                     $('#resultados span[ng-if="!spinnerCount"]').hide();
                     $('#resultados span[ng-show="spinnerCount > 0"]').removeClass('ng-hide');
                     $.ajax({
@@ -469,20 +457,11 @@
                         //jsonpCallback: myCallback,
                         cache: true,
                         success: function(data) {
-                            subprefs._processFeatures(data);
+                            geoDivisions._processFeatures(data);
                             $('#resultados span[ng-if="!spinnerCount"]').show();
                             $('#resultados span[ng-show="spinnerCount > 0"]').addClass('ng-hide');
 
-                            $('.js-sp-geo').each(function(){
-                                var $checkbox = $(this).parents('label').find('input:checkbox');
-                                var geotable = $(this).data('geot');
-                                if(subprefs.options.geotable !== '"sp_'+$(this).data('geot')+'"'){
-                                    $checkbox.prop('checked', false);
-                                }else{
-                                    $checkbox.prop('checked', true);
-                                }
-                            });
-
+                            setGeoChecboxes(geoDivisions.options.geoDivisionType);
                         }
                     });
 

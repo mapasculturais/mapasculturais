@@ -48,7 +48,7 @@ return array(
         'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
     )),
 
-//    'map.center' => array(-23.54894, -46.63882), // são paulo
+//    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
     'maps.zoom.default' => 5,
     'maps.zoom.approximate' => 14,
