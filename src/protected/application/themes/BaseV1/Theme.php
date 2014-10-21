@@ -309,6 +309,8 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeMapAssets() {
+        $app = App::i();
+
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
         $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false);
         $this->jsObject['assets']['iconZoomIn'] = $this->asset('img/icon-zoom-in.png', false);
@@ -332,6 +334,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-agente.png', false);
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
+
+        $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
 
         $this->enqueueScript('app', 'map', 'js/map.js');
 

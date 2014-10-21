@@ -57,7 +57,7 @@ return array(
     'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
 
-    'app.hierarchy' => array(
+    'app.geoDivisionsHierarchy' => array(
         'país',
         'região',
         'estado',
