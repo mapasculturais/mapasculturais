@@ -28,6 +28,13 @@ return array(
             )
         ),
 
+        'dataDeNascimento' => array(
+            'label' => 'Data de Nascimento/Fundação',
+            'validations' => array(
+                'v::date("Y-m-d")' => 'Data inválida {{format}}',
+            )
+        ),
+
         'precisao' => array(
             'label' => 'Localização',
             'type' => 'select',
