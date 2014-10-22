@@ -27,7 +27,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('project')">Resultados da SMC</a>
+                <a class="hltip botao" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')">Resultados Verificados</a>
             </div>
             <!-- div.filtro-prefeitura -->
 
@@ -75,7 +75,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('event')">Resultados da SMC</a>
+                <a class="hltip botao" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')">Resultados Verificados</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -115,7 +115,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('agent')">Resultados da SMC</a>
+                <a class="hltip botao" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')">Resultados Verificados</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -160,7 +160,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados da Secretaria Municipal de Cultura" ng-click="toggleVerified('space')">Resultados da SMC</a>
+                <a class="hltip botao" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('space')">Resultados Verificados</a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>

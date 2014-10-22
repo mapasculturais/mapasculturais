@@ -113,7 +113,7 @@
 }
 
 .editable:hover {
-  background: #e2e2e2;
+  background-color: #e2e2e2;
 }
 
 .editable:after {
@@ -176,7 +176,7 @@ a.editable-click:hover {
   padding: 0.75rem;
   background: #fff;
   border: none;
-  border-top: 4px solid #e81f26;
+  border-top: 4px solid #1c5690;
   border-radius: 2px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
@@ -228,7 +228,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 .label.space-search {
-  color: #004279;
+  color: black;
   background-color: transparent;
 }
 
@@ -267,7 +267,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .select2-container-multi .select2-choices .select2-search-choice {
   padding: 0 1.5rem 0 0.5rem;
   background-image: none;
-  background: #004279;
+  background: black;
   color: #fff;
   border: none;
   border-radius: 2px;
@@ -323,7 +323,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .select2-results .select2-highlighted {
   background: #eeeeee;
-  color: #004279;
+  color: black;
   border-radius: 2px;
 }
 
@@ -424,7 +424,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-control-layers {
   color: #fff;
-  background-color: #004279;
+  background-color: black;
 }
 
 #mapa .leaflet-control-layers {
@@ -433,7 +433,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-control-layers-expanded {
   padding: 0.75rem;
-  background-color: #e81f26;
+  background-color: #1c5690;
 }
 
 .leaflet-control-layers-toggle {
@@ -460,14 +460,14 @@ div.ficha-spcultura .editable-buttons-bottom {
   width: 32px;
   height: 32px;
   color: #fff;
-  background-color: #004279;
+  background-color: black;
 }
 
 .leaflet-bar a:hover {
   width: 32px;
   height: 32px;
   color: #fff;
-  background-color: #e81f26;
+  background-color: #1c5690;
 }
 
 .leaflet-bar a:first-child {
@@ -508,13 +508,13 @@ div.ficha-spcultura .editable-buttons-bottom {
   text-align: center;
   color: #fff;
   border-radius: 2px;
-  background-color: #004279;
+  background-color: black;
   -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .leaflet-control-command-interior:hover {
-  background-color: #e81f26;
+  background-color: #1c5690;
 }
 
 .leaflet-draw {
@@ -528,11 +528,11 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-draw-tooltip {
   font-family: 'Open Sans';
-  background: #004279;
+  background: black;
 }
 
 .leaflet-draw-tooltip:before {
-  border-right-color: #004279;
+  border-right-color: black;
 }
 
 .leaflet-draw-actions {
@@ -546,12 +546,12 @@ div.ficha-spcultura .editable-buttons-bottom {
   font-size: 0.75rem;
   font-weight: bold;
   border-left-color: #fff;
-  background-color: #004279;
+  background-color: black;
 }
 
 .leaflet-draw-actions a:hover {
   text-decoration: none;
-  background-color: #e81f26;
+  background-color: #1c5690;
 }
 
 .leaflet-draw-actions li:last-child a {
@@ -559,7 +559,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 .leaflet-bar a.leaflet-draw-toolbar-button-enabled {
-  background-color: #e81f26;
+  background-color: #1c5690;
 }
 
 .leaflet-draw-actions-top.leaflet-draw-actions-bottom a {
@@ -581,9 +581,9 @@ div.ficha-spcultura .editable-buttons-bottom {
   user-select: none;
   white-space: nowrap;
   color: #fff;
-  border-color: #004279;
+  border-color: black;
   border-radius: 2px;
-  background: #004279;
+  background: black;
 }
 
 .leaflet-label.leaflet-clickable {
@@ -653,16 +653,16 @@ div.ficha-spcultura .editable-buttons-bottom {
   height: 42px !important;
   text-align: center;
   text-indent: -1px;
-  color: #004279;
+  color: black;
   background-repeat: no-repeat;
   -webkit-background-size: 36px 42px;
   background-size: 36px 42px;
 }
 
 .vetorial-padrao {
-  stroke: #e81f26;
+  stroke: #1c5690;
   fill-opacity: .25;
-  fill: #e81f26;
+  fill: #1c5690;
   stroke-opacity: .4;
   stroke-width: 2px;
 }
@@ -715,7 +715,7 @@ body.infobox-open .leaflet-draw {
 }
 
 .mfp-bg {
-  background-color: #004279;
+  background-color: black;
   opacity: 0.9;
 }
 
@@ -732,7 +732,7 @@ body.infobox-open .leaflet-draw {
 .mfp-image-holder .mfp-close {
   padding: 0;
   opacity: 1;
-  color: #e81f26;
+  color: #1c5690;
 }
 
 .mfp-image-holder .mfp-close:hover {
@@ -747,7 +747,7 @@ button.mfp-arrow {
   width: 40px;
   height: 40px;
   margin-top: -20px;
-  background: #e81f26;
+  background: #1c5690;
   color: #fff;
   text-align: center;
   line-height: 40px;
@@ -761,7 +761,7 @@ button.mfp-arrow:active {
 
 button.mfp-arrow:hover {
   background: #fff;
-  color: #e81f26;
+  color: #1c5690;
 }
 
 button.mfp-arrow-right {
@@ -803,7 +803,7 @@ button.mfp-arrow-left {
 
 .slider-button.on {
   margin-left: 30px;
-  background: #004279;
+  background: black;
 }
 
 /* =IE fixes

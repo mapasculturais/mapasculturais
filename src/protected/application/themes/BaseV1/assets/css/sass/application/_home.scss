@@ -275,6 +275,7 @@
 }
 .destaque-aleatorio {
     position: relative;
+    width: 100%;
     margin-bottom: $line-height-base;
     margin-top: 4.5rem;
     border-radius: $border-radius-base;
@@ -285,6 +286,8 @@
     position: absolute;
     top: 100%;
     bottom: 0;
+    left: 0;
+    right: 0;
     padding: $padding-large;
     background: $brand-accent;
     color: #fff;

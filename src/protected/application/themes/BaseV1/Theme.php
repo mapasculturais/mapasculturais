@@ -42,6 +42,8 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
             $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
             $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
+            $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
+            $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
         });
 
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {

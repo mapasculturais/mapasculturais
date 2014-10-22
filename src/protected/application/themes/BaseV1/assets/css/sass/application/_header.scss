@@ -14,11 +14,14 @@
         }
     }
 }
-#logo-spcultura {
+#brand-logo {
     float: left;
     padding: .375rem $padding-large;
     img {
         width: 138px;
+    }
+    a {
+        color: $brand-primary;
     }
 }
 #about-nav {

@@ -33,13 +33,13 @@
     background-color: $brand-accent;
     box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
 }
-.hltip-erro .hltip-arrow-top {
+.hltip-danger .hltip-arrow-top {
     border-color: transparent transparent $brand-danger transparent;
 }
-.hltip-erro .hltip-arrow-bottom {
+.hltip-danger .hltip-arrow-bottom {
     border-color: $brand-danger transparent transparent transparent;
 }
-.hltip-erro .hltip-text {
+.hltip-danger .hltip-text {
     background: $brand-danger;
     color: #fff;
 }

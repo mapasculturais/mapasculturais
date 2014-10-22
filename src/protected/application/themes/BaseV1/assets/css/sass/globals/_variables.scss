@@ -13,13 +13,13 @@ $gray: #ccc;
 $gray-light: #e2e2e2;
 $gray-lighter: #eee;
 
-$brand-primary: #E81F26;
-$brand-accent: #004279;
+$brand-primary: #1c5690;
+$brand-accent: #000000;
 
-$brand-event: #0073CF;
-$brand-agent: #84C121;
-$brand-space: #2C9CD3;
-$brand-project: #00C4DF;
+$brand-event: #b3b921;
+$brand-agent: #1dabc6;
+$brand-space: #e83f96;
+$brand-project: #cc0033;
 
 $brand-info: #40b4b4;
 $brand-warning: #cc9933;
@@ -38,7 +38,7 @@ $text-color:            $gray-darker;
 
 //** Global textual link color.
 $link-color:            $brand-accent;
-//** Link hover color set via `darken()` function.
+//** Link hover color same as $link-color.
 $link-hover-color:      $link-color;
 
 
