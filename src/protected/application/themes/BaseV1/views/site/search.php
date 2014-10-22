@@ -18,7 +18,6 @@ $def = $app->getRegisteredMetadataByMetakey('classificacaoEtaria', 'MapasCultura
 $this->jsObject['classificacoesEtarias'] = array_values($def->config['options']);
 ?>
 <?php $this->includeMapAssets(); ?>
-
     <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post">
             <label for="proximo-a">Local: </label>
@@ -42,7 +41,7 @@ $this->jsObject['classificacoesEtarias'] = array_values($def->config['options'])
 
         <article class="objeto agente clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
-            <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--agent')}}">
+            <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarSmall'].url||assetsUrl.avatarAgent}}">
             <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
             <div class="objeto-meta">
                 <div><span class="label">Tipo:</span> <a ng-click="data.agent.type=openEntity.agent.type.id">{{openEntity.agent.type.name}}</a></div>
@@ -60,7 +59,7 @@ $this->jsObject['classificacoesEtarias'] = array_values($def->config['options'])
                 <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--space')}}">
+                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||assetsUrl.avatarSpace}}">
                     </a>
                     <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
                     <div class="objeto-meta">
@@ -96,7 +95,7 @@ $this->jsObject['classificacoesEtarias'] = array_values($def->config['options'])
                 </h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--event')}}">
+                        <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarSmall'].url||assetsUrl.avatarEvent}}">
                     </a>
                     <p class="objeto-resumo">{{event.shortDescription}}</p>
                     <div class="objeto-meta">
@@ -134,7 +133,7 @@ $this->jsObject['classificacoesEtarias'] = array_values($def->config['options'])
                 <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{project.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{project['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--project')}}">
+                        <img class="objeto-thumb" ng-src="{{project['@files:avatar.avatarMedium'].url||assetsUrl.avatarProject}}">
                     </a>
                     <p class="objeto-resumo">
                         {{project.shortDescription}}

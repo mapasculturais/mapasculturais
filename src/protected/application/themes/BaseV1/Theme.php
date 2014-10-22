@@ -328,6 +328,12 @@ class Theme extends MapasCulturais\Theme {
     function includeMapAssets() {
         $app = App::i();
 
+        $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+        $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
+        $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
+        $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+
+
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
         $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false);
         $this->jsObject['assets']['iconZoomIn'] = $this->asset('img/icon-zoom-in.png', false);
