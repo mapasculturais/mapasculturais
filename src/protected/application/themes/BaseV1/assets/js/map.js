@@ -416,9 +416,10 @@
                 (new L.Control.FullScreen({position: 'bottomright', title: 'Tela Cheia'})).addTo(map);
                 (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
                 var geoDivisionsObj = {};
-                MapasCulturais.geoDivisionsHierarchy.forEach(function(div){
+                for(var div_id in MapasCulturais.geoDivisionsHierarchy){
+                    var div = MapasCulturais.geoDivisionsHierarchy[div_id];
                     geoDivisionsObj['<span class="js-geo-division" data-type="' + div + '">' + div + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
-                });
+                };
 
                 var layersControl = new L.Control.Layers(camadasBase, geoDivisionsObj);
 
@@ -440,7 +441,7 @@
                         if ($(this).prop('checked') === true) {
                             setGeoChecboxes(type);
 
-                            geoDivisions.options.where = "type='" + type + "'";
+                            geoDivisions.options.where = "type='" + type.toLowerCase() + "'";
                             geoDivisions.options.geoDivisionType = type;
                             geoDivisions.setMap(map);
                         } else {
@@ -448,6 +449,7 @@
                         }
                     });
                 });
+
                 geoDivisions._makeJsonpRequest = function(url){
                     $('#resultados span[ng-if="!spinnerCount"]').hide();
                     $('#resultados span[ng-show="spinnerCount > 0"]').removeClass('ng-hide');
