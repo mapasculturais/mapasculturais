@@ -152,7 +152,8 @@
         }
         $rootScope.resetPagination();
 
-        $scope.defaultImageURL = MapasCulturais.defaultAvatarURL;
+        $scope.assetsUrl = MapasCulturais.assets;
+
         $scope.getName = function(valores, id){
             return valores.filter(function(e){if(e.id === id) return true;})[0].name;
         };

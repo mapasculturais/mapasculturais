@@ -1,1 +1,1 @@
-<h1><a href="<?php echo $app->createUrl('site') ?>">Mapas Culturais</a></h1>
+<h1 id="brand-logo"><a href="<?php echo $app->getBaseUrl() ?>">Mapas Culturais</a></h1>

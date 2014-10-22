@@ -1,9 +1,4 @@
 #!/bin/bash
-if [[ $1 ]]; then
-	BRANCH=$1
-else
-	BRANCH="stable"
-fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
@@ -12,8 +7,6 @@ cd $DIR
 cd $DIR/..
 
 git pull --all
-
-git checkout $BRANCH
 
 cd $DIR/../src/protected/
 

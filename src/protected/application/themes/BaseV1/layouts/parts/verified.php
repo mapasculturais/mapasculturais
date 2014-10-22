@@ -2,7 +2,7 @@
 <input id="is-verified-input" type="hidden" class="js-editable" data-edit="isVerified" data-value="<?php echo $entity->isVerified ? '1' : '0'?>"/>
 <div class="widget widget--verified">
     <a href="#"
-       class="oficial js-verified hltip <?php if($entity->isVerified) echo ' active'; ?>"
+       class="verified-seal js-verified hltip <?php if($entity->isVerified) echo ' active'; ?>"
        data-verify-url="<?php echo $this->controller->createUrl('verify', array($entity->id)) ?>"
        data-remove-verification-url="<?php echo $this->controller->createUrl('removeVerification', array($entity->id)) ?>" 
        title="Clique para marcar/desmarcar este <?php echo $entity->entityType ?>."
@@ -10,6 +10,6 @@
 </div>
 <?php elseif($entity->isVerified): ?>
 <div class="widget">
-    <a class="oficial hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
 </div>
 <?php endif; ?>

@@ -1,29 +1,27 @@
-.oficial {
-    display: block;
+.widget-verified {
+    text-align: center;
+}
+.verified-seal {
+    display: inline-block;
+    position: relative;
     width: 89px;
     height: 72px;
-    margin: 0 auto;
-    background: url(../img/brasao-pb.png) no-repeat center;
-    text-indent: -9999px;
-}
-.oficial.inactive {
-    opacity: .2;
-}
-.oficial.active {
-    background: url(../img/brasao.png) no-repeat center;
-}
-
-.widget--verified:before {
-    width: 1rem;
-    height: 1rem;
-    content: '\6c';
-    font-size: $font-size-base;
-    line-height: 1rem;
-    font-family: 'ElegantIcons';
-    font-weight: normal;
-    font-style: normal;
-    color: $gray-dark;
-    position: absolute;
-    top: 0;
-    left: 0;
+    background-image: url(../img/unverified-seal.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    &.inactive {
+        opacity: .2;
+    }
+    &.active {
+        background-image: url(../img/verified-seal.png);
+    }
+    &.editable {
+        padding-top: 1rem;
+        background-position: center 1rem;
+        &:after {
+            margin-left: -.5rem;
+            position: absolute;
+            top: 0;
+        }
+    }
 }

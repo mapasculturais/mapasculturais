@@ -168,9 +168,9 @@ $this->includeAngularEntityAssets($entity);
                 <div class="servico clearfix">
                     <div class="infos">
                         <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
-                        <p><span class="label">Distrito:</span> <span class="js-sp_distrito"><?php echo $entity->sp_distrito; ?></span></p>
-                        <p><span class="label">Subprefeitura:</span> <span class="js-sp_subprefeitura"><?php echo $entity->sp_subprefeitura; ?></span></p>
-                        <p><span class="label">Zona:</span> <span class="js-sp_regiao"><?php echo $entity->sp_regiao; ?></p>
+                        <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
+                            <p><span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span></p>
+                        <?php endforeach; ?>
                     </div>
                     <!--.infos-->
                     <div class="mapa">

@@ -107,11 +107,7 @@ return array(
             'validations' => array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
-        ),
-        'sp_regiao' => array('label' => 'Região',),
-        'sp_subprefeitura' => array('label' => 'Subprefeitura',),
-        'sp_distrito' => array('label' => 'Distrito',),
-
+        )
     ),
     'items' => array(
         'Espaços de Exibição de Filmes' => array(

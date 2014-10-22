@@ -120,10 +120,6 @@ return array(
             )
         ),
 
-        'sp_regiao' => array('label' => 'Região',),
-        'sp_subprefeitura' => array('label' => 'Subprefeitura',),
-        'sp_distrito' => array('label' => 'Distrito',),
-
     ),
     'items' => array(
         1 => array( 'name' => 'Individual' ),
