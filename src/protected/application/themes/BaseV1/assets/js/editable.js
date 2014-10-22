@@ -382,9 +382,11 @@ MapasCulturais.Editables = {
 
                     }else{
 
-                        if($('.js-sp_distrito').length > 0      && response['sp_distrito'])         $('.js-sp_distrito').html(response['sp_distrito']);
-                        if($('.js-sp_regiao').length > 0        && response['sp_regiao'])           $('.js-sp_regiao').html(response['sp_regiao']);
-                        if($('.js-sp_subprefeitura').length > 0 && response['sp_subprefeitura'])    $('.js-sp_subprefeitura').html(response['sp_subprefeitura']);
+
+                        $('.js-geo-division').each(function(){
+                            var r = response[$(this).data('metakey')];
+                            $(this).html(r ? r : '');
+                        });
 
                         var $endereco = $('.js-editable[data-edit="endereco"]');
                         if($endereco.length && response['endereco']){

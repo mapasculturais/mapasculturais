@@ -79,6 +79,8 @@ abstract class Theme extends \Slim\View {
 
     abstract protected function _init();
 
+    abstract function register();
+
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
 

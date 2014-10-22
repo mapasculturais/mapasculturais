@@ -457,8 +457,6 @@ return array(
                 VALUES 
                     ( 'distrito', :cod, :name, :geom );", array('cod' => $cod, 'name' => $name, 'geom' => $geom));
         }
-
-        return false;
     }
 
 );

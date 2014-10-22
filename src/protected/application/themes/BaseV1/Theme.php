@@ -11,25 +11,6 @@ class Theme extends MapasCulturais\Theme {
         return __DIR__;
     }
 
-    function head() {
-        parent::head();
-
-        $app = App::i();
-
-        $this->printStyles('vendor');
-        $this->printStyles('fonts');
-        $this->printStyles('app');
-
-        $app->applyHook('mapasculturais.styles');
-
-        $this->_printJsObject();
-
-        $this->printScripts('vendor');
-        $this->printScripts('app');
-
-        $app->applyHook('mapasculturais.scripts');
-    }
-
     protected function _init() {
         $app = App::i();
 
@@ -66,24 +47,27 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
 
             $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-            $rsm->addScalarResult('nome', 'nome');
+            $rsm->addScalarResult('type', 'type');
+            $rsm->addScalarResult('name', 'name');
 
             $x = $this->location->longitude;
             $y = $this->location->latitude;
 
-            $whereContains = 'WHERE ST_Contains(the_geom, ST_Transform(ST_GeomFromText(\'POINT(' . $x . ' ' . $y . ')\',4326),4326))';
+            $strNativeQuery = "SELECT type, name FROM geo_division WHERE ST_Contains(geom, ST_Transform(ST_GeomFromText('POINT($x $y)',4326),4326))";
 
-            $strNativeQuery = 'SELECT nome FROM "sp_regiao" ' . $whereContains;
             $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-            $this->sp_regiao = $query->getOneOrNullResult()['nome'];
 
-            $strNativeQuery = 'SELECT nome FROM "sp_subprefeitura" ' . $whereContains;
-            $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-            $this->sp_subprefeitura = $query->getOneOrNullResult()['nome'];
+            $divisions = $query->getScalarResult();
 
-            $strNativeQuery = 'SELECT nome_distr AS nome FROM "sp_distrito" ' . $whereContains;
-            $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
-            $this->sp_distrito = $query->getOneOrNullResult()['nome'];
+            foreach($app->getRegisteredGeoDivisions() as $d){
+                $metakey = $d->metakey;
+                $this->$metakey = '';
+            }
+
+            foreach($divisions as $div){
+                $metakey = 'geo' . ucfirst($div['type']);
+                $this->$metakey = $div['name'];
+            }
         });
 
         // sempre que insere uma imagem cria o avatarSmall
@@ -141,6 +125,39 @@ class Theme extends MapasCulturais\Theme {
             $where .= " OR lower(p.name) LIKE lower(:keyword)
                         OR lower(m.value) LIKE lower(:keyword)";
         });
+    }
+
+    function register(){
+        $app = App::i();
+        foreach($app->config['app.geoDivisionsHierarchy'] as $slug => $name){
+            foreach(array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class){
+                $entity_types = $app->getRegisteredEntityTypes($entity_class);
+
+                foreach($entity_types as $type){
+                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $name));
+                    $app->registerMetadata($metadata, $entity_class, $type->id);
+                }
+            }
+        }
+    }
+
+    function head() {
+        parent::head();
+
+        $app = App::i();
+
+        $this->printStyles('vendor');
+        $this->printStyles('fonts');
+        $this->printStyles('app');
+
+        $app->applyHook('mapasculturais.styles');
+
+        $this->_printJsObject();
+
+        $this->printScripts('vendor');
+        $this->printScripts('app');
+
+        $app->applyHook('mapasculturais.scripts');
     }
 
     function addDocumentMetas() {

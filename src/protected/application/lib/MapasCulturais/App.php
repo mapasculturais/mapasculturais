@@ -377,6 +377,13 @@ class App extends \Slim\Slim{
 
         $updates = include DB_UPDATES_FILE;
 
+        foreach($this->view->path as $path){
+            $db_update_file = $path . 'db-updates.php';
+            if(file_exists($db_update_file)){
+                $updates += include $db_update_file;
+            }
+        }
+
         $new_updates = false;
 
         foreach($updates as $name => $function){
@@ -598,6 +605,7 @@ class App extends \Slim\Slim{
                         $type_config['metadata'][$meta_key] = $meta_config;
 
                 foreach($type_config['metadata'] as $meta_key => $meta_config){
+
                     $metadata = new Definitions\Metadata($meta_key, $meta_config);
                     $this->registerMetadata($metadata, $entity_class, $type_id);
                 }
@@ -665,10 +673,26 @@ class App extends \Slim\Slim{
                 }
             }
 
+            $this->view->register();
+
             $this->cache->save('mapasculturais.register', $this->_register, $this->_config['app.registerCache.lifeTime']);
         }
 
+
         $this->applyHook('app.register');
+    }
+
+    function getRegisteredGeoDivisions(){
+        $result = array();
+        foreach($this->config['app.geoDivisionsHierarchy'] as $key => $name) {
+            $d = new \stdClass();
+            $d->key = $key;
+            $d->name = $name;
+            $d->metakey = 'geo' . ucfirst($key);
+            $result[] = $d;
+        }
+
+        return $result;
     }
 
 
