@@ -18,7 +18,7 @@ add_angular_entity_assets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar espaco">
+<div class="sidebar-left sidebar space">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
@@ -47,7 +47,7 @@ add_angular_entity_assets($entity);
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<article class="main-content espaco">
+<article class="main-content space">
     <header class="main-content-header">
         <div
             <?php if($header = $entity->getFile('header')): ?>
@@ -212,14 +212,14 @@ add_angular_entity_assets($entity);
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
-    <div id="agenda" class="aba-content lista">
+    <div id="agenda" class="aba-content">
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="sidebar espaco sidebar-right">
+<div class="sidebar space sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>

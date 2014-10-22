@@ -2,12 +2,6 @@
     float: right;
     margin: .5rem 0;
 }
-.lista-sem-thumb .objeto:hover {
-    background: #f4f4f4;
-}
-.lista-sem-thumb .objeto h1 {
-    font-size: $font-size-base;
-}
 .lista-sem-thumb .objeto h1 .icone {
     width: $line-height-base;;
     height: $line-height-base;;
@@ -31,6 +25,8 @@
 }
 .lista-sem-thumb .objeto-meta {
     margin-bottom: $line-height-half;
+    padding-top: 0;
+    border-top: 0;
 }
 .lista-sem-thumb .objeto-meta div {
          box-sizing: border-box;

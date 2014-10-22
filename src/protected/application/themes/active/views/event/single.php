@@ -86,7 +86,7 @@ add_occurrence_frequencies_to_js();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<div class="sidebar-left sidebar evento">
+<div class="sidebar-left sidebar event">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if(is_editable()): ?>
@@ -131,7 +131,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<article class="col-60 main-content evento">
+<article class="col-60 main-content event">
     <header class="main-content-header">
         <div
         <?php if ($header = $entity->getFile('header')): ?>
@@ -381,7 +381,7 @@ add_occurrence_frequencies_to_js();
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
-<div class="sidebar evento sidebar-right">
+<div class="sidebar event sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>

@@ -49,6 +49,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
 ?>
 <?php add_map_assets(); ?>
 
+<!-- Here starts the map view -->
+
     <div id="filtro-local" class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left" ng-controller="SearchSpatialController" ng-show="data.global.viewMode ==='map'">
         <form id="form-local" method="post">
             <label for="proximo-a">Local: </label>
@@ -67,10 +69,10 @@ $app->hook('mapasculturais.scripts', function() use($app){
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
     </div>
 
-    <div id="infobox" ng-show="showInfobox()">
+    <div id="infobox" ng-show="showInfobox()" class="{{data.global.openEntity.type}}">
         <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
 
-        <article class="objeto agente clearfix" ng-if="openEntity.agent">
+        <article class="objeto clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
             <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--agent')}}">
             <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
@@ -85,27 +87,25 @@ $app->hook('mapasculturais.scripts', function() use($app){
             </div>
         </article>
 
-        <article class="objeto espaco clearfix" ng-if="openEntity.space">
-            <article class="objeto espaco clearfix">
-                <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
-                <div class="objeto-content clearfix">
-                    <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--space')}}">
-                    </a>
-                    <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
-                    <div class="objeto-meta">
-                        <div><span class="label">Tipo:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, openEntity.space.type.name))">{{openEntity.space.type.name}}</a></div>
-                        <div>
-                            <span class="label">Área de atuação:</span>
-                            <span ng-repeat="area in openEntity.space.terms.area">
-                                <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
-                            </span>
-                        </div>
-                        <div ng-show="openEntity.space.endereco"><span class="label">Endereço:</span>{{openEntity.space.endereco}}</div>
-                        <div><span class="label">Acessibilidade:</span> {{openEntity.space.acessibilidade || 'Não Informado'}}</div>
+        <article class="objeto clearfix" ng-if="openEntity.space">
+            <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
+            <div class="objeto-content clearfix">
+                <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
+                    <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--space')}}">
+                </a>
+                <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
+                <div class="objeto-meta">
+                    <div><span class="label">Tipo:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, openEntity.space.type.name))">{{openEntity.space.type.name}}</a></div>
+                    <div>
+                        <span class="label">Área de atuação:</span>
+                        <span ng-repeat="area in openEntity.space.terms.area">
+                            <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
+                        </span>
                     </div>
+                    <div ng-show="openEntity.space.endereco"><span class="label">Endereço:</span>{{openEntity.space.endereco}}</div>
+                    <div><span class="label">Acessibilidade:</span> {{openEntity.space.acessibilidade || 'Não Informado'}}</div>
                 </div>
-            </article>
+            </div>
         </article>
 
         <div ng-if="openEntity.event">
@@ -116,32 +116,39 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 {{openEntity.event.space.endereco}}
             </p>
 
-            <article class="objeto evento clearfix" ng-repeat="event in openEntity.event.events">
-                <h1><span class="nome-projeto">
-                        <a href="{{event.project.singleUrl}}">{{event.project.name}}</a></span>
+            <article class="objeto clearfix" ng-repeat="event in openEntity.event.events">
+                <h1>
                     <a href="{{event.singleUrl}}">
                         {{event.name}}
-                        <h2>{{event.subTitle}}</h2>
+                        <span class="event-subtitle">{{event.subTitle}}</span>
                     </a>
                 </h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
                         <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarSmall'].url||defaultImageURL.replace('avatar','avatar--event')}}">
                     </a>
-                    <p class="objeto-resumo">{{event.shortDescription}}</p>
+                    <div class="objeto-resumo">
+                        <p>{{event.shortDescription}}</p>
+                    </div>                    
+                    <ul class="event-ocurrences">
+                        <li ng-repeat="occ in event.occurrences">                            
+                            {{occ.rule.description.trim()||event.readableOccurrences[$index].trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span><span ng-show="!$last">.</span>
+                        </li>
+                    </ul>
                     <div class="objeto-meta">
+                        <div>
+                            <span class="label">Projeto:</span> 
+                            <a href="{{event.project.singleUrl}}">{{event.project.name}}</a>
+                        </div>
                         <div ng-show="event.terms.linguagem && event.terms.linguagem.length">
                             <span class="label">Linguagem:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
                                 <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
-                        <div class="ocorrencias">
-                            <p class="title">Este evento ocorre em:</p>
-                            <span ng-repeat="occ in event.occurrences">
-                                {{occ.rule.description.trim()||event.readableOccurrences[$index].trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span><span ng-show="!$last">;</span>
-                            </span>
+                        <div>
+                            <span class="label">Classificação:</span>
+                            <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a>
                         </div>
                     </div>
                 </div>
@@ -152,6 +159,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
     <div id="mapa" ng-controller="SearchMapController" ng-show="data.global.viewMode!=='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}" class="js-map" data-options='{"dragging":true, "zoomControl":true, "doubleClickZoom":true, "scrollWheelZoom":true }'>
     </div><!--#mapa-->
 
+<!-- Here ends the map view and starts the list view -->
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
@@ -159,8 +167,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
                 <a class="botao adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
             </div>
         </header>
-        <div id="lista-dos-projetos" class="lista" infinite-scroll="data.global.filterEntity === 'project' && addMore('project')" ng-show="data.global.filterEntity === 'project'">
-            <article class="objeto projeto clearfix"  ng-repeat="project in projects" id="agent-result-{{project.id}}">
+        <div id="lista-dos-projetos" class="lista project" infinite-scroll="data.global.filterEntity === 'project' && addMore('project')" ng-show="data.global.filterEntity === 'project'">
+            <article class="objeto clearfix"  ng-repeat="project in projects" id="agent-result-{{project.id}}">
                 <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{project.singleUrl}}" class="js-single-url">
@@ -183,8 +191,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
             <a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
         </header>
 
-        <div id="lista-dos-agentes" class="lista" infinite-scroll="data.global.filterEntity === 'agent' && addMore('agent')" ng-show="data.global.filterEntity === 'agent'">
-            <article class="objeto agente clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
+        <div id="lista-dos-agentes" class="lista agent" infinite-scroll="data.global.filterEntity === 'agent' && addMore('agent')" ng-show="data.global.filterEntity === 'agent'">
+            <article class="objeto clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
                 <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
@@ -207,8 +215,8 @@ $app->hook('mapasculturais.scripts', function() use($app){
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="botao adicionar" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
         </header>
-        <div id="lista-dos-espacos" class="lista" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
-            <article class="objeto espaco clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
+        <div id="lista-dos-espacos" class="lista space" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
+            <article class="objeto clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
                     <a href="{{agent.singleUrl}}" class="js-single-url">
@@ -234,15 +242,33 @@ $app->hook('mapasculturais.scripts', function() use($app){
             <a class="botao adicionar" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
         </header>
 
-        <div id="lista-dos-eventos" class="lista" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
-            <article class="objeto evento clearfix" ng-repeat="event in events">
-                <h1><span class="nome-projeto"><a href="{{event.project.singleUrl}}">{{event.project.name}}</a></span><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
+        <div id="lista-dos-eventos" class="lista event" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
+            <article class="objeto clearfix" ng-repeat="event in events">
+                <h1>
+                    <a href="{{event.singleUrl}}">
+                        {{event.name}}
+                        <span class="event-subtitle">{{event.subTitle}}</span>
+                    </a>
+                </h1>
                 <div class="objeto-content clearfix">
                     <a href="{{event.singleUrl}}" class="js-single-url">
                         <img class="objeto-thumb" ng-src="{{event['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--event')}}">
                     </a>
-                    <p class="objeto-resumo">{{event.shortDescription}}</p>
+                    <div class="objeto-resumo">
+                        <p>{{event.shortDescription}}</p>
+                        <ul class="event-ocurrences">
+                            <li ng-repeat="occ in event.occurrences">
+                                <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a>
+                                {{occ.space.endereco.trim()}}
+                                {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>.
+                            </li>
+                        </ul>
+                    </div>
                     <div class="objeto-meta">
+                        <div>
+                            <span class="label">Projeto:</span>
+                            <a href="{{event.project.singleUrl}}">{{event.project.name}}</a>
+                        </div>
                         <div>
                             <span ng-show="event.terms.linguagem" class="label">Linguagem:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
@@ -250,15 +276,7 @@ $app->hook('mapasculturais.scripts', function() use($app){
                             </span>
                         </div>
                         <div><span class="label">Classificação:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
-                        <div class="ocorrencias">
-                            <p class="title">Este evento ocorre em:</p>
-                            <span ng-repeat="occ in event.occurrences">
-                                    <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a>:
-                                    {{occ.space.endereco.trim()}}
-                                    {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>;
-                            </span>
-                        </div>
-                     </div>
+                        
                     </div>
                 </div>
             </article>
