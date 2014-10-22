@@ -699,11 +699,11 @@ div.ficha-spcultura .editable-buttons-bottom {
 }
 
 body.infobox-open #filtro-local {
-  left: 320px;
+  left: 420px;
 }
 
 body.infobox-open .leaflet-draw {
-  margin-left: 731px !important;
+  margin-left: 831px !important;
 }
 
 #filtro-local,
