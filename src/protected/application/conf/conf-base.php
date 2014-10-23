@@ -93,7 +93,7 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    'app.cache.namespace' => __FILE__,
+    'app.cache.namespace' => BASE_PATH,
 
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,

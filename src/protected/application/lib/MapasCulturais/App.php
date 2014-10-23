@@ -150,7 +150,7 @@ class App extends \Slim\Slim{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
         }
 
-        $this->cache->setNamespace($config['app.cache.namespace']);
+        $this->_cache->setNamespace($config['app.cache.namespace']);
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
