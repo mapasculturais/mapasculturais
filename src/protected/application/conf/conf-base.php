@@ -36,7 +36,7 @@ return array(
 
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
-    'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
+    'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSyst1em(array(
         'publishPath' => BASE_PATH . 'assets/',
 
         'mergeScripts' => true,
@@ -93,6 +93,7 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    'app.cache.namespace' => __FILE__,
 
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
