@@ -4,7 +4,7 @@ $this->layout = 'panel'
 <div class="main-content">
 
     <p id="boas-vindas-painel">
-        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do SPCultura!
+        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php echo $app->siteName; ?>!
     </p>
     <h2>Resumo</h2>
     <section id="estatisticas-do-usuario" class="clearfix">
