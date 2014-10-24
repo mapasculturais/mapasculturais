@@ -39,12 +39,11 @@ return array(
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . 'assets/',
 
-        'mergeScripts' => true,
-        'mergeStyles' => true,
+        'mergeScripts' => false,
+        'mergeStyles' => false,
 
-        'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /public/{FILENAME}.map -m -p ' . $num_folders,
-        'process.css' => 'uglifycss {IN} > {OUT}',
-
+        'process.js' => 'cp {IN} {OUT}', //'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /pub/{FILENAME}.map -b -p 7',
+        'process.css' => 'cp {IN} {OUT}', //'uglifycss {IN} > {OUT}',
         'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
     )),
 

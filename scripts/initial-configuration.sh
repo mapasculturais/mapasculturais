@@ -15,9 +15,9 @@ sudo chown -R ${WEBGROUP}:${WEBGROUP} $PWD/src/files
 
 echo "Configuring public assets directory
 "
-mkdir $PWD/src/pub
-sudo chown -R $USER:${WEBGROUP} $PWD/src/pub
-sudo chmod 0775 $PWD/src/pub
+mkdir $PWD/src/assets
+sudo chown -R $USER:${WEBGROUP} $PWD/src/assets
+sudo chmod 0775 $PWD/src/assets
 
 echo "Configuring write permission in ORM proxy directory
 $PWD/src/protected/application/lib/MapasCulturais/DoctrineProxies
