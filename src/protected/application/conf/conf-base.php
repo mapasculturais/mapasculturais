@@ -37,7 +37,7 @@ return array(
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
-        'publishPath' => BASE_PATH . 'assets/',
+        'publishPath' => BASE_PATH . 'pub/',
 
         'mergeScripts' => false,
         'mergeStyles' => false,

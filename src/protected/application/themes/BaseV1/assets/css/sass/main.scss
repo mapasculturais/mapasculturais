@@ -3,8 +3,19 @@
 // --------------------------------------------------
 //## Compiles to style.css.
 
-
 @import "globals/all-globals";
 @import "modules/all-modules";
 @import "application/all-application";
 @import "components/all-components";
+
+//
+// Vendor
+// --------------------------------------------------
+//## Styles that override third-party's original ones.
+
+@import "vendor/datepicker";
+@import "vendor/editable";
+@import "vendor/leaflet";
+@import "vendor/magnific-popup";
+@import "vendor/slider-button";
+@import "vendor/ie";

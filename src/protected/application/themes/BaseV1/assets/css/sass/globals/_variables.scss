@@ -7,24 +7,24 @@
 //
 //## Gray and brand colors for use across application.
 
-$gray-darker: #333;
-$gray-dark: #666;
-$gray: #ccc;
-$gray-light: #e2e2e2;
-$gray-lighter: #eee;
+$gray-darker: #333 !default;
+$gray-dark: #666 !default;
+$gray: #ccc !default;
+$gray-light: #e2e2e2 !default;
+$gray-lighter: #eee !default;
 
-$brand-primary: #1c5690;
-$brand-accent: #000000;
+$brand-primary: #1c5690 !default;
+$brand-accent: #000000 !default;
 
-$brand-event: #b3b921;
-$brand-agent: #1dabc6;
-$brand-space: #e83f96;
-$brand-project: #cc0033;
+$brand-event: #b3b921 !default;
+$brand-agent: #1dabc6 !default;
+$brand-space: #e83f96 !default;
+$brand-project: #cc0033 !default;
 
-$brand-info: #40b4b4;
-$brand-warning: #cc9933;
-$brand-danger: #cc3333;
-$brand-success: #66cc66;
+$brand-info: #40b4b4 !default;
+$brand-warning: #cc9933 !default;
+$brand-danger: #cc3333 !default;
+$brand-success: #66cc66 !default;
 
 
 //== Scaffolding
@@ -32,49 +32,49 @@ $brand-success: #66cc66;
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               #ffffff;
+$body-bg:               #ffffff !default;
 //** Global text color on `<body>`.
-$text-color:            $gray-darker;
+$text-color:            $gray-darker !default;
 
 //** Global textual link color.
-$link-color:            $brand-accent;
+$link-color:            $brand-accent !default;
 //** Link hover color same as $link-color.
-$link-hover-color:      $link-color;
+$link-hover-color:      $link-color !default;
 
 
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
 //** Load fonts from this directory.
-$font-path:          "../fonts/";
+$font-path:          "../fonts/" !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-$font-family-monospace:   'Courier New', monospace;
-$font-family-base:        'Open Sans', Helvetica, Arial, sans-serif;
+$font-family-monospace:   'Courier New', monospace !default;
+$font-family-base:        'Open Sans', Helvetica, Arial, sans-serif !default;
 
-$font-size-base:          1rem; // 16px
-$font-size-small:         .875rem; // 14px
-$font-size-smaller:       .75rem; // 12px
+$font-size-base:          1rem !default; // 16px
+$font-size-small:         .875rem !default; // 14px
+$font-size-smaller:       .75rem !default; // 12px
 
-$font-size-h1:            2.25rem; // 36px
-$font-size-h2:            2rem; // 32px
-$font-size-h3:            1.75rem; // 28px
-$font-size-h4:            1.5rem; // 24px
-$font-size-h5:            1.25rem; // 20px
-$font-size-h6:            $font-size-base; // 16px
+$font-size-h1:            2.25rem !default; // 36px
+$font-size-h2:            2rem !default; // 32px
+$font-size-h3:            1.75rem !default; // 28px
+$font-size-h4:            1.5rem !default; // 24px
+$font-size-h5:            1.25rem !default; // 20px
+$font-size-h6:            $font-size-base !default; // 16px
 
-$line-height-base:        1.5rem; // 24px
-$line-height-half:        $line-height-base/2; // 12px
+$line-height-base:        1.5rem !default; // 24px
+$line-height-half:        $line-height-base/2 !default; // 12px
 
-$line-height-h1:            3rem; // 48px
-$line-height-h2:            3rem; // 48px
-$line-height-h3:            2rem; // 32px
-$line-height-h4:            $line-height-base; // 24px
-$line-height-h5:            $line-height-base; // 24px
-$line-height-h6:            $line-height-base; // 24px
+$line-height-h1:            3rem !default; // 48px
+$line-height-h2:            3rem !default; // 48px
+$line-height-h3:            2rem !default; // 32px
+$line-height-h4:            $line-height-base !default; // 24px
+$line-height-h5:            $line-height-base !default; // 24px
+$line-height-h6:            $line-height-base !default; // 24px
 
-$headings-font-family:    'aleo', serif;
-$headings-font-weight:    normal;
-$headings-color:          $brand-accent;
+$headings-font-family:    'aleo', serif !default;
+$headings-font-weight:    normal !default;
+$headings-color:          $brand-accent !default;
 
 
 //== Iconography
@@ -82,11 +82,11 @@ $headings-color:          $brand-accent;
 //## Specify custom location and filename of the included Glyphicons icon font. Useful for those including Mapas Culturais via Bower.
 
 //** Load fonts from this directory.
-$icon-font-path:          $font-path;
+$icon-font-path:          $font-path !default;
 //** File name for all font files.
-$icon-font-name:          "ElegantIcons";
+$icon-font-name:          "ElegantIcons" !default;
 //** Element ID within SVG icon file.
-$icon-font-svg-id:        "ElegantIcons";
+$icon-font-svg-id:        "ElegantIcons" !default;
 
 
 
@@ -94,70 +94,70 @@ $icon-font-svg-id:        "ElegantIcons";
 //
 //## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
 
-$padding-base:     $line-height-base/2; // 12px
+$padding-base:     $line-height-base/2 !default; // 12px
 
-$padding-large:    $line-height-base; // 24px
+$padding-large:    $line-height-base !default; // 24px
 
-$padding-small:    $line-height-base/3; // 8px
+$padding-small:    $line-height-base/3 !default; // 8px
 
-$border-radius-base: 2px;
+$border-radius-base: 2px !default;
 
 //** Global color for active items (e.g., navs or dropdowns).
-$component-active-color:    #fff;
+$component-active-color:    #fff !default;
 //** Global background color for active items (e.g., navs or dropdowns).
-$component-active-bg:       $brand-primary;
+$component-active-bg:       $brand-primary !default;
 
 //** Width of the `border` for generating arrows.
-$caret-width-base:          8px;
+$caret-width-base:          8px !default;
 
 //** Border styles to create dividing rows.
-$thin-row: 1px solid $gray-lighter;
+$thin-row: 1px solid $gray-lighter !default;
 
 //== Tables
 //
 //## Customizes the `.table` component with basic values, each used across all table variations.
 
 //** Padding for `<th>`s and `<td>`s.
-$table-cell-padding:            $padding-small;
+$table-cell-padding:            $padding-small !default;
 
 //** Default background color used for all tables.
-$table-bg:                      transparent;
+$table-bg:                      transparent !default;
 
 //** Border color for table and cell borders.
-$table-border-color:            $gray;
+$table-border-color:            $gray !default;
 
 
 //== Buttons
 //
 //## For each of Mapas Culturais's buttons, define text, background and border color.
 
-$btn-font-weight:                bold;
+$btn-font-weight:                bold !default;
 
-$btn-default-color:              $gray-dark;
-$btn-default-bg:                 #d8d8d8;
-$btn-default-border:             #c4c4c4;
+$btn-default-color:              $gray-dark !default;
+$btn-default-bg:                 #d8d8d8 !default;
+$btn-default-border:             #c4c4c4 !default;
 
-$btn-primary-color:              #fff;
-$btn-primary-bg:                 $brand-primary;
-$btn-primary-border:             darken($btn-primary-bg, 5%);
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 $brand-primary !default;
+$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
 
-$btn-success-color:              #fff;
-$btn-success-bg:                 $brand-success;
-$btn-success-border:             darken($btn-success-bg, 5%);
+$btn-success-color:              #fff !default;
+$btn-success-bg:                 $brand-success !default;
+$btn-success-border:             darken($btn-success-bg, 5%) !default;
 
-$btn-info-color:                 #fff;
-$btn-info-bg:                    $brand-info;
-$btn-info-border:                darken($btn-info-bg, 5%);
+$btn-info-color:                 #fff !default;
+$btn-info-bg:                    $brand-info !default;
+$btn-info-border:                darken($btn-info-bg, 5%) !default;
 
-$btn-warning-color:              #fff;
-$btn-warning-bg:                 $brand-warning;
-$btn-warning-border:             darken($btn-warning-bg, 5%);
+$btn-warning-color:              #fff !default;
+$btn-warning-bg:                 $brand-warning !default;
+$btn-warning-border:             darken($btn-warning-bg, 5%) !default;
 
-$btn-danger-color:               #fff;
-$btn-danger-bg:                  $brand-danger;
-$btn-danger-border:              darken($btn-danger-bg, 5%);
+$btn-danger-color:               #fff !default;
+$btn-danger-bg:                  $brand-danger !default;
+$btn-danger-border:              darken($btn-danger-bg, 5%) !default;
 
-$btn-link-disabled-color:        $gray;
+$btn-link-disabled-color:        $gray !default;
 
 
 //== Forms
@@ -165,17 +165,17 @@ $btn-link-disabled-color:        $gray;
 //##form-fields
 
 //** <input> <textarea> <button> <select>
-$form-fields-bg:                       #fff;
-$form-fields-bg-disabled:              $gray-lighter;
-$form-fields-color:                    $gray-dark;
-$form-fields-border:                   $gray;
-$form-fields-border-radius:            $border-radius-base;
-$form-fields-border-focus:             $gray-darker;
-$form-fields-color-placeholder:        $gray;
-$form-fields-color-placeholder:        $gray;
-$form-fields-font:                     $font-family-base;
-$form-fields-font-size:                $font-size-smaller;
-$form-fields-height:                   2rem;
+$form-fields-bg:                       #fff !default;
+$form-fields-bg-disabled:              $gray-lighter !default;
+$form-fields-color:                    $gray-dark !default;
+$form-fields-border:                   $gray !default;
+$form-fields-border-radius:            $border-radius-base !default;
+$form-fields-border-focus:             $gray-darker !default;
+$form-fields-color-placeholder:        $gray !default;
+$form-fields-color-placeholder:        $gray !default;
+$form-fields-font:                     $font-family-base !default;
+$form-fields-font-size:                $font-size-smaller !default;
+$form-fields-height:                   2rem !default;
 
 
 //-- Z-index master list
@@ -185,38 +185,38 @@ $form-fields-height:                   2rem;
 //
 // Note: These variables are not generated into the Customizer.
 
-$zindex-navbar:            1000;
-$zindex-dropdown:          1000;
-$zindex-popover:           1060;
-$zindex-tooltip:           1070;
-$zindex-navbar-fixed:      1030;
-$zindex-modal-background:  1040;
-$zindex-modal:             1050;
+$zindex-navbar:            1000 !default;
+$zindex-dropdown:          1000 !default;
+$zindex-popover:           1060 !default;
+$zindex-tooltip:           1070 !default;
+$zindex-navbar-fixed:      1030 !default;
+$zindex-modal-background:  1040 !default;
+$zindex-modal:             1050 !default;
 
 
 //== Alerts
 //
 //## Define alert colors, border radius, and padding.
 
-$alert-padding-vertical:      .25rem;
-$alert-padding-horizontal:    .75rem;
-$alert-border-radius:         $border-radius-base;
-$alert-link-font-weight:      bold;
+$alert-padding-vertical:      .25rem !default;
+$alert-padding-horizontal:    .75rem !default;
+$alert-border-radius:         $border-radius-base !default;
+$alert-link-font-weight:      bold !default;
 
-$alert-success-bg:            #cfc;
-$alert-success-text:          $brand-success;
-$alert-success-border:        darken(#cfc, 10%);
+$alert-success-bg:            #cfc !default;
+$alert-success-text:          $brand-success !default;
+$alert-success-border:        darken(#cfc, 10%) !default;
 
-$alert-info-bg:               #cff;
-$alert-info-text:             $brand-info;
-$alert-info-border:           darken(#cff, 10%);
+$alert-info-bg:               #cff !default;
+$alert-info-text:             $brand-info !default;
+$alert-info-border:           darken(#cff, 10%) !default;
 
-$alert-warning-bg:            #ffc;
-$alert-warning-text:          $brand-warning;
-$alert-warning-border:        darken(#ffc, 10%);
+$alert-warning-bg:            #ffc !default;
+$alert-warning-text:          $brand-warning !default;
+$alert-warning-border:        darken(#ffc, 10%) !default;
 
-$alert-danger-bg:             #fcc;
-$alert-danger-text:           $brand-danger;
-$alert-danger-border:         darken(#fcc, 10%);
+$alert-danger-bg:             #fcc !default;
+$alert-danger-text:           $brand-danger !default;
+$alert-danger-border:         darken(#fcc, 10%) !default;
 
 
