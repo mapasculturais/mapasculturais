@@ -439,7 +439,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
     protected function apiAddHeaderMetadata($data){
         if (headers_sent())
             return;
-        
+
         $response_meta = array(
             'count' => count($data)
         );
@@ -509,12 +509,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
             return false;
         }
     }
-    
+
     public function getApiCacheLifetime(){
         $app = App::i();
         $default_lifetime = $app->config['app.apiCache.lifetime'];
         $by_controller_lifetime = $app->config['app.apiCache.lifetimeByController'];
-        
+
         if(isset($by_controller_lifetime[$this->id]))
             return (int) $by_controller_lifetime[$this->id];
         else
@@ -935,15 +935,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $value = str_replace('*', '%', $value);
                 $value = $this->_API_find_addValueToParamList($value);
                 $dql = $not ?
-                        "$key NOT LIKE $value" :
-                        "$key LIKE $value";
+                        "unaccent($key) NOT LIKE unaccent($value)" :
+                        "unaccent($key) LIKE unaccent($value)";
 
             }elseif($operator == "ILIKE"){
                 $value = str_replace('*', '%', $value);
                 $value = $this->_API_find_addValueToParamList($value);
                 $dql = $not ?
-                        "lower($key) NOT LIKE lower($value)" :
-                        "lower($key) LIKE lower($value)";
+                        "unaccent(lower($key)) NOT LIKE unaccent(lower($value))" :
+                        "unaccent(lower($key)) LIKE unaccent(lower($value))";
 
             }elseif($operator == "EQ"){
                 $value = $this->_API_find_addValueToParamList($value);

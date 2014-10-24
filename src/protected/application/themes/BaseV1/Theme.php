@@ -20,12 +20,11 @@ class Theme extends MapasCulturais\Theme {
 
         /* === NOTIFICATIONS  === */
 // para todos os requests
-        $app->hook('workflow(<<*>>).create', function() use($app){
+        $app->hook('workflow(<<*>>).create', function() use($app) {
 
-
-            if($this->notifications){
+            if ($this->notifications) {
                 $app->disableAccessControl();
-                foreach($this->notifications as $n){
+                foreach ($this->notifications as $n) {
                     $n->delete();
                 }
                 $app->enableAccessControl();
@@ -37,18 +36,18 @@ class Theme extends MapasCulturais\Theme {
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type  = strtolower($origin->entityType);
-            $origin_url   = $origin->singleUrl;
-            $origin_name  = $origin->name;
+            $origin_type = strtolower($origin->entityType);
+            $origin_url = $origin->singleUrl;
+            $origin_name = $origin->name;
 
-            $destination_url  = $destination->singleUrl;
+            $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
 
-            $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
-            switch($this->getClassName()){
+            switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
                     $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
@@ -58,7 +57,8 @@ class Theme extends MapasCulturais\Theme {
                     $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} {$origin_link} para o agente {$destination_link} foi enviada.";
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";;
+                    $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+                    ;
                     $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
@@ -84,9 +84,9 @@ class Theme extends MapasCulturais\Theme {
             $notified_user_ids = array($requester->id);
 
 
-            foreach($destination->usersWithControl as $user){
+            foreach ($destination->usersWithControl as $user) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if(in_array($user->id, $notified_user_ids))
+                if (in_array($user->id, $notified_user_ids))
                     continue;
 
                 $notified_user_ids[] = $user->id;
@@ -98,7 +98,7 @@ class Theme extends MapasCulturais\Theme {
                 $notification->save(true);
             }
 
-            if(!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)){
+            if (!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)) {
                 $notification = new Notification;
                 $notification->user = $origin->ownerUser;
                 $notification->message = $message;
@@ -107,25 +107,25 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('workflow(<<*>>).approve:before', function() use($app){
+        $app->hook('workflow(<<*>>).approve:before', function() use($app) {
             $requester = $app->user;
             $profile = $requester->profile;
 
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type  = strtolower($origin->entityType);
-            $origin_url   = $origin->singleUrl;
-            $origin_name  = $origin->name;
+            $origin_type = strtolower($origin->entityType);
+            $origin_url = $origin->singleUrl;
+            $origin_name = $origin->name;
 
-            $destination_url  = $destination->singleUrl;
+            $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
 
-            $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
-            switch($this->getClassName()){
+            switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
                     break;
@@ -151,30 +151,29 @@ class Theme extends MapasCulturais\Theme {
             // notifica quem fez a requisição
             $users[] = $this->requesterUser;
 
-            if($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
                 // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if(!$destination->ownerUser->equals($this->requesterUser))
+                if (!$destination->ownerUser->equals($this->requesterUser))
                     $users[] = $destination->ownerUser;
 
                 // se não é o dono da entidade de origem que está aprovando, notifica o dono
-                if(!$origin->ownerUser->equals($app->user))
+                if (!$origin->ownerUser->equals($app->user))
                     $users[] = $origin->ownerUser;
-
-            }else{
+            }else {
                 // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if(!$origin->ownerUser->equals($this->requesterUser))
+                if (!$origin->ownerUser->equals($this->requesterUser))
                     $users[] = $origin->ownerUser;
 
                 // se não é o dono da entidade de destino que está aprovando, notifica o dono
-                if(!$destination->ownerUser->equals($app->user))
+                if (!$destination->ownerUser->equals($app->user))
                     $users[] = $destination->ownerUser;
             }
 
             $notified_user_ids = array();
 
-            foreach($users as $u){
+            foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if(in_array($u->id, $notified_user_ids))
+                if (in_array($u->id, $notified_user_ids))
                     continue;
 
                 $notified_user_ids[] = $u->id;
@@ -187,94 +186,93 @@ class Theme extends MapasCulturais\Theme {
         });
 
 
-        $app->hook('workflow(<<*>>).reject:before', function() use($app){
+        $app->hook('workflow(<<*>>).reject:before', function() use($app) {
             $requester = $app->user;
             $profile = $requester->profile;
 
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type  = strtolower($origin->entityType);
-            $origin_url   = $origin->singleUrl;
-            $origin_name  = $origin->name;
+            $origin_type = strtolower($origin->entityType);
+            $origin_url = $origin->singleUrl;
+            $origin_name = $origin->name;
 
-            $destination_url  = $destination->singleUrl;
+            $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
 
-            $profile_link      = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link  = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link       = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
+            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
-            switch($this->getClassName()){
+            switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     $message = $origin->canUser('@control') ?
-                        "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}." :
-                        "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+                            "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}." :
+                            "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
-                    if($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+                    if ($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
                         $message = $this->requesterUser->equals($requester) ?
-                            "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                            "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    }else{
+                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
+                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+                    } else {
                         $message = $this->requesterUser->equals($requester) ?
-                            "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                            "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
+                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
                     $message = $origin->canUser('@control') ?
-                        "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
-                        "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+                            "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
+                            "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
                     $message = $origin->canUser('@control') ?
-                        "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                        "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+                            "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
+                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
                     $message = $origin->canUser('@control') ?
-                        "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
-                        "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
+                            "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
+                            "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
                     break;
                 default:
                     $message = $origin->canUser('@control') ?
-                        "A requisição foi cancelada." :
-                        "A requisição foi rejeitada.";
+                            "A requisição foi cancelada." :
+                            "A requisição foi rejeitada.";
                     break;
             }
 
             $users = array();
 
-            if(!$app->user->equals($this->requesterUser)){
+            if (!$app->user->equals($this->requesterUser)) {
                 // notifica quem fez a requisição
                 $users[] = $this->requesterUser;
             }
 
-            if($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST){
+            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
                 // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if(!$destination->ownerUser->equals($this->requesterUser))
+                if (!$destination->ownerUser->equals($this->requesterUser))
                     $users[] = $destination->ownerUser;
 
                 // se não é o dono da entidade de origem que está rejeitando, notifica o dono
-                if(!$origin->ownerUser->equals($app->user))
+                if (!$origin->ownerUser->equals($app->user))
                     $users[] = $origin->ownerUser;
-
-            }else{
+            }else {
                 // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if(!$origin->ownerUser->equals($this->requesterUser))
+                if (!$origin->ownerUser->equals($this->requesterUser))
                     $users[] = $origin->ownerUser;
 
                 // se não é o dono da entidade de destino que está rejeitando, notifica o dono
-                if(!$destination->ownerUser->equals($app->user))
+                if (!$destination->ownerUser->equals($app->user))
                     $users[] = $destination->ownerUser;
             }
 
             $notified_user_ids = array();
 
-            foreach($users as $u){
+            foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if(in_array($u->id, $notified_user_ids))
+                if (in_array($u->id, $notified_user_ids))
                     continue;
 
                 $notified_user_ids[] = $u->id;
@@ -304,11 +302,9 @@ class Theme extends MapasCulturais\Theme {
                 'zoomDefault' => $app->config['maps.zoom.default'],
                 'zoomPrecise' => $app->config['maps.zoom.precise'],
                 'zoomApproximate' => $app->config['maps.zoom.approximate'],
-
                 'includeGoogleLayers' => $app->config['maps.includeGoogleLayers'],
-
                 'latitude' => $app->config['maps.center'][0],
-                'longitude'  => $app->config['maps.center'][1]
+                'longitude' => $app->config['maps.center'][1]
             );
 
 
@@ -340,12 +336,12 @@ class Theme extends MapasCulturais\Theme {
 
             $divisions = $query->getScalarResult();
 
-            foreach($app->getRegisteredGeoDivisions() as $d){
+            foreach ($app->getRegisteredGeoDivisions() as $d) {
                 $metakey = $d->metakey;
                 $this->$metakey = '';
             }
 
-            foreach($divisions as $div){
+            foreach ($divisions as $div) {
                 $metakey = 'geo' . ucfirst($div['type']);
                 $this->$metakey = $div['name'];
             }
@@ -377,51 +373,50 @@ class Theme extends MapasCulturais\Theme {
             $class = $this->getClassName();
 
             $joins .= "LEFT JOIN
-                        MapasCulturais\Entities\TermRelation
-                            tr
+                MapasCulturais\Entities\TermRelation
+                    tr
+                WITH
+                    tr.objectType = '$class' AND
+                    tr.objectId = e.id
+                    LEFT JOIN
+                        tr.term
+                            t
                         WITH
-                            tr.objectType = '$class' AND
-                            tr.objectId = e.id
-                            LEFT JOIN
-                                tr.term
-                                    t
-                                WITH
-                                    t.taxonomy = '{$taxonomy->id}'";
+                            t.taxonomy = '{$taxonomy->id}'";
         });
 
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where) {
-            $where .= " OR lower(t.term) LIKE lower(:keyword) ";
+            $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
         });
 
         $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins) {
             $joins .= " LEFT JOIN e.project p
-                        LEFT JOIN MapasCulturais\Entities\EventMeta m
-                            WITH
-                                m.key = 'subTitle' AND
-                                m.owner = e
-                        ";
+                LEFT JOIN MapasCulturais\Entities\EventMeta m
+                    WITH
+                        m.key = 'subTitle' AND
+                        m.owner = e
+                ";
         });
 
         $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where) {
-            $where .= " OR lower(p.name) LIKE lower(:keyword)
-                        OR lower(m.value) LIKE lower(:keyword)";
+            $where .= " OR unaccent(lower(p.name)) LIKE unaccent(lower(:keyword))
+                OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
     }
 
-    function register(){
+    function register() {
         $app = App::i();
-        foreach($app->config['app.geoDivisionsHierarchy'] as $slug => $name){
-            foreach(array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class){
+        foreach ($app->config['app.geoDivisionsHierarchy'] as $slug => $name) {
+            foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
-                foreach($entity_types as $type){
+                foreach ($entity_types as $type) {
                     $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $name));
                     $app->registerMetadata($metadata, $entity_class, $type->id);
                 }
             }
         }
     }
-
 
     function head() {
         parent::head();
@@ -491,7 +486,7 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    function includeVendorAssets(){
+    function includeVendorAssets() {
         $this->enqueueStyle('vendor', 'x-editable', 'vendor/x-editable/jquery-editable/css/jquery-editable.css', array('select2'));
         $this->enqueueStyle('vendor', 'x-editable-tip', 'vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
 
@@ -566,8 +561,6 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('vendor', 'spin.js', 'vendor/spin.js', array('angular'));
         $this->enqueueScript('vendor', 'angular-spinner', 'vendor/angular-spinner.js', array('spin.js'));
-
-
     }
 
     function includeCommonAssets() {
@@ -584,20 +577,19 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
 
-        if($this->isEditable())
-            $this->includeEditableEntityAssets ();
+        if ($this->isEditable())
+            $this->includeEditableEntityAssets();
 
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('style'));
     }
 
-    function includeEditableEntityAssets(){
+    function includeEditableEntityAssets() {
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
-
     }
 
-    function includeSearchAssets(){
+    function includeSearchAssets() {
 
         $this->enqueueScript('app', 'SearchService', 'js/SearchService.js', array('ng-mapasculturais', 'SearchSpatial'));
         $this->enqueueScript('app', 'FindOneService', 'js/FindOneService.js', array('ng-mapasculturais', 'SearchSpatial'));
@@ -643,16 +635,15 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
 
         $this->enqueueScript('app', 'map', 'js/map.js');
-
     }
 
-    function includeAngularEntityAssets($entity){
+    function includeAngularEntityAssets($entity) {
         $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
 
-        $this->jsObject['entity'] = array( 'id' => $entity->id );
+        $this->jsObject['entity'] = array('id' => $entity->id);
 
-        if(!$this->isEditable()){
+        if (!$this->isEditable()) {
             return;
         }
 
@@ -700,7 +691,7 @@ class Theme extends MapasCulturais\Theme {
         );
     }
 
-    protected function _populateJsObject(){
+    protected function _populateJsObject() {
 
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
@@ -737,22 +728,22 @@ class Theme extends MapasCulturais\Theme {
                 return 0;
         });
 
-        if(!isset($this->jsObject['entityTypes']))
+        if (!isset($this->jsObject['entityTypes']))
             $this->jsObject['entityTypes'] = array();
 
         $this->jsObject['entityTypes'][$controller->id] = $types;
-
     }
 
     function addTaxonoyTermsToJs($taxonomy_slug) {
         $terms = App::i()->repo('Term')->getTermsAsString($taxonomy_slug);
-        if(!isset($this->jsObject['taxonomyTerms']))
+        if (!isset($this->jsObject['taxonomyTerms']))
             $this->jsObject['taxonomyTerms'] = array();
 
         $this->jsObject['taxonomyTerms'][$taxonomy_slug] = $terms;
     }
 
-    function addRelatedAgentsToJs($entity){
+    function addRelatedAgentsToJs($entity) {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
+
 }

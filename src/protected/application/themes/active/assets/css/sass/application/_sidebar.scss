@@ -31,7 +31,7 @@
 .sidebar-right {
     width: 25%;
 }
-.sidebar.evento {
+.sidebar.event {
     border-top: $brand-event 12px solid;
     .widget-list-item > a {
         color: $brand-event;
@@ -40,7 +40,7 @@
         border-color: $brand-event transparent transparent transparent;
     }
 }
-.sidebar.agente {
+.sidebar.agent {
     border-top: $brand-agent 12px solid;
     .widget-list-item > a {
         color: $brand-agent;
@@ -49,7 +49,7 @@
         border-color: $brand-agent transparent transparent transparent;
     }
 }
-.sidebar.espaco {
+.sidebar.space {
     border-top: $brand-space 12px solid;
     .widget-list-item > a {
         color: $brand-space;
@@ -58,7 +58,7 @@
         border-color: $brand-space transparent transparent transparent;
     }
 }
-.sidebar.projeto {
+.sidebar.project {
     border-top: $brand-project 12px solid;
     .widget-list-item > a {
         color: $brand-project;

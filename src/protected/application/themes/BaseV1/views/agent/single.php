@@ -15,14 +15,14 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar agente">
+<div class="sidebar-left sidebar agent">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<article class="main-content agente">
+<article class="main-content agent">
     <header class="main-content-header">
 
         <div
@@ -73,7 +73,7 @@ $this->includeAngularEntityAssets($entity);
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
@@ -90,11 +90,14 @@ $this->includeAngularEntityAssets($entity);
                     <?php endif; ?>
                 <?php endif; ?>
 
-
                 <?php if($this->isEditable()): ?>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Completo ou Razão Social" data-emptytext="Insira seu nome completo ou razão social"><?php echo $entity->nomeCompleto; ?></span></p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">CPF/CNPJ:</span> <span class="js-editable" data-edit="documento" data-original-title="CPF/CNPJ" data-emptytext="Insira o CPF ou CNPJ com pontos, hífens e barras"><?php echo $entity->documento; ?></span></p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Idade/Tempo:</span> <span class="js-editable" data-edit="idade" data-original-title="Idade/Tempo" data-emptytext="Insira sua idade ou tempo de existência"><?php echo $entity->idade; ?></span></p>
+                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Data de Nascimento/Fundação:</span>
+                        <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="Data de Nascimento/Fundação" data-emptytext="Insira a data de nascimento ou fundação do agente">
+                            <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
+                        </span>
+                    </p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Email:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
@@ -167,13 +170,13 @@ $this->includeAngularEntityAssets($entity);
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
-    <div id="agenda" class="aba-content lista">
+    <div id="agenda" class="aba-content">
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
-<div class="sidebar agente sidebar-right">
+<div class="sidebar agent sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</div>

@@ -28,14 +28,14 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar projeto">
+<div class="sidebar-left sidebar project">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 
-<article class="main-content projeto">
+<article class="main-content project">
     <header class="main-content-header">
         <div
             <?php if($header = $entity->getFile('header')): ?>
@@ -106,7 +106,7 @@ $this->includeAngularEntityAssets($entity);
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
@@ -139,7 +139,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
-    <div id="agenda" class="aba-content lista">
+    <div id="agenda" class="aba-content">
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
@@ -198,7 +198,7 @@ $this->includeAngularEntityAssets($entity);
 
             <div id="dialog-registration-form" class="js-dialog" title="Inscrição">
                 <form class="js-ajax-upload" method="POST" data-action="project-registration" action="<?php echo $app->createUrl('project', 'register', array($entity->id)); ?>" enctype="multipart/form-data">
-                    <div class="mensagem erro"></div>
+                    <div class="alert danger"></div>
                 <h4 class="js-search js-xedit"
                            data-field-name='agentId'
                            data-emptytext="Selecione um agente"
@@ -230,7 +230,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <div class="js-registration-list">
                 <?php foreach($entity->registrations as $registration): ?>
-                <article id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="objeto evento clearfix">
+                <article id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="objeto clearfix">
                     <h1><a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a></h1>
                     <div class="objeto-meta">
                         <div><span class="label">Área de atuação:</span> <?php echo implode(',', $registration->agent->terms['area']) ?></div>
@@ -252,7 +252,7 @@ $this->includeAngularEntityAssets($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="sidebar projeto sidebar-right">
+<div class="sidebar project sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>

@@ -1,6 +1,8 @@
 MapasCulturais = MapasCulturais || {};
 
 $(function(){
+//    $.fn.select2.defaults.separator = '; ';
+//    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -110,7 +112,7 @@ MapasCulturais.Messages = {
     fadeOutSpeed: 'slow',
     showMessage: function(type, message) {
         var $container = $('#editable-entity');
-        var $message = $('<div class="mensagem ' + type + '">"').html(message);
+        var $message = $('<div class="alert ' + type + '">"').html(message);
         var $mainSection = $('#main-section');
         var delayToFadeOut = this.delayToFadeOut;
         $container.append($message);
@@ -134,16 +136,16 @@ MapasCulturais.Messages = {
 
     },
     success: function(message) {
-        this.showMessage('sucesso', message);
+        this.showMessage('success', message);
     },
     error: function(message) {
-        this.showMessage('erro', message);
+        this.showMessage('danger', message);
     },
     help: function(message) {
-        this.showMessage('ajuda', message);
+        this.showMessage('info', message);
     },
     alert: function(message) {
-        this.showMessage('alerta', message);
+        this.showMessage('warning', message);
     }
 
 }
@@ -226,7 +228,7 @@ MapasCulturais.Modal = {
     open: function(selector){
         var $dialog = $(selector);
 
-        $dialog.find('div.mensagem.erro').html('').hide();
+        $dialog.find('div.alert.danger').html('').hide();
         $dialog.find('.js-ajax-upload-progress').hide();
         $dialog.css('opacity',0).show();
         setTimeout(function(){
@@ -373,7 +375,7 @@ MapasCulturais.EditBox = {
 
     open: function(selector, $button){
         var $dialog = $(selector);
-        $dialog.find('div.mensagem.erro').html('').hide();
+        $dialog.find('div.alert.danger').html('').hide();
 
         MapasCulturais.AjaxUploader.resetProgressBar(selector);
 
@@ -544,6 +546,10 @@ MapasCulturais.Search = {
                 type:'select2',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
+//                    multiple: $selector.data('multiple'),
+//                    tokenSeparators: [";",";"],
+//                    separator:'; ',
+//                    viewseparator: '; ',
                     width: $selector.data('search-box-width'),
                     placeholder: $selector.data('search-box-placeholder'),
                     minimumInputLength: 0,

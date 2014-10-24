@@ -123,4 +123,65 @@ class WorkflowTest extends MapasCulturais_TestCase{
 
         }
     }
+
+    //Verifies Requests Actions:
+
+    //REQUEST TYPE: RequestChangeOwnership
+
+
+    //Entity Owner: Always An Agent
+
+    //ORIGIN: An Entity
+    //DESTINATION: An Agent
+
+    // RequestChangeOwnership - Request
+    //  Who can Create this Request: users that control the DESTINATION agent
+    //  Who can Approve: users that control the ORIGIN entity owner agent
+    //  Who can Reject: users that can create or approve the request
+
+    function testRequestChangeOwnershipRequest(){
+//        $this->app->enableWorkflow();
+    }
+
+    // RequestChangeOwnership - Give
+    //  Who can Create this Request: users that control the ORIGIN entity owner agent (@control)
+    //  Who can Approve: users that control the DESTINATION agent
+    //  Who can Reject: users that can create or approve the request
+
+    function testRequestChangeOwnershipGive(){
+//        $this->app->enableWorkflow();
+    }
+
+
+    //REQUEST TYPE: RequestChildEntity
+
+    //ORIGIN: A child Space or a child Project
+    //DESTINATION: A parent Space or a parent Project
+
+    //Who can Create this Request: users that control the ORIGIN Entity (child space or project)
+    //Who can Approve: users that control the DESTINATION entity (parent space or project)
+    //Who can Reject: users that can create or approve the request
+
+    function testRequestChildEntity(){
+//        $this->app->enableWorkflow();
+    }
+
+    //REQUEST TYPE: RequestAgentRelation
+
+    //ORIGIN: An Entity
+    //DESTINATION: An Agent
+
+    //Who can Create this Request: users that control the ORIGIN Entity
+    //Who can Approve: users that control the DESTINATION Agent
+    //Who can Reject: users that can create or approve the request
+
+    function testRequestAgentRelation(){
+//        $this->app->enableWorkflow();
+    }
+
+    
+
+//    RequestEventOccurrence,
+
+//    RequestEventProject
 }

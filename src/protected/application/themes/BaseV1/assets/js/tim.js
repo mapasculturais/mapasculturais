@@ -119,7 +119,7 @@
 
 
 
-            if ($('#editable-entity').length) {
+            if ($('#editable-entity:visible').length) {
                 $editableEntity = $('#editable-entity');
 
                 $editableEntity.css('top', newHeaderTop + headerHeight);

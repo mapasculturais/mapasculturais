@@ -31,8 +31,10 @@ class RequestChangeOwnership extends Request{
     }
 
     protected function canUserCreate($user) {
-        return $this->getType() === self::TYPE_REQUEST ?
-                $this->destination->canUser('@control', $user) : $this->origin->owner->canUser('@control', $user);
+        if($this->getType() === self::TYPE_REQUEST)
+            return $this->destination->canUser('@control', $user);
+        else
+            return $this->origin->owner->canUser('@control', $user);
     }
 
     protected function canUserApprove($user){
@@ -40,12 +42,5 @@ class RequestChangeOwnership extends Request{
             return $this->origin->owner->canUser('@control', $user);
         else
             return $this->destination->canUser('@control', $user);
-    }
-
-    protected function canUserReject($user){
-        if($this->getType() === self::TYPE_REQUEST)
-            return $this->destination->canUser('@control', $user);
-        else
-            return $this->origin->owner->canUser('@control', $user) || $this->origin->ownerUser->canUser('@control');
     }
 }

@@ -1,21 +1,4 @@
-<style>
-    .agenda-singles-datepicker{
-        border:none;
-        width:90px;
-        cursor:pointer;
-        font-size: .8rem;
-        font-weight: bold;
-        padding:0;
-        text-align: center;
-        margin: 0 3px;
-    }
-
-    img.spinner {
-        float:right;
-        display:none;
-    }
-</style>
-<header class="clearfix">
+<header class="entinty-calendar-header clearfix">
     <p class="alignleft">
         <strong><span id="agenda-count"></span></strong>
         evento<span id="agenda-count-plural" class="escondido">s</span>

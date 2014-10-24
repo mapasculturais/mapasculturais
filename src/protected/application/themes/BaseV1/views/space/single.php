@@ -16,7 +16,7 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar espaco">
+<div class="sidebar-left sidebar space">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
@@ -45,7 +45,7 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<article class="main-content espaco">
+<article class="main-content space">
     <header class="main-content-header">
         <div
             <?php if($header = $entity->getFile('header')): ?>
@@ -113,7 +113,7 @@ $this->includeAngularEntityAssets($entity);
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
             <p>
@@ -210,14 +210,14 @@ $this->includeAngularEntityAssets($entity);
         <!-- Image Gallery END -->
     </div>
     <!-- #sobre -->
-    <div id="agenda" class="aba-content lista">
+    <div id="agenda" class="aba-content">
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
-<div class="sidebar espaco sidebar-right">
+<div class="sidebar space sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>

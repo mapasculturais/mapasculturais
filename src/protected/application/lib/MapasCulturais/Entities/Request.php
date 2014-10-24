@@ -114,7 +114,7 @@ abstract class Request extends \MapasCulturais\Entity{
     /**
      *
      * @var \MapasCulturais\Entities\Notification[] Notifications
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="all", orphanRemoval=true)
      */
     protected $notifications;
 
@@ -221,7 +221,7 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     protected function canUserReject($user){
-        return $this->origin->canUser('@control', $user) || $this->destination->canUser('@control', $user);
+        return $this->canUserApprove($user) || $this->canUserCreate($user);
     }
 
     protected function _doRejectAction() { }

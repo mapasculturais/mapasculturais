@@ -23,7 +23,7 @@ $this->addRelatedAgentsToJs($entity);
 
                 <div class="descricao-do-agente">
                     <h1><a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a></h1>
-                    <small ng-if="relation.status < 0">Aguardando confirmação.</small>
+                    <div class="alert warning" ng-if="relation.status < 0">Aguardando confirmação.</div>
                     <div class="objeto-meta">
                         <div ng-if="relation.agent.terms.area">
                             <span class="label">área de atuação:</span>

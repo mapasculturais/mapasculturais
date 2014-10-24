@@ -25,8 +25,8 @@ $this->includeMapAssets();
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
+        {{#pending}}<div class="alert warning pending">Aguardando confirmação</div>{{/pending}}
         <div class="infos">
-            {{#pending}}<span class="pending">Aguardando confirmação</span>{{/pending}}
             <p><span class="label">Descrição Legível: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
             <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
@@ -79,7 +79,7 @@ $this->includeMapAssets();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<div class="sidebar-left sidebar evento">
+<div class="sidebar-left sidebar event">
     <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if($this->isEditable()): ?>
@@ -95,6 +95,7 @@ $this->includeMapAssets();
                 data-selection-template="#agent-response-template"
                 data-no-result-template="#agent-response-no-results-template"
                 data-selection-format="chooseProject"
+                data-multiple="true"
                 data-allow-clear="1"
                 data-auto-open="true"
                 data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
@@ -123,7 +124,7 @@ $this->includeMapAssets();
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<article class="col-60 main-content evento">
+<article class="col-60 main-content event">
     <header class="main-content-header">
         <div
         <?php if ($header = $entity->getFile('header')): ?>
@@ -174,7 +175,7 @@ $this->includeMapAssets();
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="mensagem alerta">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
             <p>
                 <?php if ($this->isEditable() || $entity->shortDescription): ?>
@@ -373,7 +374,7 @@ $this->includeMapAssets();
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
-<div class="sidebar evento sidebar-right">
+<div class="sidebar event sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
@@ -395,7 +396,7 @@ $this->includeMapAssets();
 <?php if ($this->isEditable()): ?>
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
     <form action="{{formAction}}" method="POST">
-        <div class="mensagem erro escondido"></div>
+        <div class="alert danger escondido"></div>
         <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
         <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
@@ -418,7 +419,7 @@ $this->includeMapAssets();
         </div>
 
         <!--mostrar se não encontrar o espaço cadastrado
-        <div class="mensagem alerta">
+        <div class="alert warning">
             Aparentemente o espaço procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um novo espaço clicando no botão abaixo.
         </div>
         <a class="botao adicionar" href="#">adicionar espaço</a>-->
@@ -484,7 +485,7 @@ $this->includeMapAssets();
                 <label for="description">Descrição legível do horário:</label>
                 <p class="form-help">Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado.</p>
                 <div class="grupo-descricao-automatica clearfix">
-                    <p id="descricao-automatica" class="mensagem automatica">Descrição gerada pelo sistema automaticamente.</p>
+                    <p id="descricao-automatica" class="alert automatic">Descrição gerada pelo sistema automaticamente.</p>
                     <a class="botao simples inserir"></a>
                 </div>
                 <input type="text" name="description" value="{{rule.description}}">
