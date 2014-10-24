@@ -569,8 +569,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueStyle('fonts', 'elegant', 'css/elegant-font.css');
 
-        $this->enqueueStyle('app', 'style', 'css/style.css');
-        $this->enqueueStyle('app', 'vendor', 'css/vendor.css');
+        $this->enqueueStyle('app', 'main', 'css/main.css');
 
         $this->enqueueScript('app', 'tim', 'js/tim.js');
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
@@ -583,7 +582,7 @@ class Theme extends MapasCulturais\Theme {
 
 
         if (App::i()->config('mode') == 'staging')
-            $this->enqueueStyle('app', 'staging', 'css/staging.css', array('style'));
+            $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
     }
 
     function includeEditableEntityAssets() {
