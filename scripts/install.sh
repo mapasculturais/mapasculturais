@@ -17,3 +17,5 @@ sudo -u ${PGUSER} psql -d ${DBNAME} -c 'CREATE EXTENSION unaccent;'
 
 sudo PGPASSWORD=${DBPASS} -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -h 127.0.0.1 -f ../db/schema.sql
 sudo PGPASSWORD=${DBPASS} -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -h 127.0.0.1 -f ../db/initial-data.sql
+
+./db-update.sh
