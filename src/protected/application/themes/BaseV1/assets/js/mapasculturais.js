@@ -25,10 +25,10 @@ $(function(){
             };
 
             if(roleToRemove)
-                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.request.id, {role: roleToRemove}, function(r){ if(r && !r.error) change(); });
+                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.entity.id, {role: roleToRemove}, function(r){ if(r && !r.error) change(); });
 
             if(roleToAdd)
-                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.request.id, {role: roleToAdd}, function(r){ if(r && !r.error) change(); });
+                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.entity.id, {role: roleToAdd}, function(r){ if(r && !r.error) change(); });
 
 
         });
@@ -722,7 +722,7 @@ MapasCulturais.Search = {
     },
 
     ajaxData: function(searchParams, $selector){
-        var excludedIds = MapasCulturais.request.controller === $selector.data('entity-controller') && MapasCulturais.request.id ? [MapasCulturais.request.id] : [];
+        var excludedIds = MapasCulturais.request.controller === $selector.data('entity-controller') && MapasCulturais.entity.id ? [MapasCulturais.entity.id] : [];
 
         if(excludedIds.length > 0)
             searchParams.id = '!in(' + excludedIds.toString() + ')';
@@ -811,7 +811,7 @@ MapasCulturais.Search = {
                 var groupname = $selector.parents('.js-related-group').find('.js-related-group-name').text();
 
                 $.post(
-                    MapasCulturais.baseURL + MapasCulturais.request.controller + '/createAgentRelation/id:' + MapasCulturais.request.id,
+                    MapasCulturais.baseURL + MapasCulturais.request.controller + '/createAgentRelation/id:' + MapasCulturais.entity.id,
                     {agentId: entity.id, group:groupname, has_control: '0'}
                 );
 
@@ -835,7 +835,7 @@ MapasCulturais.Search = {
             ajaxData: function(searchParams, $selector){
                 var group = $selector.parents('.js-related-group').find('.js-related-group-name').text();
 
-                var excludedIds = MapasCulturais.request.controller === 'agent' && MapasCulturais.request.id? [MapasCulturais.request.id] : [];
+                var excludedIds = MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id? [MapasCulturais.entity.id] : [];
                 try{
                     if(MapasCulturais.agentRelationGroupExludeIds[group])
                         excludedIds = excludedIds.concat(MapasCulturais.agentRelationGroupExludeIds[group]);
@@ -916,7 +916,7 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
-                var excludedIds = MapasCulturais.request.controller === 'agent' && MapasCulturais.request.id? [MapasCulturais.request.id] : [];
+                var excludedIds = MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id? [MapasCulturais.entity.id] : [];
 
                 excludedIds.push($selector.data('value'));
 
@@ -965,8 +965,8 @@ MapasCulturais.Search = {
 
             ajaxData: function(searchParams, $selector){
                 var excludedIds = [$selector.editable('getValue').ownerId];
-                if(MapasCulturais.request.controller === 'agent' && MapasCulturais.request.id)
-                    excludedIds.push(MapasCulturais.request.id);
+                if(MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id)
+                    excludedIds.push(MapasCulturais.entity.id);
 
                 if ( excludedIds.length > 0)
                     searchParams.id = '!in('+excludedIds.toString()+')';

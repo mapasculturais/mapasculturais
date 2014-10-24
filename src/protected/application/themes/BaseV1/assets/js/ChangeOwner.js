@@ -18,7 +18,7 @@
             baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
 
         try{ controllerId = MapasCulturais.request.controller; }catch (e){};
-        try{ entityId = MapasCulturais.request.id; }catch (e){};
+        try{ entityId = MapasCulturais.entity.id; }catch (e){};
 
         return {
             controllerId: controllerId,
@@ -29,7 +29,8 @@
                 return baseUrl + controllerId + '/changeOwner/' + entityId;
             },
 
-            setOwnerTo: function(agentId){
+
+        setOwnerTo: function(agentId){
                 return $http.post(this.getUrl(), {ownerId: agentId}).
                     success(function(data, status){
                         $rootScope.$emit('changedOwner', { message: "The entity owner was changed", data: data, status: status });

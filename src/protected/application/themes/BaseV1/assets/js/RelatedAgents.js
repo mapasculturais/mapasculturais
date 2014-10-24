@@ -18,7 +18,7 @@
             baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
     
         try{ controllerId = MapasCulturais.request.controller; }catch (e){};
-        try{ entityId = MapasCulturais.request.id; }catch (e){};
+        try{ entityId = MapasCulturais.entity.id; }catch (e){};
         
         return {
             controllerId: controllerId,

@@ -18,7 +18,7 @@ $(function() {
 
         $(this).on('change', function(){
             $('img.spinner').show();
-            var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.request.id;
+            var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.entity.id;
             console.log(url+'?from='+$('#agenda-from').val()+'&to='+$('#agenda-to').val());
             $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
                 $('#agenda-content').html(result);
