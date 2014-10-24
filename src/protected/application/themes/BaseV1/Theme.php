@@ -4,6 +4,7 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 
 class Theme extends MapasCulturais\Theme {
@@ -642,6 +643,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
 
         $this->jsObject['entity'] = array('id' => $entity->id);
+
+        $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
+        foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
+        $this->jsObject['roles'] = $roles;
 
         if (!$this->isEditable()) {
             return;
