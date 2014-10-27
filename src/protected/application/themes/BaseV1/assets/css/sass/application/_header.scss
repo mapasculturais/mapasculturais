@@ -23,6 +23,9 @@
     a {
         color: $brand-primary;
     }
+    a:hover {
+        text-decoration: none;
+    }
 }
 #about-nav {
     padding: 0 $padding-large;
