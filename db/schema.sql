@@ -388,7 +388,6 @@ CREATE TABLE agent (
     status smallint NOT NULL,
     is_user_profile boolean DEFAULT false NOT NULL,
     is_verified boolean DEFAULT false NOT NULL
-
 );
 
 
@@ -643,6 +642,46 @@ CREATE TABLE file (
 
 
 ALTER TABLE public.file OWNER TO mapasculturais;
+
+--
+-- Name: geo_division; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+CREATE TABLE geo_division (
+    id integer NOT NULL,
+    parent_id integer,
+    type character varying(32) NOT NULL,
+    cod character varying(32),
+    name character varying(128) NOT NULL,
+    geom geometry,
+    CONSTRAINT enforce_dims_geom CHECK ((st_ndims(geom) = 2)),
+    CONSTRAINT enforce_geotype_geom CHECK (((geometrytype(geom) = 'MULTIPOLYGON'::text) OR (geom IS NULL))),
+    CONSTRAINT enforce_srid_geom CHECK ((st_srid(geom) = 4326))
+);
+
+
+ALTER TABLE public.geo_division OWNER TO mapasculturais;
+
+--
+-- Name: geo_division_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+--
+
+CREATE SEQUENCE geo_division_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.geo_division_id_seq OWNER TO mapasculturais;
+
+--
+-- Name: geo_division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+--
+
+ALTER SEQUENCE geo_division_id_seq OWNED BY geo_division.id;
+
 
 --
 -- Name: metadata; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace:
@@ -1096,6 +1135,13 @@ ALTER TABLE ONLY event_occurrence_recurrence ALTER COLUMN id SET DEFAULT nextval
 -- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
 --
 
+ALTER TABLE ONLY geo_division ALTER COLUMN id SET DEFAULT nextval('geo_division_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+--
+
 ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::regclass);
 
 
@@ -1205,6 +1251,14 @@ ALTER TABLE ONLY event
 
 ALTER TABLE ONLY file
     ADD CONSTRAINT file_pk PRIMARY KEY (id);
+
+
+--
+-- Name: geo_division_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+ALTER TABLE ONLY geo_division
+    ADD CONSTRAINT geo_division_pkey PRIMARY KEY (id);
 
 
 --
@@ -1331,6 +1385,13 @@ CREATE INDEX agent_relation_all ON agent_relation USING btree (agent_id, object_
 --
 
 CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (status);
+
+
+--
+-- Name: geo_divisions_geom_idx; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+CREATE INDEX geo_divisions_geom_idx ON geo_division USING gist (geom);
 
 
 --
