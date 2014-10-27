@@ -1,6 +1,11 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 
+if(!isset($asset_dir)){
+    $asset_dir = 'assets/';
+}
+
+
 // creating base url
 $prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
 //added @ for HTTP_HOST undefined in Tests
@@ -18,7 +23,7 @@ return array(
 
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
-    'base.assetUrl' => '/assets/',
+    'base.assetUrl' => $base_url . $asset_dir,
 
     'vectorLayersPath' => 'geojson',
 
@@ -37,7 +42,7 @@ return array(
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
-        'publishPath' => BASE_PATH . 'pub/',
+        'publishPath' => BASE_PATH . $asset_dir,
 
         'mergeScripts' => false,
         'mergeStyles' => false,
