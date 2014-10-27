@@ -228,7 +228,6 @@ abstract class Theme extends \Slim\View {
         foreach($this->data->keys() as $k)
             $$k = $this->data->get($k);
 
-
         if ($this->controller){
             $this->bodyClasses[] = "controller-{$this->controller->id}";
             $this->bodyClasses[] = "action-{$this->controller->action}";
