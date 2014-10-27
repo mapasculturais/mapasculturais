@@ -315,17 +315,17 @@ COPY space_meta (object_id, key, value) FROM stdin;
 --
 
 COPY term (id, taxonomy, term, description) FROM stdin;
-2	2	Antropologia
-3	2	Arqueologia
-4	2	Arquitetura-Urbanismo	
-5	2	Arquivo
-6	2	Artesanato
-7	2	Artes Visuais
-8	2	Cultura Negra
-9	2	Fotografia
-10	2	Jogos Eletrônicos
-11	2	Circo
-12	2	Filosofia
+2	2	Antropologia	DESCRIÇÃO
+3	2	Arqueologia	DESCRIÇÃO
+4	2	Arquitetura-Urbanismo	DESCRIÇÃO
+5	2	Arquivo	DESCRIÇÃO
+6	2	Artesanato	DESCRIÇÃO
+7	2	Artes Visuais	DESCRIÇÃO
+8	2	Cultura Negra	DESCRIÇÃO
+9	2	Fotografia	DESCRIÇÃO
+10	2	Jogos Eletrônicos	DESCRIÇÃO
+11	2	Circo	DESCRIÇÃO
+12	2	Filosofia	DESCRIÇÃO
 \.
 
 
