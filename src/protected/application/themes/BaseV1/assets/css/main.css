@@ -675,10 +675,11 @@ h6 {
   float: right;
   text-align: center; }
 
+b
 .filtro-prefeitura .botao {
   color: #fff;
   background-color: #000000;
-  background-image: url(../img/prefeitura.png);
+  background-image: url(../img/verified-icon.png);
   background-position: 8px center;
   background-repeat: no-repeat;
   padding-left: 40px; }
