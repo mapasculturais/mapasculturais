@@ -213,7 +213,7 @@
             <!--#ferramentas-->
             <div id="resultados">
                 <span ng-show="spinnerCount > 0" style="display:inline">
-                    <span style="display:inline" us-spinner="{radius:2, width:2, length: 10, lines:11, top:0, left:1, speed:2}"></span>
+                    <img src="<?php $this->asset('img/spinner.gif') ?>" />
                     <span style="margin-left:35px">obtendo resultados...</span>
                 </span>
                 <span ng-if="!spinnerCount">
