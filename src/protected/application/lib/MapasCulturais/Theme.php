@@ -25,6 +25,7 @@ abstract class Theme extends \Slim\View {
         Traits\MagicSetter,
         Traits\MagicCallers;
 
+
     /**
      * The controller that is using this view object.
      * @var \MapasCulturais\Controller
@@ -77,9 +78,12 @@ abstract class Theme extends \Slim\View {
      */
     protected $path = null;
 
+    protected $_dict = array();
+
     abstract protected function _init();
 
     abstract function register();
+
 
     public function __construct(AssetManager $asset_manager) {
         parent::__construct();
@@ -96,12 +100,15 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['baseURL'] = $app->baseUrl;
         $this->jsObject['assetURL'] = $app->assetUrl;
 
-        $class = get_called_class();
         $folders = array();
+
+        $class = get_called_class();
         while($class !== __CLASS__){
             if(!method_exists($class, 'getThemeFolder'))
                 throw new \Exception ("getThemeFolder method is required for theme classes and is not present in {$class} class");
-                $folders[] = $class::getThemeFolder() . '/';
+
+            $folders[] = $class::getThemeFolder() . '/';
+
             $class = get_parent_class($class);
         }
 
@@ -113,6 +120,32 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:before');
         $this->_init();
         $app->applyHookBoundTo($this, 'theme.init:after');
+    }
+
+    abstract protected static function _getTexts();
+
+    protected function _addTexts(array $dict = array()){
+        $this->_dict = array_merge($dict, $this->_dict);
+    }
+
+    function dict($key, $print = true){
+        if(!$this->_dict){
+            $class = get_called_class();
+            while($class !== __CLASS__){
+                $this->_addTexts($class::_getTexts());
+                $class = get_parent_class($class);
+            }
+        }
+        $text = '';
+        if(key_exists($key, $this->_dict)){
+            $text = $this->_dict[$key];
+        }
+
+        if($print){
+            echo $text;
+        }else{
+            return $text;
+        }
     }
 
     /**
@@ -418,8 +451,8 @@ abstract class Theme extends \Slim\View {
             foreach($matches[0] as $i => $tag){
                 $markdown = str_replace($tag, $this->asset($matches[1][$i], false), $markdown);
             }
-        }        
-        
+        }
+
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);

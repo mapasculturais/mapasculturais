@@ -13,14 +13,38 @@ class Theme extends MapasCulturais\Theme {
         return __DIR__;
     }
 
+    protected static function _getTexts(){
+        return array(
+            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
+            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
+            'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
+            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
+            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."
+        );
+    }
+
+    function getSearchAgentsUrl(){
+        return App::i()->createUrl('site', 'search')."##(global:(enabled:(agent:!t),filterEntity:agent))";
+    }
+
+    function getSearchSpacesUrl(){
+        return App::i()->createUrl('site', 'search')."##(global:(enabled:(space:!t),filterEntity:space))";
+    }
+
+    function getSearchEventsUrl(){
+        return App::i()->createUrl('site', 'search')."##(global:(enabled:(event:!t),filterEntity:event))";
+    }
+
+    function getSearchProjectsUrl(){
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
+    }
+
     protected function _init() {
         $app = App::i();
 
 
-
-
         /* === NOTIFICATIONS  === */
-// para todos os requests
+        // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app) {
 
             if ($this->notifications) {
@@ -287,9 +311,6 @@ class Theme extends MapasCulturais\Theme {
 
 
         /* ---------------------- */
-
-
-
 
 
         $app->hook('view.render(<<*>>):before', function() use($app) {

@@ -125,10 +125,10 @@ $project = findOneVerifiedEntityWithImages($class_project);
 if($project) $project_img_url = getImageUrl($project);
 
 
-$url_search_agents = $app->createUrl('site', 'search')."##(global:(enabled:(agent:!t),filterEntity:agent))";
-$url_search_spaces = $app->createUrl('site', 'search')."##(global:(enabled:(space:!t),filterEntity:space))";
-$url_search_events = $app->createUrl('site', 'search')."##(global:(enabled:(event:!t),filterEntity:event))";
-$url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";
+$url_search_agents = $this->searchAgentsUrl;
+$url_search_spaces = $this->searchSpacesUrl;
+$url_search_events = $this->searchEventsUrl;
+$url_search_projects = $this->searchProjectsUrl;
 
 ?>
 <section id="capa-marca-dagua">
@@ -137,7 +137,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
 <section id="capa-intro" class="js-page-menu-item objeto-capa clearfix fundo-laranja">
     <div class="box">
         <h1>Bem-vind@!</h1>
-        <p>O SP Cultura é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria Municipal de Cultura de São Paulo sobre o cenário cultural paulistano. Ficou mais fácil se programar para conhecer as opções culturais que a cidade oferece: shows musicais, espetáculos teatrais, sessões de cinema, saraus, entre outras. Além de conferir a agenda de eventos, você também pode colaborar na gestão da cultura da cidade: basta criar seu perfil de <a href="<?php echo $url_search_agents ?>" >agente cultural</a>. A partir deste cadastro, fica mais fácil participar dos editais de fomento às artes da Prefeitura e também divulgar seus <a href="<?php echo $url_search_events; ?>">eventos</a>, <a href="<?php echo $url_search_spaces; ?>">espaços</a> ou <a href="<?php echo $url_search_projects; ?>">projetos</a>.</p>
+        <p><?php $this->dict('home: welcome') ?></p>
         <form id="form-de-busca-geral" class="clearfix">
             <input tabindex="1" id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
             <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
@@ -170,7 +170,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
                 <div class="label-das-estatisticas">eventos da SMC</div>
             </div>
         </div>
-        <p>Você pode pesquisar eventos culturais da cidade nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.</p>
+        <p><?php $this->dict('home: events') ?></p>
         <h4>Encontre eventos por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#event-terms">Linguagem</a></li>
@@ -213,7 +213,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
                 <div class="label-das-estatisticas">agentes da SMC</div>
             </div>
         </div>
-        <p>Você pode colaborar na gestão da cultura da cidade com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.</p>
+        <p><?php $this->dict('home: agents') ?></p>
         <h4>Encontre agentes por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#agent-terms">Área de atuação</a></li>
@@ -262,7 +262,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
                 <div class="label-das-estatisticas">espaços da SMC</div>
             </div>
         </div>
-        <p>Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais na cidade.</p>
+        <p><?php $this->dict('home: spaces'); ?></p>
         <h4>Encontre espaços por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#space-terms">Área de atuação</a></li>
@@ -312,7 +312,7 @@ $url_search_projects = $app->createUrl('site', 'search')."##(global:(filterEntit
                 <div class="label-das-estatisticas">projetos da SMC</div>
             </div>
         </div>
-        <p>Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criado pela Secretaria Municipal de Cultura, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.</p>
+        <p><?php $this->dict('home: projects') ?></p>
         <h4>Encontre projetos por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#project-types">Tipo</a></li>

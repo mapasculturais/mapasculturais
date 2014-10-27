@@ -55,29 +55,25 @@ class FileSystem extends \MapasCulturais\AssetManager{
         if(!$asset_filename)
             return '';
 
-        if($app->config['app.mode'] === 'development'){
-            return str_replace(BASE_PATH, $app->baseUrl, $asset_filename);
 
+        $info = pathinfo($asset_filename);
+        $extension = strtolower($info['extension']);
+
+        $output_file = $this->_getPublishedAssetFilename($asset_filename);
+
+        if(in_array($extension, array('jpg', 'png', 'gif')))
+            $output_file = "img/$output_file";
+        else
+            $output_file = "$extension/$output_file";
+
+        if(isset($this->_config["process.{$extension}"])){
+            $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
         }else{
-            $info = pathinfo($asset_filename);
-            $extension = strtolower($info['extension']);
-
-            $output_file = $this->_getPublishedAssetFilename($asset_filename);
-
-            if(in_array($extension, array('jpg', 'png', 'gif')))
-                $output_file = "img/$output_file";
-            else
-                $output_file = "$extension/$output_file";
-
-            if(isset($this->_config["process.{$extension}"])){
-                $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
-            }else{
-                $this->_mkAssetDir($output_file);
-                copy($asset_filename, $this->_config['publishPath'] . $output_file);
-            }
-
-            return $app->assetUrl . $output_file;
+            $this->_mkAssetDir($output_file);
+            copy($asset_filename, $this->_config['publishPath'] . $output_file);
         }
+
+        return $app->assetUrl . $output_file;
     }
 
     function publishFolder($dir){
