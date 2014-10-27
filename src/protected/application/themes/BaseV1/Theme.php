@@ -319,6 +319,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
 
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
+            $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
