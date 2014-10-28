@@ -105,6 +105,18 @@ trait EntityAgentRelation {
     }
 
     function getUsersWithControl(){
+        $app = \MapasCulturais\App::i();
+        
+        // cache ids 
+        $cache_id = "$this::usersWithControl";
+        
+        if($app->config['app.useUsersWithControlCache'] && $app->cache->contains($cache_id)){
+            $ids = $app->cache->fetch($cache_id);
+            $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
+            $q->setParameter('ids', $ids);
+            return $q->getResult();
+        }
+        
         $result = array($this->getOwnerUser());
         $ids = array($result[0]->id);
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
@@ -134,7 +146,10 @@ trait EntityAgentRelation {
                 $result[] = $u;
             }
         }
-
+        
+        if($app->config['app.useUsersWithControlCache']){
+            $app->cache->save($cache_id, $ids, $app->config['app.usersWithControlCache.lifetime']);
+        }
         return $result;
     }
 
@@ -149,7 +164,7 @@ trait EntityAgentRelation {
         if($this->usesOwnerAgent() && $this->owner->userHasControl($user))
             return true;
 
-        if($this->usesNested() && is_object($this->parent) && $this->parent->userHasControl($user))
+        if($this->usesNested() && is_object($this->parent) && !$this->equals($this->parent) && $this->parent->userHasControl($user))
             return true;
 
         return false;
