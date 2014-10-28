@@ -11,29 +11,14 @@ $class_project = 'MapasCulturais\Entities\Project';
 
 $class_file = 'MapasCulturais\Entities\File';
 
-$num_events = $app->controller('Event')->apiQueryByLocation(array(
-    '@count' => 1,
-    '@from' => date('Y-m-d'),
-    '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
-));
-
-$num_verified_events = $app->controller('Event')->apiQueryByLocation(array(
-    '@count' => 1,
-    '@from' => date('Y-m-d'),
-    '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
-    'isVerified' => 'EQ(true)'
-));
-
-$num_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_agents = $em->createQuery("SELECT COUNT(e) FROM $class_agent e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-
-$num_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_spaces = $em->createQuery("SELECT COUNT(e) FROM $class_space e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-
-$num_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e WHERE e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-$num_verified_projects = $em->createQuery("SELECT COUNT(e) FROM $class_project e WHERE e.isVerified = TRUE AND e.status > 0")->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getSingleScalarResult();
-
-
+$num_events             = $this->getNumEvents();
+$num_verified_events    = $this->getNumVerifiedEvents();
+$num_agents             = $this->getNumEntities($class_agent);
+$num_verified_agents    = $this->getNumEntities($class_agent, true);
+$num_spaces             = $this->getNumEntities($class_space);
+$num_verified_spaces    = $this->getNumEntities($class_space, true);
+$num_projects           = $this->getNumEntities($class_project);
+$num_verified_projects  = $this->getNumEntities($class_project, true);
 
 $event_linguagens = array_values($app->getRegisteredTaxonomy($class_event, 'linguagem')->restrictedTerms);
 $agent_areas = array_values($app->getRegisteredTaxonomy($class_agent, 'area')->restrictedTerms);
@@ -43,86 +28,21 @@ sort($event_linguagens);
 sort($agent_areas);
 sort($space_areas);
 
-
 $agent_types = $app->getRegisteredEntityTypes($class_agent);
 $space_types = $app->getRegisteredEntityTypes($class_space);
 $project_types = $app->getRegisteredEntityTypes($class_project);
 
+$agent = $this->getOneVerifiedEntityWithImages($class_agent);
+if($agent) $agent_img_url = $this->getEntityFeaturedImageUrl($agent);
 
+$space = $this->getOneVerifiedEntityWithImages($class_space);
+if($space) $space_img_url = $this->getEntityFeaturedImageUrl($space);
 
-/**
- * Returns a verified entity with images in gallery
- * @param type $entity_class
- * @return \MapasCulturais\Entity
- */
-function findOneVerifiedEntityWithImages($entity_class, $file_group = 'gallery'){
-    $app = \MapasCulturais\App::i();
+$event = $this->getOneVerifiedEntityWithImages($class_event);
+if($event) $event_img_url = $this->getEntityFeaturedImageUrl($event);
 
-    $file_class = 'MapasCulturais\Entities\File';
-
-    $dql = "
-     SELECT
-        DISTINCT f.objectId as id
-     FROM
-        $file_class f
-        JOIN $entity_class e WITH e.id = f.objectId
-     WHERE
-        e.status > 0 AND
-        e.isVerified = TRUE AND
-        f.objectType = '$entity_class' AND
-        f.group = '$file_group'
-    ";
-
-    if($entity_class === 'MapasCulturais\Entities\Event'){
-        $events = $app->controller('Event')->apiQueryByLocation(array(
-            '@from' => date('Y-m-d'),
-            '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
-            'isVerified' => 'EQ(true)',
-            '@select' => 'id'
-        ));
-        $event_ids = array_map(function($item){
-            return $item['id'];
-        }, $events);
-
-        if($event_ids)
-            $dql .= ' AND f.objectId IN ('.  implode(',', $event_ids).')';
-        else
-            return null;
-    }
-
-
-
-    $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
-    if($ids){
-        $id = $ids[array_rand($ids)]['id'];
-        return $app->repo($entity_class)->find($id);
-    }elseif($file_group === 'gallery'){
-        return findOneVerifiedEntityWithImages($entity_class, 'avatar');
-    }else{
-        return null;
-    }
-}
-
-function getImageUrl($entity){
-    if(key_exists('gallery', $entity->files)){
-        return $entity->files['gallery'][array_rand($entity->files['gallery'])]->transform('galleryFull')->url;
-    }elseif(key_exists('avatar', $entity->files)){
-        return $entity->files['avatar']->transform('galleryFull')->url;
-    }
-
-}
-
-$agent = findOneVerifiedEntityWithImages($class_agent);
-if($agent) $agent_img_url = getImageUrl($agent);
-
-$space = findOneVerifiedEntityWithImages($class_space);
-if($space) $space_img_url = getImageUrl($space);
-
-$event = findOneVerifiedEntityWithImages($class_event);
-if($event) $event_img_url = getImageUrl($event);
-
-$project = findOneVerifiedEntityWithImages($class_project);
-if($project) $project_img_url = getImageUrl($project);
+$project = $this->getOneVerifiedEntityWithImages($class_project);
+if($project) $project_img_url = $this->getEntityFeaturedImageUrl($project);
 
 
 $url_search_agents = $this->searchAgentsUrl;

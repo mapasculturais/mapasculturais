@@ -774,4 +774,107 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    
+    
+    /**
+    * Returns a verified entity with images in gallery
+    * @param type $entity_class
+    * @return \MapasCulturais\Entity
+    */
+   function getOneVerifiedEntityWithImages($entity_class, $file_group = 'gallery'){
+       $app = \MapasCulturais\App::i();
+
+       $file_class = 'MapasCulturais\Entities\File';
+
+       $dql = "
+        SELECT
+           DISTINCT f.objectId as id
+        FROM
+           $file_class f
+           JOIN $entity_class e WITH e.id = f.objectId
+        WHERE
+           e.status > 0 AND
+           e.isVerified = TRUE AND
+           f.objectType = '$entity_class' AND
+           f.group = '$file_group'
+       ";
+
+       if($entity_class === 'MapasCulturais\Entities\Event'){
+           $events = $app->controller('Event')->apiQueryByLocation(array(
+               '@from' => date('Y-m-d'),
+               '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
+               'isVerified' => 'EQ(true)',
+               '@select' => 'id'
+           ));
+           $event_ids = array_map(function($item){
+               return $item['id'];
+           }, $events);
+
+           if($event_ids)
+               $dql .= ' AND f.objectId IN ('.  implode(',', $event_ids).')';
+           else
+               return null;
+       }
+
+
+
+       $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
+       if($ids){
+           $id = $ids[array_rand($ids)]['id'];
+           return $app->repo($entity_class)->find($id);
+       }elseif($file_group === 'gallery'){
+           return $this->getOneVerifiedEntityWithImages($entity_class, 'avatar');
+       }else{
+           return null;
+       }
+   }
+   
+   function getEntityFeaturedImageUrl($entity) {
+        if (key_exists('gallery', $entity->files)) {
+            return $entity->files['gallery'][array_rand($entity->files['gallery'])]->transform('galleryFull')->url;
+        } elseif (key_exists('avatar', $entity->files)) {
+            return $entity->files['avatar']->transform('galleryFull')->url;
+        }else{
+            return null;
+        }
+    }
+    
+    function getNumEntities($class, $verified = 'all', $use_cache = true, $cache_lifetime = 300){
+        $em = App::i()->em;
+        $dql = "SELECT COUNT(e) FROM $class e WHERE e.status > 0";
+        
+        if(is_bool($verified)){
+            if($verified){
+                $dql .= ' AND e.isVerified = TRUE';
+            }else{
+                $dql .= ' AND e.isVerified = FALSE';
+            }
+        }
+        
+        $q = $em->createQuery($dql);
+        
+        if($use_cache){
+            $q->useQueryCache(true)->setResultCacheLifetime($cache_lifetime);
+        }
+        
+        return $q->getSingleScalarResult();
+    }
+    
+    function getNumEvents($from = null, $to = null){
+        return App::i()->controller('Event')->apiQueryByLocation(array(
+            '@count' => 1,
+            '@from' => date('Y-m-d'),
+            '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
+        ));
+    }
+    
+    function getNumVerifiedEvents($from = null, $to = null){
+        return App::i()->controller('Event')->apiQueryByLocation(array(
+            '@count' => 1,
+            '@from' => date('Y-m-d'),
+            '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
+            'isVerified' => 'EQ(true)'
+        ));
+    }
+
 }
