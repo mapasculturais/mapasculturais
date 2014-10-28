@@ -122,8 +122,6 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:after');
     }
 
-    abstract protected static function _getTexts();
-
     protected function _addTexts(array $dict = array()){
         $this->_dict = array_merge($dict, $this->_dict);
     }
@@ -132,6 +130,9 @@ abstract class Theme extends \Slim\View {
         if(!$this->_dict){
             $class = get_called_class();
             while($class !== __CLASS__){
+                if(!method_exists($class, '_getTexts'))
+                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+                    
                 $this->_addTexts($class::_getTexts());
                 $class = get_parent_class($class);
             }
