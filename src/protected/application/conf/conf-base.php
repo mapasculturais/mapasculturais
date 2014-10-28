@@ -105,7 +105,9 @@ return array(
     'app.useAssetsUrlCache' => true,
     'app.assetsUrlCache.lifetime' => 0,
 
-
+    'app.useFileUrlCache' => true,
+    'app.fileUrlCache.lifetime' => 604800,
+    
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 

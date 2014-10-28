@@ -206,7 +206,20 @@ class File extends \MapasCulturais\Entity
      * @return string the url to this file
      */
     public function getUrl(){
-        return App::i()->storage->getUrl($this);
+        $app = App::i();
+        $cache_id = "{$this}:url";
+        
+        if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
+            return $app->cache->fetch($cache_id);
+        }
+        
+        $url = $app->storage->getUrl($this);
+        
+        if($app->config['app.useFileUrlCache']){
+            $app->cache->save($cache_id, $url, $app->config['app.fileUrlCache.lifetime']);
+        }
+        
+        return $url;
     }
 
     public function getPath(){
