@@ -49,7 +49,10 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-
+    
+    'app.useFileUrlCache' => true,
+    'app.fileUrlCache.lifetime' => 604800,
+    
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
