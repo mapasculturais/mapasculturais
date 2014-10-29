@@ -49,7 +49,7 @@ return array(
 
         'process.js' => 'cp {IN} {OUT}', //'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /pub/{FILENAME}.map -b -p 7',
         'process.css' => 'cp {IN} {OUT}', //'uglifycss {IN} > {OUT}',
-        'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
+        'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
     )),
 
 //    'maps.center' => array(-23.54894, -46.63882), // são paulo

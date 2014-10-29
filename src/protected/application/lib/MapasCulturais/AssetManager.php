@@ -144,7 +144,7 @@ abstract class AssetManager{
             $asset_url = $app->cache->fetch($cache_id);
 
         }else{
-            $asset_url = $this->_publishAsset($asset);
+            $asset_url = $this->publishAsset($asset);
 
             if($app->config['app.useAssetsUrlCache'])
                 $app->cache->save ($cache_id, $asset_url, $app->config['app.assetsUrlCache.lifetime']);
@@ -172,10 +172,71 @@ abstract class AssetManager{
     function _getPublishedStylesGroupFilename($group, $content){
         return $group . '-' . md5($content) . '.css';
     }
+    
+    function publishFolder($dir, $destination = null){
+        $app = App::i();
+        
+        $destination = $destination ? $destination : $dir;
+        
+        $cache_id = __METHOD__ . '::' . $dir . '->' . $destination;
+        
+        if(!$app->config['app.useAssetsUrlCache'] || !$app->cache->contains($cache_id)){
+            foreach ($app->view->path as $path){
+                $dirpath = $path . 'assets/' . $dir;
+                if(is_dir($dirpath)){
+                    $this->_publishFolder($dirpath . '/*', $destination);
+                }
+            }
+                
+            if($app->config['app.useAssetsUrlCache']){
+                $app->cache->save($cache_id, '1');
+            }
+        }   
+    }
 
-    abstract function publishFolder($dir);
+    function publishAsset($asset_filename, $destination = null){
+        $app = App::i();
 
-    abstract protected function _publishAsset($asset);
+        if(preg_match('#^(\/\/|https?)#', $asset_filename))
+            return $asset_filename;
+
+        $asset_filename = $app->view->getAssetFilename($asset_filename);
+        
+        if(!$asset_filename)
+            return '';
+
+        $info = pathinfo($asset_filename);
+        
+        $extension = strtolower($info['extension']);
+        
+        if(!$destination){
+            $destination_file = $this->_getPublishedAssetFilename($asset_filename);
+
+            if(in_array($extension, array('jpg', 'png', 'gif'))){
+                $destination = "img/$destination_file";
+            }else{
+                $destination = "$extension/$destination_file";
+            }
+        }
+        
+        $cache_id = __METHOD__ . '::' . $asset_filename . '->' . $destination;
+        
+        if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
+            return $app->cache->fetch($cache_id);
+        }else{
+            $asset_url = $this->_publishAsset($asset_filename, $destination);
+            
+            if($app->config['app.useAssetsUrlCache']){
+                $app->cache->save($cache_id, $asset_url);
+            }
+            
+            return $asset_url;
+        }
+    }
+
+    abstract protected function _publishAsset($asset, $destination);
+    
+    abstract protected function _publishFolder($path, $destination);
 
     abstract protected function _publishScripts($group);
 

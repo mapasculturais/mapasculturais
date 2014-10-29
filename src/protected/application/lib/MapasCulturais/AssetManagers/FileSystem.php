@@ -21,8 +21,12 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     }
 
-    protected function _mkAssetDir($output_file){
-        $path = dirname($this->_config['publishPath'] . $output_file);
+    protected function _mkAssetDir($output_file, $is_dir = false){
+        if($is_dir){
+            $path = $this->_config['publishPath'] . $output_file;
+        }else{
+            $path = dirname($this->_config['publishPath'] . $output_file);
+        }
 
         if(!is_dir($path))
             mkdir($path,0777,true);
@@ -30,6 +34,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     protected function _exec($command_pattern, $input_files, $output_file){
         $this->_mkAssetDir($output_file);
+        
 
         $command = str_replace(array(
                 '{IN}',
@@ -43,28 +48,18 @@ class FileSystem extends \MapasCulturais\AssetManager{
                 $this->_config['publishPath']
             ), $command_pattern);
 
+        
+        if($command_pattern === 'cp -Rf {IN} {PUBLISH_PATH}')
+            die(var_dump($command));
+            
         exec($command);
     }
-    protected function _publishAsset($asset_filename) {
+    
+    protected function _publishAsset($asset_filename, $output_file) {
         $app = App::i();
-
-        if(preg_match('#^(\/\/|https?)#', $asset_filename))
-            return $asset_filename;
-
-        $asset_filename = $app->view->getAssetFilename($asset_filename);
-        if(!$asset_filename)
-            return '';
-
 
         $info = pathinfo($asset_filename);
         $extension = strtolower($info['extension']);
-
-        $output_file = $this->_getPublishedAssetFilename($asset_filename);
-
-        if(in_array($extension, array('jpg', 'png', 'gif')))
-            $output_file = "img/$output_file";
-        else
-            $output_file = "$extension/$output_file";
 
         if(isset($this->_config["process.{$extension}"])){
             $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
@@ -76,14 +71,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
         return $app->assetUrl . $output_file;
     }
 
-    function publishFolder($dir){
-        $app = App::i();
-        $cache_id = __METHOD__ . '::' . $dir;
-        if(!$app->cache->contains($cache_id)){
-            $in = App::i()->view->getAssetFilename($dir);
-            $this->_exec($this->_config['publishFolderCommand'], $in, $dir);
-            $app->cache->save($cache_id, '1');
-        }
+    protected function _publishFolder($path, $destination){
+        $this->_mkAssetDir($destination, true);
+        $this->_exec($this->_config['publishFolderCommand'], $path, $destination);
     }
 
     protected function _publishScripts($group) {
@@ -148,7 +138,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
             $result[] = $app->assetUrl . $output_file;
         }else{
             foreach($ordered as $asset){
-                $result[] = $this->_publishAsset($asset);
+                $result[] = $this->publishAsset($asset);
             }
         }
         return $result;

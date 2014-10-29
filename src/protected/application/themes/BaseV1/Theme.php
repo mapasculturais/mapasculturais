@@ -8,6 +8,16 @@ use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 
 class Theme extends MapasCulturais\Theme {
+    
+    protected $_libVersions = array(
+        'leaflet' => '0.7.3',
+        'angular' => '1.2.26',
+        'jquery' => '2.1.1',
+        'jquery-ui' => '1.11.1',
+        'select2' => '3.5.0',
+        'magnific-popup' => '0.9.9',
+        'x-editable' => 'jquery-editable-dev-1.5.2'
+    );
 
     static function getThemeFolder() {
         return __DIR__;
@@ -316,6 +326,8 @@ class Theme extends MapasCulturais\Theme {
 
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
+            $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
+            
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
@@ -514,30 +526,32 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeVendorAssets() {
-        $this->enqueueStyle('vendor', 'x-editable', 'vendor/x-editable/jquery-editable/css/jquery-editable.css', array('select2'));
-        $this->enqueueStyle('vendor', 'x-editable-tip', 'vendor/x-editable/jquery-editable/css/tip-yellowsimple.css', array('x-editable'));
+        $versions = $this->_libVersions;
+        
+        $this->enqueueStyle('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/css/jquery-editable.css", array('select2'));
+//        $this->enqueueStyle('vendor', 'x-editable-tip', "vendor/x-editable-{$versions['x-editable']}/css/tip-yellowsimple.css", array('x-editable'));
 
         $this->enqueueScript('vendor', 'mustache', 'vendor/mustache.js');
 
-        $this->enqueueScript('vendor', 'jquery', 'vendor/jquery-2.1.1.js');
+        $this->enqueueScript('vendor', 'jquery', "vendor/jquery-{$versions['jquery']}.js");
         $this->enqueueScript('vendor', 'jquery-slimscroll', 'vendor/jquery.slimscroll.js', array('jquery'));
         $this->enqueueScript('vendor', 'jquery-form', 'vendor/jquery.form.js', array('jquery'));
         $this->enqueueScript('vendor', 'jquery-mask', 'vendor/jquery.mask.js', array('jquery'));
         $this->enqueueScript('vendor', 'purl', 'vendor/purl/purl.js', array('jquery'));
 
         // select 2
-        $this->enqueueStyle('vendor', 'select2', 'vendor/select2-3.5.0/select2.css');
-        $this->enqueueScript('vendor', 'select2', 'vendor/select2-3.5.0/select2.js', array('jquery'));
+        $this->enqueueStyle('vendor', 'select2', "vendor/select2-{$versions['select2']}/select2.css");
+        $this->enqueueScript('vendor', 'select2', "vendor/select2-{$versions['select2']}/select2.js", array('jquery'));
 
         $this->enqueueScript('vendor', 'select2-BR', 'vendor/select2_locale_pt-BR-edit.js', array('select2'));
 
         $this->enqueueScript('vendor', 'poshytip', 'vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
-        $this->enqueueScript('vendor', 'x-editable', 'vendor/x-editable-dev-1.5.2/jquery-editable/js/jquery-editable-poshytip.js', array('jquery', 'poshytip', 'select2'));
+        $this->enqueueScript('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/js/jquery-editable-poshytip.js", array('jquery', 'poshytip', 'select2'));
 
 
         //Leaflet -a JavaScript library for mobile-friendly maps
-        $this->enqueueStyle('vendor', 'leaflet', 'vendor/leaflet/lib/leaflet-0.7.3/leaflet.css');
-        $this->enqueueScript('vendor', 'leaflet', 'vendor/leaflet/lib/leaflet-0.7.3/leaflet-src.js');
+        $this->enqueueStyle('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet.css");
+        $this->enqueueScript('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet-src.js");
 
         //Leaflet Vector Layers
         $this->enqueueScript('vendor', 'leaflet-vector-layers', 'vendor/leaflet-vector-layers/dist/lvector.js', array('leaflet'));
@@ -564,30 +578,25 @@ class Theme extends MapasCulturais\Theme {
         //Leaflet Plugins (Google)false');
         $this->enqueueScript('vendor', 'leaflet-google-tile', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-plugins-master/layer/tile/Google.js', array('leaflet'));
 
-        $this->enqueueStyle('vendor', 'magnific-popup', 'vendor/Magnific-Popup-0.9.9/magnific-popup.css');
-        $this->enqueueScript('vendor', 'magnific-popup', 'vendor/Magnific-Popup-0.9.9/jquery.magnific-popup.js', array('jquery'));
+        $this->enqueueStyle('vendor', 'magnific-popup', "vendor/Magnific-Popup-{$versions['magnific-popup']}/magnific-popup.css");
+        $this->enqueueScript('vendor', 'magnific-popup', "vendor/Magnific-Popup-{$versions['magnific-popup']}/jquery.magnific-popup.js", array('jquery'));
 
         $this->enqueueScript('vendor', 'momentjs', 'vendor/moment.js');
         $this->enqueueScript('vendor', 'momentjs-pt-br', 'vendor/moment.pt-br.js', array('momentjs'));
 
-        $this->enqueueScript('vendor', 'jquery-ui-core', 'vendor/jquery-ui-1.11.1/core.js', array('jquery'));
-        $this->enqueueScript('vendor', 'jquery-ui-position', 'vendor/jquery-ui-1.11.1/position.js', array('jquery-ui-core'));
-        $this->enqueueScript('vendor', 'jquery-ui-datepicker', 'vendor/jquery-ui-1.11.1/datepicker.js', array('jquery-ui-core'));
-        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', 'vendor/jquery-ui-1.11.1/datepicker-pt-BR.js', array('jquery-ui-datepicker'));
+        $this->enqueueScript('vendor', 'jquery-ui-core', "vendor/jquery-ui-{$versions['jquery-ui']}/core.js", array('jquery'));
+        $this->enqueueScript('vendor', 'jquery-ui-position', "vendor/jquery-ui-{$versions['jquery-ui']}/position.js", array('jquery-ui-core'));
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker.js", array('jquery-ui-core'));
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker-pt-BR.js", array('jquery-ui-datepicker'));
 
-        $angular_version = '1.2.26';
-
-        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$angular_version}/angular.js", array('jquery', 'jquery-ui-datepicker-pt-BR', 'jquery-ui-position'));
-        $this->enqueueScript('vendor', 'angular-sanitize', "vendor/angular-{$angular_version}/angular-sanitize.js", array('angular'));
+        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$versions['angular']}/angular.js", array('jquery', 'jquery-ui-datepicker-pt-BR', 'jquery-ui-position'));
+        $this->enqueueScript('vendor', 'angular-sanitize', "vendor/angular-{$versions['angular']}/angular-sanitize.js", array('angular'));
 
         $this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison.js', array('angular'));
         $this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.js', array('angular'));
 
         $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
 
-
-        $this->enqueueScript('vendor', 'spin.js', 'vendor/spin.js', array('angular'));
-        $this->enqueueScript('vendor', 'angular-spinner', 'vendor/angular-spinner.js', array('spin.js'));
     }
 
     function includeCommonAssets() {
@@ -627,6 +636,8 @@ class Theme extends MapasCulturais\Theme {
 
     function includeMapAssets() {
         $app = App::i();
+        
+        $this->assetManager->publishAsset('vendor/leaflet/lib/', 'css/main.css.map');
 
         $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
