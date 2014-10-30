@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'angularSpinner', 'ngSanitize']);
+    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'ngSanitize']);
 
     app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
         var baseUrl = MapasCulturais.baseURL + '/api/';
