@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * 
+ * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
  * @ORM\Table(name="usr")
  * @ORM\Entity
@@ -108,9 +110,7 @@ class User extends \MapasCulturais\Entity
 
     public function getProfile(){
 
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("isUserProfile", true));
-        $agents = $this->agents->matching($criteria);
-        $agent = $agents[0];
+        $agent = \MapasCulturais\App::i()->repo('Agent')->findOneBy(array('user' => $this, 'isUserProfile' => true));
 
         if(!$agent){
             $agent = $this->agents[0];
