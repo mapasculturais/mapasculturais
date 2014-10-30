@@ -637,7 +637,7 @@ class Theme extends MapasCulturais\Theme {
     function includeMapAssets() {
         $app = App::i();
         
-        $this->assetManager->publishAsset('vendor/leaflet/lib/', 'css/main.css.map');
+        $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
         $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);

@@ -1,7 +1,7 @@
 (function(angular) {
     "use strict";
 
-    var app = angular.module('SearchService', ['angularSpinner']);
+    var app = angular.module('SearchService', []);
     app.factory('searchService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q){
         $rootScope.lastResult = $rootScope.lastResult || { agent:null, space:null, event:null };
         var activeRequests = 0,
