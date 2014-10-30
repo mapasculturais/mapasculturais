@@ -13,7 +13,6 @@
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "v2.5.1",
         "phpoffice/phpword": "dev-master",
-        "michelf/php-markdown": "1.4.1",
-        "kriswallsmith/assetic": "1.1.2"
+        "michelf/php-markdown": "1.4.1"
     }
 }
