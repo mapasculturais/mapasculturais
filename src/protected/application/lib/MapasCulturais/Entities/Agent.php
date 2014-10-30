@@ -134,12 +134,6 @@ class Agent extends \MapasCulturais\Entity
      */
     protected $_children;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_user_profile", type="boolean", nullable=false)
-     */
-    protected $isUserProfile = false;
 
     /**
      * @var bool
@@ -203,13 +197,14 @@ class Agent extends \MapasCulturais\Entity
 
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
-
-        $this->user->getProfile()->isUserProfile = false;
-        $this->user->getProfile()->save();
-
-        $this->isUserProfile = true;
-
-        $this->save(true);
+        
+        $this->user->profile = $this;
+        
+        $this->user->save(true);
+    }
+    
+    function getIsUserProfile(){
+        return $this->equals($this->user->profile);
     }
 
     function getProjects(){
