@@ -11,6 +11,7 @@ use MapasCulturais\App;
  * Agent
  *
  * @property-read \MapasCulturais\Entities\Space[] $spaces spaces owned by this agent
+ * @property-read bool $isUserProfile Is this agent the user profile?
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity
