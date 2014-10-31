@@ -252,9 +252,10 @@ var hl;
                     entity: $(this).data('entity'),
                     keyword: $('#campo-de-busca').val()
                 };
-
-                document.location = Mustache.render(url_template, params);
+                var search_url = Mustache.render(url_template, params);
+                document.location = search_url;
             }).on('keydown', function(event){
+                
                 if(event.keyCode === 13 || event.keyCode === 32){
                     event.preventDefault();
                     $(this).click();
@@ -263,17 +264,37 @@ var hl;
                     $(this).blur();
                     $('#campo-de-busca').focus();
                     return false;
+                }else if(event.keyCode === 38){
+                    // up
+                    if($('#filtro-da-capa .submenu-dropdown li:focus').is($('#filtro-da-capa .submenu-dropdown li:first'))){
+                       $('#filtro-da-capa .submenu-dropdown li:last').focus();
+                    }else{
+                        $('#filtro-da-capa .submenu-dropdown li:focus').prev().focus();
+                    }
+                    event.preventDefault();
+                    
+                }else if(event.keyCode === 40){
+                    // down
+                    if($('#filtro-da-capa .submenu-dropdown li:focus').is($('#filtro-da-capa .submenu-dropdown li:last'))){
+                       $('#filtro-da-capa .submenu-dropdown li:first').focus();
+                    }else{
+                        $('#filtro-da-capa .submenu-dropdown li:focus').next().focus();
+                    }
+                    event.preventDefault();
                 }
 
             });
 
             $('#form-de-busca-geral').on('submit', function(){
-                $('.submenu-dropdown').css({display:'block',opacity:1}); return false;
+                $('.submenu-dropdown').css({display:'block',opacity:1}); 
+                $('.submenu-dropdown li:first').focus();
+                return false;
             });
             $('#form-de-busca-geral #campo-de-busca').on('blur', function(){
                 $('.submenu-dropdown').attr('style','');
             });
             $('#form-de-busca-geral #campo-de-busca').on('keydown', function(event){
+                var kc = event.keyCode;
                 if(event.keyCode === 9){
                     $('.submenu-dropdown').css({display:'block',opacity:1});
                 }
