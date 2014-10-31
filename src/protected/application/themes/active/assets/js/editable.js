@@ -248,7 +248,6 @@ MapasCulturais.Editables = {
                 placeholder: entity[field_name].label
             };
 
-
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
@@ -263,7 +262,7 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1 };
+                    config.datepicker = { weekStart: 1, yearRange: "1900:+0" };
                     delete config.placeholder;
 
                     break;

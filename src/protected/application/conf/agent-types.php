@@ -43,6 +43,7 @@ return array(
 
         'dataDeNascimento' => array(
             'label' => 'Data de Nascimento/Fundação',
+            type => 'date',
             'validations' => array(
                 'v::date("Y-m-d")' => 'Data inválida {{format}}',
             )
