@@ -27,6 +27,19 @@ return array(
                 "v::int()->positive()" => "A idade/tempo deve ser um número positivo."
             )
         ),
+        
+        'raca' => array(
+            'label' => 'Raça/cor',
+            'type' => 'select',
+            'options' => array(
+                '' => 'Não Informar',
+                'Branca' => 'Branca',
+                'Preta' => 'Preta',
+                'Amarela' => 'Amarela',
+                'Parda' => 'Parda',
+                'Indígena' => 'Indígena'
+            )
+        ),
 
         'precisao' => array(
             'label' => 'Localização',
