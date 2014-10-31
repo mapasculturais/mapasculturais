@@ -92,7 +92,18 @@ class User extends \MapasCulturais\Entity
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-
+    
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
+     * })
+     */
+    protected $profile;
+    
+    
     public function __construct() {
         parent::__construct();
 
@@ -107,15 +118,14 @@ class User extends \MapasCulturais\Entity
     function setAuthProvider($provider_name){
         $this->authProvider = App::i()->getRegisteredAuthProviderId($provider_name);
     }
-
-    public function getProfile(){
-
-        $agent = \MapasCulturais\App::i()->repo('Agent')->findOneBy(array('user' => $this, 'isUserProfile' => true));
-
-        if(!$agent){
-            $agent = $this->agents[0];
-        }
-        return $agent;
+    
+    function setProfile(Agent $agent){
+        $this->checkPermission('changeProfile');
+        
+        if(!$this->equals($agent->user))
+            throw new \Exception ('error');
+        
+        $this->profile = $agent;
     }
 
     function jsonSerialize() {

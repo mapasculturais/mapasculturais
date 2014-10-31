@@ -385,7 +385,6 @@ CREATE TABLE agent (
     long_description text,
     create_timestamp timestamp without time zone NOT NULL,
     status smallint NOT NULL,
-    is_user_profile boolean DEFAULT false NOT NULL,
     is_verified boolean DEFAULT false NOT NULL,
     parent_id integer
 );
@@ -1038,6 +1037,7 @@ ALTER TABLE public.usr_id_seq OWNER TO mapasculturais;
 
 CREATE TABLE usr (
     id integer DEFAULT nextval('usr_id_seq'::regclass) NOT NULL,
+    profile_id integer,
     auth_provider smallint NOT NULL,
     auth_uid character varying(512) NOT NULL,
     email character varying(255) NOT NULL,
@@ -1048,6 +1048,8 @@ CREATE TABLE usr (
 
 
 ALTER TABLE public.usr OWNER TO mapasculturais;
+
+ALTER TABLE ONLY usr ADD CONSTRAINT user_profile_fk FOREIGN KEY (profile_id) REFERENCES agent(id);
 
 --
 -- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: mapasculturais
