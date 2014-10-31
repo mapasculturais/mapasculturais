@@ -58,7 +58,7 @@ $url_search_projects = $this->searchProjectsUrl;
     <div class="box">
         <h1>Bem-vind@!</h1>
         <p><?php $this->dict('home: welcome') ?></p>
-        <form id="form-de-busca-geral" class="clearfix">
+        <form id="form-de-busca-geral" class="clearfix" ng-non-bindable>
             <input tabindex="1" id="campo-de-busca" class="campo-de-busca" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
             <div id="filtro-da-capa" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
                 <div class="placeholder"><span class="icone icon_search"></span> Buscar</div>
