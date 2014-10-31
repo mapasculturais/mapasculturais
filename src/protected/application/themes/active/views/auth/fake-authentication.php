@@ -1,8 +1,11 @@
 <?php
 usort($users, function($a, $b){
-    if(!$a->profile || !$b->profile || strtolower($a->profile->name) == strtolower($b->profile->name))
+    $prof1 = $a->profile;
+    $prof2 = $b->profile;
+    
+    if(!$prof1 || !$prof2 || strtolower($prof1->name) == strtolower($prof2->name))
         return 0;
-    if(strtolower($a->profile->name) > strtolower($b->profile->name))
+    if(strtolower($prof1->name) > strtolower($prof2->name))
         return 1;
     else return -1;
 });
