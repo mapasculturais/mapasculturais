@@ -32,6 +32,9 @@ return array(
     },
             
     'create table registration' => function() use ($conn){
+        if($conn->fetchAll("SELECT tablename from pg_catalog.pg_tables WHERE tablename = 'registration' AND schemaname = 'public'")){
+            return true;
+        }
         
         echo "criando tabela registration\n";
         
@@ -85,5 +88,25 @@ return array(
         
         
         
+    },
+            
+    'create table registration_meta' => function() use($conn){
+        if($conn->fetchAll("SELECT tablename from pg_catalog.pg_tables WHERE tablename = 'registration_meta' AND schemaname = 'public'")){
+            return true;
+        }
+        
+        echo "create table registration_meta\n";
+        $conn->executeQuery("CREATE TABLE registration_meta (
+                                object_id integer NOT NULL,
+                                key character varying(32) NOT NULL,
+                                value text
+                            );");
+        
+        echo "create registration meta primary key\n";
+        $conn->executeQuery("ALTER TABLE ONLY registration_meta
+                                ADD CONSTRAINT registration_meta_pkey PRIMARY KEY (object_id, key);");
+        
+        echo "create registration_meta key value index\n";
+        $conn->executeQuery("CREATE INDEX registration_meta_key_value_index ON registration_meta USING btree (key, value);");
     }
 );

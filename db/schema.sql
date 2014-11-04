@@ -829,24 +829,6 @@ CREATE TABLE project_meta (
 ALTER TABLE public.project_meta OWNER TO mapasculturais;
 
 --
--- Name: registration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
---
-
-CREATE TABLE registration (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    agent1_id integer NOT NULL,
-    agent2_id integer,
-    agent3_id integer,
-    create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
-    sent_timestamp timestamp without time zone,
-    status integer NOT NULL
-);
-
-
-ALTER TABLE public.registration OWNER TO mapasculturais;
-
---
 -- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
 --
 
@@ -861,11 +843,35 @@ CREATE SEQUENCE registration_id_seq
 ALTER TABLE public.registration_id_seq OWNER TO mapasculturais;
 
 --
--- Name: registration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: registration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
 --
 
-ALTER SEQUENCE registration_id_seq OWNED BY registration.id;
+CREATE TABLE registration (
+    id integer DEFAULT nextval('registration_id_seq'::regclass) NOT NULL,
+    project_id integer NOT NULL,
+    agent1_id integer NOT NULL,
+    agent2_id integer,
+    agent3_id integer,
+    create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
+    sent_timestamp timestamp without time zone,
+    status integer NOT NULL
+);
 
+
+ALTER TABLE public.registration OWNER TO mapasculturais;
+
+--
+-- Name: registration_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+--
+
+CREATE TABLE registration_meta (
+    object_id integer NOT NULL,
+    key character varying(32) NOT NULL,
+    value text
+);
+
+
+ALTER TABLE public.registration_meta OWNER TO mapasculturais;
 
 --
 -- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
@@ -1076,13 +1082,13 @@ ALTER TABLE public.usr_id_seq OWNER TO mapasculturais;
 
 CREATE TABLE usr (
     id integer DEFAULT nextval('usr_id_seq'::regclass) NOT NULL,
-    profile_id integer,
     auth_provider smallint NOT NULL,
     auth_uid character varying(512) NOT NULL,
     email character varying(255) NOT NULL,
     last_login_timestamp timestamp without time zone NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-    status smallint NOT NULL
+    status smallint NOT NULL,
+    profile_id integer
 );
 
 
@@ -1142,13 +1148,6 @@ ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::r
 --
 
 ALTER TABLE ONLY project_event ALTER COLUMN id SET DEFAULT nextval('project_event_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration ALTER COLUMN id SET DEFAULT nextval('registration_id_seq'::regclass);
 
 
 --
@@ -1301,6 +1300,14 @@ ALTER TABLE ONLY project
 
 
 --
+-- Name: registration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+--
+
+ALTER TABLE ONLY registration_meta
+    ADD CONSTRAINT registration_meta_pkey PRIMARY KEY (object_id, key);
+
+
+--
 -- Name: registration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
 --
 
@@ -1387,6 +1394,13 @@ CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (stat
 
 
 --
+-- Name: registration_meta_key_value_index; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+--
+
+CREATE INDEX registration_meta_key_value_index ON registration_meta USING btree (key, value);
+
+
+--
 -- Name: request_uid; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
 --
 
@@ -1412,30 +1426,6 @@ CREATE INDEX space_location ON space USING gist (_geo_location);
 --
 
 CREATE INDEX space_type ON space USING btree (type);
-
-
---
--- Name: registration_agent1_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent1_fk FOREIGN KEY (agent1_id) REFERENCES agent(id) ON DELETE SET NULL;
-
-
---
--- Name: registration_agent2_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent2_fk FOREIGN KEY (agent2_id) REFERENCES agent(id) ON DELETE SET NULL;
-
-
---
--- Name: registration_agent3_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent3_fk FOREIGN KEY (agent3_id) REFERENCES agent(id) ON DELETE SET NULL;
 
 
 --
@@ -1564,6 +1554,30 @@ ALTER TABLE ONLY project
 
 ALTER TABLE ONLY project_meta
     ADD CONSTRAINT project_project_meta_fk FOREIGN KEY (object_id) REFERENCES project(id);
+
+
+--
+-- Name: registration_agent1_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration
+    ADD CONSTRAINT registration_agent1_fk FOREIGN KEY (agent1_id) REFERENCES agent(id) ON DELETE SET NULL;
+
+
+--
+-- Name: registration_agent2_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration
+    ADD CONSTRAINT registration_agent2_fk FOREIGN KEY (agent2_id) REFERENCES agent(id) ON DELETE SET NULL;
+
+
+--
+-- Name: registration_agent3_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration
+    ADD CONSTRAINT registration_agent3_fk FOREIGN KEY (agent3_id) REFERENCES agent(id) ON DELETE SET NULL;
 
 
 --
