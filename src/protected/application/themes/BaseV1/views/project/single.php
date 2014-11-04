@@ -102,6 +102,7 @@ $this->includeAngularEntityAssets($entity);
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Inscrições</a></li>
+        <li><a href="#inscritos">Inscritos</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -143,7 +144,6 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-
     <div id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <?php if($this->isEditable()): ?>
@@ -165,8 +165,7 @@ $this->includeAngularEntityAssets($entity);
             <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->introInscricoes; ?></p>
         </div>
         <?php endif; ?>
-
-        <div>
+                <div>
             <?php if ($this->isEditable()): ?>
                 <p>
                     <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
@@ -221,35 +220,95 @@ $this->includeAngularEntityAssets($entity);
                 </form>
             </div>
         <?php endif; ?>
-
-        <?php if($entity->canUser('approveRegistration')): ?>
-        <div id="inscritos" class="privado lista-sem-thumb">
-            <div class="clearfix">
-                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar a Lista de Inscritos</a>
-            </div>
-            <div class="js-registration-list">
-                <?php foreach($entity->registrations as $registration): ?>
-                <article id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="objeto clearfix">
-                    <h1><a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a></h1>
-                    <div class="objeto-meta">
-                        <div><span class="label">Área de atuação:</span> <?php echo implode(',', $registration->agent->terms['area']) ?></div>
-                        <div><span class="label">Tipo:</span> <?php echo $registration->agent->type->name ?></div>
-                    </div>
-                    <div>
-                        <a href="#" class="js-registration-action action botao <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>">aprovar</a>
-                        <a href="#" class="js-registration-action action botao <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>">rejeitar</a>
-                        <?php if($form = $registration->getFile('registrationForm')): ?><a class="action" href="<?php echo $form->url ?>">baixar ficha</a><?php endif; ?>
-                    </div>
-                </article>
-                <!--.objeto-->
-                <?php endforeach; ?>
-            </div>
-        </div>
-        <?php endif; ?>
     </div>
     <!--#inscricoes-->
-
+    <div id="inscritos" class="aba-content">
+        <?php if($entity->canUser('approveRegistration')): ?>
+            <div class="privado">
+                <div class="clearfix">
+                    <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
+                    <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar lista de inscritos</a>
+                </div>
+                <table class="js-registration-list registrations-list">
+                    <thead>
+                        <tr>
+                            <th class="registration-id">
+                                Nº
+                            </th>
+                            <th class="registration-agents">
+                                Agentes
+                            </th>
+                            <th class="registration-attachments">
+                                Anexos
+                            </th>
+                            <th class="registration-status">
+                                <div class="dropdown">
+                                    <div class="placeholder">Status</div>
+                                    <div class="submenu-dropdown">
+                                        <ul>
+                                            <li>Aprovado</li>
+                                            <li>Suplente</li>
+                                            <li>Rejeitado</li>
+                                        </ul>
+                                    </div>
+                                <div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($entity->registrations as $registration): ?>
+                        <tr id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="
+                        <?php if ($registration->status == Registration::STATUS_ENABLED)
+                            {
+                            echo 'approved';
+                            }
+                            else if ($registration->status == Registration::STATUS_REGISTRATION_REJECTED)
+                            {
+                            echo 'rejected';
+                            }
+                            else if ($registration->status == Registration::STATUS_MAYBE)
+                            {
+                            echo 'maybed';
+                            }
+                        ?>">
+                            <td class="registration-id">
+                                <?php echo $registration->id ?>
+                            </td>
+                            <td class="registration-agents">
+                                <p>
+                                    <span class="label">Responsável</span><br />
+                                    <a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a>
+                                </p>
+                                <p>
+                                    <span class="label">Instituição</span><br />
+                                    Nome da Instituição
+                                </p>
+                                <p>
+                                    <span class="label">Coletivo</span><br />
+                                    Nome do Coletivo
+                                </p>
+                            </td>
+                            <td class="registration-attachments">
+                                <ul>
+                                    <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>                                        
+                                </ul>
+                            </td>
+                            <td class="registration-status">
+                                <span class="js-registration-action approve <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>"></span>
+                                <span class="js-registration-action maybe"></span>
+                                <span class="js-registration-action reject <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>"></span>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <a class="alignright botao principal" href="#">Publicar lista de aprovados</a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <!--#inscritos-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar project sidebar-right">
