@@ -212,9 +212,9 @@
             </div>
             <!--#ferramentas-->
             <div id="resultados">
-                <span ng-show="spinnerCount > 0" style="display:inline">
+                <span ng-show="spinnerCount > 0">
                     <img src="<?php $this->asset('img/spinner.gif') ?>" />
-                    <span style="margin-left:35px">obtendo resultados...</span>
+                    <span>obtendo resultados...</span>
                 </span>
                 <span ng-if="!spinnerCount">
                     <span ng-if="numResults(numAgents, 'agent')">{{numResults(numAgents, 'agent')}} agente<span ng-show="numResults(numAgents, 'agent')!==1">s</span>

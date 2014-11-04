@@ -376,6 +376,7 @@ ALTER TABLE public.agent_id_seq OWNER TO mapasculturais;
 
 CREATE TABLE agent (
     id integer DEFAULT nextval('agent_id_seq'::regclass) NOT NULL,
+    parent_id integer,
     user_id integer NOT NULL,
     type smallint NOT NULL,
     name character varying(255) NOT NULL,
@@ -385,8 +386,7 @@ CREATE TABLE agent (
     long_description text,
     create_timestamp timestamp without time zone NOT NULL,
     status smallint NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
-    parent_id integer
+    is_verified boolean DEFAULT false NOT NULL
 );
 
 
