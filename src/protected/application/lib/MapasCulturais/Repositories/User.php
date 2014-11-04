@@ -35,7 +35,7 @@ class User extends \MapasCulturais\Repository{
 
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
-        $agent->isUserProfile = true;
+        
         if(isset($response['auth']['info']['name']))
             $agent->name = $response['auth']['info']['name'];
         elseif(isset($response['auth']['info']['first_name']) && isset($response['auth']['info']['last_name']))
@@ -46,6 +46,9 @@ class User extends \MapasCulturais\Repository{
 
         $this->_em->persist($agent);
         $this->_em->flush();
+        
+        $user->profile = $agent;
+        $user->save(true);
         
         $app->enableAccessControl();
 
