@@ -8,6 +8,11 @@ $conn = $em->getConnection();
 
 return array(
     'alter table user add column profile_id' => function() use ($app, $conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'usr' AND column_name = 'profile_id'")){
+            return true;
+        }
+            
+    
         echo "adicionando coluna profile_id à tabela de usuários\n";
     
         $conn->executeQuery('ALTER TABLE usr ADD COLUMN profile_id INTEGER;');
