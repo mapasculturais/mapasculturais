@@ -386,7 +386,7 @@ CREATE TABLE agent (
     long_description text,
     create_timestamp timestamp without time zone NOT NULL,
     status smallint NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL
 );
 
 
