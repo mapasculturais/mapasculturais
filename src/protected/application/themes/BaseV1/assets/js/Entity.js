@@ -335,7 +335,8 @@
             scope: {
                 data: '=',
                 model: '=',
-                placeholder: '@'
+                placeholder: '@',
+                classes: '@'
             },
             link: function($scope, el, attrs) {
                 $scope.selectItem = function(item){

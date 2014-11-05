@@ -183,7 +183,7 @@ $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
                     <mc-select placeholder="Selecione a categoria" model="data.register.category" data="data.registrationCategories"></mc-select>
                 </div>
                 <div>
-                    <button class="botao principal">inscrever-se</button>
+                    <button class="botao principal" ng-click="register()">inscrever-se</button>
                 </div>
             </form>
         <?php endif; ?>
