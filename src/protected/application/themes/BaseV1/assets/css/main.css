@@ -2963,7 +2963,6 @@ table.contratos td {
   font-size: 0.75rem;
 }
 
-/*dropdown*/
 .dropdown {
   position: relative;
   display: inline-block;
@@ -2975,12 +2974,10 @@ table.contratos td {
   font-size: 0.75rem;
   line-height: 1.875rem;
 }
-
 .dropdown .placeholder {
   padding: 0 0.5rem;
   cursor: pointer;
 }
-
 .dropdown .placeholder:after {
   content: '\33';
   float: right;
@@ -2996,7 +2993,6 @@ table.contratos td {
   vertical-align: middle;
   cursor: pointer;
 }
-
 .dropdown .submenu-dropdown {
   z-index: 900;
   position: absolute;
@@ -3017,7 +3013,6 @@ table.contratos td {
   transition: opacity .5s;
   opacity: 0;
 }
-
 .dropdown .submenu-dropdown:before {
   content: '\42';
   position: absolute;
@@ -3037,17 +3032,10 @@ table.contratos td {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.dropdown:hover .submenu-dropdown {
-  display: block;
-  opacity: 1;
-}
-
 .dropdown .submenu-dropdown ul {
   list-style: none;
   margin: 0;
 }
-
 .dropdown .submenu-dropdown li {
   padding: 0 0.5rem;
   margin-bottom: .5rem;
@@ -3055,10 +3043,13 @@ table.contratos td {
   -webkit-transition: all .2s;
   transition: all .2s;
 }
-
-.dropdown .submenu-dropdown li:hover {
+.dropdown .submenu-dropdown li:focus, .dropdown .submenu-dropdown li:hover {
   background: #cccccc;
   color: #fff;
+}
+.dropdown:hover .submenu-dropdown {
+  display: block;
+  opacity: 1;
 }
 
 /* =Edit box
@@ -3167,6 +3158,7 @@ table.contratos td {
 /*Directive Find Entity*/
 .directive-find-entity .result-container {
   max-height: 300px;
+  max-width: 375px;
   padding: 0;
   margin: 0;
   overflow-y: auto;
@@ -3187,6 +3179,22 @@ table.contratos td {
 
 .label {
   font-weight: bold;
+}
+
+.input-text {
+  padding: 3px 6px;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+  color: #666666;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-size: 0.75rem;
+  height: 2rem;
+  margin: 0 0 .75rem;
 }
 
 .js-dialog .label {
@@ -3943,6 +3951,12 @@ h1 .icone {
 }
 .maybe.selected {
   color: #cc9933;
+}
+
+.registration-form {
+  border: 1px solid #eee;
+  border-radius: 2px;
+  padding: 1.5rem;
 }
 
 .ui-datepicker {
