@@ -30,6 +30,7 @@ class Theme extends MapasCulturais\Theme {
             'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
+            'home: colabore' => "Colabore com o Mapas Culturais",
             
             'search: verified results' => 'Resultados Verificados'
         );
@@ -356,6 +357,7 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
             $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
             $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
+            $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
         });

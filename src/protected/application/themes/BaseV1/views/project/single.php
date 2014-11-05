@@ -25,6 +25,8 @@ if($this->isEditable()){
     });
 }
 $this->includeAngularEntityAssets($entity);
+$this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -35,7 +37,7 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 
-<article class="main-content project">
+<article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <div
             <?php if($header = $entity->getFile('header')): ?>
@@ -193,7 +195,20 @@ $this->includeAngularEntityAssets($entity);
             </div>
         <?php endif; ?>
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
-            <p><a class="botao principal" href="<?php echo $app->createUrl('registration', 'create', array('projectId' => $entity->id)) ?>">Fazer inscrição</a></p>
+            <form id="project-registration">
+                <div>
+                    <a id="select-registration-owner-button" class="botao" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Selecione o agente responsável'}}</a>
+                    <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                        <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
+                    </edit-box>
+                </div>
+                <div>
+                    <mc-select placeholder="Selecione a categoria" model="data.register.category" data="data.registrationCategories"></mc-select>
+                </div>
+                <div>
+                    <button class="botao principal">inscrever-se</button>
+                </div>
+            </form>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
@@ -226,7 +241,7 @@ $this->includeAngularEntityAssets($entity);
                                             <li>Rejeitado</li>
                                         </ul>
                                     </div>
-                                <div>
+                                </div>
                             </th>
                         </tr>
                     </thead>
