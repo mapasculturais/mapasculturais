@@ -17,7 +17,9 @@ use MapasCulturais\App;
 class Registration extends \MapasCulturais\Entity
 {
     use Traits\EntityMetadata,
-        Traits\EntityFiles;
+        Traits\EntityFiles,
+        Traits\EntityOwnerAgent,
+        Traits\EntityAgentRelation;
 
     
     const STATUS_REJECTED = -3;
@@ -59,30 +61,10 @@ class Registration extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent1_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
      */
-    protected $agent1;
-    
-    /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent2_id", referencedColumnName="id")
-     * })
-     */
-    protected $agent2;
-    
-    /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent3_id", referencedColumnName="id")
-     * })
-     */
-    protected $agent3;
+    protected $owner;
     
 
     /**
@@ -98,27 +80,13 @@ class Registration extends \MapasCulturais\Entity
     protected $__metadata = array();
 
     function __construct() {
-        $this->agent1 = App::i()->user->profile;
+        $this->owner = App::i()->user->profile;
         parent::__construct();
     }
     
-    function setAgent1Id($id){
+    function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
-        $this->agent1 = $agent;
-    }
-    
-    function setAgent2Id($id){
-        $agent = App::i()->repo('Agent')->find($id);
-        $this->agent2 = $agent;
-    }
-    
-    function setAgent3Id($id){
-        $agent = App::i()->repo('Agent')->find($id);
-        $this->agent3 = $agent;
-    }
-    
-    function getOwner(){
-        return $this->agent1;
+        $this->owner = $agent;
     }
     
     function getRegistrationNumber(){

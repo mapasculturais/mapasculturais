@@ -42,9 +42,7 @@ return array(
             CREATE TABLE registration (
                 id integer NOT NULL,
                 project_id integer NOT NULL,
-                agent1_id integer NOT NULL,
-                agent2_id integer,
-                agent3_id integer,
+                agent_id integer NOT NULL,
                 create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
                 sent_timestamp timestamp without time zone,
                 status integer NOT NULL
@@ -67,22 +65,12 @@ return array(
                                 ADD CONSTRAINT registration_pkey PRIMARY KEY (id);");
         
         
-        echo "criando agent1 FK\n";
+        echo "criando agent FK\n";
         $conn->executeQuery("ALTER TABLE ONLY registration
-                                ADD CONSTRAINT registration_agent1_fk FOREIGN KEY (agent1_id) REFERENCES agent(id) ON DELETE SET NULL;");
+                                ADD CONSTRAINT registration_agent_id_fk FOREIGN KEY (agent1_id) REFERENCES agent(id) ON DELETE SET NULL;");
         
         
-        echo "criando agent2 FK\n";
-        $conn->executeQuery("ALTER TABLE ONLY registration
-                                ADD CONSTRAINT registration_agent2_fk FOREIGN KEY (agent2_id) REFERENCES agent(id) ON DELETE SET NULL;");
-        
-        
-        echo "criando agent3 FK\n";
-        $conn->executeQuery("ALTER TABLE ONLY registration
-                                ADD CONSTRAINT registration_agent3_fk FOREIGN KEY (agent3_id) REFERENCES agent(id) ON DELETE SET NULL;");
-        
-        
-        echo "\n";
+        echo "criando project FK\n";
         $conn->executeQuery("ALTER TABLE ONLY registration
                                 ADD CONSTRAINT registration_project_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;");
         

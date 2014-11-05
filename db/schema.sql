@@ -376,7 +376,6 @@ ALTER TABLE public.agent_id_seq OWNER TO mapasculturais;
 
 CREATE TABLE agent (
     id integer DEFAULT nextval('agent_id_seq'::regclass) NOT NULL,
-    parent_id integer,
     user_id integer NOT NULL,
     type smallint NOT NULL,
     name character varying(255) NOT NULL,
@@ -386,7 +385,8 @@ CREATE TABLE agent (
     long_description text,
     create_timestamp timestamp without time zone NOT NULL,
     status smallint NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL
+    is_verified boolean DEFAULT false NOT NULL,
+    parent_id integer
 );
 
 
@@ -849,9 +849,7 @@ ALTER TABLE public.registration_id_seq OWNER TO mapasculturais;
 CREATE TABLE registration (
     id integer DEFAULT nextval('registration_id_seq'::regclass) NOT NULL,
     project_id integer NOT NULL,
-    agent1_id integer NOT NULL,
-    agent2_id integer,
-    agent3_id integer,
+    agent_id integer NOT NULL,
     create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
     sent_timestamp timestamp without time zone,
     status integer NOT NULL
@@ -1554,38 +1552,6 @@ ALTER TABLE ONLY project
 
 ALTER TABLE ONLY project_meta
     ADD CONSTRAINT project_project_meta_fk FOREIGN KEY (object_id) REFERENCES project(id);
-
-
---
--- Name: registration_agent1_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent1_fk FOREIGN KEY (agent1_id) REFERENCES agent(id) ON DELETE SET NULL;
-
-
---
--- Name: registration_agent2_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent2_fk FOREIGN KEY (agent2_id) REFERENCES agent(id) ON DELETE SET NULL;
-
-
---
--- Name: registration_agent3_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_agent3_fk FOREIGN KEY (agent3_id) REFERENCES agent(id) ON DELETE SET NULL;
-
-
---
--- Name: registration_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_project_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;
 
 
 --

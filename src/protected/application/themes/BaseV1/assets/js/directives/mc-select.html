@@ -1,0 +1,8 @@
+<div class="dropdown">
+    <div class="placeholder">{{model ? model.label : placeholder}}</div>
+    <div class="submenu-dropdown">
+        <ul>
+            <li ng-repeat="item in data" ng-click="selectItem(item)" ng-class="{selected: item === model}">{{item.label}}</li>
+        </ul>
+    </div>
+</div>
