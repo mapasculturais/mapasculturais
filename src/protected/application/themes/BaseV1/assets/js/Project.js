@@ -15,38 +15,43 @@
     module.factory('ProjectService', ['$http', '$rootScope', function ($http, $rootScope) {
             return {
                 serviceProperty: null,
-                getUrl: function(){
-                    return MapasCulturais.baseURL // + controllerId  + '/' + actionName 
+                getRegistrationUrl: function(){
+                    return MapasCulturais.baseURL + 'registration/create';
                 },
-                doSomething: function (param) {
+                register: function (params) {
                     var data = {
-                        prop: name
+                        projectId: MapasCulturais.entity.id,
+                        ownerId: params.owner.id,
+                        category: params.category.value
                     };
                     return $http.post(this.getUrl(), data).
                             success(function (data, status) {
-                                $rootScope.$emit('something', {message: "Something was done", data: data, status: status});
+                                $rootScope.$emit('something', {message: "Project registration was created", data: data, status: status});
                             }).
                             error(function (data, status) {
-                                $rootScope.$emit('error', {message: "Cannot do something", data: data, status: status});
+                                $rootScope.$emit('error', {message: "Cannot create project registration", data: data, status: status});
                             });
                 }
             };
         }]);
 
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
-            var adjustingBoxPosition = false;
+            var adjustingBoxPosition = false,
+                categories = [
+                    {value: 'Categoria 1', label: 'Categoria 1'},
+                    {value: 'Categoria 2', label: 'Categoria 2'},
+                    {value: 'Categoria 3', label: 'Categoria 3'}
+                ];
+                
             $scope.editbox = EditBox;
+            
             $scope.data = {
                 spinner: false,
                 apiQueryRegistrationAgent: {
                     '@permissions': '@control',
                     'type': 'EQ(1)' // type individual
                 },
-                registrationCategories: [
-                    {value: 'Categoria 1', label: 'Categoria 1'},
-                    {value: 'Categoria 2', label: 'Categoria 2'},
-                    {value: 'Categoria 3', label: 'Categoria 3'}
-                ],
+                registrationCategories: categories,
                 registration: {
                     owner: null,
                     category: null
@@ -78,7 +83,9 @@
                     $('#find-entity-registration-owner').trigger('find');
             });
             
-            
+            $scope.register = function(){
+                ProjectService.register(data.registration);
+            };
 
         }]);
 })(angular);
