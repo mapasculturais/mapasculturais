@@ -3887,9 +3887,10 @@ h1 .icone {
 }
 .registrations-list tbody ul {
   margin: 0;
+  list-style: none;
 }
 .registrations-list .registration-id {
-  width: 10%;
+  width: 12%;
 }
 .registrations-list .registration-attachments {
   width: 36%;
@@ -3900,7 +3901,7 @@ h1 .icone {
   text-align: left;
 }
 .registrations-list .registration-status {
-  width: 18%;
+  width: 16%;
 }
 .registrations-list .registration-status .dropdown {
   width: 100%;

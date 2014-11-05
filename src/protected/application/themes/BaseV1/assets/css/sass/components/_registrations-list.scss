@@ -38,10 +38,11 @@
 		}
 		ul {
 			margin: 0;
+			list-style: none;
 		}
 	}
 	.registration-id {
-		width: 10%;
+		width: 12%;
 	}
 	.registration-attachments {
 		width: 36%;
@@ -52,7 +53,7 @@
 		text-align: left;
 	}
 	.registration-status {
-		width: 18%;
+		width: 16%;
 		.dropdown {
 			width: 100%;
 			text-align: left;
@@ -62,10 +63,10 @@
 }
 
 %status {
-			font-size: 1.25rem; //20px
-			color: $gray;
-			margin: 0 2px;
-		}
+	font-size: 1.25rem; //20px
+	color: $gray;
+	margin: 0 2px;
+}
 .approve {
 	@extend %icon;
 	@extend %status;

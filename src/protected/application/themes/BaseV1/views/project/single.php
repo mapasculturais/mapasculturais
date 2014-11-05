@@ -256,22 +256,22 @@ $this->includeAngularEntityAssets($entity);
                                 </p>
                                 <p>
                                     <span class="label">Instituição</span><br />
-                                    Nome da Instituição
+                                    <a href="#">Nome da Instituição</a>
                                 </p>
                                 <p>
                                     <span class="label">Coletivo</span><br />
-                                    Nome do Coletivo
+                                    <a href="#">Nome do Coletivo</a>
                                 </p>
                             </td>
                             <td class="registration-attachments">
                                 <ul>
-                                    <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>                                        
+                                    <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>
                                 </ul>
                             </td>
                             <td class="registration-status">
-                                <span class="js-registration-action approve <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>"></span>
-                                <span class="js-registration-action maybe"></span>
-                                <span class="js-registration-action reject <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>"></span>
+                                <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
+                                <span class="js-registration-action maybe hltip" title="Talvez"></span>
+                                <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
                             </td>
                         </tr>
                     <?php endforeach; ?>
