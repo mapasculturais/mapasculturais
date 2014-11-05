@@ -204,6 +204,14 @@ class Project extends \MapasCulturais\Entity
         $cdate = new \DateTime;
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
+    
+    
+    protected function canUserRegister($user = null){
+        if($user->is('guest'))
+            return false;
+        
+        return $this->isRegistrationOpen();
+    }
 
     function getRegistrationByAgent(Agent $agent){
         $app = App::i();

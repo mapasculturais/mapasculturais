@@ -193,32 +193,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
         <?php endif; ?>
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
-            <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
-
-            <div id="dialog-registration-form" class="js-dialog" title="Inscrição">
-                <form class="js-ajax-upload" method="POST" data-action="project-registration" action="<?php echo $app->createUrl('project', 'register', array($entity->id)); ?>" enctype="multipart/form-data">
-                    <div class="alert danger"></div>
-                <h4 class="js-search js-xedit"
-                           data-field-name='agentId'
-                           data-emptytext="Selecione um agente"
-                           data-search-box-width="400px"
-                           data-search-box-placeholder="Selecione um agente"
-                           data-entity-controller="agent"
-                           data-search-result-template="#agent-search-result-template"
-                           data-selection-template="#agent-response-template"
-                           data-no-result-template="#agent-response-no-results-template"
-                           data-selection-format="projectRegistration"
-                           data-value="<?php echo $app->user->profile->id ?>"
-                           title="Repassar propriedade"
-                     ><?php echo $app->user->profile->name ?></h4>
-                <?php if($registrationForm): ?>
-                <p>Selecione o arquivo com sua ficha de inscrição preenchida e clique em "Enviar Inscrição"</p>
-                <input type="file" name="registrationForm" />
-                <?php endif; ?>
-                <input id="registration-agent-id" name='agentId' type="hidden" value="<?php echo $app->user->profile->id ?>" />
-                <input type="submit" value="Enviar Inscrição" />
-                </form>
-            </div>
+            <p><a class="botao principal" href="<?php echo $app->createUrl('registration', 'create', array('projectId' => $entity->id)) ?>">Fazer inscrição</a></p>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->

@@ -173,6 +173,7 @@ trait EntityMetadata{
             $class = $this->getClassName();
 
             if(class_exists($class.'Meta')){
+                // @TODO replace this lines by "$result = $this->__metadata;"
                 $metadata_entity_class = $class.'Meta';
                 $repo = $app->repo($metadata_entity_class);
                 $result = $repo->findBy(array('owner' => $this));

@@ -193,6 +193,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
+            'inscrever-se' => array('registration', 'create')
         ),
         'controllers' => array(
             'painel'         => 'panel',

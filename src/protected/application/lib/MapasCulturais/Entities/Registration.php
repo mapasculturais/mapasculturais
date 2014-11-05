@@ -19,10 +19,17 @@ class Registration extends \MapasCulturais\Entity
     use Traits\EntityMetadata,
         Traits\EntityFiles;
 
+    
+    const STATUS_REJECTED = -3;
+    const STATUS_WAITING = -2;
+    const STATUS_MAYBE = -1;
+    const STATUS_APPROVED = self::STATUS_ENABLED;
 
-    protected static $validations = array();
-
-    //
+    protected static $validations = array(
+        'agent1' => array(
+            'required' => "O agente responsável é obrigatório."
+        )
+    );
 
     /**
      * @var integer
@@ -33,6 +40,18 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="registration_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
+    
+    
+    
+    /**
+     * @var \MapasCulturais\Entities\Project
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * })
+     */
+    protected $project;
 
 
     /**
@@ -65,19 +84,53 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $agent3;
     
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=false)
+     */
+    protected $status = self::STATUS_DRAFT;
     
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
 
-    public function __construct() {
+    function __construct() {
         $this->agent1 = App::i()->user->profile;
         parent::__construct();
     }
     
+    function setAgent1Id($id){
+        $agent = App::i()->repo('Agent')->find($id);
+        $this->agent1 = $agent;
+    }
+    
+    function setAgent2Id($id){
+        $agent = App::i()->repo('Agent')->find($id);
+        $this->agent2 = $agent;
+    }
+    
+    function setAgent3Id($id){
+        $agent = App::i()->repo('Agent')->find($id);
+        $this->agent3 = $agent;
+    }
+    
     function getOwner(){
         return $this->agent1;
+    }
+    
+    function getRegistrationNumber(){
+        if($this->id){
+            return $this->project->id .'-'. str_pad($this->id,8,'0',STR_PAD_LEFT);
+        }else{
+            return null;
+        }
+    }
+    
+    function canUserView(){
+        return true;
     }
 
     //============================================================= //
