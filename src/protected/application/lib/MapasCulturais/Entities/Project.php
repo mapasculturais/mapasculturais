@@ -194,10 +194,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     function validateRegistrationDates() {
-        if($this->registrationFrom && $this->registrationTo)
+        if($this->registrationFrom && $this->registrationTo){
             return $this->registrationFrom <= $this->registrationTo;
-        else
+            
+        }elseif($this->registrationFrom || $this->registrationTo){
+            return false;
+            
+        }else{
             return true;
+        }
     }
 
     function isRegistrationOpen(){
