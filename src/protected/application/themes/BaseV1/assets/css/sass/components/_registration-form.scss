@@ -9,4 +9,19 @@
 	border: 1px solid #eee;
 	border-radius: 2px;
 	padding: 1.5rem;
+	.label {
+		font-size: $font-size-smaller;
+	}
+	input[type=text] {
+		vertical-align: top; // that's to fix alignment with .botao next to it;
+		width: 250px;
+	}
+	.dropdown-select {
+		width: 200px;
+	}
+	.botao.principal {
+		width: 100%;
+		box-sizing: border-box;
+		text-align: center;
+	}
 }
