@@ -170,20 +170,20 @@ $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
         
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
             <form id="project-registration" class="registration-form">
-                <h3>Inscreva-se</h3>
-                <p>
+                <div>
                     <span class="label">Agente Responsável</span><br>
-                    <span class="input-text">{{data.registration.owner ? data.registration.owner.name : 'Selecione o agente responsável'}}</span>
-                    <a id="select-registration-owner-button" class="botao" ng-click="editbox.open('editbox-select-registration-owner', $event)">Selecionar</a>
+                    <input type="text" value="{{data.registration.owner ? data.registration.owner.name : 'Nome do Agente'}}">
+                    <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">Selecionar</a>
                     <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
                         <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
                     </edit-box>
-                </p>
-                <div>
-                    <mc-select placeholder="Selecione a categoria" model="data.register.category" data="data.registrationCategories"></mc-select>
                 </div>
                 <div>
-                    <button class="botao principal" ng-click="register()">inscrever-se</button>
+                    <span class="label">Categoria</span><br>
+                    <mc-select placeholder="Selecione a categoria" classes="dropdown-select" model="data.register.category" data="data.registrationCategories"></mc-select>
+                </div>
+                <div>
+                    <a href="#" class="botao principal" ng-click="register()">Fazer a inscrição</a>
                 </div>
             </form>
         <?php endif; ?>
