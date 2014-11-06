@@ -1,5 +1,4 @@
 <?php
-$this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
 if($this->controller->action === 'create')
     return;
 

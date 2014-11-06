@@ -5,6 +5,7 @@
 
     module.config(['$httpProvider', function ($httpProvider) {
             $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+            $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
             $httpProvider.defaults.transformRequest = function (data) {
                 var result = angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
 
@@ -16,7 +17,7 @@
             return {
                 serviceProperty: null,
                 getRegistrationUrl: function(){
-                    return MapasCulturais.baseURL + 'registration/create';
+                    return MapasCulturais.baseURL + 'registration';
                 },
                 register: function (params) {
                     var data = {
@@ -24,7 +25,7 @@
                         ownerId: params.owner.id,
                         category: params.category.value
                     };
-                    return $http.post(this.getUrl(), data).
+                    return $http.post(this.getRegistrationUrl(), data).
                             success(function (data, status) {
                                 $rootScope.$emit('something', {message: "Project registration was created", data: data, status: status});
                             }).
@@ -84,7 +85,21 @@
             });
             
             $scope.register = function(){
-                ProjectService.register(data.registration);
+                var registration = $scope.data.registration;
+                
+                if(registration.owner && (!categories.length || registration.category)){
+                    ProjectService.register(registration).success(function(rs){
+                        document.location = rs.editUrl;
+                    });
+                }else{
+                    if(!registration.owner && categories.length && !registration.category){
+                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável e uma categoria.');
+                    }else if(!registration.owner){
+                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
+                    }else if(categories.length && !registration.category){
+                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar uma categoria.');
+                    }
+                }
             };
 
         }]);

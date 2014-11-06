@@ -679,6 +679,8 @@ class Theme extends MapasCulturais\Theme {
     function includeAngularEntityAssets($entity) {
         $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
+        $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
+        $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
 
         $this->jsObject['entity'] = array('id' => $entity->id);
 

@@ -25,7 +25,6 @@ if($this->isEditable()){
     });
 }
 $this->includeAngularEntityAssets($entity);
-$this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
@@ -180,7 +179,7 @@ $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
                     </edit-box>
                 </p>
                 <div>
-                    <mc-select placeholder="Selecione a categoria" model="data.register.category" data="data.registrationCategories"></mc-select>
+                    <mc-select placeholder="Selecione a categoria" model="data.registration.category" data="data.registrationCategories"></mc-select>
                 </div>
                 <div>
                     <button class="botao principal" ng-click="register()">inscrever-se</button>

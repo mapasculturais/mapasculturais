@@ -31,7 +31,7 @@ $project = $entity->project;
             <!--.avatar-->
             <div class="entity-type registration-type">
                 <div class="icone icon_document_alt"></div>
-                <a href="#" class='js-editable-type' data-original-title="C" data-emptytext="Selecione um tipo" data-entity='registration' data-value='<?php echo $entity->type ?>'>
+                <a href="#" data-original-title="C" data-emptytext="Selecione um tipo" data-entity='registration' data-value='<?php echo $entity->type ?>'>
                     <?php echo $project->type->name; ?>
                 </a>
             </div>
