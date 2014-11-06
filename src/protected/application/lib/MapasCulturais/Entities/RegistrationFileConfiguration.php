@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * RegistrationMeta
@@ -31,8 +32,6 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
