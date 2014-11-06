@@ -10,12 +10,12 @@ return array(
         ),
         
         'registrationOptions' => array(
-            'label' => 'Opções de inscrição (coloque uma opção por linha)',
+            'label' => 'Opções de inscrição',
             'type' => 'text'
         ),
         
         'registrationOptionsDescription' => array(
-            'label' => 'Descrição das opções (ex: categoria)',
+            'label' => 'Descrição das opções (ex: categorias)',
         ),
 
         'site' => array(

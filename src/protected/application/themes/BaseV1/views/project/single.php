@@ -154,17 +154,42 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
             <p>
                 <?php if($this->isEditable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if($this->isEditable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
-                <?php if($this->isEditable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
-                <?php if($this->isEditable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
+                <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                    As inscrições estão abertas de 
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                        a
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>
+                <?php endif; ?>
             </p>
         <?php endif; ?>
 
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
-        <div id="intro-das-inscricoes">
-            <?php if($this->isEditable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
-            <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->introInscricoes; ?></p>
-        </div>
+            <div id="intro-das-inscricoes">
+                <?php if($this->isEditable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
+                <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
+            </div>
+        <?php endif; ?>
+            
+        <?php if($this->isEditable()): ?>
+            <div id="registration-categories">
+                <span class="label">3. Se necessário, você pode pedir para os inscritos escolherem uma das opções abaixo na hora de se inscrever. (coloque uma opção por linha):</span><br>
+
+                <p><span class="js-editable" data-edit="registrationOptionsDescription" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma escrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationOptionsDescription; ?></span></p>
+                <p><span class="js-editable" data-edit="registrationOptions" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationOptions; ?></span></p>
+            </div>
+            
+            <div id="registration-agent-relations">
+                <span class="label">4. Marque quais são os agentes que o proponente deve relacionar à inscrição:</span><br>
+                <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
+                    <div class="registration-related-agent-configuration">
+                        <div>
+                            <span class="label"><?php echo $def->label ?>:</span>
+                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Facultative') ; ?></span>
+                        </div> 
+                        <p><?php echo $def->description ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>

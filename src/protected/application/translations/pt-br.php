@@ -35,6 +35,7 @@ return array(
     'Yes' => 'Sim',
     'No' => 'Não',
     
+    'Use relation %s' => 'Usar relação %s',
     "Required" => 'Obrigatório',
     "Facultative" => 'Facultativo',
     "Don't use" => 'Não usar'

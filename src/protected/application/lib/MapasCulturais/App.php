@@ -527,16 +527,10 @@ class App extends \Slim\Slim{
             // registration agent relations
             
             foreach($this->config['registration.agentRelations'] as $config){ 
-                $projects_meta['useAgentRelation' . ucfirst($config['agentRelationGroupName'])] = array(
-                    'label' => sprintf($this->txt('Use relation %'), $config['label']),
-                    'type' => 'select',
-                    'options' => array(
-                        'required' => $this->txt('Required'),
-                        'facultative' => $this->txt('Facultative'),
-                        'dontUse' => $this->txt("Don't use")
-                    )
-                );
-                $this->registerRegistrationAgentRelation(new Definitions\RegistrationAgentRelation($config));
+                $def = new Definitions\RegistrationAgentRelation($config);
+                $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
+                
+                $this->registerRegistrationAgentRelation($def);
             }
 
             // all metalist groups
@@ -1179,6 +1173,10 @@ class App extends \Slim\Slim{
         $this->_register['registration_agent_relations'][$def->agentRelationGroupName] = $def;
     }
     
+    /**
+     * 
+     * @return \MapasCulturais\Definitions\RegistrationAgentRelation[]
+     */
     function getRegisteredRegistrationAgentRelations(){
         return $this->_register['registration_agent_relations'];
     }
