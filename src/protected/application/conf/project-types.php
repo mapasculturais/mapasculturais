@@ -4,14 +4,18 @@
  */
 return array(
     'metadata' => array(
-        'criterios' => array(
-            'label' => 'Critérios de uso do espaço',
-            'type' => 'text'
-        ),
-
         'introInscricoes' => array(
             'label' => 'Texto introdutório das inscrições',
             'type' => 'text'
+        ),
+        
+        'registrationOptions' => array(
+            'label' => 'Opções de inscrição (coloque uma opção por linha)',
+            'type' => 'text'
+        ),
+        
+        'registrationOptionsDescription' => array(
+            'label' => 'Descrição das opções (ex: categoria)',
         ),
 
         'site' => array(

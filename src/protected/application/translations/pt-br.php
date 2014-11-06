@@ -32,5 +32,10 @@ return array(
     'December' => 'Dezembro',
 
 
-
+    'Yes' => 'Sim',
+    'No' => 'Não',
+    
+    "Required" => 'Obrigatório',
+    "Facultative" => 'Facultativo',
+    "Don't use" => 'Não usar'
 );
