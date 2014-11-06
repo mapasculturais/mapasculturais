@@ -1,20 +1,6 @@
 .label {
     font-weight: bold;
 }
-.input-text {
-    padding: 3px 6px;
-    display: inline-block;
-    background: #fff;
-    border: 1px solid $gray;
-    border-radius: $border-radius-base;
-    color: $gray-dark;
-    font-family: $font-family-base;
-         box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    font-size: $font-size-smaller;
-    height: 2rem;
-    margin: 0 0 .75rem;
-}
 .js-dialog .label {
     color: $brand-accent;
     font-weight: normal;
