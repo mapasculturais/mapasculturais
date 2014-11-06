@@ -2968,19 +2968,22 @@ table.contratos td {
   display: inline-block;
   height: 2rem;
   margin: 0;
-  background: #e2e2e2;
+  background-color: #e2e2e2;
   color: black;
   border-radius: 2px;
   font-size: 0.75rem;
   line-height: 1.875rem;
 }
 .dropdown .placeholder {
-  padding: 0 0.5rem;
+  padding: 0 1.5rem 0 0.5rem;
   cursor: pointer;
 }
 .dropdown .placeholder:after {
   content: '\33';
-  float: right;
+  position: absolute;
+  right: 0;
+  width: 1.5rem;
+  text-align: center;
   font-family: 'ElegantIcons';
   speak: none;
   font-size: 1rem;
@@ -3050,6 +3053,27 @@ table.contratos td {
 .dropdown:hover .submenu-dropdown {
   display: block;
   opacity: 1;
+}
+
+.dropdown-select {
+  border: 1px solid #cccccc;
+  font-weight: bold;
+  color: #666666;
+  margin-bottom: 0.75rem;
+}
+.dropdown-select .placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.dropdown-select .placeholder:after {
+  background-color: #e2e2e2;
+}
+.dropdown-select .submenu-dropdown {
+  border: 1px solid #cccccc;
+}
+.dropdown-select:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
 }
 
 /* =Edit box
@@ -3179,22 +3203,6 @@ table.contratos td {
 
 .label {
   font-weight: bold;
-}
-
-.input-text {
-  padding: 3px 6px;
-  display: inline-block;
-  background: #fff;
-  border: 1px solid #cccccc;
-  border-radius: 2px;
-  color: #666666;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  font-size: 0.75rem;
-  height: 2rem;
-  margin: 0 0 .75rem;
 }
 
 .js-dialog .label {
@@ -3957,6 +3965,23 @@ h1 .icone {
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 1.5rem;
+}
+.registration-form .label {
+  font-size: 0.75rem;
+}
+.registration-form input[type=text] {
+  vertical-align: top;
+  width: 250px;
+}
+.registration-form .dropdown-select {
+  width: 200px;
+}
+.registration-form .botao.principal {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .ui-datepicker {
