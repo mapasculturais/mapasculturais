@@ -5,11 +5,11 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 
 /**
- * Project Controller
+ * Registration Controller
  *
- * By default this controller is registered with the id 'project'.
+ * By default this controller is registered with the id 'registration'.
  *
- *  @property-read \MapasCulturais\Entities\Project $requestedEntity The Requested Entity
+ *  @property-read \MapasCulturais\Entities\Registration $requestedEntity The Requested Entity
  */
 class Registration extends EntityController {
     use Traits\ControllerUploads;

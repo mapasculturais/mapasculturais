@@ -829,10 +829,25 @@ CREATE TABLE project_meta (
 ALTER TABLE public.project_meta OWNER TO mapasculturais;
 
 --
--- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
 --
 
-CREATE SEQUENCE registration_id_seq
+CREATE TABLE registration_file_configuration (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    description text,
+    required boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.registration_file_configuration OWNER TO mapasculturais;
+
+--
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+--
+
+CREATE SEQUENCE registration_file_configuration_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -840,23 +855,14 @@ CREATE SEQUENCE registration_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.registration_id_seq OWNER TO mapasculturais;
+ALTER TABLE public.registration_file_configuration_id_seq OWNER TO mapasculturais;
 
 --
--- Name: registration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
 --
 
-CREATE TABLE registration (
-    id integer DEFAULT nextval('registration_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    agent_id integer NOT NULL,
-    create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
-    sent_timestamp timestamp without time zone,
-    status integer NOT NULL
-);
+ALTER SEQUENCE registration_file_configuration_id_seq OWNED BY registration_file_configuration.id;
 
-
-ALTER TABLE public.registration OWNER TO mapasculturais;
 
 --
 -- Name: registration_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
@@ -1152,6 +1158,13 @@ ALTER TABLE ONLY project_event ALTER COLUMN id SET DEFAULT nextval('project_even
 -- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
 --
 
+ALTER TABLE ONLY registration_file_configuration ALTER COLUMN id SET DEFAULT nextval('registration_file_configuration_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+--
+
 ALTER TABLE ONLY role ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclass);
 
 
@@ -1298,19 +1311,19 @@ ALTER TABLE ONLY project
 
 
 --
+-- Name: registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+--
+
+ALTER TABLE ONLY registration_file_configuration
+    ADD CONSTRAINT registration_file_configuration_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: registration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
 --
 
 ALTER TABLE ONLY registration_meta
     ADD CONSTRAINT registration_meta_pkey PRIMARY KEY (object_id, key);
-
-
---
--- Name: registration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
---
-
-ALTER TABLE ONLY registration
-    ADD CONSTRAINT registration_pkey PRIMARY KEY (id);
 
 
 --
@@ -1552,6 +1565,14 @@ ALTER TABLE ONLY project
 
 ALTER TABLE ONLY project_meta
     ADD CONSTRAINT project_project_meta_fk FOREIGN KEY (object_id) REFERENCES project(id);
+
+
+--
+-- Name: registration_meta_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration_file_configuration
+    ADD CONSTRAINT registration_meta_project_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE SET NULL;
 
 
 --

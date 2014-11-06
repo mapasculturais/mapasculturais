@@ -28,7 +28,7 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_APPROVED = self::STATUS_ENABLED;
 
     protected static $validations = array(
-        'agent1' => array(
+        'owner' => array(
             'required' => "O agente responsável é obrigatório."
         )
     );
@@ -87,6 +87,11 @@ class Registration extends \MapasCulturais\Entity
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
         $this->owner = $agent;
+    }
+    
+    function setProjectId($id){
+        $agent = App::i()->repo('Project')->find($id);
+        $this->project = $agent;
     }
     
     function getRegistrationNumber(){

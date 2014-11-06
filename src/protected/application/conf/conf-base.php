@@ -72,6 +72,26 @@ return array(
         'subprefeitura',
         'distrito'
     ),
+    
+    'registration.agentRelations' => array(
+        array(
+            'required' => false,
+            'agentRelationGroupName' => 'instituicao',
+            'label' => 'Instituição Responsável',
+            'description' => 'É um agente coletivo com CNPJ obrigatoriamente preenchido',
+            'type' => 2,
+            'requiredProperties' => array('documento')
+        ),
+        
+        array(
+            'required' => false,
+            'label' => 'Coletivo',
+            'agentRelationGroupName' => 'coletivo',
+            'description' => 'É um agente coletivo relacionado ao projeto, sem obrigatoriedade de CNPJ',
+            'type' => 2,
+            'requiredProperties' => array()
+        )
+    ),
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
