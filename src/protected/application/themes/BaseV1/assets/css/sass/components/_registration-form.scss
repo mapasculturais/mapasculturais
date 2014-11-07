@@ -3,25 +3,40 @@
 // --------------------------------------------------
 
 
-//## List that shows on projects tab "Inscritos" when editing.
+//## Registration form that shows on projects tab "Inscritos" when editing.
 
 .registration-form {
+	box-sizing: border-box;
 	border: 1px solid #eee;
 	border-radius: 2px;
-	padding: 1.5rem;
-	.label {
-		font-size: $font-size-smaller;
-	}
-	input[type=text] {
-		vertical-align: top; // that's to fix alignment with .botao next to it;
-		width: 250px;
+	padding: $padding-large;
+	> div {
+		float: left;
+		box-sizing: border-box;
+		padding-right: .75rem;
+		&:nth-child(1){
+			width: 40%;
+		}
+		&:nth-child(2) {
+			width: 40%;
+		}
+		&:nth-child(3) {
+			width: 20%;
+			padding-right: 0;
+		}
+
 	}
 	.dropdown-select {
-		width: 200px;
-	}
-	.botao.principal {
 		width: 100%;
-		box-sizing: border-box;
-		text-align: center;
+	}
+	.botao {
+		width: 100%;
+		&.principal {
+			text-align: center;
+		}
+		&.simples {
+			white-space: nowrap;
+			overflow: hidden;
+		}
 	}
 }

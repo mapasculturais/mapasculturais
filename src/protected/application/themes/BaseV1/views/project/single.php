@@ -193,27 +193,24 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
         
         <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
-            <form id="project-registration" class="registration-form">
+            <form id="project-registration" class="registration-form clearfix">
                 <div>
-                    <span class="label">Agente Responsável</span><br>
-                    <input type="text" value="{{data.registration.owner ? data.registration.owner.name : 'Nome do Agente'}}">
-                    <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">Selecionar</a>
+                    <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente Responsável'}}</a>
                     <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
-                        <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
+                    <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
                     </edit-box>
                 </div>
                 <div>
-                    <span class="label">Categoria</span><br>
-                    <mc-select placeholder="Selecione a categoria" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
+                    <mc-select placeholder="Categoria" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
                 </div>
                 <div>
-                    <a href="#" class="botao principal" ng-click="register()">Fazer a inscrição</a>
+                    <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>
                 </div>
             </form>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-    <div id="inscritos" class="aba-content">
+    <div id="inscritos" class="aba-content privado">
         <?php if($entity->canUser('approveRegistration')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
