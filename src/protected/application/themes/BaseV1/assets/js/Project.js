@@ -36,6 +36,26 @@
             };
         }]);
 
+    module.factory('RegistrationFileConfigurationService', ['$http', function($http){
+        var url = MapasCulturais.baseURL + 'registrationfileconfiguration';
+        return {
+            create: function(data){
+                $http.post(url+'/create', data)
+                    .success(
+                        function(){
+
+                        }
+                    );
+            },
+            edit: function(){
+
+            },
+            delete: function(){
+
+            }
+        };
+
+    }]);
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
             var adjustingBoxPosition = false,
                 categories = [
@@ -43,9 +63,9 @@
                     {value: 'Categoria 2', label: 'Categoria 2'},
                     {value: 'Categoria 3', label: 'Categoria 3'}
                 ];
-                
+
             $scope.editbox = EditBox;
-            
+
             $scope.data = {
                 spinner: false,
                 apiQueryRegistrationAgent: {
@@ -56,9 +76,10 @@
                 registration: {
                     owner: null,
                     category: null
-                }
+                },
+                registrationFileConfigurations: MapasCulturais.entity.registrationFileConfigurations
             };
-            
+
             var adjustBoxPosition = function () {
                 setTimeout(function () {
                     adjustingBoxPosition = true;
@@ -73,7 +94,7 @@
                 if (ov && !nv)
                     adjustBoxPosition();
             });
-            
+
             $scope.setRegistrationOwner = function(entity){
                 $scope.data.registration.owner = entity;
                 EditBox.close('editbox-select-registration-owner');
@@ -83,10 +104,10 @@
                 if (!adjustingBoxPosition)
                     $('#find-entity-registration-owner').trigger('find');
             });
-            
+
             $scope.register = function(){
                 var registration = $scope.data.registration;
-                
+
                 if(registration.owner && (!categories.length || registration.category)){
                     ProjectService.register(registration).success(function(rs){
                         document.location = rs.editUrl;

@@ -14,9 +14,9 @@ use MapasCulturais\App;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationFileConfiguration extends \MapasCulturais\Entity {
-    
-    use Traits\EntityFiles;
-            
+
+    use \MapasCulturais\Traits\EntityFiles;
+
 
     /**
      * @var integer
@@ -31,9 +31,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Registration")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })

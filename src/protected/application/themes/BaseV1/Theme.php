@@ -8,7 +8,7 @@ use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 
 class Theme extends MapasCulturais\Theme {
-    
+
     protected $_libVersions = array(
         'leaflet' => '0.7.3',
         'angular' => '1.2.26',
@@ -31,7 +31,7 @@ class Theme extends MapasCulturais\Theme {
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
             'home: colabore' => "Colabore com o Mapas Culturais",
-            
+
             'search: verified results' => 'Resultados Verificados'
         );
     }
@@ -328,7 +328,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
-            
+
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
@@ -529,7 +529,7 @@ class Theme extends MapasCulturais\Theme {
 
     function includeVendorAssets() {
         $versions = $this->_libVersions;
-        
+
         $this->enqueueStyle('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/css/jquery-editable.css", array('select2'));
 //        $this->enqueueStyle('vendor', 'x-editable-tip', "vendor/x-editable-{$versions['x-editable']}/css/tip-yellowsimple.css", array('x-editable'));
 
@@ -638,7 +638,7 @@ class Theme extends MapasCulturais\Theme {
 
     function includeMapAssets() {
         $app = App::i();
-        
+
         $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
         $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
@@ -682,7 +682,9 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
         $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
 
-        $this->jsObject['entity'] = array('id' => $entity->id);
+        $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(
+            'id' => $entity->id
+        ));
 
         $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
         foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
@@ -791,8 +793,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
-    
-    
+    function addRegistrationFileConfigurationsToJs($entity) {
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations->toArray();;
+    }
+
     /**
     * Returns a verified entity with images in gallery
     * @param type $entity_class
@@ -845,7 +849,7 @@ class Theme extends MapasCulturais\Theme {
            return null;
        }
    }
-   
+
    function getEntityFeaturedImageUrl($entity) {
         if (key_exists('gallery', $entity->files)) {
             return $entity->files['gallery'][array_rand($entity->files['gallery'])]->transform('galleryFull')->url;
@@ -855,11 +859,11 @@ class Theme extends MapasCulturais\Theme {
             return null;
         }
     }
-    
+
     function getNumEntities($class, $verified = 'all', $use_cache = true, $cache_lifetime = 300){
         $em = App::i()->em;
         $dql = "SELECT COUNT(e) FROM $class e WHERE e.status > 0";
-        
+
         if(is_bool($verified)){
             if($verified){
                 $dql .= ' AND e.isVerified = TRUE';
@@ -867,16 +871,16 @@ class Theme extends MapasCulturais\Theme {
                 $dql .= ' AND e.isVerified = FALSE';
             }
         }
-        
+
         $q = $em->createQuery($dql);
-        
+
         if($use_cache){
             $q->useQueryCache(true)->setResultCacheLifetime($cache_lifetime);
         }
-        
+
         return $q->getSingleScalarResult();
     }
-    
+
     function getNumEvents($from = null, $to = null){
         return App::i()->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
@@ -884,7 +888,7 @@ class Theme extends MapasCulturais\Theme {
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
         ));
     }
-    
+
     function getNumVerifiedEvents($from = null, $to = null){
         return App::i()->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
