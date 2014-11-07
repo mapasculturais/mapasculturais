@@ -4007,6 +4007,24 @@ h1 .icone {
   overflow: hidden;
 }
 
+.registration-edition-options {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #eeeeee;
+  border-radius: 2px;
+}
+.registration-edition-options:hover {
+  background-color: #f4f4f4;
+}
+.registration-edition-options h4 {
+  margin-bottom: 0.75rem;
+}
+
+.registration-edition-help {
+  font-style: italic;
+  color: #999;
+}
+
 .ui-datepicker {
   display: none;
   border: 1px solid #cccccc;
