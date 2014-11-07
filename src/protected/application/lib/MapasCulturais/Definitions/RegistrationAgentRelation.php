@@ -8,6 +8,8 @@ namespace MapasCulturais\Definitions;
  * @property-read string $description
  * @property-read int $type
  * @property-read array $requiredProperties
+ * @property-read array $metadataConfiguration
+ * @property-read array $metadataName
  */
 class RegistrationAgentRelation extends \MapasCulturais\Definition{
    
@@ -41,11 +43,7 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
         return array(
             'label' => sprintf($app->txt('Use relation %s'), $this->label),
             'type' => 'select',
-            'options' => array(
-                $app->txt('Required') => $app->txt('Required'),
-                $app->txt('Facultative') => $app->txt('Facultative'),
-                $app->txt("Don't use") => $app->txt("Don't use")
-            )
+            'options' => $app->config['registration.agentRelationsOptions']
         );
     }
 }
