@@ -37,8 +37,8 @@
         }]);
 
     module.factory('RegistrationFileConfigurationService', ['$http', function($http){
-        var url = MapasCulturais.baseURL + 'registrationfileconfiguration';
         return {
+            getUrl: function(){MapasCulturais.baseURL + 'registrationfileconfiguration'},
             create: function(data){
                 $http.post(url+'/create', data)
                     .success(
@@ -56,6 +56,18 @@
         };
 
     }]);
+    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
+        $scope.isEditable = MapasCulturais.isEditable;
+        $scope.uploadFileGroup = 'registrationFileConfiguration';
+        $scope.getUploadUrl = function (ownerId){
+            return RegistrationFileConfigurationService.getUrl()+'/upload/'+ownerId;
+        };
+        $scope.data = {
+            files: MapasCulturais.entity.registrationFileConfigurations
+        };
+        console.log($scope.data.files);
+    }]);
+
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
             var adjustingBoxPosition = false,
                 categories = [
@@ -76,8 +88,7 @@
                 registration: {
                     owner: null,
                     category: null
-                },
-                registrationFileConfigurations: MapasCulturais.entity.registrationFileConfigurations
+                }
             };
 
             var adjustBoxPosition = function () {

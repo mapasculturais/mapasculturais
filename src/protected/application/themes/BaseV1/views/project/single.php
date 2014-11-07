@@ -195,16 +195,48 @@ $this->includeAngularEntityAssets($entity);
 
             <div id="registration-attachments">
 
-                <span class="label">5. Anexos:</span><br>
-
+                <span class="label">5. Anexos:</span>
                 <!-- da parte downloads.php -->
 
-                <?php $attachments = $entity->registrationFileConfigurations;
-                if($attachments)
-                foreach($attachments as $a){
-                    echo $a->id.'. '.$a->title.'<br>'.$a->description;
-                }
+                <?php // $attachments = $entity->registrationFileConfigurations;
+//                if($attachments)
+//                foreach($attachments as $a){
+//                    echo $a->id.'. '.$a->title.'<br>'.$a->description;
+//                }
                 ?>
+                <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)"></a>
+                <div ng-controller="RegistrationFileConfigurationsController">
+                    <ul class="widget-list">
+                        <li ng-repeat="file in data.files" id="registration-file-{{file.id}}" class="widget-list-item is-editable">
+                            <a href="{{}}"><span>{{file.title}}</span></a>
+                            {{file.description}}
+                            <div class="botoes">
+                                <a data-href="{{file.deleteUrl}}" ng-click="remove(file.id)" class="icone icon_close hltip js-remove-item" hltitle="Excluir anexo"></a>
+                            </div>
+
+                            <edit-box id="editbox-registration-files-{{file.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+
+                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(file.id)}}" enctype="multipart/form-data">
+                                    <div class="alert danger escondido"></div>
+                                    <p class="form-help">Tamanho máximo do arquivo: {{data.maxUploadSize}}</p>
+                                    <input type="file" name="{{data.uploadFileGroup}}" />
+                                </form>
+
+                                <div class="js-ajax-upload-progress">
+                                    <div class="progress">
+                                        <div class="bar"></div >
+                                        <div class="percent">0%</div >
+                                    </div>
+                                </div>
+
+                            </edit-box>
+
+                        </li>
+                    </ul>
+                </div>
+
+
+
 
             </div>
 
