@@ -40,3 +40,20 @@
 		}
 	}
 }
+.registration-edition-options {
+	margin-bottom: $line-height-base;
+	padding: $padding-large;
+	border: 1px solid $gray-lighter;
+	border-radius: 2px;
+	&:hover {
+		background-color: #f4f4f4;
+	}
+	h4 {
+		margin-bottom: $line-height-half;
+	}
+
+}
+.registration-edition-help {
+	font-style: italic;
+	color: #999;
+}
