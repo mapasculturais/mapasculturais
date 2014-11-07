@@ -104,6 +104,7 @@ $this->includeAngularEntityAssets($entity);
         <li><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Inscrições</a></li>
         <li><a href="#inscritos">Inscritos</a></li>
+        <li><a href="#aprovados">Aprovados</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -152,27 +153,29 @@ $this->includeAngularEntityAssets($entity);
                     Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
                 </p>
             <?php endif; ?>
-            <div class="registration-edition-options">
-                <?php if($this->isEditable()): ?>
+            
+            <?php if($this->isEditable()): ?>
+                <div id="registration-period" class="registration-edition-options">
                     <h4>1. Período de inscrições</h4>
-                <?php endif; ?>
-                <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                    <p>
-                    As inscrições estão abertas de 
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
-                        a
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>
-                    </p>
-                <?php endif; ?>
-            </div>
+            <?php endif; ?>
+            <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                <p>
+                Inscrições abertas de 
+                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                    a
+                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
+                </p>
+            <?php endif; ?>
         <?php endif; ?>
-
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
+            </div>
+            <!-- #registration-period -->
             <div id="intro-das-inscricoes" class="registration-edition-options">
                 <?php if($this->isEditable()): ?><h4>2. Introdução</h4><?php endif; ?>
                 <p class="registration-edition-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
             </div>
+            <!-- #intro-das-inscricoes -->
         <?php endif; ?>
             
         <?php if($this->isEditable()): ?>
@@ -189,7 +192,7 @@ $this->includeAngularEntityAssets($entity);
                     <span class="js-editable" data-edit="registrationOptions" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationOptions; ?></span>
                 </p>
             </div>
-            
+            <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-edition-options">
                 <h4>4. Agentes</h4>
                 <p class="registration-edition-help">Marque quais são os agentes que o proponente deve relacionar à inscrição</p>
@@ -204,23 +207,29 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 <?php endforeach; ?>
             </div>
+            <!-- #registration-agent-relations -->
         <?php endif; ?>
         
-        <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
-            <form id="project-registration" class="registration-form clearfix">
-                <div>
-                    <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente Responsável'}}</a>
-                    <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
-                    <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
-                    </edit-box>
-                </div>
-                <div>
-                    <mc-select placeholder="Categoria" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
-                </div>
-                <div>
-                    <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>
-                </div>
-            </form>
+        <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
+            <?php if($app->auth->isUserAuthenticated()):?>
+                <form id="project-registration" class="registration-form clearfix">
+                    <div>
+                        <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente Responsável'}}</a>
+                        <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                        <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
+                        </edit-box>
+                    </div>
+                    <div>
+                        <mc-select placeholder="Categoria" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
+                    </div>
+                    <div>
+                        <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>
+                    </div>
+                </form>
+            <?php else: ?>
+                    <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
+                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
+            <?php endif;?>        
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
@@ -309,6 +318,9 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
     </div>
     <!--#inscritos-->
+    <div id="aprovados" class="aba-content">
+    </div>
+    <!--#aprovados-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar project sidebar-right">
