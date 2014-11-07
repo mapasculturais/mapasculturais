@@ -1,10 +1,12 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'angularSpinner', 'ngSanitize']);
+    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'ngSanitize']);
 
-    app.factory('FindService', ['$rootScope', '$http', function($rootScope, $http){
+    app.factory('FindService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q){
         var baseUrl = MapasCulturais.baseURL + '/api/';
+        var canceller;
+        
         function extend (query){
             return angular.extend(query, {
                 "@select": 'id,name,type,shortDescription,terms',
@@ -14,11 +16,18 @@
         };
 
         function request (url, query, success_cb, error_cb){
+            cancelRequest();
+            
             query = extend(query);
-
+            
+            
+            canceller = $q.defer();
+            
             var p = $http({
                 url: url,
                 method: "GET",
+                timeout: canceller.promise,
+                cache:true,
                 params: query
             });
 
@@ -30,8 +39,18 @@
                 p.error( error_cb );
             }
         };
+        
+        function cancelRequest(){
+            if(canceller){
+                canceller.resolve();
+            }
+        }
 
         return {
+            
+            cancel: function(){
+               cancelRequest();
+            },
 
             find: function(entity, query, success_cb, error_cb){
                 var url = baseUrl + entity + '/find';
@@ -112,7 +131,7 @@
 
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
+            templateUrl: MapasCulturais.templateUrl.findEntity,
             scope:{
                 spinnerCondition: '=',
                 entity: '@',
@@ -124,7 +143,7 @@
             },
 
             link: function($scope, el, attrs){
-                
+
                 $scope.attrs = attrs;
 
                 $scope.result = [];
@@ -143,13 +162,14 @@
                 $scope.find = function(){
                     if(timeouts.find)
                         $timeout.cancel(timeouts.find);
+                    
+                    FindService.cancel();
 
                     var s = $scope.searchText.trim().replace(' ', '*');
 
                     var query = angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
 
                     query.name = 'ILIKE(*' + s + '*)';
-
                     timeouts.find = $timeout(function(){
                         $scope.spinnerCondition = true;
                         FindService.find($scope.entity, query, function(data, status){
@@ -173,8 +193,8 @@
 
                     $scope.result = data;
                 };
-                
-                $(el).on('find', function(){
+
+                jQuery(el).on('find', function(){
                     $scope.find();
                 });
             }
@@ -225,7 +245,7 @@
 
                 this.openEditboxes[editboxId] = false;
 
-                var $box = $('#' + editboxId);
+                var $box = jQuery('#' + editboxId);
                 var $submitInput = $box.find('input:text');
                 $submitInput.on('keyup', function(event){
                     if(event.keyCode === 13){
@@ -240,11 +260,11 @@
 
                 this.openEditboxes[editboxId] = true;
 
-                var $box = $('#' + editboxId).find('>div.edit-box');
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.show();
-                
-                $('#' + editboxId).trigger('open');
-                
+
+                jQuery('#' + editboxId).trigger('open');
+
                 var $firstInput = $box.find('input:first,select:first,textarea:first');
                 $firstInput.focus();
                 setPosition($box, $event.target);
@@ -256,12 +276,12 @@
 
                 this.openEditboxes[editboxId] = false;
 
-                var $box = $('#' + editboxId).find('>div.edit-box');
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.hide();
             }
         };
 
-        $('body').on('keyup', 'edit-box', function(event){
+        jQuery('body').on('keyup', 'edit-box', function(event){
             if(event.keyCode === 27){
                 editBox.close(this.id);
             }
@@ -274,7 +294,7 @@
     app.directive('editBox', ['EditBox', function(EditBox) {
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.assetURL + '/js/directives/edit-box.html',
+            templateUrl: MapasCulturais.templateUrl.editBox,
             transclude: true,
 
             scope: {
@@ -295,7 +315,7 @@
 
                 $scope.args = attrs;
 
-                $scope.spinnerUrl = MapasCulturais.assetURL + '/img/spinner.gif';
+                $scope.spinnerUrl = MapasCulturais.spinnerUrl;
 
                 $scope.classes = {
                     'mc-bottom': attrs.position === 'bottom' || !attrs.position,
@@ -318,9 +338,9 @@
                         $scope.onCancel();
                     }
                 };
-                
+
                 if(angular.isFunction($scope.onOpen)){
-                    $('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
+                    jQuery('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
                 }
             }
         };
