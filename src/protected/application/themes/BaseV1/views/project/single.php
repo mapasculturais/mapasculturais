@@ -362,9 +362,9 @@ $this->includeAngularEntityAssets($entity);
         <div class="widget">
             <?php if($entity->children): ?>
             <h3>Sub-projetos</h3>
-            <ul class="js-slimScroll">
+            <ul class="widget-list js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
-                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
