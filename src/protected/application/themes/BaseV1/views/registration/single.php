@@ -7,6 +7,7 @@ $this->includeAngularEntityAssets($entity);
 $project = $entity->project;
 // @TODO adicionar ao javascript as categorias para a inscrição
 
+$this->addRegistrationDataToJs($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 

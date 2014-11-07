@@ -157,6 +157,11 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
     function delete($flush = false) {
         $this->checkPermission('remove');
+        // ($originType, $originId, $destinationType, $destinationId, $metadata)
+        $ruid = RequestAgentRelation::generateRequestUid($this->owner->getClassName(), $this->owner->id, $this->agent->getClassName(), $this->agent->id, array('class' => $this->getClassName(), 'relationId' => $this->id));
+        $requests = App::i()->repo('RequestAgentRelation')->findBy(array('requestUid' => $ruid));
+        foreach($requests as $r)
+            $r->delete($flush);
 
         parent::delete($flush);
     }

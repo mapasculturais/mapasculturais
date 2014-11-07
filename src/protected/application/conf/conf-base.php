@@ -73,6 +73,12 @@ return array(
         'distrito'
     ),
     
+    'registration.agentRelationsOptions' => array(
+        'dontUse' => 'Não pedir para o proponente',
+        'required' => 'Pedir para o proponente informar, com obrigatoriedade',
+        'optional' => 'Pedir para o proponente informar, sem obrigatoriedade'
+    ),
+    
     'registration.agentRelations' => array(
         array(
             'required' => false,

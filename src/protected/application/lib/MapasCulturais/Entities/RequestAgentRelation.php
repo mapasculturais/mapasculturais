@@ -30,12 +30,16 @@ class RequestAgentRelation extends Request{
 
     function _doApproveAction() {
         $relation = $this->getAgentRelation();
-        $relation->status = AgentRelation::STATUS_ENABLED;
-        $relation->save(true);
+        if($relation){
+            $relation->status = AgentRelation::STATUS_ENABLED;
+            $relation->save(true);
+        }
     }
 
     function _doRejectAction() {
         $relation = $this->getAgentRelation();
-        $relation->delete();
+        if($relation){
+            $relation->delete();
+        }
     }
 }

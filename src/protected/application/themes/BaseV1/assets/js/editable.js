@@ -247,6 +247,8 @@ MapasCulturais.Editables = {
                 emptytext: entity[field_name].label,
                 placeholder: entity[field_name].label
             };
+            
+            var select_value = null;
 
             switch (entity[field_name].type){
                 case 'text':
@@ -255,7 +257,13 @@ MapasCulturais.Editables = {
 
                 case 'select':
                     config.type = 'select';
-                    config.source = entity[field_name].options;
+                    config.source = [];
+                    for(var k in entity[field_name].options){
+                        var obj = {value: k, text: entity[field_name].options[k]};
+                        
+                        config.source.push(obj);
+                    }
+                    
                     break;
 
                 case 'date':
@@ -268,21 +276,14 @@ MapasCulturais.Editables = {
                     break;
             }
 
-            //Sets data-value = element's innerHTML
-            if(config.type == 'select' && !$(this).data('value'))
-                $(this).data('value', $(this).html());
-
             $(this).editable(config);
-            $(this).editable('option', 'validate', function(v) {
-                //If Required
-//                    if(entity[field_name].required){
-//                        if(!v) return 'Campo Obrigatórios!';
-//                    }
-            });
+            
+            if(config.type === 'select')
+                $(this).editable('setValue', $(this).html());
 
             if($(this).data('notext')){
                 $(this).text('');
-                var that = this
+                var that = this;
                 $(this).on('hidden', function(){
                     $(that).text('');
                 });

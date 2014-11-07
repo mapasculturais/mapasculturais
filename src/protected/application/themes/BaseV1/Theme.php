@@ -791,6 +791,19 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRegistrationDataToJs($registration){
+        $app = App::i();
+        $project = $entity->project;
+        
+        $this->jsObject['entity']['relations'] = array();
+        
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+            $metadata_name = $def->metadataName;
+            
+            //$this->jsObject['entity']['relations']
+        }
+        
+    }
     
     
     /**

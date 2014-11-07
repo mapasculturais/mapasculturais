@@ -10,8 +10,7 @@ class User extends \MapasCulturais\Repository{
      * @param string $auth_uid
      * @param int $auth_provider
      * @return \MapasCulturais\Entities\User|null
-     */
-    
+     */    
     public function getByAuth($auth_provider, $auth_uid){
         $user_query = $this->_em->createQuery('SELECT u FROM MapasCulturais\Entities\User u WHERE u.authProvider=:auth_provider AND u.authUid = :auth_uid');
 
