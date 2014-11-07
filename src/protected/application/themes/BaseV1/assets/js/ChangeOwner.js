@@ -47,14 +47,13 @@
         $scope.editbox = EditBox;
         $scope.data = {
             spinner: false,
-            apiQuery: {
-                '@permissions': MapasCulturais.entity.userHasControl ? '!@control' : '@control'
-            }
+            apiQuery: { }
         };
-        if(MapasCulturais.roles.indexOf('superAdmin') !== -1){
+        
+        if(!MapasCulturais.entity.userHasControl){
             $scope.data.apiQuery['@permissions'] = '@control';
         }
-
+        
         var adjustBoxPosition = function(){
             setTimeout(function(){
                 adjustingBoxPosition = true;
