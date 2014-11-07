@@ -49,7 +49,7 @@
 .botao.download:hover,
 .botao.excluir:hover {
     color: $gray-darker;
-    background: #gray-lighter;
+    background: $gray-lighter;
     border: 1px solid $gray-dark;
 }
 .botao-grande {
