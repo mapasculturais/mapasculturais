@@ -11,20 +11,6 @@ $this->addProjectRegistrationConfigurationToJs($entity);
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
-
-
-    $app->hook('mapasculturais.scripts', function() use ($app, $entity){
-
-        $ids = array_map(function($e){
-
-            return $e->agent->id;
-        }, $entity->registrations);
-        ?>
-        <script type="text/javascript">
-            MapasCulturais.agentRelationDisabledCD = ['<?php echo $app->txt('project registration')?>'];
-        </script>
-        <?php
-    });
 }
 $this->includeAngularEntityAssets($entity);
 

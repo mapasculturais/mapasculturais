@@ -41,17 +41,18 @@ $this->addRegistrationDataToJs($entity);
             <h3>Inscrição <?php if($action !== 'create'): ?>nº <?php echo $entity->registrationNumber ?><?php endif; ?></h3>
         </div>
     </header>
-    
+
     <div class="ficha-spcultura">
-        <!-- selecionar categoria --> 
-        <!-- agente responsável --> 
-        <!-- instituição responsável --> 
-        <!-- coletivo --> 
-        
-        <!-- anexos --> 
+        <!-- selecionar categoria -->
+        <?php echo $entity->category ?>
+        <!-- agente responsável -->
+        <!-- instituição responsável -->
+        <!-- coletivo -->
+
+        <!-- anexos -->
     </div>
     <!--.ficha-spcultura-->
-    
+
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>

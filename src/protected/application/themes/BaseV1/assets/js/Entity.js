@@ -355,10 +355,10 @@
             scope: {
                 data: '=',
                 model: '=',
-                placeholder: '@',
-                classes: '@'
+                placeholder: '@'
             },
             link: function($scope, el, attrs) {
+                $scope.classes = attrs.classes;
                 $scope.selectItem = function(item, $event){
                     $($event.target).parents('.js-submenu-dropdown').hide();
                     setTimeout(function(){
