@@ -3200,40 +3200,43 @@ h1 .icone {
   padding: 0.75rem;
   background: #f8f8f8; }
 
-.registrations-list {
+.registrations-table, .my-registrations, .approved-registrations {
   width: 100%;
   max-width: 100%;
+  margin-bottom: 3rem;
   table-layout: fixed; }
-  .registrations-list tbody tr {
+  .registrations-table tbody tr, .my-registrations tbody tr, .approved-registrations tbody tr {
     border-left: 3px solid transparent; }
-    .registrations-list tbody tr:nth-child(even) {
+    .registrations-table tbody tr:nth-child(even), .my-registrations tbody tr:nth-child(even), .approved-registrations tbody tr:nth-child(even) {
       background-color: #f6f6f6; }
-    .registrations-list tbody tr:hover {
+    .registrations-table tbody tr:hover, .my-registrations tbody tr:hover, .approved-registrations tbody tr:hover {
       background-color: #eee; }
-    .registrations-list tbody tr.approved {
+    .registrations-table tbody tr.approved, .my-registrations tbody tr.approved, .approved-registrations tbody tr.approved {
       border-left: 3px solid #66cc66; }
-    .registrations-list tbody tr.rejected {
+    .registrations-table tbody tr.rejected, .my-registrations tbody tr.rejected, .approved-registrations tbody tr.rejected {
       border-left: 3px solid #cc3333; }
-    .registrations-list tbody tr.maybed {
+    .registrations-table tbody tr.maybed, .my-registrations tbody tr.maybed, .approved-registrations tbody tr.maybed {
       border-left: 3px solid #cc9933; }
-  .registrations-list tbody p {
+    .registrations-table tbody tr td, .my-registrations tbody tr td, .approved-registrations tbody tr td {
+      word-wrap: break-word; }
+  .registrations-table tbody p, .my-registrations tbody p, .approved-registrations tbody p {
     margin-bottom: 0.75rem; }
-  .registrations-list tbody a {
+  .registrations-table tbody a, .my-registrations tbody a, .approved-registrations tbody a {
     color: #cc0033; }
-  .registrations-list tbody ul {
+  .registrations-table tbody ul, .my-registrations tbody ul, .approved-registrations tbody ul {
     margin: 0;
     list-style: none; }
-  .registrations-list .registration-id {
+  .registrations-table .registration-id, .my-registrations .registration-id, .approved-registrations .registration-id {
     width: 12%; }
-  .registrations-list .registration-attachments {
+  .registrations-table .registration-attachments, .my-registrations .registration-attachments, .approved-registrations .registration-attachments {
     width: 36%;
     text-align: left; }
-  .registrations-list .registration-agents {
+  .registrations-table .registration-agents, .my-registrations .registration-agents, .approved-registrations .registration-agents {
     width: 36%;
     text-align: left; }
-  .registrations-list .registration-status {
+  .registrations-table .registration-status, .my-registrations .registration-status, .approved-registrations .registration-status {
     width: 16%; }
-    .registrations-list .registration-status .dropdown {
+    .registrations-table .registration-status .dropdown, .my-registrations .registration-status .dropdown, .approved-registrations .registration-status .dropdown {
       width: 100%;
       text-align: left;
       background-color: transparent; }
@@ -3264,12 +3267,17 @@ h1 .icone {
 .maybe.selected {
   color: #cc9933; }
 
+.my-registrations .registration-id, .approved-registrations .registration-id {
+  width: 10%; }
+.my-registrations .registration-agents, .approved-registrations .registration-agents {
+  width: 30%; }
+
 .registration-form {
   box-sizing: border-box;
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 1.5rem;
-  margin-bottom: 1.5rem; }
+  margin-bottom: 3rem; }
   .registration-form > div {
     float: left;
     box-sizing: border-box;
