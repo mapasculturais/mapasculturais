@@ -8,7 +8,7 @@ class RegistrationFileConfiguration extends EntityController {
     use Traits\ControllerUploads;
 
     function GET_create() {
-        App::i()->pass();
+        echo 'oi';
     }
 
     function GET_edit() {
