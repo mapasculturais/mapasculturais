@@ -70,11 +70,9 @@
 
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
             var adjustingBoxPosition = false,
-                categories = [
-                    {value: 'Categoria 1', label: 'Categoria 1'},
-                    {value: 'Categoria 2', label: 'Categoria 2'},
-                    {value: 'Categoria 3', label: 'Categoria 3'}
-                ];
+                categories = MapasCulturais.entity.registrationOptions.map(function(e){
+                    return { value: e, label: e };
+                });
 
             $scope.editbox = EditBox;
 

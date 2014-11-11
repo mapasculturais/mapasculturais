@@ -6,7 +6,7 @@ $registrationForm = $entity->getFile('registrationForm');
 
 $this->bodyProperties['ng-app'] = "Entity";
 
-$this->addRegistrationFileConfigurationsToJs($entity);
+$this->addProjectRegistrationConfigurationToJs($entity);
 
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
@@ -155,14 +155,14 @@ $this->includeAngularEntityAssets($entity);
                     Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
                 </p>
             <?php endif; ?>
-            
+
             <?php if($this->isEditable()): ?>
                 <div id="registration-period" class="registration-edition-options">
                     <h4>1. Período de inscrições</h4>
             <?php endif; ?>
             <?php if($this->isEditable() || $entity->registrationFrom): ?>
                 <p>
-                Inscrições abertas de 
+                Inscrições abertas de
                     <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
                     a
                     <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
@@ -201,7 +201,7 @@ $this->includeAngularEntityAssets($entity);
                 </p>
                 <p>
                     <span class="label">Opções</span><br>
-                    <span class="js-editable" data-edit="registrationOptions" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationOptions; ?></span>
+                    <span class="js-editable" data-edit="registrationOptions" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationOptions); ?></span>
                 </p>
             </div>
 
@@ -215,13 +215,13 @@ $this->includeAngularEntityAssets($entity);
                             <span class="label"><?php echo $def->label ?></span> <span class="registration-edition-help"><?php echo $def->description ?></span>
                             <br>
                             <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
-                        </p> 
-                        
+                        </p>
+
                     </div>
                 <?php endforeach; ?>
             </div>
             <!-- #registration-agent-relations -->
-            
+
             <div id="registration-attachments" class="registration-edition-options">
 
                 <h4>5. Anexos:</h4>
@@ -261,7 +261,7 @@ $this->includeAngularEntityAssets($entity);
 
             </div>
         <?php endif; ?>
-        
+
         <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
                 <form id="project-registration" class="registration-form clearfix">
@@ -281,7 +281,7 @@ $this->includeAngularEntityAssets($entity);
             <?php else: ?>
                     <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
                     <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
-            <?php endif;?>        
+            <?php endif;?>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->

@@ -9,11 +9,6 @@ return array(
             'type' => 'text'
         ),
         
-        'registrationOptions' => array(
-            'label' => 'Opções de inscrição',
-            'type' => 'text'
-        ),
-        
         'registrationOptionsDescription' => array(
             'label' => 'Descrição das opções (ex: categorias)',
         ),

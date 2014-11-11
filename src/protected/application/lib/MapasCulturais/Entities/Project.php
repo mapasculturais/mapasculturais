@@ -118,6 +118,13 @@ class Project extends \MapasCulturais\Entity
     protected $createTimestamp;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="registration_options", type="json_array", nullable=true)
+     */
+    protected $registrationOptions = array();
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
@@ -221,20 +228,27 @@ class Project extends \MapasCulturais\Entity
 
         return $this->isRegistrationOpen();
     }
-    
+
     function getEnabledRelations(){
         $result = array();
         foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
             $metadata_name = $def->metadataName;
             $metadata_value = $this->$metadata_name;
-            
+
             if($this->$metadata_name !== 'dontUse'){
                 $obj = new \stdClass;
                 $obj->metadataName = $metadata_name;
                 $obj->required = $metadata_value;
                 $obj->label = $def->label;
             }
-                
+        }
+    }
+
+    function setRegistrationOptions($value){
+        if(is_string($value)){
+            $this->registrationOptions = explode("\n", $value);
+        }else{
+            $this->registrationOptions = $value;
         }
     }
 

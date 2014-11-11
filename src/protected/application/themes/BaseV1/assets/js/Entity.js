@@ -359,7 +359,12 @@
                 classes: '@'
             },
             link: function($scope, el, attrs) {
-                $scope.selectItem = function(item){
+                $scope.selectItem = function(item, $event){
+                    $($event.target).parents('.js-submenu-dropdown').hide();
+                    setTimeout(function(){
+                        $($event.target).parents('.js-submenu-dropdown').css('display','');
+                    },500);
+                    
                     $scope.model = item;
                 }
             }

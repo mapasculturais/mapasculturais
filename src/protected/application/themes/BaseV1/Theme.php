@@ -681,10 +681,11 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
         $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
         $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
+        if(!isset($this->jsObject['entity'])){
+            $this->jsObject['entity'] = array();
+        }
 
-        $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(
-            'id' => $entity->id
-        ));
+        $this->jsObject['entity']['id'] = $entity->id;
 
         $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
         foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
@@ -793,25 +794,26 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
-    function addRegistrationFileConfigurationsToJs($entity) {
+    function addProjectRegistrationConfigurationToJs($entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationOptions'] = $entity->registrationOptions;
     }
 
 
     function addRegistrationDataToJs($registration){
         $app = App::i();
         $project = $entity->project;
-        
+
         $this->jsObject['entity']['relations'] = array();
-        
+
         foreach($app->getRegisteredRegistrationAgentRelations() as $def){
             $metadata_name = $def->metadataName;
-            
+
             //$this->jsObject['entity']['relations']
         }
-        
+
     }
-    
+
     /**
     * Returns a verified entity with images in gallery
     * @param type $entity_class
