@@ -115,7 +115,7 @@ trait EntityTaxonomies{
         foreach($this->taxonomyTerms as $slug => $terms){
             foreach($terms as $term){
                 // if the term is in the terms property and the association already exists,
-                if(in_array($term->term, $taxonomy[$slug])){
+                if(isset($taxonomy[$slug]) && in_array($term->term, $taxonomy[$slug])){
                     $i = array_search($term->term, $taxonomy[$slug]);
                     // removes the term of the temporary array because is not necessary to add it
                     unset($taxonomy[$slug][$i]);

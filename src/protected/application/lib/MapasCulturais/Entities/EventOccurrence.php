@@ -11,10 +11,12 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event_occurrence")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventOccurrence extends \MapasCulturais\Entity
 {
+    const STATUS_PENDING = -5;
 
     protected static $validations = array(
         'startsOn' => array(
@@ -55,29 +57,6 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     );
 
-    function validateFrequency($value) {
-        if ($this->flag_day_on === false) return false;
-        if (in_array($value, ['daily', 'weekly', 'monthly'])) {
-            return !is_null($this->until);
-        }
-
-        return true;
-    }
-
-    static function convert($value='', $format='Y-m-d H:i')
-    {
-        if ($value === null || $value instanceof \DateTime) {
-            return $value;
-        }
-
-        $d = \DateTime::createFromFormat($format, $value);
-        if ($d && $d->format($format) == $value) {
-            return $d;
-        } else {
-            return $value;
-        }
-    }
-
     private $flag_day_on = true;
 
     /**
@@ -98,29 +77,12 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $_startsOn;
 
-    function setStartsOn($value) {
-        $this->_startsOn = self::convert($value, 'Y-m-d');
-    }
-
-    function getStartsOn() {
-        return $this->_startsOn;
-    }
-
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_on", type="date", nullable=true)
      */
     protected $_endsOn;
-
-    function setEndsOn($value) {
-        $this->_endsOn = self::convert($value, 'Y-m-d');
-    }
-
-    function getEndsOn() {
-        return $this->_endsOn;
-    }
 
 
     /**
@@ -130,40 +92,12 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $_startsAt;
 
-    function setStartsAt($value) {
-        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
-    }
-
-    function getStartsAt() {
-        return $this->_startsAt;
-    }
-
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ends_at", type="datetime", nullable=true)
      */
     protected $_endsAt;
-
-    function setEndsAt($value) {
-        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
-    }
-
-    function getEndsAt() {
-        return $this->_endsAt;
-    }
-
-    function getDuration() {
-        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
-            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
-            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
-            $interval = $endsAtCopy->diff($startsAtCopy);
-            return $interval;
-        }else{
-            return null;
-        }
-    }
 
     /**
      * @var frequency
@@ -192,14 +126,6 @@ class EventOccurrence extends \MapasCulturais\Entity
      * @ORM\Column(name="until", type="date", nullable=true)
      */
     protected $_until;
-
-    function setUntil($value) {
-        $this->_until = self::convert($value, 'Y-m-d');
-    }
-
-    function getUntil() {
-        return $this->_until;
-    }
 
     /**
      * @var string
@@ -243,6 +169,96 @@ class EventOccurrence extends \MapasCulturais\Entity
      */
     protected $spaceId;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rule", type="text", nullable=false)
+     */
+    protected $_rule;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=false)
+     */
+    protected $status = self::STATUS_ENABLED;
+
+    function validateFrequency($value) {
+        if ($this->flag_day_on === false) return false;
+        if (in_array($value, ['daily', 'weekly', 'monthly'])) {
+            return !is_null($this->until);
+        }
+
+        return true;
+    }
+
+    static function convert($value='', $format='Y-m-d H:i')
+    {
+        if ($value === null || $value instanceof \DateTime) {
+            return $value;
+        }
+
+        $d = \DateTime::createFromFormat($format, $value);
+        if ($d && $d->format($format) == $value) {
+            return $d;
+        } else {
+            return $value;
+        }
+    }
+
+    function setStartsOn($value) {
+        $this->_startsOn = self::convert($value, 'Y-m-d');
+    }
+
+    function getStartsOn() {
+        return $this->_startsOn;
+    }
+
+    function setEndsOn($value) {
+        $this->_endsOn = self::convert($value, 'Y-m-d');
+    }
+
+    function getEndsOn() {
+        return $this->_endsOn;
+    }
+
+
+    function setStartsAt($value) {
+        $this->_startsAt = self::convert($value, 'Y-m-d H:i');
+    }
+
+    function getStartsAt() {
+        return $this->_startsAt;
+    }
+
+
+    function setEndsAt($value) {
+        $this->_endsAt = self::convert($value, 'Y-m-d H:i');
+    }
+
+    function getEndsAt() {
+        return $this->_endsAt;
+    }
+
+    function getDuration() {
+        if($this->startsAt instanceof \DateTime && $this->endsAt instanceof \DateTime){
+            $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i:s'));
+            $endsAtCopy = new \DateTime($this->endsAt->format('Y-m-d H:i:s'));
+            $interval = $endsAtCopy->diff($startsAtCopy);
+            return $interval;
+        }else{
+            return null;
+        }
+    }
+
+    function setUntil($value) {
+        $this->_until = self::convert($value, 'Y-m-d');
+    }
+
+    function getUntil() {
+        return $this->_until;
+    }
+
     function getRecurrences() {
         if ($this->id) {
             return App::i()->repo('EventOccurrenceRecurrence')->findBy(['eventOccurrence'=> $this]);
@@ -252,20 +268,13 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDescription(){
-        return $this->rule->description;
+        return isset($this->rule->description) ? $this->rule->description : "";
     }
 
 
     function getPrice(){
         return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="rule", type="text", nullable=false)
-     */
-    protected $_rule;
 
     function setRule($value) {
         if ($value === '') {
@@ -278,22 +287,20 @@ class EventOccurrence extends \MapasCulturais\Entity
         //$this->endsAt = @$value['startsOn'] . ' ' . @$value['endsAt'];
 
         if(!empty($value['duration'])){
-            @list($hours, $minutes) = explode('h', $value['duration']);
-            $dateString = 'PT'.$hours.'H' . ($minutes ? $minutes.'M' : '');
-
-            if(!$minutes)
-                $value['duration'] = str_pad($value['duration'], 2, '0', STR_PAD_LEFT).'h00';
-            else
-                $value['duration'] = $hours . 'h'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+            $value['duration'] = intval($value['duration']);
+            $dateString = 'PT'.$value['duration'] .'M';
 
             if($this->startsAt instanceof \DateTime){
                 $startsAtCopy = new \DateTime($this->startsAt->format('Y-m-d H:i'));
                 $this->endsAt = $startsAtCopy->add(new \DateInterval($dateString));
             }
         }else{
+            $value['duration'] = 0;
             $this->endsAt = $this->startsAt; // don't attributing causes the duration to be 1 minute
         }
-
+        if($this->endsAt instanceof \DateTime){
+            $value['endsAt'] = $this->endsAt->format('H:i');
+        }
 
         $this->startsOn = $value['startsOn'];
         $this->until = $value['until'] ? $value['until'] : null;
@@ -358,16 +365,10 @@ class EventOccurrence extends \MapasCulturais\Entity
                     break;
             }
         }
-
-
     }
 
     function getRule() {
         return json_decode($this->_rule);
-    }
-
-    function translateFrequency($key){
-        //if()
     }
 
     function jsonSerialize() {
@@ -390,6 +391,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'event' => $this->event ? array('id' => $this->event->id, 'name' => $this->event->name, 'shortDescription' => $this->event->shortDescription, 'avatar' => $this->space->avatar) : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
+            'status' => $this->status
         );
     }
 
@@ -400,7 +402,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('admin'))
             return true;
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     protected function canUserModify($user){
@@ -413,13 +415,44 @@ class EventOccurrence extends \MapasCulturais\Entity
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
 
+    function save($flush = false) {
+        try{
+            parent::save($flush);
+
+        }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+            if(!App::i()->isWorkflowEnabled())
+                throw $e;
+
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->status = self::STATUS_PENDING;
+            parent::save($flush);
+            $app->enableAccessControl();
+
+            $request = new RequestEventOccurrence;
+            $request->origin = $this->event;
+            $request->destination = $this->space;
+            $request->eventOccurrence = $this;
+            $request->save(true);
+
+            throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
+        }
+    }
+
+    /** @ORM\PreRemove */
+    function _removeRequests(){
+        if($this->status === self::STATUS_PENDING){
+            $requests = App::i()->repo('RequestEventOccurrence')->findByEventOccurrence($this);
+            if($requests)
+                foreach ($requests as $req)
+                    $req->delete();
+        }
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

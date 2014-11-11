@@ -40,10 +40,9 @@ $app->hook('GET(<<agent|space|project>>.agendaSingle)', function() use ($app) {
     if(empty($events)){
         $app->stop();
     }
-
-    $app->view->part('parts/agenda-content', array('events'=>$events, 'entity'=>$entity));
+    $app->view->part('agenda-content', array('events'=>$events, 'entity'=>$entity));
 });
 
 $app->hook('view.render(<<agent|space|project>>/<<single|edit>>):before', function() use ($app) {
-    $app->enqueueScript('app', 'agenda-single', '/js/agenda-single.js', array('mapasculturais'));
+    $app->view->enqueueScript('app', 'agenda-single', '/js/agenda-single.js', array('mapasculturais'));
 });

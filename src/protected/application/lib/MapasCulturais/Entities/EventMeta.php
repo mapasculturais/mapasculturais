@@ -10,6 +10,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="event_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventMeta extends \MapasCulturais\Entity
@@ -47,13 +48,6 @@ class EventMeta extends \MapasCulturais\Entity
         return $this->owner->canUser($action, $userOrAgent);
     }
 
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->key = trim($this->key);
-        
-        App::i()->applyHookBoundTo($this, 'entity(event).meta(' . $this->key . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(event).meta(' . $this->key . ').insert:before', $args);
@@ -85,9 +79,6 @@ class EventMeta extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

@@ -1,7 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use \MapasCulturais\App;
+use MapasCulturais\App;
+use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
  * This is the base class to Entity Controllers
@@ -126,6 +127,26 @@ abstract class EntityController extends \MapasCulturais\Controller{
         return $this->getFields();
     }
 
+    protected function _finishRequest($entity, $isAjax = false){
+        $app = App::i();
+        $status = 200;
+        try{
+            $entity->save(true);
+        }  catch (WorkflowRequest $e){
+            $status = 202;
+            $reqs = array();
+            foreach($e->requests as $request){
+                $reqs[] = $request->getRequestType();
+            }
+
+            header('CreatedRequests: ' . json_encode($reqs));
+        }
+        if($app->request->isAjax() || $isAjax){
+            $this->json($entity, $status);
+        }else{
+            $app->redirect($app->request()->getReferer(), $status);
+        }
+    }
 
     // ============= ACTIONS =============== //
 
@@ -168,8 +189,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 
@@ -296,8 +316,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $entity->save(true);
-            $this->json($entity);
+            $this->_finishRequest($entity);
         }
     }
 
@@ -417,6 +436,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
         App::i()->stop();
     }
 
+    protected function apiAddHeaderMetadata($data){
+        if (headers_sent())
+            return;
+
+        $response_meta = array(
+            'count' => count($data)
+        );
+
+        header('API-Metadata: ' . json_encode($response_meta));
+    }
+
     /**
      * Ouputs an API Item Reponse
      *
@@ -438,26 +468,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $cache_id = $this->getApiCacheId($this->getData, array('findOne' => true));
-
-        if(!$this->apiCacheResponse($cache_id)){
-            $entity = $this->apiQuery($this->getData, array('findOne' => true));
-            $this->apiItemResponse($entity);
-        }
+        $entity = $this->apiQuery($this->getData, array('findOne' => true));
+        $this->apiItemResponse($entity);
     }
 
     public function API_find(){
-        $cache_id = $this->getApiCacheId($this->getData);
-
-        if(!$this->apiCacheResponse($cache_id)){
-            $data = $this->apiQuery($this->getData);
-            $this->apiResponse($data);
-        }
+        $data = $this->apiQuery($this->getData);
+        $this->apiResponse($data);
     }
 
     public function API_describe(){
         $class = $this->entityClassName;
-
         $this->apiResponse($class::getPropertiesMetadata());
     }
 
@@ -489,6 +510,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
         }
     }
 
+    public function getApiCacheLifetime(){
+        $app = App::i();
+        $default_lifetime = $app->config['app.apiCache.lifetime'];
+        $by_controller_lifetime = $app->config['app.apiCache.lifetimeByController'];
+
+        if(isset($by_controller_lifetime[$this->id]))
+            return (int) $by_controller_lifetime[$this->id];
+        else
+            return (int) $default_lifetime;
+    }
+
     public function apiQuery($qdata, $options = array()){
         $this->_apiFindParamList = array();
         $app = App::i();
@@ -501,23 +533,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
             unset($qdata['@count']);
 
         if(class_exists($this->entityClassName)){
-            if($app->config['app.useApiCache']){
-                $cache_id = $this->getApiCacheId($qdata, $options);
-
-                $app->hook('api.response(<<*>>).<<array|item>>(<<*>>):after', function($var1, $var2, $var3, $var4) use($app, $cache_id){
-
-                    $lifetime = @$app->config['app.apiCache.lifetime'] ? $app->config['app.apiCache.lifetime'] : 5 * 60;
-                    $cache = array(
-                        'contentType' => $this->contentType,
-                        'output' => $var4
-                    );
-
-                    if($app->config['app.log.apiCache'])
-                        $app->log->debug(print_r(array('cache_id' => $cache_id) + $cache, true));
-
-                    $app->cache->save($cache_id, $cache, $lifetime);
-                });
-            }
             if(!$qdata && !$counting)
                 $this->apiErrorResponse('no data');
 
@@ -567,12 +582,20 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $offset = null;
             $limit = null;
             $page = null;
+            $keyword = null;
+            $permissions = null;
 
             $dqls = array();
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@keyword'){
+                    $keyword = $val;
+                    continue;
+                }elseif(strtolower($key) == '@permissions'){
+                    $permissions = explode(',', $val);
                     continue;
                 }elseif(strtolower($key) == '@order'){
                     $order = $val;
@@ -677,9 +700,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
             }
 
-            if($counting)
-                $order = '';
-
             if($order){
                 $new_order = array();
                 foreach(explode(',',$order) as $prop){
@@ -702,6 +722,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             $dql_where = implode($op, $dqls);
 
+
+
             if($metadata_class)
                 $metadata_class = ", $metadata_class m";
 
@@ -711,12 +733,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $dql_where = $dql_where ? $dql_where . ' AND e.status > 0' : 'WHERE e.status > 0';
             }
 
-
-            $selecting = $counting ? 'COUNT(e)' : 'e';
+            if($keyword){
+                $repo = $this->repo();
+                if($repo->usesKeyword()){
+                    $ids = implode(',',$repo->getIdsByKeyword($keyword));
+                    $dql_where .= $ids ? "AND e.id IN($ids)" : 'AND e.id < 0';
+                }
+            }
 
             $final_dql = "
                 SELECT
-                    $selecting
+                    e
                 FROM
                     $class e
                     $dql_joins
@@ -729,35 +756,39 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             if($app->config['app.log.apiDql'])
                 $app->log->debug("API DQL: ".$final_dql);
-            
-
-
-            if($page && $limit)
-                $offset = (($page - 1) * $limit);
 
             $query = $app->em->createQuery($final_dql);
+
+            // cache
+            if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
+                $query->useResultCache(true, $this->getApiCacheLifetime());
+            }
+
             $query->setParameters($this->_apiFindParamList);
-            $query->setMaxResults($findOne ? 1 : $limit);
-            $query->setFirstResult($offset);
 
             $processEntity = function($r) use($append_files_cb, $select){
-                
+
                 $entity = array();
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
                     try{
                         if(strpos($prop, '.')){
-                            
                             $props = explode('.',$prop);
                             $current_object = $r;
-                            foreach($props as $p){
-                                $current_object = $current_object->$p;
-                                
-                                if(!is_object($current_object))
+                            foreach($props as $pk => $p){
+                                if($p === 'permissionTo' && $pk === count($props) - 2){
+                                    $current_object = $current_object->canUser($props[$pk + 1]);
                                     break;
+                                }else{
+                                    $current_object = $current_object->$p;
+
+                                    if(!is_object($current_object))
+                                        break;
+
+                                }
                             }
-                            
+
                             $prop_value = $current_object;
                         }else{
                             $prop_value = $r->$prop;
@@ -765,31 +796,89 @@ abstract class EntityController extends \MapasCulturais\Controller{
                         if(is_object($prop_value) && $prop_value instanceof \Doctrine\Common\Collections\Collection)
                             $prop_value = $prop_value->toArray();
 
-                        $entity[$prop] = $prop_value;
-                    }  catch (\Exception $e){
-                    }
+                        if(strpos($prop, '.')){
+                            $props = explode('.',$prop);
+                            $carray =& $entity;
+                            for($i = 0; $i < count($props) -1; $i++){
+                                $p = $props[$i];
+                                if(!isset($carray[$p]))
+                                    $carray[$p] = array();
+                                $carray =& $carray[$p];
+                            }
+                            $carray[array_pop($props)] = $prop_value;
+                        }else{
+                            $entity[$prop] = $prop_value;
+                        }
+                    }  catch (\Exception $e){ }
                 }
                 return $entity;
             };
 
-            if($counting){
-                $num = $query->getSingleScalarResult();
-                return $num;
+            if($findOne){
+                $query->setMaxResults(1);
 
-            }elseif($findOne){
                 if($r = $query->getOneOrNullResult()){
-                    $entity = $processEntity($r);
+
+                    if($permissions){
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($r->canUser(substr($perm, 1))){
+                                    $r = null;
+                                    break;
+                                }
+                            }else{
+                                if(!$r->canUser($perm)){
+                                    $r = null;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if($r)
+                        $entity = $processEntity($r);
                 }else{
                     $entity = null;
                 }
                 return $entity;
             }else{
+
                 $rs = $query->getResult();
 
+
                 $result = array();
-                foreach($rs as $r){
-                    $result[] = $processEntity($r);
+
+                if(is_array($permissions)){
+                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                if($entity->canUser(substr($perm,1)))
+                                    return false;
+                            }else{
+                                if(!$entity->canUser($perm))
+                                    return false;
+                            }
+                        }
+
+                        return true;
+                    }));
                 }
+
+                if($counting)
+                    return count($rs);
+
+                $this->apiAddHeaderMetadata($rs);
+
+                if($page && $limit){
+                    $offset = (($page - 1) * $limit);
+                    $rs = array_slice($rs, $offset, $limit);
+                }
+                $result = array_map(function($entity) use ($processEntity){
+                    return $processEntity($entity);
+                }, $rs);
+
                 return $result;
             }
         }
@@ -846,15 +935,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $value = str_replace('*', '%', $value);
                 $value = $this->_API_find_addValueToParamList($value);
                 $dql = $not ?
-                        "$key NOT LIKE $value" :
-                        "$key LIKE $value";
+                        "unaccent($key) NOT LIKE unaccent($value)" :
+                        "unaccent($key) LIKE unaccent($value)";
 
             }elseif($operator == "ILIKE"){
                 $value = str_replace('*', '%', $value);
                 $value = $this->_API_find_addValueToParamList($value);
                 $dql = $not ?
-                        "lower($key) NOT LIKE lower($value)" :
-                        "lower($key) LIKE lower($value)";
+                        "unaccent(lower($key)) NOT LIKE unaccent(lower($value))" :
+                        "unaccent(lower($key)) LIKE unaccent(lower($value))";
 
             }elseif($operator == "EQ"){
                 $value = $this->_API_find_addValueToParamList($value);
@@ -930,7 +1019,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         }else{
             $app = App::i();
             if(trim($value) === '@me'){
-                $value = $app->user;
+                $value = $app->user->is('guest') ? null : $app->user;
             }elseif(strpos($value,'@me.') === 0){
                 $v = str_replace('@me.', '', $value);
                 $value = $app->user->$v;
@@ -945,7 +1034,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
                 $value = ($_repo && $_id) ? $_repo->find($_id) : null;
 
-            }elseif($value[0] == '@'){
+            }elseif(strlen($value) && $value[0] == '@'){
                 $value = null;
             }
 

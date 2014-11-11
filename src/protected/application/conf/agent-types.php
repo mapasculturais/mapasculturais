@@ -27,6 +27,27 @@ return array(
                 "v::int()->positive()" => "A idade/tempo deve ser um número positivo."
             )
         ),
+        
+        'raca' => array(
+            'label' => 'Raça/cor',
+            'type' => 'select',
+            'options' => array(
+                '' => 'Não Informar',
+                'Branca' => 'Branca',
+                'Preta' => 'Preta',
+                'Amarela' => 'Amarela',
+                'Parda' => 'Parda',
+                'Indígena' => 'Indígena'
+            )
+        ),
+
+        'dataDeNascimento' => array(
+            'label' => 'Data de Nascimento/Fundação',
+            'type' => 'date',
+            'validations' => array(
+                'v::date("Y-m-d")' => 'Data inválida {{format}}',
+            )
+        ),
 
         'precisao' => array(
             'label' => 'Localização',
@@ -119,10 +140,6 @@ return array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
         ),
-
-        'sp_regiao' => array('label' => 'Região',),
-        'sp_subprefeitura' => array('label' => 'Subprefeitura',),
-        'sp_distrito' => array('label' => 'Distrito',),
 
     ),
     'items' => array(

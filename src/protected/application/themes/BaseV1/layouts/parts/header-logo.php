@@ -1,0 +1,1 @@
+<h1 id="brand-logo"><a href="<?php echo $app->getBaseUrl() ?>"><?php echo $app->siteName; ?></a></h1>

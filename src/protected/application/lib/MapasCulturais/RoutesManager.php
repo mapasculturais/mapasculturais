@@ -106,7 +106,21 @@ class RoutesManager{
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-                    $app->halt(403, $app->txt('Permission Denied'));
+
+                    if($app->config['slim.debug']){
+                        if($app->request()->isAjax())
+                            $app->halt(403, $app->txt('Permission Denied: ' . $e));
+                        else
+                            $app->halt(403, $app->txt('Permission Denied: <br><pre>' . $e . '</pre>'));
+                    }else{
+                        $app->halt(403, $app->txt('Permission Denied'));
+                    }
+                }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
+                    $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
+                    if($app->request()->isAjax())
+                        $app->halt(202, json_encode($requests) );
+                    else
+                        $app->halt(202, $app->txt('Created requests: ') . implode(', ',$requests) );
                 }
             }else{
                 $app->pass();

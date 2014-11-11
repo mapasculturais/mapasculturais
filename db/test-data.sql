@@ -15,15 +15,15 @@ SET search_path = public, pg_catalog;
 -- Data for Name: usr; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
-COPY usr (id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status) FROM stdin;
-5	1	1	Staff1@local	2014-05-21 17:41:23	2014-05-21 17:41:23	1
-6	1	1	Staff2@local	2014-05-21 17:42:02	2014-05-21 17:42:02	1
-7	1	1	Normal1@local	2014-05-21 17:42:35	2014-05-21 17:42:35	1
-1	1	1	SuperAdmin1@local	2014-05-21 17:45:03	2014-05-21 17:45:03	1
-8	1	1	Normal2@local	2014-05-21 17:42:51	2014-05-21 17:42:51	1
-2	1	1	SuperAdmin2@local	2014-05-21 17:38:59	2014-05-21 17:38:59	1
-3	1	1	Admin1@local	2014-05-21 17:39:34	2014-05-21 17:39:34	1
-4	1	1	Admin2@local	2014-05-21 17:40:15	2014-05-21 17:40:15	1
+COPY usr (id, profile_id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status) FROM stdin;
+5	5	1	1	Staff1@local	2014-05-21 17:41:23	2014-05-21 17:41:23	1
+6	6	1	1	Staff2@local	2014-05-21 17:42:02	2014-05-21 17:42:02	1
+7	7	1	1	Normal1@local	2014-05-21 17:42:35	2014-05-21 17:42:35	1
+1	1	1	1	SuperAdmin1@local	2014-05-21 17:45:03	2014-05-21 17:45:03	1
+8	8	1	1	Normal2@local	2014-05-21 17:42:51	2014-05-21 17:42:51	1
+2	2	1	1	SuperAdmin2@local	2014-05-21 17:38:59	2014-05-21 17:38:59	1
+3	3	1	1	Admin1@local	2014-05-21 17:39:34	2014-05-21 17:39:34	1
+4	4	1	1	Admin2@local	2014-05-21 17:40:15	2014-05-21 17:40:15	1
 \.
 
 
@@ -31,15 +31,15 @@ COPY usr (id, auth_provider, auth_uid, email, last_login_timestamp, create_times
 -- Data for Name: agent; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
-COPY agent (id, user_id, type, name, location, _geo_location, short_description, long_description, create_timestamp, status, is_user_profile, is_verified) FROM stdin;
-5	5	1	Staff User 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	t
-6	6	1	Staff User 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	f
-7	7	1	Normal User 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	t
-8	8	1	Normal User 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	f
-1	1	1	Super Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	t
-2	2	1	Super Admin 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	f
-3	3	1	Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	t
-4	4	1	Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t	f
+COPY agent (id, user_id, type, name, location, _geo_location, short_description, long_description, create_timestamp, status, is_verified) FROM stdin;
+5	5	1	Staff User 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t
+6	6	1	Staff User 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	f
+7	7	1	Normal User 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t
+8	8	1	Normal User 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	f
+1	1	1	Super Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t
+2	2	1	Super Admin 2	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	f
+3	3	1	Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	t
+4	4	1	Admin 1	(0,0)	0101000020E610000000000000000000000000000000000000	short description		2014-05-21 17:57:23	1	f
 \.
 
 
@@ -71,44 +71,6 @@ COPY agent_relation (id, agent_id, object_type, object_id, type, has_control, cr
 --
 
 SELECT pg_catalog.setval('agent_relation_id_seq', 1, true);
-
-
---
--- Data for Name: authority_request; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY authority_request (id, owner_type, owner_id, object_type, object_id, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Name: authority_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('authority_request_id_seq', 1, true);
-
-
---
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY comment (id, parent_id, agent_id, object_type, object_id, content, create_timestamp, status) FROM stdin;
-\.
-
-
---
--- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: mapasculturais
---
-
-COPY contract (id, object_id, object_type, agent_id, from_date, to_date, amount, is_verified) FROM stdin;
-\.
-
-
---
--- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('contract_id_seq', 1, true);
 
 
 --
@@ -283,13 +245,6 @@ SELECT pg_catalog.setval('metalist_id_seq', 1, true);
 
 
 --
--- Name: occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('occurrence_id_seq', 100000, true);
-
-
---
 -- Data for Name: project_event; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
@@ -341,27 +296,6 @@ SELECT pg_catalog.setval('role_id_seq', 123, true);
 
 
 --
--- Name: sp_distrito_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_distrito_gid_seq', 96, true);
-
-
---
--- Name: sp_regiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_regiao_gid_seq', 8, true);
-
-
---
--- Name: sp_subprefeitura_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
---
-
-SELECT pg_catalog.setval('sp_subprefeitura_gid_seq', 32, true);
-
-
---
 -- Name: space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
 --
 
@@ -381,17 +315,17 @@ COPY space_meta (object_id, key, value) FROM stdin;
 --
 
 COPY term (id, taxonomy, term, description) FROM stdin;
-2	2	Antropologia	
-3	2	Arqueologia	
-4	2	Arquitetura-Urbanismo	
-5	2	Arquivo	
-6	2	Artesanato	
-7	2	Artes Visuais	
-8	2	Cultura Negra	
-9	2	Fotografia	
-10	2	Jogos Eletrônicos	
-11	2	Circo	
-12	2	Filosofia	
+2	2	Antropologia	DESCRIÇÃO
+3	2	Arqueologia	DESCRIÇÃO
+4	2	Arquitetura-Urbanismo	DESCRIÇÃO
+5	2	Arquivo	DESCRIÇÃO
+6	2	Artesanato	DESCRIÇÃO
+7	2	Artes Visuais	DESCRIÇÃO
+8	2	Cultura Negra	DESCRIÇÃO
+9	2	Fotografia	DESCRIÇÃO
+10	2	Jogos Eletrônicos	DESCRIÇÃO
+11	2	Circo	DESCRIÇÃO
+12	2	Filosofia	DESCRIÇÃO
 \.
 
 

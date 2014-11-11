@@ -16,7 +16,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
  * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
- * @property-read \MapasCulturais\View $view The MapasCulturais View object
+ * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
  * @property-read String $projectRegistrationAgentRelationGroupName Project Registration Agent Relation Group Name
@@ -35,6 +35,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read mixed $notFound Callable to be invoked if no matching routes are found
  *
  * @property-read array $config
+ *
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
@@ -94,35 +95,22 @@ class App extends \Slim\Slim{
     protected $_config = array();
 
     /**
-     *
-     * @var type
-     */
-    protected $_enqueuedScripts = array();
-
-    /**
-     *
-     * @var type
-     */
-    protected $_enqueuedStyles = array();
-
-    protected $_runningUpdates = false;
-
-    /**
      * The Application Registry.
      *
      * Here is stored the registered controllers, entity types, entity type groups, entity metadata definitions, file groups definitions and taxonomy definitions.
      *
      * @var type
      */
-    public $_register = array();
+    protected $_register = array();
 
     protected $_registerLocked = true;
 
+    protected $_hooks = array();
+    protected $_excludeHooks = array();
 
 
-	protected $_hooks = array();
-	protected $_excludeHooks = array();
-
+    protected $_accessControlEnabled = true;
+    protected $_workflowEnabled = true;
 
     /**
      * Initializes the application instance.
@@ -155,6 +143,38 @@ class App extends \Slim\Slim{
 
         session_start();
 
+        // =============== CACHE =============== //
+        if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
+            $this->_cache = $config['app.cache'];
+        }else{
+            $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
+        }
+
+        $this->_cache->setNamespace($config['app.cache.namespace']);
+
+        spl_autoload_register(function($class) use ($config){
+            $cache_id = "AUTOLOAD_CLASS:$class";
+            if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
+                $path = $this->cache->fetch($cache_id);
+                require_once $path;
+                return true;
+            }
+
+            foreach($config['namespaces'] as $namespace => $base_dir){
+                if(strpos($class, $namespace) === 0){
+                    $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
+
+                    if(\file_exists($path)){
+                        require_once $path;
+                        if($config['app.useRegisteredAutoloadCache'])
+                            $this->cache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                        return true;
+                    }
+                }
+            }
+
+        });
+
         $config['app.mode'] = key_exists('app.mode', $config) ? $config['app.mode'] : 'production';
 
         $this->_config = $config;
@@ -166,12 +186,14 @@ class App extends \Slim\Slim{
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
 
+        $theme_class = $config['themes.active'].'\Theme';
+
         parent::__construct(array(
             'log.level' => $config['slim.log.level'],
             'log.enabled' => $config['slim.log.enabled'],
             'debug' => $config['slim.debug'],
             'templates.path' => $this->_config['path.templates'],
-            'view' => new View(),
+            'view' => new $theme_class($config['themes.assetManager']),
             'mode' => $this->_config['app.mode']
         ));
 
@@ -183,6 +205,11 @@ class App extends \Slim\Slim{
             $log->setWriter($config['slim.log.writer']);
         }
 
+
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
 
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
@@ -234,19 +261,23 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomStringFunction('st_summary', 'CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STSummary');
 
 
-        $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\Types\DoctrineMap\STDWithin');
-        $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\Types\DoctrineMap\STMakePoint');
+        $doctrine_config->addCustomStringFunction('string_agg', 'MapasCulturais\DoctrineMappings\Functions\StringAgg');
+        $doctrine_config->addCustomStringFunction('unaccent', 'MapasCulturais\DoctrineMappings\Functions\Unaccent');
+        $doctrine_config->addCustomStringFunction('recurring_event_occurrence_for', 'MapasCulturais\DoctrineMappings\Functions\RecurringEventOcurrenceFor');
 
-        $doctrine_config->setQueryCacheImpl(new \Doctrine\Common\Cache\ApcCache());
+        $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
+        $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
+
+        $doctrine_config->setQueryCacheImpl($this->_cache);
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
 
-        \MapasCulturais\Types\DoctrineMap\Frequency::register();
+        \MapasCulturais\DoctrineMappings\Types\Frequency::register();
 
-        \MapasCulturais\Types\DoctrineMap\Point::register();
-        \MapasCulturais\Types\DoctrineMap\Geography::register();
-        \MapasCulturais\Types\DoctrineMap\Geometry::register();
+        \MapasCulturais\DoctrineMappings\Types\Point::register();
+        \MapasCulturais\DoctrineMappings\Types\Geography::register();
+        \MapasCulturais\DoctrineMappings\Types\Geometry::register();
 
 
 
@@ -257,22 +288,6 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
-
-
-        // =============== CACHE =============== //
-        if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
-            $this->_cache = $config['app.cache'];
-        }else{
-            $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-        }
-
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
-
 
 
         // ============= STORAGE =============== //
@@ -306,9 +321,8 @@ class App extends \Slim\Slim{
 
         $this->_auth->setCookies();
 
-        // run theme theme.php
-        if(file_exists(ACTIVE_THEME_PATH . 'theme.php'))
-            include ACTIVE_THEME_PATH . 'theme.php';
+        // initialize theme
+        $this->view->init();
 
         // ===================================== //
 
@@ -317,7 +331,7 @@ class App extends \Slim\Slim{
             include PLUGINS_PATH.$plugin.'.php';
         }
         // ===================================== //
-        
+
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
 
@@ -330,105 +344,32 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
-    public function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
-        if(!key_exists($group, $this->_enqueuedScripts))
-                $this->_enqueuedScripts[$group] = array();
-
-        $this->_enqueuedScripts[$group][$script_name] = array($script_name, $script_filename, $dependences);
+    function enableAccessControl(){
+        $this->_accessControlEnabled = true;
     }
 
-    public function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
-        if(!key_exists($group, $this->_enqueuedStyles))
-                $this->_enqueuedStyles[$group] = array();
-
-        $this->_enqueuedStyles[$group][$style_name] = array($style_name, $style_filename, $dependences, $media);
+    function disableAccessControl(){
+        $this->_accessControlEnabled = false;
     }
 
-    public function addScriptToArray($group, $script, array &$array){
-        if(!in_array($script[1], $array)){
-            foreach ($script[2] as $dep)
-                if(key_exists($dep, $this->_enqueuedScripts[$group]))
-                    $this->addScriptToArray ($group, $this->_enqueuedScripts[$group][$dep], $array);
-                else
-                    throw new \Exception(sprintf(App::txt('Missing script dependence: %s depends on %s'),$script[0],$dep));
-
-            $array[] = $script[1];
-        }
+    function isAccessControlEnabled(){
+        return $this->_accessControlEnabled;
     }
 
-    public function addStylesToArray($group, $script, array &$array){
-
-        if(!in_array($script[1], $array)){
-            foreach ($script[2] as $dep)
-                if(key_exists($dep, $this->_enqueuedStyles[$group]))
-                    $this->addScriptToArray ($group, $this->_enqueuedStyles[$group][$dep], $array);
-                else
-                    throw new \Exception(sprintf(App::txt('Missing script dependence: %s depends on %s'),$script[0],$dep));
-
-            $array[] = $script[1];
-        }
+    function enableWorkflow(){
+        $this->_workflowEnabled = true;
     }
 
-    public function printStyles($group){
-        if(!key_exists($group, $this->_enqueuedStyles))
-            return;
-
-        $sources = array();
-        foreach($this->_enqueuedStyles[$group] as $script)
-            $this->addStylesToArray ($group, $script, $sources);
-
-        if(!$sources){
-            echo "";
-            return;
-        }
-
-        $styles = "";
-
-        foreach ($sources as $source){
-            if(!preg_match('#^http://|https://|//#', $source))
-                $source = $this->getAssetUrl() . $source;
-            $styles .= "\n<link href='$source'  media='all' rel='stylesheet' type='text/css' />";
-        }
-
-        echo $styles;
+    function disableWorkflow(){
+        $this->_workflowEnabled = false;
     }
 
-    public function printScripts($group){
-        if(!key_exists($group, $this->_enqueuedScripts))
-            return;
-
-        $sources = array();
-        foreach($this->_enqueuedScripts[$group] as $script)
-            $this->addScriptToArray ($group, $script, $sources);
-
-        if(!$sources){
-            echo "";
-            return;
-        }
-
-        $scripts = "";
-
-        foreach ($sources as $source){
-            if(!preg_match('#^http://|https://|//#', $source)){
-                $hash = '';
-                $fullfilepath = ACTIVE_THEME_PATH . 'assets' . $source;
-                if(file_exists($fullfilepath))
-                    $hash = '?v='.md5_file ($fullfilepath);
-
-                $source = $this->getAssetUrl() . $source . $hash;
-            }
-            $scripts .= "\n" . '<script type="text/javascript" src="' . $source .'"></script>';
-        }
-
-        echo $scripts;
-    }
-
-    public function isRunningUpdates(){
-        return $this->_runningUpdates;
+    function isWorkflowEnabled(){
+        return $this->_workflowEnabled;
     }
 
     protected function _dbUpdates(){
-        $this->_runningUpdates = true;
+        $this->disableAccessControl();
 
         $executed_updates = array();
 
@@ -437,6 +378,13 @@ class App extends \Slim\Slim{
 
         $updates = include DB_UPDATES_FILE;
 
+        foreach($this->view->path as $path){
+            $db_update_file = $path . 'db-updates.php';
+            if(file_exists($db_update_file)){
+                $updates += include $db_update_file;
+            }
+        }
+
         $new_updates = false;
 
         foreach($updates as $name => $function){
@@ -444,11 +392,14 @@ class App extends \Slim\Slim{
                 $new_updates = true;
                 echo "\nApplying db update \"$name\":";
                 echo "\n-------------------------------------------------------------------------------------------------------\n";
-                
-                if($function() !== false){
-                    $up = new Entities\DbUpdate();
-                    $up->name = $name;
-                    $up->save();
+                try{
+                    if($function() !== false){
+                        $up = new Entities\DbUpdate();
+                        $up->name = $name;
+                        $up->save();
+                    }
+                }catch(\Exception $e){
+                    echo "\nERROR " . $e . "\n";
                 }
                 echo "\n-------------------------------------------------------------------------------------------------------\n\n";
             }
@@ -459,8 +410,7 @@ class App extends \Slim\Slim{
             $this->cache->deleteAll();
         }
 
-        $this->_runningUpdates = false;
-
+        $this->enableAccessControl();
     }
 
     public function register(){
@@ -505,9 +455,13 @@ class App extends \Slim\Slim{
             $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
             $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
 
+            //workflow controllers
+            $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
+
 
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
             $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
+            $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
 
             /**
              * @todo melhores mensagens de erro
@@ -652,6 +606,7 @@ class App extends \Slim\Slim{
                         $type_config['metadata'][$meta_key] = $meta_config;
 
                 foreach($type_config['metadata'] as $meta_key => $meta_config){
+
                     $metadata = new Definitions\Metadata($meta_key, $meta_config);
                     $this->registerMetadata($metadata, $entity_class, $type_id);
                 }
@@ -719,10 +674,26 @@ class App extends \Slim\Slim{
                 }
             }
 
+            $this->view->register();
+
             $this->cache->save('mapasculturais.register', $this->_register, $this->_config['app.registerCache.lifeTime']);
         }
 
+
         $this->applyHook('app.register');
+    }
+
+    function getRegisteredGeoDivisions(){
+        $result = array();
+        foreach($this->config['app.geoDivisionsHierarchy'] as $key => $name) {
+            $d = new \stdClass();
+            $d->key = $key;
+            $d->name = $name;
+            $d->metakey = 'geo' . ucfirst($key);
+            $result[] = $d;
+        }
+
+        return $result;
     }
 
 
@@ -846,6 +817,8 @@ class App extends \Slim\Slim{
         }
     }
 
+    protected $_hookCache = array();
+
     /**
      * Get hook listeners
      *
@@ -868,6 +841,7 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook($name, $callable, $priority = 10) {
+        $this->_hookCache = array();
         $_hooks = explode(',', $name);
         foreach ($_hooks as $hook) {
             if (trim($hook)[0] === '-') {
@@ -935,9 +909,13 @@ class App extends \Slim\Slim{
         }
     }
 
+
     function _getHookCallables($name) {
         $exclude_list = array();
         $result = array();
+//
+//        if(isset($this->_hookCache[$name]))
+//            return $this->_hookCache[$name];
 
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
@@ -954,6 +932,8 @@ class App extends \Slim\Slim{
                 }
             }
         }
+
+        $this->_hookCache[$name] = $result;
 
         return $result;
     }
@@ -1037,8 +1017,12 @@ class App extends \Slim\Slim{
                 $this->_config['app.projectRegistrationAgentRelationGroupName'] : 'registration';
     }
 
-    public function getDebugbar(){
-        return $this->_debugbar;
+    public function getSiteName(){
+        return $this->_config['app.siteName'];
+    }
+
+    public function getSiteDescription(){
+        return $this->_config['app.siteDescription'];
     }
 
     /**
@@ -1102,7 +1086,7 @@ class App extends \Slim\Slim{
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'public';
+        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
     }
 
     /**

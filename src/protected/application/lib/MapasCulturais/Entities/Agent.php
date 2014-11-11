@@ -11,10 +11,11 @@ use MapasCulturais\App;
  * Agent
  *
  * @property-read \MapasCulturais\Entities\Space[] $spaces spaces owned by this agent
+ * @property-read bool $isUserProfile Is this agent the user profile?
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\CachedRepository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Agent")
  * @ORM\HasLifecycleCallbacks
  */
 class Agent extends \MapasCulturais\Entity
@@ -28,7 +29,10 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityNested {
+            Traits\EntityNested::setParent as netedSetParent;
+        }
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -38,8 +42,12 @@ class Agent extends \MapasCulturais\Entity
             'required' => 'O nome do agente é obrigatório'
         ),
         'shortDescription' => array(
-            'required' => 'A descrição curta é obrigatória'
+            'required' => 'A descrição curta é obrigatória',
+            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ),
+        'type' => array(
+            'required' => 'O tipo do agente é obrigatório',
+        )
     );
 
     /**
@@ -109,11 +117,23 @@ class Agent extends \MapasCulturais\Entity
     protected $status = self::STATUS_ENABLED;
 
     /**
-     * @var bool
+     * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\Column(name="is_user_profile", type="boolean", nullable=false)
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
      */
-    protected $isUserProfile = false;
+    protected $parent;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Agent[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $_children;
+
 
     /**
      * @var bool
@@ -126,7 +146,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -144,26 +164,26 @@ class Agent extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $spaces = array();
+    protected $_spaces = array();
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $projects = array();
+    protected $_projects = array();
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $events = array();
-    
-    
+    protected $_events = array();
+
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
-    
+
 
     /**
      * Constructor
@@ -177,13 +197,26 @@ class Agent extends \MapasCulturais\Entity
 
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
+        
+        $this->user->profile = $this;
+        
+        $this->user->save(true);
+    }
+    
+    function getIsUserProfile(){
+        return $this->equals($this->user->profile);
+    }
 
-        $this->user->getProfile()->isUserProfile = false;
-        $this->user->getProfile()->save();
+    function getProjects(){
+        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED);
+    }
 
-        $this->isUserProfile = true;
+    function getEvents(){
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
 
-        $this->save(true);
+    function getSpaces(){
+        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED);
     }
 
 
@@ -192,21 +225,73 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getOwner(){
-        return $this->user ?
-                $this->user->profile :
-                App::i()->user->profile;
+        if($parent = $this->getParent()){
+            return $parent;
+        }else{
+            return $this->user ? $this->user->profile : App::i()->user->profile;
+        }
     }
+
+    function setOwner(Agent $parent = null){
+        $this->setParent($parent);
+    }
+
 
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
-        if($owner)
-            $this->setUser($owner->user);
+        $this->setParent($owner);
     }
 
-    function setUser($user){
-        $this->checkPermission('modifyOwner');
-        $user->checkPermission('modify');
-        $this->user = $user;
+    private $_newUser = false;
+
+    function setUser(User $user){
+        $this->_newUser = $user;
+        if($this->_newParent === false)
+            $this->_newParent = $user->profile;
+    }
+
+    function setParent(Agent $parent = null){
+        $this->nestedSetParent($parent);
+        if($parent)
+            $this->setUser($parent->user);
+    }
+
+    function getParent(){
+        return $this->parent;
+    }
+
+    protected function _saveNested($flush = false) {
+        if($this->_newParent !== false){
+            $app = App::i();
+
+            if(is_object($this->parent) && is_object($this->_newParent) && $this->parent->equals($this->_newParent) || is_null($this->parent) && is_null($this->_newParent)){
+                return;
+            }
+
+            try{
+                $this->checkPermission('changeOwner');
+                if($this->_newParent){
+                    $this->_newParent->checkPermission('@control');
+                    $this->parent = $this->_newParent;
+                    $this->user = $this->_newUser;
+                    $this->_newParent = false;
+                }
+
+            }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+                if(!$app->isWorkflowEnabled())
+                    throw $e;
+
+                $destination = $this->_newParent;
+                $this->_newParent = false;
+
+                $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
+                $ar->origin = $this;
+                $ar->destination = $destination;
+
+                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
+
+            }
+        }
     }
 
     function jsonSerialize() {
@@ -216,7 +301,7 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserCreate($user){
-        if(is_null($user) || $user->is('guest'))
+        if($user->is('guest'))
             return true;
         else
             return $this->genericPermissionVerification($user);
@@ -230,13 +315,30 @@ class Agent extends \MapasCulturais\Entity
             return parent::canUserRemove($user);
     }
 
+    protected function canUserDestroy($user){
+        if($this->isUserProfile)
+            return false;
+        else
+            return $user->is('superAdmin');
+    }
+
+    protected function canUserChangeOwner($user){
+        if($this->isUserProfile)
+            return false;
+
+        if($user->is('guest'))
+            return false;
+
+        if($user->is('admin'))
+            return true;
+
+        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

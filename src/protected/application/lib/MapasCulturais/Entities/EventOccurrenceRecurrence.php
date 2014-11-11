@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="event_occurrence_recurrence")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class EventOccurrenceRecurrence extends \MapasCulturais\Entity
@@ -47,7 +48,7 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\EventOccurrence
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id")
      * })
@@ -67,9 +68,6 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

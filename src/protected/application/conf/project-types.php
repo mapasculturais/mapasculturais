@@ -53,6 +53,7 @@ return array(
         9 =>  array( 'name' => "Edital"),
         10 => array( 'name' => "Concurso"),
         11 => array( 'name' => "Exposição"),
+        11 => array( 'name' => "Jornada"),
     )
     /* EXEMPLOS DE METADADOS:
 

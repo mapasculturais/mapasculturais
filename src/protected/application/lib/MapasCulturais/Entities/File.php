@@ -21,7 +21,7 @@ use \MapasCulturais\App;
  * @property-read array $tmpFile $_FILE
  * @ORM\Table(name="file")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\File")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
  */
 class File extends \MapasCulturais\Entity
@@ -206,7 +206,20 @@ class File extends \MapasCulturais\Entity
      * @return string the url to this file
      */
     public function getUrl(){
-        return App::i()->storage->getUrl($this);
+        $app = App::i();
+        $cache_id = "{$this}:url";
+        
+        if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
+            return $app->cache->fetch($cache_id);
+        }
+        
+        $url = $app->storage->getUrl($this);
+        
+        if($app->config['app.useFileUrlCache']){
+            $app->cache->save($cache_id, $url, $app->config['app.fileUrlCache.lifetime']);
+        }
+        
+        return $url;
     }
 
     public function getPath(){
@@ -281,14 +294,6 @@ class File extends \MapasCulturais\Entity
         return $this->_transform($transformation_name, "resizeDown($width, $height, 'outside')->crop('center', 'middle', $width, $height)");
     }
 
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->group = trim($this->group);
-        $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->storage->add($this);
@@ -341,9 +346,6 @@ class File extends \MapasCulturais\Entity
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

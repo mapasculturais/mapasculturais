@@ -11,6 +11,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="space_meta")
  * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class SpaceMeta extends \MapasCulturais\Entity
@@ -48,48 +49,37 @@ class SpaceMeta extends \MapasCulturais\Entity
         return $this->owner->canUser($action, $userOrAgent);
     }
 
-
-    /** @ORM\PostLoad */
-    public function _postLoad($args = null){
-        $this->key = trim($this->key);
-        
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').load', $args);
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', [$args]);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:after', [$args]);
     }
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:before', [$args]);
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:after', [$args]);
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:before', [$args]);
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:after', [$args]);
     }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

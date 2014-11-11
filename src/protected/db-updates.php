@@ -2,29 +2,32 @@
 namespace MapasCulturais;
 
 $app = App::i();
+$em = $app->em;
+$conn = $em->getConnection();
+
+
 return array(
-    'teste de execução pelo deploy' => function() use($app){
-        $agents = $app->repo('Agent')->findAll();
-        
-        foreach($agents as $a){
-            echo "AGENTE: $a->name\n";
+    'alter table user add column profile_id' => function() use ($app, $conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'usr' AND column_name = 'profile_id'")){
+            return true;
         }
-    },
             
-    'Virada 2014 - set events is verified' => function() use($app){
-        $virada = $app->repo('Project')->find(4);
+    
+        echo "adicionando coluna profile_id à tabela de usuários\n";
+    
+        $conn->executeQuery('ALTER TABLE usr ADD COLUMN profile_id INTEGER;');
         
-        $events = $app->repo('Event')->findBy(array('project' => $virada));
+        echo "criando user_profile_fk\n";
+        $conn->executeQuery('ALTER TABLE ONLY usr ADD CONSTRAINT user_profile_fk FOREIGN KEY (profile_id) REFERENCES agent(id);');
         
-        $i = 0;
-        foreach($events as $event){
-            $i++;
-            echo "$i - Definindo o evento \"{$event->name}\" como oficial.\n";
-            $event->isVerified = true;
-            $event->save();
+        $agents = $conn->fetchAll("SELECT id, user_id FROM agent WHERE is_user_profile = TRUE");
+        
+        foreach($agents as $agent){
+            echo "setando o user profile do usuário {$agent['user_id']} como o agente de id {$agent['id']}\n";
+            $conn->executeQuery('UPDATE usr SET profile_id = ' . $agent['id'] . ' WHERE id = ' . $agent['user_id']);
         }
         
-        $app->em->flush();
-        
+        echo "removendo a coluna is_user_profile da tabela agent\n";
+        $conn->executeQuery('ALTER TABLE agent DROP COLUMN is_user_profile;');
     }
 );

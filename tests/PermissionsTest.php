@@ -6,34 +6,6 @@ require_once __DIR__.'/bootstrap.php';
  * @author rafael
  */
 class PermissionsTest extends MapasCulturais_TestCase{
-    protected $entities = [
-        'Agent' => 'agents',
-        'Space' => 'spaces',
-        'Event' => 'events',
-        'Project' => 'projects'
-    ];
-
-    function getNewEntity($class, $user = null){
-        if(!is_null($user)){
-            $_user = $this->app->user->is('guest') ? null : $this->app->user;
-            $this->user = $user;
-        }
-            
-        $app = MapasCulturais\App::i();
-        $classname = 'MapasCulturais\Entities\\' . $class;
-
-        $type = array_shift($app->getRegisteredEntityTypes($classname));
-
-        $entity = new $classname;
-        $entity->name = "Test $class "  . uniqid();
-        $entity->type = $type;
-        $entity->shortDescription = 'A litle short description';
-        
-        if(!is_null($user)){
-            $this->user = $_user;
-        }
-        return $entity;
-    }
 
     function getRandomEntity($_class, $where = null){
         $app = MapasCulturais\App::i();
@@ -49,38 +21,13 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
     }
 
-    function assertPermissionDenied($callable, $msg = ''){
-        $exception = null;
-        try{
-            $callable = \Closure::bind($callable, $this);
-            $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
-            $exception = $ex;
-        }
-
-        $this->assertInstanceOf('MapasCulturais\Exceptions\PermissionDenied', $exception, $msg);
-    }
-
-
-    function assertPermissionGranted($callable, $msg = ''){
-        $exception = null;
-        try{
-            $callable = \Closure::bind($callable, $this);
-            $callable();
-        } catch (MapasCulturais\Exceptions\PermissionDenied $ex) {
-            $exception = $ex;
-            $msg .= '(message: "' . $ex->getMessage() . '")';
-        }
-
-        $this->assertEmpty($exception, $msg);
-    }
-
     function testCanUserCreate(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $app = MapasCulturais\App::i();
 
         /*
-         * Guest users cant create entities.
+         * Guest users CANNOT create entities.
          */
         $this->user = null;
 
@@ -95,7 +42,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
 
         /*
-         * Super Admins can create entities
+         * Super Admins CAN create entities
          */
         $this->user = 'superAdmin';
 
@@ -109,27 +56,25 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
 
         /*
-         * Normal users cannot create entities to another users
+         * Normal users CANNOT create entities to another users
          */
         $this->user = 'normal';
 
         $another_user = $this->getRandomEntity('User', 'e.id != ' . $app->user->id);
-
+        
         foreach($this->entities as $class => $plural){
             $this->assertPermissionDenied(function() use ($class, $another_user){
                 $entity = $this->getNewEntity($class);
 
-                if($class === 'Agent'){
-                    $entity->user = $another_user;
-                }else
-                    $entity->ownerId = $another_user->profile->id;
+                $entity->owner = $another_user->profile;
 
                 $entity->save(true);
+                
             }, "Asserting that a normal user CANNOT create $plural to another user.");
         }
 
         /*
-         * Super Admins can create entities to another users
+         * Super Admins CAN create entities to another users
          */
         $this->user = 'superAdmin';
 
@@ -137,19 +82,17 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $this->assertPermissionGranted(function() use ($class, $another_user){
                 $entity = $this->getNewEntity($class);
 
-                if($class === 'Agent')
-                    $entity->user = $another_user;
-                else
-                    $entity->ownerId = $another_user->profile->id;
+                $entity->owner = $another_user->profile;
 
                 $entity->save(true);
             }, "Asserting that a super admin user CAN create $plural to another user.");
         }
+        $this->app->enableWorkflow();
     }
 
-
-
+    
     function testCanUserModify(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         /*
          * Asserting thar guest users cannot modify entities
@@ -206,12 +149,16 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }
         }
 
-
+        $this->app->enableWorkflow();
     }
 
-    function testCanUserRemove(){ }
+    function testCanUserRemove(){ 
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
+    }
 
     function testCanUserVerifyEntity(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $app = $this->app;
 
@@ -303,11 +250,16 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->save(true);
             }, "Asserting that a staff user CAN verify their own $plural.");
         }
+        $this->app->enableWorkflow();
     }
 
-    function testCanUserViewPrivateData(){ }
+    function testCanUserViewPrivateData(){
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
+    }
 
     function testAgentRelationsPermissions(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         // create agent relation without control
 
@@ -471,7 +423,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
         foreach($this->entities as $class => $plural){
             if($class == 'Agent')
                 continue;
-            
             
             $this->assertPermissionGranted(function() use($user1, $class){
                 $this->user = $user1();
@@ -655,7 +606,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
         
         /*
-         *  Asserting that an user with control cannot remove agent relations of agents with control
+         *  Asserting that an user with control CANNOT remove agent relations of agents with control
          */
         
         foreach($this->entities as $class => $plural){
@@ -732,10 +683,76 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that user CANNOT remove control of other related agent in $plural that he has control");
         }
         
+        
+        /**
+         * Asserting that an user with control over a space or project can control children spaces or projects
+         */
+        
+        foreach(array('Space' => 'spaces', 'Project' => 'projects') as $class => $plural){
+            $this->resetTransactions();
+            
+            $this->user = $user1();
+            
+            $parentEntity = $this->getNewEntity($class);
+            $parentEntity->owner = $user1()->profile;
+            $parentEntity->save();
+            
+            $childEntity = $this->getNewEntity($class);
+            $childEntity->owner = $user1()->profile;
+            $childEntity->parent = $parentEntity;
+            $childEntity->save();
+            
+            $parentEntity->createAgentRelation($user2()->profile, $GROUP, true, true);
+
+            $this->user = $user2();
+            
+            $this->assertTrue($childEntity->userHasControl($user2()), "Asserting that an user with control over a parent $class CAN have control over child a $class");
+            $this->assertTrue($childEntity->canUser('modify'), "Asserting that an user with control over a parent $class CAN modify a child $class");
+            $this->assertTrue($childEntity->canUser('createAgentRelation'), "Asserting that an user with control over a parent $class CAN create agent relations to a child $class");
+            $this->assertTrue($childEntity->canUser('createChild'), "Asserting that an user with control over a parent $class CAN create children for the child $class");
+            
+            // somente quem controla o owner pode remover. quem controla o parent não.
+            $this->assertFalse($childEntity->canUser('remove'), "Asserting that an user with control over a parent $class CANNOT remove a child $class");
+        }
+        
+        
+        /**
+         * Asserting that an user with control over an agent CONTROL and CAN REMOVE spaces, events and projects of the controlled agent
+         */
+        
+        foreach($this->entities as $class => $plural){
+            if($class === 'Agent')
+                continue;
+            
+            $this->resetTransactions();
+            
+            $this->user = $user1();
+            
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $user1()->profile;
+            $entity->save();
+            
+            $user1()->profile->createAgentRelation($user2()->profile, $GROUP, true, true);           
+            
+            $this->user = $user2();
+            
+            $this->assertTrue($entity->userHasControl($user2()), "Asserting that an user with control over the owner agent CAN CONTROL $plural of this controlled agent");
+            $this->assertTrue($entity->canUser('modify'), "Asserting that an user with control over the owner agent CAN modify $plural of this controlled agent");
+            $this->assertTrue($entity->canUser('createAgentRelation'), "Asserting that an user with control over the owner agent CAN create agent relations to $plural of this controlled agent");
+            if($class != 'Event')
+                $this->assertTrue($childEntity->canUser('createChild'), "Asserting that an user with control over the owner agent CAN create children for $plural of this controlled agent");
+            
+            // somente quem controla o owner pode remover. quem controla o parent não.
+            $this->assertTrue($entity->canUser('remove'), "Asserting that an user with control over the owner agent CAN remove $plural of this controlled agent");
+            
+        }
+        
         $this->resetTransactions();
+        $this->app->enableWorkflow();
     }
     
     function testEventOccurrencePermissions(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         
         $rule = array(
@@ -757,6 +774,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->user = $user0;
         
         $event = $this->getNewEntity('Event');
+        $event->owner = $user0->profile;
         $event->save();
         
         $this->assertPermissionDenied(function() use($event, $space, $rule){
@@ -786,9 +804,36 @@ class PermissionsTest extends MapasCulturais_TestCase{
             
             $occ->save();
         }, "Asserting that a normal user CAN create an event occurrence on spaces that he have control");
+        
+        // Assert that a normal user CAN create an event occurrence in public spaces that he don't have control
+        $this->user = $user0;
+        $public_space = $this->getNewEntity('Space');
+        $public_space->owner = $user0->profile;
+        $public_space->public = true;
+        $public_space->save();
+        
+        $this->user = $user1;
+        
+        $event = $this->getNewEntity('Event');
+        $event->owner = $user1->profile;
+        $event->save();
+        
+        
+        $this->assertPermissionGranted(function() use($event, $public_space, $rule){
+            $occ = new \MapasCulturais\Entities\EventOccurrence;
+        
+            $occ->event = $event;
+            $occ->space = $public_space;
+            $occ->rule = $rule;
+            
+            $occ->save();
+        }, "Asserting that a normal user CAN create an event occurrence in public spaces that he don't have control");
+        
+        $this->app->enableWorkflow();
     }
     
     function testProjectEventCreation(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         // assert that a user WITHOUT control of a project CANNOT create events to this project
         $user1 = $this->getUser('normal', 0);
@@ -817,9 +862,11 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event->project = $project;
             $event->save();
         }, 'Asserting that a user WITH control of a project CAN create events to this project');
+        $this->app->enableWorkflow();
     }
 
     function testProjectRegistrationPermissions(){
+        $this->app->disableWorkflow();
         
         $this->resetTransactions();
         $user1 = $this->getUser('normal', 0);
@@ -857,18 +904,21 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $project->register($user2->profile);
 
         }, "Asserting that a normal user CANNOT register in a project with registration closed");
-    
+        $this->app->enableWorkflow();
     }
-
+    
     function testFilesPermissions(){
-
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
     }
 
     function testMetalistPermissions(){
-
+        $this->app->disableWorkflow();
+        $this->app->enableWorkflow();
     }
 
     function testCanUserAddRemoveRole(){
+        $this->app->disableWorkflow();
         $this->resetTransactions();
         $roles = ['staff', 'admin', 'superAdmin'];
 
@@ -980,6 +1030,77 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $user = $this->getUser($role, 1);
                 $user->removeRole($role);
             }, "Asserting that super admin user CAN remove the role $role of a user");
+        }
+        $this->app->enableWorkflow();
+    }
+    
+    function testSoftDeleteDestroy(){
+        foreach(['normal', 'staff', 'admin'] as $role){
+            foreach ($this->entities as $class => $plural){
+                $this->resetTransactions();
+                $user = $this->getUser($role, 1);
+                $this->user = $user;
+                $profile = $user->profile;
+                $entity = $this->getNewEntity($class);
+                $entity->owner = $profile;
+                $entity->save(true);
+                $this->assertPermissionDenied(function() use($entity){
+                    $entity->destroy(true);
+                }, "Asserting that a $role user CANNOT destroy his own $plural");
+
+            }
+        }
+        
+        foreach ($this->entities as $class => $plural){
+            $this->resetTransactions();
+            $user = $this->getUser('superAdmin', 1);
+            $this->user = $user;
+            $profile = $user->profile;
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $profile;
+            $entity->save(true);
+            $this->assertPermissionGranted(function() use($entity){
+                $entity->destroy(true);
+            }, "Asserting that a Super Admin user CAN destroy his own $plural");
+
+        }
+        
+        foreach(['normal', 'staff', 'admin'] as $role){
+            foreach ($this->entities as $class => $plural){
+                $this->resetTransactions();
+                
+                $user = $this->getUser('normal', 0);
+                $this->user = $user;
+                $profile = $user->profile;
+                $entity = $this->getNewEntity($class);
+                $entity->owner = $profile;
+                $entity->save(true);
+                
+                $this->user = $this->getUser($role, 1);
+                
+                $this->assertPermissionDenied(function() use($entity){
+                    $entity->destroy(true);
+                }, "Asserting that a $role user CANNOT destroy other user $plural");
+
+            }
+        }
+        
+        foreach ($this->entities as $class => $plural){
+            $this->resetTransactions();
+
+            $user = $this->getUser('normal', 0);
+            $this->user = $user;
+            $profile = $user->profile;
+            $entity = $this->getNewEntity($class);
+            $entity->owner = $profile;
+            $entity->save(true);
+
+            $this->user = $this->getUser('superAdmin', 1);
+
+            $this->assertPermissionGranted(function() use($entity){
+                $entity->destroy(true);
+            }, "Asserting that a Super Admin user CAN destroy other user $plural");
+
         }
     }
 }

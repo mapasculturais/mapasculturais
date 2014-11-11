@@ -3,6 +3,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Space Controller
@@ -11,12 +12,13 @@ use MapasCulturais\App;
  *
  */
 class Space extends EntityController {
-    use \MapasCulturais\Traits\ControllerTypes,
-        \MapasCulturais\Traits\ControllerUploads,
-        \MapasCulturais\Traits\ControllerMetaLists,
-        \MapasCulturais\Traits\ControllerAgentRelation,
-        \MapasCulturais\Traits\ControllerVerifiable,
-        \MapasCulturais\Traits\ControllerSoftDelete;
+    use Traits\ControllerTypes,
+        Traits\ControllerUploads,
+        Traits\ControllerMetaLists,
+        Traits\ControllerAgentRelation,
+        Traits\ControllerVerifiable,
+        Traits\ControllerSoftDelete,
+        Traits\ControllerChangeOwner;
 
 
     function GET_create() {
@@ -44,6 +46,7 @@ class Space extends EntityController {
 
         $event_data = array('@select' => 'id') + $query_data;
         unset($event_data['@count']);
+
         $events = $eventController->apiQuery($event_data);
 
         $event_ids = array_map(function ($e){ return $e['id']; }, $events);
@@ -56,6 +59,7 @@ class Space extends EntityController {
                 if($key[0] === '@' || $key == '_geoLocation')
                     $space_data[$key] = $val;
 
+            unset($space_data['@keyword']);
             $this->apiResponse($this->apiQuery($space_data));
         }else{
             $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());

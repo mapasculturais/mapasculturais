@@ -1,0 +1,206 @@
+//
+// Entities List
+// --------------------------------------------------
+
+//== Entity Item
+//
+//## Default styles for entities list itens. They remain unchanged when inside #infobox (map view mode).
+
+
+.objeto {
+    margin-bottom: 5px;
+    padding: $padding-base;
+    background-color: $gray-lighter;
+    border-radius: $border-radius-base;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+    &:hover {
+        background: #f4f4f4;
+    }
+    h1 {
+        font-size: 1.25rem;
+        margin-bottom: $line-height-half;
+        padding-bottom: $padding-base;
+        line-height: $line-height-base;
+        border-bottom: 1px solid #fff;
+        .event-subtitle {
+            display: block;
+            font-size: .875rem;
+            font-weight: normal;
+        }
+    }
+}
+.objeto-content {
+    position: relative;
+    min-height: 6rem;
+}
+.objeto-thumb {
+    float: left;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 $line-height-half 0 0;
+    background-color: $gray;
+}
+.objeto-resumo {
+    min-height: 4rem;
+    padding: 0;
+    font-size: $font-size-smaller;
+    p {
+        margin-bottom: $line-height-half;
+    }
+}
+
+.event-ocurrences {
+    font-size: $font-size-smaller;
+    font-style: italic;
+    padding-left: $padding-base;
+    margin: 0 0 $line-height-half;
+    a {
+        color: $gray-darker;
+    }
+}
+
+.objeto-meta {
+    clear: both;
+             box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding-top: $padding-base;
+    border-top:  1px solid #fff;
+    font-size:  $font-size-smaller;
+    color: #888;
+    .label {
+        text-transform: uppercase;    
+        letter-spacing: .1em;
+        font-size: .70rem;
+    }
+}
+
+.event {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-event;
+    }
+}
+.agent {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-agent;
+    }
+}
+.space {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-space;
+    }
+}
+.project {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-project;
+    }
+}
+
+//== Entity Item in List View Mode
+//
+//## Styles for entities when in list view mode.
+
+.lista {
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin-bottom: 3rem;
+    padding: 0 3rem;
+    .objeto {
+        padding: $line-height-base;
+        background-color: #f8f8f8;
+        &:hover {
+        background-color: #fff;
+        }
+        h1 {
+            border-bottom: $thin-row;
+        }
+    }
+    .objeto-thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6rem;
+        height: 6rem;
+    }
+    .objeto-resumo {
+        float: left;
+        min-height: 6rem;
+        margin-right: 30%;
+        margin-bottom: 0;
+        padding: 0 $padding-large 0 7.5rem;
+        font-size: $font-size-small;
+    }
+    .objeto-meta {
+        clear: none;
+        float: right;
+        width: 30%;
+        min-height: 6rem;
+        margin-bottom: 0;
+        margin-left: -30%;
+        padding-left: $padding-large;
+        padding-top: 0;
+        border-top: none;
+        border-left: 1px solid $gray-lighter;
+    }
+}
+
+//== Entity Calendar of Events
+//
+//## Styles for calendar of events that shows up on entities' single pages.
+
+#agenda {
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin-bottom: 3rem;
+    .objeto-thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .objeto-resumo {
+        float: left;
+        min-height: 4rem;
+        margin-right: 30%;
+        margin-bottom: 0;
+        padding: 0 $padding-large 0 5.5rem;
+    }
+    .objeto-meta {
+        clear: none;
+        float: right;
+        width: 30%;
+        min-height: 4rem;
+        margin-bottom: 0;
+        margin-left: -30%;
+        padding-left: $padding-large;
+        padding-top: 0;
+        border-top: none;
+        border-left: 1px solid #fff;
+    }
+
+}
+
+.entinty-calendar-header {
+    margin-bottom: 3rem;
+    padding: $padding-base;
+    border-radius: $border-radius-base;
+    background: $gray-light;
+    font-size: $font-size-smaller;
+    p {
+        margin-bottom: 0;
+        line-height: 2rem;
+    }
+    .agenda-singles-datepicker {
+        border:none;
+        width:90px;
+        cursor:pointer;
+        font-size: .8rem;
+        font-weight: bold;
+        padding:0;
+        text-align: center;
+        margin: 0 3px;
+    }
+    .spinner { 
+        float:right; 
+        display:none; 
+    }
+}

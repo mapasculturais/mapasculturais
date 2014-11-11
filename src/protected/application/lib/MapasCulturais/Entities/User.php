@@ -4,19 +4,22 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use Doctrine\Common\Collections\Criteria;
 
 
 /**
  * User
- * 
+ *
  * @property-read \MapasCulturais\Entities\Agent[] $agents Active Agents
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
  * 
+ * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
+ *
  * @ORM\Table(name="usr")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Entities\Repositories\User")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\User")
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity
@@ -80,17 +83,27 @@ class User extends \MapasCulturais\Entity
     /**
      *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
     protected $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-
-
+    
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
+     * })
+     */
+    protected $profile;
+    
+    
     public function __construct() {
         parent::__construct();
 
@@ -105,18 +118,14 @@ class User extends \MapasCulturais\Entity
     function setAuthProvider($provider_name){
         $this->authProvider = App::i()->getRegisteredAuthProviderId($provider_name);
     }
-
-    public function getProfile(){
-        $agent = App::i()->repo('Agent')->findOneBy(array(
-            'user' => $this,
-            'isUserProfile' => true
-        ));
-        if(!$agent){
-            $agent = App::i()->repo('Agent')->findOneBy(array(
-                'user' => $this
-            ),array('id'=>'ASC'));
-        }
-        return $agent;
+    
+    function setProfile(Agent $agent){
+        $this->checkPermission('changeProfile');
+        
+        if(!$this->equals($agent->user))
+            throw new \Exception ('error');
+        
+        $this->profile = $agent;
     }
 
     function jsonSerialize() {
@@ -282,13 +291,39 @@ class User extends \MapasCulturais\Entity
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 
+    function getNotifications($status = null){
+        if(is_null($status)){
+            $status_operator =  '>';
+            $status = '0';
+            
+        }else{
+            $status_operator =  '=';
+        }
+        $dql = "
+            SELECT
+                e
+            FROM
+                MapasCulturais\Entities\Notification e
+            WHERE
+                e.status $status_operator :status AND
+                e.user = :user
+            ORDER BY
+                e.createTimestamp ASC
+        ";
+        $query = App::i()->em->createQuery($dql);
+
+        $query->setParameter('user', $this);
+        $query->setParameter('status', $status);
+
+        $entityList = $query->getResult();
+        return $entityList;
+        
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
-
-    /** @ORM\PostLoad */
-    public function postLoad($args = null){ parent::postLoad($args); }
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }

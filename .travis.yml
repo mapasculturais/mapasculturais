@@ -7,8 +7,6 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures: 
-    - php: 5.6
 
 install:
   - composer self-update && composer --version
@@ -16,28 +14,21 @@ install:
   - pushd src/protected; composer update --prefer-dist; popd
 
 before_script:
-  - psql -c 'create user mapasculturais;' -U postgres
-  - psql -c 'create database mapasculturais_test owner mapasculturais;' -U postgres
-  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais_test
-  - psql -f db/schema.sql -U mapasculturais -d mapasculturais_test
-  - psql -f db/test-data.sql -U mapasculturais -d mapasculturais_test
-
-  - tar xC db -f db/sp-shapefile-sql.tar.xz
-  - psql -c "DROP table IF EXISTS sp_regiao;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_regiao.sql -U mapasculturais -d mapasculturais_test
-  - psql -c "DROP table IF EXISTS sp_distrito;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_distrito.sql -U mapasculturais -d mapasculturais_test
-  - psql -c "DROP table IF EXISTS sp_subprefeitura;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_subprefeitura.sql -U mapasculturais -d mapasculturais_test
-
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - php -S localhost:8000 -t src > /dev/null &
 
 script:
-  - phpunit tests
+  - ./scripts/run-tests.sh
 
 notifications:
+  slack:
+    secure: 43vNQD7zOqTTbMnJnnSAOq1avTE0MkxcUAUNX7za6XHg6Q3Caa27K0hP0KQUjgZqqUWeg1jNo2mpq+mIsJCwpebfIA9ZPjmeKq5ryXNmdW7xbqVx7sq3KPKJxTYwJ0RBzuz3LTZALfhRJs8gD6ys+U5E5bOe/ZiGLyq/eQ9hfcw=
   hipchat:
     on_success: change
     rooms:
       secure: 6KVjKLIde59VWYmJbXx0okMUEhU9gjcl55X+AdW4q1zLo8/cHNhW9iz4De45CfE0gruBgw14h0hOU8QPxJx/4KwgVoSm9PoJopHmYy7SKmSBCwlcxm6Symw9IYVQo5B/hfZlr+gqtUPT8emiBVzvhnTk6DVjZhJbFg2oyp7s+uA=
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/68552e7377e32b765b22
+    on_success: change
+    on_failure: always
+    on_start: false
