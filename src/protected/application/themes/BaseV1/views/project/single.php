@@ -201,7 +201,7 @@ $this->includeAngularEntityAssets($entity);
                 </p>
                 <p>
                     <span class="label">Opções</span><br>
-                    <span class="js-editable" data-edit="registrationOptions" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationOptions); ?></span>
+                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationCategories); ?></span>
                 </p>
             </div>
 

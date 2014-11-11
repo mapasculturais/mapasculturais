@@ -120,9 +120,9 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var array
      *
-     * @ORM\Column(name="registration_options", type="json_array", nullable=true)
+     * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
      */
-    protected $registrationOptions = array();
+    protected $registrationCategories = array();
 
     /**
      * @var integer
@@ -244,11 +244,11 @@ class Project extends \MapasCulturais\Entity
         }
     }
 
-    function setRegistrationOptions($value){
+    function setRegistrationCategories($value){
         if(is_string($value)){
-            $this->registrationOptions = explode("\n", $value);
+            $this->registrationCategories = explode("\n", $value);
         }else{
-            $this->registrationOptions = $value;
+            $this->registrationCategories = $value;
         }
     }
 

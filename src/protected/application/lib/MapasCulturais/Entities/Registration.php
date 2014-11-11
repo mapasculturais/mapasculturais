@@ -21,7 +21,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation;
 
-    
+
     const STATUS_REJECTED = -3;
     const STATUS_WAITING = -2;
     const STATUS_MAYBE = -1;
@@ -42,9 +42,16 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="registration_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
-    
-    
-    
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category", type="string", length=255)
+     */
+    protected $category;
+
+
     /**
      * @var \MapasCulturais\Entities\Project
      *
@@ -65,7 +72,7 @@ class Registration extends \MapasCulturais\Entity
      * })
      */
     protected $owner;
-    
+
 
     /**
      * @var integer
@@ -73,7 +80,7 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_DRAFT;
-    
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
@@ -83,17 +90,17 @@ class Registration extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-    
+
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
         $this->owner = $agent;
     }
-    
+
     function setProjectId($id){
         $agent = App::i()->repo('Project')->find($id);
         $this->project = $agent;
     }
-    
+
     function getRegistrationNumber(){
         if($this->id){
             return $this->project->id .'-'. str_pad($this->id,8,'0',STR_PAD_LEFT);
@@ -101,7 +108,7 @@ class Registration extends \MapasCulturais\Entity
             return null;
         }
     }
-    
+
     function canUserView(){
         return true;
     }
