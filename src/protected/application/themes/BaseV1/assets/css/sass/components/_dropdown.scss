@@ -8,17 +8,20 @@
     display: inline-block;
     height: 2rem;
     margin: 0;
-    background: $gray-light;
+    background-color: $gray-light;
     color: $brand-accent;
     border-radius: $border-radius-base;
     font-size: $font-size-smaller;
     line-height: 1.875rem;
     .placeholder {
-        padding: 0 $padding-small;
+        padding: 0 $padding-large 0 $padding-small;
         cursor: pointer;
         &:after {
             content: '\33';
-            float: right;
+            position: absolute;
+            right: 0;
+            width: $padding-large;
+            text-align: center;
             font-family: 'ElegantIcons';
             speak: none;
             font-size: $font-size-base;
@@ -88,5 +91,25 @@
     &:hover .submenu-dropdown {
         display: block;
         opacity: 1;
+    }
+}
+.dropdown-select {
+    box-sizing: border-box;
+    border: 1px solid $gray;
+    font-weight: bold;
+    color: $gray-dark;
+    .placeholder {
+        white-space: nowrap;
+        overflow: hidden;
+        &:after {
+           background-color: $gray-light;
+        }
+    }
+    .submenu-dropdown {
+        border: 1px solid $gray;
+    }
+    &:hover {
+            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+        -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
     }
 }

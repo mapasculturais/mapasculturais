@@ -15,7 +15,8 @@
     text-decoration: none;
 }
 .botao {
-    height: 1.875rem;
+    height: 2rem;
+    box-sizing: border-box;
     padding: 0 $padding-small;
     font-size: $font-size-smaller;
     line-height: 1.875rem;
@@ -40,16 +41,16 @@
 .botao.download,
 .botao.excluir {
     color: $gray-dark;
-    background: #d8d8d8;
-    border: 1px solid #c4c4c4;
+    background: $gray-light;
+    border: 1px solid $gray;
 }
 .botao.adicionar:hover,
 .botao.editar:hover,
 .botao.download:hover,
 .botao.excluir:hover {
     color: $gray-darker;
-    background: #ddd;
-    border: 1px solid #999;
+    background: $gray-lighter;
+    border: 1px solid $gray-dark;
 }
 .botao-grande {
     padding: $padding-small;
@@ -115,7 +116,7 @@
     display: none;
     padding: .2rem .5rem;
     border-radius: $border-radius-base;
-    background: #ddd;
+    background: $gray-light;
     border: 1px solid #999;
             box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
     -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;

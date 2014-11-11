@@ -3,10 +3,57 @@
 // --------------------------------------------------
 
 
-//## List that shows on projects tab "Inscritos" when editing.
+//## Registration form that shows on projects tab "Inscritos" when editing.
 
 .registration-form {
+	box-sizing: border-box;
 	border: 1px solid #eee;
 	border-radius: 2px;
-	padding: 1.5rem;
+	padding: $padding-large;
+	> div {
+		float: left;
+		box-sizing: border-box;
+		padding-right: .75rem;
+		&:nth-child(1){
+			width: 40%;
+		}
+		&:nth-child(2) {
+			width: 40%;
+		}
+		&:nth-child(3) {
+			width: 20%;
+			padding-right: 0;
+		}
+
+	}
+	.dropdown-select {
+		width: 100%;
+	}
+	.botao {
+		width: 100%;
+		&.principal {
+			text-align: center;
+		}
+		&.simples {
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	}
+}
+.registration-edition-options {
+	margin-bottom: $line-height-base;
+	padding: $padding-large;
+	border: 1px solid $gray-lighter;
+	border-radius: 2px;
+	&:hover {
+		background-color: #f4f4f4;
+	}
+	h4 {
+		margin-bottom: $line-height-half;
+	}
+
+}
+.registration-edition-help {
+	font-style: italic;
+	color: #999;
 }

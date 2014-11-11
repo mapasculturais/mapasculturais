@@ -1270,18 +1270,20 @@ h6 {
   content: ' »';
 }
 
+#entity-owner {
+  clear: both;
+}
+
 .dono {
   margin: 1.5rem 0;
   padding-top: 1.5rem;
   border-top: 1px solid #eeeeee;
   font-size: 0.875rem;
 }
-
 .dono .avatar {
   width: 3rem;
   height: 3rem;
 }
-
 .dono .descricao-do-agente {
   font-style: italic;
 }
@@ -2805,7 +2807,10 @@ nav.sidebar-left .icone {
 }
 
 .botao {
-  height: 1.875rem;
+  height: 2rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0 0.5rem;
   font-size: 0.75rem;
   line-height: 1.875rem;
@@ -2834,8 +2839,8 @@ nav.sidebar-left .icone {
 .botao.download,
 .botao.excluir {
   color: #666666;
-  background: #d8d8d8;
-  border: 1px solid #c4c4c4;
+  background: #e2e2e2;
+  border: 1px solid #cccccc;
 }
 
 .botao.adicionar:hover,
@@ -2843,8 +2848,8 @@ nav.sidebar-left .icone {
 .botao.download:hover,
 .botao.excluir:hover {
   color: #333333;
-  background: #ddd;
-  border: 1px solid #999;
+  background: #eeeeee;
+  border: 1px solid #666666;
 }
 
 .botao-grande {
@@ -2922,7 +2927,7 @@ nav.sidebar-left .icone {
   display: none;
   padding: .2rem .5rem;
   border-radius: 2px;
-  background: #ddd;
+  background: #e2e2e2;
   border: 1px solid #999;
   box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
   -webkit-box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
@@ -2968,19 +2973,22 @@ table.contratos td {
   display: inline-block;
   height: 2rem;
   margin: 0;
-  background: #e2e2e2;
+  background-color: #e2e2e2;
   color: black;
   border-radius: 2px;
   font-size: 0.75rem;
   line-height: 1.875rem;
 }
 .dropdown .placeholder {
-  padding: 0 0.5rem;
+  padding: 0 1.5rem 0 0.5rem;
   cursor: pointer;
 }
 .dropdown .placeholder:after {
   content: '\33';
-  float: right;
+  position: absolute;
+  right: 0;
+  width: 1.5rem;
+  text-align: center;
   font-family: 'ElegantIcons';
   speak: none;
   font-size: 1rem;
@@ -3050,6 +3058,29 @@ table.contratos td {
 .dropdown:hover .submenu-dropdown {
   display: block;
   opacity: 1;
+}
+
+.dropdown-select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  font-weight: bold;
+  color: #666666;
+}
+.dropdown-select .placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.dropdown-select .placeholder:after {
+  background-color: #e2e2e2;
+}
+.dropdown-select .submenu-dropdown {
+  border: 1px solid #cccccc;
+}
+.dropdown-select:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px 0;
 }
 
 /* =Edit box
@@ -3179,22 +3210,6 @@ table.contratos td {
 
 .label {
   font-weight: bold;
-}
-
-.input-text {
-  padding: 3px 6px;
-  display: inline-block;
-  background: #fff;
-  border: 1px solid #cccccc;
-  border-radius: 2px;
-  color: #666666;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  font-size: 0.75rem;
-  height: 2rem;
-  margin: 0 0 .75rem;
 }
 
 .js-dialog .label {
@@ -3954,9 +3969,60 @@ h1 .icone {
 }
 
 .registration-form {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 1.5rem;
+}
+.registration-form > div {
+  float: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-right: .75rem;
+}
+.registration-form > div:nth-child(1) {
+  width: 40%;
+}
+.registration-form > div:nth-child(2) {
+  width: 40%;
+}
+.registration-form > div:nth-child(3) {
+  width: 20%;
+  padding-right: 0;
+}
+.registration-form .dropdown-select {
+  width: 100%;
+}
+.registration-form .botao {
+  width: 100%;
+}
+.registration-form .botao.principal {
+  text-align: center;
+}
+.registration-form .botao.simples {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.registration-edition-options {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #eeeeee;
+  border-radius: 2px;
+}
+.registration-edition-options:hover {
+  background-color: #f4f4f4;
+}
+.registration-edition-options h4 {
+  margin-bottom: 0.75rem;
+}
+
+.registration-edition-help {
+  font-style: italic;
+  color: #999;
 }
 
 .ui-datepicker {

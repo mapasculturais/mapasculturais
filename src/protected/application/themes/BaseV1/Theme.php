@@ -794,9 +794,24 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addRegistrationFileConfigurationsToJs($entity) {
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations->toArray();;
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
     }
 
+
+    function addRegistrationDataToJs($registration){
+        $app = App::i();
+        $project = $entity->project;
+        
+        $this->jsObject['entity']['relations'] = array();
+        
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+            $metadata_name = $def->metadataName;
+            
+            //$this->jsObject['entity']['relations']
+        }
+        
+    }
+    
     /**
     * Returns a verified entity with images in gallery
     * @param type $entity_class
