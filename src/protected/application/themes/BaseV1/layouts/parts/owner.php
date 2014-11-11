@@ -38,9 +38,6 @@ if ($this->isEditable() || "$entity" != "$owner"):
                     <?php else: ?>
                         <a id="change-owner-button" class="action" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedade</a>
                     <?php endif; ?>
-                    <style>
-                        #editbox-change-owner .edit-box { max-width:350px; }
-                    </style>
                     <edit-box id="editbox-change-owner" position="right" title="Selecione o agente para o qual você deseja passar a propriedade deste <?php echo strtolower($entity->getEntityType()) ?>" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.spinner">
                         <find-entity id='find-entity-change-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
                     </edit-box>

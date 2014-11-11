@@ -432,13 +432,31 @@ class App extends \Slim\Slim{
                 'by-entity' => array(),
             ),
             'api_outputs' => array(),
-            'image_transformations' => array()
+            'image_transformations' => array(),
+            'registration_agent_relations' => array()
         );
 
         if($this->_config['app.useRegisterCache'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
         }else{
+            // get types and metadata configurations
+            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+            $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
+            
+            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+            $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
+            
+            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+            $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
+            
+            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+            $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
+            
+            // register auth providers
+            // @TODO veridicar se isto está sendo usado, se não remover
             $this->registerAuthProvider('OpenID');
+            
+            // register controllers
 
             $this->registerController('site',    'MapasCulturais\Controllers\Site');
             $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
@@ -448,9 +466,11 @@ class App extends \Slim\Slim{
             $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
             $this->registerController('space',   'MapasCulturais\Controllers\Space');
             $this->registerController('project', 'MapasCulturais\Controllers\Project');
-
-            $this->registerController('term',    'MapasCulturais\Controllers\Term');
-
+            
+            $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');           
+            $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
+            
+            $this->registerController('term',           'MapasCulturais\Controllers\Term');
             $this->registerController('file',           'MapasCulturais\Controllers\File');
             $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
             $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
@@ -473,7 +493,7 @@ class App extends \Slim\Slim{
                 'avatar' => new Definitions\FileGroup('avatar', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
-                'registrationForm' => new Definitions\FileGroup('registrationForm', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+                'registrationFileConfiguration' => new Definitions\FileGroup('registrationForm', array('^application/.*'), 'The uploaded file is not a valid document.', true),
             );
 
             // register file groups
@@ -496,13 +516,22 @@ class App extends \Slim\Slim{
             $this->registerFileGroup('project', $file_groups['avatar']);
             $this->registerFileGroup('project', $file_groups['downloads']);
             $this->registerFileGroup('project', $file_groups['gallery']);
-            $this->registerFileGroup('project', $file_groups['registrationForm']);
 
-            $this->registerFileGroup('project', $file_groups['registrationForm']);
-
-            $image_transformations = $space_types = include APPLICATION_PATH.'/conf/image-transformations.php';
+            $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+            
+            $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
             foreach($image_transformations as $name => $transformation)
                 $this->registerImageTransformation($name, $transformation);
+            
+            
+            // registration agent relations
+            
+            foreach($this->config['registration.agentRelations'] as $config){ 
+                $def = new Definitions\RegistrationAgentRelation($config);
+                $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
+                
+                $this->registerRegistrationAgentRelation($def);
+            }
 
             // all metalist groups
             $metalist_groups = array(
@@ -554,9 +583,6 @@ class App extends \Slim\Slim{
             $this->registerMetaListGroup('project', $metalist_groups['videos']);
 
             // register space types and spaces metadata
-            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
-            $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
-
             foreach($space_types['items'] as $group_name => $group_config){
                 $entity_class = 'MapasCulturais\Entities\Space';
                 $group = new Definitions\EntityTypeGroup($entity_class, $group_name, $group_config['range'][0], $group_config['range'][1]);
@@ -590,8 +616,6 @@ class App extends \Slim\Slim{
             }
 
             // register agent types and agent metadata
-            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
-            $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
             $entity_class = 'MapasCulturais\Entities\Agent';
 
             foreach($agent_types['items'] as $type_id => $type_config){
@@ -613,8 +637,6 @@ class App extends \Slim\Slim{
             }
 
             // register event types and event metadata
-            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
-            $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
             $entity_class = 'MapasCulturais\Entities\Event';
 
             foreach($event_types['items'] as $type_id => $type_config){
@@ -635,8 +657,6 @@ class App extends \Slim\Slim{
             }
 
             // register project types and project metadata
-            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
-            $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
             $entity_class = 'MapasCulturais\Entities\Project';
 
             foreach($project_types['items'] as $type_id => $type_config){
@@ -682,6 +702,8 @@ class App extends \Slim\Slim{
 
         $this->applyHook('app.register');
     }
+    
+    
 
     function getRegisteredGeoDivisions(){
         $result = array();
@@ -1136,10 +1158,35 @@ class App extends \Slim\Slim{
     public function registerRole($role){
 
     }
-
+    
     public function getRoleName($role){
         $roles = include APPLICATION_PATH . 'conf/roles.php';
         return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
+    }
+    
+    
+    function registerRegistrationAgentRelation(Definitions\RegistrationAgentRelation $def){
+        if(key_exists($def->agentRelationGroupName, $this->_register['registration_agent_relations'])){
+            throw new \Exception('There is already a RegistrationAgentRelation with agent relation group name "' . $def->agentRelationGroupName . '"');
+        }
+        
+        $this->_register['registration_agent_relations'][$def->agentRelationGroupName] = $def;
+    }
+    
+    /**
+     * 
+     * @return \MapasCulturais\Definitions\RegistrationAgentRelation[]
+     */
+    function getRegisteredRegistrationAgentRelations(){
+        return $this->_register['registration_agent_relations'];
+    }
+    
+    function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){
+        if(key_exists($group_name, $this->_register['registration_agent_relations'])){
+            return $this->_register['registration_agent_relations'][$group_name];
+        }else{
+            return null;
+        }
     }
 
 

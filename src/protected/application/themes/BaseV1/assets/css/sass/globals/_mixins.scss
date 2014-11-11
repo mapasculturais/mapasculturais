@@ -1,5 +1,5 @@
 //
-// Mixins
+// Mixins & Placeholders
 // --------------------------------------------------
 
 
@@ -18,4 +18,23 @@
 		padding-bottom: $line-height-base;
 		border-bottom: 1px solid $color;
 	} 
+}
+
+//== Placeholders
+//
+
+//== Icons
+//## Use it whenever you want to add these rules to an element that displays an icon 
+
+%icon {
+    font-family: 'ElegantIcons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    vertical-align: middle;
 }

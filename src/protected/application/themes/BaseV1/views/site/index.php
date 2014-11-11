@@ -72,7 +72,7 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </div>
         </form>
-        <p class="textcenter"><a class="botao-grande" href="<?php echo $app->createUrl('panel') ?>">Colabore com o SP Cultura</a></p>
+        <p class="textcenter"><a class="botao-grande" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a></p>
     </div>
     <div class="ver-mais"><a class="hltip icone arrow_carrot-down" href="#capa-eventos" title="Saiba mais"></a></div>
 </section>

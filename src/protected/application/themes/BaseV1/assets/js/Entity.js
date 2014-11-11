@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Notifications', 'ngSanitize']);
+    var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Project', 'Notifications', 'ngSanitize']);
 
     app.factory('FindService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q){
         var baseUrl = MapasCulturais.baseURL + '/api/';
@@ -120,7 +120,7 @@
         };
     }]);
 
-    app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', function($scope, $timeout, RelatedAgents, ChangeOwner){
+    app.controller('EntityController',['$scope', '$timeout', 'RelatedAgents', 'ChangeOwner', 'Project', function($scope, $timeout, RelatedAgents, ChangeOwner, Project){
         $scope.openEditBox = function(editboxId){
 
         };
@@ -341,6 +341,26 @@
 
                 if(angular.isFunction($scope.onOpen)){
                     jQuery('#'+attrs.id).on('open', function(){ $scope.onOpen(); });
+                }
+            }
+        };
+    }]);
+
+    app.directive('mcSelect', [function() {
+        return {
+            restrict: 'E',
+            templateUrl: MapasCulturais.templateUrl.MCSelect,
+            transclude: true,
+
+            scope: {
+                data: '=',
+                model: '=',
+                placeholder: '@',
+                classes: '@'
+            },
+            link: function($scope, el, attrs) {
+                $scope.selectItem = function(item){
+                    $scope.model = item;
                 }
             }
         };

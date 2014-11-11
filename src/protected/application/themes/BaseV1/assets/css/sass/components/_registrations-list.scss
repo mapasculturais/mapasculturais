@@ -1,0 +1,106 @@
+//
+// Registrations List
+// --------------------------------------------------
+
+
+//## List that shows on projects tab "Inscritos" when editing.
+
+.registrations-list {
+	width: 100%;
+	max-width: 100%;
+	table-layout: fixed;
+	tbody {
+		tr {
+			border-left: 3px solid transparent;
+			&:nth-child(even) {
+				background-color: lighten($gray-lighter, 3%);
+			}
+			&:hover {
+				background-color: $gray-lighter;
+			}
+			&.approved {
+				border-left: 3px solid $brand-success;
+			}
+			&.rejected {
+				border-left: 3px solid $brand-danger;
+			}
+			&.maybed {
+				border-left: 3px solid $brand-warning;
+			}
+		}
+		p {
+		margin-bottom: $line-height-half;
+		}
+		a {
+			color: $brand-project;
+		}
+		ul {
+			margin: 0;
+			list-style: none;
+		}
+	}
+	.registration-id {
+		width: 12%;
+	}
+	.registration-attachments {
+		width: 36%;
+		text-align: left;
+	}
+	.registration-agents {
+		width: 36%;
+		text-align: left;
+	}
+	.registration-status {
+		width: 16%;
+		.dropdown {
+			width: 100%;
+			text-align: left;
+			background-color: transparent;
+		}
+	}
+}
+
+%status {
+	font-size: 1.25rem; //20px
+	color: $gray;
+	margin: 0 2px;
+}
+.approve {
+	@extend %icon;
+	@extend %status;
+	&:before {
+		content: "\e052";
+	}
+	&:hover {
+		color: $brand-success;
+	}
+	&.selected {
+		color: $brand-success;
+	}
+}
+.reject {
+	@extend %icon;
+	@extend %status;
+	&:before {
+		content: "\e051";
+	}
+	&:hover {
+		color: $brand-danger;
+	}
+	&.selected {
+		color: $brand-danger;
+	}
+}
+.maybe {
+	@extend %icon;
+	@extend %status;
+	&:before {
+		content: "\e064";
+	}
+	&:hover {
+		color: $brand-warning;
+	}
+	&.selected {
+		color: $brand-warning;
+	}
+}
