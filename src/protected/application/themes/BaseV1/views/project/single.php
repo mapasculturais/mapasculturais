@@ -204,19 +204,37 @@ $this->includeAngularEntityAssets($entity);
                 <p class="registration-edition-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                 <!-- da parte downloads.php -->
 
-                <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)"></a>
                 <div ng-controller="RegistrationFileConfigurationsController">
+
+                    <?php if($this->controller->action == 'create'): ?>
+                        <div class="widget">Para adicionar anexos, primeiro é preciso salvar o projeto.</div>
+                    <?php else: ?>
+                        <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a>
+                        <br>
+                        <br>
+                    <?php endif; ?>
+
+                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                        <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
+                        <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
+                    <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                    </edit-box>
+
                     <ul class="widget-list">
-                        <li ng-repeat="file in data.files" id="registration-file-{{file.id}}" class="widget-list-item is-editable">
-                            <a href="{{}}"><span>{{file.title}}</span></a>
-                            {{file.description}}
-                            <div class="botoes">
-                                <a data-href="{{file.deleteUrl}}" ng-click="remove(file.id)" class="icone icon_close hltip js-remove-item" hltitle="Excluir anexo"></a>
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" id="registration-file-{{fileConfiguration.id}}" class="widget-list-item is-editable">
+                            <a href="{{}}"><span>{{fileConfiguration.title}}</span></a>
+                            {{fileConfiguration.description}}
+                            <div style="font-weight: bold; font-size: 10pt;">
+                                {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
                             </div>
 
-                            <edit-box id="editbox-registration-files-{{file.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <div class="botoes">
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close hltip" hltitle="Excluir anexo"></a>
+                            </div>
 
-                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(file.id)}}" enctype="multipart/form-data">
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+
+                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
                                     <p class="form-help">Tamanho máximo do arquivo: {{data.maxUploadSize}}</p>
                                     <input type="file" name="{{data.uploadFileGroup}}" />
