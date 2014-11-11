@@ -3,7 +3,7 @@ $this->layout = 'panel'
 ?>
 <div class="main-content">
 
-    <p id="boas-vindas-painel">
+    <p class="highlighted-message">
         Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php echo $app->siteName; ?>!
     </p>
     <section id="user-stats" class="clearfix">

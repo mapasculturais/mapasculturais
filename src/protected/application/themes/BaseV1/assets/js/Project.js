@@ -36,36 +36,76 @@
             };
         }]);
 
-    module.factory('RegistrationFileConfigurationService', ['$http', function($http){
+    module.factory('RegistrationFileConfigurationService', ['$rootScope', '$q', '$http', '$log', function($rootScope, $q, $http, $log) {
         return {
-            getUrl: function(){MapasCulturais.baseURL + 'registrationfileconfiguration'},
+            getUrl: function(){
+                return MapasCulturais.baseURL + 'registrationfileconfiguration';
+            },
             create: function(data){
-                $http.post(url+'/create', data)
+                var deferred = $q.defer();
+                $log.debug(data);
+                $http.post(this.getUrl(), data)
                     .success(
-                        function(){
-
+                        function(response){
+                            deferred.resolve(response);
                         }
                     );
+                return deferred.promise;
             },
             edit: function(){
 
             },
-            delete: function(){
-
+            delete: function(id){
+                var deferred = $q.defer();
+                $http.get(this.getUrl()+'/apaga/'+id)
+                    .success(
+                        function(response){
+                            deferred.resolve(response);
+                        }
+                    );
+                return deferred.promise;
             }
         };
 
     }]);
-    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
+    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox) {
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.uploadFileGroup = 'registrationFileConfiguration';
         $scope.getUploadUrl = function (ownerId){
             return RegistrationFileConfigurationService.getUrl()+'/upload/'+ownerId;
         };
         $scope.data = {
-            files: MapasCulturais.entity.registrationFileConfigurations
+            fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
+            newFileConfiguration: {
+                ownerId: MapasCulturais.entity.id,
+                title: null,
+                description: null,
+                required: false
+            }
         };
-        console.log($scope.data.files);
+        console.log($scope.data.fileConfigurations);
+        $scope.createFileConfiguration = function(){
+            RegistrationFileConfigurationService
+                .create($scope.data.newFileConfiguration)
+                .then(function(response){
+                    if(!response.error){
+                        $scope.data.fileConfigurations.push(response);
+                        EditBox.close('editbox-registration-files');
+                    }
+                });
+
+        };
+        $scope.remove = function (id, $index) {
+            if(confirm('Deseja remover este item?')){
+                RegistrationFileConfigurationService
+                    .delete(id)
+                    .then(function(response){
+                        if(!response.error){
+                            $scope.data.fileConfigurations.splice($index, 1)
+                        }
+                    });
+            }
+        };
     }]);
 
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {

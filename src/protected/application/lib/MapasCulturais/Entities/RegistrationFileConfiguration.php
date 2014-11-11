@@ -18,7 +18,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
 
     use \MapasCulturais\Traits\EntityFiles;
 
-
+    protected static $validations = array(
+        'owner' => array( 'required' => "O projeto é obrigatório."),
+        'title' => array( 'required' => "O título do anexo é obrigatório.")
+    );
     /**
      * @var integer
      *
@@ -38,7 +41,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * })
      */
     protected $owner;
-    
+
     /**
      * @var string
      *
@@ -52,15 +55,19 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="required", type="boolean", nullable=false)
      */
     protected $required = false;
-    
-    
+
+
+    public function setOwnerId($id){
+//        $this->owner = $this->repo()->find('project', $id);
+        $this->owner = App::i()->repo('Project')->find($id);
+    }
 
     /** @ORM\PrePersist */
     public function _prePersist($args = null){

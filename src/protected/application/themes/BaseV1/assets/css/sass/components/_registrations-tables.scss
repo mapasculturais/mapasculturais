@@ -1,13 +1,13 @@
 //
-// Registrations List
+// Registrations Tables
 // --------------------------------------------------
 
 
-//## List that shows on projects tab "Inscritos" when editing.
-
-.registrations-list {
+//**  Table that shows on projects tab "Inscritos" when editing.
+.registrations-table {
 	width: 100%;
 	max-width: 100%;
+	margin-bottom: 2*$line-height-base;
 	table-layout: fixed;
 	tbody {
 		tr {
@@ -27,9 +27,12 @@
 			&.maybed {
 				border-left: 3px solid $brand-warning;
 			}
+			td {
+				word-wrap: break-word;
+			}
 		}
 		p {
-		margin-bottom: $line-height-half;
+			margin-bottom: $line-height-half;
 		}
 		a {
 			color: $brand-project;
@@ -59,7 +62,7 @@
 		}
 	}
 }
-
+//** registrations status buttons
 %status {
 	font-size: 1.25rem; //20px
 	color: $gray;
@@ -103,4 +106,18 @@
 	&.selected {
 		color: $brand-warning;
 	}
+}
+//** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
+.my-registrations {
+	@extend .registrations-table;
+	.registration-id {
+		width: 10%;
+	}
+	.registration-agents {
+		width: 30%;
+	}
+}
+//** Table that shows on projects tab "Aprovados".
+.approved-registrations {
+	@extend .my-registrations;
 }

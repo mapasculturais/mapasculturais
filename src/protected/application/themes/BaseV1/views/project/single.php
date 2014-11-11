@@ -146,27 +146,28 @@ $this->includeAngularEntityAssets($entity);
                     <h4>1. Período de inscrições</h4>
             <?php endif; ?>
             <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                <p>
+                <p class="highlighted-message">
                 Inscrições abertas de
                     <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
                     a
                     <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
                 </p>
             <?php endif; ?>
-
         <?php endif; ?>
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
+            <?php if($this->isEditable()): ?>
             </div>
             <!-- #registration-period -->
             <div id="intro-das-inscricoes" class="registration-edition-options">
-                <?php if($this->isEditable()): ?><h4>2. Introdução</h4><?php endif; ?>
+                <h4>2. Introdução</h4>
                 <p class="registration-edition-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
+            <?php endif; ?>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
-            </div>
-            <!-- #intro-das-inscricoes -->
         <?php endif; ?>
 
         <?php if($this->isEditable()): ?>
+            </div>
+            <!-- #intro-das-inscricoes -->
             <div id="registration-categories" class="registration-edition-options">
                 <h4>3. Opções</h4>
                 <p class="registration-edition-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
@@ -204,19 +205,35 @@ $this->includeAngularEntityAssets($entity);
                 <p class="registration-edition-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                 <!-- da parte downloads.php -->
 
-                <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)"></a>
                 <div ng-controller="RegistrationFileConfigurationsController">
+                    <?php if($this->controller->action == 'create'): ?>
+                        <div class="widget">Para adicionar anexos, primeiro é preciso salvar o projeto.</div>
+                    <?php else: ?>
+                        <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a>
+                        <br>
+                        <br>
+                    <?php endif; ?>
+
+                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                        <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
+                        <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
+                    <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                    </edit-box>
+
                     <ul class="widget-list">
-                        <li ng-repeat="file in data.files" id="registration-file-{{file.id}}" class="widget-list-item is-editable">
-                            <a href="{{}}"><span>{{file.title}}</span></a>
-                            {{file.description}}
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" id="registration-file-{{fileConfiguration.id}}" class="widget-list-item is-editable">
+                            <a href="{{}}"><span>{{fileConfiguration.title}}</span></a>
+                            {{fileConfiguration.description}}
+                            <div style="font-weight: bold; font-size: 10pt;">
+                                {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
+                            </div>
                             <div class="botoes">
-                                <a data-href="{{file.deleteUrl}}" ng-click="remove(file.id)" class="icone icon_close hltip js-remove-item" hltitle="Excluir anexo"></a>
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close hltip" hltitle="Excluir anexo"></a>
                             </div>
 
-                            <edit-box id="editbox-registration-files-{{file.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
 
-                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(file.id)}}" enctype="multipart/form-data">
+                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
                                     <p class="form-help">Tamanho máximo do arquivo: {{data.maxUploadSize}}</p>
                                     <input type="file" name="{{data.uploadFileGroup}}" />
@@ -254,6 +271,42 @@ $this->includeAngularEntityAssets($entity);
                         <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>
                     </div>
                 </form>
+                <h4>Minhas Inscrições</h4>
+                <table class="my-registrations">
+                    <thead>
+                        <tr>
+                            <th class="registration-id">
+                                Nº
+                            </th>
+                            <th class="registration-agents">
+                                Agente Responsável
+                            </th>
+                            <th class="registration-agents">
+                                Coletivo
+                            </th>
+                            <th class="registration-agents">
+                                Instituição
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="registration-id" data-registration-id="">
+                            <td class="registration-id">
+                            <a href="#">0000</a>
+                            </td>
+                            <td class="registration-agents">
+                                Nome do Agente Responsável
+                            </td>
+                            <td class="registration-agents">
+                                Nome da Instituição
+                            </td>
+                            <td class="registration-agents">
+                                Nome do Coletivo
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             <?php else: ?>
                     <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
                     <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
@@ -267,7 +320,7 @@ $this->includeAngularEntityAssets($entity);
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
                 <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar lista de inscritos</a>
             </div>
-            <table class="js-registration-list registrations-list">
+            <table class="js-registration-list registrations-table">
                 <thead>
                     <tr>
                         <th class="registration-id">
@@ -347,6 +400,41 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <!--#inscritos-->
     <div id="aprovados" class="aba-content">
+        <p class="highlighted-message">As inscrições abaixo foram aprovadas!</p>
+        <table class="approved-registrations">
+            <thead>
+                <tr>
+                    <th class="registration-id">
+                        Nº
+                    </th>
+                    <th class="registration-agents">
+                        Agente Responsável
+                    </th>
+                    <th class="registration-agents">
+                        Coletivo
+                    </th>
+                    <th class="registration-agents">
+                        Instituição
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="registration-id" data-registration-id="">
+                    <td class="registration-id">
+                    0000
+                    </td>
+                    <td class="registration-agents">
+                        <a href="#">Nome do Agente Responsável</a>
+                    </td>
+                    <td class="registration-agents">
+                        <a href="#">Nome da Instituição</a>
+                    </td>
+                    <td class="registration-agents">
+                        <a href="#">Nome do Coletivo</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <!--#aprovados-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
