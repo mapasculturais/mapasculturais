@@ -1,20 +1,25 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+
 $this->bodyProperties['ng-app'] = "Entity";
 
-$this->includeAngularEntityAssets($entity);
-
 $project = $entity->project;
+
+$this->addProjectRegistrationConfigurationToJs($project);
+
 // @TODO adicionar ao javascript as categorias para a inscrição
 
 $this->addRegistrationDataToJs($entity);
+
+$this->includeAngularEntityAssets($entity);
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <div class="sidebar-left sidebar registration">
     <div class="setinha"></div>
 </div>
-<article class="main-content registration">
+<article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
         <div<?php if($header = $project->getFile('header')): ?> style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem" <?php endif; ?>>
         </div>
@@ -32,9 +37,7 @@ $this->addRegistrationDataToJs($entity);
             <!--.avatar-->
             <div class="entity-type registration-type">
                 <div class="icone icon_document_alt"></div>
-                <a href="#" data-original-title="C" data-emptytext="Selecione um tipo" data-entity='registration' data-value='<?php echo $entity->type ?>'>
-                    <?php echo $project->type->name; ?>
-                </a>
+                <a><?php echo $project->type->name; ?></a>
             </div>
             <!--.entity-type-->
             <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
@@ -43,11 +46,20 @@ $this->addRegistrationDataToJs($entity);
     </header>
 
     <div class="ficha-spcultura">
+
         <!-- selecionar categoria -->
-        <?php echo $entity->category ?>
+        <p>
+            <?php echo $project->registrationCategoriesName ?>:
+            <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
+        </p>
+
         <!-- agente responsável -->
-        <!-- instituição responsável -->
-        <!-- coletivo -->
+        <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->owner, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
+
+        <!-- outros agentes -->
+        <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $required = $project->{$def->metadataName} === 'required';?>
+            <?php $this->part('registration-agent', array('name' => $def->agentRelationGroupName, 'agent' => null, 'required' => $required, 'type' => $def->type, 'label' => $def->label, 'description' => $def->description )); ?>
+        <?php endforeach; ?>
 
         <!-- anexos -->
     </div>

@@ -75,6 +75,11 @@
                 });
 
             $scope.editbox = EditBox;
+            
+            $scope.openEditBox = function(id, e){
+                console.log(id, e);
+                EditBox.open(id, e);
+            };
 
             $scope.data = {
                 spinner: false,
@@ -107,6 +112,11 @@
             $scope.setRegistrationOwner = function(entity){
                 $scope.data.registration.owner = entity;
                 EditBox.close('editbox-select-registration-owner');
+            };
+            
+            $scope.setRegistrationAgent = function(entity, attrs){
+                console.log(attrs);
+                EditBox.close(attrs.editBoxId);
             };
 
             $('#editbox-select-registration-owner').on('open', function () {

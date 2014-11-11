@@ -158,6 +158,9 @@ MapasCulturais.Editables = {
             this.setButton(editableEntitySelector);
             this.initTaxonomies();
             this.initTypes();
+            
+            if(MapasCulturais.request.controller === 'registration')
+                this.initRegistrationCategories();
 
             if(MapasCulturais.request.controller === 'space')
                 this.initSpacePublicEditable();
@@ -206,6 +209,17 @@ MapasCulturais.Editables = {
             $(this).editable(config);
         });
     },
+    
+    initRegistrationCategories: function(){
+        $('.js-editable-registrationCategory').each(function(){
+            var config = {
+                name: 'category',
+                type: 'select',
+                source: MapasCulturais.entity.registrationCategories
+            };
+            $(this).editable(config);
+        });
+    },
 
     initTypes: function(){
         $('.js-editable-type').each(function(){
@@ -225,7 +239,7 @@ MapasCulturais.Editables = {
 
     getEditableElements : function(){
         if(MapasCulturais.isEditable)
-            return $('.js-editable, .js-editable-taxonomy, .js-editable-type');
+            return $('.js-editable, .js-editable-taxonomy, .js-editable-type, .js-editable-registrationCategory');
         else
             return $('.js-xedit');
     },
@@ -317,7 +331,7 @@ MapasCulturais.Editables = {
                 target = MapasCulturais.Editables.baseTarget+'/single/'+$(editableEntitySelector).data('id');
             else
                 target = MapasCulturais.Editables.baseTarget;
-
+            
             MapasCulturais.Editables.getEditableElements().add('.js-include-editable').editable('submit', {
                 url: target,
                 ajaxOptions: {

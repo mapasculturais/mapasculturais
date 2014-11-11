@@ -2,7 +2,6 @@
 use MapasCulturais\Entities\ProjectAgentRelation as Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
-$registrationForm = $entity->getFile('registrationForm');
 
 $this->bodyProperties['ng-app'] = "Entity";
 
@@ -174,7 +173,7 @@ $this->includeAngularEntityAssets($entity);
 
                 <p>
                     <span class="label">Descrição</span><br>
-                    <span class="js-editable" data-edit="registrationOptionsDescription" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationOptionsDescription; ?></span>
+                    <span class="js-editable" data-edit="registrationCategoriesName" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationCategoriesName; ?></span>
                 </p>
                 <p>
                     <span class="label">Opções</span><br>
@@ -249,7 +248,7 @@ $this->includeAngularEntityAssets($entity);
                         </edit-box>
                     </div>
                     <div>
-                        <mc-select placeholder="Categoria" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
+                        <mc-select placeholder="<?php echo $entity->registrationCategoriesName; ?>" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
                     </div>
                     <div>
                         <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>

@@ -8,8 +8,8 @@ return array(
             'label' => 'Texto introdutório das inscrições',
             'type' => 'text'
         ),
-        
-        'registrationOptionsDescription' => array(
+
+        'registrationCategoriesName' => array(
             'label' => 'Descrição das opções (ex: categorias)',
         ),
 
