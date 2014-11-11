@@ -120,7 +120,7 @@ return array(
                                 ADD CONSTRAINT registration_meta_project_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE SET NULL;");
     },
 
-    'alter table registration add column registration_options' => function() use($conn){
+    'alter table registration add column registration_categories' => function() use($conn){
         $conn->executeQuery('ALTER TABLE project ADD COLUMN registration_categories text;');
     }
 );
