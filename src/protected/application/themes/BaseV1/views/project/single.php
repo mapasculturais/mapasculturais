@@ -11,20 +11,6 @@ $this->addProjectRegistrationConfigurationToJs($entity);
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
-
-
-    $app->hook('mapasculturais.scripts', function() use ($app, $entity){
-
-        $ids = array_map(function($e){
-
-            return $e->agent->id;
-        }, $entity->registrations);
-        ?>
-        <script type="text/javascript">
-            MapasCulturais.agentRelationDisabledCD = ['<?php echo $app->txt('project registration')?>'];
-        </script>
-        <?php
-    });
 }
 $this->includeAngularEntityAssets($entity);
 
@@ -168,15 +154,6 @@ $this->includeAngularEntityAssets($entity);
                     <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
                 </p>
             <?php endif; ?>
-            <p>
-                <?php if($this->isEditable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                    As inscrições estão abertas de
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
-                        a
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>
-                <?php endif; ?>
-            </p>
 
         <?php endif; ?>
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
