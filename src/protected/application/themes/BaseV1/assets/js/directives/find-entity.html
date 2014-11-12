@@ -7,7 +7,7 @@
     {{onRepeatDone()}}
 
     <ul class="result-container" ng-show="!spinnerCondition && !noEntityFound">
-        <li class="search-agent clearfix" ng-repeat="entity in result" ng-click="select(entity, attrs)" on-repeat-done="{{attrs.id ? 'findEntity:' + attrs.id : 'findEntity' }}">
+        <li class="search-agent clearfix" ng-repeat="entity in result" ng-click="select(entity, attrs, $event)" on-repeat-done="{{attrs.id ? 'findEntity:' + attrs.id : 'findEntity' }}">
             <img class="search-agent-thumb" ng-src='{{avatarUrl(entity)}}' alt="{{entity.name}}" />
             <h1>{{entity.name}}</h1>
             <div class="objeto-meta">

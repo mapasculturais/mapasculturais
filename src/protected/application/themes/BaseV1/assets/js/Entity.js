@@ -255,6 +255,7 @@
             },
 
             open: function(editboxId, $event){
+                
                 if(typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
 

@@ -355,9 +355,6 @@ class Theme extends MapasCulturais\Theme {
         });
 
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
-            $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
-            $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
-            $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
         });
@@ -550,7 +547,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'poshytip', 'vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
         $this->enqueueScript('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/js/jquery-editable-poshytip.js", array('jquery', 'poshytip', 'select2'));
 
-
         //Leaflet -a JavaScript library for mobile-friendly maps
         $this->enqueueStyle('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet.css");
         $this->enqueueScript('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet-src.js");
@@ -623,6 +619,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeEditableEntityAssets() {
+        $this->assetManager->publishAsset('img/setinhas-editable.png');
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
     }
 
@@ -677,6 +674,10 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeAngularEntityAssets($entity) {
+        $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
+        $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
+        $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
+
         $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
         $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
