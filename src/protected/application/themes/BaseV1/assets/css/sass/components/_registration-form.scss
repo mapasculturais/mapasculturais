@@ -58,3 +58,52 @@
 	font-style: italic;
 	color: #999;
 }
+.attachment-list {
+	margin: 0;
+	list-style: none;
+    .attachment-list-item {
+        position: relative;
+        padding: $padding-base;
+        border-bottom: 1px solid $gray-lighter;
+        .attachment-title {
+        	display: block;
+        	&:before {
+        		@extend %icon;
+        		content: "\e016";
+        	}
+        }
+        .attachment-description {
+        	font-size: $font-size-smaller;
+        	color: #999;
+        }
+    }
+    .is-editable {
+        padding-right: 4rem;
+        min-height: $line-height-base;
+        .botoes {
+            display: none;
+            position: absolute;
+            top: .75rem;
+            right: .75rem;
+        }
+        &:hover {
+            background: $gray-lighter;
+            border-radius: $border-radius-base;
+            .botoes {
+                display: inline-block;
+            }
+        }
+    }
+    a.icone,
+    a.editar {
+        margin-left: 5px;
+        color: $gray-dark;
+        cursor: pointer;
+        &:hover {
+            color: $gray-darker;
+        }
+    }
+    a.icone {
+        font-size: 1rem;
+    }
+}
