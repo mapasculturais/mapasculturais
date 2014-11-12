@@ -212,10 +212,11 @@ $this->includeAngularEntityAssets($entity);
                         <p><a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a></p>
                     <?php endif; ?>
 
-                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                         <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
                         <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
-                    <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                        <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+
                     </edit-box>
 
                     <ul class="attachment-list">
@@ -226,11 +227,16 @@ $this->includeAngularEntityAssets($entity);
                                 {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
                             </div>
                             <div class="botoes">
-                                <a href="#" class="editar js-open-editbox hltip" title="editar"></a>
+                                <a href="#" class="editar js-open-editbox hltip" ng-click="editbox.open('editbox-registration-files-'+fileConfiguration.id, $event)" title="editar"></a>
                                 <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
 
-                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" spinner-condition="data.uploadSpinner">
+
+                                <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
+                                <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
+                                <p><label><input style="width:auto" type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+
 
                                 <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
@@ -267,7 +273,7 @@ $this->includeAngularEntityAssets($entity);
                         <mc-select placeholder="<?php echo $entity->registrationCategoriesName; ?>" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
                     </div>
                     <div>
-                        <a href="#" class="botao principal" ng-click="register()">Fazer inscrição</a>
+                        <a class="botao principal" ng-click="register()">Fazer inscrição</a>
                     </div>
                 </form>
                 <h4>Minhas Inscrições</h4>
