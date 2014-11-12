@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.approve, .reject, .maybe {
+.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before {
   font-family: 'ElegantIcons';
   speak: none;
   font-style: normal;
@@ -3312,6 +3312,44 @@ h1 .icone {
 .registration-edition-help {
   font-style: italic;
   color: #999; }
+
+.attachment-list {
+  margin: 0;
+  list-style: none; }
+  .attachment-list .attachment-list-item {
+    position: relative;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee; }
+    .attachment-list .attachment-list-item .attachment-title {
+      display: block; }
+      .attachment-list .attachment-list-item .attachment-title:before {
+        content: "\e016"; }
+    .attachment-list .attachment-list-item .attachment-description {
+      font-size: 0.75rem;
+      color: #999; }
+  .attachment-list .is-editable {
+    padding-right: 4rem;
+    min-height: 1.5rem; }
+    .attachment-list .is-editable .botoes {
+      display: none;
+      position: absolute;
+      top: .75rem;
+      right: .75rem; }
+    .attachment-list .is-editable:hover {
+      background: #eee;
+      border-radius: 2px; }
+      .attachment-list .is-editable:hover .botoes {
+        display: inline-block; }
+  .attachment-list a.icone,
+  .attachment-list a.editar {
+    margin-left: 5px;
+    color: #666;
+    cursor: pointer; }
+    .attachment-list a.icone:hover,
+    .attachment-list a.editar:hover {
+      color: #333; }
+  .attachment-list a.icone {
+    font-size: 1rem; }
 
 .ui-datepicker {
   display: none;

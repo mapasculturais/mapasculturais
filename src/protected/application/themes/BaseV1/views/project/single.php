@@ -186,11 +186,11 @@ $this->includeAngularEntityAssets($entity);
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-edition-options">
                 <h4>4. Agentes</h4>
-                <p class="registration-edition-help">Marque quais são os agentes que o proponente deve relacionar à inscrição</p>
+                <p class="registration-edition-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
                     <div class="registration-related-agent-configuration">
                         <p>
-                            <span class="label"><?php echo $def->label ?></span> <span class="registration-edition-help"><?php echo $def->description ?></span>
+                            <span class="label"><?php echo $def->label ?></span> <span class="registration-edition-help">(<?php echo $def->description ?>)</span>
                             <br>
                             <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
                         </p>
@@ -202,17 +202,15 @@ $this->includeAngularEntityAssets($entity);
 
             <div id="registration-attachments" class="registration-edition-options">
 
-                <h4>5. Anexos:</h4>
+                <h4>5. Anexos</h4>
                 <p class="registration-edition-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                 <!-- da parte downloads.php -->
 
                 <div ng-controller="RegistrationFileConfigurationsController">
                     <?php if($this->controller->action == 'create'): ?>
-                        <div class="widget">Para adicionar anexos, primeiro é preciso salvar o projeto.</div>
+                        <p>Para adicionar anexos, primeiro é preciso salvar o projeto.</p>
                     <?php else: ?>
-                        <a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a>
-                        <br>
-                        <br>
+                        <p><a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a></p>
                     <?php endif; ?>
 
                     <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
@@ -221,15 +219,16 @@ $this->includeAngularEntityAssets($entity);
                     <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
                     </edit-box>
 
-                    <ul class="widget-list">
-                        <li ng-repeat="fileConfiguration in data.fileConfigurations" id="registration-file-{{fileConfiguration.id}}" class="widget-list-item is-editable">
-                            <a href="{{}}"><span>{{fileConfiguration.title}}</span></a>
-                            {{fileConfiguration.description}}
-                            <div style="font-weight: bold; font-size: 10pt;">
+                    <ul class="attachment-list">
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
+                            <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
+                            <div class="attachment-description">
+                                {{fileConfiguration.description}}<br>
                                 {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
                             </div>
                             <div class="botoes">
-                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close hltip" hltitle="Excluir anexo"></a>
+                                <a href="#" class="editar js-open-editbox hltip" title="editar"></a>
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
 
                             <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
