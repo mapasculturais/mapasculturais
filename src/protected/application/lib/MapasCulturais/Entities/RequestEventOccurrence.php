@@ -34,13 +34,17 @@ class RequestEventOccurrence extends Request{
 
     function _doApproveAction() {
         $eo = $this->getEventOccurrence();
-        $eo->status = EventOccurrence::STATUS_ENABLED;
-        $eo->save(true);
+        if($eo){
+            $eo->status = EventOccurrence::STATUS_ENABLED;
+            $eo->save(true);
+        }
     }
 
     function _doRejectAction() {
         $eo = $this->getEventOccurrence();
-        $eo->delete(true);
+        if($eo){
+            $eo->delete(true);
+        }
         parent::_doRejectAction();
     }
 }
