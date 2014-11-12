@@ -20,10 +20,11 @@ use MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"   = "\MapasCulturais\Entities\ProjectAgentRelation",
-        "MapasCulturais\Entities\Event"     = "\MapasCulturais\Entities\EventAgentRelation",
-        "MapasCulturais\Entities\Agent"     = "\MapasCulturais\Entities\AgentAgentRelation",
-        "MapasCulturais\Entities\Space"     = "\MapasCulturais\Entities\SpaceAgentRelation"
+        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectAgentRelation",
+        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventAgentRelation",
+        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentAgentRelation",
+        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceAgentRelation",
+        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationAgentRelation"
    })
  */
 abstract class AgentRelation extends \MapasCulturais\Entity
