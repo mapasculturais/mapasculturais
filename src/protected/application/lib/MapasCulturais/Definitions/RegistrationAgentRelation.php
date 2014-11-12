@@ -41,7 +41,7 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
     function getMetadataConfiguration(){
         $app = \MapasCulturais\App::i();
         return array(
-            'label' => sprintf($app->txt('Use relation %s'), $this->label),
+            'label' => $this->label,
             'type' => 'select',
             'options' => $app->config['registration.agentRelationsOptions']
         );

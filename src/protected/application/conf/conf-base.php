@@ -74,17 +74,17 @@ return array(
     ),
     
     'registration.agentRelationsOptions' => array(
-        'dontUse' => 'Não pedir para o proponente',
-        'required' => 'Pedir para o proponente informar, com obrigatoriedade',
-        'optional' => 'Pedir para o proponente informar, sem obrigatoriedade'
+        'dontUse' => 'Não é necessário',
+        'required' => 'Obrigatório',
+        'optional' => 'Opcional'
     ),
     
     'registration.agentRelations' => array(
         array(
             'required' => false,
+            'label' => 'Instituição',
             'agentRelationGroupName' => 'instituicao',
-            'label' => 'Instituição Responsável',
-            'description' => 'Agente coletivo com CNPJ obrigatório.',
+            'description' => 'agente coletivo com CNPJ',
             'type' => 2,
             'requiredProperties' => array('documento')
         ),
@@ -93,7 +93,7 @@ return array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'Agente coletivo sem CNPJ obrigatório.',
+            'description' => 'agente coletivo sem CNPJ',
             'type' => 2,
             'requiredProperties' => array()
         )
