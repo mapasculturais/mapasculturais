@@ -1,3 +1,9 @@
+//
+// Right Sidebar Widgets
+// --------------------------------------------------
+
+
+//**  Widgets structure.
 .widget {
     position: relative;
     margin-bottom: $line-height-base;
@@ -27,6 +33,7 @@
         }
     }
 }
+//**  Widget list.
 .widget-list {
     margin: 0;
     .widget-list-item {
@@ -42,6 +49,7 @@
         }
         
     }
+    //**  Widget list item when being edited. Editing buttons (edit & delete buttons) show on hover
     .is-editable {
         padding-right: 4rem;
         min-height: $line-height-base;
