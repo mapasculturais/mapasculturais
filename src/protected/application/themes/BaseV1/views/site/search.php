@@ -32,7 +32,7 @@ $this->includeMapAssets();
         <!--<a class="botao principal hltip" href="#" ng-click="drawCircle()" title="Buscar somente resultados em uma área delimitada">delimitar área</a>-->
     </div>
     <!--#filtro-local-->
-    <div id="camadas-de-entidades" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
+    <div id="mc-entity-layers" class="js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-right" ng-show="data.global.viewMode ==='map'">
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_calendar" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_profile"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
         <a class="hltip hltip-auto-update botoes-do-mapa icone icon_building" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>

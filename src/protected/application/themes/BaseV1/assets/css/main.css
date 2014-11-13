@@ -570,13 +570,6 @@ h6 {
 .botoes-do-mapa.active {
   background-color: #1c5690; }
 
-/*camadas de entidades*/
-#camadas-de-entidades {
-  position: absolute;
-  z-index: 150;
-  right: 0rem;
-  height: 1.875rem; }
-
 /* filtros dos objetos*/
 .filtro-objeto {
   position: relative;
@@ -3705,7 +3698,7 @@ div.ficha-spcultura .editable-buttons-bottom {
   border-radius: 2px;
   -moz-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  -webkitbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
+  -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
 
 .leaflet-control-layers {
   color: #fff;
@@ -3754,6 +3747,9 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-bar a:only-of-type {
   border-radius: 2px; }
+
+.leaflet-bar a.leaflet-disabled {
+  background-color: #ccc; }
 
 .leaflet-control-zoom-fullscreen {
   background-image: url(../img/icon-fullscreen.png); }
