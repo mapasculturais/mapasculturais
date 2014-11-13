@@ -1036,7 +1036,7 @@ h6 {
     font-size: 0.75rem;
     text-transform: uppercase;
     color: inherit; }
-  .content-do-header .project-type {
+  .content-do-header .project-type, .content-do-header .registration-type {
     color: #cc0033; }
   .content-do-header .agent-type {
     color: #1dabc6; }
@@ -1046,10 +1046,10 @@ h6 {
     color: #e83f96; }
   .content-do-header > h2 {
     margin-bottom: 0; }
-  .content-do-header .event-subtitle, .content-do-header .entity-parent-title {
+  .content-do-header .event-subtitle, .content-do-header .entity-parent-title, .content-do-header .registration-title {
     font-weight: 100;
     margin-bottom: 0; }
-    .content-do-header .event-subtitle > a, .content-do-header .entity-parent-title > a {
+    .content-do-header .event-subtitle > a, .content-do-header .entity-parent-title > a, .content-do-header .registration-title > a {
       font-weight: 100; }
   .content-do-header .entity-parent-title:after {
     content: ' »'; }
@@ -1973,11 +1973,11 @@ nav.sidebar-left .icone {
   .sidebar.space .setinha {
     border-color: #e83f96 transparent transparent transparent; }
 
-.sidebar.project {
+.sidebar.project, .sidebar.registration {
   border-top: #cc0033 12px solid; }
-  .sidebar.project .widget-list-item > a {
+  .sidebar.project .widget-list-item > a, .sidebar.registration .widget-list-item > a {
     color: #cc0033; }
-  .sidebar.project .setinha {
+  .sidebar.project .setinha, .sidebar.registration .setinha {
     border-color: #cc0033 transparent transparent transparent; }
 
 .header-do-painel .botao.adicionar {

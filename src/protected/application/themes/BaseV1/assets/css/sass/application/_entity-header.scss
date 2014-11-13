@@ -47,7 +47,7 @@
             color: inherit;
         }
     }
-    .project-type {
+    .project-type, .registration-type {
         color: $brand-project;
     }
     .agent-type {
@@ -63,7 +63,7 @@
     > h2 {
         margin-bottom: 0;
     }
-    .event-subtitle, .entity-parent-title {
+    .event-subtitle, .entity-parent-title, .registration-title {
         font-weight: 100;
         margin-bottom: 0;
         > a {
