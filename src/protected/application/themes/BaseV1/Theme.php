@@ -809,25 +809,6 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
     }
 
-
-    function addRegistrationDataToJs($registration){
-        $app = App::i();
-        $project = $registration->project;
-
-        $this->jsObject['entity']['relations'] = array(
-            'owner' => $registration->owner
-        );
-        $this->jsObject['TESTE'] = array();
-        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
-            $metadata_name = $def->metadataName;
-
-            $this->jsObject['TESTE']['meta_key'] = $metadata_name;
-            $this->jsObject['TESTE']['meta_value'] = $project->$metadata_name;
-
-        }
-
-    }
-
     /**
     * Returns a verified entity with images in gallery
     * @param type $entity_class

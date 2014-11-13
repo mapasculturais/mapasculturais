@@ -156,9 +156,11 @@
             
             $scope.setRegistrationAgent = function(entity, attrs){
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
-                console.log(entity);
-                RelatedAgentsService.create(attrs.name, entity.id)
-                EditBox.close(editBoxId);
+                RelatedAgentsService.create(attrs.name, entity.id).success(function(){
+                    var $el = $('#registration-agent-' + attrs.name);
+                    
+                    EditBox.close(editBoxId);
+                });
             };
 
             $('#editbox-select-registration-owner').on('open', function () {
