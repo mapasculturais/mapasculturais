@@ -619,7 +619,16 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeEditableEntityAssets() {
+        $versions = $this->_libVersions;
         $this->assetManager->publishAsset('img/setinhas-editable.png');
+
+        $this->assetManager->publishAsset("vendor/x-editable-{$versions['x-editable']}/img/clear.png", 'img/clear.png');
+        $this->assetManager->publishAsset("vendor/x-editable-{$versions['x-editable']}/img/loading.gif", 'img/loading.gif');
+
+        $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2.png", 'css/select2.png');
+        $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2-spinner.gif", 'css/select2-spinner.gif');
+
+
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
     }
 
