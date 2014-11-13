@@ -438,6 +438,17 @@ class EventOccurrence extends \MapasCulturais\Entity
             throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
         }
     }
+    
+    function delete($flush = false) {
+        $this->checkPermission('remove');
+        // ($originType, $originId, $destinationType, $destinationId, $metadata)
+        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, array('event_occurrence_id' => $this->id, 'rule' => $this->rule));
+        $requests = App::i()->repo('RequestEventOccurrence')->findBy(array('requestUid' => $ruid));
+        foreach($requests as $r)
+            $r->delete($flush);
+
+        parent::delete($flush);
+    }
 
     /** @ORM\PreRemove */
     function _removeRequests(){

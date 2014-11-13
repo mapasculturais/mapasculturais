@@ -387,12 +387,6 @@ MapasCulturais.Editables = {
                             $(this).html(r ? r : '');
                         });
 
-                        var $endereco = $('.js-editable[data-edit="endereco"]');
-                        if($endereco.length && response['endereco']){
-                            $endereco.editable('setValue', response['endereco']);
-                            $endereco.trigger('changeAddress', response['endereco']);
-                        }
-
                         MapasCulturais.Messages.success('Edições salvas.');
 
                         $('.editable-unsaved').

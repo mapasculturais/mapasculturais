@@ -131,7 +131,7 @@
 
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.templateUrl.findEntity,
+            templateUrl: MapasCulturais.assetURL + '/js/directives/find-entity.html',
             scope:{
                 spinnerCondition: '=',
                 entity: '@',
@@ -294,7 +294,7 @@
     app.directive('editBox', ['EditBox', function(EditBox) {
         return {
             restrict: 'E',
-            templateUrl: MapasCulturais.templateUrl.editBox,
+            templateUrl: MapasCulturais.assetURL + '/js/directives/edit-box.html',
             transclude: true,
 
             scope: {
