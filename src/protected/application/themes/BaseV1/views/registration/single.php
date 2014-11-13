@@ -41,7 +41,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.entity-type-->
             <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
-            <h3>Inscrição <?php if($action !== 'create'): ?>nº <?php echo $entity->registrationNumber ?><?php endif; ?></h3>
+            <h4 class="registration-title">Inscrição <?php if($action !== 'create'): ?>nº <?php echo $entity->registrationNumber ?><?php endif; ?></h4>
         </div>
     </header>
 
@@ -54,11 +54,27 @@ $this->includeAngularEntityAssets($entity);
         </p>
 
         <!-- agente responsável -->
-        <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->owner, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
+        <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
+        <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
 
         <!-- outros agentes -->
-        <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $required = $project->{$def->metadataName} === 'required';?>
-            <?php $this->part('registration-agent', array('name' => $def->agentRelationGroupName, 'agent' => null, 'required' => $required, 'type' => $def->type, 'label' => $def->label, 'description' => $def->description )); ?>
+        <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+            $required = $project->{$def->metadataName} === 'required';
+            $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
+
+            $relation = $relation ? $relation[0] : null;
+
+            $agent = $relation ? $relation->agent : null;
+            $status = $relation ? $relation->status : null;
+            ?>
+            <?php $this->part('registration-agent', array(
+                'name' => $def->agentRelationGroupName,
+                'agent' => $agent,
+                'status' => $status,
+                'required' => $required,
+                'type' => $def->type,
+                'label' => $def->label,
+                'description' => $def->description )); ?>
         <?php endforeach; ?>
 
         <!-- anexos -->
@@ -68,15 +84,5 @@ $this->includeAngularEntityAssets($entity);
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
-    <?php if($this->controller->action == 'create'): ?>
-        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar a inscrição.</div>
-    <?php endif; ?>
-
-    <!-- Downloads BEGIN -->
-        <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
-    <!-- Downloads END -->
-
-    <!-- Link List BEGIN -->
-        <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
-    <!-- Link List END -->
+    
 </div>

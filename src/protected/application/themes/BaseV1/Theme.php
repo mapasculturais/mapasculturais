@@ -814,12 +814,16 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $project = $registration->project;
 
-        $this->jsObject['entity']['relations'] = array();
-
+        $this->jsObject['entity']['relations'] = array(
+            'owner' => $registration->owner
+        );
+        $this->jsObject['TESTE'] = array();
         foreach($app->getRegisteredRegistrationAgentRelations() as $def){
             $metadata_name = $def->metadataName;
 
-            //$this->jsObject['entity']['relations']
+            $this->jsObject['TESTE']['meta_key'] = $metadata_name;
+            $this->jsObject['TESTE']['meta_value'] = $project->$metadata_name;
+
         }
 
     }
