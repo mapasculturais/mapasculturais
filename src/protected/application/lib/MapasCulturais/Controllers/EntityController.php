@@ -977,8 +977,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             }elseif($operator == 'NULL'){
                 $dql = $not ?
-                        "($key IS NOT NULL OR $key <> '')" :
-                        "($key IS NULL OR $key = '')";
+                        "($key IS NOT NULL)" :
+                        "($key IS NULL)";
 
             }elseif($operator == 'GEONEAR'){
                 $values = $this->_API_find_splitParam($value);
