@@ -41,7 +41,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.entity-type-->
             <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
-            <h3>Inscrição <?php if($action !== 'create'): ?>nº <?php echo $entity->registrationNumber ?><?php endif; ?></h3>
+            <h4 class="registration-title">Inscrição <?php if($action !== 'create'): ?>nº <?php echo $entity->registrationNumber ?><?php endif; ?></h4>
         </div>
     </header>
 
@@ -68,15 +68,5 @@ $this->includeAngularEntityAssets($entity);
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
-    <?php if($this->controller->action == 'create'): ?>
-        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar a inscrição.</div>
-    <?php endif; ?>
-
-    <!-- Downloads BEGIN -->
-        <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
-    <!-- Downloads END -->
-
-    <!-- Link List BEGIN -->
-        <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
-    <!-- Link List END -->
+    
 </div>
