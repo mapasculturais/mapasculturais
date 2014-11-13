@@ -108,7 +108,7 @@
         };
     }]);
 
-    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', function ($scope, $rootScope, $timeout, ProjectService, EditBox) {
+    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, ProjectService, EditBox, RelatedAgentsService) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
@@ -155,8 +155,10 @@
             };
             
             $scope.setRegistrationAgent = function(entity, attrs){
-                console.log(attrs);
-                EditBox.close(attrs.editBoxId);
+                var editBoxId = 'editbox-select-registration-' + attrs.name;
+                console.log(entity);
+                RelatedAgentsService.create(attrs.name, entity.id)
+                EditBox.close(editBoxId);
             };
 
             $('#editbox-select-registration-owner').on('open', function () {
