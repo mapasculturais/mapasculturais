@@ -16,7 +16,7 @@ else
 	composer="composer"
 fi
 
-$composer update --prefer-dist
+$composer install --prefer-dist
 
 $composer dump-autoload --optimize
 
