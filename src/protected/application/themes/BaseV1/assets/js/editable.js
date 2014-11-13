@@ -158,7 +158,7 @@ MapasCulturais.Editables = {
             this.setButton(editableEntitySelector);
             this.initTaxonomies();
             this.initTypes();
-            
+
             if(MapasCulturais.request.controller === 'registration')
                 this.initRegistrationCategories();
 
@@ -209,7 +209,7 @@ MapasCulturais.Editables = {
             $(this).editable(config);
         });
     },
-    
+
     initRegistrationCategories: function(){
         $('.js-editable-registrationCategory').each(function(){
             var config = {
@@ -261,7 +261,7 @@ MapasCulturais.Editables = {
                 emptytext: entity[field_name].label,
                 placeholder: entity[field_name].label
             };
-            
+
             var select_value = null;
 
             switch (entity[field_name].type){
@@ -274,10 +274,10 @@ MapasCulturais.Editables = {
                     config.source = [];
                     for(var k in entity[field_name].options){
                         var obj = {value: k, text: entity[field_name].options[k]};
-                        
+
                         config.source.push(obj);
                     }
-                    
+
                     break;
 
                 case 'date':
@@ -291,7 +291,7 @@ MapasCulturais.Editables = {
             }
 
             $(this).editable(config);
-            
+
             if(config.type === 'select')
                 $(this).editable('setValue', $(this).html());
 
@@ -331,7 +331,7 @@ MapasCulturais.Editables = {
                 target = MapasCulturais.Editables.baseTarget+'/single/'+$(editableEntitySelector).data('id');
             else
                 target = MapasCulturais.Editables.baseTarget;
-            
+
             MapasCulturais.Editables.getEditableElements().add('.js-include-editable').editable('submit', {
                 url: target,
                 ajaxOptions: {
@@ -401,12 +401,6 @@ MapasCulturais.Editables = {
                             var r = response[$(this).data('metakey')];
                             $(this).html(r ? r : '');
                         });
-
-                        var $endereco = $('.js-editable[data-edit="endereco"]');
-                        if($endereco.length && response['endereco']){
-                            $endereco.editable('setValue', response['endereco']);
-                            $endereco.trigger('changeAddress', response['endereco']);
-                        }
 
                         MapasCulturais.Messages.success('Edições salvas.');
 
