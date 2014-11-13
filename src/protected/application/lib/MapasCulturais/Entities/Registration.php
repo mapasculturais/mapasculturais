@@ -101,9 +101,21 @@ class Registration extends \MapasCulturais\Entity
         $this->project = $agent;
     }
 
+    protected function _getRegistrationOwnerRequest(){
+
+    }
+
+    function getRegistrationOwnerStatus(){
+        return 1;
+    }
+
+    function getRegistrationOwner(){
+        return $this->owner;
+    }
+
     function getRegistrationNumber(){
         if($this->id){
-            return $this->project->id .'-'. str_pad($this->id,8,'0',STR_PAD_LEFT);
+            return $this->project->id .'-'. str_pad($this->id,3,'0',STR_PAD_LEFT);
         }else{
             return null;
         }

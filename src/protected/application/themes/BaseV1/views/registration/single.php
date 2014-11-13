@@ -54,11 +54,27 @@ $this->includeAngularEntityAssets($entity);
         </p>
 
         <!-- agente responsável -->
-        <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->owner, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
+        <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
+        <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
 
         <!-- outros agentes -->
-        <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $required = $project->{$def->metadataName} === 'required';?>
-            <?php $this->part('registration-agent', array('name' => $def->agentRelationGroupName, 'agent' => null, 'required' => $required, 'type' => $def->type, 'label' => $def->label, 'description' => $def->description )); ?>
+        <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+            $required = $project->{$def->metadataName} === 'required';
+            $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
+
+            $relation = $relation ? $relation[0] : null;
+
+            $agent = $relation ? $relation->agent : null;
+            $status = $relation ? $relation->status : null;
+            ?>
+            <?php $this->part('registration-agent', array(
+                'name' => $def->agentRelationGroupName,
+                'agent' => $agent,
+                'status' => $status,
+                'required' => $required,
+                'type' => $def->type,
+                'label' => $def->label,
+                'description' => $def->description )); ?>
         <?php endforeach; ?>
 
         <!-- anexos -->
