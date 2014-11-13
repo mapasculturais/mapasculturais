@@ -52,12 +52,20 @@
                     );
                 return deferred.promise;
             },
-            edit: function(){
-
+            edit: function(data){
+                var deferred = $q.defer();
+                $log.debug(data);
+                $http.post(this.getUrl()+'/single/'+data.id, data)
+                    .success(
+                        function(response){
+                            deferred.resolve(response);
+                        }
+                    );
+                return deferred.promise;
             },
             delete: function(id){
                 var deferred = $q.defer();
-                $http.get(this.getUrl()+'/apaga/'+id)
+                $http.get(this.getUrl()+'/delete/'+id)
                     .success(
                         function(response){
                             deferred.resolve(response);
@@ -101,10 +109,27 @@
                     .delete(id)
                     .then(function(response){
                         if(!response.error){
-                            $scope.data.fileConfigurations.splice($index, 1)
+                            $scope.data.fileConfigurations.splice($index, 1);
                         }
                     });
             }
+        };
+        $scope.editFileConfiguration = function(attrs) {
+            var model = $scope.data.fileConfigurations[attrs.index],
+                data = {
+                    id: model.id,
+                    title: model.title,
+                    description: model.description,
+                    required: model.required
+                };
+            RegistrationFileConfigurationService
+                .edit(data)
+                .then(function(response){
+                    if(!response.error){
+                        EditBox.close('editbox-registration-files-'+data.id);
+                    }
+                });
+
         };
     }]);
 
@@ -115,7 +140,7 @@
                 });
 
             $scope.editbox = EditBox;
-            
+
             $scope.openEditBox = function(id, e){
                 console.log(id, e);
                 EditBox.open(id, e);
@@ -153,7 +178,7 @@
                 $scope.data.registration.owner = entity;
                 EditBox.close('editbox-select-registration-owner');
             };
-            
+
             $scope.setRegistrationAgent = function(entity, attrs){
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
                 RelatedAgentsService.create(attrs.name, entity.id).success(function(){
