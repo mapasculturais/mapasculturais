@@ -1,5 +1,28 @@
 /* =Edit box
 -------------------------------------------------------------- */
+.mc-editable {
+    display: inline-block;
+    padding: 0 3px;
+    border-radius: $border-radius-base;
+    &:hover {
+        background-color: $gray-light;
+        &:after {
+            color: $gray-darker;
+        }
+    }
+    &:after {
+        margin-left: 5px;
+        content: '\6c';
+        font-size: $font-size-base;
+        line-height: 1rem;
+        font-family: 'ElegantIcons';
+        font-weight: normal;
+        font-style: normal;
+        vertical-align: initial;
+        text-transform: none;
+        color: $gray-dark;
+    }
+}
 .edit-box {
     position: absolute;
     z-index: 149;
