@@ -69,7 +69,6 @@
 	line-height: 1;
 }
 .registration-agent {
-	margin-bottom: $line-height-half;
 	.warning {
 		display: none;
 	}
@@ -85,6 +84,34 @@
 		margin-right: $line-height-half;
 	}
 }
+
+.registration-list {
+	margin: 0;
+	list-style: none;
+    .registration-list-item {
+        position: relative;
+        padding: $padding-base;
+        padding-right: 11rem;
+        border-bottom: 1px solid $gray-lighter;
+        .registration-label {
+        	font-weight: bold;
+        }
+        .registration-description {
+        	font-size: $font-size-smaller;
+        	color: #999;
+        }
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
+        }
+        &:hover {
+        	background: $gray-lighter;
+        }
+    }
+}
+
+
 .attachment-list {
 	margin: 0;
 	list-style: none;
