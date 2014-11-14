@@ -42,18 +42,18 @@
 			list-style: none;
 		}
 	}
-	.registration-id {
+	.registration-id-col {
 		width: 12%;
 	}
-	.registration-attachments {
+	.registration-attachments-col {
 		width: 36%;
 		text-align: left;
 	}
-	.registration-agents {
+	.registration-agents-col {
 		width: 36%;
 		text-align: left;
 	}
-	.registration-status {
+	.registration-status-col {
 		width: 16%;
 		.dropdown {
 			width: 100%;
@@ -110,10 +110,10 @@
 //** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
 .my-registrations {
 	@extend .registrations-table;
-	.registration-id {
+	.registration-id-col {
 		width: 10%;
 	}
-	.registration-agents {
+	.registration-agents-col {
 		width: 30%;
 	}
 }
