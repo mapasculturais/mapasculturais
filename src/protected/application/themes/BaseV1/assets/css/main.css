@@ -2331,6 +2331,7 @@ nav.sidebar-left .icone {
   background: #e2e2e2;
   border: 1px solid #ccc; }
 
+.botao.simples:hover,
 .botao.adicionar:hover,
 .botao.editar:hover,
 .botao.download:hover,
@@ -2537,6 +2538,26 @@ table.contratos td {
 
 /* =Edit box
 -------------------------------------------------------------- */
+.mc-editable {
+  display: inline-block;
+  padding: 0 3px;
+  border-radius: 2px; }
+  .mc-editable:hover {
+    background-color: #e2e2e2; }
+    .mc-editable:hover:after {
+      color: #333; }
+  .mc-editable:after {
+    margin-left: 5px;
+    content: '\6c';
+    font-size: 1rem;
+    line-height: 1rem;
+    font-family: 'ElegantIcons';
+    font-weight: normal;
+    font-style: normal;
+    vertical-align: initial;
+    text-transform: none;
+    color: #666; }
+
 .edit-box {
   position: absolute;
   z-index: 149;
@@ -3219,17 +3240,17 @@ h1 .icone {
   .registrations-table tbody ul, .my-registrations tbody ul, .approved-registrations tbody ul {
     margin: 0;
     list-style: none; }
-  .registrations-table .registration-id, .my-registrations .registration-id, .approved-registrations .registration-id {
+  .registrations-table .registration-id-col, .my-registrations .registration-id-col, .approved-registrations .registration-id-col {
     width: 12%; }
-  .registrations-table .registration-attachments, .my-registrations .registration-attachments, .approved-registrations .registration-attachments {
+  .registrations-table .registration-attachments-col, .my-registrations .registration-attachments-col, .approved-registrations .registration-attachments-col {
     width: 36%;
     text-align: left; }
-  .registrations-table .registration-agents, .my-registrations .registration-agents, .approved-registrations .registration-agents {
+  .registrations-table .registration-agents-col, .my-registrations .registration-agents-col, .approved-registrations .registration-agents-col {
     width: 36%;
     text-align: left; }
-  .registrations-table .registration-status, .my-registrations .registration-status, .approved-registrations .registration-status {
+  .registrations-table .registration-status-col, .my-registrations .registration-status-col, .approved-registrations .registration-status-col {
     width: 16%; }
-    .registrations-table .registration-status .dropdown, .my-registrations .registration-status .dropdown, .approved-registrations .registration-status .dropdown {
+    .registrations-table .registration-status-col .dropdown, .my-registrations .registration-status-col .dropdown, .approved-registrations .registration-status-col .dropdown {
       width: 100%;
       text-align: left;
       background-color: transparent; }
@@ -3260,9 +3281,9 @@ h1 .icone {
 .maybe.selected {
   color: #cc9933; }
 
-.my-registrations .registration-id, .approved-registrations .registration-id {
+.my-registrations .registration-id-col, .approved-registrations .registration-id-col {
   width: 10%; }
-.my-registrations .registration-agents, .approved-registrations .registration-agents {
+.my-registrations .registration-agents-col, .approved-registrations .registration-agents-col {
   width: 30%; }
 
 .registration-form {
@@ -3292,19 +3313,41 @@ h1 .icone {
       white-space: nowrap;
       overflow: hidden; }
 
-.registration-edition-options {
+.registration-header {
+  background-color: #cc0033;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 2px; }
+
+.registration-fieldset {
   margin-bottom: 1.5rem;
   padding: 1.5rem;
   border: 1px solid #eee;
   border-radius: 2px; }
-  .registration-edition-options:hover {
+  .registration-fieldset:hover {
     background-color: #f4f4f4; }
-  .registration-edition-options h4 {
+  .registration-fieldset h4 {
     margin-bottom: 0.75rem; }
 
-.registration-edition-help {
+.registration-help {
   font-style: italic;
   color: #999; }
+
+.registration-id {
+  font-size: 3rem;
+  line-height: 1; }
+
+.registration-agent {
+  margin-bottom: 0.75rem; }
+  .registration-agent .warning {
+    display: none; }
+  .registration-agent.pendent .warning {
+    display: block; }
+  .registration-agent .registration-agent-avatar {
+    float: left;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.75rem; }
 
 .attachment-list {
   margin: 0;
@@ -3673,24 +3716,24 @@ div.ficha-spcultura .editable-buttons-bottom {
   width: 100%;
   height: 100%; }
 
-#camadas-de-entidades {
+#mc-entity-layers {
+  position: absolute;
+  z-index: 150;
+  right: 0rem;
+  height: 1.875rem;
   font-size: 1rem;
   line-height: 1.5rem;
   font-family: "Open Sans", Helvetica, Arial, sans-serif; }
+  #mc-entity-layers a {
+    color: #fff; }
 
-#camadas-de-entidades a {
-  color: #fff; }
-
-/*Fix leaflet top and bottom layers z-index from 1000 to header's -1*/
 .leaflet-top,
 .leaflet-bottom {
   z-index: 122; }
 
-/*Fix Map top em tela cheia*/
 .leaflet-container:-webkit-full-screen {
   top: 0 !important; }
 
-/*controles de layers, zoom, fullscreen, localize-me*/
 .leaflet-control-layers,
 .leaflet-bar {
   -webkit-border-radius: 2px;
@@ -3723,33 +3766,27 @@ div.ficha-spcultura .editable-buttons-bottom {
 .leaflet-control-layers-list label {
   font-size: 0.75rem;
   margin-bottom: 0.75rem; }
-
-.leaflet-control-layers-list label:hover {
-  color: #fff; }
+  .leaflet-control-layers-list label:hover {
+    color: #fff; }
 
 .leaflet-bar a {
   width: 32px;
   height: 32px;
   color: #fff;
   background-color: #000000; }
-
-.leaflet-bar a:hover {
-  width: 32px;
-  height: 32px;
-  color: #fff;
-  background-color: #1c5690; }
-
-.leaflet-bar a:first-child {
-  border-radius: 2px 2px 0 0; }
-
-.leaflet-bar a:last-child {
-  border-radius: 0 0 2px 2px; }
-
-.leaflet-bar a:only-of-type {
-  border-radius: 2px; }
-
-.leaflet-bar a.leaflet-disabled {
-  background-color: #ccc; }
+  .leaflet-bar a:hover {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    background-color: #1c5690; }
+  .leaflet-bar a:first-child {
+    border-radius: 2px 2px 0 0; }
+  .leaflet-bar a:last-child {
+    border-radius: 0 0 2px 2px; }
+  .leaflet-bar a:only-of-type {
+    border-radius: 2px; }
+  .leaflet-bar a.leaflet-disabled {
+    background-color: #ccc; }
 
 .leaflet-control-zoom-fullscreen {
   background-image: url(../img/icon-fullscreen.png); }
@@ -3777,9 +3814,8 @@ div.ficha-spcultura .editable-buttons-bottom {
   border-radius: 2px;
   background-color: #000000;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15); }
-
-.leaflet-control-command-interior:hover {
-  background-color: #1c5690; }
+  .leaflet-control-command-interior:hover {
+    background-color: #1c5690; }
 
 .leaflet-draw {
   margin-left: 411px !important; }
@@ -3791,28 +3827,24 @@ div.ficha-spcultura .editable-buttons-bottom {
 .leaflet-draw-tooltip {
   font-family: 'Open Sans';
   background: #000000; }
-
-.leaflet-draw-tooltip:before {
-  border-right-color: #000000; }
+  .leaflet-draw-tooltip:before {
+    border-right-color: #000000; }
 
 .leaflet-draw-actions {
   left: 34px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
-
-.leaflet-draw-actions a {
-  font-family: 'Open Sans';
-  font-size: 0.75rem;
-  font-weight: bold;
-  border-left-color: #fff;
-  background-color: #000000; }
-
-.leaflet-draw-actions a:hover {
-  text-decoration: none;
-  background-color: #1c5690; }
-
-.leaflet-draw-actions li:last-child a {
-  -webkit-border-radius: 0 2px 2px 0;
-  border-radius: 0 2px 2px 0; }
+  .leaflet-draw-actions a {
+    font-family: 'Open Sans';
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-left-color: #fff;
+    background-color: #000000; }
+    .leaflet-draw-actions a:hover {
+      text-decoration: none;
+      background-color: #1c5690; }
+  .leaflet-draw-actions li:last-child a {
+    -webkit-border-radius: 0 2px 2px 0;
+    border-radius: 0 2px 2px 0; }
 
 .leaflet-bar a.leaflet-draw-toolbar-button-enabled {
   background-color: #1c5690; }
@@ -3821,7 +3853,6 @@ div.ficha-spcultura .editable-buttons-bottom {
   line-height: 32px;
   height: 32px; }
 
-/*label*/
 .leaflet-label {
   font: 0.75rem/1.5 "Open Sans", Helvetica, Arial, sans-serif;
   position: absolute;
@@ -3838,34 +3869,28 @@ div.ficha-spcultura .editable-buttons-bottom {
   border-color: #000000;
   border-radius: 2px;
   background: #000000; }
-
-.leaflet-label.leaflet-clickable {
-  cursor: pointer; }
-
-.leaflet-label:before,
-.leaflet-label:after {
-  position: absolute;
-  top: 8px;
-  content: none;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-radius: 4px; }
-
-.leaflet-label:before {
-  left: -5px;
-  border-right: 6px solid black;
-  border-right-color: inherit; }
-
-.leaflet-label:after {
-  right: -5px;
-  border-left: 6px solid black;
-  border-left-color: inherit; }
+  .leaflet-label.leaflet-clickable {
+    cursor: pointer; }
+  .leaflet-label:before, .leaflet-label:after {
+    position: absolute;
+    top: 8px;
+    content: none;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-radius: 4px; }
+  .leaflet-label:before {
+    left: -5px;
+    border-right: 6px solid black;
+    border-right-color: inherit; }
+  .leaflet-label:after {
+    right: -5px;
+    border-left: 6px solid black;
+    border-left-color: inherit; }
 
 .leaflet-label-right:before,
 .leaflet-label-left:after {
   content: ''; }
 
-/*cluster*/
 .leaflet-cluster.cluster-event {
   background-image: url("../img/agrupador-evento.png"); }
 
@@ -3904,12 +3929,11 @@ div.ficha-spcultura .editable-buttons-bottom {
   fill: #1c5690;
   stroke-opacity: .4;
   stroke-width: 2px; }
-
-.vetorial-padrao:hover {
-  cursor: default;
-  fill-opacity: .15;
-  stroke-opacity: .4;
-  stroke-width: 5px; }
+  .vetorial-padrao:hover {
+    cursor: default;
+    fill-opacity: .15;
+    stroke-opacity: .4;
+    stroke-width: 5px; }
 
 .vetorial-sp {
   stroke: #f33;
@@ -3917,11 +3941,10 @@ div.ficha-spcultura .editable-buttons-bottom {
   fill: #f99;
   stroke-opacity: .4;
   stroke-width: 2px; }
-
-.vetorial-sp:hover {
-  cursor: default;
-  fill-opacity: .15;
-  stroke-opacity: .4; }
+  .vetorial-sp:hover {
+    cursor: default;
+    fill-opacity: .15;
+    stroke-opacity: .4; }
 
 .marker-circle-icon {
   border: 1px dotted rgba(0, 0, 255, 0);
