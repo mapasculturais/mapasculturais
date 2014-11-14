@@ -142,7 +142,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <div id="registration-period" class="registration-edition-options">
+                <div id="registration-period" class="registration-fieldset">
                     <h4>1. Período de inscrições</h4>
             <?php endif; ?>
             <?php if($this->isEditable() || $entity->registrationFrom): ?>
@@ -158,9 +158,9 @@ $this->includeAngularEntityAssets($entity);
             <?php if($this->isEditable()): ?>
             </div>
             <!-- #registration-period -->
-            <div id="intro-das-inscricoes" class="registration-edition-options">
+            <div id="intro-das-inscricoes" class="registration-fieldset">
                 <h4>2. Introdução</h4>
-                <p class="registration-edition-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
+                <p class="registration-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
             <?php endif; ?>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
         <?php endif; ?>
@@ -168,9 +168,9 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable()): ?>
             </div>
             <!-- #intro-das-inscricoes -->
-            <div id="registration-categories" class="registration-edition-options">
+            <div id="registration-categories" class="registration-fieldset">
                 <h4>3. Opções</h4>
-                <p class="registration-edition-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
+                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
 
                 <p>
                     <span class="label">Descrição</span><br>
@@ -183,13 +183,13 @@ $this->includeAngularEntityAssets($entity);
             </div>
 
             <!-- #registration-categories -->
-            <div id="registration-agent-relations" class="registration-edition-options">
+            <div id="registration-agent-relations" class="registration-fieldset">
                 <h4>4. Agentes</h4>
-                <p class="registration-edition-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
+                <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
                     <div class="registration-related-agent-configuration">
                         <p>
-                            <span class="label"><?php echo $def->label ?></span> <span class="registration-edition-help">(<?php echo $def->description ?>)</span>
+                            <span class="label"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
                             <br>
                             <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
                         </p>
@@ -199,10 +199,10 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-agent-relations -->
 
-            <div id="registration-attachments" class="registration-edition-options">
+            <div id="registration-attachments" class="registration-fieldset">
 
                 <h4>5. Anexos</h4>
-                <p class="registration-edition-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
+                <p class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                 <!-- da parte downloads.php -->
 
                 <div ng-controller="RegistrationFileConfigurationsController">
@@ -280,32 +280,32 @@ $this->includeAngularEntityAssets($entity);
                 <table class="my-registrations">
                     <thead>
                         <tr>
-                            <th class="registration-id">
+                            <th class="registration-id-col">
                                 Nº
                             </th>
-                            <th class="registration-agents">
+                            <th class="registration-agents-col">
                                 Agente Responsável
                             </th>
-                            <th class="registration-agents">
+                            <th class="registration-agents-col">
                                 Coletivo
                             </th>
-                            <th class="registration-agents">
+                            <th class="registration-agents-col">
                                 Instituição
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="registration-id" data-registration-id="">
-                            <td class="registration-id">
+                        <tr>
+                            <td class="registration-id-col">
                             <a href="#">0000</a>
                             </td>
-                            <td class="registration-agents">
+                            <td class="registration-agents-col">
                                 Nome do Agente Responsável
                             </td>
-                            <td class="registration-agents">
+                            <td class="registration-agents-col">
                                 Nome da Instituição
                             </td>
-                            <td class="registration-agents">
+                            <td class="registration-agents-col">
                                 Nome do Coletivo
                             </td>
                         </tr>
@@ -328,16 +328,16 @@ $this->includeAngularEntityAssets($entity);
             <table class="js-registration-list registrations-table">
                 <thead>
                     <tr>
-                        <th class="registration-id">
+                        <th class="registration-id-col">
                             Nº
                         </th>
-                        <th class="registration-agents">
+                        <th class="registration-agents-col">
                             Agentes
                         </th>
-                        <th class="registration-attachments">
+                        <th class="registration-attachments-col">
                             Anexos
                         </th>
-                        <th class="registration-status">
+                        <th class="registration-status-col">
                             <div class="dropdown">
                                 <div class="placeholder">Status</div>
                                 <div class="submenu-dropdown">
@@ -367,10 +367,10 @@ $this->includeAngularEntityAssets($entity);
                         echo 'maybed';
                         }
                     ?>">
-                        <td class="registration-id">
+                        <td class="registration-id-col">
                             <?php echo $registration->id ?>
                         </td>
-                        <td class="registration-agents">
+                        <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
                                 <a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a>
@@ -384,12 +384,12 @@ $this->includeAngularEntityAssets($entity);
                                 <a href="#">Nome do Coletivo</a>
                             </p>
                         </td>
-                        <td class="registration-attachments">
+                        <td class="registration-attachments-col">
                             <ul>
                                 <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>
                             </ul>
                         </td>
-                        <td class="registration-status">
+                        <td class="registration-status-col">
                             <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
                             <span class="js-registration-action maybe hltip" title="Talvez"></span>
                             <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
@@ -409,32 +409,32 @@ $this->includeAngularEntityAssets($entity);
         <table class="approved-registrations">
             <thead>
                 <tr>
-                    <th class="registration-id">
+                    <th class="registration-id-col">
                         Nº
                     </th>
-                    <th class="registration-agents">
+                    <th class="registration-agents-col">
                         Agente Responsável
                     </th>
-                    <th class="registration-agents">
+                    <th class="registration-agents-col">
                         Coletivo
                     </th>
-                    <th class="registration-agents">
+                    <th class="registration-agents-col">
                         Instituição
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr id="registration-id" data-registration-id="">
-                    <td class="registration-id">
+                <tr>
+                    <td class="registration-id-col">
                     0000
                     </td>
-                    <td class="registration-agents">
+                    <td class="registration-agents-col">
                         <a href="#">Nome do Agente Responsável</a>
                     </td>
-                    <td class="registration-agents">
+                    <td class="registration-agents-col">
                         <a href="#">Nome da Instituição</a>
                     </td>
-                    <td class="registration-agents">
+                    <td class="registration-agents-col">
                         <a href="#">Nome do Coletivo</a>
                     </td>
                 </tr>
