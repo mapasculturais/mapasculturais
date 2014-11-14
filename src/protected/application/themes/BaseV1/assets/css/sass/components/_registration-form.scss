@@ -41,7 +41,13 @@
 		}
 	}
 }
-.registration-edition-options {
+.registration-header {
+	background-color: $registration-header-bg;
+	color: $registration-header-color;
+	padding: $padding-base;
+	border-radius: $border-radius-base;
+}
+.registration-fieldset {
 	margin-bottom: $line-height-base;
 	padding: $padding-large;
 	border: 1px solid $gray-lighter;
@@ -54,9 +60,30 @@
 	}
 
 }
-.registration-edition-help {
+.registration-help {
 	font-style: italic;
 	color: #999;
+}
+.registration-id {
+	font-size: 3rem;
+	line-height: 1;
+}
+.registration-agent {
+	margin-bottom: $line-height-half;
+	.warning {
+		display: none;
+	}
+	&.pendent {
+		.warning {
+			display: block;
+		}
+	}
+	.registration-agent-avatar {
+		float: left;
+		width: 2rem;
+		height: 2rem;
+		margin-right: $line-height-half;
+	}
 }
 .attachment-list {
 	margin: 0;
