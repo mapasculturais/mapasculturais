@@ -59,30 +59,33 @@ $this->includeAngularEntityAssets($entity);
             <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
         </p>
     </div>
-    <!-- agente responsável -->
+    <div class="registration-fieldset">
+    <h4>Agentes</h4>
+        <!-- agente responsável -->
+        <ul class="registration-list">
+            <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
+            <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
+            <!-- outros agentes -->
+            <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                $required = $project->{$def->metadataName} === 'required';
+                $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
 
-    <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
-    <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
-    <!-- outros agentes -->
-    <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-        $required = $project->{$def->metadataName} === 'required';
-        $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
+                $relation = $relation ? $relation[0] : null;
 
-        $relation = $relation ? $relation[0] : null;
-
-        $agent = $relation ? $relation->agent : null;
-        $status = $relation ? $relation->status : null;
-        ?>
-        <?php $this->part('registration-agent', array(
-            'name' => $def->agentRelationGroupName,
-            'agent' => $agent,
-            'status' => $status,
-            'required' => $required,
-            'type' => $def->type,
-            'label' => $def->label,
-            'description' => $def->description )); ?>
-    <?php endforeach; ?>
-
+                $agent = $relation ? $relation->agent : null;
+                $status = $relation ? $relation->status : null;
+                ?>
+                <?php $this->part('registration-agent', array(
+                    'name' => $def->agentRelationGroupName,
+                    'agent' => $agent,
+                    'status' => $status,
+                    'required' => $required,
+                    'type' => $def->type,
+                    'label' => $def->label,
+                    'description' => $def->description )); ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
     <!-- anexos -->
 </article>
 <div class="sidebar registration sidebar-right">

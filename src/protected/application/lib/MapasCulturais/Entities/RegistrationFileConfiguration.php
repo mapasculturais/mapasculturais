@@ -69,6 +69,17 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->owner = App::i()->repo('Project')->find($id);
     }
 
+    public function jsonSerialize() {
+        return array(
+            'id' => $this->id,
+            'ownerId' => $this->owner->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'required' => $this->required,
+            'template' => $this->getFile('registrationFileTemplate')
+        );
+    }
+
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:before', $args);
