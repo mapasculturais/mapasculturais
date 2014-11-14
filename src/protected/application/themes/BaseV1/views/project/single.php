@@ -1,5 +1,5 @@
 <?php
-use MapasCulturais\Entities\ProjectAgentRelation as Registration;
+use MapasCulturais\Entities\Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
@@ -352,13 +352,13 @@ $this->includeAngularEntityAssets($entity);
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach($entity->registrations as $registration): ?>
+                <?php foreach($entity->sentRegistrations as $registration): ?>
                     <tr id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="
-                    <?php if ($registration->status == Registration::STATUS_ENABLED)
+                    <?php if ($registration->status == Registration::STATUS_APPROVED)
                         {
                         echo 'approved';
                         }
-                        else if ($registration->status == Registration::STATUS_REGISTRATION_REJECTED)
+                        else if ($registration->status == Registration::STATUS_REJECTED)
                         {
                         echo 'rejected';
                         }
@@ -373,7 +373,7 @@ $this->includeAngularEntityAssets($entity);
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
-                                <a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a>
+                                <a href="<?php echo $registration->owner->singleUrl ?>"><?php echo $registration->owner->name ?></a>
                             </p>
                             <p>
                                 <span class="label">Instituição</span><br />
@@ -390,9 +390,9 @@ $this->includeAngularEntityAssets($entity);
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
+                            <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
                             <span class="js-registration-action maybe hltip" title="Talvez"></span>
-                            <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
+                            <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
                         </td>
                     </tr>
                 <?php endforeach; ?>
