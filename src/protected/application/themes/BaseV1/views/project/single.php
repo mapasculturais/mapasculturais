@@ -225,9 +225,9 @@ $this->includeAngularEntityAssets($entity);
                             <div class="attachment-description">
                                 {{fileConfiguration.description}}<br>
                                 {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
-                                <p id="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
+                                <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
                                     <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
-                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target="#file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target=".file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
                                 </p>
                             </div>
                             <div class="botoes">
@@ -241,7 +241,10 @@ $this->includeAngularEntityAssets($entity);
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                                 <p><label><input style="width:auto" type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
 
-                                Modelo
+                                <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
+                                    <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
+                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target=".file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                </p>
                                 <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
                                     <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
