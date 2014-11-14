@@ -18,6 +18,6 @@ $avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall'
         </div>
     <?php endif;?>
     <edit-box id="editbox-select-registration-<?php echo $name ?>" position="right" title="Selecione o agente <?php echo $label ?>." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
-        <find-entity id='find-entity-registration-<?php echo $name ?>' name='<?php echo $name ?>' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
+        <find-entity id='find-entity-registration-<?php echo $name ?>' name='<?php echo $name ?>' type="<?php echo $type ?>" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
     </edit-box>
 </div>

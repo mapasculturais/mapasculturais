@@ -6,7 +6,7 @@
     app.factory('FindService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q){
         var baseUrl = MapasCulturais.baseURL + '/api/';
         var canceller;
-        
+
         function extend (query){
             return angular.extend(query, {
                 "@select": 'id,name,type,shortDescription,terms',
@@ -17,12 +17,12 @@
 
         function request (url, query, success_cb, error_cb){
             cancelRequest();
-            
+
             query = extend(query);
-            
-            
+
+
             canceller = $q.defer();
-            
+
             var p = $http({
                 url: url,
                 method: "GET",
@@ -39,7 +39,7 @@
                 p.error( error_cb );
             }
         };
-        
+
         function cancelRequest(){
             if(canceller){
                 canceller.resolve();
@@ -47,7 +47,7 @@
         }
 
         return {
-            
+
             cancel: function(){
                cancelRequest();
             },
@@ -162,7 +162,7 @@
                 $scope.find = function(){
                     if(timeouts.find)
                         $timeout.cancel(timeouts.find);
-                    
+
                     FindService.cancel();
 
                     var s = $scope.searchText.trim().replace(' ', '*');
@@ -255,7 +255,7 @@
             },
 
             open: function(editboxId, $event){
-                
+
                 if(typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
 
@@ -327,7 +327,7 @@
 
                 $scope.submit = function(){
                     if(angular.isFunction($scope.onSubmit)){
-                        $scope.onSubmit();
+                        $scope.onSubmit(attrs);
                     }
                 };
 
@@ -365,7 +365,7 @@
                     setTimeout(function(){
                         $($event.target).parents('.js-submenu-dropdown').css('display','');
                     },500);
-                    
+
                     $scope.model = item;
                 }
             }

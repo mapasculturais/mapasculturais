@@ -396,7 +396,6 @@ MapasCulturais.Editables = {
 
                     }else{
 
-
                         $('.js-geo-division').each(function(){
                             var r = response[$(this).data('metakey')];
                             $(this).html(r ? r : '');

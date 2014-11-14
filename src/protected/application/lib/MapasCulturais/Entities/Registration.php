@@ -101,16 +101,28 @@ class Registration extends \MapasCulturais\Entity
         $this->project = $agent;
     }
 
+    /**
+     *
+     * @return
+     */
     protected function _getRegistrationOwnerRequest(){
-
+        return  App::i()->repo('RequestChangeOwnership')->findOneBy(array('originType' => $this->getClassName(), 'originId' => $this->id));
     }
 
     function getRegistrationOwnerStatus(){
-        return 1;
+        if($request = $this->_getRegistrationOwnerRequest()){
+            return RegistrationAgentRelation::STATUS_PENDING;
+        }else{
+            return RegistrationAgentRelation::STATUS_ENABLED;
+        }
     }
 
     function getRegistrationOwner(){
-        return $this->owner;
+        if($request = $this->_getRegistrationOwnerRequest()){
+            return $request->agent;
+        }else{
+            return $this->owner;
+        }
     }
 
     function getRegistrationNumber(){
