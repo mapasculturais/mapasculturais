@@ -2638,6 +2638,9 @@ table.contratos td {
 .edit-box select {
   width: 100%; }
 
+.edit-box input[type="checkbox"], .edit-box input[type="radio"] {
+  width: auto; }
+
 .edit-box .mc-spinner {
   width: 16px;
   margin: 0 auto; }
@@ -3337,17 +3340,35 @@ h1 .icone {
   font-size: 3rem;
   line-height: 1; }
 
-.registration-agent {
-  margin-bottom: 0.75rem; }
-  .registration-agent .warning {
-    display: none; }
-  .registration-agent.pendent .warning {
-    display: block; }
-  .registration-agent .registration-agent-avatar {
-    float: left;
-    width: 2rem;
-    height: 2rem;
-    margin-right: 0.75rem; }
+.registration-agent .warning {
+  display: none; }
+.registration-agent.pendent .warning {
+  display: block; }
+.registration-agent .registration-agent-avatar {
+  float: left;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.75rem; }
+
+.registration-list {
+  margin: 0;
+  list-style: none; }
+  .registration-list .registration-list-item {
+    position: relative;
+    padding: 0.75rem;
+    padding-right: 11rem;
+    border-bottom: 1px solid #eee; }
+    .registration-list .registration-list-item .registration-label {
+      font-weight: bold; }
+    .registration-list .registration-list-item .registration-description {
+      font-size: 0.75rem;
+      color: #999; }
+    .registration-list .registration-list-item .btn-group {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem; }
+    .registration-list .registration-list-item:hover {
+      background: #eee; }
 
 .attachment-list {
   margin: 0;
