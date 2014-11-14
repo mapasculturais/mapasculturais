@@ -91,7 +91,7 @@
     &:only-of-type {
         border-radius: $border-radius-base;
     }
-    &:.leaflet-disabled {
+    &.leaflet-disabled {
         background-color: $gray;
     }
 }
