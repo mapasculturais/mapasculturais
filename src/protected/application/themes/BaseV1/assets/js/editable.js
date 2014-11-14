@@ -444,106 +444,122 @@ MapasCulturais.AjaxUploader = {
 
     },
     animationTime: 100,
-    init: function() {
-        var bar = $('.js-ajax-upload-progress .bar');
-        var percent = $('.js-ajax-upload-progress .percent');
-        // bind form using 'ajaxForm'
-        $('.js-ajax-upload').ajaxForm({
-            //target:        '#output1',   // target element(s) to be updated with server response
-            beforeSubmit: function(arr, $form, options) {
-                MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), true);
-            },
-            uploadProgress: function(event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.animate({'width':percentVal});
-                percent.html(percentVal);
-                console.log('percent',percentComplete);
-            },
-            success: function (response, statusText, xhr, $form)  {
+    init: function(selector) {
+        selector = selector || '.js-ajax-upload';
+        $(selector).each(function(){
 
-                var percentVal = '100%';
-                bar.width(percentVal);
-                percent.html(percentVal);
+            if($(this).data('initialized'))
+                return;
 
-                if(response.error){
-                    MapasCulturais.AjaxUploader.resetProgressBar($form.parents('.js-editbox'), false);
-                    var group = $form.data('group');
-                    var error_message = typeof response.data == 'string' ? response.data : response.data[group];
-                    $form.find('div.alert.danger').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
-                    return;
-                }
+            $(this).data('initialized', true);
 
-                var $target = $($form.data('target'));
-                var group = $form.find('input:file').attr('name');
+            var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
+            var percent = $(this).parent().find('.js-ajax-upload-progress .percent');
 
-                var template = $form.find('script').text();
+            MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
 
-                switch($form.data('action').toString()){
-                    case 'replace':
-                        var html = Mustache.render(template, response[group]);
-                        $target.replaceWith($(html));
-                    break;
-                    case 'set-content':
+            // bind form using 'ajaxForm'
+            $(this).ajaxForm({
+                //target:        '#output1',   // target element(s) to be updated with server response
+                beforeSubmit: function(arr, $form, options) {
+                    MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), true);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.animate({'width':percentVal});
+                    percent.html(percentVal);
+                    console.log('percent',percentComplete);
+                },
+                success: function (response, statusText, xhr, $form)  {
 
-                        var html = Mustache.render(template, response[group]);
-                        $target.html(html);
-                    break;
-                    case 'a-href':
-                        try{
-                            $target.attr('href', response[group].url);
-                        }catch (e){}
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
 
-                    break;
-                    case 'image-src':
-                        try{
-                            if($form.data('transform'))
-                                $target.attr('src', response[group].files[$form.data('transform')].url);
-                            else
-                                $target.attr('src', response[group].url);
-                        }catch (e){}
+                    if(response.error){
+                        MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), false);
+                        var group = $form.data('group');
+                        var error_message = typeof response.data == 'string' ? response.data : response.data[group];
+                        $form.find('div.alert.danger').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
+                        return;
+                    }
 
-                    break;
-                    case 'background-image':
-                        $target.each(function(){
-                            try{
-                                if($form.data('transform'))
-                                    $(this).css('background-image', 'url(' + response[group].files[$form.data('transform')].url + ')');
-                                else
-                                    $(this).css('background-image', 'url(' + response[group].url + ')');
-                            }catch (e){}
-                        });
-                    break;
+                    var $target = $($form.data('target'));
+                    var group = $form.find('input:file').attr('name');
 
-                    case 'append':
-                        for(var i in response[group]){
+                    var template = $form.find('script').text();
+                    if($form.data('action')){
+                        switch($form.data('action').toString()){
+                            case 'replace':
+                                var html = Mustache.render(template, response[group]);
+                                $target.replaceWith($(html));
+                            break;
+                            case 'set-content':
 
-                            if(!response[group][i].description)
-                               response[group][i].description = response[group][i].name;
+                                var html = Mustache.render(template, response[group]);
+                                $target.html(html);
+                            break;
+                            case 'a-href':
+                                try{
+                                    $target.attr('href', response[group].url);
+                                }catch (e){}
 
-                           var html = Mustache.render(template, response[group][i]);
-                           $target.append(html);
-                       }
-                    break;
+                            break;
+                            case 'image-src':
+                                try{
+                                    if($form.data('transform'))
+                                        $target.attr('src', response[group].files[$form.data('transform')].url);
+                                    else
+                                        $target.attr('src', response[group].url);
+                                }catch (e){}
 
-                }
+                            break;
+                            case 'background-image':
+                                $target.each(function(){
+                                    try{
+                                        if($form.data('transform'))
+                                            $(this).css('background-image', 'url(' + response[group].files[$form.data('transform')].url + ')');
+                                        else
+                                            $(this).css('background-image', 'url(' + response[group].url + ')');
+                                    }catch (e){}
+                                });
+                            break;
 
-                $form.get(0).reset();
-                if($form.parents('.js-editbox').data('success-callback'))
-                    eval($form.parents('.js-editbox').data('success-callback'));
+                            case 'append':
+                                for(var i in response[group]){
 
-                $form.parents('.js-editbox').find('.mc-cancel').click();
-            },
+                                    if(!response[group][i].description)
+                                       response[group][i].description = response[group][i].name;
 
-            // other available options:
-            //url:       url         // override for form's 'action' attribute
-            //type:      type        // 'get' or 'post', override for form's 'method' attribute
-            dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
-            //clearForm: true        // clear all form fields after successful submit
-            //resetForm: true        // reset the form after successful submit
+                                   var html = Mustache.render(template, response[group][i]);
+                                   $target.append(html);
+                               }
+                            break;
 
-            // $.ajax options can be used here too, for example:
-            //timeout:   3000
+                        }
+                    }
+                    $form.trigger('ajaxform.success', [response]);
+
+                    $form.get(0).reset();
+                    if($form.parents('.js-editbox').data('success-callback'))
+                        eval($form.parents('.js-editbox').data('success-callback'));
+
+                    $form.parents('.js-editbox').find('.mc-cancel').click();
+                },
+
+                // other available options:
+                //url:       url         // override for form's 'action' attribute
+                //type:      type        // 'get' or 'post', override for form's 'method' attribute
+                dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
+                //clearForm: true        // clear all form fields after successful submit
+                //resetForm: true        // reset the form after successful submit
+
+                // $.ajax options can be used here too, for example:
+                //timeout:   3000
+            });
         });
+
+
     }
 };
 

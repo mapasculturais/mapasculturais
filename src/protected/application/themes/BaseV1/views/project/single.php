@@ -220,14 +220,18 @@ $this->includeAngularEntityAssets($entity);
                     </edit-box>
 
                     <ul class="attachment-list">
-                        <li ng-repeat="fileConfiguration in data.fileConfigurations" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
                             <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
                             <div class="attachment-description">
                                 {{fileConfiguration.description}}<br>
                                 {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
+                                <p id="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
+                                    <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
+                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target="#file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                </p>
                             </div>
                             <div class="botoes">
-                                <a class="editar js-open-editbox hltip" ng-click="editbox.open('editbox-registration-files-'+fileConfiguration.id, $event)" title="editar"></a>
+                                <a class="editar js-open-editbox hltip" ng-click="editbox.open('editbox-registration-files-'+fileConfiguration.id, $event); initAjaxUploader(fileConfiguration.id, $index)" title="editar"></a>
                                 <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
 
@@ -237,19 +241,22 @@ $this->includeAngularEntityAssets($entity);
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                                 <p><label><input style="width:auto" type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
 
-
-                                <form class="js-ajax-upload" method="post" action="{{data.getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                                Modelo
+                                <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
-                                    <p class="form-help">Tamanho máximo do arquivo: {{data.maxUploadSize}}</p>
-                                    <input type="file" name="{{data.uploadFileGroup}}" />
+                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                                    <input type="file" name="{{uploadFileGroup}}" />
+                                    <input type="submit" value="Enviar Modelo">
+
+                                    <div class="js-ajax-upload-progress">
+                                        <div class="progress">
+                                            <div class="bar"></div >
+                                            <div class="percent">0%</div >
+                                        </div>
+                                    </div>
                                 </form>
 
-                                <div class="js-ajax-upload-progress">
-                                    <div class="progress">
-                                        <div class="bar"></div >
-                                        <div class="percent">0%</div >
-                                    </div>
-                                </div>
+
 
                             </edit-box>
 

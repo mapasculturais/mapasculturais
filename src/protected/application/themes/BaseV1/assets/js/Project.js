@@ -78,9 +78,9 @@
     }]);
     module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox) {
         $scope.isEditable = MapasCulturais.isEditable;
-        $scope.uploadFileGroup = 'registrationFileConfiguration';
+        $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
-            return RegistrationFileConfigurationService.getUrl()+'/upload/'+ownerId;
+            return RegistrationFileConfigurationService.getUrl()+'/upload/id:'+ownerId;
         };
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
@@ -120,7 +120,8 @@
                     id: model.id,
                     title: model.title,
                     description: model.description,
-                    required: model.required
+                    required: model.required,
+                    template: model.template
                 };
             RegistrationFileConfigurationService
                 .edit(data)
@@ -131,6 +132,21 @@
                 });
 
         };
+
+        $scope.initAjaxUploader = function(id, index){
+            var $form = jQuery('#editbox-registration-files-' + id);
+            if($form.data('initialized'))
+                return;
+            MapasCulturais.AjaxUploader.init($form);
+
+            $form.on('ajaxform.success', function(evt, response){
+                console.log(response);
+                $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
+                $scope.$apply();
+                console.log($scope.data.fileConfigurations);
+            });
+        };
+
     }]);
 
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, ProjectService, EditBox, RelatedAgentsService) {
@@ -183,7 +199,7 @@
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
                 RelatedAgentsService.create(attrs.name, entity.id).success(function(){
                     var $el = $('#registration-agent-' + attrs.name);
-                    
+
                     EditBox.close(editBoxId);
                 });
             };

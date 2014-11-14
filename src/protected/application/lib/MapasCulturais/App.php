@@ -442,20 +442,20 @@ class App extends \Slim\Slim{
             // get types and metadata configurations
             $space_types = include APPLICATION_PATH.'/conf/space-types.php';
             $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
-            
+
             $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
             $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
-            
+
             $event_types = include APPLICATION_PATH.'/conf/event-types.php';
             $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
-            
+
             $project_types = include APPLICATION_PATH.'/conf/project-types.php';
             $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
-            
+
             // register auth providers
             // @TODO veridicar se isto está sendo usado, se não remover
             $this->registerAuthProvider('OpenID');
-            
+
             // register controllers
 
             $this->registerController('site',    'MapasCulturais\Controllers\Site');
@@ -466,10 +466,10 @@ class App extends \Slim\Slim{
             $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
             $this->registerController('space',   'MapasCulturais\Controllers\Space');
             $this->registerController('project', 'MapasCulturais\Controllers\Project');
-            
-            $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');           
+
+            $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
             $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
-            
+
             $this->registerController('term',           'MapasCulturais\Controllers\Term');
             $this->registerController('file',           'MapasCulturais\Controllers\File');
             $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
@@ -493,7 +493,7 @@ class App extends \Slim\Slim{
                 'avatar' => new Definitions\FileGroup('avatar', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
-                'registrationFileConfiguration' => new Definitions\FileGroup('registrationForm', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+                'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
             );
 
             // register file groups
@@ -518,18 +518,18 @@ class App extends \Slim\Slim{
             $this->registerFileGroup('project', $file_groups['gallery']);
 
             $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
-            
+
             $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
             foreach($image_transformations as $name => $transformation)
                 $this->registerImageTransformation($name, $transformation);
-            
-            
+
+
             // registration agent relations
-            
-            foreach($this->config['registration.agentRelations'] as $config){ 
+
+            foreach($this->config['registration.agentRelations'] as $config){
                 $def = new Definitions\RegistrationAgentRelation($config);
                 $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
-                
+
                 $this->registerRegistrationAgentRelation($def);
             }
 
@@ -702,8 +702,8 @@ class App extends \Slim\Slim{
 
         $this->applyHook('app.register');
     }
-    
-    
+
+
 
     function getRegisteredGeoDivisions(){
         $result = array();
@@ -1158,29 +1158,29 @@ class App extends \Slim\Slim{
     public function registerRole($role){
 
     }
-    
+
     public function getRoleName($role){
         $roles = include APPLICATION_PATH . 'conf/roles.php';
         return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
     }
-    
-    
+
+
     function registerRegistrationAgentRelation(Definitions\RegistrationAgentRelation $def){
         if(key_exists($def->agentRelationGroupName, $this->_register['registration_agent_relations'])){
             throw new \Exception('There is already a RegistrationAgentRelation with agent relation group name "' . $def->agentRelationGroupName . '"');
         }
-        
+
         $this->_register['registration_agent_relations'][$def->agentRelationGroupName] = $def;
     }
-    
+
     /**
-     * 
+     *
      * @return \MapasCulturais\Definitions\RegistrationAgentRelation[]
      */
     function getRegisteredRegistrationAgentRelations(){
         return $this->_register['registration_agent_relations'];
     }
-    
+
     function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){
         if(key_exists($group_name, $this->_register['registration_agent_relations'])){
             return $this->_register['registration_agent_relations'][$group_name];
@@ -1643,6 +1643,7 @@ class App extends \Slim\Slim{
      * @param \MapasCulturais\Definitions\FileGroup $group The group to register
      */
     function registerFileGroup($controller_id, Definitions\FileGroup $group){
+        $controller_id = strtolower($controller_id);
         if(!key_exists($controller_id, $this->_register['file_groups']))
             $this->_register['file_groups'][$controller_id] = array();
 
