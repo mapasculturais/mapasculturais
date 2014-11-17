@@ -92,7 +92,7 @@
             }
         };
         $scope.fileConfigurationBackups = [];
-        console.log($scope.data.fileConfigurations);
+
         $scope.createFileConfiguration = function(){
             RegistrationFileConfigurationService
                 .create($scope.data.newFileConfiguration)
@@ -135,17 +135,12 @@
         };
 
         $scope.cancelFileConfigurationEditBox = function(attrs){
-            console.log(attrs);
-            console.log($scope.data.fileConfigurations[attrs.index].title, 'bkp ' + $scope.fileConfigurationBackups[attrs.index].title);
             $scope.data.fileConfigurations[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
             delete $scope.fileConfigurationBackups[attrs.index];
         };
 
         $scope.openFileConfigurationEditBox = function(id, index, event){
-            console.log(arguments);
-            console.log($scope.data.fileConfigurations[index].title, 'bkp ');
             $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fileConfigurations[index]);
-            console.log($scope.data.fileConfigurations[index].title, 'bkp ' + $scope.fileConfigurationBackups[index].title);
             EditBox.open('editbox-registration-files-'+id, event);
             initAjaxUploader(id, index);
         };
@@ -157,10 +152,8 @@
             MapasCulturais.AjaxUploader.init($form);
 
             $form.on('ajaxform.success', function(evt, response){
-                console.log(response);
                 $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
-                console.log($scope.data.fileConfigurations);
             });
         };
 
@@ -175,7 +168,6 @@
             $scope.editbox = EditBox;
 
             $scope.openEditBox = function(id, e){
-                console.log(id, e);
                 EditBox.open(id, e);
             };
 
