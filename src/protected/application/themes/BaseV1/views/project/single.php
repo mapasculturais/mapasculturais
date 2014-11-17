@@ -231,11 +231,11 @@ $this->includeAngularEntityAssets($entity);
                                 </p>
                             </div>
                             <div class="botoes">
-                                <a class="editar js-open-editbox hltip" ng-click="editbox.open('editbox-registration-files-'+fileConfiguration.id, $event); initAjaxUploader(fileConfiguration.id, $index)" title="editar"></a>
+                                <a class="editar js-open-editbox hltip" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);" title="editar"></a>
                                 <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
 
-                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
 
                                 <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>

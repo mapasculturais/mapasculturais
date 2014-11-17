@@ -91,6 +91,7 @@
                 required: false
             }
         };
+        $scope.fileConfigurationBackups = [];
         console.log($scope.data.fileConfigurations);
         $scope.createFileConfiguration = function(){
             RegistrationFileConfigurationService
@@ -133,7 +134,23 @@
 
         };
 
-        $scope.initAjaxUploader = function(id, index){
+        $scope.cancelFileConfigurationEditBox = function(attrs){
+            console.log(attrs);
+            console.log($scope.data.fileConfigurations[attrs.index].title, 'bkp ' + $scope.fileConfigurationBackups[attrs.index].title);
+            $scope.data.fileConfigurations[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
+            delete $scope.fileConfigurationBackups[attrs.index];
+        };
+
+        $scope.openFileConfigurationEditBox = function(id, index, event){
+            console.log(arguments);
+            console.log($scope.data.fileConfigurations[index].title, 'bkp ');
+            $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fileConfigurations[index]);
+            console.log($scope.data.fileConfigurations[index].title, 'bkp ' + $scope.fileConfigurationBackups[index].title);
+            EditBox.open('editbox-registration-files-'+id, event);
+            initAjaxUploader(id, index);
+        };
+
+        var initAjaxUploader = function(id, index){
             var $form = jQuery('#editbox-registration-files-' + id);
             if($form.data('initialized'))
                 return;
