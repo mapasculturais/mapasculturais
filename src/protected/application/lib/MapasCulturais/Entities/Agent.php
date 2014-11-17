@@ -31,7 +31,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityNested {
-            Traits\EntityNested::setParent as netedSetParent;
+            Traits\EntityNested::setParent as nestedSetParent;
         }
 
     const STATUS_RELATED = -1;
