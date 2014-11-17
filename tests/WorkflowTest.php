@@ -34,6 +34,38 @@ class WorkflowTest extends MapasCulturais_TestCase{
             }, "Asserting that AuthorityRequest is created when an user tries to take ownership of a {$class}.");
         }
 
+        // asserting that the request authority is created when user tries to TAKE ownership of an entity to another user agent that he has control
+        foreach($this->entities as $class => $e){
+            $this->resetTransactions();
+            
+            
+            $admin = $this->getUser('admin');
+            $this->user = $admin;
+            
+            $newAgent = $this->getNewEntity('Agent', $admin);
+            $newAgent->owner = $admin->profile;
+            $newAgent->save(true);
+            
+            $user1 = $this->getUser('normal',0);
+            $user2 = $this->getUser('normal',1);
+            
+            $newAgent->createAgentRelation($user2->profile, 'CONTROL', true, true, true);
+            
+            $this->user = $user2;
+            
+            $this->app->em->refresh($newAgent);
+            
+            $entities = $user1->$e;
+            $entity = $entities[0];
+            
+            
+            $this->assertAuthorizationRequestCreated(function() use($newAgent, $entity){
+                $entity->owner = $newAgent;
+                $entity->save();
+            }, "Asserting that AuthorityRequest is created when an user tries to take ownership of a {$class}. to another user agent that he has control");
+            
+        }
+
         // asserting that the request authority is created when user tries to GIVE ownership of an entity
         foreach($this->entities as $class => $e){
             $this->resetTransactions();
