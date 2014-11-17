@@ -9,7 +9,7 @@ $avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall'
         <p class="alert warning">Aguardando confirmação</p>
         <div class="clearfix">
             <img src="<?php echo $avatar_url ?>" class="registration-agent-avatar js-registration-agent-avatar" />
-            <div class="js-registration-agent-name"><?php echo $agent ? $agent->name : 'Não informado' ?></div>
+            <div class="js-registration-agent-name"><?php echo $agent ? '<a href="#">'.$agent->name.'</a>' : 'Não informado' ?></div>
         </div>
     </div>
     <?php if($this->isEditable()): ?>
