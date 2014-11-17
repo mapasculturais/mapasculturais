@@ -336,7 +336,7 @@
                         EditBox.close(attrs.id);
 
                     if(angular.isFunction($scope.onCancel)){
-                        $scope.onCancel();
+                        $scope.onCancel(attrs);
                     }
                 };
 
