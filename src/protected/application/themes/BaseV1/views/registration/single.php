@@ -61,6 +61,7 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <div class="registration-fieldset">
     <h4>Agentes</h4>
+    <p class="registration-help">Relacione os agentes a esta Inscrição</p>
         <!-- agente responsável -->
         <ul class="registration-list">
             <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
@@ -90,5 +91,5 @@ $this->includeAngularEntityAssets($entity);
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
-    
+
 </div>
