@@ -98,7 +98,7 @@ $this->includeAngularEntityAssets($entity);
                 <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                     <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : 'Opcional'}}</div>
                     <div class="attachment-description">
-                        {{fileConfiguration.description}} (<a target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">baixar modelo</a>)              
+                        {{fileConfiguration.description}} (<a target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
                     </div>
                     <a class="attachment-title" href="#">Nome-do-arquivo-anexado.ext</a>
                     <?php if($this->isEditable()): ?>
@@ -132,7 +132,6 @@ $this->includeAngularEntityAssets($entity);
 
     </div>
 
->>>>>>> 34162500e041ed51d78b723f835581003e6d4c0a
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
