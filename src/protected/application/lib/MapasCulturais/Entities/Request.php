@@ -244,7 +244,10 @@ abstract class Request extends \MapasCulturais\Entity{
 
     function save($flush = false) {
         $this->requestUid = $this->generateUid();
-        if($request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid)) && !$request->equals($this)){
+        
+        $request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid));
+        
+        if($request && !$request->equals($this)){
             $request->_applyPostPersistHooks();
         }else{
             // if the origin is a new entity, reset the origin
