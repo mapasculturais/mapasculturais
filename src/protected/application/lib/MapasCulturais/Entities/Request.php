@@ -31,7 +31,6 @@ use MapasCulturais\App;
 abstract class Request extends \MapasCulturais\Entity{
     const STATUS_PENDING = 1;
     const STATUS_APPROVED = 2;
-    const STATUS_REJECTED = 3;
 
     /**
      * @var integer
@@ -199,13 +198,14 @@ abstract class Request extends \MapasCulturais\Entity{
 
         $app->disableAccessControl();
         $this->_doRejectAction();
-
-        $this->status = self::STATUS_REJECTED;
-        $this->save(true);
-
         $app->enableAccessControl();
 
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').reject:after');
+        
+        $app->disableAccessControl();
+        $this->delete(true);
+        $app->enableAccessControl();
+
     }
 
     function getRequestType(){
@@ -244,7 +244,7 @@ abstract class Request extends \MapasCulturais\Entity{
 
     function save($flush = false) {
         $this->requestUid = $this->generateUid();
-        if($request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid))){
+        if($request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid)) && !$request->equals($this)){
             $request->_applyPostPersistHooks();
         }else{
             // if the origin is a new entity, reset the origin

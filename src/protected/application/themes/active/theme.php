@@ -216,7 +216,7 @@ $app->hook('workflow(<<*>>).reject:before', function() use($app){
         case "MapasCulturais\Entities\RequestEventOccurrence":
             $message = $origin->canUser('@control') ?
                 "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+                "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
         break;
         case "MapasCulturais\Entities\RequestEventProject":
             $message = $origin->canUser('@control') ?
