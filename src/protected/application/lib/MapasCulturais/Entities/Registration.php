@@ -22,10 +22,11 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation;
 
 
-    const STATUS_REJECTED = -3;
-    const STATUS_WAITING = -2;
-    const STATUS_MAYBE = -1;
-    const STATUS_APPROVED = self::STATUS_ENABLED;
+    const STATUS_REJECTED = 3;
+    const STATUS_WAITING = 5;
+    const STATUS_MAYBE = 8;
+    const STATUS_APPROVED = 10;
+    const STATUS_SENT = self::STATUS_ENABLED;
 
     protected static $validations = array(
         'owner' => array(

@@ -4,7 +4,7 @@ $avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall'
 <li class="registration-list-item">
     <div class="registration-label"><?php echo $label ?> <?php if ($required): ?>*<?php endif; ?></div>
     <div class="registration-description"><?php echo $description ?></div>
-    
+
     <div id="registration-agent-<?php echo $name ?>" class="js-registration-agent registration-agent <?php if($status < 0): ?>pending<?php endif; ?>">
         <p class="alert warning">Aguardando confirmação</p>
         <div class="clearfix">
@@ -15,9 +15,10 @@ $avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall'
     <?php if($this->isEditable()): ?>
         <div class="btn-group">
             <?php if($agent): ?>
-                <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="editar <?php echo $label ?>">editar</a> <a href="#" class="botao excluir hltip" title="excluir <?php echo $label ?>">excluir</a>
+                <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="Editar <?php echo $label ?>">editar</a>
+                <a href="#" class="botao excluir hltip" title="Excluir <?php echo $label ?>">excluir</a>
             <?php else: ?>
-                <a class="botao adicionar hltip"ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="adicionar <?php echo $label ?>">adicionar</a>
+                <a class="botao adicionar hltip"ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="Adicionar <?php echo $label ?>">adicionar</a>
             <?php endif; ?>
         </div>
     <?php endif;?>

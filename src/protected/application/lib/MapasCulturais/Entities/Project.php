@@ -28,7 +28,6 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete;
 
-
     protected static $validations = array(
         'name' => array(
             'required' => 'O nome do projeto é obrigatório'
@@ -88,13 +87,6 @@ class Project extends \MapasCulturais\Entity
      */
     protected $longDescription;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="public_registration", type="boolean", nullable=false)
-     */
-    protected $publicRegistration = false;
-
 
     /**
      * @var \DateTime
@@ -111,6 +103,20 @@ class Project extends \MapasCulturais\Entity
     protected $registrationTo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="use_registrations", type="boolean", nullable=false)
+     */
+    protected $useRegistrations = false;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="published_registrations", type="boolean", nullable=false)
+     */
+    protected $publishedRegistrations = false;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
@@ -123,6 +129,8 @@ class Project extends \MapasCulturais\Entity
      * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
      */
     protected $registrationCategories = array();
+
+
 
     /**
      * @var integer
@@ -186,6 +194,18 @@ class Project extends \MapasCulturais\Entity
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
+
+    function getSentRegistrations(){
+        // ============ IMPORTANTE =============//
+        // @TODO implementar findSentByProject no repositório de inscrições
+        $registrations = App::i()->repo('Registration')->findBy(array('project' => $this));
+        $result = array();
+        foreach($registrations as $re){
+            if($re->status > 0)
+                $result[] = $re;
+        }
+        return $registrations;
     }
 
     function setRegistrationFrom($date){
@@ -252,155 +272,17 @@ class Project extends \MapasCulturais\Entity
         }
     }
 
-    function getRegistrationByAgent(Agent $agent){
-        $app = App::i();
-        $group = $app->projectRegistrationAgentRelationGroupName;
-        $relation_class = $this->getAgentRelationEntityClassName();
-
-        $dql = "SELECT e FROM $relation_class e WHERE e.group = :g AND e.owner = :o AND e.agent = :a";
-        $q = $app->em->createQuery($dql);
-        $q->setParameters(array(
-            'a' => $agent,
-            'o' => $this,
-            'g' => $group
-        ));
-
-        $q->setMaxResults(1);
-
-        $result = $q->getOneOrNullResult();
-        return $result;
+    function publishRegistrations(){
+        $this->checkPermission('publishRegistrations');
     }
 
-    function isRegistered(Agent $agent){
-        return (bool) $this->getRegistrationByAgent($agent);
+    protected function canUserPublishRegistrations($user){
+        if($user->is('guest'))
+            return false;
+
+        if($this->isRegistrationOpen())
+            return false;
     }
-
-    function isRegistrationApproved(Agent $agent){
-        $registration = $this->getRegistrationByAgent($agent);
-        return $registration && $registration->status = ProjectAgentRelation::STATUS_ENABLED;
-    }
-
-    function register(Agent $agent, File $registrationForm = null){
-        $app = App::i();
-
-        $app->applyHookBoundTo($this, 'project.register:before', array($agent, $registrationForm));
-
-        if(!$this->isRegistrationOpen())
-            throw new \MapasCulturais\Exceptions\PermissionDenied(App::i()->user, $this, 'register');
-
-        $group = $app->projectRegistrationAgentRelationGroupName;
-
-        $relation_class = $this->getAgentRelationEntityClassName();
-
-        if($this->isRegistered($agent))
-            return $app->txt("This agent is already registered in this project.");
-
-        $relation = new $relation_class;
-        $relation->agent = $agent;
-        $relation->owner = $this;
-        $relation->group = $group;
-        $relation->status = ProjectAgentRelation::STATUS_REGISTRATION;
-
-        $relation->save();
-
-        if($registrationForm){
-            $registrationForm->owner = $relation;
-
-            $registrationForm->save();
-        }
-
-        $app->em->flush();
-
-        $this->clearAgentRelationCache();
-
-        $app->applyHookBoundTo($this, 'project.register:after', array($relation));
-        return $relation;
-    }
-
-
-    function approveRegistration(Agent $agent){
-        $app = App::i();
-
-        $this->checkPermission('approveRegistration');
-
-        $registration = $this->getRegistrationByAgent($agent);
-
-        $app->applyHookBoundTo($this, 'project.approveRegistration:before', array($registration));
-
-        $registration->status = ProjectAgentRelation::STATUS_ENABLED;
-
-        $registration->save(true);
-        $this->clearAgentRelationCache();
-
-        $app->applyHookBoundTo($this, 'project.approveRegistration:after', array($registration));
-
-        return $registration;
-    }
-
-
-    function rejectRegistration(Agent $agent){
-        $app = App::i();
-
-        $this->checkPermission('rejectRegistration');
-
-        $registration = $this->getRegistrationByAgent($agent);
-
-        $app->applyHookBoundTo($this, 'project.rejectRegistration:before', array($registration));
-
-        $registration->status = ProjectAgentRelation::STATUS_REGISTRATION_REJECTED;
-
-        $registration->save(true);
-        $this->clearAgentRelationCache();
-
-        $app->applyHookBoundTo($this, 'project.rejectRegistration:after', array($registration));
-
-        return $registration;
-    }
-
-
-    function getRegistrations($status = null){
-        if(!$this->id)
-            return array();
-
-        $app = App::i();
-
-        $group = $app->projectRegistrationAgentRelationGroupName;
-
-        $relation_class = $this->getAgentRelationEntityClassName();
-
-        $params = array('group' => $group, 'owner' => $this);
-
-        $status_dql = is_null($status) ? '' : 'AND e.status = ' . $status;
-
-        //return $app->repo($relation_class)->findBy($params, array('status' => 'ASC'));
-
-        $q = $app->em->createQuery("
-            SELECT
-                e,
-                a
-            FROM
-                $relation_class e
-                JOIN e.agent a
-            WHERE e.group = :group AND e.owner = :owner
-
-            $status_dql
-            ORDER BY
-                a.name ASC
-        ");
-
-        $q->setParameter('group', $group);
-        $q->setParameter('owner', $this);
-
-        $result = $q->getResult();
-
-        return $result;
-    }
-
-    function getApprovedRegistrations(){
-        return $this->getRegistrations(ProjectAgentRelation::STATUS_ENABLED);
-    }
-
-
 
     /** @ORM\PreRemove */
     public function unlinkEvents(){

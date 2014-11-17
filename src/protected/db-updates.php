@@ -121,6 +121,18 @@ return array(
     },
 
     'alter table registration add column registration_categories' => function() use($conn){
+        echo "adicionando coluna registration_categories\n";
         $conn->executeQuery('ALTER TABLE project ADD COLUMN registration_categories text;');
+    },
+
+    'alter table project add columns use_registrations AND publihed_registrations' => function() use($conn){
+        echo "adicionando coluna use_registrations\n";
+        $conn->executeQuery("ALTER TABLE project ADD COLUMN use_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
+
+        echo "adicionando coluna published_registrations\n";
+        $conn->executeQuery("ALTER TABLE project ADD COLUMN published_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
+
+        echo "removendo coluna public_registration\n";
+        $conn->executeQuery("ALTER TABLE project DROP COLUMN public_registration;");
     }
 );
