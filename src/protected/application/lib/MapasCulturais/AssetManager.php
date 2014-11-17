@@ -212,7 +212,7 @@ abstract class AssetManager{
         if(!$destination){
             $destination_file = $this->_getPublishedAssetFilename($asset_filename);
 
-            if(in_array($extension, array('jpg', 'png', 'gif'))){
+            if(in_array($extension, array('jpg', 'png', 'gif', 'ico'))){
                 $destination = "img/$destination_file";
             }else{
                 $destination = "$extension/$destination_file";
