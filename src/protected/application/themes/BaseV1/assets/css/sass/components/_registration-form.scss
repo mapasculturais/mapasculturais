@@ -93,12 +93,16 @@
         padding: $padding-base;
         padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
+        a {
+        	font-weight: normal;
+        }
         .registration-label {
         	font-weight: bold;
         }
         .registration-description {
         	font-size: $font-size-smaller;
         	color: #999;
+        	margin-bottom: $line-height-half;
         }
         .btn-group {
             position: absolute;
@@ -118,7 +122,11 @@
     .attachment-list-item {
         position: relative;
         padding: $padding-base;
+        padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
+        a {
+        	font-weight: normal;
+        }
         .attachment-title {
         	display: block;
         	&:before {
@@ -129,6 +137,22 @@
         .attachment-description {
         	font-size: $font-size-smaller;
         	color: #999;
+        	margin-bottom: $line-height-half;
+        	a {
+        		&:before {
+        			@extend %icon;
+  					font-size: inherit;
+  					content:"\e092";
+        		}
+        	}
+        }
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
+        }
+        &:hover {
+        	background: $gray-lighter;
         }
     }
     .is-editable {

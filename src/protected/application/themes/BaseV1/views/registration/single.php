@@ -60,7 +60,7 @@ $this->includeAngularEntityAssets($entity);
         </p>
     </div>
     <div class="registration-fieldset">
-    <h4>Agentes</h4>
+        <h4>Agentes</h4>
         <!-- agente responsável -->
         <ul class="registration-list">
             <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
@@ -87,6 +87,40 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <!-- anexos -->
+    <div class="registration-fieldset">
+        <h4>Anexos</h4>
+        <ul class="attachment-list">
+            <!-- se já subiu o arquivo-->
+            <li class="attachment-list-item">
+                <div class="label">Título do Anexo *</div>
+                <p class="attachment-description">
+                    Descrição do anexo (<a href="#"> baixar modelo</a>)
+                </p>
+                <a class="attachment-title" href="#">Nome-do-arquivo-anexado.ext</a>
+
+                <?php if($this->isEditable()): ?>
+                    <div class="btn-group">
+                        <a class="botao editar hltip" title="editar anexo">editar</a> <a href="#" class="botao excluir hltip" title="excluir anexo">excluir</a>
+                    </div>
+                <?php endif;?>            
+            </li>
+            <!-- se não subiu o arquivo ainda -->
+            <li class="attachment-list-item">
+                <div class="label">Título do Anexo *</div>
+                <p class="attachment-description">
+                    Descrição do anexo (<a href="#"> baixar modelo</a>)
+                </p>
+                <a class="attachment-title" href="#">Nome-do-arquivo-anexado.ext</a>
+
+                <?php if($this->isEditable()): ?>
+                    <div class="btn-group">
+                        <a class="botao adicionar hltip" title="adicionar anexo">adicionar</a>
+                    </div>
+                <?php endif;?>            
+            </li>
+
+        </ul>
+    </div>
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
