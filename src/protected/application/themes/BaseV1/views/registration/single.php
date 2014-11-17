@@ -88,8 +88,59 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <!-- anexos -->
+    <style>
+    .attachment-list-item .btn-group {
+        position: absolute;
+        bottom: 0.75rem;
+        right: 0.75rem;
+    }
+    </style>
+    <div id="registration-attachments" class="registration-fieldset">
+
+        <h4>Anexos</h4>
+        <p class="registration-help">Anexator descrivinhator helpior.</p>
+        <!-- da parte downloads.php -->
+
+        <div ng-controller="RegistrationFileConfigurationsController">
+
+            <ul class="attachment-list">
+                <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
+                    <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
+                    <div class="attachment-description">
+                        {{fileConfiguration.description}}<br>
+                        {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="botao simples" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)">Selecionar arquivo</a>
+                        <a class="botao simples" target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">Fazer download modelo</a>
+                    </div>
+
+                    <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
+
+                        <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                            <div class="alert danger escondido"></div>
+                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                            <input type="file" name="{{uploadFileGroup}}" />
+                            <input type="submit" value="Enviar Modelo">
+
+                            <div class="js-ajax-upload-progress">
+                                <div class="progress">
+                                    <div class="bar"></div >
+                                    <div class="percent">0%</div >
+                                </div>
+                            </div>
+                        </form>
+
+                    </edit-box>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
-
 </div>
