@@ -14,7 +14,7 @@ if($this->isEditable()){
 ?>
 
 <div id="editable-entity" class="clearfix sombra <?php echo $classes ?>" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>" data-submit-button-selector="#submitButton">
-    <h1 id="logo-spcultura-peq"><a href="<?php echo $app->getBaseUrl() ?>"><img src="<?php $this->asset('img/logo-spcultura.png'); ?>" /></a></h1>
+    <?php $this->part('editable-entity-logo') ?>
     <?php if ($this->isEditable()): ?>
         <script type="text/javascript">
             MapasCulturais.Messages.help('Os ícones de lápis indicam conteúdos editáveis.');

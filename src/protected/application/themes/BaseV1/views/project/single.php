@@ -200,7 +200,17 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-agent-relations -->
             <style>
-                .attachment-list-item .adicionar:before{
+                .attachment-list-item .enviar:before{
+                    display: inline-block;
+                    width: 1rem;
+                    height: 1rem;
+                    font-size: 1rem;
+                    font-family: 'ElegantIcons';
+                    vertical-align: top;
+                    text-transform: none;
+                    font-weight: normal;
+                    font-style: none;
+
                     content: "\e091";
                 }
 
@@ -234,7 +244,7 @@ $this->includeAngularEntityAssets($entity);
                             </div>
                             <div class="botoes" style="display:block">
                                 <a class="editar js-open-editbox hltip" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);" title="editar"></a>
-                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="removeFileConfiguration(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
 
                             <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
@@ -244,17 +254,16 @@ $this->includeAngularEntityAssets($entity);
                             </edit-box>
 
                             <div class="file-{{fileConfiguration.template.id}}">
-                                <a ng-href="{{fileConfiguration.template.url}}">Modelo {{fileConfiguration.template.name}}</a>
+                                <a ng-href="{{fileConfiguration.template.url}}">Modelo{{fileConfiguration.template ? ': '+fileConfiguration.template.name : ''}}</a>
                                 <div style="display: inline-block">
-                                    <a class="js-open-editbox hltip" ng-class="{'editar':fileConfiguration.template,'adicionar':!fileConfiguration.template}" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" title="{{fileConfiguration.template ? 'Editar':'Enviar'}} Modelo"></a>
-                                    <a ng-if="fileConfiguration.template" data-href="{{fileConfiguration.template.deleteUrl}}" data-confirm-message="Remover este modelo?" class="icone icon_close_alt hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                    <a class="js-open-editbox hltip" ng-class="{'editar':fileConfiguration.template,'enviar':!fileConfiguration.template}" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" title="{{fileConfiguration.template ? 'Editar':'Enviar'}} Modelo"></a>
+                                    <a ng-if="fileConfiguration.template" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="Excluir Modelo"></a>
                                 </div>
                             </div>
 
                             <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
                                     <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
-                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target=".file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
                                 </p>
                                 <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
@@ -342,7 +351,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('approveRegistration')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar lista de inscritos</a>
+                <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
             </div>
             <table class="js-registration-list registrations-table">
                 <thead>

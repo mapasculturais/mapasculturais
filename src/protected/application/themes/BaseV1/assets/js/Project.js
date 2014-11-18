@@ -76,12 +76,14 @@
         };
 
     }]);
-    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox) {
+    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
+
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
             return RegistrationFileConfigurationService.getUrl()+'/upload/id:'+ownerId;
         };
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
             newFileConfiguration: {
@@ -91,30 +93,28 @@
                 required: false
             }
         };
+
         $scope.fileConfigurationBackups = [];
 
         $scope.createFileConfiguration = function(){
-            RegistrationFileConfigurationService
-                .create($scope.data.newFileConfiguration)
-                .then(function(response){
+            RegistrationFileConfigurationService.create($scope.data.newFileConfiguration).then(function(response){
+                if(!response.error){
+                    $scope.data.fileConfigurations.push(response);
+                    EditBox.close('editbox-registration-files');
+                }
+            });
+        };
+
+        $scope.removeFileConfiguration = function (id, $index) {
+            if(confirm('Deseja remover este item?')){
+                RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
-                        $scope.data.fileConfigurations.push(response);
-                        EditBox.close('editbox-registration-files');
+                        $scope.data.fileConfigurations.splice($index, 1);
                     }
                 });
-
-        };
-        $scope.remove = function (id, $index) {
-            if(confirm('Deseja remover este item?')){
-                RegistrationFileConfigurationService
-                    .delete(id)
-                    .then(function(response){
-                        if(!response.error){
-                            $scope.data.fileConfigurations.splice($index, 1);
-                        }
-                    });
             }
         };
+
         $scope.editFileConfiguration = function(attrs) {
             var model = $scope.data.fileConfigurations[attrs.index],
                 data = {
@@ -124,14 +124,11 @@
                     required: model.required,
                     template: model.template
                 };
-            RegistrationFileConfigurationService
-                .edit(data)
-                .then(function(response){
-                    if(!response.error){
-                        EditBox.close('editbox-registration-files-'+data.id);
-                    }
-                });
-
+            RegistrationFileConfigurationService.edit(data).then(function(response){
+                if(!response.error){
+                    EditBox.close('editbox-registration-files-'+data.id);
+                }
+            });
         };
 
         $scope.cancelFileConfigurationEditBox = function(attrs){
@@ -147,6 +144,14 @@
         $scope.openFileConfigurationTemplateEditBox = function(id, index, event){
             EditBox.open('editbox-registration-files-template-'+id, event);
             initAjaxUploader(id, index);
+        };
+
+        $scope.removeFileConfigurationTemplate = function (id, $index) {
+            if(confirm('Deseja remover este item?')){
+                $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
+                    delete $scope.data.fileConfigurations[$index].template;
+                });
+            }
         };
 
         var initAjaxUploader = function(id, index){

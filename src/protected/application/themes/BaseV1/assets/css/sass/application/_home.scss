@@ -234,28 +234,30 @@
     line-height: 2.5rem;
     font-weight: bold;
     text-align: left;
-}
-#filtro-da-capa .placeholder:after {
-    margin-left: .75rem;
-    line-height: 2.5rem;
-    font-size: 1.5rem;
-    color: #fff;
-}
-#filtro-da-capa li {
-    padding: 0 $padding-base;
-    cursor: pointer;
-}
-#filtro-da-capa .submenu-dropdown {
-    top: 48px;
-    background: $brand-accent;
-}
-#filtro-da-capa .submenu-dropdown:before {
-    color: $brand-accent;
-}
-#filtro-da-capa .icone {
-    margin-right: 5px;
-    vertical-align: initial;
-    font-size: $font-size-base;
+    .placeholder {
+        padding-right: 2.5rem;
+        &:after {
+            margin-right: .5rem;
+            line-height: 2.5rem;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+    }
+    li {
+        padding: 0 $padding-base;
+        cursor: pointer;
+    }
+    .submenu-dropdown {
+        background: $brand-accent;
+        &:before {
+            color: $brand-accent;
+        }
+    }
+    .icone {
+        margin-right: 5px;
+        vertical-align: initial;
+        font-size: $font-size-base;
+    }
 }
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {
