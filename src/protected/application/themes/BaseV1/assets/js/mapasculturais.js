@@ -106,6 +106,20 @@ MapasCulturais.TemplateManager = {
 MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
 
 MapasCulturais.isEditable = MapasCulturais.request.action == 'create' || MapasCulturais.request.action == 'edit';
+function editableEntityAddHash(){
+    $('#editable-entity').find('.js-toggle-edit').each(function(){
+        var href = $(this).attr('href'),
+            cleanHref = href.indexOf('#') !== -1 ? href.split('#')[0] : href;
+        $(this).attr('href', cleanHref+location.hash);
+    });
+}
+jQuery(document).ready(function(){
+    editableEntityAddHash();
+    $(window).on('hashchange', function(){
+        editableEntityAddHash();
+    });
+});
+
 
 MapasCulturais.Messages = {
     delayToFadeOut: 5000,

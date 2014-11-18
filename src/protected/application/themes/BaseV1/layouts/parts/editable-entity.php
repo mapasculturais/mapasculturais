@@ -61,7 +61,7 @@ if($this->isEditable()){
             <?php endif; ?>
             <!-- se estiver na página de edição e logado mostrar:-->
             <?php if ($this->controller->action !== 'create'): ?>
-                <a href="<?php echo $this->controller->createUrl('single', array($entity->id)) ?>" class="botao principal">Sair do modo de edição</a>
+                <a href="<?php echo $this->controller->createUrl('single', array($entity->id)) ?>" class="botao principal js-toggle-edit">Sair do modo de edição</a>
             <?php endif; ?>
             <a id="submitButton" class="botao principal" data-legend="Salvar" data-legend-submitted="salvo">Salvar</a>
         </div>
@@ -71,7 +71,7 @@ if($this->isEditable()){
         </script>
         <div class="controles">
             <!-- se estiver na página comum e logado mostrar:-->
-            <a href="<?php echo $entity->editUrl ?>" class="botao principal">Editar</a>
+            <a href="<?php echo $entity->editUrl ?>" class="botao principal js-toggle-edit">Editar</a>
 
             <?php if ($entity->canUser('remove') && $entity->status > 0): ?>
                 <a href="<?php echo $entity->deleteUrl ?>" class="botao selected">Excluir</a>
