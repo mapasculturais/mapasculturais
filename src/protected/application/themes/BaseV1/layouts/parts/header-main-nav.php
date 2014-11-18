@@ -113,7 +113,7 @@
                         <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
                             <a href="<?php echo $app->createUrl('auth'); ?>">Trocar Usuário</a>
                         <?php endif; ?>
-                        <a href="<?php echo $app->createUrl('auth', 'login'); ?>">Sair</a>
+                        <a href="<?php echo $app->createUrl('auth', 'logout'); ?>">Sair</a>
                     </li>
                 </ul>
             </li>

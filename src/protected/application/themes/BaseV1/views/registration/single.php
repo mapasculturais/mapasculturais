@@ -106,7 +106,6 @@ $this->includeAngularEntityAssets($entity);
                         <a class="botao enviar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="enviar anexo">enviar</a>
                     </div>
                     <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
-
                         <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                             <div class="alert danger escondido"></div>
                             <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
@@ -115,12 +114,11 @@ $this->includeAngularEntityAssets($entity);
 
                             <div class="js-ajax-upload-progress">
                                 <div class="progress">
-                                    <div class="bar"></div >
-                                    <div class="percent">0%</div >
+                                    <div class="bar"></div>
+                                    <div class="percent">0%</div>
                                 </div>
                             </div>
                         </form>
-
                     </edit-box>
                 <?php endif;?>
             </li>
