@@ -725,17 +725,13 @@ h6 {
   width: 370px;
   text-align: right; }
 
-#logo-spcultura-peq {
-  display: none;
+#small-brand {
   position: absolute;
   left: .75rem;
-  margin-bottom: 0;
+  font-size: 20px;
   line-height: 2rem; }
-
-#logo-spcultura-peq img {
-  display: block;
-  height: 2.2rem;
-  width: auto; }
+  #small-brand a {
+    color: #1c5690; }
 
 #funcao-do-agente {
   width: 135px;
