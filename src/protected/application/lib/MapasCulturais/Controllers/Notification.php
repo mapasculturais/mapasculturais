@@ -79,12 +79,6 @@ class Notification extends EntityController {
 
         $request->reject();
 
-        $app->em->refresh($request);
-
-        $app->disableAccessControl();
-        $request->delete(true);
-        $app->enableAccessControl();
-
         if($this->isAjax()){
             $this->json(true);
         }else{
