@@ -38,13 +38,13 @@
     .submenu-dropdown {
         z-index: 900;
         position: absolute;
-        top: 40px;
+        top: 100%;
         right: 0;
         min-width: 100%;
              box-sizing: border-box;
         -moz-box-sizing: border-box;
         display: none;
-        margin: 0;
+        margin: 8px 0 0;
         padding: $padding-small 0;
         background: $gray-light;
         border-radius: $border-radius-base;

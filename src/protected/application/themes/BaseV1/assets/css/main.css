@@ -1613,28 +1613,24 @@ h6 {
   line-height: 2.5rem;
   font-weight: bold;
   text-align: left; }
-
-#filtro-da-capa .placeholder:after {
-  margin-left: .75rem;
-  line-height: 2.5rem;
-  font-size: 1.5rem;
-  color: #fff; }
-
-#filtro-da-capa li {
-  padding: 0 0.75rem;
-  cursor: pointer; }
-
-#filtro-da-capa .submenu-dropdown {
-  top: 48px;
-  background: #000000; }
-
-#filtro-da-capa .submenu-dropdown:before {
-  color: #000000; }
-
-#filtro-da-capa .icone {
-  margin-right: 5px;
-  vertical-align: initial;
-  font-size: 1rem; }
+  #filtro-da-capa .placeholder {
+    padding-right: 2.5rem; }
+    #filtro-da-capa .placeholder:after {
+      margin-right: .5rem;
+      line-height: 2.5rem;
+      font-size: 1.5rem;
+      color: #fff; }
+  #filtro-da-capa li {
+    padding: 0 0.75rem;
+    cursor: pointer; }
+  #filtro-da-capa .submenu-dropdown {
+    background: #000000; }
+    #filtro-da-capa .submenu-dropdown:before {
+      color: #000000; }
+  #filtro-da-capa .icone {
+    margin-right: 5px;
+    vertical-align: initial;
+    font-size: 1rem; }
 
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {
@@ -2481,13 +2477,13 @@ table.contratos td {
   .dropdown .submenu-dropdown {
     z-index: 900;
     position: absolute;
-    top: 40px;
+    top: 100%;
     right: 0;
     min-width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     display: none;
-    margin: 0;
+    margin: 8px 0 0;
     padding: 0.5rem 0;
     background: #e2e2e2;
     border-radius: 2px;
