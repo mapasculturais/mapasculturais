@@ -107,7 +107,7 @@ $this->includeMapAssets();
     <?php elseif($entity->project): ?>
         <div class="widget">
             <h3>Projeto</h3>
-            <a href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
+            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
         </div>
     <?php endif; ?>
     <div class="widget">

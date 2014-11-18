@@ -1945,6 +1945,7 @@ nav.sidebar-left .icone {
 
 .sidebar.event {
   border-top: #b3b921 12px solid; }
+  .sidebar.event .event-project-link,
   .sidebar.event .widget-list-item > a {
     color: #b3b921; }
   .sidebar.event .setinha {
