@@ -106,7 +106,7 @@ $this->includeAngularEntityAssets($entity);
                             <!-- se já subiu o arquivo-->
                             <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="editar anexo">editar</a> <a href="#" class="botao excluir hltip" title="excluir anexo">excluir</a>
                             <!-- se não subiu ainda -->
-                            <a class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="adicionar anexo">adicionar</a>
+                            <a class="botao enviar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="enviar anexo">enviar</a>
                         </div>
                         <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
 
