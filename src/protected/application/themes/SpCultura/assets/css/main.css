@@ -4075,14 +4075,14 @@ button.mfp-arrow-left {
 .ie .abas-objetos li.active:after {
   margin-top: 1px; }
 
-#logo-spcultura-peq {
+#logo-peq {
   display: none;
   position: absolute;
   left: .75rem;
   margin-bottom: 0;
   line-height: 2rem; }
 
-#logo-spcultura-peq img {
+#logo-peq img {
   display: block;
   height: 2.2rem;
   width: auto; }
