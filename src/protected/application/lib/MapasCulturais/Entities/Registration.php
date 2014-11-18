@@ -22,11 +22,10 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation;
 
 
+    const STATUS_WAITING = self::STATUS_ENABLED;
     const STATUS_REJECTED = 3;
-    const STATUS_WAITING = 5;
     const STATUS_MAYBE = 8;
     const STATUS_APPROVED = 10;
-    const STATUS_SENT = self::STATUS_ENABLED;
 
     protected static $validations = array(
         'owner' => array(
@@ -92,6 +91,35 @@ class Registration extends \MapasCulturais\Entity
         parent::__construct();
     }
 
+    function jsonSerialize() {
+        $json = array(
+            'id' => $this->id,
+            'number' => $this->number,
+            'owner' => $this->owner->simplify('id,name,singleUrl'),
+            'agentRelations' => array(),
+            'files' => array(),
+            'singleUrl' => $this->singleUrl,
+            'editUrl' => $this->editUrl,
+            'status' => $this->status
+        );
+
+        $related_agents = $this->getRelatedAgents();
+
+        foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
+            $json['agentRelations'][] = array(
+                'label' => $def->label,
+                'description' => $def->description,
+                'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
+            );
+        }
+
+        foreach($this->files as $group => $file){
+            $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+        }
+
+        return $json;
+    }
+
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
         $this->owner = $agent;
@@ -126,7 +154,7 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
-    function getRegistrationNumber(){
+    function getNumber(){
         if($this->id){
             return $this->project->id .'-'. str_pad($this->id,3,'0',STR_PAD_LEFT);
         }else{

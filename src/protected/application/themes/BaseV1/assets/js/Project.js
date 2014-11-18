@@ -173,11 +173,7 @@
                 });
 
             $scope.editbox = EditBox;
-
-            $scope.openEditBox = function(id, e){
-                EditBox.open(id, e);
-            };
-
+            
             $scope.data = {
                 spinner: false,
                 apiQueryRegistrationAgent: {
@@ -188,9 +184,38 @@
                 registration: {
                     owner: null,
                     category: null
+                },
+                
+                registrations: MapasCulturais.entity.registrations,
+                
+                registrationStatuses:[
+                    {value: null, label: 'Todos'},
+                    {value: 1, label: 'Aguardando'},
+                    {value: 3, label: 'Rejeitado'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Aprovado'}
+                ]
+            };
+
+            $scope.openEditBox = function(id, e){
+                EditBox.open(id, e);
+            };
+            
+            $scope.statusName = function(registration){
+                switch (registration.status){
+                    case 1: return 'waiting'; break;
+                    case 3: return 'rejected'; break;
+                    case 8: return 'maybe'; break;
+                    case 10: return 'approved'; break;
                 }
             };
 
+
+            $scope.showRegistration = function(registration){
+                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
+                
+                return result;
+            }
             var adjustBoxPosition = function () {
                 setTimeout(function () {
                     adjustingBoxPosition = true;

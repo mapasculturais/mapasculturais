@@ -5,13 +5,14 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 
 $this->bodyProperties['ng-app'] = "Entity";
 
-$this->addProjectRegistrationConfigurationToJs($entity);
+$this->addProjectToJs($entity);
 
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
 }
 $this->includeAngularEntityAssets($entity);
+
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
@@ -356,64 +357,36 @@ $this->includeAngularEntityAssets($entity);
                             Anexos
                         </th>
                         <th class="registration-status-col">
-                            <div class="dropdown">
-                                <div class="placeholder">Status</div>
-                                <div class="submenu-dropdown">
-                                    <ul>
-                                        <li>Aprovado</li>
-                                        <li>Suplente</li>
-                                        <li>Rejeitado</li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach($entity->sentRegistrations as $registration): ?>
-                    <tr id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="
-                    <?php if ($registration->status == Registration::STATUS_APPROVED)
-                        {
-                        echo 'approved';
-                        }
-                        else if ($registration->status == Registration::STATUS_REJECTED)
-                        {
-                        echo 'rejected';
-                        }
-                        else if ($registration->status == Registration::STATUS_MAYBE)
-                        {
-                        echo 'maybed';
-                        }
-                    ?>">
-                        <td class="registration-id-col">
-                            <?php echo $registration->id ?>
-                        </td>
+
+                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{statusName(reg)}}}" ng-show="showRegistration(reg)" >
+                        <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
-                                <a href="<?php echo $registration->owner->singleUrl ?>"><?php echo $registration->owner->name ?></a>
+                                <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
                             </p>
-                            <p>
-                                <span class="label">Instituição</span><br />
-                                <a href="#">Nome da Instituição</a>
-                            </p>
-                            <p>
-                                <span class="label">Coletivo</span><br />
-                                <a href="#">Nome do Coletivo</a>
+
+                            <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
+                                <span class="label">relation.label</span><br />
+                                <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                             </p>
                         </td>
                         <td class="registration-attachments-col">
                             <ul>
-                                <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>
+                                <li ng-repeat="file in reg.files"><a href="{{file.url}}">file.name</a></li>
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
-                            <span class="js-registration-action maybe hltip" title="Talvez"></span>
-                            <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
+                            <span ng-click="setRegistrationStatus('approved')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Aprovar"></span>
+                            <span ng-click="setRegistrationStatus('maybe')" class="js-registration-action maybe hltip" ng-class="{selected: statusName(reg) === 'maybe'}" title="Suplente"></span>
+                            <span ng-click="setRegistrationStatus('rejected')" class="js-registration-action reject hltip" ng-class="{selected: statusName(reg) === 'rejected'}" title="Rejeitar"></span>
                         </td>
                     </tr>
-                <?php endforeach; ?>
                 </tbody>
             </table>
             <div class="clearfix">

@@ -806,9 +806,11 @@ class Theme extends MapasCulturais\Theme {
     }
 
 
-    function addProjectRegistrationConfigurationToJs($entity){
+    function addProjectToJs($entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+
     }
 
     /**
@@ -910,6 +912,24 @@ class Theme extends MapasCulturais\Theme {
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
             'isVerified' => 'EQ(true)'
         ));
+    }
+
+    function getRegistrationStatusName($registration){
+        switch ($registration->status) {
+            case \MapasCulturais\Entities\Registration::STATUS_APPROVED:
+                return 'approved';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_REJECTED:
+                return 'rejected';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_MAYBE:
+                return 'maybe';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_WAITING:
+                return 'waiting';
+                break;
+
+        }
     }
 
 }

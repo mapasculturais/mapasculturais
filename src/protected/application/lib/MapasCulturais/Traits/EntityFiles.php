@@ -15,7 +15,7 @@ use MapasCulturais\App;
  * )
  * </code>
  *
- * @property-read $files Files of this entities grouped by file groups.
+ * @property-read \MapasCulturais\Entities\File[] $files Files of this entities grouped by file groups.
  *
  * @see \MapasCulturais\Definitions\FileGroup
  * @see \MapasCulturais\App::registerFileGroup()
