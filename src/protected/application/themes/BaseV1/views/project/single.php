@@ -350,7 +350,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('approveRegistration')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar lista de inscritos</a>
+                <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
             </div>
             <table class="js-registration-list registrations-table">
                 <thead>
