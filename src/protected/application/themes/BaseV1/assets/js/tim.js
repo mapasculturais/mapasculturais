@@ -1,7 +1,7 @@
 (function($) {
     // to prevent jQuery bug
     $(document).unbind('DOMNodeInserted.mask');
-    
+
     // Analytivs
     if(MapasCulturais.mode !== 'development'){
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -129,10 +129,10 @@
                 if ($editableEntity.position().top == 0) {
                     $mainHeader.removeClass('sombra');
                     $editableEntity.addClass('sombra');
-                    $('#logo-spcultura-peq').stop().show('fast');
+                    $('#logo-peq').stop().fadeIn(100);
                 } else {
                     $editableEntity.removeClass('sombra');
-                    $('#logo-spcultura-peq').stop().hide('fast');
+                    $('#logo-peq').stop().fadeOut(100);
                 }
 
             }
@@ -211,7 +211,7 @@
             railVisible: true
         });
         $('.js-slimScroll').each(function() {
-            
+
             $(this).slimScroll({
                 position: 'right',
                 distance: '0px',
@@ -257,7 +257,7 @@
                 var search_url = Mustache.render(url_template, params);
                 document.location = search_url;
             }).on('keydown', function(event){
-                
+
                 if(event.keyCode === 13 || event.keyCode === 32){
                     event.preventDefault();
                     $(this).click();
@@ -274,7 +274,7 @@
                         $('#filtro-da-capa .submenu-dropdown li:focus').prev().focus();
                     }
                     event.preventDefault();
-                    
+
                 }else if(event.keyCode === 40){
                     // down
                     if($('#filtro-da-capa .submenu-dropdown li:focus').is($('#filtro-da-capa .submenu-dropdown li:last'))){
@@ -288,7 +288,7 @@
             });
 
             $('#form-de-busca-geral').on('submit', function(){
-                $('.submenu-dropdown').css({display:'block',opacity:1}); 
+                $('.submenu-dropdown').css({display:'block',opacity:1});
                 $('.submenu-dropdown li:first').focus();
                 return false;
             });
