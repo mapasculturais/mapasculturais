@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before {
+.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before, .attachment-list .attachment-list-item .attachment-description a:before {
   font-family: 'ElegantIcons';
   speak: none;
   font-style: normal;
@@ -10,6 +10,8 @@
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   vertical-align: middle; }
+  .approve:hover, .reject:hover, .maybe:hover, .attachment-list .attachment-list-item .attachment-title:hover:before, .attachment-list .attachment-list-item .attachment-description a:hover:before {
+    text-decoration: none; }
 
 /* =Reset default browser CSS. Based on work by Eric Meyer: http://meyerweb.com/eric/tools/css/reset/index.html
 -------------------------------------------------------------- */
@@ -3358,11 +3360,14 @@ h1 .icone {
     padding: 0.75rem;
     padding-right: 11rem;
     border-bottom: 1px solid #eee; }
+    .registration-list .registration-list-item a {
+      font-weight: normal; }
     .registration-list .registration-list-item .registration-label {
       font-weight: bold; }
     .registration-list .registration-list-item .registration-description {
       font-size: 0.75rem;
-      color: #999; }
+      color: #999;
+      margin-bottom: 0.75rem; }
     .registration-list .registration-list-item .btn-group {
       position: absolute;
       bottom: 0.75rem;
@@ -3376,14 +3381,27 @@ h1 .icone {
   .attachment-list .attachment-list-item {
     position: relative;
     padding: 0.75rem;
+    padding-right: 11rem;
     border-bottom: 1px solid #eee; }
+    .attachment-list .attachment-list-item a {
+      font-weight: normal; }
     .attachment-list .attachment-list-item .attachment-title {
       display: block; }
       .attachment-list .attachment-list-item .attachment-title:before {
         content: "\e016"; }
     .attachment-list .attachment-list-item .attachment-description {
       font-size: 0.75rem;
-      color: #999; }
+      color: #999;
+      margin-bottom: 0.75rem; }
+      .attachment-list .attachment-list-item .attachment-description a:before {
+        font-size: inherit;
+        content: "\e092"; }
+    .attachment-list .attachment-list-item .btn-group {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem; }
+    .attachment-list .attachment-list-item:hover {
+      background: #eee; }
   .attachment-list .is-editable {
     padding-right: 4rem;
     min-height: 1.5rem; }

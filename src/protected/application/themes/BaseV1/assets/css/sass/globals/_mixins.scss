@@ -37,4 +37,7 @@
     -webkit-font-smoothing: antialiased;
     display: inline-block;
     vertical-align: middle;
+    &:hover {
+    	text-decoration: none;
+    }
 }

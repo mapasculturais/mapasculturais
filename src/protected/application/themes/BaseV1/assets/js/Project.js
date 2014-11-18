@@ -91,7 +91,8 @@
                 required: false
             }
         };
-        console.log($scope.data.fileConfigurations);
+        $scope.fileConfigurationBackups = [];
+
         $scope.createFileConfiguration = function(){
             RegistrationFileConfigurationService
                 .create($scope.data.newFileConfiguration)
@@ -133,18 +134,34 @@
 
         };
 
-        $scope.initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-registration-files-' + id);
+        $scope.cancelFileConfigurationEditBox = function(attrs){
+            $scope.data.fileConfigurations[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
+            delete $scope.fileConfigurationBackups[attrs.index];
+        };
+
+        $scope.openFileConfigurationEditBox = function(id, index, event){
+            $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fileConfigurations[index]);
+            EditBox.open('editbox-registration-files-'+id, event);
+        };
+
+        $scope.openFileConfigurationTemplateEditBox = function(id, index, event){
+            EditBox.open('editbox-registration-files-template-'+id, event);
+            initAjaxUploader(id, index);
+        };
+
+        var initAjaxUploader = function(id, index){
+            var $form = jQuery('#editbox-registration-files-template-' + id);
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
             $form.on('ajaxform.success', function(evt, response){
-                console.log(response);
                 $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
-                console.log($scope.data.fileConfigurations);
-            });
+                setTimeout(function(){
+                    EditBox.close('editbox-registration-files-template-'+id, event);
+                }, 700);
+           });
         };
 
     }]);
@@ -158,7 +175,6 @@
             $scope.editbox = EditBox;
 
             $scope.openEditBox = function(id, e){
-                console.log(id, e);
                 EditBox.open(id, e);
             };
 
