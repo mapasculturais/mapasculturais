@@ -129,10 +129,10 @@
                 if ($editableEntity.position().top == 0) {
                     $mainHeader.removeClass('sombra');
                     $editableEntity.addClass('sombra');
-                    $('#logo-peq').stop().fadeIn(100);
+                    $('#small-brand').stop().fadeIn(100);
                 } else {
                     $editableEntity.removeClass('sombra');
-                    $('#logo-peq').stop().fadeOut(100);
+                    $('#small-brand').stop().fadeOut(100);
                 }
 
             }

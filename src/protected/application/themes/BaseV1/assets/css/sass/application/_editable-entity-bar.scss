@@ -26,13 +26,15 @@
     right: .75rem;
     width: 370px;
     text-align: right;
-} 
-#logo-peq {
+}
+#small-brand {
     position: absolute;
     left: .75rem;
     font-size: 20px;
     line-height: 2rem;
-
+    a {
+        color: $small-brand-color;
+    }
 }
 #funcao-do-agente {
     width: 135px;

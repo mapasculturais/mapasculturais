@@ -723,11 +723,13 @@ h6 {
   width: 370px;
   text-align: right; }
 
-#logo-peq {
+#small-brand {
   position: absolute;
   left: .75rem;
   font-size: 20px;
   line-height: 2rem; }
+  #small-brand a {
+    color: #1c5690; }
 
 #funcao-do-agente {
   width: 135px;
