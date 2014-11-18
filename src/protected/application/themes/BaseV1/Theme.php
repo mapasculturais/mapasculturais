@@ -30,6 +30,7 @@ class Theme extends MapasCulturais\Theme {
             'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
+
             'home: colabore' => "Colabore com o Mapas Culturais",
 
             'search: verified results' => 'Resultados Verificados'
@@ -619,6 +620,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeEditableEntityAssets() {
+
         $versions = $this->_libVersions;
         $this->assetManager->publishAsset('img/setinhas-editable.png');
 
@@ -627,7 +629,6 @@ class Theme extends MapasCulturais\Theme {
 
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2.png", 'css/select2.png');
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2-spinner.gif", 'css/select2-spinner.gif');
-
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
     }
@@ -803,6 +804,7 @@ class Theme extends MapasCulturais\Theme {
     function addRelatedAgentsToJs($entity) {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
+
 
     function addProjectRegistrationConfigurationToJs($entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
