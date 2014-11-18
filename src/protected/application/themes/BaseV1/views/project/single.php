@@ -1,30 +1,18 @@
 <?php
-use MapasCulturais\Entities\ProjectAgentRelation as Registration;
+use MapasCulturais\Entities\Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
-$registrationForm = $entity->getFile('registrationForm');
 
 $this->bodyProperties['ng-app'] = "Entity";
+
+$this->addProjectRegistrationConfigurationToJs($entity);
 
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
-
-
-    $app->hook('mapasculturais.scripts', function() use ($app, $entity){
-
-        $ids = array_map(function($e){
-
-            return $e->agent->id;
-        }, $entity->registrations);
-        ?>
-        <script type="text/javascript">
-            MapasCulturais.agentRelationDisabledCD = ['<?php echo $app->txt('project registration')?>'];
-        </script>
-        <?php
-    });
 }
 $this->includeAngularEntityAssets($entity);
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -35,7 +23,7 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 
-<article class="main-content project">
+<article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <div
             <?php if($header = $entity->getFile('header')): ?>
@@ -85,7 +73,7 @@ $this->includeAngularEntityAssets($entity);
                    data-selection-template="#agent-response-template"
                    data-no-result-template="#agent-response-no-results-template"
                    data-selection-format="parentProject"
-                   data-allow-clear="1",
+                   data-allow-clear="1"
                    title="Selecionar projeto pai"
                    data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                    data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
@@ -102,6 +90,8 @@ $this->includeAngularEntityAssets($entity);
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Inscrições</a></li>
+        <li><a href="#inscritos">Inscritos</a></li>
+        <li><a href="#aprovados">Aprovados</a></li>
     </ul>
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
@@ -143,113 +133,325 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-
     <div id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <?php if($this->isEditable()): ?>
-                <p>
-                    Utilize este espaço caso queira abrir inscrições para este projeto para Agentes Culturais cadastrados na plataforma.
+                <p class="alert info textcenter">
+                    Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
                 </p>
             <?php endif; ?>
-            <p>
-                <?php if($this->isEditable()): ?><span class="label">1. Selecione o período em que as inscrições ficarão abertas:</span> <br/><?php endif; ?>
-                <?php if($this->isEditable() || $entity->registrationFrom): ?>As inscrições estão abertas de <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span><?php endif; ?>
-                <?php if($this->isEditable() || ($entity->registrationFrom && $entity->registrationTo)) echo ' a '; ?>
-                <?php if($this->isEditable() || $entity->registrationTo): ?><span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span><?php endif; ?>.
-            </p>
-        <?php endif; ?>
 
+            <?php if($this->isEditable()): ?>
+                <div id="registration-period" class="registration-fieldset">
+                    <h4>1. Período de inscrições</h4>
+            <?php endif; ?>
+            <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                <p class="highlighted-message">
+                Inscrições abertas de
+                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                    a
+                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
+                </p>
+            <?php endif; ?>
+        <?php endif; ?>
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
-        <div id="intro-das-inscricoes">
-            <?php if($this->isEditable()): ?><span class="label">2. Texto introdutório:</span> <br/> <?php endif; ?>
-            <p class="js-editable" data-edit="introInscricoes" data-original-title="Texto introdutório da inscrição" data-emptytext="Insira um texto de introdução para as inscrições" data-placeholder="Insira um texto de introdução para as inscrições" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->introInscricoes; ?></p>
-        </div>
-        <?php endif; ?>
-
-        <div>
-            <?php if ($this->isEditable()): ?>
-                <p>
-                    <span class="label">3. Suba uma ficha de inscrição:</span> <br/>
-                    Isto é opcional. Você pode anexar uma ficha de inscrição. Os candidatos farão download dessa ficha, para que possam preencher e anexar ao fazer a inscrição para o seu projeto.
-                </p>
+            <?php if($this->isEditable()): ?>
+            </div>
+            <!-- #registration-period -->
+            <div id="intro-das-inscricoes" class="registration-fieldset">
+                <h4>2. Introdução</h4>
+                <p class="registration-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
             <?php endif; ?>
-            <p class="js-ficha-inscricao">
-                <?php if($registrationForm): ?>
-                    <a href="<?php echo $registrationForm->url?>" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a>
-                    <?php if($this->isEditable()): ?>
-                        <a class='botao excluir simples js-remove-item' data-href='<?php echo $registrationForm->deleteUrl ?>' data-target=".js-ficha-inscricao>*" data-remove-callback="$('#upload-registration-button').removeClass('oculto');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </p>
-        </div>
-
-        <?php if($this->controller->action == 'edit'): ?>
-            <p id="upload-registration-button" <?php if($registrationForm): ?>class="oculto"<?php endif; ?>>
-                <a class="botao adicionar simples js-open-editbox" data-target="#editbox-upload-registration-form">Subir uma ficha de inscrição</a>
-            </p>
-            <div id="editbox-upload-registration-form" class="js-editbox mc-right" title="Subir ficha de inscrição" data-success-callback="$('#upload-registration-button').addClass('oculto');">
-                <?php $this->ajaxUploader ($entity, 'registrationForm', 'set-content', '.js-ficha-inscricao',''
-                        . '<a href="{{url}}" class="botao principal"><span class="icone icon_download"></span>Baixar a ficha de inscrição</a> '
-                        . '<a class="botao excluir simples js-remove-item" data-href="{{deleteUrl}}" data-target=".js-ficha-inscricao>*" data-remove-callback="$(\'#upload-registration-button\').removeClass(\'oculto\');" data-confirm-message="Excluir a ficha de inscrição?">Excluir a ficha de inscrição</a>','',false,'.doc, .xls, .pdf'); ?>
-            </div>
-        <?php endif; ?>
-        <?php if($app->auth->isUserAuthenticated() && $entity->isRegistrationOpen() && !$this->isEditable()): ?>
-            <p><a class="botao principal js-open-dialog" data-dialog="#dialog-registration-form" href="#">Fazer inscrição</a></p>
-
-            <div id="dialog-registration-form" class="js-dialog" title="Inscrição">
-                <form class="js-ajax-upload" method="POST" data-action="project-registration" action="<?php echo $app->createUrl('project', 'register', array($entity->id)); ?>" enctype="multipart/form-data">
-                    <div class="alert danger"></div>
-                <h4 class="js-search js-xedit"
-                           data-field-name='agentId'
-                           data-emptytext="Selecione um agente"
-                           data-search-box-width="400px"
-                           data-search-box-placeholder="Selecione um agente"
-                           data-entity-controller="agent"
-                           data-search-result-template="#agent-search-result-template"
-                           data-selection-template="#agent-response-template"
-                           data-no-result-template="#agent-response-no-results-template"
-                           data-selection-format="projectRegistration"
-                           data-value="<?php echo $app->user->profile->id ?>"
-                           title="Repassar propriedade"
-                     ><?php echo $app->user->profile->name ?></h4>
-                <?php if($registrationForm): ?>
-                <p>Selecione o arquivo com sua ficha de inscrição preenchida e clique em "Enviar Inscrição"</p>
-                <input type="file" name="registrationForm" />
-                <?php endif; ?>
-                <input id="registration-agent-id" name='agentId' type="hidden" value="<?php echo $app->user->profile->id ?>" />
-                <input type="submit" value="Enviar Inscrição" />
-                </form>
-            </div>
+                <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
         <?php endif; ?>
 
-        <?php if($entity->canUser('approveRegistration')): ?>
-        <div id="inscritos" class="privado lista-sem-thumb">
-            <div class="clearfix">
-                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar a Lista de Inscritos</a>
+        <?php if($this->isEditable()): ?>
             </div>
-            <div class="js-registration-list">
-                <?php foreach($entity->registrations as $registration): ?>
-                <article id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="objeto clearfix">
-                    <h1><a href="<?php echo $registration->agent->singleUrl ?>"><?php echo $registration->agent->name ?></a></h1>
-                    <div class="objeto-meta">
-                        <div><span class="label">Área de atuação:</span> <?php echo implode(',', $registration->agent->terms['area']) ?></div>
-                        <div><span class="label">Tipo:</span> <?php echo $registration->agent->type->name ?></div>
+            <!-- #intro-das-inscricoes -->
+            <div id="registration-categories" class="registration-fieldset">
+                <h4>3. Opções</h4>
+                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
+
+                <p>
+                    <span class="label">Descrição</span><br>
+                    <span class="js-editable" data-edit="registrationCategoriesName" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationCategoriesName; ?></span>
+                </p>
+                <p>
+                    <span class="label">Opções</span><br>
+                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationCategories); ?></span>
+                </p>
+            </div>
+
+            <!-- #registration-categories -->
+            <div id="registration-agent-relations" class="registration-fieldset">
+                <h4>4. Agentes</h4>
+                <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
+                <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
+                    <div class="registration-related-agent-configuration">
+                        <p>
+                            <span class="label"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
+                            <br>
+                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
+                        </p>
+
                     </div>
-                    <div>
-                        <a href="#" class="js-registration-action action botao <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>">aprovar</a>
-                        <a href="#" class="js-registration-action action botao <?php if($registration->status == Registration::STATUS_REGISTRATION_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->agent->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>">rejeitar</a>
-                        <?php if($form = $registration->getFile('registrationForm')): ?><a class="action" href="<?php echo $form->url ?>">baixar ficha</a><?php endif; ?>
-                    </div>
-                </article>
-                <!--.objeto-->
                 <?php endforeach; ?>
             </div>
-        </div>
+            <!-- #registration-agent-relations -->
+
+            <div id="registration-attachments" class="registration-fieldset">
+
+                <h4>5. Anexos</h4>
+                <p class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
+                <!-- da parte downloads.php -->
+
+                <div ng-controller="RegistrationFileConfigurationsController">
+                    <?php if($this->controller->action == 'create'): ?>
+                        <p>Para adicionar anexos, primeiro é preciso salvar o projeto.</p>
+                    <?php else: ?>
+                        <p><a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar Anexo</a></p>
+                    <?php endif; ?>
+
+                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                        <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
+                        <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
+                        <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+
+                    </edit-box>
+
+                    <ul class="attachment-list">
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
+                            <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
+                            <div class="attachment-description">
+                                {{fileConfiguration.description}}<br>
+                                {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
+                                <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
+                                    <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
+                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target=".file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                </p>
+                            </div>
+                            <div class="botoes">
+                                <a class="editar js-open-editbox hltip" ng-click="editbox.open('editbox-registration-files-'+fileConfiguration.id, $event); initAjaxUploader(fileConfiguration.id, $index)" title="editar"></a>
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="remove(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
+                            </div>
+
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
+
+                                <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
+                                <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
+                                <p><label><input style="width:auto" type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+
+                                <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
+                                    <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
+                                    <a data-href="{{fileConfiguration.template.deleteUrl}}" data-target=".file-{{fileConfiguration.template.id}}" data-confirm-message="Remover este modelo?" class="icone icon_close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="" hltitle="Excluir modelo"></a>
+                                </p>
+                                <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                                    <div class="alert danger escondido"></div>
+                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                                    <input type="file" name="{{uploadFileGroup}}" />
+                                    <input type="submit" value="Enviar Modelo">
+
+                                    <div class="js-ajax-upload-progress">
+                                        <div class="progress">
+                                            <div class="bar"></div >
+                                            <div class="percent">0%</div >
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+                            </edit-box>
+
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
+            <?php if($app->auth->isUserAuthenticated()):?>
+                <form id="project-registration" class="registration-form clearfix">
+                    <div>
+                        <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente Responsável'}}</a>
+                        <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                            <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
+                        </edit-box>
+                    </div>
+                    <div>
+                        <mc-select placeholder="<?php echo $entity->registrationCategoriesName; ?>" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
+                    </div>
+                    <div>
+                        <a class="botao principal" ng-click="register()">Fazer inscrição</a>
+                    </div>
+                </form>
+                <h4>Minhas Inscrições</h4>
+                <table class="my-registrations">
+                    <thead>
+                        <tr>
+                            <th class="registration-id-col">
+                                Nº
+                            </th>
+                            <th class="registration-agents-col">
+                                Agente Responsável
+                            </th>
+                            <th class="registration-agents-col">
+                                Coletivo
+                            </th>
+                            <th class="registration-agents-col">
+                                Instituição
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="registration-id-col">
+                            <a href="#">0000</a>
+                            </td>
+                            <td class="registration-agents-col">
+                                Nome do Agente Responsável
+                            </td>
+                            <td class="registration-agents-col">
+                                Nome da Instituição
+                            </td>
+                            <td class="registration-agents-col">
+                                Nome do Coletivo
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            <?php else: ?>
+                    <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
+                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
+            <?php endif;?>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-
+    <div id="inscritos" class="aba-content privado">
+        <?php if($entity->canUser('approveRegistration')): ?>
+            <div class="clearfix">
+                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
+                <a class="alignright botao download" href="#"><span class="icone icon_download"></span>Baixar lista de inscritos</a>
+            </div>
+            <table class="js-registration-list registrations-table">
+                <thead>
+                    <tr>
+                        <th class="registration-id-col">
+                            Nº
+                        </th>
+                        <th class="registration-agents-col">
+                            Agentes
+                        </th>
+                        <th class="registration-attachments-col">
+                            Anexos
+                        </th>
+                        <th class="registration-status-col">
+                            <div class="dropdown">
+                                <div class="placeholder">Status</div>
+                                <div class="submenu-dropdown">
+                                    <ul>
+                                        <li>Aprovado</li>
+                                        <li>Suplente</li>
+                                        <li>Rejeitado</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($entity->sentRegistrations as $registration): ?>
+                    <tr id="registration-<?php echo $registration->id ?>" data-registration-id="<?php echo $registration->id ?>" class="
+                    <?php if ($registration->status == Registration::STATUS_APPROVED)
+                        {
+                        echo 'approved';
+                        }
+                        else if ($registration->status == Registration::STATUS_REJECTED)
+                        {
+                        echo 'rejected';
+                        }
+                        else if ($registration->status == Registration::STATUS_MAYBE)
+                        {
+                        echo 'maybed';
+                        }
+                    ?>">
+                        <td class="registration-id-col">
+                            <?php echo $registration->id ?>
+                        </td>
+                        <td class="registration-agents-col">
+                            <p>
+                                <span class="label">Responsável</span><br />
+                                <a href="<?php echo $registration->owner->singleUrl ?>"><?php echo $registration->owner->name ?></a>
+                            </p>
+                            <p>
+                                <span class="label">Instituição</span><br />
+                                <a href="#">Nome da Instituição</a>
+                            </p>
+                            <p>
+                                <span class="label">Coletivo</span><br />
+                                <a href="#">Nome do Coletivo</a>
+                            </p>
+                        </td>
+                        <td class="registration-attachments-col">
+                            <ul>
+                                <li><?php if($form = $registration->getFile('registrationForm')): ?><a href="<?php echo $form->url ?>">Anexo 1</a><?php endif; ?></li>
+                            </ul>
+                        </td>
+                        <td class="registration-status-col">
+                            <span class="js-registration-action approve hltip <?php if($registration->status == Registration::STATUS_ENABLED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'approveRegistration', array($entity->id)) ?>" title="Aprovar"></span>
+                            <span class="js-registration-action maybe hltip" title="Talvez"></span>
+                            <span class="js-registration-action reject hltip <?php if($registration->status == Registration::STATUS_REJECTED) echo 'selected' ?>" data-agent-id="<?php echo $registration->owner->id ?>" data-href="<?php echo $app->createUrl('project', 'rejectRegistration', array($entity->id)) ?>" title="Rejeitar"></span>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <a class="alignright botao principal" href="#">Publicar lista de aprovados</a>
+            </div>
+        <?php endif; ?>
+    </div>
+    <!--#inscritos-->
+    <div id="aprovados" class="aba-content">
+        <p class="highlighted-message">As inscrições abaixo foram aprovadas!</p>
+        <table class="approved-registrations">
+            <thead>
+                <tr>
+                    <th class="registration-id-col">
+                        Nº
+                    </th>
+                    <th class="registration-agents-col">
+                        Agente Responsável
+                    </th>
+                    <th class="registration-agents-col">
+                        Coletivo
+                    </th>
+                    <th class="registration-agents-col">
+                        Instituição
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="registration-id-col">
+                    0000
+                    </td>
+                    <td class="registration-agents-col">
+                        <a href="#">Nome do Agente Responsável</a>
+                    </td>
+                    <td class="registration-agents-col">
+                        <a href="#">Nome da Instituição</a>
+                    </td>
+                    <td class="registration-agents-col">
+                        <a href="#">Nome do Coletivo</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--#aprovados-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar project sidebar-right">
@@ -264,9 +466,9 @@ $this->includeAngularEntityAssets($entity);
         <div class="widget">
             <?php if($entity->children): ?>
             <h3>Sub-projetos</h3>
-            <ul class="js-slimScroll">
+            <ul class="widget-list js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
-                <li><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
+                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><span><?php echo $space->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>

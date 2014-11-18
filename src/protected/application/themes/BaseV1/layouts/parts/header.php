@@ -5,6 +5,7 @@
         <meta charset="UTF-8" />
         <title><?php echo $title == $app->siteName ? $title : "{$app->siteName} - {$title}"; ?></title>
         <link rel="profile" href="http://gmpg.org/xfn/11" />
+        <link rel="shortcut icon" href="<?php $this->asset('img/favicon.ico') ?>" />
         <?php $this->head(isset($entity) ? $entity : null); ?>
         <!--[if lt IE 9]>
         <script src="<?php $this->asset('js/html5.js'); ?>" type="text/javascript"></script>

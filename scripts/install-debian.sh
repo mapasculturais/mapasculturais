@@ -43,10 +43,7 @@ echo ""
 echo "MAPAS CULTURAIS: Install Finished"
 echo ""
 
-echo "The application can be tested running in http://localhost:8000
-By the PHP built-in web server you can use with command
-php -S 0.0.0.0:8000 -t ../src ../src/router.php &
-
-If you want to serve in other address IP change base.url in src/protected/application/conf/config.php
+echo "You can test the application running PHP's built-in web server issuing command
+php -S 0.0.0.0:8000 -t ../src ../src/router.php
+And accessing http://localhost:8000
 "
-php -S 0.0.0.0:8000 -t ../src ../src/router.php &

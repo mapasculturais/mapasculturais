@@ -67,3 +67,6 @@
         border-color: $brand-project transparent transparent transparent;
     }
 }
+.sidebar.registration {
+    @extend .sidebar.project;
+}

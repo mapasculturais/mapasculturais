@@ -58,7 +58,7 @@
         }
 
         //jQuery(document).ready(function() {
-        
+
             var config = MapasCulturais.mapsDefaults;
 
             var mapSelector = initializerOptions.mapSelector;
@@ -124,7 +124,7 @@
                     attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
                     maxZoom: config.zoomMax
                 });
-                
+
                 var map = new L.Map(id, options).addLayer(openStreetMap);
                 $(this).data('leaflet-map', map);
                 var timeout;

@@ -72,6 +72,32 @@ return array(
         'subprefeitura',
         'distrito'
     ),
+    
+    'registration.agentRelationsOptions' => array(
+        'dontUse' => 'Não é necessário',
+        'required' => 'Obrigatório',
+        'optional' => 'Opcional'
+    ),
+    
+    'registration.agentRelations' => array(
+        array(
+            'required' => false,
+            'label' => 'Instituição',
+            'agentRelationGroupName' => 'instituicao',
+            'description' => 'agente coletivo com CNPJ',
+            'type' => 2,
+            'requiredProperties' => array('documento')
+        ),
+        
+        array(
+            'required' => false,
+            'label' => 'Coletivo',
+            'agentRelationGroupName' => 'coletivo',
+            'description' => 'agente coletivo sem CNPJ',
+            'type' => 2,
+            'requiredProperties' => array()
+        )
+    ),
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -193,6 +219,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
+            'inscrever-se' => array('registration', 'create')
         ),
         'controllers' => array(
             'painel'         => 'panel',

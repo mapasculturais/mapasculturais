@@ -11,6 +11,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 @uses text
 @uses textarea
 **/
+
 (function ($) {
     "use strict";
     
@@ -331,7 +332,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
                     $.extend(params, this.options.params);
                 }
-
+                
                 if(typeof this.options.url === 'function') { //user's function
                     return this.options.url.call(this.options.scope, params);
                 } else {  
@@ -2047,17 +2048,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @returns {Object} jQuery object
             **/
             case 'submit':  //collects value, validate and submit to server for creating new record
+                
                 var config = arguments[1] || {},
                 $elems = this,
                 errors = this.editable('validate');
-
+                
                 // validation ok
                 if($.isEmptyObject(errors)) {
                     var ajaxOptions = {};
                                                       
                     // for single element use url, success etc from options
+                
                     if($elems.length === 1) {
                         var editable = $elems.data('editable');
+                        console.log(editable.options);
                         //standard params
                         var params = {
                             name: editable.options.name || '',
@@ -4991,6 +4995,7 @@ $(function(){
        },
 
        submit: function() {
+           
            var $form = this.$input.closest('form');
            setTimeout(function() {
                $form.submit();

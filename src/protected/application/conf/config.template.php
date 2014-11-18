@@ -7,20 +7,20 @@ $config = include 'conf-base.php';
 // devel
 return array_merge($config,
     array(
-        'namespaces' => array_merge( $config['namespaces'], array('SpCultura' => THEMES_PATH . 'SpCultura') ),
-        'themes.active' => 'SpCultura',
-        'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
-            'publishPath' => BASE_PATH . 'pub/',
-
-            'mergeScripts' => false,
-            'mergeStyles' => true,
-
-            'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /pub/{FILENAME}.map -b -p 7',
-            'process.css' => 'uglifycss {IN} > {OUT}',
-            'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
-
-        )),
-        'base.assetUrl' => 'http://localhost:8000/pub/',
+//        'namespaces' => array_merge( $config['namespaces'], array('SpCultura' => THEMES_PATH . 'SpCultura') ),
+//        'themes.active' => 'SpCultura',
+//        'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
+//            'publishPath' => BASE_PATH . 'pub/',
+//
+//            'mergeScripts' => false,
+//            'mergeStyles' => true,
+//
+//            'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /pub/{FILENAME}.map -b -p 7',
+//            'process.css' => 'uglifycss {IN} > {OUT}',
+//            'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
+//
+//        )),
+//        'base.assetUrl' => 'http://localhost:8000/pub/',
 
         'base.url' => 'http://localhost:8000/',
 
@@ -43,7 +43,7 @@ return array_merge($config,
 
         // logs
         'slim.log.writer' => new \MapasCulturais\Loggers\File(function(){ return 'mapasculturais.log'; }),
-        'app.log.path' => '/var/log/mapasculturais/',
+        'app.log.path' => '/tmp/',
 
         'slim.log.level' => \Slim\Log::DEBUG,
         'slim.log.enabled' => true,

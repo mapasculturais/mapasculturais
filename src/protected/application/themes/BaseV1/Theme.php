@@ -31,6 +31,8 @@ class Theme extends MapasCulturais\Theme {
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
 
+            'home: colabore' => "Colabore com o Mapas Culturais",
+
             'search: verified results' => 'Resultados Verificados'
         );
     }
@@ -354,8 +356,6 @@ class Theme extends MapasCulturais\Theme {
         });
 
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
-            $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
-            $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
         });
@@ -548,7 +548,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'poshytip', 'vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
         $this->enqueueScript('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/js/jquery-editable-poshytip.js", array('jquery', 'poshytip', 'select2'));
 
-
         //Leaflet -a JavaScript library for mobile-friendly maps
         $this->enqueueStyle('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet.css");
         $this->enqueueScript('vendor', 'leaflet', "vendor/leaflet/lib/leaflet-{$versions['leaflet']}/leaflet-src.js");
@@ -685,10 +684,19 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeAngularEntityAssets($entity) {
+        $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
+        $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
+        $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
+
         $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
+        $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
+        $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
+        if(!isset($this->jsObject['entity'])){
+            $this->jsObject['entity'] = array();
+        }
 
-        $this->jsObject['entity'] = array('id' => $entity->id);
+        $this->jsObject['entity']['id'] = $entity->id;
 
         $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
         foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
@@ -798,6 +806,10 @@ class Theme extends MapasCulturais\Theme {
     }
 
 
+    function addProjectRegistrationConfigurationToJs($entity){
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+    }
 
     /**
     * Returns a verified entity with images in gallery

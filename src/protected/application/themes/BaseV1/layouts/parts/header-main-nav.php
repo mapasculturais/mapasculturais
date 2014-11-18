@@ -109,7 +109,12 @@
                     </li>
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->
-                    <li><a href="<?php echo $app->createUrl('auth', 'logout') ?>">Sair</a></li>
+                    <li>
+                        <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
+                            <a href="<?php echo $app->createUrl('auth'); ?>">Trocar Usuário</a>
+                        <?php endif; ?>
+                        <a href="<?php echo $app->createUrl('auth', 'login'); ?>">Sair</a>
+                    </li>
                 </ul>
             </li>
             <!--.usuario-->
