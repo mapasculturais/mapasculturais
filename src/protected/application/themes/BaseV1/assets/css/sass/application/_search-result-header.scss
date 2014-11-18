@@ -43,9 +43,9 @@
     position: relative;
     float: left;
 }
-.busca-popover{ 
+.busca-popover{
     position: absolute;
-    z-index: 100;
+    z-index: $z-index-4;
     display: none;
     top: 2.25rem;
     right: -24px;

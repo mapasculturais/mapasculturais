@@ -2,7 +2,7 @@
 -------------------------------------------------------------- */
 #capa-marca-dagua {
     position: fixed;
-    z-index: 50;
+    z-index: $z-index-2;
     left: 0;
     right: 0;
     top: 102px;
@@ -13,7 +13,7 @@
 }
 #capa-nav {
     position: fixed;
-    z-index: 100;
+    z-index: $z-index-4;
     top: 50%;
     bottom: 0;
 }
@@ -26,7 +26,7 @@
 }
 #capa-nav ul li a {
     position: relative;
-    z-index: 100;
+    z-index: $z-index-4;
     display: block;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -42,7 +42,7 @@
 }
 .nav-title {
     position: absolute;
-    z-index: 90;
+    z-index: $z-index-3;
     top: 0;
     display: block;
          box-sizing: border-box;
@@ -92,7 +92,7 @@
     font-size: 4rem;
     text-align: center;
     position: relative;
-    z-index: 51;
+    z-index: $z-index-2;
 }
 .objeto-capa {
     float: none;
@@ -116,7 +116,7 @@
 }
 .objeto-capa .box {
     position: relative;
-    z-index: 100;
+    z-index: $z-index-4;
 }
 .objeto-capa .box h4 {
     font-family: 'Open Sans';

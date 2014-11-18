@@ -25,7 +25,7 @@
 }
 .edit-box {
     position: absolute;
-    z-index: 149;
+    z-index: $z-index-7;
     min-width: 375px;
     display: none;
     padding: $padding-base;

@@ -36,7 +36,7 @@
         }
     }
     .submenu-dropdown {
-        z-index: 900;
+        z-index: $z-index-11;
         position: absolute;
         top: 40px;
         right: 0;
