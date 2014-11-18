@@ -89,49 +89,47 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <!-- anexos -->
     <div id="registration-attachments" class="registration-fieldset">
-
         <h4>Anexos</h4>
         <p class="registration-help">Anexator descrivinhator helpior.</p>
-        <div ng-controller="RegistrationFileConfigurationsController">
-
-            <ul class="attachment-list">
-                <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
-                    <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : 'Opcional'}}</div>
-                    <div class="attachment-description">
-                        {{fileConfiguration.description}} (<a target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
+        <ul class="attachment-list" ng-controller="RegistrationFileConfigurationsController">
+            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
+                <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : 'Opcional'}}</div>
+                <div class="attachment-description">
+                    {{fileConfiguration.description}} (<a target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
+                </div>
+                <a class="attachment-title" href="#">Nome-do-arquivo-anexado.ext</a>
+                <?php if($this->isEditable()): ?>
+                    <div class="btn-group">
+                        <!-- se já subiu o arquivo-->
+                        <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="editar anexo">editar</a> <a href="#" class="botao excluir hltip" title="excluir anexo">excluir</a>
+                        <!-- se não subiu ainda -->
+                        <a class="botao enviar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="enviar anexo">enviar</a>
                     </div>
-                    <a class="attachment-title" href="#">Nome-do-arquivo-anexado.ext</a>
-                    <?php if($this->isEditable()): ?>
-                        <div class="btn-group">
-                            <!-- se já subiu o arquivo-->
-                            <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="editar anexo">editar</a> <a href="#" class="botao excluir hltip" title="excluir anexo">excluir</a>
-                            <!-- se não subiu ainda -->
-                            <a class="botao enviar hltip" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)" title="enviar anexo">enviar</a>
-                        </div>
-                        <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
+                    <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
 
-                            <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
-                                <div class="alert danger escondido"></div>
-                                <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
-                                <input type="file" name="{{uploadFileGroup}}" />
-                                <input type="submit" value="Enviar Modelo">
+                        <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                            <div class="alert danger escondido"></div>
+                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                            <input type="file" name="{{uploadFileGroup}}" />
+                            <input type="submit" value="Enviar Modelo">
 
-                                <div class="js-ajax-upload-progress">
-                                    <div class="progress">
-                                        <div class="bar"></div >
-                                        <div class="percent">0%</div >
-                                    </div>
+                            <div class="js-ajax-upload-progress">
+                                <div class="progress">
+                                    <div class="bar"></div >
+                                    <div class="percent">0%</div >
                                 </div>
-                            </form>
+                            </div>
+                        </form>
 
-                        </edit-box>
-                    <?php endif;?>
-                </li>
-            </ul>
-        </div>
-
+                    </edit-box>
+                <?php endif;?>
+            </li>
+        </ul>
     </div>
-
+    <div class="registration-fieldset">
+        <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. Depois de enviada, não será mais possível editá-la.</p>
+        <a class="botao-grande" href="#">enviar inscrição</a>
+    </div>
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
