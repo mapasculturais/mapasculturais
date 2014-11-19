@@ -383,7 +383,7 @@ $this->includeAngularEntityAssets($entity);
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{statusName(reg)}}}" ng-show="showRegistration(reg)" >
+                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{statusName(reg)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-agents-col">
                             <p>
