@@ -509,7 +509,7 @@ h6 {
 
 #main-header #busca {
   position: relative;
-  z-index: 1300; }
+  z-index: 9999; }
 
 #busca-avancada {
   background-color: #e2e2e2;
