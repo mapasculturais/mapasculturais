@@ -15,8 +15,17 @@
     }
 }
 #brand-logo {
-    float: left;
+    font-size: 1.7rem;
+    line-height: 3.7rem;
+    margin: auto;
     padding: .375rem $padding-large;
+    text-align: center;
+    @media screen and (min-width: $screen-xs-min) {
+        float: left;
+    }
+    @media screen and (min-width: $screen-lg-min) {
+        font-size: 2.25rem;
+    }
     img {
         width: 138px;
     }
@@ -28,7 +37,11 @@
     }
 }
 #about-nav {
-    padding: 0 $padding-large;
+    display: none;
+    @media screen and (min-width: $screen-xs-min) {
+        display: block;
+        padding: 0 $padding-large;
+    }
 }
 #logo-smc {
     clear: both;
@@ -63,11 +76,17 @@
         position: relative;
         list-style-type: none;
         float: left;
-        width: 5rem;
+        width: 3rem;
         padding: $padding-base;
         border-top: 6px solid transparent;
                 box-shadow: 1px 0 0 0 $gray-lighter inset;
         -webkit-box-shadow: 1px 0 0 0 $gray-lighter inset;
+        @media screen and (min-width: $screen-md-min) {
+            width: 4rem;
+        }
+        @media screen and (min-width: $screen-lg-min) {
+            width: 5rem;
+        }
         &:hover .submenu {
             display: block;
         }
