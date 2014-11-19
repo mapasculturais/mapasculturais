@@ -81,21 +81,27 @@
     background: $brand-primary;
     border-color: $brand-primary;
 }
-.adicionar:before,
-.editar:before,
-.enviar:before,
-.download:before,
-.excluir:before,
-.inserir:before {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    font-size: $font-size-base;
-    font-family: 'ElegantIcons';
-    vertical-align: top;
-    text-transform: none;
-    font-weight: normal;
-    font-style: none;
+.adicionar,
+.editar,
+.enviar,
+.download,
+.excluir,
+.inserir {
+    color: $gray-dark;
+    &:hover {
+        color: $gray-darker;
+    }
+    &:before {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        font-size: $font-size-base;
+        font-family: 'ElegantIcons';
+        vertical-align: top;
+        text-transform: none;
+        font-weight: normal;
+        font-style: none;
+    }
 }
 .adicionar:before {
     content: '\e050';
