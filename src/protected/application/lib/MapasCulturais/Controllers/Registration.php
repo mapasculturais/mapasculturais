@@ -3,6 +3,7 @@ namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use MapasCulturais\Definitions;
 
 /**
  * Registration Controller
@@ -14,6 +15,25 @@ use MapasCulturais\Traits;
 class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation;
+
+    function __construct() {
+        $app = App::i();
+        $app->hook('POST(registration.upload):before', function() use($app) {
+            $registration = $this->requestedEntity;
+            foreach($registration->project->registrationFileConfigurations as $rfc){
+                $fileGroup = new Definitions\FileGroup(
+                    $rfc->fileGroupName,
+                    array('^application/.*'),
+                    'The uploaded file is not a valid document.',
+                    true
+                );
+                $app->registerFileGroup('registration', $fileGroup);
+            }
+        });
+
+        parent::__construct();
+
+    }
 
     function getRequestedProject(){
         $app = App::i();
@@ -50,4 +70,5 @@ class Registration extends EntityController {
 
         parent::GET_single();
     }
+
 }

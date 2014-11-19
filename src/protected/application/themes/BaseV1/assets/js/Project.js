@@ -81,7 +81,7 @@
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
-            return RegistrationFileConfigurationService.getUrl()+'/upload/id:'+ownerId;
+            return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
         };
 
         $scope.data = {
@@ -106,7 +106,7 @@
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
-            if(confirm('Deseja remover este item?')){
+            if(confirm('Deseja remover este anexo?')){
                 RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fileConfigurations.splice($index, 1);
@@ -147,7 +147,7 @@
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
-            if(confirm('Deseja remover este item?')){
+            if(confirm('Deseja remover este modelo?')){
                 $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
                     delete $scope.data.fileConfigurations[$index].template;
                 });
@@ -171,6 +171,47 @@
 
     }]);
 
+    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
+        $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
+
+        $scope.data = {
+            fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
+        };
+
+        $scope.data.fileConfigurations.forEach(function(item){
+            item.file = MapasCulturais.entity.registrationFiles[item.groupName];
+        });
+
+        $scope.openFileEditBox = function(id, index, event){
+            EditBox.open('editbox-file-'+id, event);
+            initAjaxUploader(id, index);
+        };
+
+        $scope.removeFile = function (id, $index) {
+            if(confirm('Deseja remover este anexo?')){
+                $http.get($scope.data.fileConfigurations[$index].file.deleteUrl).success(function(response){
+                    delete $scope.data.fileConfigurations[$index].file;
+                });
+            }
+        };
+
+        var initAjaxUploader = function(id, index){
+            var $form = jQuery('#editbox-file-' + id);
+            if($form.data('initialized'))
+                return;
+            MapasCulturais.AjaxUploader.init($form);
+
+            $form.on('ajaxform.success', function(evt, response){
+                $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
+                $scope.$apply();
+                setTimeout(function(){
+                    EditBox.close('editbox-file-'+id, event);
+                }, 700);
+           });
+        };
+
+    }]);
+
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, ProjectService, EditBox, RelatedAgentsService) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
@@ -178,7 +219,7 @@
                 });
 
             $scope.editbox = EditBox;
-            
+
             $scope.data = {
                 spinner: false,
                 apiQueryRegistrationAgent: {
@@ -190,9 +231,9 @@
                     owner: null,
                     category: null
                 },
-                
+
                 registrations: MapasCulturais.entity.registrations,
-                
+
                 registrationStatuses:[
                     {value: null, label: 'Todos'},
                     {value: 1, label: 'Aguardando'},
@@ -205,7 +246,7 @@
             $scope.openEditBox = function(id, e){
                 EditBox.open(id, e);
             };
-            
+
             $scope.statusName = function(registration){
                 switch (registration.status){
                     case 1: return 'waiting'; break;
@@ -218,7 +259,7 @@
 
             $scope.showRegistration = function(registration){
                 var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
-                
+
                 return result;
             }
             var adjustBoxPosition = function () {
