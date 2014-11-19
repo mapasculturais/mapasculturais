@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before {
+.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before, .attachment-list .attachment-list-item .attachment-description a:before {
   font-family: 'ElegantIcons';
   speak: none;
   font-style: normal;
@@ -10,6 +10,8 @@
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   vertical-align: middle; }
+  .approve:hover, .reject:hover, .maybe:hover, .attachment-list .attachment-list-item .attachment-title:hover:before, .attachment-list .attachment-list-item .attachment-description a:hover:before {
+    text-decoration: none; }
 
 /* =Reset default browser CSS. Based on work by Eric Meyer: http://meyerweb.com/eric/tools/css/reset/index.html
 -------------------------------------------------------------- */
@@ -505,11 +507,11 @@ h6 {
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
   position: relative;
-  z-index: 152; }
+  z-index: 1700; }
 
 #main-header #busca {
   position: relative;
-  z-index: 151; }
+  z-index: 9999; }
 
 #busca-avancada {
   background-color: #e2e2e2;
@@ -529,7 +531,7 @@ h6 {
 /*filtro local*/
 #filtro-local {
   position: absolute;
-  z-index: 150;
+  z-index: 1400;
   left: 0;
   height: 1.875rem; }
 
@@ -696,7 +698,7 @@ h6 {
 
 #editable-entity {
   position: fixed;
-  z-index: 123;
+  z-index: 1400;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 100%;
@@ -723,11 +725,13 @@ h6 {
   width: 370px;
   text-align: right; }
 
-#logo-peq {
+#small-brand {
   position: absolute;
   left: .75rem;
   font-size: 20px;
   line-height: 2rem; }
+  #small-brand a {
+    color: #f90; }
 
 #funcao-do-agente {
   width: 135px;
@@ -1089,7 +1093,7 @@ h6 {
 -------------------------------------------------------------- */
 #main-footer {
   position: relative;
-  z-index: 100;
+  z-index: 1200;
   padding: 1.5rem;
   background: #000;
   color: #fff; }
@@ -1114,7 +1118,7 @@ h6 {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 150;
+  z-index: 1700;
   border-top: 6px solid #000;
   background: #fff; }
   #main-header h1 {
@@ -1373,7 +1377,7 @@ h6 {
 -------------------------------------------------------------- */
 #capa-marca-dagua {
   position: fixed;
-  z-index: 50;
+  z-index: 900;
   left: 0;
   right: 0;
   top: 102px;
@@ -1384,7 +1388,7 @@ h6 {
 
 #capa-nav {
   position: fixed;
-  z-index: 100;
+  z-index: 1200;
   top: 50%;
   bottom: 0; }
 
@@ -1397,7 +1401,7 @@ h6 {
 
 #capa-nav ul li a {
   position: relative;
-  z-index: 100;
+  z-index: 1200;
   display: block;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1413,7 +1417,7 @@ h6 {
 
 .nav-title {
   position: absolute;
-  z-index: 90;
+  z-index: 1000;
   top: 0;
   display: block;
   box-sizing: border-box;
@@ -1463,7 +1467,7 @@ h6 {
   font-size: 4rem;
   text-align: center;
   position: relative;
-  z-index: 51; }
+  z-index: 900; }
 
 .objeto-capa {
   float: none;
@@ -1487,7 +1491,7 @@ h6 {
 
 .objeto-capa .box {
   position: relative;
-  z-index: 100; }
+  z-index: 1200; }
 
 .objeto-capa .box h4 {
   font-family: 'Open Sans';
@@ -1605,28 +1609,24 @@ h6 {
   line-height: 2.5rem;
   font-weight: bold;
   text-align: left; }
-
-#filtro-da-capa .placeholder:after {
-  margin-left: .75rem;
-  line-height: 2.5rem;
-  font-size: 1.5rem;
-  color: #fff; }
-
-#filtro-da-capa li {
-  padding: 0 0.75rem;
-  cursor: pointer; }
-
-#filtro-da-capa .submenu-dropdown {
-  top: 48px;
-  background: #000; }
-
-#filtro-da-capa .submenu-dropdown:before {
-  color: #000; }
-
-#filtro-da-capa .icone {
-  margin-right: 5px;
-  vertical-align: initial;
-  font-size: 1rem; }
+  #filtro-da-capa .placeholder {
+    padding-right: 2.5rem; }
+    #filtro-da-capa .placeholder:after {
+      margin-right: .5rem;
+      line-height: 2.5rem;
+      font-size: 1.5rem;
+      color: #fff; }
+  #filtro-da-capa li {
+    padding: 0 0.75rem;
+    cursor: pointer; }
+  #filtro-da-capa .submenu-dropdown {
+    background: #000; }
+    #filtro-da-capa .submenu-dropdown:before {
+      color: #000; }
+  #filtro-da-capa .icone {
+    margin-right: 5px;
+    vertical-align: initial;
+    font-size: 1rem; }
 
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {
@@ -1729,7 +1729,7 @@ body.editable #main-section {
 
 #infobox {
   position: absolute;
-  z-index: 149;
+  z-index: 1500;
   top: 105px;
   left: 0;
   bottom: 0;
@@ -1867,7 +1867,7 @@ nav.sidebar-left .icone {
 
 .busca-popover {
   position: absolute;
-  z-index: 100;
+  z-index: 1200;
   display: none;
   top: 2.25rem;
   right: -24px;
@@ -1941,6 +1941,7 @@ nav.sidebar-left .icone {
 
 .sidebar.event {
   border-top: #b3b921 12px solid; }
+  .sidebar.event .event-project-link,
   .sidebar.event .widget-list-item > a {
     color: #b3b921; }
   .sidebar.event .setinha {
@@ -2077,7 +2078,7 @@ nav.sidebar-left .icone {
   .agentes .avatar .descricao-do-agente {
     display: none;
     position: absolute;
-    z-index: 2;
+    z-index: 800;
     top: 3.5rem;
     right: -.75rem;
     width: 200px;
@@ -2279,7 +2280,6 @@ nav.sidebar-left .icone {
   width: 3rem;
   height: 3rem; }
 
-/*botões*/
 .botao,
 .botao-grande {
   display: inline-block;
@@ -2319,6 +2319,7 @@ nav.sidebar-left .icone {
 .botao.simples,
 .botao.adicionar,
 .botao.editar,
+.botao.enviar,
 .botao.download,
 .botao.excluir {
   color: #666;
@@ -2328,11 +2329,20 @@ nav.sidebar-left .icone {
 .botao.simples:hover,
 .botao.adicionar:hover,
 .botao.editar:hover,
+.botao.enviar:hover,
 .botao.download:hover,
 .botao.excluir:hover {
   color: #333;
   background: #eee;
   border: 1px solid #666; }
+
+.botao.adicionar:before,
+.botao.editar:before,
+.botao.enviar:before,
+.botao.download:before,
+.botao.excluir:before,
+.botao-grande.adicionar:before {
+  margin-right: 5px; }
 
 .botao-grande {
   padding: 0.5rem;
@@ -2347,6 +2357,8 @@ nav.sidebar-left .icone {
 
 .adicionar:before,
 .editar:before,
+.enviar:before,
+.download:before,
 .excluir:before,
 .inserir:before {
   display: inline-block;
@@ -2365,20 +2377,17 @@ nav.sidebar-left .icone {
 .editar:before {
   content: '\6c'; }
 
+.enviar:before {
+  content: '\e091'; }
+
+.download:before {
+  content: '\e092'; }
+
 .excluir:before {
   content: '\e051'; }
 
 .inserir:before {
   content: '\37'; }
-
-.botao.editar:before {
-  margin-right: 5px;
-  line-height: 1.875rem; }
-
-.botao.adicionar:before,
-.botao-grande.adicionar:before,
-.botao.excluir:before {
-  margin-right: 5px; }
 
 .botao-de-icone {
   width: 1.375rem;
@@ -2463,15 +2472,15 @@ table.contratos td {
       vertical-align: middle;
       cursor: pointer; }
   .dropdown .submenu-dropdown {
-    z-index: 900;
+    z-index: 1800;
     position: absolute;
-    top: 40px;
+    top: 100%;
     right: 0;
     min-width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     display: none;
-    margin: 0;
+    margin: 8px 0 0;
     padding: 0.5rem 0;
     background: #e2e2e2;
     border-radius: 2px;
@@ -2554,7 +2563,7 @@ table.contratos td {
 
 .edit-box {
   position: absolute;
-  z-index: 149;
+  z-index: 1500;
   min-width: 375px;
   display: none;
   padding: 0.75rem;
@@ -2772,7 +2781,7 @@ h1 .icone {
   display: none;
   margin-top: 15px;
   padding: 1.5rem;
-  z-index: 1000;
+  z-index: 3000;
   background: #fff;
   border-top: 4px solid #f90;
   border-radius: 2px;
@@ -3352,11 +3361,14 @@ h1 .icone {
     padding: 0.75rem;
     padding-right: 11rem;
     border-bottom: 1px solid #eee; }
+    .registration-list .registration-list-item a {
+      font-weight: normal; }
     .registration-list .registration-list-item .registration-label {
       font-weight: bold; }
     .registration-list .registration-list-item .registration-description {
       font-size: 0.75rem;
-      color: #999; }
+      color: #999;
+      margin-bottom: 0.75rem; }
     .registration-list .registration-list-item .btn-group {
       position: absolute;
       bottom: 0.75rem;
@@ -3370,14 +3382,27 @@ h1 .icone {
   .attachment-list .attachment-list-item {
     position: relative;
     padding: 0.75rem;
+    padding-right: 11rem;
     border-bottom: 1px solid #eee; }
+    .attachment-list .attachment-list-item a {
+      font-weight: normal; }
     .attachment-list .attachment-list-item .attachment-title {
       display: block; }
       .attachment-list .attachment-list-item .attachment-title:before {
         content: "\e016"; }
     .attachment-list .attachment-list-item .attachment-description {
       font-size: 0.75rem;
-      color: #999; }
+      color: #999;
+      margin-bottom: 0.75rem; }
+      .attachment-list .attachment-list-item .attachment-description a:before {
+        font-size: inherit;
+        content: "\e092"; }
+    .attachment-list .attachment-list-item .btn-group {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem; }
+    .attachment-list .attachment-list-item:hover {
+      background: #eee; }
   .attachment-list .is-editable {
     padding-right: 4rem;
     min-height: 1.5rem; }
@@ -3546,7 +3571,7 @@ a.editable-click:hover {
 
 /* balãozinho*/
 .tip-yellowsimple {
-  z-index: 1001;
+  z-index: 1900;
   padding: 0.75rem;
   background: #fff;
   border: none;
@@ -3733,7 +3758,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 #mc-entity-layers {
   position: absolute;
-  z-index: 150;
+  z-index: 1400;
   right: 0rem;
   height: 1.875rem;
   font-size: 1rem;
@@ -3744,7 +3769,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-top,
 .leaflet-bottom {
-  z-index: 122; }
+  z-index: 1300; }
 
 .leaflet-container:-webkit-full-screen {
   top: 0 !important; }
@@ -3871,7 +3896,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .leaflet-label {
   font: 0.75rem/1.5 "Open Sans", Helvetica, Arial, sans-serif;
   position: absolute;
-  z-index: 9999999 !important;
+  z-index: 9999 !important;
   display: block;
   margin: 0 8px;
   padding: 5px 10px;

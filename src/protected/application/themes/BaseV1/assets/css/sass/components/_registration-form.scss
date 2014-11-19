@@ -155,33 +155,4 @@
         	background: $gray-lighter;
         }
     }
-    .is-editable {
-        padding-right: 4rem;
-        min-height: $line-height-base;
-        .botoes {
-            display: none;
-            position: absolute;
-            top: .75rem;
-            right: .75rem;
-        }
-        &:hover {
-            background: $gray-lighter;
-            border-radius: $border-radius-base;
-            .botoes {
-                display: inline-block;
-            }
-        }
-    }
-    a.icone,
-    a.editar {
-        margin-left: 5px;
-        color: $gray-dark;
-        cursor: pointer;
-        &:hover {
-            color: $gray-darker;
-        }
-    }
-    a.icone {
-        font-size: 1rem;
-    }
 }

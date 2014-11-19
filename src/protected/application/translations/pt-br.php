@@ -10,6 +10,9 @@ return array(
     'Project' => 'Projeto',
     'no files uploaded' => 'nenhum arquivo foi enviado',
     'The uploaded file is not a valid image.' => 'O arquivo enviado não é uma imagem válida.',
+    'The uploaded file is not a valid document.' => 'O arquivo enviado não é um documento válido.',
+    'The uploaded file is larger than the allowed size.' => 'O arquivo enviado é maior do que o permitido.',
+    'Unexpected error.' => 'Erro inesperado.',
 
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
@@ -34,7 +37,7 @@ return array(
 
     'Yes' => 'Sim',
     'No' => 'Não',
-    
+
     'Use relation %s' => 'Usar relação %s',
     "Required" => 'Obrigatório',
     "Facultative" => 'Facultativo',
