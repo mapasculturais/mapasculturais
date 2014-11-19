@@ -185,14 +185,19 @@ $form-fields-height:                   2rem !default;
 //
 // Note: These variables are not generated into the Customizer.
 
-$zindex-navbar:            1000 !default;
-$zindex-dropdown:          1000 !default;
-$zindex-popover:           1060 !default;
-$zindex-tooltip:           1070 !default;
-$zindex-navbar-fixed:      1030 !default;
-$zindex-modal-background:  1040 !default;
-$zindex-modal:             1050 !default;
-
+$z-index-1:   800 !default;
+$z-index-2:   900 !default;
+$z-index-3:  1000 !default;
+$z-index-4:  1200 !default;
+$z-index-5:  1300 !default;
+$z-index-6:  1400 !default;
+$z-index-7:  1500 !default;
+$z-index-8:  1400 !default;
+$z-index-9:  1300 !default;
+$z-index-10: 1700 !default;
+$z-index-11: 1800 !default;
+$z-index-12: 1900 !default;
+$z-index-13: 9999 !default;
 
 //== Alerts
 //
@@ -226,6 +231,7 @@ $alert-danger-border:         darken(#fcc, 10%) !default;
 
 $registration-header-bg:      $brand-project;
 $registration-header-color:	  #fff !default;
+
 
 //== Editable Entity Bar
 //
