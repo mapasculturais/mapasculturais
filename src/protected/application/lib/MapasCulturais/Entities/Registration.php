@@ -94,6 +94,7 @@ class Registration extends \MapasCulturais\Entity
     function jsonSerialize() {
         $json = array(
             'id' => $this->id,
+            'project' => $this->project->simplify('id,name,singleUrl'),
             'number' => $this->number,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => array(),

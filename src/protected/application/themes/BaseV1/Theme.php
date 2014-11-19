@@ -810,8 +810,14 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
-
     }
+
+    function addRegistrationToJs($entity){
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
+        $this->jsObject['entity']['registrationFiles'] = $entity->files;
+    }
+
 
     /**
     * Returns a verified entity with images in gallery
