@@ -457,9 +457,12 @@ MapasCulturais.AjaxUploader = {
             var percent = $(this).parent().find('.js-ajax-upload-progress .percent');
 
             MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
-
+            var $this = $(this);
             // bind form using 'ajaxForm'
             $(this).ajaxForm({
+                beforeSend: function(xhr){
+                    $this.data('xhr', xhr);
+                },
                 //target:        '#output1',   // target element(s) to be updated with server response
                 beforeSubmit: function(arr, $form, options) {
                     MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), true);
@@ -538,7 +541,7 @@ MapasCulturais.AjaxUploader = {
 
                         }
                     }
-                    $form.trigger('ajaxform.success', [response]);
+                    $form.trigger('ajaxForm.success', [response]);
 
                     $form.get(0).reset();
                     if($form.parents('.js-editbox').data('success-callback'))

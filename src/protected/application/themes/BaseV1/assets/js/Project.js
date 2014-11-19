@@ -192,12 +192,19 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-registration-files-template-' + id);
+            var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
+
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            $form.on('ajaxform.success', function(evt, response){
+            jQuery('#editbox-registration-files-template-'+id).on('cancel', function(){
+                $form.data('xhr').abort();
+                $form.get(0).reset();
+                MapasCulturais.AjaxUploader.resetProgressBar($form);
+            });
+
+            $form.on('ajaxForm.success', function(evt, response){
                 $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
                 setTimeout(function(){
