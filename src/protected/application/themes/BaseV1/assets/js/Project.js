@@ -113,6 +113,8 @@
     module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
 
         $scope.isEditable = MapasCulturais.isEditable;
+        $scope.maxUploadSize = MapasCulturais.maxUploadSize;
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
             return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
@@ -192,12 +194,19 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-registration-files-template-' + id);
+            var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
+
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            $form.on('ajaxform.success', function(evt, response){
+            jQuery('#editbox-registration-files-template-'+id).on('cancel', function(){
+                $form.data('xhr').abort();
+                $form.get(0).reset();
+                MapasCulturais.AjaxUploader.resetProgressBar($form);
+            });
+
+            $form.on('ajaxForm.success', function(evt, response){
                 $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
                 setTimeout(function(){
@@ -210,7 +219,8 @@
 
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
         $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
-
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
+        
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };

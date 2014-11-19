@@ -780,6 +780,10 @@ class App extends \Slim\Slim{
                     $result[] = new \MapasCulturais\Entities\File($tmp_file);
                 }
             }else{
+
+                if($_FILES[$key]['error']){
+                    throw new \MapasCulturais\Exceptions\FileUploadError($key, $_FILES[$key]['error']);
+                }
                 $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name']);
                 $result = new \MapasCulturais\Entities\File($_FILES[$key]);
             }
@@ -990,7 +994,7 @@ class App extends \Slim\Slim{
      * Getters
      **********************************************/
 
-    public function getMaxUploadSize(){
+    public function getMaxUploadSize($useSuffix=true){
         $MB = 1024;
         $GB = $MB * 1024;
 
@@ -1017,6 +1021,9 @@ class App extends \Slim\Slim{
         $memory_limit = $convertToKB(ini_get('memory_limit'));
 
         $result = min($max_upload, $max_post, $memory_limit);
+
+        if(!$useSuffix)
+            return $result;
 
         if($result < $MB){
             $result .= ' KB';

@@ -279,6 +279,8 @@
 
                 var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.hide();
+
+                jQuery('#' + editboxId).trigger('close');
             }
         };
 
@@ -338,6 +340,7 @@
                     if(angular.isFunction($scope.onCancel)){
                         $scope.onCancel(attrs);
                     }
+                    jQuery('#' + attrs.id).trigger('cancel');
                 };
 
                 if(angular.isFunction($scope.onOpen)){

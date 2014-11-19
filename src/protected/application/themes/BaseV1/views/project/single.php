@@ -262,9 +262,9 @@ $this->includeAngularEntityAssets($entity);
                                 <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
                                     <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
                                 </p>
-                                <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                                <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
-                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                                     <input type="file" name="{{uploadFileGroup}}" />
                                     <input type="submit" value="Enviar Modelo">
 
