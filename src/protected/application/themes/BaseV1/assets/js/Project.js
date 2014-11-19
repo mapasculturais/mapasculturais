@@ -27,7 +27,7 @@
 
                 return url;
             }
-            
+
             function setStatus(registration, registrationStatus){
                 return $http.post(getUrl(registrationStatus, registration.id)).
                             success(function (data, status) {
@@ -38,7 +38,7 @@
                                 $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
                             });
             }
-            
+
             return {
                 register: function (params) {
                     var data = {
@@ -54,19 +54,19 @@
                                 $rootScope.$emit('error', {message: "Cannot create project registration", data: data, status: status});
                             });
                 },
-                
+
                 approve: function(registration){
                     return setStatus(registration, 'approve');
                 },
-                
+
                 reject: function(registration){
                     return setStatus(registration, 'reject');
                 },
-                
+
                 maybe: function(registration){
                     return setStatus(registration, 'maybe');
                 }
-                
+
             };
         }]);
 
@@ -118,14 +118,16 @@
             return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
         };
 
+        var fileConfigurationSkeleton = {
+            ownerId: MapasCulturais.entity.id,
+            title: null,
+            description: null,
+            required: false
+        };
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
-            newFileConfiguration: {
-                ownerId: MapasCulturais.entity.id,
-                title: null,
-                description: null,
-                required: false
-            }
+            newFileConfiguration: angular.copy(fileConfigurationSkeleton)
         };
 
         $scope.fileConfigurationBackups = [];
@@ -135,6 +137,7 @@
                 if(!response.error){
                     $scope.data.fileConfigurations.push(response);
                     EditBox.close('editbox-registration-files');
+                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
                 }
             });
         };
@@ -275,7 +278,7 @@
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovado'}
                 ],
-                
+
                 userHasControl: MapasCulturais.entity.userHasControl
             };
 
@@ -291,7 +294,7 @@
                     case 10: return 'approved'; break;
                 }
             };
-            
+
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl){
                     RegistrationService[status](registration);
@@ -304,7 +307,7 @@
 
                 return result;
             };
-            
+
             var adjustBoxPosition = function () {
                 setTimeout(function () {
                     adjustingBoxPosition = true;
