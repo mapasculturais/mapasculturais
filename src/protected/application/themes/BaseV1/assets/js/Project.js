@@ -13,26 +13,60 @@
             };
         }]);
 
-    module.factory('ProjectService', ['$http', '$rootScope', function ($http, $rootScope) {
+    module.factory('RegistrationService', ['$http', '$rootScope', function ($http, $rootScope) {
+            function getUrl(action, registrationId){
+                var url = MapasCulturais.baseURL + 'registration';
+
+                if(action){
+                    url += '/' + action;
+                }
+
+                if(registrationId){
+                    url += '/' + registrationId;
+                }
+
+                return url;
+            }
+
+            function setStatus(registration, registrationStatus){
+                return $http.post(getUrl(registrationStatus, registration.id)).
+                            success(function (data, status) {
+                                registration.status = data.status;
+                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration was " + registrationStatus, data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
+                            });
+            }
+
             return {
-                serviceProperty: null,
-                getRegistrationUrl: function(){
-                    return MapasCulturais.baseURL + 'registration';
-                },
                 register: function (params) {
                     var data = {
                         projectId: MapasCulturais.entity.id,
                         ownerId: params.owner.id,
                         category: params.category.value
                     };
-                    return $http.post(this.getRegistrationUrl(), data).
+                    return $http.post(getUrl(), data).
                             success(function (data, status) {
-                                $rootScope.$emit('something', {message: "Project registration was created", data: data, status: status});
+                                $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
                             }).
                             error(function (data, status) {
                                 $rootScope.$emit('error', {message: "Cannot create project registration", data: data, status: status});
                             });
+                },
+
+                approve: function(registration){
+                    return setStatus(registration, 'approve');
+                },
+
+                reject: function(registration){
+                    return setStatus(registration, 'reject');
+                },
+
+                maybe: function(registration){
+                    return setStatus(registration, 'maybe');
                 }
+
             };
         }]);
 
@@ -81,17 +115,19 @@
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
-            return RegistrationFileConfigurationService.getUrl()+'/upload/id:'+ownerId;
+            return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
+        };
+
+        var fileConfigurationSkeleton = {
+            ownerId: MapasCulturais.entity.id,
+            title: null,
+            description: null,
+            required: false
         };
 
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
-            newFileConfiguration: {
-                ownerId: MapasCulturais.entity.id,
-                title: null,
-                description: null,
-                required: false
-            }
+            newFileConfiguration: angular.copy(fileConfigurationSkeleton)
         };
 
         $scope.fileConfigurationBackups = [];
@@ -101,12 +137,13 @@
                 if(!response.error){
                     $scope.data.fileConfigurations.push(response);
                     EditBox.close('editbox-registration-files');
+                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
                 }
             });
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
-            if(confirm('Deseja remover este item?')){
+            if(confirm('Deseja remover este anexo?')){
                 RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fileConfigurations.splice($index, 1);
@@ -147,7 +184,7 @@
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
-            if(confirm('Deseja remover este item?')){
+            if(confirm('Deseja remover este modelo?')){
                 $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
                     delete $scope.data.fileConfigurations[$index].template;
                 });
@@ -171,17 +208,54 @@
 
     }]);
 
-    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, ProjectService, EditBox, RelatedAgentsService) {
+    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
+        $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
+
+        $scope.data = {
+            fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
+        };
+
+        $scope.data.fileConfigurations.forEach(function(item){
+            item.file = MapasCulturais.entity.registrationFiles[item.groupName];
+        });
+
+        $scope.openFileEditBox = function(id, index, event){
+            EditBox.open('editbox-file-'+id, event);
+            initAjaxUploader(id, index);
+        };
+
+        $scope.removeFile = function (id, $index) {
+            if(confirm('Deseja remover este anexo?')){
+                $http.get($scope.data.fileConfigurations[$index].file.deleteUrl).success(function(response){
+                    delete $scope.data.fileConfigurations[$index].file;
+                });
+            }
+        };
+
+        var initAjaxUploader = function(id, index){
+            var $form = jQuery('#editbox-file-' + id);
+            if($form.data('initialized'))
+                return;
+            MapasCulturais.AjaxUploader.init($form);
+
+            $form.on('ajaxform.success', function(evt, response){
+                $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
+                $scope.$apply();
+                setTimeout(function(){
+                    EditBox.close('editbox-file-'+id, event);
+                }, 700);
+           });
+        };
+
+    }]);
+
+    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
                 });
 
             $scope.editbox = EditBox;
-
-            $scope.openEditBox = function(id, e){
-                EditBox.open(id, e);
-            };
 
             $scope.data = {
                 spinner: false,
@@ -193,7 +267,45 @@
                 registration: {
                     owner: null,
                     category: null
+                },
+
+                registrations: MapasCulturais.entity.registrations,
+
+                registrationStatuses:[
+                    {value: null, label: 'Todos'},
+                    {value: 1, label: 'Aguardando'},
+                    {value: 3, label: 'Rejeitado'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Aprovado'}
+                ],
+
+                userHasControl: MapasCulturais.entity.userHasControl
+            };
+
+            $scope.openEditBox = function(id, e){
+                EditBox.open(id, e);
+            };
+
+            $scope.statusName = function(registration){
+                switch (registration.status){
+                    case 1: return 'waiting'; break;
+                    case 3: return 'rejected'; break;
+                    case 8: return 'maybe'; break;
+                    case 10: return 'approved'; break;
                 }
+            };
+
+            $scope.setRegistrationStatus = function(registration, status){
+                if(MapasCulturais.entity.userHasControl){
+                    RegistrationService[status](registration);
+                }
+            };
+
+
+            $scope.showRegistration = function(registration){
+                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
+
+                return result;
             };
 
             var adjustBoxPosition = function () {
@@ -234,7 +346,7 @@
                 var registration = $scope.data.registration;
 
                 if(registration.owner && (!categories.length || registration.category)){
-                    ProjectService.register(registration).success(function(rs){
+                    RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
                 }else{

@@ -276,6 +276,11 @@ class Project extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
     }
 
+    function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
+        $meta_name = $def->getMetadataName();
+        return $this->$meta_name;
+    }
+
     protected function canUserPublishRegistrations($user){
         if($user->is('guest'))
             return false;

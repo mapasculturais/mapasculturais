@@ -698,14 +698,14 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['entity']['id'] = $entity->id;
 
-        $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
-        foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
-        $this->jsObject['roles'] = $roles;
-
-        if (!$this->isEditable()) {
-            return;
+        $roles = [];
+        if(!\MapasCulturais\App::i()->user->is('guest')){
+            foreach(\MapasCulturais\App::i()->user->roles as $r){
+                $roles[] = $r->name;
+            }
         }
 
+        $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
 
         $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(
@@ -806,10 +806,18 @@ class Theme extends MapasCulturais\Theme {
     }
 
 
-    function addProjectRegistrationConfigurationToJs($entity){
+    function addProjectToJs($entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
     }
+
+    function addRegistrationToJs($entity){
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
+        $this->jsObject['entity']['registrationFiles'] = $entity->files;
+    }
+
 
     /**
     * Returns a verified entity with images in gallery
@@ -910,6 +918,24 @@ class Theme extends MapasCulturais\Theme {
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
             'isVerified' => 'EQ(true)'
         ));
+    }
+
+    function getRegistrationStatusName($registration){
+        switch ($registration->status) {
+            case \MapasCulturais\Entities\Registration::STATUS_APPROVED:
+                return 'approved';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_REJECTED:
+                return 'rejected';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_MAYBE:
+                return 'maybe';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_WAITING:
+                return 'waiting';
+                break;
+
+        }
     }
 
 }

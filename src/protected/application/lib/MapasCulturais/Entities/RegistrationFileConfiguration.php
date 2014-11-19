@@ -63,6 +63,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      */
     protected $required = false;
 
+    public function getFileGroupName(){
+        return 'rfc_' . $this->id;
+    }
 
     public function setOwnerId($id){
 //        $this->owner = $this->repo()->find('project', $id);
@@ -76,7 +79,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'title' => $this->title,
             'description' => $this->description,
             'required' => $this->required,
-            'template' => $this->getFile('registrationFileTemplate')
+            'template' => $this->getFile('registrationFileTemplate'),
+            'groupName' => $this->fileGroupName
         );
     }
 
