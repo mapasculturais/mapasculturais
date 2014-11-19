@@ -14,7 +14,7 @@
         .descricao-do-agente {
             display: none;
             position: absolute;
-            z-index: 2;
+            z-index: $z-index-1;
             top: 3.5rem;
             right: -.75rem;
             width: 200px;
