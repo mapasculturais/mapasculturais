@@ -105,9 +105,9 @@ $this->includeAngularEntityAssets($entity);
                         <a ng-if="!fileConfiguration.required && fileConfiguration.file" ng-click="removeFile(fileConfiguration.id, $index)" class="botao excluir hltip" title="excluir anexo">excluir</a>
                     </div>
                     <edit-box id="editbox-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
-                        <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" enctype="multipart/form-data">
+                        <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{fileConfiguration.groupName}}"  enctype="multipart/form-data">
                             <div class="alert danger escondido"></div>
-                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                             <input type="file" name="{{fileConfiguration.groupName}}" />
                             <input type="submit" value="Enviar Modelo">
 

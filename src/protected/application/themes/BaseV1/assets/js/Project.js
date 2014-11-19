@@ -219,7 +219,8 @@
 
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
         $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
-
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
+        
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
