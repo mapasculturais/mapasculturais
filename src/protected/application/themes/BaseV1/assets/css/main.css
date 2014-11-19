@@ -1125,8 +1125,17 @@ h6 {
       display: block; }
 
 #brand-logo {
-  float: left;
-  padding: 0.375rem 1.5rem; }
+  font-size: 1.7rem;
+  line-height: 3.7rem;
+  margin: auto;
+  padding: 0.375rem 1.5rem;
+  text-align: center; }
+  @media screen and (min-width: 480px) {
+    #brand-logo {
+      float: left; } }
+  @media screen and (min-width: 1200px) {
+    #brand-logo {
+      font-size: 2.25rem; } }
   #brand-logo img {
     width: 138px; }
   #brand-logo a {
@@ -1135,7 +1144,11 @@ h6 {
     text-decoration: none; }
 
 #about-nav {
-  padding: 0 1.5rem; }
+  display: none; }
+  @media screen and (min-width: 480px) {
+    #about-nav {
+      display: block;
+      padding: 0 1.5rem; } }
 
 #logo-smc {
   clear: both; }
@@ -1166,11 +1179,17 @@ h6 {
     position: relative;
     list-style-type: none;
     float: left;
-    width: 5rem;
+    width: 3rem;
     padding: 0.75rem;
     border-top: 6px solid transparent;
     box-shadow: 1px 0 0 0 #eee inset;
     -webkit-box-shadow: 1px 0 0 0 #eee inset; }
+    @media screen and (min-width: 992px) {
+      .menu > li {
+        width: 4rem; } }
+    @media screen and (min-width: 1200px) {
+      .menu > li {
+        width: 5rem; } }
     .menu > li:hover .submenu {
       display: block; }
     .menu > li:first-child {
@@ -2016,9 +2035,6 @@ nav.sidebar-left .icone {
   .sidebar-right {
     width: 20%; } }
 @media screen and (max-width: 1055px) {
-  .menu > li {
-    width: 4rem; }
-
   .sidebar-right.sidebar {
     border-top: none; }
 
