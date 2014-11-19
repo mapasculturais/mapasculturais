@@ -28,17 +28,6 @@
                 return url;
             }
 
-            function setStatus(registration, registrationStatus){
-                return $http.post(getUrl(registrationStatus, registration.id)).
-                            success(function (data, status) {
-                                registration.status = data.status;
-                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration was " + registrationStatus, data: data, status: status});
-                            }).
-                            error(function (data, status) {
-                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
-                            });
-            }
-
             return {
                 register: function (params) {
                     var data = {
@@ -55,16 +44,16 @@
                             });
                 },
 
-                approve: function(registration){
-                    return setStatus(registration, 'approve');
-                },
-
-                reject: function(registration){
-                    return setStatus(registration, 'reject');
-                },
-
-                maybe: function(registration){
-                    return setStatus(registration, 'maybe');
+                setStatusTo: function(registration, registrationStatus){
+                    
+                    return $http.post(getUrl('setStatusTo', registration.id), {status: registrationStatus}).
+                            success(function (data, status) {
+                                registration.status = data.status;
+                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration status was setted to " + registrationStatus, data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
+                            });
                 }
 
             };
@@ -287,17 +276,25 @@
             };
 
             $scope.statusName = function(registration){
+                /*
+                        const STATUS_SENT = self::STATUS_ENABLED;
+                        const STATUS_APPROVED = 10;
+                        const STATUS_WAITLIST = 8;
+                        const STATUS_NOTAPPROVED = 3;
+                        const STATUS_INVALID = 2;
+                 */
                 switch (registration.status){
-                    case 1: return 'waiting'; break;
-                    case 3: return 'rejected'; break;
-                    case 8: return 'maybe'; break;
+                    case 1: return 'sent'; break;
+                    case 2: return 'invalid'; break;
+                    case 3: return 'notapproved'; break;
+                    case 8: return 'waitlist'; break;
                     case 10: return 'approved'; break;
                 }
             };
 
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl){
-                    RegistrationService[status](registration);
+                    RegistrationService.setStatusTo(registration, status);
                 }
             };
 

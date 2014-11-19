@@ -402,9 +402,12 @@ $this->includeAngularEntityAssets($entity);
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <span ng-click="setRegistrationStatus(reg, 'approve')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Aprovar"></span>
-                            <span ng-click="setRegistrationStatus(reg, 'maybe')" class="js-registration-action maybe hltip" ng-class="{selected: statusName(reg) === 'maybe'}" title="Suplente"></span>
-                            <span ng-click="setRegistrationStatus(reg, 'reject')" class="js-registration-action reject hltip" ng-class="{selected: statusName(reg) === 'rejected'}" title="Rejeitar"></span>
+                            <style>.selected {font-weight: bold}</style>
+                            <span ng-click="setRegistrationStatus(reg, 'approved')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Marcar como aprovado">Marcar como aprovado</span>
+                            <span ng-click="setRegistrationStatus(reg, 'waitlist')" class="js-registration-action waitlist hltip" ng-class="{selected: statusName(reg) === 'waitlist'}" title="Marcar como suplente">Marcar como suplente</span>
+                            <span ng-click="setRegistrationStatus(reg, 'invalid')" class="js-registration-action invalid hltip" ng-class="{selected: statusName(reg) === 'invalid'}" title="Marcar como inválido">Marcar como inválido</span>
+                            <span ng-click="setRegistrationStatus(reg, 'notapproved')" class="js-registration-action notapproved hltip" ng-class="{selected: statusName(reg) === 'notapproved'}" title="Marcar como não aprovado">Marcar como não aprovado</span>
+                            <span ng-click="setRegistrationStatus(reg, 'draft')" class="js-registration-action draft hltip" title="Reabrir formulário">Reabrir formulário</span>
                         </td>
                     </tr>
                 </tbody>

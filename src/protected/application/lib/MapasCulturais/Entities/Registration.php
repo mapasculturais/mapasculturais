@@ -21,11 +21,11 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation;
 
-
-    const STATUS_WAITING = self::STATUS_ENABLED;
-    const STATUS_REJECTED = 3;
-    const STATUS_MAYBE = 8;
+    const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;
+    const STATUS_WAITLIST = 8;
+    const STATUS_NOTAPPROVED = 3;
+    const STATUS_INVALID = 2;
 
     protected static $validations = array(
         'owner' => array(
@@ -167,65 +167,69 @@ class Registration extends \MapasCulturais\Entity
         // do nothing
     }
 
-    function approve(){
+    protected function _setStatusTo($status){
         $this->checkPermission('changeStatus');
 
         App::i()->applyHookBoundTo($this, 'entity(Registration).approve:before');
 
-        $this->status = self::STATUS_APPROVED;
+        $this->status = $status;
 
         $this->save(true);
 
         App::i()->applyHookBoundTo($this, 'entity(Registration).approve:after');
     }
 
-    function reject(){
-        $this->checkPermission('changeStatus');
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).reject:before');
-
-        $this->status = self::STATUS_REJECTED;
-
-        $this->save(true);
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).reject:after');
+    function setStatusToDraft(){
+        $this->_setStatusTo(self::STATUS_DRAFT);
     }
 
-    function maybe(){
-        $this->checkPermission('changeStatus');
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:before');
-
-        $this->status = self::STATUS_MAYBE;
-
-        $this->save(true);
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:after');
+    function setStatusToApproved(){
+        $this->_setStatusTo(self::STATUS_APPROVED);
     }
 
-    function waiting(){
-        $this->checkPermission('changeStatus');
+    function setStatusToNotApproved(){
+        $this->_setStatusTo(self::STATUS_NOTAPPROVED);
+    }
 
-        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:before');
+    function setStatusToWaitlist(){
+        $this->_setStatusTo(self::STATUS_WAITLIST);
+    }
 
-        $this->status = self::STATUS_WAITING;
-
-        $this->save(true);
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:after');
+    function setStatusToInvalid(){
+        $this->_setStatusTo(self::STATUS_INVALID);
     }
 
 
     protected function canUserView($user){
-        return true;
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($user->is('admin')){
+            return true;
+        }
+
+        if($this->canUser('@control', $user)){
+            return true;
+        }
+
+        if($this->project->canUser('@control', $user)){
+            return true;
+        }
+
+        foreach($this->relatedAgents as $agent){
+            if($agent->canUser('@control', $user)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function canUserChangeStatus($user){
-        if($user->is('guest'))
+        if($user->is('guest')){
             return false;
-
-        if($this->project->registrationTo > new \DateTime)
-            return false;
+        }
 
         return $this->project->canUser('@control', $user);
     }
