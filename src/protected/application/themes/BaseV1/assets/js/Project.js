@@ -113,6 +113,8 @@
     module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
 
         $scope.isEditable = MapasCulturais.isEditable;
+        $scope.maxUploadSize = MapasCulturais.maxUploadSize;
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
             return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;

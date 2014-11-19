@@ -10,7 +10,7 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\View $layout The layout to use when rendering the template.
  * @property \MapasCulturais\Controller $controller The controller that call the render / partial
- * 
+ *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
@@ -101,6 +101,8 @@ abstract class Theme extends \Slim\View {
         $this->jsObject = new \ArrayObject;
         $this->jsObject['baseURL'] = $app->baseUrl;
         $this->jsObject['assetURL'] = $app->assetUrl;
+        $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
+        $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
 
         $folders = array();
 
@@ -134,7 +136,7 @@ abstract class Theme extends \Slim\View {
             while($class !== __CLASS__){
                 if(!method_exists($class, '_getTexts'))
                     throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
-                    
+
                 $this->_addTexts($class::_getTexts());
                 $class = get_parent_class($class);
             }

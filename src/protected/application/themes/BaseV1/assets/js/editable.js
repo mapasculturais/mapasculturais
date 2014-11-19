@@ -462,6 +462,8 @@ MapasCulturais.AjaxUploader = {
             $(this).ajaxForm({
                 beforeSend: function(xhr){
                     $this.data('xhr', xhr);
+                    console.log('file',$this.find('input:file').get(0).files[0]);
+                    //@TODO validate size and type before upload
                 },
                 //target:        '#output1',   // target element(s) to be updated with server response
                 beforeSubmit: function(arr, $form, options) {
