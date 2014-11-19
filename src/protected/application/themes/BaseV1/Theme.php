@@ -698,14 +698,14 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['entity']['id'] = $entity->id;
 
-        $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
-        foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
-        $this->jsObject['roles'] = $roles;
-
-        if (!$this->isEditable()) {
-            return;
+        $roles = [];
+        if(!\MapasCulturais\App::i()->user->is('guest')){
+            foreach(\MapasCulturais\App::i()->user->roles as $r){
+                $roles[] = $r->name;
+            }
         }
 
+        $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
 
         $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(

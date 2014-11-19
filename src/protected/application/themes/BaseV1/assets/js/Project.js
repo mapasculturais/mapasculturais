@@ -13,26 +13,60 @@
             };
         }]);
 
-    module.factory('ProjectService', ['$http', '$rootScope', function ($http, $rootScope) {
+    module.factory('RegistrationService', ['$http', '$rootScope', function ($http, $rootScope) {
+            function getUrl(action, registrationId){
+                var url = MapasCulturais.baseURL + 'registration';
+
+                if(action){
+                    url += '/' + action;
+                }
+
+                if(registrationId){
+                    url += '/' + registrationId;
+                }
+
+                return url;
+            }
+            
+            function setStatus(registration, registrationStatus){
+                return $http.post(getUrl(registrationStatus, registration.id)).
+                            success(function (data, status) {
+                                registration.status = data.status;
+                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration was " + registrationStatus, data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
+                            });
+            }
+            
             return {
-                serviceProperty: null,
-                getRegistrationUrl: function(){
-                    return MapasCulturais.baseURL + 'registration';
-                },
                 register: function (params) {
                     var data = {
                         projectId: MapasCulturais.entity.id,
                         ownerId: params.owner.id,
                         category: params.category.value
                     };
-                    return $http.post(this.getRegistrationUrl(), data).
+                    return $http.post(getUrl(), data).
                             success(function (data, status) {
-                                $rootScope.$emit('something', {message: "Project registration was created", data: data, status: status});
+                                $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
                             }).
                             error(function (data, status) {
                                 $rootScope.$emit('error', {message: "Cannot create project registration", data: data, status: status});
                             });
+                },
+                
+                approve: function(registration){
+                    return setStatus(registration, 'approve');
+                },
+                
+                reject: function(registration){
+                    return setStatus(registration, 'reject');
+                },
+                
+                maybe: function(registration){
+                    return setStatus(registration, 'maybe');
                 }
+                
             };
         }]);
 
@@ -171,7 +205,7 @@
 
     }]);
 
-    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'ProjectService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, ProjectService, EditBox, RelatedAgentsService) {
+    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
@@ -199,7 +233,9 @@
                     {value: 3, label: 'Rejeitado'},
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovado'}
-                ]
+                ],
+                
+                userHasControl: MapasCulturais.entity.userHasControl
             };
 
             $scope.openEditBox = function(id, e){
@@ -214,13 +250,20 @@
                     case 10: return 'approved'; break;
                 }
             };
+            
+            $scope.setRegistrationStatus = function(registration, status){
+                if(MapasCulturais.entity.userHasControl){
+                    RegistrationService[status](registration);
+                }
+            };
 
 
             $scope.showRegistration = function(registration){
                 var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
                 
                 return result;
-            }
+            };
+            
             var adjustBoxPosition = function () {
                 setTimeout(function () {
                     adjustingBoxPosition = true;
@@ -259,7 +302,7 @@
                 var registration = $scope.data.registration;
 
                 if(registration.owner && (!categories.length || registration.category)){
-                    ProjectService.register(registration).success(function(rs){
+                    RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
                 }else{

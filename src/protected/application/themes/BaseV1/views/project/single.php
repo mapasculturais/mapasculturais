@@ -304,6 +304,12 @@ $this->includeAngularEntityAssets($entity);
                         <a class="botao principal" ng-click="register()">Fazer inscrição</a>
                     </div>
                 </form>
+            <?php else: ?>
+                    <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
+                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
+            <?php endif;?>
+        <?php endif; ?>
+        <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
                 <h4>Minhas Inscrições</h4>
                 <table class="my-registrations">
                     <thead>
@@ -314,41 +320,46 @@ $this->includeAngularEntityAssets($entity);
                             <th class="registration-agents-col">
                                 Agente Responsável
                             </th>
+                            <?php
+                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                                if(!$entity->useRegistrationAgentRelation($def))
+                                    continue;
+
+                            ?>
                             <th class="registration-agents-col">
-                                Coletivo
+                                <?php echo $def->label ?>
                             </th>
-                            <th class="registration-agents-col">
-                                Instituição
-                            </th>
+                            <?php endforeach; ?>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($registrations as $registration) ?>
                         <tr>
                             <td class="registration-id-col">
-                            <a href="#">0000</a>
+                            <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
                             </td>
                             <td class="registration-agents-col">
-                                Nome do Agente Responsável
+                                <?php echo $registration->owner->name ?>
                             </td>
+                            <?php
+                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                                if(!$entity->useRegistrationAgentRelation($def))
+                                    continue;
+                            ?>
                             <td class="registration-agents-col">
-                                Nome da Instituição
+                                <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
+                                <?php echo $agents[0]->name ?>
+                                <?php endif; ?>
                             </td>
-                            <td class="registration-agents-col">
-                                Nome do Coletivo
-                            </td>
+                            <?php endforeach; ?>
                         </tr>
                     </tbody>
                 </table>
-
-            <?php else: ?>
-                    <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
-                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
-            <?php endif;?>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
     <div id="inscritos" class="aba-content privado">
-        <?php if($entity->canUser('approveRegistration')): ?>
+        <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
                 <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
@@ -391,9 +402,9 @@ $this->includeAngularEntityAssets($entity);
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <span ng-click="setRegistrationStatus('approved')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Aprovar"></span>
-                            <span ng-click="setRegistrationStatus('maybe')" class="js-registration-action maybe hltip" ng-class="{selected: statusName(reg) === 'maybe'}" title="Suplente"></span>
-                            <span ng-click="setRegistrationStatus('rejected')" class="js-registration-action reject hltip" ng-class="{selected: statusName(reg) === 'rejected'}" title="Rejeitar"></span>
+                            <span ng-click="setRegistrationStatus(reg, 'approve')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Aprovar"></span>
+                            <span ng-click="setRegistrationStatus(reg, 'maybe')" class="js-registration-action maybe hltip" ng-class="{selected: statusName(reg) === 'maybe'}" title="Suplente"></span>
+                            <span ng-click="setRegistrationStatus(reg, 'reject')" class="js-registration-action reject hltip" ng-class="{selected: statusName(reg) === 'rejected'}" title="Rejeitar"></span>
                         </td>
                     </tr>
                 </tbody>

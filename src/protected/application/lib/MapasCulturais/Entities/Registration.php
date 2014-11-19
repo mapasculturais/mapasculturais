@@ -162,8 +162,71 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
-    function canUserView(){
+    function setStatus(){
+        // do nothing
+    }
+
+    function approve(){
+        $this->checkPermission('changeStatus');
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).approve:before');
+
+        $this->status = self::STATUS_APPROVED;
+
+        $this->save(true);
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).approve:after');
+    }
+
+    function reject(){
+        $this->checkPermission('changeStatus');
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).reject:before');
+
+        $this->status = self::STATUS_REJECTED;
+
+        $this->save(true);
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).reject:after');
+    }
+
+    function maybe(){
+        $this->checkPermission('changeStatus');
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:before');
+
+        $this->status = self::STATUS_MAYBE;
+
+        $this->save(true);
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:after');
+    }
+
+    function waiting(){
+        $this->checkPermission('changeStatus');
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:before');
+
+        $this->status = self::STATUS_WAITING;
+
+        $this->save(true);
+
+        App::i()->applyHookBoundTo($this, 'entity(Registration).maybe:after');
+    }
+
+
+    protected function canUserView($user){
         return true;
+    }
+
+    protected function canUserChangeStatus($user){
+        if($user->is('guest'))
+            return false;
+
+        if($this->project->registrationTo > new \DateTime)
+            return false;
+
+        return $this->project->canUser('@control', $user);
     }
 
     //============================================================= //
