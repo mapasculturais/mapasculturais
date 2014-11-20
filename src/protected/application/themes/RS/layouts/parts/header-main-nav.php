@@ -14,13 +14,13 @@
         </li>
         <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                <div class="icone icon_profile"></div>
+                <i class="fa fa-user"></i>
                 <div>Agentes</div>
             </a>
         </li>
         <li id="aba-projetos"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
-                <div class="icone icon_document_alt"></div>
+                <i class="fa fa-file-text-o"></i>
                 <div>Projetos</div>
             </a>
         </li>
@@ -121,7 +121,7 @@
         <?php else: ?>
             <li class="entrar">
                 <a href="<?php echo $app->createUrl('panel') ?>">
-                    <div class="icone icon_lock"></div>
+                    <i class="fa fa-lock"></i>
                     <div>Entrar</div>
                 </a>
             </li>
