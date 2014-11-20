@@ -33,7 +33,7 @@
                     var data = {
                         projectId: MapasCulturais.entity.id,
                         ownerId: params.owner.id,
-                        category: params.category.value
+                        category: params.category
                     };
                     return $http.post(getUrl(), data).
                             success(function (data, status) {
@@ -272,10 +272,21 @@
 
                 registrationStatuses:[
                     {value: null, label: 'Todos'},
-                    {value: 1, label: 'Aguardando'},
-                    {value: 3, label: 'Rejeitado'},
+                    {value: 1, label: 'Não avaliados'},
+                    {value: 2, label: 'Inválidos'},
+                    {value: 3, label: 'Não aprovados'},
+                    {value: 8, label: 'Suplentes'},
+                    {value: 10, label: 'Aprovados'}
+                ],
+                
+                registrationStatusesNames: [
+                    {value: 1, label: 'Não avaliado'},
+                    {value: 2, label: 'Inválido'},
+                    {value: 3, label: 'Não aprovado'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovado'}
+                    {value: 10, label: 'Aprovado'},
+                    {value: 0, label: 'Reabrir formulário'},
+                    
                 ],
 
                 userHasControl: MapasCulturais.entity.userHasControl
@@ -285,7 +296,7 @@
                 EditBox.open(id, e);
             };
 
-            $scope.statusName = function(registration){
+            $scope.getStatusSlug = function(status){
                 /*
                         const STATUS_SENT = self::STATUS_ENABLED;
                         const STATUS_APPROVED = 10;
@@ -293,7 +304,7 @@
                         const STATUS_NOTAPPROVED = 3;
                         const STATUS_INVALID = 2;
                  */
-                switch (registration.status){
+                switch (status){
                     case 1: return 'sent'; break;
                     case 2: return 'invalid'; break;
                     case 3: return 'notapproved'; break;
@@ -303,14 +314,18 @@
             };
 
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl){
-                    RegistrationService.setStatusTo(registration, status);
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário?'))){
+                    RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value));
                 }
+            };
+            
+            $scope.getRegistrationStatus = function(registration){
+                return registration.status;
             };
 
 
             $scope.showRegistration = function(registration){
-                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
+                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
 
                 return result;
             };

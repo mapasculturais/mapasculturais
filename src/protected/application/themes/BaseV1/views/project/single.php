@@ -382,7 +382,7 @@ $this->includeAngularEntityAssets($entity);
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{statusName(reg)}}" ng-show="showRegistration(reg)" >
+                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-agents-col">
                             <p>
@@ -401,12 +401,7 @@ $this->includeAngularEntityAssets($entity);
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <style>.selected {font-weight: bold}</style>
-                            <span ng-click="setRegistrationStatus(reg, 'approved')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Marcar como aprovado">Marcar como aprovado</span>
-                            <span ng-click="setRegistrationStatus(reg, 'waitlist')" class="js-registration-action waitlist hltip" ng-class="{selected: statusName(reg) === 'waitlist'}" title="Marcar como suplente">Marcar como suplente</span>
-                            <span ng-click="setRegistrationStatus(reg, 'invalid')" class="js-registration-action invalid hltip" ng-class="{selected: statusName(reg) === 'invalid'}" title="Marcar como inválido">Marcar como inválido</span>
-                            <span ng-click="setRegistrationStatus(reg, 'notapproved')" class="js-registration-action notapproved hltip" ng-class="{selected: statusName(reg) === 'notapproved'}" title="Marcar como não aprovado">Marcar como não aprovado</span>
-                            <span ng-click="setRegistrationStatus(reg, 'draft')" class="js-registration-action draft hltip" title="Reabrir formulário">Reabrir formulário</span>
+                            <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                         </td>
                     </tr>
                 </tbody>
