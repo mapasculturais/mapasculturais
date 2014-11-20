@@ -203,6 +203,10 @@ class Registration extends \MapasCulturais\Entity
         $this->_setStatusTo(self::STATUS_INVALID);
     }
 
+    function setStatusToSent(){
+        $this->_setStatusTo(self::STATUS_SENT);
+    }
+
 
     protected function canUserView($user){
         if($user->is('guest')){
@@ -235,7 +239,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        return $this->project->canUser('@control', $user);
+        return $this->status > 0 && $this->project->canUser('@control', $user);
     }
 
     //============================================================= //

@@ -305,6 +305,7 @@
                         const STATUS_INVALID = 2;
                  */
                 switch (status){
+                    case 0: return 'draft'; break;
                     case 1: return 'sent'; break;
                     case 2: return 'invalid'; break;
                     case 3: return 'notapproved'; break;
