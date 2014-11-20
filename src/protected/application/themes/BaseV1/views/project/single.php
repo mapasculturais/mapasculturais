@@ -305,7 +305,7 @@ $this->includeAngularEntityAssets($entity);
                 </form>
             <?php else: ?>
                     <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
-                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
+                    <a class="botao principal" href="<?php echo $app->createUrl('auth','login') ?>?redirectTo=<?php echo $entity->singleUrl , urlencode("#tab=inscricoes") ?>">Entrar</a>
             <?php endif;?>
         <?php endif; ?>
         <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>

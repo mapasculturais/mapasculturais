@@ -10,10 +10,10 @@ class Fake extends \MapasCulturais\AuthProvider{
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $users = $app->repo('User')->findBy(array(), array('id' => 'ASC'));
-            $this->render('fake-authentication', array('users' => $users, 'form_action' => $app->createUrl('auth', 'login')));
+            $this->render('fake-authentication', array('users' => $users, 'form_action' => $app->createUrl('auth', 'fakeLogin')));
         });
 
-        $app->hook('GET(auth.login)', function () use($app){
+        $app->hook('GET(auth.fakeLogin)', function () use($app){
             $app->auth->processResponse();
 
             if($app->auth->isUserAuthenticated()){
@@ -26,25 +26,6 @@ class Fake extends \MapasCulturais\AuthProvider{
 
     public function _cleanUserSession() {
         unset($_SESSION['auth.fakeAuthenticationUserId']);
-    }
-
-    public function _requireAuthentication() {
-        $app = App::i();
-
-        if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
-        }else{
-            $this->_setRedirectPath($app->request->getPathInfo());
-            $app->redirect($app->controller('auth')->createUrl(''), 401);
-        }
-    }
-
-    /**
-     * Defines the URL to redirect after authentication
-     * @param string $redirect_path
-     */
-    protected function _setRedirectPath($redirect_path){
-        $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
     /**
