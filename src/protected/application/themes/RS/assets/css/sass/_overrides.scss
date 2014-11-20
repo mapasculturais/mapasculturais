@@ -12,8 +12,23 @@
     margin-bottom: 0;
     line-height: 2rem;
 }
+
 #small-logo img {
     display: block;
     height: 2.2rem;
     width: auto;
+}
+
+// header icons size
+.menu {
+    > li {
+        i.fa {
+            width: $line-height-base;
+            height: $line-height-base;
+            margin: 0 auto .25rem;
+            font-size: 14px;
+            line-height: $line-height-base;
+            border-radius: $border-radius-base;
+        }
+    }
 }
