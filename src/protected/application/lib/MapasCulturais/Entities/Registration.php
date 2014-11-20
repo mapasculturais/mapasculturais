@@ -36,10 +36,10 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", options={"default": "random_id_generator('registration', 10000)"})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="registration_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
      */
     protected $id;
 
@@ -155,12 +155,16 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    function randomIdGeneratorFormat($id){
+        return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
+    }
+
+    function randomIdGeneratorInitialRange(){
+        return 1000;
+    }
+
     function getNumber(){
-        if($this->id){
-            return $this->project->id .'-'. str_pad($this->id,3,'0',STR_PAD_LEFT);
-        }else{
-            return null;
-        }
+        return 'on-' . $this->id;
     }
 
     function setStatus(){
