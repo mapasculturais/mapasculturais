@@ -22,13 +22,58 @@
 // header icons size
 .menu {
     > li {
-        i.fa {
-            width: $line-height-base;
-            height: $line-height-base;
-            margin: 0 auto .25rem;
+        div.icone {
             font-size: 14px;
-            line-height: $line-height-base;
-            border-radius: $border-radius-base;
+        }
+    }
+}
+
+// home arrows icons size
+#capa-nav ul a.up,
+#capa-nav ul a.down {
+    font-size: 1.6rem;
+}
+
+// extend fontawesome icons styles
+.icone {
+    @extend .fa;
+}
+.icon_calendar {
+    @extend .fa-calendar-o;
+}
+.icon_building {
+    @extend .fa-building-o;
+}
+.icon_profile {
+    @extend .fa-user;
+}
+.icon_document_alt {
+    @extend .fa-file-text-o;
+}
+.icon_search {
+    @extend .fa-search;
+}
+.icon_tools {
+    @extend .fa-wrench;
+}
+.icon_house {
+    @extend .fa-home;
+}
+.icon_star {
+    @extend .fa-star;
+}
+.arrow_carrot-up {
+    @extend .fa-angle-up;
+}
+.arrow_carrot-down {
+    @extend .fa-angle-down;
+}
+
+// dropdown icon
+.dropdown {
+    .placeholder {
+        &:after {
+            content: '\f107';
         }
     }
 }
