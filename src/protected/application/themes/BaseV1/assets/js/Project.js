@@ -257,6 +257,7 @@
             $scope.editbox = EditBox;
 
             $scope.data = {
+                isEditable: MapasCulturais.isEditable,
                 spinner: false,
                 apiQueryRegistrationAgent: {
                     '@permissions': '@control',
