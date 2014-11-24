@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before, .attachment-list .attachment-list-item .attachment-description a:before {
+.approve, .reject, .maybe, .attachment-list .attachment-list-item .attachment-title:before, .attachment-list .attachment-list-item .attachment-template:before {
   font-family: 'ElegantIcons';
   speak: none;
   font-style: normal;
@@ -10,7 +10,7 @@
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   vertical-align: middle; }
-  .approve:hover, .reject:hover, .maybe:hover, .attachment-list .attachment-list-item .attachment-title:hover:before, .attachment-list .attachment-list-item .attachment-description a:hover:before {
+  .approve:hover, .reject:hover, .maybe:hover, .attachment-list .attachment-list-item .attachment-title:hover:before, .attachment-list .attachment-list-item .attachment-template:hover:before {
     text-decoration: none; }
 
 /* =Reset default browser CSS. Based on work by Eric Meyer: http://meyerweb.com/eric/tools/css/reset/index.html
@@ -2655,7 +2655,7 @@ table.contratos td {
 .edit-box select {
   width: 100%; }
 
-.edit-box input[type="checkbox"], .edit-box input[type="radio"] {
+.edit-box input[type="checkbox"], .edit-box input[type="radio"], .edit-box input[type="submit"] {
   width: auto; }
 
 .edit-box .mc-spinner {
@@ -3398,19 +3398,23 @@ h1 .icone {
     padding: 0.75rem;
     padding-right: 11rem;
     border-bottom: 1px solid #eee; }
-    .attachment-list .attachment-list-item a {
-      font-weight: normal; }
     .attachment-list .attachment-list-item .attachment-title {
-      display: block; }
+      font-size: 0.75rem;
+      font-weight: normal;
+      word-wrap: break-word; }
       .attachment-list .attachment-list-item .attachment-title:before {
-        content: "\e016"; }
+        content: "\e016";
+        margin-right: 3px; }
     .attachment-list .attachment-list-item .attachment-description {
       font-size: 0.75rem;
       color: #999;
       margin-bottom: 0.75rem; }
-      .attachment-list .attachment-list-item .attachment-description a:before {
-        font-size: inherit;
-        content: "\e092"; }
+    .attachment-list .attachment-list-item .attachment-template {
+      font-size: 0.75rem;
+      font-weight: normal; }
+      .attachment-list .attachment-list-item .attachment-template:before {
+        content: "\e092";
+        margin-right: 3px; }
     .attachment-list .attachment-list-item .btn-group {
       position: absolute;
       bottom: 0.75rem;
