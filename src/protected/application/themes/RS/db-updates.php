@@ -6,10 +6,10 @@ $conn = $em->getConnection();
 return array(
     'import data' => function () use($app, $conn){
         $owner = $app->repo('Agent')->find(1);
-    
+
         $filename = isset($app->config['rs.importDataFilename']) ? $app->config['rs.importDataFilename'] : '/tmp/cultura-rs.json';
         $posts = json_decode(file_get_contents($filename));
-        
+
         /*  SO PARA DEBUG : agrupa os posts por slug
         $slugs = [];
         foreach($posts as $post){
@@ -23,13 +23,13 @@ return array(
                                 $slugs[$cat->slug]->titles[] = $p->title;
                             }
                         }
-                           
+
                     }
                 }
             }
         }
         */
-        
+
         $space_categories = [
             'arquivos' =>                                   [50, ['Arquivo']],
             'bibliotecas' =>                                [20, ['Leitura', 'Literatura', 'Livro']],
@@ -39,29 +39,29 @@ return array(
             'museus' =>                                     [60, ['Outros']],
             'teatros' =>                                    [30, ['Teatro']],
             'cineclube' =>                                  [11, ['Audiovisual', 'Cinema']]
-            
+
 //            'Centro de Documentação Pública' => 70, // não achei post com essa categoria
         ];
-        
+
         $agent_categories = [
             'teatro-coletivo-de-artes-cenicas' =>   [2, ['Teatro']],
             'danca' =>                              [2, ['Dança']],
             'circo' =>                              [2, ['Circo']],
             'agremiacoes-de-carnaval' =>            [2, ['Outros']],
             'escolas-de-samba' =>                   [2, ['Outros']]
-        ];    
-        
+        ];
+
         $spaces = [];
         $agents = [];
-        
+
         $rejected = [];
-        
-        
+
+
         $has_category = function($post, $slugs){
             if(!$post->categories){
                 return false;
             }
-            
+
             foreach($post->categories as $cat){
                 if(is_array($slugs) && in_array($cat->slug, $slugs)){
                     return true;
@@ -69,22 +69,24 @@ return array(
                     return true;
                 }
             }
-            
+
             return false;
         };
-        
+
         $is_space = function($post) use($has_category, $space_categories){
             return $has_category($post, array_keys($space_categories));
         };
-        
+
         $is_agent = function($post) use($has_category, $agent_categories){
             return $has_category($post, array_keys($agent_categories));
         };
-        
+
         $populate_entity = function($entity, $post) use($has_category){
-            $entity->name = $post->title;
-            $entity->shortDescription = $post->short_description;
-            $entity->description = $post->description;
+            $entity->name = html_entity_decode($post->title);
+            $entity->shortDescription = html_entity_decode(str_replace(array('[&hellip;]', '[..]'), '', $post->short_description));
+            $entity->longDescription = html_entity_decode(
+                preg_replace('!(http|ftp|scp)(s)?:\/\/[a-zA-Z0-9.?&_/=;]+!', "<a target=\"_blank\" href=\"\\0\">\\0</a>",$post->description)
+            );
 
             // localização
             if($post->lat && $post->lng){
@@ -112,24 +114,85 @@ return array(
             if($email){
                 $entity->emailPublico = $email;
             }
-            
+
             // endereço
-            
+
             // download de arquivos
 
         };
-        
-        foreach($posts as $post){
+
+        $create_file = function($entity, $group, $info, $tmpName) use($app) {
+            $mimeType = $info['extension'] == 'jpg' ? 'image/jpeg' : 'image/'.$info['extension'];
+            $file = new \MapasCulturais\Entities\File ([
+                'name' => uniqid().'.'.$info['extension'],
+                'type' => $mimeType,
+                'tmp_name' => $tmpName,
+                'error' => 0,
+                'size' => filesize($tmpName)
+            ]);
+
+            $file->owner = $entity;
+            $file->group = $group;
+            $file->save();
+
+        };
+
+        $count=0;
+        $create_files = function($post, $entity) use ($count, $create_file){
+
+            $first = true;
+
+            foreach ($post->images as $key => $url) {
+
+                $tmpName = '/tmp/'.uniqid('mc-file-gallery-');
+                $info = pathinfo($url);
+
+                if(@copy($url, $tmpName)){
+                    echo "\n".'copiou ' . $info['basename'] . "\n";
+                    $count++;
+                    if($first){
+                        $tmpName2 = '/tmp/'.uniqid('mc-file-avatar-');
+                        copy($tmpName, $tmpName2);
+                        $create_file($entity, 'avatar', $info, $tmpName2);
+                    }
+                    $create_file($entity, 'gallery', $info, $tmpName);
+                    $first = false;
+                }else{
+                    if(mb_detect_encoding($url) === 'UTF-8')
+                        $url = mb_convert_encoding($url, 'ISO-8859-1');
+                    $info = pathinfo($url);
+                    if(!@copy($url, $tmpName)){
+                        print_r($info);
+                    }else{
+                        echo "\n".'copiou convertido ' . $info['basename'] . "\n";
+                        $count++;
+                        if($first){
+                            $tmpName2 = '/tmp/'.uniqid('mc-file-avatar-');
+                            copy($tmpName, $tmpName2);
+                            $create_file($entity, 'avatar', $info, $tmpName2);
+                        }
+                        $create_file($entity, 'gallery', $info, $tmpName);
+
+                        $first = false;
+                    }
+                }
+            }
+
+        };
+
+        foreach($posts as $key => $post){
+
+
             $agent = null; $space = null;
-            
+
             $space_owner = $owner;
-            
+
             if($is_agent($post)){
                 $agent = new MapasCulturais\Entities\Agent();
                 $agent->owner = $owner;
                 $agent->type = 2;
                 $agent->terms['area'] = [];
-                
+
                 foreach($post->categories as $cat){
                     if(isset($agent_categories[$cat->slug])){
                         foreach($agent_categories[$cat->slug][1] as $term){
@@ -139,15 +202,17 @@ return array(
                         }
                     }
                 }
-                
+
                 $populate_entity($agent, $post);
                 $agent->save();
-                
+
                 echo "INSERIDO AGENTE $agent->name ($agent->id)\n";
-                
+
+                $create_files($post, $agent);
+
                 $space_owner = $agent;
             }
-            
+
             if($is_space($post)){
                 $space = new MapasCulturais\Entities\Space();
                 $space->owner = $space_owner;
@@ -165,15 +230,15 @@ return array(
                     echo " ESPAÇO COM MAIS DE UM TIPO, USANDO O PRIMEIRO: ";
                     print_r(['id' => $post-ID, 'title' => $post->title, 'cats' => $post->categories, 'tupes' => $types]);
                 }
-                
+
                 if(!$types){
                     $rejected[] = $post;
                     continue;
                 }
-                
+
                 $space->type = $types[0];
                 $space->terms['area'] = [];
-                
+
                 foreach($post->categories as $cat){
                     if(isset($space_categories[$cat->slug])){
                         foreach($space_categories[$cat->slug][1] as $term){
@@ -183,19 +248,23 @@ return array(
                         }
                     }
                 }
-                
+
                 $populate_entity($space, $post);
                 $space->save();
-                
+
                 echo "INSERIDO ESPAÇO $space->name ($space->id)\n";
+
+                $create_files($post, $space);
             }
-            
+
             if(is_null($agent) && is_null($space)){
                 $rejected[] = ['id' => $post->ID, 'name' => $post->title];
             }
         }
-        
+
         $app->em->flush();
+        echo "REJEITADOS: -============================-\n";
         var_dump($rejected);
+        return false;
     }
 );
