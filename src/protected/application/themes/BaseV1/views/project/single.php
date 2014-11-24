@@ -136,7 +136,6 @@ $this->includeAngularEntityAssets($entity);
             <p ng-if="data.isEditable" class="alert info textcenter">
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
             </p>
-
             <div id="registration-period" ng-class="{'registration-fieldset': data.isEditable}">
                 <h4 ng-if="data.isEditable">1. Período de inscrições</h4>
 
@@ -149,30 +148,29 @@ $this->includeAngularEntityAssets($entity);
                     </p>
                 <?php endif; ?>
             </div>
+            <!-- #registration-period -->
         <?php endif; ?>
 
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
-            <!-- #registration-period -->
+
             <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
                 <h4 ng-if="data.isEditable">2. Introdução</h4>
                 <p class="registration-help" ng-if="data.isEditable">Você pode criar um texto de introdução de apenas um parágrafo.</p>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
             </div>
+            <!-- #intro-das-inscricoes -->
         <?php endif; ?>
 
         <?php if($this->isEditable()): ?>
-            <!-- #intro-das-inscricoes -->
-            <div id="registration-categories" class="registration-fieldset">
+            <div id="registration-rules" class="registration-fieldset">
                 <h4>3. Regulamento</h4>
-                <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. .</p>
+                <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
 
             </div>
-
-            <!-- #intro-das-inscricoes -->
+            <!-- #registration-rules -->
             <div id="registration-categories" class="registration-fieldset">
                 <h4>4. Opções</h4>
                 <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
-
                 <p>
                     <span class="label">Descrição</span><br>
                     <span class="js-editable" data-edit="registrationCategoriesName" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationCategoriesName; ?></span>
@@ -182,7 +180,6 @@ $this->includeAngularEntityAssets($entity);
                     <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationCategories); ?></span>
                 </p>
             </div>
-
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
                 <h4>5. Agentes</h4>
@@ -202,7 +199,6 @@ $this->includeAngularEntityAssets($entity);
             <div id="registration-attachments" class="registration-fieldset">
                 <h4>6. Anexos</h4>
                 <p class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
-
                 <div ng-controller="RegistrationFileConfigurationsController">
                     <?php if($this->controller->action == 'create'): ?>
                         <p class="allert warning">Antes de adicionar anexos é preciso salvar o projeto.</p>
@@ -228,12 +224,11 @@ $this->includeAngularEntityAssets($entity);
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                                 <p><label><input type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
                             </edit-box>
-                            <!-- attachment upload -->
                             <div class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template">
                                 <span class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);">{{fileConfiguration.template.name}}</span>
                                 <a class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" hltitle="excluir modelo"></a>
                             </div>
-
+                            <!-- edit-box to upload attachments -->
                             <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p ng-if="fileConfiguration.template">
                                     <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
@@ -251,7 +246,6 @@ $this->includeAngularEntityAssets($entity);
                                     </div>
                                     <input type="submit" value="enviar">
                                 </form>
-
                             </edit-box>
                             <div class="btn-group">
                                 <a class="botao enviar hltip" title="enviar modelo" ng-if="!fileConfiguration.template" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" >enviar modelo</a>
@@ -260,21 +254,18 @@ $this->includeAngularEntityAssets($entity);
                         </li>
                     </ul>
                 </div>
-
             </div>
+            <!-- #registration-attachments -->
         <?php endif; ?>
 
         <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
                 <form id="project-registration" class="registration-form clearfix">
                     <div>
-                        <a id="select-registration-owner-button" class="botao simples" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente Responsável'}}</a>
+                        <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsável'}}</div>
                         <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
                             <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.apiQueryRegistrationAgent' spinner-condition="data.registrationSpinner"></find-entity>
                         </edit-box>
-                    </div>
-                    <div>
-                        <mc-select placeholder="<?php echo $entity->registrationCategoriesName; ?>" classes="dropdown-select" model="data.registration.category" data="data.registrationCategories"></mc-select>
                     </div>
                     <div>
                         <a class="botao principal" ng-click="register()">Fazer inscrição</a>

@@ -3315,23 +3315,23 @@ h1 .icone {
   .registration-form > div {
     float: left;
     box-sizing: border-box;
-    padding-right: .75rem; }
-    .registration-form > div:nth-child(1) {
-      width: 40%; }
-    .registration-form > div:nth-child(2) {
-      width: 40%; }
-    .registration-form > div:nth-child(3) {
-      width: 20%;
-      padding-right: 0; }
-  .registration-form .dropdown-select {
-    width: 100%; }
+    width: 50%; }
+    .registration-form > div:first-child {
+      padding-right: .75rem; }
+  .registration-form .input-text {
+    box-sizing: border-box;
+    height: 2rem;
+    padding: 3px 6px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #666;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: 0.75rem; }
   .registration-form .botao {
     width: 100%; }
     .registration-form .botao.principal {
       text-align: center; }
-    .registration-form .botao.simples {
-      white-space: nowrap;
-      overflow: hidden; }
 
 .registration-header {
   background-color: #cc0033;

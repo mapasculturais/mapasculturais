@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 
-//## Registration form that shows on projects tab "Inscritos" when editing.
+//## Registration form that shows on projects tab "Inscritos" when logged in and on view mode.
 
 .registration-form {
 	box-sizing: border-box;
@@ -14,33 +14,32 @@
 	> div {
 		float: left;
 		box-sizing: border-box;
-		padding-right: .75rem;
-		&:nth-child(1){
-			width: 40%;
-		}
-		&:nth-child(2) {
-			width: 40%;
-		}
-		&:nth-child(3) {
-			width: 20%;
-			padding-right: 0;
-		}
-
+        width: 50%;
+        &:first-child {
+    		padding-right: .75rem;
+        }
 	}
-	.dropdown-select {
-		width: 100%;
-	}
+    .input-text {
+        box-sizing: border-box;
+        height: 2rem;
+        padding: 3px 6px;
+        background: #fff;
+        border: 1px solid $gray;
+        border-radius: $border-radius-base;
+        color: $gray-dark;
+        font-family: $font-family-base;
+        font-size: $font-size-smaller;
+    }
 	.botao {
 		width: 100%;
 		&.principal {
 			text-align: center;
 		}
-		&.simples {
-			white-space: nowrap;
-			overflow: hidden;
-		}
 	}
 }
+
+
+//## Registration form that shows on projects tab "Inscritos" when editing.
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;
