@@ -28,7 +28,7 @@
 
                     return url;
                 },
-                
+
                 register: function (params) {
                     var data = {
                         projectId: MapasCulturais.entity.id,
@@ -45,7 +45,7 @@
                 },
 
                 setStatusTo: function(registration, registrationStatus){
-                    
+
                     return $http.post(this.getUrl('setStatusTo', registration.id), {status: registrationStatus}).
                             success(function (data, status) {
                                 registration.status = data.status;
@@ -55,7 +55,7 @@
                                 $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
                             });
                 },
-                
+
                 send: function(registrationId){
                     alert(getUrl('send', registrationId));
                 }
@@ -162,7 +162,7 @@
                 }
             });
         };
-        
+
         $scope.sendFile = function(attrs){
             jQuery('#' + attrs.id + ' form').submit();
         };
@@ -180,7 +180,7 @@
         $scope.openFileConfigurationTemplateEditBox = function(id, index, event){
             EditBox.open('editbox-registration-files-template-'+id, event);
             initAjaxUploader(id, index);
-            
+
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
@@ -194,13 +194,13 @@
         var initAjaxUploader = function(id, index){
             var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
             MapasCulturais.AjaxUploader.resetProgressBar($form);
-            
+
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
             jQuery('#editbox-registration-files-template-'+id).on('cancel', function(){
-                $form.data('xhr').abort();
+                if($form.data('xhr')) $form.data('xhr').abort();
                 $form.get(0).reset();
                 MapasCulturais.AjaxUploader.resetProgressBar($form);
             });
@@ -219,7 +219,7 @@
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
         $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
-        
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -227,7 +227,7 @@
         $scope.data.fileConfigurations.forEach(function(item){
             item.file = MapasCulturais.entity.registrationFiles[item.groupName];
         });
-        
+
         $scope.sendFile = function(attrs){
             jQuery('#' + attrs.id + ' form').submit();
         };
@@ -251,6 +251,12 @@
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
+            jQuery('#editbox-file-'+id).on('cancel', function(){
+                if($form.data('xhr')) $form.data('xhr').abort();
+                $form.get(0).reset();
+                MapasCulturais.AjaxUploader.resetProgressBar($form);
+            });
+
             $form.on('ajaxForm.success', function(evt, response){
                 $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
                 $scope.$apply();
@@ -269,7 +275,7 @@
                 });
 
             $scope.editbox = EditBox;
-            
+
             $scope.data = angular.extend({
                 uploadSpinner: false,
                 spinner: false,
@@ -277,14 +283,14 @@
                     '@permissions': '@control',
                     'type': 'EQ(1)' // type individual
                 },
-                
+
                 registrationCategories: categories,
-                
+
                 registration: {
                     owner: null,
                     category: null
                 },
-                
+
                 registrationStatuses:[
                     {value: null, label: 'Todos'},
                     {value: 1, label: 'Não avaliados'},
@@ -293,7 +299,7 @@
                     {value: 8, label: 'Suplentes'},
                     {value: 10, label: 'Aprovados'}
                 ],
-                
+
                 registrationStatusesNames: [
                     {value: 1, label: 'Não avaliado'},
                     {value: 2, label: 'Inválido'},
@@ -301,7 +307,7 @@
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovado'},
                     {value: 0, label: 'Reabrir formulário'},
-                    
+
                 ]
             }, MapasCulturais);
 
@@ -332,7 +338,7 @@
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value));
                 }
             };
-            
+
             $scope.getRegistrationStatus = function(registration){
                 return registration.status;
             };
@@ -389,7 +395,7 @@
                     MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
                 }
             };
-            
+
             $scope.sendRegistrationRulesFile = function(){
                 jQuery('#edibox-upload-rules form').submit();
             };
@@ -398,8 +404,8 @@
                 EditBox.open('edibox-upload-rules', event);
                 initAjaxUploader('edibox-upload-rules');
             };
-            
-            
+
+
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){
                     $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
@@ -407,14 +413,20 @@
                     });
                 }
             };
-            
+
             var initAjaxUploader = function(id){
                 var $form = jQuery('#' + id + ' form');
-                
+
                 if($form.data('initialized'))
                     return;
-                
+
                 MapasCulturais.AjaxUploader.init($form);
+
+                jQuery('#'+id).on('cancel', function(){
+                    if($form.data('xhr')) $form.data('xhr').abort();
+                    $form.get(0).reset();
+                    MapasCulturais.AjaxUploader.resetProgressBar($form);
+                });
 
                 $form.on('ajaxForm.success', function(evt, response){
                     $scope.data.entity.registrationRulesFile = response['rules'];
@@ -424,7 +436,7 @@
                     }, 700);
                });
             };
-            
+
             $scope.sendRegistration = function(){
                 RegistrationService.setStatusTo($scope.data.entity, 'sent').success(function(entity){
                     document.location = entity.singleUrl;
