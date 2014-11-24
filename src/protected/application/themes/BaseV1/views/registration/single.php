@@ -124,7 +124,8 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <div class="registration-fieldset">
         <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. Depois de enviada, não será mais possível editá-la.</p>
-        <a class="botao-grande" href="#">enviar inscrição</a>
+        status: <?php echo $entity->status ?>
+        <a class="botao-grande" ng-click="sendRegistration()">enviar inscrição</a>
     </div>
 </article>
 <div class="sidebar registration sidebar-right">

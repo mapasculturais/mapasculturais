@@ -14,28 +14,28 @@
         }]);
 
     module.factory('RegistrationService', ['$http', '$rootScope', function ($http, $rootScope) {
-            function getUrl(action, registrationId){
-                var url = MapasCulturais.baseURL + 'registration';
-
-                if(action){
-                    url += '/' + action;
-                }
-
-                if(registrationId){
-                    url += '/' + registrationId;
-                }
-
-                return url;
-            }
-
             return {
+                getUrl: function(action, registrationId){
+                    var url = MapasCulturais.baseURL + 'registration';
+
+                    if(action){
+                        url += '/' + action;
+                    }
+
+                    if(registrationId){
+                        url += '/' + registrationId;
+                    }
+
+                    return url;
+                },
+                
                 register: function (params) {
                     var data = {
                         projectId: MapasCulturais.entity.id,
                         ownerId: params.owner.id,
                         category: params.category
                     };
-                    return $http.post(getUrl(), data).
+                    return $http.post(this.getUrl(), data).
                             success(function (data, status) {
                                 $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
                             }).
@@ -46,7 +46,7 @@
 
                 setStatusTo: function(registration, registrationStatus){
                     
-                    return $http.post(getUrl('setStatusTo', registration.id), {status: registrationStatus}).
+                    return $http.post(this.getUrl('setStatusTo', registration.id), {status: registrationStatus}).
                             success(function (data, status) {
                                 registration.status = data.status;
                                 $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration status was setted to " + registrationStatus, data: data, status: status});
@@ -54,6 +54,10 @@
                             error(function (data, status) {
                                 $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
                             });
+                },
+                
+                send: function(registrationId){
+                    alert(getUrl('send', registrationId));
                 }
 
             };
@@ -377,18 +381,12 @@
             $scope.register = function(){
                 var registration = $scope.data.registration;
 
-                if(registration.owner && (!categories.length || registration.category)){
+                if(registration.owner){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
                 }else{
-                    if(!registration.owner && categories.length && !registration.category){
-                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável e uma categoria.');
-                    }else if(!registration.owner){
-                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
-                    }else if(categories.length && !registration.category){
-                        MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar uma categoria.');
-                    }
+                    MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
                 }
             };
             
@@ -425,6 +423,12 @@
                         EditBox.close(id);
                     }, 700);
                });
+            };
+            
+            $scope.sendRegistration = function(){
+                RegistrationService.setStatusTo($scope.data.entity, 'sent').success(function(entity){
+                    document.location = entity.singleUrl;
+                });
             };
 
         }]);
