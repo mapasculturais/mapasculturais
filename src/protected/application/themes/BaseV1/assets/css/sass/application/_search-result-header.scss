@@ -2,7 +2,7 @@
 #header-dos-resultados {
     position: relative;
     min-height: $line-height-base;
-    padding: 0 123px 0 0;
+    padding: 0 165px 0 0;
     background-color: $gray-lighter;
     font-size: $font-size-smaller;
     color: $brand-accent;
@@ -32,16 +32,18 @@
 }
 #ferramentas {
     float: right;
-    width: 123px;
     margin: $padding-base 0;
     padding: 0 $padding-base;
-    margin-right: -123px;
+    margin-right: -165px;
     border-left: 2px solid #d3d3d3;
     box-sizing: border-box;
 }
 #compartilhar {
     position: relative;
     float: left;
+    margin-right: .75rem;
+    padding-right: 0.75rem;
+    border-right: 2px solid #d3d3d3;
 }
 .busca-popover{
     position: absolute;
@@ -77,9 +79,10 @@
 }
 #url-da-busca {
     width: 70%;
-    margin-bottom: 0;
-    border: 1px solid $gray;
     cursor: default;
+}
+#exportar-resultados {
+    float: left;
 }
 #views {
     float: left;
