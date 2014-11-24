@@ -142,7 +142,7 @@ $this->includeAngularEntityAssets($entity);
 
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
                     <p class="highlighted-message">
-                    Inscrições abertas de
+                        Inscrições abertas de
                         <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
                         a
                         <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
@@ -160,13 +160,40 @@ $this->includeAngularEntityAssets($entity);
             </div>
         <?php endif; ?>
 
-        <?php if($this->isEditable()): ?>
-            <!-- #intro-das-inscricoes -->
-            <div id="registration-categories" class="registration-fieldset">
-                <h4>3. Regulamento</h4>
-                <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. .</p>
-                
+        <!-- #registration-rules -->
+        <div ng-if="!data.isEditable && data.entity.registrationRulesFile" class="registration-fieldset">
+            <h4 >3. Regulamento</h4>
+            <a href="{{data.entity.registrationRulesFile.url}}">Baixar o reculamento</a>
+        </div>
+
+        <div ng-if="data.isEditable" class="registration-fieldset">
+            <h4 >3. Regulamento</h4>
+            <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. .</p>
+
+            <div class="btn-group">
+                <!-- se já subiu o arquivo-->
+                <!-- se não subiu ainda -->
+                <a class="botao hltip" ng-class="{'editar':data.entity.registrationRulesFile, 'enviar':!data.entity.registrationRulesFile}" ng-click="openRulesUploadEditbox($event)" title="{{data.entity.registrationRulesFile ? 'editar' : 'enviar'}} regulamento">{{!data.entity.registrationRulesFile ? 'enviar' : 'editar'}}</a>
+                <a ng-click="removeRegistrationRulesFile()" class="botao excluir hltip" title="excluir anexo">excluir</a>
             </div>
+            <edit-box id="edibox-upload-rules" position="bottom" title="{{data.entity.registrationRulesFile ? 'Enviar regulamento' : 'Editar regulamento'}}" cancel-label="Cancelar" close-on-cancel='true' on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+                <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
+                    <div class="alert danger escondido"></div>
+                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
+                    <input type="file" name="rules" />
+                    <input type="submit" value="Enviar Modelo">
+
+                    <div class="js-ajax-upload-progress">
+                        <div class="progress">
+                            <div class="bar"></div>
+                            <div class="percent">0%</div>
+                        </div>
+                    </div>
+                </form>
+            </edit-box>
+        </div>
+
+        <?php if($this->isEditable()): ?>
 
             <!-- #intro-das-inscricoes -->
             <div id="registration-categories" class="registration-fieldset">
@@ -382,7 +409,7 @@ $this->includeAngularEntityAssets($entity);
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
+                    <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-agents-col">
                             <p>

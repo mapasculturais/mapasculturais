@@ -232,12 +232,12 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-file-' + id);
+            var $form = jQuery('#editbox-file-' + id + ' form');
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            $form.on('ajaxform.success', function(evt, response){
+            $form.on('ajaxForm.success', function(evt, response){
                 $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
                 $scope.$apply();
                 setTimeout(function(){
@@ -248,29 +248,29 @@
 
     }]);
 
-    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService) {
+    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
                 });
 
             $scope.editbox = EditBox;
-
-            $scope.data = {
-                isEditable: MapasCulturais.isEditable,
+            
+            $scope.data = angular.extend({
+                uploadSpinner: false,
                 spinner: false,
                 apiQueryRegistrationAgent: {
                     '@permissions': '@control',
                     'type': 'EQ(1)' // type individual
                 },
+                
                 registrationCategories: categories,
+                
                 registration: {
                     owner: null,
                     category: null
                 },
-
-                registrations: MapasCulturais.entity.registrations,
-
+                
                 registrationStatuses:[
                     {value: null, label: 'Todos'},
                     {value: 1, label: 'Não avaliados'},
@@ -288,10 +288,8 @@
                     {value: 10, label: 'Aprovado'},
                     {value: 0, label: 'Reabrir formulário'},
                     
-                ],
-
-                userHasControl: MapasCulturais.entity.userHasControl
-            };
+                ]
+            }, MapasCulturais);
 
             $scope.openEditBox = function(id, e){
                 EditBox.open(id, e);
@@ -382,6 +380,41 @@
                         MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar uma categoria.');
                     }
                 }
+            };
+            
+            $scope.registrationRulesSubmited = function(){
+                
+            };
+
+            $scope.openRulesUploadEditbox = function(event){
+                EditBox.open('edibox-upload-rules', event);
+                initAjaxUploader('edibox-upload-rules');
+            };
+            
+            
+            $scope.removeRegistrationRulesFile = function (id, $index) {
+                if(confirm('Deseja remover este anexo?')){
+                    $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
+                        $scope.data.entity.registrationRulesFile = null;
+                    });
+                }
+            };
+            
+            var initAjaxUploader = function(id){
+                var $form = jQuery('#' + id + ' form');
+                
+                if($form.data('initialized'))
+                    return;
+                
+                MapasCulturais.AjaxUploader.init($form);
+
+                $form.on('ajaxForm.success', function(evt, response){
+                    $scope.data.entity.registrationRulesFile = response['rules'];
+                    $scope.$apply();
+                    setTimeout(function(){
+                        EditBox.close(id);
+                    }, 700);
+               });
             };
 
         }]);
