@@ -134,5 +134,32 @@ return array(
 
         echo "removendo coluna public_registration\n";
         $conn->executeQuery("ALTER TABLE project DROP COLUMN public_registration;");
+    },
+
+    'create or replace function random_id_generator' => function() use($conn){
+        $conn->executeQuery('
+            CREATE FUNCTION random_id_generator(table_name character varying, initial_range bigint) RETURNS bigint
+                LANGUAGE plpgsql
+                AS $$DECLARE
+              rand_int INTEGER;
+              count INTEGER := 1;
+              statement TEXT;
+            BEGIN
+              WHILE count > 0 LOOP
+                initial_range := initial_range * 10;
+
+                rand_int := (RANDOM() * initial_range)::BIGINT + initial_range / 10;
+
+                statement := CONCAT(\'SELECT count(id) FROM \', table_name, \' WHERE id = \', rand_int);
+
+                EXECUTE statement;
+                IF NOT FOUND THEN
+                  count := 0;
+                END IF;
+
+              END LOOP;
+              RETURN rand_int;
+            END;
+            $$;');
     }
 );

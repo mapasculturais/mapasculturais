@@ -507,11 +507,11 @@ h6 {
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
   position: relative;
-  z-index: 152; }
+  z-index: 1700; }
 
 #main-header #busca {
   position: relative;
-  z-index: 151; }
+  z-index: 9999; }
 
 #busca-avancada {
   background-color: #e2e2e2;
@@ -531,7 +531,7 @@ h6 {
 /*filtro local*/
 #filtro-local {
   position: absolute;
-  z-index: 150;
+  z-index: 1400;
   left: 0;
   height: 1.875rem; }
 
@@ -698,7 +698,7 @@ h6 {
 
 #editable-entity {
   position: fixed;
-  z-index: 123;
+  z-index: 1400;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 100%;
@@ -1093,7 +1093,7 @@ h6 {
 -------------------------------------------------------------- */
 #main-footer {
   position: relative;
-  z-index: 100;
+  z-index: 1200;
   padding: 1.5rem;
   background: #000000;
   color: #fff; }
@@ -1118,7 +1118,7 @@ h6 {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 150;
+  z-index: 1700;
   border-top: 6px solid #000000;
   background: #fff; }
   #main-header h1 {
@@ -1377,7 +1377,7 @@ h6 {
 -------------------------------------------------------------- */
 #capa-marca-dagua {
   position: fixed;
-  z-index: 50;
+  z-index: 900;
   left: 0;
   right: 0;
   top: 102px;
@@ -1388,7 +1388,7 @@ h6 {
 
 #capa-nav {
   position: fixed;
-  z-index: 100;
+  z-index: 1200;
   top: 50%;
   bottom: 0; }
 
@@ -1401,7 +1401,7 @@ h6 {
 
 #capa-nav ul li a {
   position: relative;
-  z-index: 100;
+  z-index: 1200;
   display: block;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1417,7 +1417,7 @@ h6 {
 
 .nav-title {
   position: absolute;
-  z-index: 90;
+  z-index: 1000;
   top: 0;
   display: block;
   box-sizing: border-box;
@@ -1467,7 +1467,7 @@ h6 {
   font-size: 4rem;
   text-align: center;
   position: relative;
-  z-index: 51; }
+  z-index: 900; }
 
 .objeto-capa {
   float: none;
@@ -1491,7 +1491,7 @@ h6 {
 
 .objeto-capa .box {
   position: relative;
-  z-index: 100; }
+  z-index: 1200; }
 
 .objeto-capa .box h4 {
   font-family: 'Open Sans';
@@ -1729,7 +1729,7 @@ body.editable #main-section {
 
 #infobox {
   position: absolute;
-  z-index: 149;
+  z-index: 1500;
   top: 105px;
   left: 0;
   bottom: 0;
@@ -1867,7 +1867,7 @@ nav.sidebar-left .icone {
 
 .busca-popover {
   position: absolute;
-  z-index: 100;
+  z-index: 1200;
   display: none;
   top: 2.25rem;
   right: -24px;
@@ -2078,7 +2078,7 @@ nav.sidebar-left .icone {
   .agentes .avatar .descricao-do-agente {
     display: none;
     position: absolute;
-    z-index: 2;
+    z-index: 800;
     top: 3.5rem;
     right: -.75rem;
     width: 200px;
@@ -2355,21 +2355,35 @@ nav.sidebar-left .icone {
   background: #1c5690;
   border-color: #1c5690; }
 
-.adicionar:before,
-.editar:before,
-.enviar:before,
-.download:before,
-.excluir:before,
-.inserir:before {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  font-size: 1rem;
-  font-family: 'ElegantIcons';
-  vertical-align: top;
-  text-transform: none;
-  font-weight: normal;
-  font-style: none; }
+.adicionar,
+.editar,
+.enviar,
+.download,
+.excluir,
+.inserir {
+  color: #666; }
+  .adicionar:hover,
+  .editar:hover,
+  .enviar:hover,
+  .download:hover,
+  .excluir:hover,
+  .inserir:hover {
+    color: #333; }
+  .adicionar:before,
+  .editar:before,
+  .enviar:before,
+  .download:before,
+  .excluir:before,
+  .inserir:before {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    font-size: 1rem;
+    font-family: 'ElegantIcons';
+    vertical-align: top;
+    text-transform: none;
+    font-weight: normal;
+    font-style: none; }
 
 .adicionar:before {
   content: '\e050'; }
@@ -2472,7 +2486,7 @@ table.contratos td {
       vertical-align: middle;
       cursor: pointer; }
   .dropdown .submenu-dropdown {
-    z-index: 900;
+    z-index: 1800;
     position: absolute;
     top: 100%;
     right: 0;
@@ -2563,7 +2577,7 @@ table.contratos td {
 
 .edit-box {
   position: absolute;
-  z-index: 149;
+  z-index: 1500;
   min-width: 375px;
   display: none;
   padding: 0.75rem;
@@ -2781,7 +2795,7 @@ h1 .icone {
   display: none;
   margin-top: 15px;
   padding: 1.5rem;
-  z-index: 1000;
+  z-index: 3000;
   background: #fff;
   border-top: 4px solid #1c5690;
   border-radius: 2px;
@@ -3403,29 +3417,6 @@ h1 .icone {
       right: 0.75rem; }
     .attachment-list .attachment-list-item:hover {
       background: #eee; }
-  .attachment-list .is-editable {
-    padding-right: 4rem;
-    min-height: 1.5rem; }
-    .attachment-list .is-editable .botoes {
-      display: none;
-      position: absolute;
-      top: .75rem;
-      right: .75rem; }
-    .attachment-list .is-editable:hover {
-      background: #eee;
-      border-radius: 2px; }
-      .attachment-list .is-editable:hover .botoes {
-        display: inline-block; }
-  .attachment-list a.icone,
-  .attachment-list a.editar {
-    margin-left: 5px;
-    color: #666;
-    cursor: pointer; }
-    .attachment-list a.icone:hover,
-    .attachment-list a.editar:hover {
-      color: #333; }
-  .attachment-list a.icone {
-    font-size: 1rem; }
 
 .ui-datepicker {
   display: none;
@@ -3571,7 +3562,7 @@ a.editable-click:hover {
 
 /* balãozinho*/
 .tip-yellowsimple {
-  z-index: 1001;
+  z-index: 1900;
   padding: 0.75rem;
   background: #fff;
   border: none;
@@ -3758,7 +3749,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 #mc-entity-layers {
   position: absolute;
-  z-index: 150;
+  z-index: 1400;
   right: 0rem;
   height: 1.875rem;
   font-size: 1rem;
@@ -3769,7 +3760,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 
 .leaflet-top,
 .leaflet-bottom {
-  z-index: 122; }
+  z-index: 1300; }
 
 .leaflet-container:-webkit-full-screen {
   top: 0 !important; }
@@ -3896,7 +3887,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .leaflet-label {
   font: 0.75rem/1.5 "Open Sans", Helvetica, Arial, sans-serif;
   position: absolute;
-  z-index: 9999999 !important;
+  z-index: 9999 !important;
   display: block;
   margin: 0 8px;
   padding: 5px 10px;

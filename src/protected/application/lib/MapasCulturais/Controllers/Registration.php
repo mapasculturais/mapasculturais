@@ -72,55 +72,29 @@ class Registration extends EntityController {
         parent::GET_single();
     }
 
-    function POST_approve(){
+    function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
 
         $registration = $this->requestedEntity;
-
+        
         if(!$registration){
             $app->pass();
         }
 
-        $registration->approve();
+        $status = isset($this->postData['status']) ? $this->postData['status'] : null;
 
-        if($app->request->isAjax()){
-            $this->json($registration);
-        }else{
-            $app->redirect($app->request->getReferer());
-        }
-    }
+        $method_name = 'setStatusTo' . ucfirst($status);
 
-    function POST_reject(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $registration = $this->requestedEntity;
-
-        if(!$registration){
-            $app->pass();
+        if(!method_exists($registration, $method_name)){
+            if($app->request->isAjax()){
+                $this->errorJson('Invalid status name');
+            }else{
+                $app->halt(200, 'Invalid status name');
+            }
         }
 
-        $registration->reject();
-
-        if($app->request->isAjax()){
-            $this->json($registration);
-        }else{
-            $app->redirect($app->request->getReferer());
-        }
-    }
-
-    function POST_maybe(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $registration = $this->requestedEntity;
-
-        if(!$registration){
-            $app->pass();
-        }
-
-        $registration->maybe();
+        $registration->$method_name();
 
         if($app->request->isAjax()){
             $this->json($registration);

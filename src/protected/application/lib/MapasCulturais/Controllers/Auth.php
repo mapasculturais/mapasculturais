@@ -8,4 +8,14 @@ class Auth extends \MapasCulturais\Controller{
         $app->auth->logout();
         $app->redirect($app->baseUrl);
     }
+    
+    function GET_login(){
+        $app = App::i();
+        
+        if(isset($this->getData['redirectTo'])){
+            $app->auth->requireAuthentication($this->getData['redirectTo']);
+        }else{
+            $app->auth->requireAuthentication();
+        }
+    }
 }

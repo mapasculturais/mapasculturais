@@ -231,43 +231,40 @@ $this->includeAngularEntityAssets($entity);
                     <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                         <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
                         <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
-                        <p><label><input style="width:auto" type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                        <p><label><input type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
                     </edit-box>
 
                     <ul class="attachment-list">
-                        <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
-                            <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
-                            <div class="attachment-description">
-                                {{fileConfiguration.description}}<br>
-                                {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
-
-                            </div>
-                            <div class="botoes" style="display:block">
+                        <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
+                            <div class="label">{{fileConfiguration.title}}</div>
+                            <div>
+                                <span class="attachment-description">{{fileConfiguration.description}} - {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}</span>
                                 <a class="editar js-open-editbox hltip" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);" title="editar"></a>
-                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="removeFileConfiguration(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="excluir"></a>
                             </div>
-
                             <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
                                 <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
-                                <p><label><input style="width:auto" type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                                <p><label><input type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
                             </edit-box>
 
                             <div class="file-{{fileConfiguration.template.id}}">
-                                <a ng-href="{{fileConfiguration.template.url}}">Modelo{{fileConfiguration.template ? ': '+fileConfiguration.template.name : ''}}</a>
-                                <div style="display: inline-block">
-                                    <a class="js-open-editbox hltip" ng-class="{'editar':fileConfiguration.template,'enviar':!fileConfiguration.template}" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" title="{{fileConfiguration.template ? 'Editar':'Enviar'}} Modelo"></a>
-                                    <a ng-if="fileConfiguration.template" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" class="icone icon_close_alt hltip" hltitle="Excluir Modelo"></a>
+                                <div class="label">Modelo</div>
+                                <div ng-if="fileConfiguration.template">
+                                    <a ng-href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
+                                    <a class="js-open-editbox editar hltip" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" title="editar modelo"></a>
+                                    <a class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" hltitle="excluir modelo"></a>
                                 </div>
+
+                                <a ng-if="!fileConfiguration.template" class="botao enviar hltip" title="enviar modelo">enviar</a>
                             </div>
 
                             <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template" >
                                     <a href="{{fileConfiguration.template.url}}">Modelo - {{fileConfiguration.template.name}}</a>
                                 </p>
-                                <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
+                                <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
                                     <div class="alert danger escondido"></div>
-                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
+                                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                                     <input type="file" name="{{uploadFileGroup}}" />
                                     <input type="submit" value="Enviar Modelo">
 
@@ -280,7 +277,9 @@ $this->includeAngularEntityAssets($entity);
                                 </form>
 
                             </edit-box>
-
+                            <div class="btn-group">
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="removeFileConfiguration(fileConfiguration.id, $index)" class="botao excluir hltip" title="excluir anexo">excluir</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -306,7 +305,7 @@ $this->includeAngularEntityAssets($entity);
                 </form>
             <?php else: ?>
                     <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
-                    <a class="botao principal" href="<?php echo $app->createUrl('panel') ?>">Entrar</a>
+                    <a class="botao principal" href="<?php echo $app->createUrl('auth','login') ?>?redirectTo=<?php echo $entity->singleUrl , urlencode("#tab=inscricoes") ?>">Entrar</a>
             <?php endif;?>
         <?php endif; ?>
         <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
@@ -383,7 +382,7 @@ $this->includeAngularEntityAssets($entity);
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{statusName(reg)}}}" ng-show="showRegistration(reg)" >
+                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-agents-col">
                             <p>
@@ -402,9 +401,7 @@ $this->includeAngularEntityAssets($entity);
                             </ul>
                         </td>
                         <td class="registration-status-col">
-                            <span ng-click="setRegistrationStatus(reg, 'approve')" class="js-registration-action approve hltip" ng-class="{selected: statusName(reg) === 'approved'}" title="Aprovar"></span>
-                            <span ng-click="setRegistrationStatus(reg, 'maybe')" class="js-registration-action maybe hltip" ng-class="{selected: statusName(reg) === 'maybe'}" title="Suplente"></span>
-                            <span ng-click="setRegistrationStatus(reg, 'reject')" class="js-registration-action reject hltip" ng-class="{selected: statusName(reg) === 'rejected'}" title="Rejeitar"></span>
+                            <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                         </td>
                     </tr>
                 </tbody>

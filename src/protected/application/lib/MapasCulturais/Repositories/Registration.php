@@ -10,7 +10,7 @@ class Registration extends \MapasCulturais\Repository{
      * @return \MapasCulturais\Entities\Registration[]
      */
     function findByProjectAndUser(\MapasCulturais\Entities\Project $project, $user){
-        if($user->is('guest')){
+        if($user->is('guest') || !$project->id){
             return array();
         }
 

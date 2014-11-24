@@ -32,11 +32,30 @@ abstract class AuthProvider {
         App::i()->applyHookBoundTo($this, 'auth.logout:after');
     }
 
-    abstract function _requireAuthentication();
-
-    final function requireAuthentication(){
-        App::i()->applyHookBoundTo($this, 'auth.requireAuthentication');
+    final function requireAuthentication($redirect_url = null){
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'auth.requireAuthentication');
+        $this->_setRedirectPath($redirect_url ? $redirect_url : $app->request->getPathInfo());
         $this->_requireAuthentication();
+    }
+    
+    protected function _requireAuthentication() {
+        $app = App::i();
+
+        if($app->request->isAjax()){
+            $app->halt(401, $app->txt('This action requires authentication'));
+        }else{
+            $app->redirect($app->controller('auth')->createUrl(''), 401);
+        }
+    }
+    
+
+    /**
+     * Defines the URL to redirect after authentication
+     * @param string $redirect_path
+     */
+    protected function _setRedirectPath($redirect_path){
+        $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){

@@ -27,24 +27,13 @@
 
                 return url;
             }
-            
-            function setStatus(registration, registrationStatus){
-                return $http.post(getUrl(registrationStatus, registration.id)).
-                            success(function (data, status) {
-                                registration.status = data.status;
-                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration was " + registrationStatus, data: data, status: status});
-                            }).
-                            error(function (data, status) {
-                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
-                            });
-            }
-            
+
             return {
                 register: function (params) {
                     var data = {
                         projectId: MapasCulturais.entity.id,
                         ownerId: params.owner.id,
-                        category: params.category.value
+                        category: params.category
                     };
                     return $http.post(getUrl(), data).
                             success(function (data, status) {
@@ -54,19 +43,19 @@
                                 $rootScope.$emit('error', {message: "Cannot create project registration", data: data, status: status});
                             });
                 },
-                
-                approve: function(registration){
-                    return setStatus(registration, 'approve');
-                },
-                
-                reject: function(registration){
-                    return setStatus(registration, 'reject');
-                },
-                
-                maybe: function(registration){
-                    return setStatus(registration, 'maybe');
+
+                setStatusTo: function(registration, registrationStatus){
+                    
+                    return $http.post(getUrl('setStatusTo', registration.id), {status: registrationStatus}).
+                            success(function (data, status) {
+                                registration.status = data.status;
+                                $rootScope.$emit('registration.' + registrationStatus, {message: "Project registration status was setted to " + registrationStatus, data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " project registration", data: data, status: status});
+                            });
                 }
-                
+
             };
         }]);
 
@@ -113,19 +102,23 @@
     module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
 
         $scope.isEditable = MapasCulturais.isEditable;
+        $scope.maxUploadSize = MapasCulturais.maxUploadSize;
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
             return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
         };
 
+        var fileConfigurationSkeleton = {
+            ownerId: MapasCulturais.entity.id,
+            title: null,
+            description: null,
+            required: false
+        };
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
-            newFileConfiguration: {
-                ownerId: MapasCulturais.entity.id,
-                title: null,
-                description: null,
-                required: false
-            }
+            newFileConfiguration: angular.copy(fileConfigurationSkeleton)
         };
 
         $scope.fileConfigurationBackups = [];
@@ -135,6 +128,7 @@
                 if(!response.error){
                     $scope.data.fileConfigurations.push(response);
                     EditBox.close('editbox-registration-files');
+                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
                 }
             });
         };
@@ -189,12 +183,19 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-registration-files-template-' + id);
+            var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
+
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            $form.on('ajaxform.success', function(evt, response){
+            jQuery('#editbox-registration-files-template-'+id).on('cancel', function(){
+                $form.data('xhr').abort();
+                $form.get(0).reset();
+                MapasCulturais.AjaxUploader.resetProgressBar($form);
+            });
+
+            $form.on('ajaxForm.success', function(evt, response){
                 $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
                 setTimeout(function(){
@@ -207,7 +208,8 @@
 
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
         $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
-
+        $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
+        
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -270,12 +272,23 @@
 
                 registrationStatuses:[
                     {value: null, label: 'Todos'},
-                    {value: 1, label: 'Aguardando'},
-                    {value: 3, label: 'Rejeitado'},
-                    {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovado'}
+                    {value: 1, label: 'Não avaliados'},
+                    {value: 2, label: 'Inválidos'},
+                    {value: 3, label: 'Não aprovados'},
+                    {value: 8, label: 'Suplentes'},
+                    {value: 10, label: 'Aprovados'}
                 ],
                 
+                registrationStatusesNames: [
+                    {value: 1, label: 'Não avaliado'},
+                    {value: 2, label: 'Inválido'},
+                    {value: 3, label: 'Não aprovado'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Aprovado'},
+                    {value: 0, label: 'Reabrir formulário'},
+                    
+                ],
+
                 userHasControl: MapasCulturais.entity.userHasControl
             };
 
@@ -283,28 +296,41 @@
                 EditBox.open(id, e);
             };
 
-            $scope.statusName = function(registration){
-                switch (registration.status){
-                    case 1: return 'waiting'; break;
-                    case 3: return 'rejected'; break;
-                    case 8: return 'maybe'; break;
+            $scope.getStatusSlug = function(status){
+                /*
+                        const STATUS_SENT = self::STATUS_ENABLED;
+                        const STATUS_APPROVED = 10;
+                        const STATUS_WAITLIST = 8;
+                        const STATUS_NOTAPPROVED = 3;
+                        const STATUS_INVALID = 2;
+                 */
+                switch (status){
+                    case 0: return 'draft'; break;
+                    case 1: return 'sent'; break;
+                    case 2: return 'invalid'; break;
+                    case 3: return 'notapproved'; break;
+                    case 8: return 'waitlist'; break;
                     case 10: return 'approved'; break;
                 }
             };
-            
+
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl){
-                    RegistrationService[status](registration);
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário?'))){
+                    RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value));
                 }
+            };
+            
+            $scope.getRegistrationStatus = function(registration){
+                return registration.status;
             };
 
 
             $scope.showRegistration = function(registration){
-                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus.value || $scope.data.registrationStatus.value === registration.status;
+                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
 
                 return result;
             };
-            
+
             var adjustBoxPosition = function () {
                 setTimeout(function () {
                     adjustingBoxPosition = true;
