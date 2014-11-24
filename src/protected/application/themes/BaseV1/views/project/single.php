@@ -13,7 +13,6 @@ if($this->isEditable()){
 }
 $this->includeAngularEntityAssets($entity);
 
-
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -42,13 +41,12 @@ $this->includeAngularEntityAssets($entity);
         </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">
-            <?php if($avatar = $entity->avatar): ?>
-                <div class="avatar com-imagem">
+            <div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
+                <?php if($avatar = $entity->avatar): ?>
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
                 <?php else: ?>
-                    <div class="avatar">
-                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
-            <?php endif; ?>
+                    <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
+                <?php endif; ?>
                 <?php if($this->isEditable()): ?>
                     <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
@@ -105,12 +103,11 @@ $this->includeAngularEntityAssets($entity);
             </p>
             <div class="servico">
                 <?php if($this->isEditable() || $entity->site): ?>
-                    <p><span class="label">Site:</span>
-                    <?php if($this->isEditable()): ?>
-                        <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span></p>
-                    <?php else: ?>
-                        <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-                    <?php endif; ?>
+                    <p>
+                        <span class="label">Site:</span>
+                        <span ng-if="data.isEditable" class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span>
+                        <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                    </p>
                 <?php endif; ?>
             </div>
         </div>
@@ -136,41 +133,44 @@ $this->includeAngularEntityAssets($entity);
     <!-- #agenda -->
     <div id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
-            <?php if($this->isEditable()): ?>
-                <p class="alert info textcenter">
-                    Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
-                </p>
-            <?php endif; ?>
+            <p ng-if="data.isEditable" class="alert info textcenter">
+                Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
+            </p>
 
-            <?php if($this->isEditable()): ?>
-                <div id="registration-period" class="registration-fieldset">
-                    <h4>1. Período de inscrições</h4>
-            <?php endif; ?>
-            <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                <p class="highlighted-message">
-                Inscrições abertas de
-                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
-                    a
-                    <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
-                </p>
-            <?php endif; ?>
-        <?php endif; ?>
-        <?php if($entity->introInscricoes || $this->isEditable()): ?>
-            <?php if($this->isEditable()): ?>
+            <div id="registration-period" ng-class="{'registration-fieldset': data.isEditable}">
+                <h4 ng-if="data.isEditable">1. Período de inscrições</h4>
+
+                <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                    <p class="highlighted-message">
+                    Inscrições abertas de
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                        a
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
+                    </p>
+                <?php endif; ?>
             </div>
+        <?php endif; ?>
+
+        <?php if($entity->introInscricoes || $this->isEditable()): ?>
             <!-- #registration-period -->
-            <div id="intro-das-inscricoes" class="registration-fieldset">
-                <h4>2. Introdução</h4>
-                <p class="registration-help">Você pode criar um texto de introdução de apenas um parágrafo.</p>
-            <?php endif; ?>
+            <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
+                <h4 ng-if="data.isEditable">2. Introdução</h4>
+                <p class="registration-help" ng-if="data.isEditable">Você pode criar um texto de introdução de apenas um parágrafo.</p>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
+            </div>
         <?php endif; ?>
 
         <?php if($this->isEditable()): ?>
-            </div>
             <!-- #intro-das-inscricoes -->
             <div id="registration-categories" class="registration-fieldset">
-                <h4>3. Opções</h4>
+                <h4>3. Regulamento</h4>
+                <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. .</p>
+
+            </div>
+
+            <!-- #intro-das-inscricoes -->
+            <div id="registration-categories" class="registration-fieldset">
+                <h4>4. Opções</h4>
                 <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
 
                 <p>
@@ -185,7 +185,7 @@ $this->includeAngularEntityAssets($entity);
 
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
-                <h4>4. Agentes</h4>
+                <h4>5. Agentes</h4>
                 <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
                     <div class="registration-related-agent-configuration">
@@ -200,7 +200,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-agent-relations -->
             <div id="registration-attachments" class="registration-fieldset">
-                <h4>5. Anexos</h4>
+                <h4>6. Anexos</h4>
                 <p class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
 
                 <div ng-controller="RegistrationFileConfigurationsController">

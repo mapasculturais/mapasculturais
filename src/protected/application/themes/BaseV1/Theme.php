@@ -937,5 +937,4 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
-
 }
