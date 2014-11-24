@@ -205,7 +205,7 @@ class Project extends \MapasCulturais\Entity
             if($re->status > 0)
                 $result[] = $re;
         }
-        return $registrations;
+        return $result;
     }
 
     function setRegistrationFrom($date){

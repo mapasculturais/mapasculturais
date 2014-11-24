@@ -77,7 +77,7 @@ class Registration extends EntityController {
         $app = App::i();
 
         $registration = $this->requestedEntity;
-        
+
         if(!$registration){
             $app->pass();
         }
@@ -100,6 +100,28 @@ class Registration extends EntityController {
             $this->json($registration);
         }else{
             $app->redirect($app->request->getReferer());
+        }
+    }
+
+    function POST_send(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $registration = $this->requestedEntity;
+
+        if(!$registration){
+            $app->pass();
+        }
+
+        if($registration->validate()){
+            $registration->send();
+             if($app->request->isAjax()){
+                $this->json($registration);
+            }else{
+                $app->redirect($app->request->getReferer());
+            }
+        }else{
+            $this->errorJson($app->txt('required fields'));
         }
     }
 }

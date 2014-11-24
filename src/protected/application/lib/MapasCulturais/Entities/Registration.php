@@ -177,11 +177,11 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
-
-        App::i()->disableAccessControl();
+        $app = App::i();
+        $app->disableAccessControl();
         $this->status = $status;
         $this->save(true);
-        App::i()->enableAccessControl();
+        $app->enableAccessControl();
     }
 
     function setStatusToDraft(){
@@ -212,6 +212,21 @@ class Registration extends \MapasCulturais\Entity
     function setStatusToSent(){
         $this->_setStatusTo(self::STATUS_SENT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
+    }
+
+    function send(){
+        $this->checkPermission('send');
+        $app = App::i();
+
+        $app->disableAccessControl();
+        // copiar dados dos agentes
+        $app->enableAccessControl();
+    }
+
+    function validate(){
+        // @TODO: validar agentes (retornar false se não for válido)
+        // @TODO: validar arquivos (retornar false se não for válido)
+        return true;
     }
 
 
@@ -251,6 +266,10 @@ class Registration extends \MapasCulturais\Entity
 
     protected function canUserSend($user){
         if($user->is('guest')){
+            return false;
+        }
+
+        if(!$this->validate()){
             return false;
         }
 
