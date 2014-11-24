@@ -177,12 +177,11 @@ $this->includeAngularEntityAssets($entity);
                 <a class="botao hltip" ng-class="{'editar':data.entity.registrationRulesFile, 'enviar':!data.entity.registrationRulesFile}" ng-click="openRulesUploadEditbox($event)" title="{{data.entity.registrationRulesFile ? 'editar' : 'enviar'}} regulamento">{{!data.entity.registrationRulesFile ? 'enviar' : 'editar'}}</a>
                 <a ng-click="removeRegistrationRulesFile()" class="botao excluir hltip" title="excluir anexo">excluir</a>
             </div>
-            <edit-box id="edibox-upload-rules" position="bottom" title="{{data.entity.registrationRulesFile ? 'Enviar regulamento' : 'Editar regulamento'}}" cancel-label="Cancelar" close-on-cancel='true' on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+            <edit-box id="edibox-upload-rules" position="bottom" title="{{data.entity.registrationRulesFile ? 'Enviar regulamento' : 'Editar regulamento'}}" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
                 <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
                     <div class="alert danger escondido"></div>
                     <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                     <input type="file" name="rules" />
-                    <input type="submit" value="Enviar Modelo">
 
                     <div class="js-ajax-upload-progress">
                         <div class="progress">
@@ -256,7 +255,7 @@ $this->includeAngularEntityAssets($entity);
                                 <a class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" hltitle="excluir modelo"></a>
                             </div>
                             <!-- edit-box to upload attachments -->
-                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" submit-label="Enviar modelo" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p ng-if="fileConfiguration.template">
                                     <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
                                 </p>
@@ -271,7 +270,7 @@ $this->includeAngularEntityAssets($entity);
                                             <div class="percent">0%</div >
                                         </div>
                                     </div>
-                                    <input type="submit" value="enviar">
+
                                 </form>
                             </edit-box>
                             <div class="btn-group">

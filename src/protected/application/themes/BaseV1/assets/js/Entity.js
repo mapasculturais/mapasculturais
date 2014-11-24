@@ -266,7 +266,7 @@
 
                 jQuery('#' + editboxId).trigger('open');
 
-                var $firstInput = $box.find('input:first,select:first,textarea:first');
+                var $firstInput = $($box.find('input,select,textarea').get(0));
                 $firstInput.focus();
                 setPosition($box, $event.target);
             },

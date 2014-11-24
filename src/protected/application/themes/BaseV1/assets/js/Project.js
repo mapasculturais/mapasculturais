@@ -158,6 +158,10 @@
                 }
             });
         };
+        
+        $scope.sendFile = function(attrs){
+            jQuery('#' + attrs.id + ' form').submit();
+        };
 
         $scope.cancelFileConfigurationEditBox = function(attrs){
             $scope.data.fileConfigurations[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
@@ -172,6 +176,7 @@
         $scope.openFileConfigurationTemplateEditBox = function(id, index, event){
             EditBox.open('editbox-registration-files-template-'+id, event);
             initAjaxUploader(id, index);
+            
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
@@ -184,7 +189,8 @@
 
         var initAjaxUploader = function(id, index){
             var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
-
+            MapasCulturais.AjaxUploader.resetProgressBar($form);
+            
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
@@ -217,6 +223,10 @@
         $scope.data.fileConfigurations.forEach(function(item){
             item.file = MapasCulturais.entity.registrationFiles[item.groupName];
         });
+        
+        $scope.sendFile = function(attrs){
+            jQuery('#' + attrs.id + ' form').submit();
+        };
 
         $scope.openFileEditBox = function(id, index, event){
             EditBox.open('editbox-file-'+id, event);
@@ -382,8 +392,8 @@
                 }
             };
             
-            $scope.registrationRulesSubmited = function(){
-                
+            $scope.sendRegistrationRulesFile = function(){
+                jQuery('#edibox-upload-rules form').submit();
             };
 
             $scope.openRulesUploadEditbox = function(event){
