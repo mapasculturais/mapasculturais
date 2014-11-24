@@ -93,7 +93,7 @@ $this->includeAngularEntityAssets($entity);
                 <div class="attachment-description">
                     {{fileConfiguration.description}}
                     <span ng-if="fileConfiguration.template">
-                        (<a target="_blank" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
+                        (<a class="attachment-template" target="_blank" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
                     </span>
                 </div>
                 <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.}}" target="_blank">{{fileConfiguration.file.name}}</a>
