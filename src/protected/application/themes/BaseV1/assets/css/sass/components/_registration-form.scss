@@ -124,27 +124,29 @@
         padding: $padding-base;
         padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
-        a {
-        	font-weight: normal;
-        }
         .attachment-title {
-        	display: block;
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            word-wrap: break-word;
         	&:before {
         		@extend %icon;
         		content: "\e016";
+                margin-right: 3px;
         	}
         }
         .attachment-description {
         	font-size: $font-size-smaller;
         	color: #999;
         	margin-bottom: $line-height-half;
-        	a {
-        		&:before {
-        			@extend %icon;
-  					font-size: inherit;
-  					content:"\e092";
-        		}
-        	}
+        }
+        .attachment-template {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            &:before {
+                @extend %icon;
+                content:"\e092";
+                margin-right: 3px;
+            }
         }
         .btn-group {
             position: absolute;
