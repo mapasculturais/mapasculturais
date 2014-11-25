@@ -72,13 +72,13 @@ return array(
         'subprefeitura',
         'distrito'
     ),
-    
+
     'registration.agentRelationsOptions' => array(
         'dontUse' => 'Não é necessário',
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-    
+
     'registration.agentRelations' => array(
         array(
             'required' => false,
@@ -88,7 +88,7 @@ return array(
             'type' => 2,
             'requiredProperties' => array('documento')
         ),
-        
+
         array(
             'required' => false,
             'label' => 'Coletivo',
@@ -133,13 +133,13 @@ return array(
 
     'app.useFileUrlCache' => true,
     'app.fileUrlCache.lifetime' => 604800,
-    
+
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
-    
+
     'app.useUsersWithControlCache' => true,
     'app.usersWithControlCache.lifetime' => 30,
 
@@ -202,7 +202,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-            // 'james-bond'                => array('agent', 'single', array('id' => '007')),
+             'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
@@ -219,7 +219,8 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscrever-se' => array('registration', 'create')
+            'inscricao' => array('registration', 'single'),
+            'inscricao/edita' => array('registration', 'edit')
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -229,7 +230,9 @@ return array(
             'agentes'        => 'agent',
             'espacos'        => 'space',
             'arquivos'       => 'file',
-            'projetos'       => 'project'
+            'projetos'       => 'project',
+            'inscricoes'      => 'registration',
+            'anexos'         => 'registrationfileconfiguration'
         ),
         'actions' => array(
             'lista'         => 'list',
