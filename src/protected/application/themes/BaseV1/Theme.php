@@ -348,6 +348,7 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
+            $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();
             $this->includeVendorAssets();
