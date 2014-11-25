@@ -281,6 +281,10 @@ class Project extends \MapasCulturais\Entity
 
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
+
+        $this->publishedRegistrations = true;
+
+        $this->save(true);
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
@@ -289,11 +293,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     protected function canUserPublishRegistrations($user){
-        if($user->is('guest'))
+        if($user->is('guest')){
             return false;
+        }
 
-        if($this->isRegistrationOpen())
+        if($this->registrationTo >= new \DateTime){
             return false;
+        }
+
+        return $this->canUser('@control', $user);
     }
 
     /** @ORM\PreRemove */

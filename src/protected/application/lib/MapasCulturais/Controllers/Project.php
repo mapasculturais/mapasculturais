@@ -32,7 +32,7 @@ class Project extends EntityController {
         parent::GET_create();
     }
 
-    function ALL_publishRegistrations(){
+    function ALL_publish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -44,5 +44,10 @@ class Project extends EntityController {
 
         $project->publishRegistrations();
 
+        if($app->request->isAjax()){
+            $this->json($project);
+        }else{
+            $app->redirect($app->request->getReferer());
+        }
     }
 }

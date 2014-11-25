@@ -480,5 +480,18 @@
                     });
 
             };
+
+            var url = new UrlService('project');
+
+            $scope.publish = function(){
+                $http.post(url.create('publish', $scope.data.entity.id)).
+                    success(function(r){
+                        console.log(r)
+                        alert('publicado');
+                    }).error(function(r){
+                        console.log(r);
+                        alert('erro');
+                    });
+            };
         }]);
 })(angular);
