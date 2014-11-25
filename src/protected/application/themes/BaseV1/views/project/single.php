@@ -142,7 +142,7 @@ $this->includeAngularEntityAssets($entity);
 
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
                     <p class="highlighted-message">
-                    Inscrições abertas de
+                        Inscrições abertas de
                         <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
                         a
                         <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
@@ -162,35 +162,69 @@ $this->includeAngularEntityAssets($entity);
             <!-- #intro-das-inscricoes -->
         <?php endif; ?>
 
-        <?php if($this->isEditable()): ?>
-            <div id="registration-rules" class="registration-fieldset">
-                <h4>3. Regulamento</h4>
-                <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
+        <!-- #registration-rules -->
+        <div ng-if="!data.isEditable && data.entity.registrationRulesFile" class="registration-fieldset">
+            <h4 >3. Regulamento</h4>
+            <a href="{{data.entity.registrationRulesFile.url}}">Baixar o reculamento</a>
+        </div>
 
+        <div ng-if="data.isEditable" class="registration-fieldset">
+            <h4 >3. Regulamento</h4>
+            <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
+
+            <div class="btn-group">
+                <!-- se já subiu o arquivo-->
+                <!-- se não subiu ainda -->
+                <a class="botao hltip" ng-class="{'editar':data.entity.registrationRulesFile, 'enviar':!data.entity.registrationRulesFile}" ng-click="openRulesUploadEditbox($event)" title="{{data.entity.registrationRulesFile ? 'editar' : 'enviar'}} regulamento">{{!data.entity.registrationRulesFile ? 'enviar' : 'editar'}}</a>
+                <a ng-click="removeRegistrationRulesFile()" class="botao excluir hltip" title="excluir anexo">excluir</a>
             </div>
-            <!-- #registration-rules -->
+            <edit-box id="edibox-upload-rules" position="bottom" title="{{data.entity.registrationRulesFile ? 'Enviar regulamento' : 'Editar regulamento'}}" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+                <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
+                    <div class="alert danger escondido"></div>
+                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
+                    <input type="file" name="rules" />
+
+                    <div class="js-ajax-upload-progress">
+                        <div class="progress">
+                            <div class="bar"></div>
+                            <div class="percent">0%</div>
+                        </div>
+                    </div>
+                </form>
+            </edit-box>
+        </div>
+
+        <?php if($this->isEditable()): ?>
             <div id="registration-categories" class="registration-fieldset">
                 <h4>4. Opções</h4>
-                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
-                <p>
-                    <span class="label">Descrição</span><br>
-                    <span class="js-editable" data-edit="registrationCategoriesName" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationCategoriesName; ?></span>
+                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.
+                    <br>
+                    Para não utilizar opções, deixe em branco o campo "Opções selecionáveis"
                 </p>
                 <p>
-                    <span class="label">Opções</span><br>
-                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationCategories); ?></span>
+                    <span class="label">Título das opções</span><br>
+                    <span class="js-editable" data-edit="registrationCategTitle" data-original-title="Título das opções" data-emptytext="Insira um título para o campo de opções"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categorias'; ?></span>
+                </p>
+                <p>
+                    <span class="label">Descrição das opções</span><br>
+                    <span class="js-editable" data-edit="registrationCategDescription" data-original-title="Descrição das opções" data-emptytext="Insira uma descrição para o campo de opções"><?php echo $entity->registrationCategDescription ? $entity->registrationCategDescription : 'Selecione uma categoria'; ?></span>
+                </p>
+                <p>
+                    <span class="label">Opções selecionáveis</span><br>
+                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationCategories ? implode("\n", $entity->registrationCategories) : ''; ?></span>
                 </p>
             </div>
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
                 <h4>5. Agentes</h4>
                 <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
+
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
                     <div class="registration-related-agent-configuration">
                         <p>
                             <span class="label"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
                             <br>
-                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
+                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : 'optional' ?></span>
                         </p>
 
                     </div>
@@ -230,7 +264,7 @@ $this->includeAngularEntityAssets($entity);
                                 <a class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" hltitle="excluir modelo"></a>
                             </div>
                             <!-- edit-box to upload attachments -->
-                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" submit-label="Enviar modelo" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p ng-if="fileConfiguration.template">
                                     <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
                                 </p>
@@ -245,7 +279,7 @@ $this->includeAngularEntityAssets($entity);
                                             <div class="percent">0%</div >
                                         </div>
                                     </div>
-                                    <input type="submit" value="enviar">
+
                                 </form>
                             </edit-box>
                             <div class="btn-group">
@@ -368,7 +402,7 @@ $this->includeAngularEntityAssets($entity);
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
+                    <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-option-col">
                         opção selecionada

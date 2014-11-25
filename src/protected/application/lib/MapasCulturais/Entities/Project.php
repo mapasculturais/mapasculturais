@@ -205,7 +205,7 @@ class Project extends \MapasCulturais\Entity
             if($re->status > 0)
                 $result[] = $re;
         }
-        return $registrations;
+        return $result;
     }
 
     function setRegistrationFrom($date){
@@ -265,8 +265,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setRegistrationCategories($value){
-        if(is_string($value)){
-            $this->registrationCategories = explode("\n", $value);
+        if(is_string($value) && trim($value)){
+            $cats = [];
+            foreach(explode("\n", trim($value)) as $opt){
+                $opt = trim($opt);
+                if($opt && !in_array($opt, $cats)){
+                    $cats[] = $opt;
+                }
+            }
+            $this->registrationCategories = $cats;
         }else{
             $this->registrationCategories = $value;
         }

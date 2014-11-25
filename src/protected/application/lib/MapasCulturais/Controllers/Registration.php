@@ -21,18 +21,11 @@ class Registration extends EntityController {
         $app->hook('POST(registration.upload):before', function() use($app) {
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
-                $fileGroup = new Definitions\FileGroup(
-                    $rfc->fileGroupName,
-                    array('^application/.*'),
-                    'The uploaded file is not a valid document.',
-                    true
-                );
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, array('^application/.*'), 'The uploaded file is not a valid document.', true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
-
         parent::__construct();
-
     }
 
     function getRequestedProject(){
@@ -72,12 +65,17 @@ class Registration extends EntityController {
         parent::GET_single();
     }
 
+    function GET_edit(){
+        $this->requestedEntity->validate();
+        parent::GET_edit();
+    }
+
     function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
 
         $registration = $this->requestedEntity;
-        
+
         if(!$registration){
             $app->pass();
         }
@@ -100,6 +98,28 @@ class Registration extends EntityController {
             $this->json($registration);
         }else{
             $app->redirect($app->request->getReferer());
+        }
+    }
+
+    function POST_send(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $registration = $this->requestedEntity;
+
+        if(!$registration){
+            $app->pass();
+        }
+
+        if($registration->validate()){
+            $registration->send();
+             if($app->request->isAjax()){
+                $this->json($registration);
+            }else{
+                $app->redirect($app->request->getReferer());
+            }
+        }else{
+            $this->errorJson($app->txt('Please inform all required fields.'), 401);
         }
     }
 }

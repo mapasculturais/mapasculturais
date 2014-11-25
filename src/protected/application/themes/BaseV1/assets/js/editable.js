@@ -124,7 +124,6 @@ MapasCulturais.Remove = {
                 var href = $this.data('href');
 
                 $.getJSON(href,function(r){
-                    console.log(r);
                     if(r.error){
                         MapasCulturais.Messages.error(r.data);
                     }else{
@@ -462,7 +461,6 @@ MapasCulturais.AjaxUploader = {
             $(this).ajaxForm({
                 beforeSend: function(xhr){
                     $this.data('xhr', xhr);
-                    console.log('file',$this.find('input:file').get(0).files[0]);
                     //@TODO validate size and type before upload
                 },
                 //target:        '#output1',   // target element(s) to be updated with server response
@@ -473,7 +471,6 @@ MapasCulturais.AjaxUploader = {
                     var percentVal = percentComplete + '%';
                     bar.animate({'width':percentVal});
                     percent.html(percentVal);
-                    console.log('percent',percentComplete);
                 },
                 success: function (response, statusText, xhr, $form)  {
 

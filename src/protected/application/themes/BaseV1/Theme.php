@@ -336,6 +336,10 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
+            $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+            $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
+            $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
+            $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -348,6 +352,7 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
+            $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();
             $this->includeVendorAssets();
@@ -805,14 +810,14 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
-
-    function addProjectToJs($entity){
+    function addProjectToJs(Entities\Project $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+        $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
     }
 
-    function addRegistrationToJs($entity){
+    function addRegistrationToJs(Entities\Registration $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
