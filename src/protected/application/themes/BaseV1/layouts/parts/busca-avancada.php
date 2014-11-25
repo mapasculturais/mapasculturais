@@ -166,34 +166,9 @@
         </div>
         <!--#filtro-espacos-->
         <!--#busca-avancada-->
-        <style>
-            /*TODO MOVER PARA O LOCAL PADRAO DE ESTILOS*/
-
-            #ferramentas{
-                width:auto;
-            }
-            #exportar-resultados{
-                position:relative;
-                float: left;
-            }
-            #exportar-resultados a {
-                width:10px;
-            }
-            .compartilhar-changed{
-                margin-left: .75rem;
-                padding-left: 0.75rem;
-                border-left: 2px solid #d3d3d3;
-            }
-        </style>
         <div id="header-dos-resultados" class="clearfix">
-            <div id="ferramentas" style="">
-                <div id="exportar-resultados" data-toggle="busca-popover">
-                    <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
-                    <div class="busca-popover">
-                        <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
-                    </div>
-                </div>
-                <div id="compartilhar" class="compartilhar-changed">
+            <div id="ferramentas">
+                <div id="compartilhar">
                     <a class="botao-de-icone icone social_share"></a>
                     <form id="compartilhar-url" class="busca-popover">
                         <div class="setinha"></div>
@@ -202,8 +177,13 @@
                         <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icone social_twitter"></a>
                         <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_facebook"></a>
                         <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_googleplus"></a>
-                        <span class="info">Você também pode copiar o endereço do seu navegador</span>
                     </form>
+                </div>
+                <div id="exportar-resultados" data-toggle="busca-popover">
+                    <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                    <div class="busca-popover">
+                        <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                    </div>
                 </div>
                 <div id="views" class="clearfix" ng-if="!showFilters('project')">
                     <a class="hltip botao-de-icone icone icon_menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>

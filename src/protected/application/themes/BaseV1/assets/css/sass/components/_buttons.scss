@@ -32,15 +32,25 @@
     color: #fff;
     background: $brand-primary;
     border: 1px solid $brand-primary;
-}
-.botao.principal:hover {
+    &:hover {
     border-color: darken($brand-primary, 10%);
+    }
 }
 .botao.selected,
 .botao.selected:hover {
     background-color: $brand-accent;
     border: 1px solid $brand-accent;
     color: #fff;
+}
+.botao.disabled {
+    background-color: $gray-light;
+    border: 1px solid $gray;
+    color: #fff;
+    cursor: default;
+    &:hover {
+        border: 1px solid $gray;
+        box-shadow: none;
+    }
 }
 .botao.simples,
 .botao.adicionar,
