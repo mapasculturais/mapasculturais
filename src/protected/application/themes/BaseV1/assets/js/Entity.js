@@ -3,6 +3,18 @@
 
     var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Project', 'Notifications', 'ngSanitize']);
 
+    app.factory('UrlService', [function(){
+        return function(controller){
+            this.create = function(action, params){
+                if(params == parseInt(params)){ // params is an integer, so it is an id
+                    return MapasCulturais.createUrl(controller, action, [params]);
+                }else{
+                    return MapasCulturais.createUrl(controller, action, params);
+                }
+            };
+        };
+    }]);
+
     app.factory('FindService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q){
         var baseUrl = MapasCulturais.baseURL + '/api/';
         var canceller;
@@ -365,20 +377,20 @@
             },
             link: function($scope, el, attrs) {
                 $scope.classes = attrs.classes;
-                
+
                 $scope.selectItem = function(item, $event){
                     if(angular.isFunction($scope.setter)){
                         $scope.setter($scope.model, item);
                     }else{
                         $scope.model = item.value;
                     }
-                    
+
                     $($event.target).parents('.js-submenu-dropdown').hide();
                     setTimeout(function(){
                         $($event.target).parents('.js-submenu-dropdown').css('display','');
                     },500);
                 },
-                        
+
                 $scope.getSelectedValue = function(){
                     if($scope.model && angular.isFunction($scope.getter)){
                         return $scope.getter($scope.model);
@@ -386,28 +398,28 @@
                         return $scope.model;
                     }
                 };
-                
+
                 $scope.getSelectedItem = function(){
                     var item = null,
                         selectedValue = $scope.getSelectedValue();
-                    
+
                     $scope.data.forEach(function(e){
                         if(e.value == selectedValue)
                             item = e;
                     });
                     return item;
                 };
-                        
+
                 $scope.getSelectedLabel = function(){
                     var item = $scope.getSelectedItem();
-                    
+
                     if(item){
                         return item.label;
                     }else{
                         return $scope.placeholder;
                     }
                 };
-                
+
                 $scope.isSelected = function(item){
                     return item.value == $scope.getSelectedValue();
                 }

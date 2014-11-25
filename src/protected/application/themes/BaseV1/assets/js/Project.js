@@ -13,20 +13,12 @@
             };
         }]);
 
-    module.factory('RegistrationService', ['$http', '$rootScope', function ($http, $rootScope) {
+    module.factory('RegistrationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+            var url = new UrlService('registration');
+
             return {
                 getUrl: function(action, registrationId){
-                    var url = MapasCulturais.baseURL + 'registration';
-
-                    if(action){
-                        url += '/' + action;
-                    }
-
-                    if(registrationId){
-                        url += '/' + registrationId;
-                    }
-
-                    return url;
+                    return url.create(action, registrationId);
                 },
 
                 register: function (params) {
@@ -58,16 +50,23 @@
                 },
 
                 send: function(registrationId){
-                    alert(getUrl('send', registrationId));
+                    return $http.post(this.getUrl('send', registrationId)).
+                            success(function(data, status){
+                                $rootScope.$emit('registration.send', {message: "Project registration was send ", data: data, status: status});
+                            }).
+                            error(function(data, status){
+                                $rootScope.$emit('error', {message: "Cannot send project registration", data: data, status: status});
+                            });
                 }
 
             };
         }]);
 
-    module.factory('RegistrationFileConfigurationService', ['$rootScope', '$q', '$http', '$log', function($rootScope, $q, $http, $log) {
+    module.factory('RegistrationFileConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
+        var url = new UrlService('registrationfileconfiguration');
         return {
-            getUrl: function(){
-                return MapasCulturais.baseURL + 'registrationfileconfiguration';
+            getUrl: function(action, id){
+                return url.create(action, id);
             },
             create: function(data){
                 var deferred = $q.defer();
@@ -83,7 +82,7 @@
             edit: function(data){
                 var deferred = $q.defer();
                 $log.debug(data);
-                $http.post(this.getUrl()+'/single/'+data.id, data)
+                $http.post(url.create('single', data.id), data)
                     .success(
                         function(response){
                             deferred.resolve(response);
@@ -93,7 +92,7 @@
             },
             delete: function(id){
                 var deferred = $q.defer();
-                $http.get(this.getUrl()+'/delete/'+id)
+                $http.get(url.create('delete', id))
                     .success(
                         function(response){
                             deferred.resolve(response);
@@ -111,7 +110,7 @@
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
-            return RegistrationFileConfigurationService.getUrl() + '/upload/id:' + ownerId;
+            return RegistrationFileConfigurationService.getUrl('upload', ownerId);
         };
 
         var fileConfigurationSkeleton = {
@@ -217,8 +216,11 @@
 
     }]);
 
-    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
-        $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
+    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
+        var registrationsUrl = new UrlService('registration');
+
+        $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
+        
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
         $scope.data = {
@@ -269,7 +271,7 @@
 
     }]);
 
-    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http) {
+    module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
             var adjustingBoxPosition = false,
                 categories = MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
@@ -307,7 +309,7 @@
                     {value: 3, label: 'Não aprovado'},
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovado'},
-                    {value: 0, label: 'Reabrir formulário'},
+                    {value: 0, label: 'Reabrir formulário'}
 
                 ]
             }, MapasCulturais);
@@ -443,10 +445,9 @@
             };
 
             $scope.sendRegistration = function(){
-                RegistrationService.setStatusTo($scope.data.entity, 'sent').success(function(entity){
+                RegistrationService.send($scope.data.entity.id).success(function(entity){
                     document.location = entity.singleUrl;
                 });
             };
-
         }]);
 })(angular);
