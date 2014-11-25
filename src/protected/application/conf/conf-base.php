@@ -74,7 +74,7 @@ return array(
     ),
 
     'registration.agentRelationsOptions' => array(
-        'dontUse' => 'Não é necessário',
+        'dontUse' => 'Não utilizar',
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),

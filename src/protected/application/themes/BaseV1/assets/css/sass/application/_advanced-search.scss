@@ -16,13 +16,7 @@
     position: relative;
     padding: $padding-base;
 }
-#busca-avancada input {
-    margin-bottom: 0;
-    border: none;
-}
-#busca-avancada .campo-de-busca {
-    width: 100%;
-}
+
 /*filtro local*/
 #filtro-local {
     position: absolute;
@@ -97,6 +91,7 @@
     line-height: 2.5rem;
     font-size: $line-height-base;
 }
+
 .filtro {
     float: left;
          box-sizing: border-box;
@@ -138,6 +133,13 @@
 .filtro .dropdown .submenu-dropdown li:hover {
     background: $gray-lighter;
     color: $brand-accent;
+}
+.filtro input {
+    margin-bottom: 0;
+    border: none;
+}
+.filtro .campo-de-busca {
+    width: 100%;
 }
 .lista-de-filtro {
     margin-bottom: 0;

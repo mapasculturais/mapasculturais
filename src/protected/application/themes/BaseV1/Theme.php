@@ -336,6 +336,10 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
+            $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+            $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
+            $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
+            $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],

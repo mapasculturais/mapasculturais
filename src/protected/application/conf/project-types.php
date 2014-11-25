@@ -9,8 +9,12 @@ return array(
             'type' => 'text'
         ),
 
-        'registrationCategoriesName' => array(
-            'label' => 'Descrição das opções (ex: categorias)',
+        'registrationCategTitle' => array(
+            'label' => 'Título das opções (ex: Categorias)',
+        ),
+
+        'registrationCategDescription' => array(
+            'label' => 'Descrição das opções (ex: Selecione uma categoria)',
         ),
 
         'site' => array(

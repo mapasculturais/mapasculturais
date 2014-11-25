@@ -136,8 +136,9 @@ $this->includeAngularEntityAssets($entity);
     <!-- #agenda -->
     <div id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
-            <p ng-if="data.isEditable" class="alert info textcenter">
+            <p ng-if="data.isEditable" class="alert info">
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
+                <span class="close"></span>
             </p>
             <div id="registration-period" ng-class="{'registration-fieldset': data.isEditable}">
                 <h4 ng-if="data.isEditable">1. Período de inscrições</h4>
@@ -199,26 +200,34 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable()): ?>
             <div id="registration-categories" class="registration-fieldset">
                 <h4>4. Opções</h4>
-                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.</p>
-                <p>
-                    <span class="label">Descrição</span><br>
-                    <span class="js-editable" data-edit="registrationCategoriesName" data-original-title="Descrição das opções (ex: categoria)" data-emptytext="Insira uma descrição para o campo de opções (ex: Categorias)"><?php echo $entity->registrationCategoriesName; ?></span>
+                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.
+                    <br>
+                    Para não utilizar opções, deixe em branco o campo "Opções selecionáveis"
                 </p>
                 <p>
-                    <span class="label">Opções</span><br>
-                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo implode("\n", $entity->registrationCategories); ?></span>
+                    <span class="label">Título das opções</span><br>
+                    <span class="js-editable" data-edit="registrationCategTitle" data-original-title="Título das opções" data-emptytext="Insira um título para o campo de opções"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categorias'; ?></span>
+                </p>
+                <p>
+                    <span class="label">Descrição das opções</span><br>
+                    <span class="js-editable" data-edit="registrationCategDescription" data-original-title="Descrição das opções" data-emptytext="Insira uma descrição para o campo de opções"><?php echo $entity->registrationCategDescription ? $entity->registrationCategDescription : 'Selecione uma categoria'; ?></span>
+                </p>
+                <p>
+                    <span class="label">Opções selecionáveis</span><br>
+                    <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationCategories ? implode("\n", $entity->registrationCategories) : ''; ?></span>
                 </p>
             </div>
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
                 <h4>5. Agentes</h4>
                 <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
+
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
                     <div class="registration-related-agent-configuration">
                         <p>
                             <span class="label"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
                             <br>
-                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : $app->txt('Optional') ; ?></span>
+                            <span class="js-editable" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $entity->$metadata_name ? $entity->$metadata_name : 'optional' ?></span>
                         </p>
 
                     </div>
@@ -358,13 +367,30 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
+                <a class="alignright botao download" href="#">baixar lista de inscritos</a>
             </div>
+            <div class="alert info">
+                <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
+                <ul>
+                    <li><span>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</span></li>
+                    <li><span>Pendente - ainda não avaliada.</span></li>
+                    <li><span>Rejeitada - avaliada, mas não aprovada.</span></li>
+                    <li><span>Suplente - avaliada, mas aguardando vaga.</span></li>
+                    <li><span>Aprovada - avaliada e aprovada.</span></li>
+                    <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
+                </ul>
+                <div class="close"></div>
+            </div>
+
+
             <table class="js-registration-list registrations-table">
                 <thead>
                     <tr>
                         <th class="registration-id-col">
                             Nº
+                        </th>
+                        <th class="registration-option-col">
+                            Nome da opção
                         </th>
                         <th class="registration-agents-col">
                             Agentes
@@ -380,6 +406,9 @@ $this->includeAngularEntityAssets($entity);
                 <tbody>
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+                        <td class="registration-option-col">
+                        opção selecionada
+                        </td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
@@ -392,9 +421,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td class="registration-attachments-col">
-                            <ul>
-                                <li ng-repeat="file in reg.files"><a href="{{file.url}}">file.name</a></li>
-                            </ul>
+                            <a class="icone icon_download" href="{{file.url}}"><span class="screen-reader">file.name</span></a>
                         </td>
                         <td class="registration-status-col">
                             <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>

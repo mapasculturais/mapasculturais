@@ -37,7 +37,6 @@
                 },
 
                 setStatusTo: function(registration, registrationStatus){
-
                     return $http.post(this.getUrl('setStatusTo', registration.id), {status: registrationStatus}).
                             success(function (data, status) {
                                 registration.status = data.status;
@@ -273,9 +272,9 @@
 
     module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
             var adjustingBoxPosition = false,
-                categories = MapasCulturais.entity.registrationCategories.map(function(e){
+                categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
                     return { value: e, label: e };
-                });
+                }) : [];
 
             $scope.editbox = EditBox;
 
@@ -295,21 +294,21 @@
                 },
 
                 registrationStatuses:[
-                    {value: null, label: 'Todos'},
-                    {value: 1, label: 'Não avaliados'},
-                    {value: 2, label: 'Inválidos'},
-                    {value: 3, label: 'Não aprovados'},
-                    {value: 8, label: 'Suplentes'},
-                    {value: 10, label: 'Aprovados'}
+                    {value: null, label: 'Todas'},
+                    {value: 1, label: 'Pendente'},
+                    {value: 2, label: 'Inválida'},
+                    {value: 3, label: 'Rejeitada'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Aprovada'}
                 ],
 
                 registrationStatusesNames: [
-                    {value: 1, label: 'Não avaliado'},
-                    {value: 2, label: 'Inválido'},
-                    {value: 3, label: 'Não aprovado'},
+                    {value: 1, label: 'Pendente'},
+                    {value: 2, label: 'Inválida'},
+                    {value: 3, label: 'Rejeitada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovado'},
-                    {value: 0, label: 'Reabrir formulário'}
+                    {value: 10, label: 'Aprovada'},
+                    {value: 0, label: 'Rascunho'},
 
                 ]
             }, MapasCulturais);
@@ -379,9 +378,22 @@
 
             $scope.setRegistrationAgent = function(entity, attrs){
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
-                RelatedAgentsService.create(attrs.name, entity.id).success(function(){
+                RelatedAgentsService.create(attrs.name, entity.id).success(function(response){
                     var $el = $('#registration-agent-' + attrs.name);
+                    $el.find('.js-registration-agent-name').html('<a href="'+response.agent.singleUrl+'">'+response.agent.name+'</a>');
+                    if(response.agent.avatar.length){
+                        $el.find('.js-registration-agent-avatar').attr('src', response.agent.avatar.url);
+                    }
+                    EditBox.close(editBoxId);
+                });
+            };
 
+            $scope.unsetRegistrationAgent = function(entityId, groupName){
+                var editBoxId = 'editbox-select-registration-' + groupName;
+                RelatedAgentsService.remove(groupName, entityId).success(function(){
+                    var $el = $('#registration-agent-' + groupName);
+                    $el.find('.js-registration-agent-name').html('Não informado');
+                    $el.find('.js-registration-agent-avatar').attr('src', MapasCulturais.assets.avatarAgent);
                     EditBox.close(editBoxId);
                 });
             };
@@ -445,9 +457,14 @@
             };
 
             $scope.sendRegistration = function(){
-                RegistrationService.send($scope.data.entity.id).success(function(entity){
-                    document.location = entity.singleUrl;
-                });
+                RegistrationService.send($scope.data.entity.id).
+                    success(function(entity){
+                        document.location = entity.singleUrl;
+                    }).error( function (response){
+                        console.log(response);
+                        MapasCulturais.Messages.error(response.data);
+                    });
+
             };
 
             var url = new UrlService('project');
