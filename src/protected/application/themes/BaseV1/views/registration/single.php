@@ -47,14 +47,16 @@ $this->includeAngularEntityAssets($entity);
             <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
         </div>
     </div>
-    <div class="registration-fieldset">
-        <!-- selecionar categoria -->
-        <h4><?php echo $project->registrationCategoriesName ?></h4>
-        <p class="registration-help">Categoria xyz.</p>
-        <p>
-            <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
-        </p>
-    </div>
+    <?php if($project->registrationCategories): ?>
+        <div class="registration-fieldset">
+            <!-- selecionar categoria -->
+            <h4><?php echo $project->registrationCategTitle ?></h4>
+            <p class="registration-help"><?php echo $project->registrationCategDescription ?></p>
+            <p>
+                <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
+            </p>
+        </div>
+    <?php endif; ?>
     <div class="registration-fieldset">
         <h4>Agentes</h4>
         <p class="registration-help">Relacione os agentes a esta Inscrição</p>
@@ -64,6 +66,9 @@ $this->includeAngularEntityAssets($entity);
             <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
             <!-- outros agentes -->
             <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                if($project->{$def->metadataName} === 'dontUse'){
+                    continue;
+                }
                 $required = $project->{$def->metadataName} === 'required';
                 $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
 
@@ -104,7 +109,7 @@ $this->includeAngularEntityAssets($entity);
                         <a class="botao hltip" ng-class="{'enviar':!fileConfiguration.file,'editar':fileConfiguration.file}" ng-click="openFileEditBox(fileConfiguration.id, $index, $event)" title="{{!fileConfiguration.file ? 'enviar' : 'editar'}} anexo">{{!fileConfiguration.file ? 'enviar' : 'editar'}}</a>
                         <a ng-if="!fileConfiguration.required && fileConfiguration.file" ng-click="removeFile(fileConfiguration.id, $index)" class="botao excluir hltip" title="excluir anexo">excluir</a>
                     </div>
-                    <edit-box id="editbox-file-{{fileConfiguration.id}}" position="bottom" title="Enviar {{fileConfiguration.title.toLowerCase()}}" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendFile" submit-label="Enviar anexo" index="{{$index}}" spinner-condition="data.uploadSpinner">
+                    <edit-box id="editbox-file-{{fileConfiguration.id}}" position="bottom" title="{{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendFile" submit-label="Enviar anexo" index="{{$index}}" spinner-condition="data.uploadSpinner">
                         <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{fileConfiguration.groupName}}"  enctype="multipart/form-data">
                             <div class="alert danger escondido"></div>
                             <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>

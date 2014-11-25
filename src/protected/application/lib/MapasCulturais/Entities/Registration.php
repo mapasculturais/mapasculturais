@@ -227,6 +227,25 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function validate(){
+        $app = App::i();
+
+
+        $project = $this->project;
+        $related_agents = $this->getRelatedAgents();
+
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+             $metadata_name = $def->metadataName;
+             $meta_val = $project->$metadata_name;
+             $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+             if($meta_val === 'dontUse') {
+                continue;
+             }elseif($meta_val === 'required'){
+                if(!$relation){
+                    return false;
+                }
+             }
+        }
+
         // @TODO: validar agentes (retornar false se não for válido)
         // @TODO: validar arquivos (retornar false se não for válido)
         return true;

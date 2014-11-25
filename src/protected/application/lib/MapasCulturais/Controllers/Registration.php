@@ -21,18 +21,11 @@ class Registration extends EntityController {
         $app->hook('POST(registration.upload):before', function() use($app) {
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
-                $fileGroup = new Definitions\FileGroup(
-                    $rfc->fileGroupName,
-                    array('^application/.*'),
-                    'The uploaded file is not a valid document.',
-                    true
-                );
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, array('^application/.*'), 'The uploaded file is not a valid document.', true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
-
         parent::__construct();
-
     }
 
     function getRequestedProject(){
@@ -70,6 +63,11 @@ class Registration extends EntityController {
         $entity->checkPermission('view');
 
         parent::GET_single();
+    }
+
+    function GET_edit(){
+        $this->requestedEntity->validate();
+        parent::GET_edit();
     }
 
     function POST_setStatusTo(){
@@ -121,7 +119,7 @@ class Registration extends EntityController {
                 $app->redirect($app->request->getReferer());
             }
         }else{
-            $this->errorJson($app->txt('required fields'));
+            $this->errorJson($app->txt('Please inform all required fields.'), 401);
         }
     }
 }
