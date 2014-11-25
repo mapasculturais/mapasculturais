@@ -220,6 +220,9 @@ class Registration extends \MapasCulturais\Entity
 
         $app->disableAccessControl();
         // copiar dados dos agentes
+
+        $this->status = self::STATUS_SENT;
+        $this->save(true);
         $app->enableAccessControl();
     }
 
