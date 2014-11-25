@@ -100,9 +100,11 @@ class Registration extends \MapasCulturais\Entity
             'agentRelations' => array(),
             'files' => array(),
             'singleUrl' => $this->singleUrl,
-            'editUrl' => $this->editUrl,
-            'status' => $this->status
+            'editUrl' => $this->editUrl
         );
+
+        if($this->project->publishedRegistrations || $this->project->canUser('@control'))
+            $json['status'] = $this->status;
 
         $related_agents = $this->getRelatedAgents();
 

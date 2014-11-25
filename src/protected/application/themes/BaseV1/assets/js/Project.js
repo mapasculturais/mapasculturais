@@ -220,7 +220,7 @@
         var registrationsUrl = new UrlService('registration');
 
         $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
-        
+
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
         $scope.data = {
@@ -448,6 +448,19 @@
                 RegistrationService.send($scope.data.entity.id).success(function(entity){
                     document.location = entity.singleUrl;
                 });
+            };
+
+            var url = new UrlService('project');
+
+            $scope.publish = function(){
+                $http.post(url.create('publish', $scope.data.entity.id)).
+                    success(function(r){
+                        console.log(r)
+                        alert('publicado');
+                    }).error(function(r){
+                        console.log(r);
+                        alert('erro');
+                    });
             };
         }]);
 })(angular);
