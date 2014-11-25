@@ -14,6 +14,9 @@ return array(
     'The uploaded file is larger than the allowed size.' => 'O arquivo enviado é maior do que o permitido.',
     'Unexpected error.' => 'Erro inesperado.',
     'Please inform all required fields.' => 'Por favor, informe todos os campos obrigatórios.',
+    'The %s is required.' => 'A %s de obrigatória',
+    'The %s is required.' => 'O %s é obrigatório.',
+    'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
 
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
