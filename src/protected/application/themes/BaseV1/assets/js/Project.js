@@ -463,12 +463,15 @@
                             console.log(response);
                             Object.keys(response.data).forEach(function(key, index){
                                 var errorHtml = '<span title="Erro: ' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                var $el;
                                 if(key === 'category'){
-                                    jQuery('.js-editable-registrationCategory').parent().append(errorHtml);
+                                    $el = jQuery('.js-editable-registrationCategory').parent();
+                                }else if(key.indexOf('agent') !== -1){
+                                    $el = jQuery('#' + key).parent().find('.registration-label');
                                 }else {
-                                    jQuery('#' + key).find('div:first').append(errorHtml);
+                                    $el = jQuery('#' + key).find('div:first');
                                 }
-
+                                $el.append(errorHtml);
                             });
 
                         }else{
