@@ -45,7 +45,7 @@
                 },
 
                 setStatusTo: function(registration, registrationStatus){
-                    
+
                     return $http.post(getUrl('setStatusTo', registration.id), {status: registrationStatus}).
                             success(function (data, status) {
                                 registration.status = data.status;
@@ -209,7 +209,7 @@
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
         $scope.uploadUrl = MapasCulturais.baseURL + 'registration/upload/id:' + MapasCulturais.entity.id;
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
-        
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -272,22 +272,22 @@
                 registrations: MapasCulturais.entity.registrations,
 
                 registrationStatuses:[
-                    {value: null, label: 'Todos'},
-                    {value: 1, label: 'Não avaliados'},
-                    {value: 2, label: 'Inválidos'},
-                    {value: 3, label: 'Não aprovados'},
-                    {value: 8, label: 'Suplentes'},
-                    {value: 10, label: 'Aprovados'}
-                ],
-                
-                registrationStatusesNames: [
-                    {value: 1, label: 'Não avaliado'},
-                    {value: 2, label: 'Inválido'},
-                    {value: 3, label: 'Não aprovado'},
+                    {value: null, label: 'Todas'},
+                    {value: 1, label: 'Pendente'},
+                    {value: 2, label: 'Inválida'},
+                    {value: 3, label: 'Rejeitada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovado'},
-                    {value: 0, label: 'Reabrir formulário'},
-                    
+                    {value: 10, label: 'Aprovada'}
+                ],
+
+                registrationStatusesNames: [
+                    {value: 1, label: 'Pendente'},
+                    {value: 2, label: 'Inválida'},
+                    {value: 3, label: 'Rejeitada'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Aprovada'},
+                    {value: 0, label: 'Rascunho'},
+
                 ],
 
                 userHasControl: MapasCulturais.entity.userHasControl
@@ -320,7 +320,7 @@
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value));
                 }
             };
-            
+
             $scope.getRegistrationStatus = function(registration){
                 return registration.status;
             };

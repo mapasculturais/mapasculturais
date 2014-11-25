@@ -133,8 +133,9 @@ $this->includeAngularEntityAssets($entity);
     <!-- #agenda -->
     <div id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
-            <p ng-if="data.isEditable" class="alert info textcenter">
+            <p ng-if="data.isEditable" class="alert info">
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
+                <span class="close"></span>
             </p>
             <div id="registration-period" ng-class="{'registration-fieldset': data.isEditable}">
                 <h4 ng-if="data.isEditable">1. Período de inscrições</h4>
@@ -329,13 +330,30 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
+                <a class="alignright botao download" href="#">baixar lista de inscritos</a>
             </div>
+            <div class="alert info">
+                <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
+                <ul>
+                    <li><span>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</span></li>
+                    <li><span>Pendente - ainda não avaliada.</span></li>
+                    <li><span>Rejeitada - avaliada, mas não aprovada.</span></li>
+                    <li><span>Suplente - avaliada, mas aguardando vaga.</span></li>
+                    <li><span>Aprovada - avaliada e aprovada.</span></li>
+                    <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
+                </ul>
+                <div class="close"></div>
+            </div>
+
+
             <table class="js-registration-list registrations-table">
                 <thead>
                     <tr>
                         <th class="registration-id-col">
                             Nº
+                        </th>
+                        <th class="registration-option-col">
+                            Nome da opção
                         </th>
                         <th class="registration-agents-col">
                             Agentes
@@ -352,6 +370,9 @@ $this->includeAngularEntityAssets($entity);
 
                     <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+                        <td class="registration-option-col">
+                        opção selecionada
+                        </td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
@@ -364,9 +385,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td class="registration-attachments-col">
-                            <ul>
-                                <li ng-repeat="file in reg.files"><a href="{{file.url}}">file.name</a></li>
-                            </ul>
+                            <a class="icone icon_download" href="{{file.url}}"><span class="screen-reader">file.name</span></a>
                         </td>
                         <td class="registration-status-col">
                             <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
@@ -375,7 +394,7 @@ $this->includeAngularEntityAssets($entity);
                 </tbody>
             </table>
             <div class="clearfix">
-                <a class="alignright botao principal" href="#">Publicar lista de aprovados</a>
+                <a class="alignright botao principal" href="#">Publicar resultados</a>
             </div>
         <?php endif; ?>
     </div>
