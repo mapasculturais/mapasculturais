@@ -458,11 +458,22 @@
 
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
-                    success(function(entity){
-                        document.location = entity.singleUrl;
-                    }).error( function (response){
-                        console.log(response);
-                        MapasCulturais.Messages.error(response.data);
+                    success(function(response){
+                        if(response.error){
+                            console.log(response);
+                            Object.keys(response.data).forEach(function(key, index){
+                                var errorHtml = '<span title="Erro: ' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                if(key === 'category'){
+                                    jQuery('.js-editable-registrationCategory').parent().append(errorHtml);
+                                }else {
+                                    jQuery('#' + key).find('div:first').append(errorHtml);
+                                }
+
+                            });
+
+                        }else{
+                            document.location = response.singleUrl;
+                        }
                     });
 
             };
