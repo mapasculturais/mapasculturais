@@ -220,7 +220,6 @@ return array(
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
             'inscricao' => array('registration', 'single'),
-            'inscricao/edita' => array('registration', 'edit')
         ),
         'controllers' => array(
             'painel'         => 'panel',
