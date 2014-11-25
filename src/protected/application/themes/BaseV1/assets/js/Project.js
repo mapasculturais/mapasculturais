@@ -459,6 +459,7 @@
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
                     success(function(response){
+                        $('.js-response-error').remove();
                         if(response.error){
                             console.log(response);
                             Object.keys(response.data).forEach(function(key, index){
