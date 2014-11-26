@@ -471,7 +471,6 @@
                     success(function(response){
                         $('.js-response-error').remove();
                         if(response.error){
-                            console.log(response);
                             Object.keys(response.data).forEach(function(key, index){
                                 var errorHtml = '<span title="' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
                                 var $el;
@@ -484,7 +483,7 @@
                                 }
                                 $el.append(errorHtml);
                             });
-
+                            MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                         }else{
                             document.location = response.singleUrl;
                         }
