@@ -416,7 +416,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td class="registration-attachments-col">
-                            <a class="icone icon_download" href="{{file.url}}"><span class="screen-reader">file.name</span></a>
+                            <a class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">file.name</span></a>
                         </td>
                         <td class="registration-status-col">
                             <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
