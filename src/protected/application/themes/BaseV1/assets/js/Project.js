@@ -455,7 +455,6 @@
                     }, 700);
                });
             };
-
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
                     success(function(response){

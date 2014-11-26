@@ -237,7 +237,7 @@ class Registration extends \MapasCulturais\Entity
 
 
         if($project->registrationCategories && !$this->category){
-            $result['category'] = [sprintf($app->txt('The %s is required.'), $project->registrationCategTitle)];
+            $result['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
 
 
@@ -250,7 +250,7 @@ class Registration extends \MapasCulturais\Entity
                continue;
             }elseif($meta_val === 'required'){
                if(!$relation){
-                   $errors[] = sprintf($app->txt('The %s is required.'), $def->label);
+                   $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                }
             }
             if($errors){
