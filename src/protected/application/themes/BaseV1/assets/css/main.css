@@ -3257,103 +3257,111 @@ h1 .icone {
   padding: 0.75rem;
   background: #f8f8f8; }
 
-.registrations-table, .my-registrations, .approved-registrations {
+.registrations-table, .my-registrations {
   width: 100%;
   max-width: 100%;
   margin-bottom: 3rem;
   table-layout: fixed; }
-  .registrations-table thead, .my-registrations thead, .approved-registrations thead {
+  .registrations-table thead, .my-registrations thead {
     background-color: #e2e2e2; }
-    .registrations-table thead > tr th, .my-registrations thead > tr th, .approved-registrations thead > tr th {
+    .registrations-table thead > tr th, .my-registrations thead > tr th {
       border-left: 1px solid #fff;
       border-bottom: none; }
-      .registrations-table thead > tr th .dropdown, .my-registrations thead > tr th .dropdown, .approved-registrations thead > tr th .dropdown {
+      .registrations-table thead > tr th .dropdown, .my-registrations thead > tr th .dropdown {
         background-color: transparent; }
-        .registrations-table thead > tr th .dropdown .submenu-dropdown, .my-registrations thead > tr th .dropdown .submenu-dropdown, .approved-registrations thead > tr th .dropdown .submenu-dropdown {
+        .registrations-table thead > tr th .dropdown .submenu-dropdown, .my-registrations thead > tr th .dropdown .submenu-dropdown {
           background-color: #fff; }
-          .registrations-table thead > tr th .dropdown .submenu-dropdown:before, .my-registrations thead > tr th .dropdown .submenu-dropdown:before, .approved-registrations thead > tr th .dropdown .submenu-dropdown:before {
+          .registrations-table thead > tr th .dropdown .submenu-dropdown:before, .my-registrations thead > tr th .dropdown .submenu-dropdown:before {
             color: #fff; }
-    .registrations-table thead > tr th:first-child, .my-registrations thead > tr th:first-child, .approved-registrations thead > tr th:first-child {
+    .registrations-table thead > tr th:first-child, .my-registrations thead > tr th:first-child {
       border-radius: 2px 0 0 0;
       border-left: none; }
-    .registrations-table thead > tr th:last-child, .my-registrations thead > tr th:last-child, .approved-registrations thead > tr th:last-child {
+    .registrations-table thead > tr th:last-child, .my-registrations thead > tr th:last-child {
       border-radius: 0 2px 0 0; }
-  .registrations-table tbody tr, .my-registrations tbody tr, .approved-registrations tbody tr {
+  .registrations-table tbody tr, .my-registrations tbody tr {
     border-left: 3px solid #eee;
     border-right: 1px solid #eee; }
-    .registrations-table tbody tr:nth-child(even), .my-registrations tbody tr:nth-child(even), .approved-registrations tbody tr:nth-child(even) {
+    .registrations-table tbody tr:nth-child(even), .my-registrations tbody tr:nth-child(even) {
       background-color: #f6f6f6;
       border-left: 3px solid #e2e2e2; }
-    .registrations-table tbody tr:hover, .my-registrations tbody tr:hover, .approved-registrations tbody tr:hover {
+    .registrations-table tbody tr:hover, .my-registrations tbody tr:hover {
       background-color: #eee;
       border-left: 3px solid #ccc; }
-    .registrations-table tbody tr.approved, .my-registrations tbody tr.approved, .approved-registrations tbody tr.approved {
+    .registrations-table tbody tr.approved, .my-registrations tbody tr.approved {
       border-left: 3px solid #66cc66;
       border-bottom: 1px solid #fff;
       background-color: #cfc; }
-      .registrations-table tbody tr.approved:hover, .my-registrations tbody tr.approved:hover, .approved-registrations tbody tr.approved:hover {
+      .registrations-table tbody tr.approved:hover, .my-registrations tbody tr.approved:hover {
         background-color: #e5ffe5; }
-      .registrations-table tbody tr.approved .dropdown, .my-registrations tbody tr.approved .dropdown, .approved-registrations tbody tr.approved .dropdown {
+      .registrations-table tbody tr.approved .dropdown, .my-registrations tbody tr.approved .dropdown {
         background-color: #66cc66; }
-        .registrations-table tbody tr.approved .dropdown .placeholder, .my-registrations tbody tr.approved .dropdown .placeholder, .approved-registrations tbody tr.approved .dropdown .placeholder {
+        .registrations-table tbody tr.approved .dropdown .placeholder, .my-registrations tbody tr.approved .dropdown .placeholder {
           color: #fff; }
-    .registrations-table tbody tr.notapproved, .my-registrations tbody tr.notapproved, .approved-registrations tbody tr.notapproved {
+    .registrations-table tbody tr.notapproved, .my-registrations tbody tr.notapproved {
       border-left: 3px solid #cc3333;
       border-bottom: 1px solid #fff;
       background-color: #fcc; }
-      .registrations-table tbody tr.notapproved:hover, .my-registrations tbody tr.notapproved:hover, .approved-registrations tbody tr.notapproved:hover {
+      .registrations-table tbody tr.notapproved:hover, .my-registrations tbody tr.notapproved:hover {
         background-color: #ffe5e5; }
-      .registrations-table tbody tr.notapproved .dropdown, .my-registrations tbody tr.notapproved .dropdown, .approved-registrations tbody tr.notapproved .dropdown {
+      .registrations-table tbody tr.notapproved .dropdown, .my-registrations tbody tr.notapproved .dropdown {
         background-color: #cc3333; }
-        .registrations-table tbody tr.notapproved .dropdown .placeholder, .my-registrations tbody tr.notapproved .dropdown .placeholder, .approved-registrations tbody tr.notapproved .dropdown .placeholder {
+        .registrations-table tbody tr.notapproved .dropdown .placeholder, .my-registrations tbody tr.notapproved .dropdown .placeholder {
           color: #fff; }
-    .registrations-table tbody tr.waitlist, .my-registrations tbody tr.waitlist, .approved-registrations tbody tr.waitlist {
+    .registrations-table tbody tr.waitlist, .my-registrations tbody tr.waitlist {
       border-left: 3px solid #cc9933;
       border-bottom: 1px solid #fff;
       background-color: #ffc; }
-      .registrations-table tbody tr.waitlist:hover, .my-registrations tbody tr.waitlist:hover, .approved-registrations tbody tr.waitlist:hover {
+      .registrations-table tbody tr.waitlist:hover, .my-registrations tbody tr.waitlist:hover {
         background-color: #ffffe5; }
-      .registrations-table tbody tr.waitlist .dropdown, .my-registrations tbody tr.waitlist .dropdown, .approved-registrations tbody tr.waitlist .dropdown {
+      .registrations-table tbody tr.waitlist .dropdown, .my-registrations tbody tr.waitlist .dropdown {
         background-color: #cc9933; }
-        .registrations-table tbody tr.waitlist .dropdown .placeholder, .my-registrations tbody tr.waitlist .dropdown .placeholder, .approved-registrations tbody tr.waitlist .dropdown .placeholder {
+        .registrations-table tbody tr.waitlist .dropdown .placeholder, .my-registrations tbody tr.waitlist .dropdown .placeholder {
           color: #fff; }
-    .registrations-table tbody tr.invalid, .my-registrations tbody tr.invalid, .approved-registrations tbody tr.invalid {
+    .registrations-table tbody tr.invalid, .my-registrations tbody tr.invalid {
       border-left: 3px solid #000;
       background-color: #999; }
-      .registrations-table tbody tr.invalid:hover, .my-registrations tbody tr.invalid:hover, .approved-registrations tbody tr.invalid:hover {
+      .registrations-table tbody tr.invalid:hover, .my-registrations tbody tr.invalid:hover {
         background-color: #a6a6a6; }
-      .registrations-table tbody tr.invalid .dropdown, .my-registrations tbody tr.invalid .dropdown, .approved-registrations tbody tr.invalid .dropdown {
+      .registrations-table tbody tr.invalid .dropdown, .my-registrations tbody tr.invalid .dropdown {
         background-color: #000; }
-        .registrations-table tbody tr.invalid .dropdown .placeholder, .my-registrations tbody tr.invalid .dropdown .placeholder, .approved-registrations tbody tr.invalid .dropdown .placeholder {
+        .registrations-table tbody tr.invalid .dropdown .placeholder, .my-registrations tbody tr.invalid .dropdown .placeholder {
           color: #fff; }
-    .registrations-table tbody tr td, .my-registrations tbody tr td, .approved-registrations tbody tr td {
+    .registrations-table tbody tr td, .my-registrations tbody tr td {
       word-wrap: break-word; }
-  .registrations-table tbody p, .my-registrations tbody p, .approved-registrations tbody p {
+  .registrations-table tbody p, .my-registrations tbody p {
     margin-bottom: 0.75rem;
     line-height: 1.5; }
-  .registrations-table tbody a, .my-registrations tbody a, .approved-registrations tbody a {
+  .registrations-table tbody a, .my-registrations tbody a {
     color: #cc0033; }
-  .registrations-table tbody ul, .my-registrations tbody ul, .approved-registrations tbody ul {
+  .registrations-table tbody ul, .my-registrations tbody ul {
     margin: 0;
     list-style: none; }
-  .registrations-table .registration-id-col, .my-registrations .registration-id-col, .approved-registrations .registration-id-col {
-    width: 15%; }
-  .registrations-table .registration-agents-col, .my-registrations .registration-agents-col, .approved-registrations .registration-agents-col {
+  .registrations-table .registration-id-col, .my-registrations .registration-id-col {
+    width: 18%; }
+  .registrations-table .registration-agents-col, .my-registrations .registration-agents-col {
     width: 30%;
     text-align: left; }
-  .registrations-table .registration-attachments-col, .my-registrations .registration-attachments-col, .approved-registrations .registration-attachments-col {
-    width: 15%; }
-  .registrations-table .registration-option-col, .my-registrations .registration-option-col, .approved-registrations .registration-option-col {
+  .registrations-table .registration-attachments-col, .my-registrations .registration-attachments-col {
+    width: 12%; }
+  .registrations-table .registration-option-col, .my-registrations .registration-option-col {
     width: 30%;
     text-align: left; }
-  .registrations-table .registration-status-col, .my-registrations .registration-status-col, .approved-registrations .registration-status-col {
+  .registrations-table .registration-status-col, .my-registrations .registration-status-col {
     width: 20%; }
-    .registrations-table .registration-status-col .dropdown, .my-registrations .registration-status-col .dropdown, .approved-registrations .registration-status-col .dropdown {
+    .registrations-table .registration-status-col .dropdown, .my-registrations .registration-status-col .dropdown {
       width: 100%;
       text-align: left; }
+  .registrations-table.registrations-results .registration-id-col, .registrations-results.my-registrations .registration-id-col {
+    width: 22%; }
+  .registrations-table.registrations-results .registration-agents-col, .registrations-results.my-registrations .registration-agents-col {
+    width: 34%;
+    text-align: left; }
+  .registrations-table.registrations-results .registration-option-col, .registrations-results.my-registrations .registration-option-col {
+    width: 34%;
+    text-align: left; }
 
-.my-registrations .registration-id-col, .approved-registrations .registration-id-col {
-  width: 10%; }
+.my-registrations .registration-agents-col {
+  width: 26%; }
 
 .status-sent, .status-approved, .status-notapproved, .status-waitlist, .status-invalid, .status-draft {
   display: inline-block;
