@@ -155,7 +155,53 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-period -->
         <?php endif; ?>
+        <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
+                <h4>Minhas Inscrições</h4>
+                <table class="my-registrations">
+                    <thead>
+                        <tr>
+                            <th class="registration-id-col">
+                                Nº
+                            </th>
+                            <th class="registration-agents-col">
+                                Agente Responsável
+                            </th>
+                            <?php
+                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                                if(!$entity->useRegistrationAgentRelation($def))
+                                    continue;
 
+                            ?>
+                            <th class="registration-agents-col">
+                                <?php echo $def->label ?>
+                            </th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($registrations as $registration) ?>
+                        <tr>
+                            <td class="registration-id-col">
+                            <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
+                            </td>
+                            <td class="registration-agents-col">
+                                <?php echo $registration->owner->name ?>
+                            </td>
+                            <?php
+                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                                if(!$entity->useRegistrationAgentRelation($def))
+                                    continue;
+                            ?>
+                            <td class="registration-agents-col">
+                                <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
+                                <?php echo $agents[0]->name ?>
+                                <?php endif; ?>
+                            </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </tbody>
+                </table>
+        <?php endif; ?>
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
 
             <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
@@ -309,53 +355,6 @@ $this->includeAngularEntityAssets($entity);
                     <a class="botao principal" href="<?php echo $app->createUrl('auth','login') ?>?redirectTo=<?php echo $entity->singleUrl , urlencode("#tab=inscricoes") ?>">Entrar</a>
             <?php endif;?>
         <?php endif; ?>
-        <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
-                <h4>Minhas Inscrições</h4>
-                <table class="my-registrations">
-                    <thead>
-                        <tr>
-                            <th class="registration-id-col">
-                                Nº
-                            </th>
-                            <th class="registration-agents-col">
-                                Agente Responsável
-                            </th>
-                            <?php
-                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                                if(!$entity->useRegistrationAgentRelation($def))
-                                    continue;
-
-                            ?>
-                            <th class="registration-agents-col">
-                                <?php echo $def->label ?>
-                            </th>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($registrations as $registration) ?>
-                        <tr>
-                            <td class="registration-id-col">
-                            <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
-                            </td>
-                            <td class="registration-agents-col">
-                                <?php echo $registration->owner->name ?>
-                            </td>
-                            <?php
-                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                                if(!$entity->useRegistrationAgentRelation($def))
-                                    continue;
-                            ?>
-                            <td class="registration-agents-col">
-                                <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
-                                <?php echo $agents[0]->name ?>
-                                <?php endif; ?>
-                            </td>
-                            <?php endforeach; ?>
-                        </tr>
-                    </tbody>
-                </table>
-        <?php endif; ?>
     </div>
     <!--#inscricoes-->
     <div id="inscritos" class="aba-content privado">
@@ -382,7 +381,7 @@ $this->includeAngularEntityAssets($entity);
                 <thead>
                     <tr>
                         <th class="registration-id-col">
-                            Nº
+                            Inscrição
                         </th>
                         <th class="registration-option-col">
                             Nome da opção
@@ -402,7 +401,7 @@ $this->includeAngularEntityAssets($entity);
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-option-col">
-                        opção selecionada
+                            opção selecionada
                         </td>
                         <td class="registration-agents-col">
                             <p>
@@ -419,7 +418,11 @@ $this->includeAngularEntityAssets($entity);
                             <a class="icone icon_download" href="{{file.url}}"><span class="screen-reader">file.name</span></a>
                         </td>
                         <td class="registration-status-col">
-                            <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+                            <?php if($entity->publishedRegistrations): ?>
+                                <span class="status-{{getStatusSlug(reg.status)}}">{{getStatusSlug(reg.status)}}</span>
+                            <?php else: ?>
+                                <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
