@@ -118,14 +118,14 @@
 		}
 	}
 	.registration-id-col {
-		width: 15%;
+		width: 18%;
 	}
 	.registration-agents-col {
 		width: 30%;
 		text-align: left;
 	}
 	.registration-attachments-col {
-		width: 15%;
+		width: 12%;
 	}
 	.registration-option-col {
 		width: 30%;
@@ -138,17 +138,27 @@
 			text-align: left;
 		}
 	}
+	//** Table that shows on projects tab "Resultados".
+	&.registrations-results {
+		.registration-id-col {
+			width: 22%;
+		}
+		.registration-agents-col {
+			width: 34%;
+			text-align: left;
+		}
+		.registration-option-col {
+			width: 34%;
+			text-align: left;
+		}
+	}
 }
 //** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
 .my-registrations {
 	@extend .registrations-table;
-	.registration-id-col {
-		width: 10%;
+	.registration-agents-col {
+		width: 26%;
 	}
-}
-//** Table that shows on projects tab "Aprovados".
-.approved-registrations {
-	@extend .my-registrations;
 }
 
 %status-caption {
