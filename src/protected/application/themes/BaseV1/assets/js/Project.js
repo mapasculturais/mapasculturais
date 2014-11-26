@@ -455,13 +455,16 @@
                     }, 700);
                });
             };
-            //hide submit button and category submit on change
-            jQuery('#submitButton').hide();
-            jQuery('.js-editable-registrationCategory').on('save', function(){
-                setTimeout(function(){
-                    jQuery('#submitButton').trigger('click');
+
+            if(MapasCulturais.request.controller === 'registration'){
+                //hide submit button and category submit on change
+                jQuery('#submitButton').hide();
+                jQuery('.js-editable-registrationCategory').on('save', function(){
+                    setTimeout(function(){
+                        jQuery('#submitButton').trigger('click');
+                    });
                 });
-            });
+            }
 
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
