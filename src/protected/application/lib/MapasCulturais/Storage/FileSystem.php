@@ -118,6 +118,43 @@ class FileSystem extends \MapasCulturais\Storage{
 
         $result = $relative ? $relative_path : $this->config['dir'] . $relative_path;
 
-        return str_replace('\\', '-', $result);;
+        return str_replace('\\', '-', $result);
+    }
+
+
+    public function createZipOfEntityFiles($entity, $fileName = null) {
+        if($file = $entity->getFile('archive')){
+            $file->delete(true);
+        }
+        \MapasCulturais\App::i()->em->refresh($entity);
+        $files = array_map(function($item){
+            return '"'.$this->getPath($item).'"';
+        }, $entity->files);
+
+
+        $strFiles = implode(' ', $files);
+
+        $tmpName = sys_get_temp_dir() . '/' . $entity->id . '-' . uniqid() . '.zip';
+
+        if(!$fileName){
+            $fileName = $entity->id . '.zip';
+        }
+
+        if(exec('zip ' . $tmpName . ' ' . $strFiles)){
+            $newFile = new \MapasCulturais\Entities\File ([
+                'name' => $fileName,
+                'type' => 'application/zip',
+                'tmp_name' => $tmpName,
+                'error' => 0,
+                'size' => filesize($tmpName)
+            ]);
+            $newFile->owner = $entity;
+            $newFile->group = 'registration-zip';
+            $newFile->save(true);
+            return $newFile;
+        }else{
+            //exception: can't create zipfile
+            return null;
+        }
     }
 }
