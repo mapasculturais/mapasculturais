@@ -436,7 +436,7 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 <?php else: ?>
                 <div class="clearfix">
-                    <a class="alignright botao principal <?php if(!$entity->canUser('publishRegistrations')) echo 'inactive hl-tip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title=""'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar lista de aprovados</a>
+                    <a class="alignright botao principal <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar lista de aprovados</a>
                 </div>
                 <?php endif; ?>
             <?php endif; ?>
