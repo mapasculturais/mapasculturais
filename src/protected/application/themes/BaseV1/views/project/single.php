@@ -95,6 +95,7 @@ $this->includeAngularEntityAssets($entity);
             <li><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
     </ul>
+
     <div id="sobre" class="aba-content">
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
@@ -164,13 +165,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #intro-das-inscricoes -->
         <?php endif; ?>
-
-        <!-- #registration-rules -->
-        <div ng-if="!data.isEditable && data.entity.registrationRulesFile" class="registration-fieldset">
-            <h4 >3. Regulamento</h4>
-            <a href="{{data.entity.registrationRulesFile.url}}">Baixar o reculamento</a>
-        </div>
-
+        <p><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" ng-if="!data.isEditable && data.entity.registrationRulesFile" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4 >3. Regulamento</h4>
             <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
@@ -196,7 +191,7 @@ $this->includeAngularEntityAssets($entity);
                 </form>
             </edit-box>
         </div>
-
+        <!-- #registration-rules -->
         <?php if($this->isEditable()): ?>
             <div id="registration-categories" class="registration-fieldset">
                 <h4>4. Opções</h4>
@@ -426,6 +421,9 @@ $this->includeAngularEntityAssets($entity);
                         <td class="registration-status-col">
                             <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Nenhuma inscrição encontrada com esse status.</td>
                     </tr>
                 </tbody>
             </table>
