@@ -65,11 +65,6 @@ class Registration extends EntityController {
         parent::GET_single();
     }
 
-    function GET_edit(){
-        $this->requestedEntity->validate();
-        parent::GET_edit();
-    }
-
     function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
@@ -111,15 +106,15 @@ class Registration extends EntityController {
             $app->pass();
         }
 
-        if($registration->validate()){
+        if($errors = $registration->getSendValidationErrors()){
+            $this->errorJson($errors);
+        }else{
             $registration->send();
-             if($app->request->isAjax()){
+            if($app->request->isAjax()){
                 $this->json($registration);
             }else{
                 $app->redirect($app->request->getReferer());
             }
-        }else{
-            $this->errorJson($app->txt('Please inform all required fields.'), 401);
         }
     }
 }

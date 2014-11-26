@@ -163,7 +163,7 @@
         };
 
         $scope.sendFile = function(attrs){
-            jQuery('#' + attrs.id + ' form').submit();
+            $('#' + attrs.id + ' form').submit();
         };
 
         $scope.cancelFileConfigurationEditBox = function(attrs){
@@ -191,14 +191,14 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-registration-files-template-' + id + ' form');
+            var $form = $('#editbox-registration-files-template-' + id + ' form');
             MapasCulturais.AjaxUploader.resetProgressBar($form);
 
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            jQuery('#editbox-registration-files-template-'+id).on('cancel', function(){
+            $('#editbox-registration-files-template-'+id).on('cancel', function(){
                 if($form.data('xhr')) $form.data('xhr').abort();
                 $form.get(0).reset();
                 MapasCulturais.AjaxUploader.resetProgressBar($form);
@@ -231,7 +231,7 @@
         });
 
         $scope.sendFile = function(attrs){
-            jQuery('#' + attrs.id + ' form').submit();
+            $('#' + attrs.id + ' form').submit();
         };
 
         $scope.openFileEditBox = function(id, index, event){
@@ -248,12 +248,12 @@
         };
 
         var initAjaxUploader = function(id, index){
-            var $form = jQuery('#editbox-file-' + id + ' form');
+            var $form = $('#editbox-file-' + id + ' form');
             if($form.data('initialized'))
                 return;
             MapasCulturais.AjaxUploader.init($form);
 
-            jQuery('#editbox-file-'+id).on('cancel', function(){
+            $('#editbox-file-'+id).on('cancel', function(){
                 if($form.data('xhr')) $form.data('xhr').abort();
                 $form.get(0).reset();
                 MapasCulturais.AjaxUploader.resetProgressBar($form);
@@ -416,7 +416,7 @@
             };
 
             $scope.sendRegistrationRulesFile = function(){
-                jQuery('#edibox-upload-rules form').submit();
+                $('#edibox-upload-rules form').submit();
             };
 
             $scope.openRulesUploadEditbox = function(event){
@@ -434,14 +434,14 @@
             };
 
             var initAjaxUploader = function(id){
-                var $form = jQuery('#' + id + ' form');
+                var $form = $('#' + id + ' form');
 
                 if($form.data('initialized'))
                     return;
 
                 MapasCulturais.AjaxUploader.init($form);
 
-                jQuery('#'+id).on('cancel', function(){
+                $('#'+id).on('cancel', function(){
                     if($form.data('xhr')) $form.data('xhr').abort();
                     $form.get(0).reset();
                     MapasCulturais.AjaxUploader.resetProgressBar($form);
@@ -456,15 +456,52 @@
                });
             };
 
+            if(MapasCulturais.request.controller === 'registration'){
+                //hide submit button and category submit on change
+                $('#submitButton').hide();
+                $('.js-editable-registrationCategory').on('save', function(){
+                    setTimeout(function(){
+                        $('#submitButton').trigger('click');
+                    });
+                });
+            }
+
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
-                    success(function(entity){
-                        document.location = entity.singleUrl;
-                    }).error( function (response){
-                        console.log(response);
-                        MapasCulturais.Messages.error(response.data);
+                    success(function(response){
+                        $('.js-response-error').remove();
+                        if(response.error){
+                            Object.keys(response.data).forEach(function(key, index){
+                                var errorHtml = '<span title="' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                var $el;
+                                if(key === 'category'){
+                                    $el = $('.js-editable-registrationCategory').parent();
+                                }else if(key.indexOf('agent') !== -1){
+                                    $el = $('#' + key).parent().find('.registration-label');
+                                }else {
+                                    $el = $('#' + key).find('div:first');
+                                }
+                                $el.append(errorHtml);
+                            });
+                            MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                        }else{
+                            document.location = response.singleUrl;
+                        }
                     });
 
+            };
+
+            var url = new UrlService('project');
+
+            $scope.publish = function(){
+                $http.post(url.create('publish', $scope.data.entity.id)).
+                    success(function(r){
+                        console.log(r)
+                        alert('publicado');
+                    }).error(function(r){
+                        console.log(r);
+                        alert('erro');
+                    });
             };
         }]);
 })(angular);

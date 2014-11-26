@@ -369,7 +369,7 @@ MapasCulturais.Editables = {
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
-                                    var errorHtml = '<span title="'+'Erro: ' + response.data[p][k]+'" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                    var errorHtml = '<span title="' + response.data[p][k] + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
                                     $field.parent().append(errorHtml);
                                 }else{
                                     unknow_errors.push(response.data[p][k]);

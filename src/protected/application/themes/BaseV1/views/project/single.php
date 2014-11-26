@@ -89,8 +89,11 @@ $this->includeAngularEntityAssets($entity);
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
         <li><a href="#inscricoes">Inscrições</a></li>
-        <li><a href="#inscritos">Inscritos</a></li>
-        <li><a href="#aprovados">Aprovados</a></li>
+        <?php if($entity->publishedRegistrations): ?>
+            <li><a href="#inscritos">Resultado</a></li>
+        <?php else: ?>
+            <li><a href="#inscritos">Inscritos</a></li>
+        <?php endif; ?>
     </ul>
 
     <div id="sobre" class="aba-content">
@@ -246,7 +249,7 @@ $this->includeAngularEntityAssets($entity);
                         <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                             <div class="mc-editable js-open-editbox" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);">
                                 <div class="label">{{fileConfiguration.title}}</div>
-                                <span class="attachment-description">{{fileConfiguration.description}} - {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}</span>
+                                <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required === true ? 'Obrigatório' : 'Opcional'}})</span>
                             </div>
                             <!-- edit-box to edit attachment -->
                             <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
@@ -424,50 +427,20 @@ $this->includeAngularEntityAssets($entity);
                     </tr>
                 </tbody>
             </table>
-            <div class="clearfix">
-                <a class="alignright botao principal" href="#">Publicar resultados</a>
-            </div>
+            <?php if($entity->canUser('@control')): ?>
+                <?php if($entity->publishedRegistrations): ?>
+                <div class="clearfix">
+                    <p class='alert success'>O resultado já foi publicado</p>
+                </div>
+                <?php else: ?>
+                <div class="clearfix">
+                    <a class="alignright botao principal <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar lista de aprovados</a>
+                </div>
+                <?php endif; ?>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
     <!--#inscritos-->
-    <div id="aprovados" class="aba-content">
-        <p class="highlighted-message">As inscrições abaixo foram aprovadas!</p>
-        <table class="approved-registrations">
-            <thead>
-                <tr>
-                    <th class="registration-id-col">
-                        Nº
-                    </th>
-                    <th class="registration-agents-col">
-                        Agente Responsável
-                    </th>
-                    <th class="registration-agents-col">
-                        Coletivo
-                    </th>
-                    <th class="registration-agents-col">
-                        Instituição
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="registration-id-col">
-                    0000
-                    </td>
-                    <td class="registration-agents-col">
-                        <a href="#">Nome do Agente Responsável</a>
-                    </td>
-                    <td class="registration-agents-col">
-                        <a href="#">Nome da Instituição</a>
-                    </td>
-                    <td class="registration-agents-col">
-                        <a href="#">Nome do Coletivo</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!--#aprovados-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar project sidebar-right">

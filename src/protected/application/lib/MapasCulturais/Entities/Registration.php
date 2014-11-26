@@ -100,9 +100,11 @@ class Registration extends \MapasCulturais\Entity
             'agentRelations' => array(),
             'files' => array(),
             'singleUrl' => $this->singleUrl,
-            'editUrl' => $this->editUrl,
-            'status' => $this->status
+            'editUrl' => $this->editUrl
         );
+
+        if($this->project->publishedRegistrations || $this->project->canUser('@control'))
+            $json['status'] = $this->status;
 
         $related_agents = $this->getRelatedAgents();
 
@@ -226,29 +228,54 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    function validate(){
+    function getSendValidationErrors(){
         $app = App::i();
 
+        $result = [];
 
         $project = $this->project;
-        $related_agents = $this->getRelatedAgents();
+
+
+        if($project->registrationCategories && !$this->category){
+            $result['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+        }
+
 
         foreach($app->getRegisteredRegistrationAgentRelations() as $def){
-             $metadata_name = $def->metadataName;
-             $meta_val = $project->$metadata_name;
-             $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
-             if($meta_val === 'dontUse') {
-                continue;
-             }elseif($meta_val === 'required'){
-                if(!$relation){
-                    return false;
-                }
-             }
+            $errors = [];
+            $metadata_name = $def->metadataName;
+            $meta_val = $project->$metadata_name;
+            $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+            if($meta_val === 'dontUse') {
+               continue;
+            }elseif($meta_val === 'required'){
+               if(!$relation){
+                   $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+               }
+            }
+            if($errors){
+                $result['registration-agent-' . $def->agentRelationGroupName] = $errors;
+            }
         }
+
+        foreach($project->registrationFileConfigurations as $rfc){
+            $errors = [];
+            if($rfc->required){
+                if(!isset($this->files[$rfc->fileGroupName])){
+                    $errors[] = sprintf($app->txt('The file "%s" is required.'), $rfc->title);
+                }
+            }
+            if($errors){
+                $result['registration-file-' . $rfc->id] = $errors;
+            }
+        }
+
+
 
         // @TODO: validar agentes (retornar false se não for válido)
         // @TODO: validar arquivos (retornar false se não for válido)
-        return true;
+
+        return $result;
     }
 
 
@@ -291,7 +318,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if(!$this->validate()){
+        if($this->getSendValidationErrors()){
             return false;
         }
 
