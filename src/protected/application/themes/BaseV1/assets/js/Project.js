@@ -455,6 +455,11 @@
                     }, 700);
                });
             };
+            jQuery('.js-editable-registrationCategory').on('save', function(){
+                setTimeout(function(){
+                    jQuery('#submitButton').trigger('click');
+                });
+            });
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).
                     success(function(response){
