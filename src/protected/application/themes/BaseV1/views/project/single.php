@@ -377,7 +377,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
 
 
-            <table class="js-registration-list registrations-table <!-- registrations-results -->">
+            <table class="js-registration-list registrations-table"><!-- adicionar a classe registrations-results quando resultados publicados-->
                 <thead>
                     <tr>
                         <th class="registration-id-col">
@@ -396,6 +396,8 @@ $this->includeAngularEntityAssets($entity);
                             <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
                         </th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td colspan='5'>
                             <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0">Nenhuma inscrição enviada.</span>
@@ -406,9 +408,6 @@ $this->includeAngularEntityAssets($entity);
                             <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} inscrições encontradas com os filtros selecionados.</span>
                         </td>
                     </tr>
-                </thead>
-                <caption></caption>
-                <tbody>
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
                         <td class="registration-option-col">{{reg.category}}</td>
