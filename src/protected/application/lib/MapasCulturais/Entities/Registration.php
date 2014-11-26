@@ -222,7 +222,13 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $app->disableAccessControl();
-        // copiar dados dos agentes
+
+        // copies agents data including configured private
+
+        // creates zip archive of all files
+        if($this->files){
+            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . '.zip');
+        }
 
         $this->status = self::STATUS_SENT;
         $this->save(true);
@@ -246,11 +252,11 @@ class Registration extends \MapasCulturais\Entity
             $meta_val = $project->$metadata_name;
             $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
             if($meta_val === 'dontUse') {
-               continue;
+                continue;
             }elseif($meta_val === 'required'){
-               if(!$relation){
-                   $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
-               }
+                if(!$relation){
+                    $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+                }
             }
             if($errors){
                 $errorsResult['registration-agent-' . $def->agentRelationGroupName] = $errors;
@@ -269,10 +275,6 @@ class Registration extends \MapasCulturais\Entity
             }
         }
 
-        if(!$errorsResult){
-            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . '.zip');
-        }
-        
         return $errorsResult;
     }
 
