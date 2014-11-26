@@ -123,7 +123,7 @@ class FileSystem extends \MapasCulturais\Storage{
 
 
     public function createZipOfEntityFiles($entity, $fileName = null) {
-        if($file = $entity->getFile('archive')){
+        if($file = $entity->getFile('zipArchive')){
             $file->delete(true);
         }
         \MapasCulturais\App::i()->em->refresh($entity);
@@ -140,7 +140,7 @@ class FileSystem extends \MapasCulturais\Storage{
             $fileName = $entity->id . '.zip';
         }
 
-        if(exec('zip ' . $tmpName . ' ' . $strFiles)){
+        if(exec('zip -j ' . $tmpName . ' ' . $strFiles)){
             $newFile = new \MapasCulturais\Entities\File ([
                 'name' => $fileName,
                 'type' => 'application/zip',
@@ -149,7 +149,7 @@ class FileSystem extends \MapasCulturais\Storage{
                 'size' => filesize($tmpName)
             ]);
             $newFile->owner = $entity;
-            $newFile->group = 'registration-zip';
+            $newFile->group = 'zipArchive';
             $newFile->save(true);
             return $newFile;
         }else{
