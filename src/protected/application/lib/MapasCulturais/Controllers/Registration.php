@@ -65,11 +65,6 @@ class Registration extends EntityController {
         parent::GET_single();
     }
 
-    function GET_edit(){
-        $this->requestedEntity->validate();
-        parent::GET_edit();
-    }
-
     function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
