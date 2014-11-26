@@ -48,10 +48,12 @@
 			}
 			&.approved {
 				border-left: 3px solid $brand-success;
-				border-bottom: 1px solid #fff;
 				background-color: #cfc;
 				&:hover {
 					background-color: lighten(#cfc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
 				}
 				.dropdown {
 					background-color: $brand-success;
@@ -62,10 +64,12 @@
 			}
 			&.notapproved {
 				border-left: 3px solid $brand-danger;
-				border-bottom: 1px solid #fff;
 				background-color: #fcc;
 				&:hover {
 					background-color: lighten(#fcc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
 				}
 				.dropdown {
 					background-color: $brand-danger;
@@ -76,10 +80,12 @@
 			}
 			&.waitlist {
 				border-left: 3px solid $brand-warning;
-				border-bottom: 1px solid #fff;
 				background-color: #ffc;
 				&:hover {
 					background-color: lighten(#ffc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
 				}
 				.dropdown {
 					background-color: $brand-warning;

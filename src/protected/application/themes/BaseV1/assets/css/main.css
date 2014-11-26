@@ -3289,30 +3289,33 @@ h1 .icone {
       border-left: 3px solid #ccc; }
     .registrations-table tbody tr.approved, .my-registrations tbody tr.approved {
       border-left: 3px solid #66cc66;
-      border-bottom: 1px solid #fff;
       background-color: #cfc; }
       .registrations-table tbody tr.approved:hover, .my-registrations tbody tr.approved:hover {
         background-color: #e5ffe5; }
+      .registrations-table tbody tr.approved td, .my-registrations tbody tr.approved td {
+        border-bottom: 1px solid #fff; }
       .registrations-table tbody tr.approved .dropdown, .my-registrations tbody tr.approved .dropdown {
         background-color: #66cc66; }
         .registrations-table tbody tr.approved .dropdown .placeholder, .my-registrations tbody tr.approved .dropdown .placeholder {
           color: #fff; }
     .registrations-table tbody tr.notapproved, .my-registrations tbody tr.notapproved {
       border-left: 3px solid #cc3333;
-      border-bottom: 1px solid #fff;
       background-color: #fcc; }
       .registrations-table tbody tr.notapproved:hover, .my-registrations tbody tr.notapproved:hover {
         background-color: #ffe5e5; }
+      .registrations-table tbody tr.notapproved td, .my-registrations tbody tr.notapproved td {
+        border-bottom: 1px solid #fff; }
       .registrations-table tbody tr.notapproved .dropdown, .my-registrations tbody tr.notapproved .dropdown {
         background-color: #cc3333; }
         .registrations-table tbody tr.notapproved .dropdown .placeholder, .my-registrations tbody tr.notapproved .dropdown .placeholder {
           color: #fff; }
     .registrations-table tbody tr.waitlist, .my-registrations tbody tr.waitlist {
       border-left: 3px solid #cc9933;
-      border-bottom: 1px solid #fff;
       background-color: #ffc; }
       .registrations-table tbody tr.waitlist:hover, .my-registrations tbody tr.waitlist:hover {
         background-color: #ffffe5; }
+      .registrations-table tbody tr.waitlist td, .my-registrations tbody tr.waitlist td {
+        border-bottom: 1px solid #fff; }
       .registrations-table tbody tr.waitlist .dropdown, .my-registrations tbody tr.waitlist .dropdown {
         background-color: #cc9933; }
         .registrations-table tbody tr.waitlist .dropdown .placeholder, .my-registrations tbody tr.waitlist .dropdown .placeholder {
