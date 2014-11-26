@@ -314,6 +314,10 @@
                 ]
             }, MapasCulturais);
 
+            $scope.hideStatusInfo = function(){
+                jQuery('#status-info').slideUp('fast');
+            };
+
             $scope.openEditBox = function(id, e){
                 EditBox.open(id, e);
             };
