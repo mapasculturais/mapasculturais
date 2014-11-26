@@ -96,6 +96,7 @@ class Registration extends \MapasCulturais\Entity
             'id' => $this->id,
             'project' => $this->project->simplify('id,name,singleUrl'),
             'number' => $this->number,
+            'category' => $this->category,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => array(),
             'files' => array(),
@@ -231,15 +232,13 @@ class Registration extends \MapasCulturais\Entity
     function getSendValidationErrors(){
         $app = App::i();
 
-        $result = [];
+        $errorsResult = [];
 
         $project = $this->project;
 
-
         if($project->registrationCategories && !$this->category){
-            $result['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+            $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
-
 
         foreach($app->getRegisteredRegistrationAgentRelations() as $def){
             $errors = [];
@@ -254,7 +253,7 @@ class Registration extends \MapasCulturais\Entity
                }
             }
             if($errors){
-                $result['registration-agent-' . $def->agentRelationGroupName] = $errors;
+                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = $errors;
             }
         }
 
@@ -266,18 +265,16 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
             if($errors){
-                $result['registration-file-' . $rfc->id] = $errors;
+                $errorsResult['registration-file-' . $rfc->id] = $errors;
             }
         }
 
-
-
-        // @TODO: validar agentes (retornar false se não for válido)
-        // @TODO: validar arquivos (retornar false se não for válido)
-
-        return $result;
+        if(!$errorsResult){
+            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . '.zip');
+        }
+        
+        return $errorsResult;
     }
-
 
     protected function canUserView($user){
         if($user->is('guest')){

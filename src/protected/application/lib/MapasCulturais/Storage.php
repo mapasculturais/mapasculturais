@@ -144,6 +144,8 @@ abstract class Storage{
         return $result;
     }
 
+    abstract public function createZipOfEntityFiles($entity);
+
     abstract protected function _add(\MapasCulturais\Entities\File $file);
     abstract protected function _remove(\MapasCulturais\Entities\File $file);
     abstract protected function _getUrl(\MapasCulturais\Entities\File $file);

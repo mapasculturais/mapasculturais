@@ -287,6 +287,7 @@
                 },
 
                 registrationCategories: categories,
+                registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
 
                 registration: {
                     owner: null,
@@ -351,9 +352,20 @@
 
 
             $scope.showRegistration = function(registration){
-                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
+                var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
+                var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
 
-                return result;
+                return status && category;
+            };
+
+            $scope.getFilteredRegistrations = function(){
+                return $scope.data.entity.registrations.filter(function(e){
+                    return $scope.showRegistration(e);
+                });
+            };
+
+            $scope.usingFilters = function(){
+                return $scope.data.registrationStatus || $scope.data.registrationCategory;
             };
 
             var adjustBoxPosition = function () {
