@@ -378,14 +378,14 @@ $this->includeAngularEntityAssets($entity);
             </div>
 
 
-            <table class="js-registration-list registrations-table">
+            <table class="js-registration-list registrations-table <!-- registrations-results -->">
                 <thead>
                     <tr>
                         <th class="registration-id-col">
                             Nº
                         </th>
                         <th class="registration-option-col">
-                            Nome da opção
+                            <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
                         </th>
                         <th class="registration-agents-col">
                             Agentes
@@ -397,13 +397,22 @@ $this->includeAngularEntityAssets($entity);
                             <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
                         </th>
                     </tr>
+                    <tr>
+                        <td colspan='5'>
+                            <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0">Nenhuma inscrição enviada.</span>
+                            <span ng-if="usingFilters() && getFilteredRegistrations().length === 0">Nenhuma inscrição encontrada com os filtros selecionados.</span>
+                            <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1">1 inscrição enviada.</span>
+                            <span ng-if="usingFilters() && getFilteredRegistrations().length === 1">1 inscrição encontrada com os filtros selecionados.</span>
+                            <span ng-if="!usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} inscrições enviadas.</span>
+                            <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} inscrições encontradas com os filtros selecionados.</span>
+                        </td>
+                    </tr>
                 </thead>
+                <caption></caption>
                 <tbody>
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-                        <td class="registration-option-col">
-                        opção selecionada
-                        </td>
+                        <td class="registration-option-col">{{reg.category}}</td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
@@ -422,11 +431,9 @@ $this->includeAngularEntityAssets($entity);
                             <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="5">Nenhuma inscrição encontrada com esse status.</td>
-                    </tr>
                 </tbody>
             </table>
+
             <?php if($entity->canUser('@control')): ?>
                 <?php if($entity->publishedRegistrations): ?>
                 <div class="clearfix">
