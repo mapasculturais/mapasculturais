@@ -3281,7 +3281,7 @@ h1 .icone {
   .registrations-table tbody tr, .my-registrations tbody tr {
     border-left: 3px solid #eee;
     border-right: 1px solid #eee; }
-    .registrations-table tbody tr:nth-child(even), .my-registrations tbody tr:nth-child(even) {
+    .registrations-table tbody tr:nth-child(odd), .my-registrations tbody tr:nth-child(odd) {
       background-color: #f6f6f6;
       border-left: 3px solid #e2e2e2; }
     .registrations-table tbody tr:hover, .my-registrations tbody tr:hover {

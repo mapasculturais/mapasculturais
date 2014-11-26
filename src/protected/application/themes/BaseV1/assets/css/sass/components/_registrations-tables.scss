@@ -38,7 +38,7 @@
 		tr {
 			border-left: 3px solid $gray-lighter;
 			border-right: 1px solid $gray-lighter;
-			&:nth-child(even) {
+			&:nth-child(odd) {
 				background-color: lighten($gray-lighter, 3%);
 				border-left: 3px solid $gray-light;
 			}
