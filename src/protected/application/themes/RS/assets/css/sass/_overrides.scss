@@ -123,3 +123,12 @@
         }
     }
 }
+
+//list of filters
+.lista-de-filtro {
+    li {
+        &:before {
+            content: '\f00c';
+        }
+    }
+}
