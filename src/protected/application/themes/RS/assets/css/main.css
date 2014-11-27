@@ -5794,8 +5794,16 @@ button.mfp-arrow-left {
   content: '\f019'; }
 .icone.social_share:before {
   content: '\f1e0'; }
+.icone.icon_menu-square_alt:before {
+  content: '\f03a'; }
+.icone.icon_map:before {
+  content: '\f041'; }
 
 .lista-de-filtro li:before {
   content: '\f00c'; }
+
+.tag-selected:after {
+  content: '\f00d';
+  padding-left: 5px; }
 
 /*# sourceMappingURL=main.css.map */

@@ -110,7 +110,7 @@
     }
 }
 
-//icon download
+//icon bar header
 .icone {
     &.icon_download {
         &:before {
@@ -122,6 +122,16 @@
             content: '\f1e0';
         }
     }
+    &.icon_menu-square_alt {
+        &:before {
+            content: '\f03a';
+        }
+    }
+    &.icon_map {
+        &:before {
+            content: '\f041';
+        }
+    }
 }
 
 //list of filters
@@ -130,5 +140,13 @@
         &:before {
             content: '\f00c';
         }
+    }
+}
+
+//tag search
+.tag-selected {
+    &:after {
+        content: '\f00d';
+        padding-left: 5px;
     }
 }
