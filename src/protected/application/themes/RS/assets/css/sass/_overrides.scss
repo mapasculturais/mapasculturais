@@ -143,6 +143,14 @@
     }
 }
 
+//list filters
+.dropdown {
+    .submenu-dropdown {
+        &:before {
+            content: '\f0d8'
+        }
+    }
+}
 //tag search
 .tag-selected {
     &:after {

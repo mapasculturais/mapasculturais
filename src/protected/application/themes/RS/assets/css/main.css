@@ -5802,6 +5802,9 @@ button.mfp-arrow-left {
 .lista-de-filtro li:before {
   content: '\f00c'; }
 
+.dropdown .submenu-dropdown:before {
+  content: ""; }
+
 .tag-selected:after {
   content: '\f00d';
   padding-left: 5px; }
