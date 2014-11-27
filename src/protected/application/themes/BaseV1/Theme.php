@@ -813,6 +813,7 @@ class Theme extends MapasCulturais\Theme {
     function addProjectToJs(Entities\Project $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
     }

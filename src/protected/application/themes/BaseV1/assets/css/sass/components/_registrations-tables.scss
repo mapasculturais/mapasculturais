@@ -158,6 +158,13 @@
 			text-align: left;
 		}
 	}
+	//** Table that doesn't have registration-option-col.
+	&.no-options {
+		.registration-agents-col {
+			width: 60%;
+			text-align: left;
+		}
+	}
 }
 //** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
 .my-registrations {

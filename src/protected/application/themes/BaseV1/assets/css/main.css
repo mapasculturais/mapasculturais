@@ -3362,6 +3362,9 @@ h1 .icone {
   .registrations-table.registrations-results .registration-option-col, .registrations-results.my-registrations .registration-option-col {
     width: 34%;
     text-align: left; }
+  .registrations-table.no-options .registration-agents-col, .no-options.my-registrations .registration-agents-col {
+    width: 60%;
+    text-align: left; }
 
 .my-registrations .registration-agents-col {
   width: 26%; }

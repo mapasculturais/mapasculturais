@@ -91,7 +91,7 @@ $this->includeAngularEntityAssets($entity);
         <li><a href="#inscricoes">Inscrições</a></li>
         <?php if($entity->publishedRegistrations): ?>
             <li><a href="#inscritos">Resultado</a></li>
-        <?php else: ?>
+        <?php elseif($entity->canUser('@control')): ?>
             <li><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
     </ul>
@@ -285,7 +285,7 @@ $this->includeAngularEntityAssets($entity);
                         <p><a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">adicionar anexo</a></p>
                     <?php endif; ?>
                     <!-- edit-box to add attachment -->
-                    <edit-box id="editbox-registration-files" position="bottom" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                    <edit-box id="editbox-registration-files" position="right" title="Adicionar Anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                         <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
                         <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                         <p><label><input type="checkbox" ng-model="data.newFileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
@@ -298,7 +298,7 @@ $this->includeAngularEntityAssets($entity);
                                 <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required === true ? 'Obrigatório' : 'Opcional'}})</span>
                             </div>
                             <!-- edit-box to edit attachment -->
-                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="right" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
                                 <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                                 <p><label><input type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
@@ -308,7 +308,7 @@ $this->includeAngularEntityAssets($entity);
                                 <a class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" hltitle="excluir modelo"></a>
                             </div>
                             <!-- edit-box to upload attachments -->
-                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="bottom" title="Enviar modelo" cancel-label="Cancelar" submit-label="Enviar modelo" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
+                            <edit-box id="editbox-registration-files-template-{{fileConfiguration.id}}" position="top" title="Enviar modelo" cancel-label="Cancelar" submit-label="Enviar modelo" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                 <p ng-if="fileConfiguration.template">
                                     <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
                                 </p>
@@ -363,7 +363,7 @@ $this->includeAngularEntityAssets($entity);
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
                 <a class="alignright botao download" href="#">baixar lista de inscritos</a>
             </div>
-            <div class="alert info">
+            <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
                 <ul>
                     <li><span>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</span></li>
@@ -373,17 +373,17 @@ $this->includeAngularEntityAssets($entity);
                     <li><span>Aprovada - avaliada e aprovada.</span></li>
                     <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
                 </ul>
-                <div class="close"></div>
+                <div class="close" ng-click="hideStatusInfo()"></div>
             </div>
 
 
-            <table class="js-registration-list registrations-table"><!-- adicionar a classe registrations-results quando resultados publicados-->
+            <table class="js-registration-list registrations-table" ng-class="{'no-options': !entity.registrationCategories, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
                 <thead>
                     <tr>
                         <th class="registration-id-col">
                             Inscrição
                         </th>
-                        <th class="registration-option-col">
+                        <th ng-if="entity.registrationCategories" class="registration-option-col">
                             <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
                         </th>
                         <th class="registration-agents-col">
@@ -410,7 +410,7 @@ $this->includeAngularEntityAssets($entity);
                     </tr>
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-                        <td class="registration-option-col">{{reg.category}}</td>
+                        <td ng-if="entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
