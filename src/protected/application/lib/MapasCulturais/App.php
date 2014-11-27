@@ -149,7 +149,6 @@ class App extends \Slim\Slim{
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        $this->_cache->setNamespace(__DIR__);
 
 
 
@@ -270,6 +269,7 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
         $doctrine_config->setQueryCacheImpl($this->_cache);
+        $this->_cache->setNamespace(__DIR__);
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
