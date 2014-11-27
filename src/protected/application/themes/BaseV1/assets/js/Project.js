@@ -309,8 +309,7 @@
                     {value: 3, label: 'Rejeitada'},
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovada'},
-                    {value: 0, label: 'Rascunho'},
-
+                    {value: 0, label: 'Reabrir formulário para alteração'}
                 ]
             }, MapasCulturais);
 

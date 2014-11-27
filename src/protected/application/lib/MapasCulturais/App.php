@@ -1190,6 +1190,10 @@ class App extends \Slim\Slim{
         return $this->_register['registration_agent_relations'];
     }
 
+    function getRegisteredRegistrationOwnerDefinition(){
+        return $this->getConfig('registration.ownerDefinition');
+    }
+
     function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){
         if(key_exists($group_name, $this->_register['registration_agent_relations'])){
             return $this->_register['registration_agent_relations'][$group_name];

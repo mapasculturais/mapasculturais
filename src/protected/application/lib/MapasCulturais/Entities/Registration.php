@@ -158,6 +158,20 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    function getAgentsAndDefinitions(){
+        $definitions =
+        $owner = $this->owner;
+        $owner->definition = 'owner';
+        $agents = [$owner];
+        foreach($this->relatedAgents as $groupName=>$relatedAgents){
+            $agent = $relatedAgents[0];
+            $agent->groupName = $groupName;
+            $agents[] = $agent;
+        }
+        return $agents;
+    }
+
+
     function randomIdGeneratorFormat($id){
         return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
     }
@@ -235,6 +249,14 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    function exportAgentsData(){
+
+    }
+
+    function validateAgentFiles($agent){
+
+    }
+
     function getSendValidationErrors(){
         $app = App::i();
 
@@ -246,11 +268,14 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
 
+        $errorsResult['def'] = $app->getRegisteredRegistrationAgentRelations();
+
         foreach($app->getRegisteredRegistrationAgentRelations() as $def){
             $errors = [];
             $metadata_name = $def->metadataName;
             $meta_val = $project->$metadata_name;
             $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+
             if($meta_val === 'dontUse') {
                 continue;
             }elseif($meta_val === 'required'){
@@ -258,8 +283,36 @@ class Registration extends \MapasCulturais\Entity
                     $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                 }
             }
+
             if($errors){
                 $errorsResult['registration-agent-' . $def->agentRelationGroupName] = $errors;
+            }
+
+            $errorsResult['agents'] = $this->agents;
+
+            $properties = Agent::getPropertiesMetadata();
+
+            $errorsResult['properties'] = $properties;
+
+            foreach($this->agents as $agent){
+                $exportData = [];
+                $exportData2 = [];
+                $errorsResult[$agent->name] = [];
+                foreach($properties as $p=>$details){
+
+                    $val = $agent->$p;
+
+                    if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
+                        continue;
+                    }
+
+                    if( !$details['isMetadata'] || !$details['private'] || in_array($p, $def->requiredProperties) ){
+                        $exportData[$p] = $val;
+                    }
+
+                    $exportData2[$p] = $details;
+                }
+                $errorsResult[$agent->name][] = $exportData;
             }
         }
 
