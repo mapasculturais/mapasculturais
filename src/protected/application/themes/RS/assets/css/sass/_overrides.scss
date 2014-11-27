@@ -166,6 +166,13 @@
         content: '\f044';
     }
 }
+
+// close button editable
+.icon_close { 
+    &:before {
+        content: '\f00d';
+    }
+}
 //tag search
 .tag-selected {
     &:after {

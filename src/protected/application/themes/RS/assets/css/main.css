@@ -5811,6 +5811,9 @@ button.mfp-arrow-left {
 .editable:after {
   content: '\f044'; }
 
+.icon_close:before {
+  content: '\f00d'; }
+
 .tag-selected:after {
   content: '\f00d';
   padding-left: 5px; }
