@@ -5781,6 +5781,9 @@ button.mfp-arrow-left {
 .adicionar:before {
   content: '\f055'; }
 
+.botao.editar:before {
+  content: '\f044'; }
+
 .abas-objetos li.active:after {
   content: ""; }
 
@@ -5804,6 +5807,9 @@ button.mfp-arrow-left {
 
 .dropdown .submenu-dropdown:before {
   content: ""; }
+
+.editable:after {
+  content: '\f044'; }
 
 .tag-selected:after {
   content: '\f00d';

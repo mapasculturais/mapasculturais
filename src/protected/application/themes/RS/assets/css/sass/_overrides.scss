@@ -85,6 +85,14 @@
     }
 }
 
+.botao {
+    &.editar {
+        &:before {
+            content: '\f044';
+        }
+    }
+}
+
 // triangle tab projects
 .abas-objetos {
     li {
@@ -149,6 +157,13 @@
         &:before {
             content: '\f0d8'
         }
+    }
+}
+
+//create
+.editable {
+    &:after {
+        content: '\f044';
     }
 }
 //tag search
