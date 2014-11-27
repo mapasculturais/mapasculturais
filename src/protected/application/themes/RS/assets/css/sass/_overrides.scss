@@ -173,6 +173,21 @@
         content: '\f00d';
     }
 }
+
+//datepicker arrow
+.ui-datepicker {
+    .ui-datepicker-next {
+        &:before {
+            content: '\f138';
+        }
+    }
+    .ui-datepicker-prev {
+        &:before {
+            content: '\f137';
+        }
+    }
+}
+
 //tag search
 .tag-selected {
     &:after {

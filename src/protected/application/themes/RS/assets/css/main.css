@@ -5814,6 +5814,11 @@ button.mfp-arrow-left {
 .icon_close:before {
   content: '\f00d'; }
 
+.ui-datepicker .ui-datepicker-next:before {
+  content: '\f138'; }
+.ui-datepicker .ui-datepicker-prev:before {
+  content: '\f137'; }
+
 .tag-selected:after {
   content: '\f00d';
   padding-left: 5px; }
