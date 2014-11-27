@@ -77,3 +77,49 @@
         }
     }
 }
+
+// add icon
+.adicionar {
+    &:before {
+        content: '\f055';
+    }
+}
+
+// triangle tab projects
+.abas-objetos {
+    li {
+        &.active {
+            &:after {
+                content: '\f0d8'
+            }
+        }
+    }
+}
+
+//check search
+.icon_check {
+    &:before {
+        content: '\f00c';
+    }
+}
+
+// icon login panel
+.icon_lock {
+    &:before {
+        content: '\f023';
+    }
+}
+
+//icon download
+.icone {
+    &.icon_download {
+        &:before {
+            content: '\f019';
+        }
+    }
+    &.social_share {
+        &:before {
+            content: '\f1e0';
+        }
+    }
+}
