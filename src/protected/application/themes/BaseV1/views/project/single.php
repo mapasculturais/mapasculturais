@@ -206,7 +206,7 @@ $this->includeAngularEntityAssets($entity);
 
             <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
                 <h4 ng-if="data.isEditable">2. Introdução</h4>
-                <p class="registration-help" ng-if="data.isEditable">Você pode criar um texto de introdução de apenas um parágrafo.</p>
+                <p class="registration-help" ng-if="data.isEditable">Crie um texto de introdução com o máximo de XXXXX caracteres.</p>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
             </div>
             <!-- #intro-das-inscricoes -->
@@ -214,7 +214,7 @@ $this->includeAngularEntityAssets($entity);
         <p><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" ng-if="!data.isEditable && data.entity.registrationRulesFile" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4>3. Regulamento</h4>
-            <p class="registration-help">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
+            <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .xxx, .xxx, .xxx.</p>
             <a class="botao enviar hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="enviar regulamento">enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
                 <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">Nome do arquivo do regulamento</span>
@@ -239,20 +239,17 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable()): ?>
             <div id="registration-categories" class="registration-fieldset">
                 <h4>4. Opções</h4>
-                <p class="registration-help">Também é possível criar opções para os inscritos escolherem na hora de se inscrever.
-                    <br>
-                    Para não utilizar opções, deixe em branco o campo "Opções selecionáveis"
-                </p>
+                <p class="registration-help">É possível criar opções para os proponentes escolherem na hora de se inscrever, como por exemplo categorias. Se não desejar utilizar este recurso, deixe em branco o campo "Opções".</p>
                 <p>
                     <span class="label">Título das opções</span><br>
-                    <span class="js-editable" data-edit="registrationCategTitle" data-original-title="Título das opções" data-emptytext="Insira um título para o campo de opções"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categorias'; ?></span>
+                    <span class="js-editable" data-edit="registrationCategTitle" data-original-title="Título das opções" data-emptytext="Insira um título para o campo de opções"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categoria'; ?></span>
                 </p>
                 <p>
                     <span class="label">Descrição das opções</span><br>
                     <span class="js-editable" data-edit="registrationCategDescription" data-original-title="Descrição das opções" data-emptytext="Insira uma descrição para o campo de opções"><?php echo $entity->registrationCategDescription ? $entity->registrationCategDescription : 'Selecione uma categoria'; ?></span>
                 </p>
                 <p>
-                    <span class="label">Opções selecionáveis</span><br>
+                    <span class="label">Opções</span><br>
                     <span class="js-editable" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $entity->registrationCategories ? implode("\n", $entity->registrationCategories) : ''; ?></span>
                 </p>
             </div>
