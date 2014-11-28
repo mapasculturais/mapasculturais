@@ -37,7 +37,7 @@
 // extend fontawesome icons styles
 .icone {
     @extend .fa;
-    font-family: 'FontAwesome';
+    font-family: $icon-font-name;
 }
 .icon_calendar {
     @extend .fa-calendar-o;
@@ -74,7 +74,7 @@
 .dropdown {
     .placeholder {
         &:after {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f107';
         }
     }
@@ -83,7 +83,7 @@
 // add icon
 .adicionar {
     &:before {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f055';
     }
 }
@@ -91,7 +91,7 @@
 .botao {
     &.editar {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f044';
         }
     }
@@ -102,7 +102,7 @@
     li {
         &.active {
             &:after {
-                font-family: 'FontAwesome';
+                font-family: $icon-font-name;
                 content: '\f0d8'
             }
         }
@@ -112,7 +112,7 @@
 //check search
 .icon_check {
     &:before {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f00c';
     }
 }
@@ -120,7 +120,7 @@
 // icon login panel
 .icon_lock {
     &:before {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f023';
     }
 }
@@ -129,25 +129,25 @@
 .icone {
     &.icon_download {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f019';
         }
     }
     &.social_share {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f1e0';
         }
     }
     &.icon_menu-square_alt {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f03a';
         }
     }
     &.icon_map {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f041';
         }
     }
@@ -157,7 +157,7 @@
 .lista-de-filtro {
     li {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f00c';
         }
     }
@@ -167,7 +167,7 @@
 .dropdown {
     .submenu-dropdown {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f0d8'
         }
     }
@@ -176,7 +176,7 @@
 //create
 .editable {
     &:after {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f044';
     }
 }
@@ -184,7 +184,7 @@
 // close button editable
 .icon_close { 
     &:before {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f00d';
     }
 }
@@ -193,13 +193,13 @@
 .ui-datepicker {
     .ui-datepicker-next {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f138';
         }
     }
     .ui-datepicker-prev {
         &:before {
-            font-family: 'FontAwesome';
+            font-family: $icon-font-name;
             content: '\f137';
         }
     }
@@ -210,7 +210,7 @@
     .icone {
         &.icon_plus {
             &:before {
-                font-family: 'FontAwesome';
+                font-family: $icon-font-name;
                 content: '\f067';
             }
         }
@@ -220,7 +220,7 @@
 //tag search
 .tag-selected {
     &:after {
-        font-family: 'FontAwesome';
+        font-family: $icon-font-name;
         content: '\f00d';
         padding-left: 5px;
     }

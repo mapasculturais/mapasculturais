@@ -5856,74 +5856,74 @@ button.mfp-arrow-left {
   font-size: 1.6rem; }
 
 .icone {
-  font-family: 'FontAwesome'; }
+  font-family: "FontAwesome"; }
 
 .dropdown .placeholder:after {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f107'; }
 
 .adicionar:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f055'; }
 
 .botao.editar:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f044'; }
 
 .abas-objetos li.active:after {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: ""; }
 
 .icon_check:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f00c'; }
 
 .icon_lock:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f023'; }
 
 .icone.icon_download:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f019'; }
 .icone.social_share:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f1e0'; }
 .icone.icon_menu-square_alt:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f03a'; }
 .icone.icon_map:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f041'; }
 
 .lista-de-filtro li:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f00c'; }
 
 .dropdown .submenu-dropdown:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: ""; }
 
 .editable:after {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f044'; }
 
 .icon_close:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f00d'; }
 
 .ui-datepicker .ui-datepicker-next:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f138'; }
 .ui-datepicker .ui-datepicker-prev:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f137'; }
 
 #user-stats .icone.icon_plus:before {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f067'; }
 
 .tag-selected:after {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   content: '\f00d';
   padding-left: 5px; }
 
