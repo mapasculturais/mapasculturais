@@ -1,20 +1,36 @@
 <?php
-$project = $entity->project;
+use MapasCulturais\Entities\Registration;
+
+$app = MapasCulturais\App::i();
+
+$url = $registration->status == Registration::STATUS_DRAFT ? $registration->editUrl : $registration->singleUrl;
+$proj = $registration->project;
 ?>
 <article class="objeto clearfix">
-    <?php if($avatar = $project->avatar): ?>
-        <div class="thumb" style="background-image: url(<?php echo $avatar->transform('avatarSmall')->url; ?>)"></div>
-    <?php else: ?>
-        <div class="thumb"></div>
+    <?php if($avatar = $proj->avatar): ?>
+    <div class="thumb">
+        <img src="<?php echo $avatar->transform('avatarSmall')->url ?>" >
+    </div>
     <?php endif; ?>
-    <h1><a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->number ?> - <?php echo $project->name; ?></a></h1>
-	<div class="objeto-meta">
-		<div><span class="label">Agente responsável:</span> <?php echo $entity->registrationOwner->name; ?></div>
-        <div><span class="label">Coletivo:</span> Nome do Coletivo sem CNPJ</div>
-        <div><span class="label">Instituição:</span> Nome do Coletivo com CNPJ</div>
-        <div><span class="label"><?php echo $project->registrationCategTitle ?>:</span> <?php echo $entity->category ?></div>
-	</div>
+    <h1><a href="<?php echo $url; ?>"><?php echo $registration->number ?> - <?php echo $proj->name ?></a></h1>
+    <div class="objeto-meta">
+        <div><span class="label">Responsável:</span> <?php echo $registration->owner->name ?></div>
+        <?php
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+            if(isset($registration->relatedAgents[$def->agentRelationGroupName])):
+                $agent = $registration->relatedAgents[$def->agentRelationGroupName][0];
+        ?>
+        <div><span class="label"><?php echo $def->label ?>:</span> <?php echo $agent->name; ?></div>
+
+        <?php
+            endif;
+        endforeach;
+        ?>
+        <?php if($proj->registrationCategories): ?>
+        <div><span class="label"><?php echo $proj->registrationCategTitle ?>:</span> <?php echo $registration->category ?></div>
+        <?php endif; ?>
+    </div>
     <div>
-        <a class="action" href="<?php echo $entity->editUrl; ?>">editar</a>
+        <a class="action" href="#">editar</a>
     </div>
 </article>
