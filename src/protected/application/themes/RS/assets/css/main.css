@@ -5819,6 +5819,9 @@ button.mfp-arrow-left {
 .ui-datepicker .ui-datepicker-prev:before {
   content: '\f137'; }
 
+#user-stats .icone.icon_plus:before {
+  content: '\f067'; }
+
 .tag-selected:after {
   content: '\f00d';
   padding-left: 5px; }

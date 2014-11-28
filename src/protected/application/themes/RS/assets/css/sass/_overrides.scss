@@ -188,6 +188,17 @@
     }
 }
 
+// Users stats icon Plus
+#user-stats {
+    .icone {
+        &.icon_plus {
+            &:before {
+                content: '\f067';
+            }
+        }
+    }
+}
+
 //tag search
 .tag-selected {
     &:after {
