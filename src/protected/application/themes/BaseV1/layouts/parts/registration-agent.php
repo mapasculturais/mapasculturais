@@ -1,5 +1,5 @@
 <?php
-$avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : $this->asset('img/avatar.png', false);
+$avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : $this->asset('img/avatar--agent.png', false);
 ?>
 <li class="registration-list-item">
     <div class="registration-label"><?php echo $label ?> <?php if ($required): ?>*<?php endif; ?></div>
@@ -9,16 +9,16 @@ $avatar_url = $agent && $agent->avatar ? $agent->avatar->transform('avatarSmall'
         <p class="alert warning">Aguardando confirmação</p>
         <div class="clearfix">
             <img src="<?php echo $avatar_url ?>" class="registration-agent-avatar js-registration-agent-avatar" />
-            <div class="js-registration-agent-name"><?php echo $agent ? '<a href="#">'.$agent->name.'</a>' : 'Não informado' ?></div>
+            <div class="js-registration-agent-name"><?php echo $agent ? '<a href="'.$agent->singleUrl.'">'.$agent->name.'</a>' : 'Não informado' ?></div>
         </div>
     </div>
     <?php if($this->isEditable()): ?>
         <div class="btn-group">
             <?php if($agent): ?>
                 <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="Editar <?php echo $label ?>">editar</a>
-                <a href="#" class="botao excluir hltip" title="Excluir <?php echo $label ?>">excluir</a>
+                <a ng-click="unsetRegistrationAgent(<?php echo $agent->id; ?>, '<?php echo $name; ?>')" class="botao excluir hltip" title="Excluir <?php echo $label ?>">excluir</a>
             <?php else: ?>
-                <a class="botao adicionar hltip"ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="Adicionar <?php echo $label ?>">adicionar</a>
+                <a class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-<?php echo $name ?>', $event)" title="Adicionar <?php echo $label ?>">adicionar</a>
             <?php endif; ?>
         </div>
     <?php endif;?>

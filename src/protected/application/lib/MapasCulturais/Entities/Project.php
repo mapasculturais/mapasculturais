@@ -205,7 +205,7 @@ class Project extends \MapasCulturais\Entity
             if($re->status > 0)
                 $result[] = $re;
         }
-        return $registrations;
+        return $result;
     }
 
     function setRegistrationFrom($date){
@@ -265,8 +265,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setRegistrationCategories($value){
-        if(is_string($value)){
-            $this->registrationCategories = explode("\n", $value);
+        if(is_string($value) && trim($value)){
+            $cats = [];
+            foreach(explode("\n", trim($value)) as $opt){
+                $opt = trim($opt);
+                if($opt && !in_array($opt, $cats)){
+                    $cats[] = $opt;
+                }
+            }
+            $this->registrationCategories = $cats;
         }else{
             $this->registrationCategories = $value;
         }
@@ -274,6 +281,10 @@ class Project extends \MapasCulturais\Entity
 
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
+
+        $this->publishedRegistrations = true;
+
+        $this->save(true);
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
@@ -282,11 +293,15 @@ class Project extends \MapasCulturais\Entity
     }
 
     protected function canUserPublishRegistrations($user){
-        if($user->is('guest'))
+        if($user->is('guest')){
             return false;
+        }
 
-        if($this->isRegistrationOpen())
+        if($this->registrationTo >= new \DateTime){
             return false;
+        }
+
+        return $this->canUser('@control', $user);
     }
 
     /** @ORM\PreRemove */

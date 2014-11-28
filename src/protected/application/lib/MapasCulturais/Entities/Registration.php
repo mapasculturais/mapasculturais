@@ -100,9 +100,11 @@ class Registration extends \MapasCulturais\Entity
             'agentRelations' => array(),
             'files' => array(),
             'singleUrl' => $this->singleUrl,
-            'editUrl' => $this->editUrl,
-            'status' => $this->status
+            'editUrl' => $this->editUrl
         );
+
+        if($this->project->publishedRegistrations || $this->project->canUser('@control'))
+            $json['status'] = $this->status;
 
         $related_agents = $this->getRelatedAgents();
 
@@ -172,39 +174,108 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function _setStatusTo($status){
-        $this->checkPermission('changeStatus');
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).approve:before');
-
+        if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
+            $this->checkPermission('send');
+        }else{
+            $this->checkPermission('changeStatus');
+        }
+        $app = App::i();
+        $app->disableAccessControl();
         $this->status = $status;
-
         $this->save(true);
-
-        App::i()->applyHookBoundTo($this, 'entity(Registration).approve:after');
+        $app->enableAccessControl();
     }
 
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
     }
 
     function setStatusToApproved(){
         $this->_setStatusTo(self::STATUS_APPROVED);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(approved)');
     }
 
     function setStatusToNotApproved(){
         $this->_setStatusTo(self::STATUS_NOTAPPROVED);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(notapproved)');
     }
 
     function setStatusToWaitlist(){
         $this->_setStatusTo(self::STATUS_WAITLIST);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(waitlist)');
     }
 
     function setStatusToInvalid(){
         $this->_setStatusTo(self::STATUS_INVALID);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(invalid)');
     }
 
     function setStatusToSent(){
         $this->_setStatusTo(self::STATUS_SENT);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
+    }
+
+    function send(){
+        $this->checkPermission('send');
+        $app = App::i();
+
+        $app->disableAccessControl();
+        // copiar dados dos agentes
+
+        $this->status = self::STATUS_SENT;
+        $this->save(true);
+        $app->enableAccessControl();
+    }
+
+    function getSendValidationErrors(){
+        $app = App::i();
+
+        $result = [];
+
+        $project = $this->project;
+
+
+        if($project->registrationCategories && !$this->category){
+            $result['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+        }
+
+
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+            $errors = [];
+            $metadata_name = $def->metadataName;
+            $meta_val = $project->$metadata_name;
+            $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+            if($meta_val === 'dontUse') {
+               continue;
+            }elseif($meta_val === 'required'){
+               if(!$relation){
+                   $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+               }
+            }
+            if($errors){
+                $result['registration-agent-' . $def->agentRelationGroupName] = $errors;
+            }
+        }
+
+        foreach($project->registrationFileConfigurations as $rfc){
+            $errors = [];
+            if($rfc->required){
+                if(!isset($this->files[$rfc->fileGroupName])){
+                    $errors[] = sprintf($app->txt('The file "%s" is required.'), $rfc->title);
+                }
+            }
+            if($errors){
+                $result['registration-file-' . $rfc->id] = $errors;
+            }
+        }
+
+
+
+        // @TODO: validar agentes (retornar false se não for válido)
+        // @TODO: validar arquivos (retornar false se não for válido)
+
+        return $result;
     }
 
 
@@ -240,6 +311,30 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $this->status > 0 && $this->project->canUser('@control', $user);
+    }
+
+    protected function canUserSend($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($this->getSendValidationErrors()){
+            return false;
+        }
+
+        if($user->is('admin')){
+            return true;
+        }
+
+        return $this->canUser('@control');
+    }
+
+    protected function canUserModify($user){
+        if($this->status !== self::STATUS_DRAFT){
+            return false;
+        }else{
+            return $this->genericPermissionVerification($user);
+        }
     }
 
     //============================================================= //

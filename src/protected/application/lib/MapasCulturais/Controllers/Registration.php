@@ -21,18 +21,11 @@ class Registration extends EntityController {
         $app->hook('POST(registration.upload):before', function() use($app) {
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
-                $fileGroup = new Definitions\FileGroup(
-                    $rfc->fileGroupName,
-                    array('^application/.*'),
-                    'The uploaded file is not a valid document.',
-                    true
-                );
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, array('^application/.*'), 'The uploaded file is not a valid document.', true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
-
         parent::__construct();
-
     }
 
     function getRequestedProject(){
@@ -77,7 +70,7 @@ class Registration extends EntityController {
         $app = App::i();
 
         $registration = $this->requestedEntity;
-        
+
         if(!$registration){
             $app->pass();
         }
@@ -100,6 +93,28 @@ class Registration extends EntityController {
             $this->json($registration);
         }else{
             $app->redirect($app->request->getReferer());
+        }
+    }
+
+    function POST_send(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $registration = $this->requestedEntity;
+
+        if(!$registration){
+            $app->pass();
+        }
+
+        if($errors = $registration->getSendValidationErrors()){
+            $this->errorJson($errors);
+        }else{
+            $registration->send();
+            if($app->request->isAjax()){
+                $this->json($registration);
+            }else{
+                $app->redirect($app->request->getReferer());
+            }
         }
     }
 }

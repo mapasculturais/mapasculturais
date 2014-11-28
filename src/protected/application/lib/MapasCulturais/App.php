@@ -494,6 +494,7 @@ class App extends \Slim\Slim{
                 'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
                 'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+                'rules' => new Definitions\FileGroup('rules', array('^application/.*'), 'The uploaded file is not a valid document.', true),
             );
 
             // register file groups
@@ -516,6 +517,7 @@ class App extends \Slim\Slim{
             $this->registerFileGroup('project', $file_groups['avatar']);
             $this->registerFileGroup('project', $file_groups['downloads']);
             $this->registerFileGroup('project', $file_groups['gallery']);
+            $this->registerFileGroup('project', $file_groups['rules']);
 
             $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 

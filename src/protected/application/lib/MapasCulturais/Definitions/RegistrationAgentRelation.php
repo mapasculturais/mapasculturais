@@ -12,19 +12,19 @@ namespace MapasCulturais\Definitions;
  * @property-read array $metadataName
  */
 class RegistrationAgentRelation extends \MapasCulturais\Definition{
-   
+
     protected $required = false;
-    
+
     protected $agentRelationGroupName = '';
-    
+
     protected $label = '';
-    
+
     protected $description = '';
-    
+
     protected $type = null;
-    
+
     protected $requiredProperties = array();
-    
+
     function __construct($config) {
         $this->required               = $config['required'];
         $this->agentRelationGroupName = $config['agentRelationGroupName'];
@@ -33,11 +33,11 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
         $this->type                   = $config['type'];
         $this->requiredProperties     = $config['requiredProperties'];
     }
-    
+
     function getMetadataName(){
         return 'useAgentRelation' . ucfirst($this->agentRelationGroupName);
     }
-    
+
     function getMetadataConfiguration(){
         $app = \MapasCulturais\App::i();
         return array(
@@ -45,5 +45,9 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
             'type' => 'select',
             'options' => $app->config['registration.agentRelationsOptions']
         );
+    }
+
+    function getOptionLabel($key){
+        return \MapasCulturais\App::i()->config['registration.agentRelationsOptions'][$key];
     }
 }
