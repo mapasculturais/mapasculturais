@@ -231,7 +231,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscricao' => array('registration', 'single'),
+            'inscricao' => array('registration', 'view'),
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -242,7 +242,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
-            'inscricoes'      => 'registration',
+            'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration'
         ),
         'actions' => array(
@@ -253,6 +253,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'inscricoes'    => 'registrations'
         ),
 
         'readableNames' => array(

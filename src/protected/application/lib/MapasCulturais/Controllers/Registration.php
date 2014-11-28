@@ -4,6 +4,7 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
+use MapasCulturais\Entities;
 
 /**
  * Registration Controller
@@ -57,17 +58,24 @@ class Registration extends EntityController {
         $this->render('create', array('entity' => $registration));
     }
 
-    function GET_single(){
+    function GET_view(){
         $entity = $this->requestedEntity;
 
         $entity->checkPermission('view');
 
-        if($entity->canUser('modify')){
-            //parent::GET_edit();
-            \MapasCulturais\App::i()->redirect ($this->createUrl('edit', [$entity->id]));
+        if($entity->status === Entities\Registration::STATUS_DRAFT){
+            parent::GET_edit();
+        }else{
+            parent::GET_single();
         }
+    }
 
-        parent::GET_single();
+    function GET_single(){
+        App::i()->pass();
+    }
+
+    function GET_edit(){
+        App::i()->pass();
     }
 
     function POST_setStatusTo(){

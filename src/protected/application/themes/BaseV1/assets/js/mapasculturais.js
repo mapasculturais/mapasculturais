@@ -196,7 +196,6 @@ MapasCulturais.TemplateManager = {
 
 MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
 
-MapasCulturais.isEditable = MapasCulturais.request.action == 'create' || MapasCulturais.request.action == 'edit';
 function editableEntityAddHash(){
     $('#editable-entity').find('.js-toggle-edit').each(function(){
         var href = $(this).attr('href'),

@@ -341,6 +341,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
+            $this->jsObject['isEditable'] = $this->isEditable();
+
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
                 'zoomMin' => $app->config['maps.zoom.min'],
@@ -615,6 +617,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
+
+
 
         if ($this->isEditable())
             $this->includeEditableEntityAssets();

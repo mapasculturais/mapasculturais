@@ -134,6 +134,14 @@ class Registration extends \MapasCulturais\Entity
         $this->project = $agent;
     }
 
+    function getSingleUrl(){
+        return App::i()->createUrl('registration', 'view', array($this->id));
+    }
+
+    function getEditUrl(){
+        return App::i()->createUrl('registration', 'view', array($this->id));
+    }
+
     /**
      *
      * @return
@@ -283,7 +291,7 @@ class Registration extends \MapasCulturais\Entity
         if($project->registrationCategories && !$this->category){
             $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
-        
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
 
         foreach($definitionsWithAgents as $def){
