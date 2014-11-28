@@ -486,17 +486,19 @@
                     success(function(response){
                         $('.js-response-error').remove();
                         if(response.error){
-                            Object.keys(response.data).forEach(function(key, index){
-                                var errorHtml = '<span title="' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                            Object.keys(response.data).forEach(function(field, index){
                                 var $el;
-                                if(key === 'category'){
+                                if(field === 'category'){
                                     $el = $('.js-editable-registrationCategory').parent();
-                                }else if(key.indexOf('agent') !== -1){
-                                    $el = $('#' + key).parent().find('.registration-label');
+                                }else if(field.indexOf('agent') !== -1){
+                                    $el = $('#' + field).parent().find('.registration-label');
                                 }else {
-                                    $el = $('#' + key).find('div:first');
+                                    $el = $('#' + field).find('div:first');
                                 }
-                                $el.append(errorHtml);
+                                response.data[field].forEach(function(errorMessage){
+                                    var errorHtml = '<span title="' + errorMessage.replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                    $el.append(errorHtml);
+                                });
                             });
                             MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                         }else{

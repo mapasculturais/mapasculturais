@@ -18,6 +18,8 @@ return array(
     'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
 
+    'The field "%s" of the agent "%s" is required.' => 'O campo "%s" do agente "%s" é obrigatório.',
+
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
 

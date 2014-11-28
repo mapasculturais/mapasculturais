@@ -87,6 +87,7 @@ return array(
     'registration.ownerDefinition' => array(
         'required' => true,
         'label' => 'Agente Responsável',
+        'agentRelationGroupName' => 'owner',
         'description' => 'Agente individual com CPF cadastrado',
         'type' => 1,
         'requiredProperties' => array('documento')
