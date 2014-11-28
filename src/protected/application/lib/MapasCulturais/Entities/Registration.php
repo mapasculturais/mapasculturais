@@ -158,6 +158,44 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    protected function _getAgentsWithDefinitions(){
+        $definitions = App::i()->getRegistrationAgentsDefinitions();
+        $owner = $this->owner;
+        $owner->definition = $definitions['owner'];
+        $agents = [$owner];
+        foreach($this->relatedAgents as $groupName=>$relatedAgents){
+            $agent = $relatedAgents[0];
+            $agent->groupName = $groupName;
+            $agent->definition = $definitions[$groupName];
+            $agents[] = $agent;
+        }
+        return $agents;
+    }
+
+
+    protected function _getDefinitionsWithAgents(){
+        $definitions = App::i()->getRegistrationAgentsDefinitions();
+        foreach($definitions as $groupName=>$def){
+            $metadata_name = $def->metadataName;
+            $meta_val = $this->project->$metadata_name;
+
+            if($meta_val === 'dontUse')
+                continue;
+
+            if($groupName === 'owner'){
+                $relation = $this->owner;
+                $meta_val = 'required';
+            }else{
+                $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+            }
+
+            $definitions[$groupName]->use = $meta_val;
+            $definitions[$groupName]->agent = $relation ? $relation : null;
+        }
+        return $definitions;
+    }
+
+
     function randomIdGeneratorFormat($id){
         return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
     }
@@ -245,22 +283,33 @@ class Registration extends \MapasCulturais\Entity
         if($project->registrationCategories && !$this->category){
             $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
+        
+        $definitionsWithAgents = $this->_getDefinitionsWithAgents();
 
-        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+        foreach($definitionsWithAgents as $def){
             $errors = [];
-            $metadata_name = $def->metadataName;
-            $meta_val = $project->$metadata_name;
-            $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
-            if($meta_val === 'dontUse') {
-                continue;
-            }elseif($meta_val === 'required'){
-                if(!$relation){
+            if($def->use === 'required'){
+                if(!$def->agent){
                     $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                 }
             }
+            if($def->agent){
+                foreach($def->requiredProperties as $requiredProperty){
+                    $value = null;
+                    try{
+                        $value = $def->agent->$requiredProperty;
+                    }catch(\Exception $e){};
+
+                    if(!$value){
+                        $errors[] = sprintf($app->txt('The field "%s" of the agent "%s" is required.'), $requiredProperty, $def->label);
+                    }
+                }
+            }
+
             if($errors){
                 $errorsResult['registration-agent-' . $def->agentRelationGroupName] = $errors;
             }
+
         }
 
         foreach($project->registrationFileConfigurations as $rfc){
@@ -276,6 +325,37 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $errorsResult;
+    }
+
+    function exportAgentsData(){
+        //for backup, not being executed yet
+        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+
+            $properties = Agent::getPropertiesMetadata();
+
+            $errorsResult['properties'] = $properties;
+
+            foreach($this->_getAgentsWithDefinitions() as $agent){
+                $exportData = [];
+                $exportData2 = [];
+                $errorsResult[$agent->name] = [];
+                foreach($properties as $p=>$details){
+
+                    $val = $agent->$p;
+
+                    if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
+                        continue;
+                    }
+
+                    if( !$details['isMetadata'] || !$details['private'] || in_array($p, $def->requiredProperties) ){
+                        $exportData[$p] = $val;
+                    }
+
+                    $exportData2[$p] = $details;
+                }
+                $errorsResult[$agent->name][] = $exportData;
+            }
+        }
     }
 
     protected function canUserView($user){

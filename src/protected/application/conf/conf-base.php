@@ -78,22 +78,34 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-
+    'registration.rivatePropertiesExported' => array(
+        'documento',
+        'emailPrivado',
+        'telefone1',
+        'telefone2'
+    ),
+    'registration.ownerDefinition' => array(
+        'required' => true,
+        'label' => 'Agente Responsável',
+        'agentRelationGroupName' => 'owner',
+        'description' => 'Agente individual com CPF cadastrado',
+        'type' => 1,
+        'requiredProperties' => array('documento')
+    ),
     'registration.agentRelations' => array(
         array(
             'required' => false,
             'label' => 'Instituição',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'agente coletivo com CNPJ',
+            'description' => 'Agente coletivo com CNPJ',
             'type' => 2,
             'requiredProperties' => array('documento')
         ),
-
         array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'agente coletivo sem CNPJ',
+            'description' => 'Agente coletivo sem CNPJ',
             'type' => 2,
             'requiredProperties' => array()
         )

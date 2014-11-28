@@ -1194,6 +1194,20 @@ class App extends \Slim\Slim{
         return $this->_register['registration_agent_relations'];
     }
 
+    function getRegistrationOwnerDefinition(){
+        $config = $this->getConfig('registration.ownerDefinition');
+        $definition = new Definitions\RegistrationAgentRelation($config);
+        return $definition;
+    }
+
+    function getRegistrationAgentsDefinitions(){
+        $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
+        foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName=>$def){
+            $definitions[$groupName] = $def;
+        }
+        return $definitions;
+    }
+
     function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){
         if(key_exists($group_name, $this->_register['registration_agent_relations'])){
             return $this->_register['registration_agent_relations'][$group_name];

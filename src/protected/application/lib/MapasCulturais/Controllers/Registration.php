@@ -62,6 +62,11 @@ class Registration extends EntityController {
 
         $entity->checkPermission('view');
 
+        if($entity->canUser('modify')){
+            //parent::GET_edit();
+            \MapasCulturais\App::i()->redirect ($this->createUrl('edit', [$entity->id]));
+        }
+
         parent::GET_single();
     }
 
