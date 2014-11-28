@@ -660,7 +660,7 @@ h6 {
   padding: 2px;
   background: #e2e2e2;
   -webkit-font-smoothing: antialiased;
-  font: normal .75rem/.75rem 'ElegantIcons';
+  font: normal 0.75rem/0.75rem "ElegantIcons";
   text-align: center;
   color: #fff;
   border-radius: 2px; }
@@ -1206,7 +1206,7 @@ h6 {
   right: 0;
   left: 0;
   width: 100%;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   speak: none;
   font-weight: normal;
   font-variant: normal;
@@ -2100,7 +2100,7 @@ nav.sidebar-left .icone {
       left: 0;
       padding-right: 1.5rem;
       color: #fff;
-      font-family: 'ElegantIcons';
+      font-family: "ElegantIcons";
       speak: none;
       font-weight: normal;
       font-variant: normal;
@@ -2155,7 +2155,7 @@ nav.sidebar-left .icone {
   margin: 0 5px;
   font-size: 1rem;
   line-height: inherit;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   vertical-align: top;
   text-transform: none;
   font-weight: normal;
@@ -2404,7 +2404,7 @@ nav.sidebar-left .icone {
     width: 1rem;
     height: 1rem;
     font-size: 1rem;
-    font-family: 'ElegantIcons';
+    font-family: "ElegantIcons";
     vertical-align: top;
     text-transform: none;
     font-weight: normal;
@@ -2432,7 +2432,7 @@ nav.sidebar-left .icone {
   width: 1.375rem;
   line-height: 1.375rem !important;
   font-size: 1rem;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   font-weight: normal;
   text-align: center;
   color: #999; }
@@ -2499,7 +2499,7 @@ table.contratos td {
       right: 0;
       width: 1.5rem;
       text-align: center;
-      font-family: 'ElegantIcons';
+      font-family: "ElegantIcons";
       speak: none;
       font-size: 1rem;
       font-weight: normal;
@@ -2536,7 +2536,7 @@ table.contratos td {
       left: 0;
       padding-right: .25rem;
       color: #e2e2e2;
-      font-family: 'ElegantIcons';
+      font-family: "ElegantIcons";
       speak: none;
       font-weight: normal;
       font-variant: normal;
@@ -2592,7 +2592,7 @@ table.contratos td {
     content: '\6c';
     font-size: 1rem;
     line-height: 1rem;
-    font-family: 'ElegantIcons';
+    font-family: "ElegantIcons";
     font-weight: normal;
     font-style: normal;
     vertical-align: initial;
@@ -2719,7 +2719,7 @@ table.contratos td {
 
 .radio-button {
   color: #000000;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   speak: none;
   font-weight: normal;
   font-variant: normal;
@@ -3035,7 +3035,7 @@ h1 .icone {
     margin-top: -3px;
     font-size: 1rem;
     line-height: 1rem;
-    font-family: 'ElegantIcons';
+    font-family: "ElegantIcons";
     vertical-align: middle;
     text-transform: none; }
 
@@ -3536,7 +3536,7 @@ h1 .icone {
   margin: 0 5px;
   font-size: 1rem;
   line-height: inherit;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   vertical-align: top;
   text-transform: none;
   font-weight: normal;
@@ -3599,7 +3599,7 @@ h1 .icone {
   content: '\6c';
   font-size: 1rem;
   line-height: 1rem;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   font-weight: normal;
   font-style: normal;
   vertical-align: initial;
@@ -3744,7 +3744,7 @@ div.ficha-spcultura .editable-buttons-bottom {
   content: '\4d';
   font-size: 1rem;
   line-height: 1.5rem;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   font-weight: normal;
   font-style: normal;
   vertical-align: initial;
@@ -3796,7 +3796,7 @@ div.ficha-spcultura .editable-buttons-bottom {
   speak: none;
   line-height: 1.5rem;
   font-size: 1rem;
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
