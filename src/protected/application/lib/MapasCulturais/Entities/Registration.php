@@ -194,7 +194,8 @@ class Registration extends \MapasCulturais\Entity
                 $relation = $this->owner;
                 $meta_val = 'required';
             }else{
-                $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+                $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, false, true);
+                $relation = $related_agents ? $related_agents[0] : null;
             }
 
             $definitions[$groupName]->use = $meta_val;
@@ -296,18 +297,21 @@ class Registration extends \MapasCulturais\Entity
 
         foreach($definitionsWithAgents as $def){
             $errors = [];
+            
+            // @TODO: validar o tipo do agente
+            
             if($def->use === 'required'){
                 if(!$def->agent){
                     $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                 }
             }
             if($def->agent){
+                
+                // @TODO: concatenar os campos obrigatórios não preenchidos numa única mensagem de erro
+                
                 foreach($def->requiredProperties as $requiredProperty){
-                    $value = null;
-                    try{
-                        $value = $def->agent->$requiredProperty;
-                    }catch(\Exception $e){};
-
+                    $value = $def->agent->$requiredProperty;
+                    
                     if(!$value){
                         $errors[] = sprintf($app->txt('The field "%s" of the agent "%s" is required.'), $requiredProperty, $def->label);
                     }
