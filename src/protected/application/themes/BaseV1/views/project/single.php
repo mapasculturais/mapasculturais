@@ -211,13 +211,13 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #intro-das-inscricoes -->
         <?php endif; ?>
-        <p><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" ng-if="!data.isEditable && data.entity.registrationRulesFile" >Baixar o regulamento</a></p>
+        <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4>3. Regulamento</h4>
             <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .xxx, .xxx, .xxx.</p>
             <a class="botao enviar hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
-                <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">Nome do arquivo do regulamento</span>
+                <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
                 <a class="excluir hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
             </div>
             <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
