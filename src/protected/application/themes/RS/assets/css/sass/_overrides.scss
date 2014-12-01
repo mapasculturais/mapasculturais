@@ -96,6 +96,38 @@
         }
     }
 }
+.enviar {
+    &:before {
+        content: '\f093';
+    }
+}
+.download {
+    &:before {
+        content: '\f019';
+    }
+}
+.excluir {
+    &:before {
+        content: '\f057';
+    }
+}
+.inserir {
+    &:before {
+        content: '\f057';
+    }
+}
+
+//radio button
+.radio-button {
+    &:before {
+        content: '\f10c';        
+    }
+    &.selected{
+        &:before {
+            content: '\f192';
+        }
+    }
+}
 
 // triangle tab projects
 .abas-objetos {
@@ -174,7 +206,7 @@
 }
 
 //create
-.editable {
+.editable, .mc-editable {
     &:after {
         font-family: $icon-font-name;
         content: '\f044';
@@ -216,6 +248,26 @@
         }
     }
 }
+
+//alerts
+.info {
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f0eb';
+    }
+}
+.warning, .danger {
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f129';
+    }
+}
+.success {
+    &:before {
+        content: '\f00c'        
+    }
+}
+
 
 //tag search
 .tag-selected {
