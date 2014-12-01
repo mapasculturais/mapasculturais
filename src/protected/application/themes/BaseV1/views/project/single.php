@@ -351,21 +351,6 @@ $this->includeAngularEntityAssets($entity);
             <?php endif;?>
         <?php endif; ?>
     </div>
-    <style>
-        .dropdown .placeholder{
-            width: 60px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .submenu-dropdown li {
-            white-space: nowrap;
-            text-align: left;
-        }
-        /* .submenu-dropdown:before{
-            right:calc(60px / 2 - .25rem) !important;
-        }*/
-    </style>
     <!--#inscricoes-->
     <div id="inscritos" class="aba-content privado">
         <?php if($entity->canUser('@control')): ?>
