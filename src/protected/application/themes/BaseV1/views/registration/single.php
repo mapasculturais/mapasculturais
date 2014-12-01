@@ -66,18 +66,18 @@ $this->includeAngularEntityAssets($entity);
             <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
                 <div class="registration-label">{{def.label}} <span ng-if="def.required" class="required">*</span></div>
                 <div class="registration-description">{{def.description}}</div>
-                
+
                 <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
                     <p ng-if="def.relationStatus < 0" class="alert warning">Aguardando confirmação</p>
                     <div class="clearfix">
                         <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
                         <div>
-                            <a ng-if="def.agent" src="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
+                            <a ng-if="def.agent" href="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
                             <span ng-if="!def.agent">Não informado</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div ng-if="data.isEditable" class="btn-group">
                     <span ng-if="def.agent">
                         <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">editar</a>
@@ -85,7 +85,7 @@ $this->includeAngularEntityAssets($entity);
                     </span>
                     <a ng-if="!def.agent" class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Adicionar {{def.label}}">adicionar</a>
                 </div>
-                
+
                 <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
                     <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p>
                     <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
@@ -106,7 +106,7 @@ $this->includeAngularEntityAssets($entity);
                         (<a class="attachment-template" target="_blank" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
                     </span>
                 </div>
-                <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.}}" target="_blank">{{fileConfiguration.file.name}}</a>
+                <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.url}}" target="_blank">{{fileConfiguration.file.name}}</a>
                 <?php if($this->isEditable()): ?>
                     <div class="btn-group">
                         <!-- se já subiu o arquivo-->
