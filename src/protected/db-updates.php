@@ -126,6 +126,10 @@ return array(
     },
 
     'alter table project add columns use_registrations AND publihed_registrations' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'project' AND column_name = 'use_registrations'")){
+            return true;
+        }
+
         echo "adicionando coluna use_registrations\n";
         $conn->executeQuery("ALTER TABLE project ADD COLUMN use_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
 
@@ -161,5 +165,15 @@ return array(
               RETURN rand_int;
             END;
             $$;');
-    }
+    },
+
+    'alter table registration add columns related_agents_data' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'registration' AND column_name = 'related_agents_data'")){
+            return true;
+        }
+
+        echo "adicionando coluna use_registrations\n";
+        $conn->executeQuery("ALTER TABLE registration ADD COLUMN related_agents_data TEXT;");
+
+    },
 );
