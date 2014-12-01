@@ -105,6 +105,43 @@ $this->includeAngularEntityAssets($entity);
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
+
+
+            <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
+                <div id="registration-period" >
+                    <h4 ng-if="data.isEditable">Período de inscrições</h4>
+
+                    <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                        <p class="highlighted-message">
+                            Inscrições abertas de
+                            <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                            a
+                            <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
+                        </p>
+                    <?php endif; ?>
+                </div>
+                <!-- #registration-period -->
+            <?php endif; ?>
+
+
+         <p>
+            <?php if($this->isEditable()): ?>
+                <div id="editable-use-registrations" class="js-editable" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Não'},{value: 1, text:'Sim'}]">
+                    <?php if ($entity->useRegistrations) : ?>
+                        Este projeto utiliza inscrições online.
+                    <?php else: ?>
+                        Este projeto não utiliza inscrições online.
+                    <?php endif; ?>
+                </div>
+            <?php else: ?>
+                <?php if ($entity->useRegistrations) : ?>
+                    Este projeto utiliza inscrições online.
+                <?php else: ?>
+                    Este projeto não utiliza inscrições online.
+                <?php endif; ?>
+            <?php endif; ?>
+        </p>
+
             <div class="servico">
                 <?php if($this->isEditable() || $entity->site): ?>
                     <p>
@@ -141,19 +178,6 @@ $this->includeAngularEntityAssets($entity);
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
                 <span class="close"></span>
             </p>
-            <div id="registration-period" ng-class="{'registration-fieldset': data.isEditable}">
-                <h4 ng-if="data.isEditable">1. Período de inscrições</h4>
-
-                <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                    <p class="highlighted-message">
-                        Inscrições abertas de
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
-                        a
-                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
-                    </p>
-                <?php endif; ?>
-            </div>
-            <!-- #registration-period -->
         <?php endif; ?>
         <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
                 <h4>Minhas Inscrições</h4>
@@ -205,7 +229,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->introInscricoes || $this->isEditable()): ?>
 
             <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
-                <h4 ng-if="data.isEditable">2. Introdução</h4>
+                <h4 ng-if="data.isEditable">1. Introdução</h4>
                 <p class="registration-help" ng-if="data.isEditable">Crie um texto de introdução com o máximo de XXXXX caracteres.</p>
                 <p class="js-editable" data-edit="introInscricoes" data-original-title="Introdução da inscrição" data-emptytext="Insira um parágrafo." data-placeholder="Insira um parágrafo." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
             </div>
@@ -213,7 +237,7 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
         <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
-            <h4>3. Regulamento</h4>
+            <h4>2. Regulamento</h4>
             <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .xxx, .xxx, .xxx.</p>
             <a class="botao enviar hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
@@ -238,7 +262,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- #registration-rules -->
         <?php if($this->isEditable()): ?>
             <div id="registration-categories" class="registration-fieldset">
-                <h4>4. Opções</h4>
+                <h4>3. Opções</h4>
                 <p class="registration-help">É possível criar opções para os proponentes escolherem na hora de se inscrever, como por exemplo categorias. Se não desejar utilizar este recurso, deixe em branco o campo "Opções".</p>
                 <p>
                     <span class="label">Título das opções</span><br>
@@ -255,7 +279,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
-                <h4>5. Agentes</h4>
+                <h4>4. Agentes</h4>
                 <p class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
 
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def): $metadata_name = $def->metadataName;?>
@@ -271,7 +295,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #registration-agent-relations -->
             <div id="registration-attachments" class="registration-fieldset">
-                <h4>6. Anexos</h4>
+                <h4>5. Anexos</h4>
                 <p class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                 <div ng-controller="RegistrationFileConfigurationsController">
                     <?php if($this->controller->action == 'create'): ?>
