@@ -78,7 +78,7 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-    'registration.rivatePropertiesExported' => array(
+    'registration.privatePropertiesToExport' => array(
         'documento',
         'emailPrivado',
         'telefone1',

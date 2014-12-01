@@ -31,7 +31,7 @@ return array(
         $conn->executeQuery('ALTER TABLE agent DROP COLUMN is_user_profile;');
     },
 
-    'create table registration teste' => function() use ($conn){
+    'create table registration ' => function() use ($conn){
 
         if($conn->fetchAll("SELECT tablename from pg_catalog.pg_tables WHERE tablename = 'registration' AND schemaname = 'public'")){
             return true;
@@ -45,7 +45,7 @@ return array(
                 project_id integer NOT NULL,
                 category varchar(255),
                 agent_id integer NOT NULL,
-                create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
+                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
                 sent_timestamp timestamp without time zone,
                 status integer NOT NULL
             );");

@@ -833,6 +833,10 @@ class Theme extends MapasCulturais\Theme {
             if($agent){
                 $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
                 $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+
+                foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
+                    $def->agent->$prop = $val;
+                }
             }
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }

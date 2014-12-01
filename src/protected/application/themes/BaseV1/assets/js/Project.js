@@ -310,6 +310,19 @@
                     {value: 0, label: 'Rascunho'}
                 ],
 
+                propLabels : [
+                    {name: 'nomeCompleto', label: 'Nome Completo'},
+                    {name: 'documento', label: 'Documento'},
+                    {name: 'dataDeNascimento', label: 'Data de Nascimento/Fundação'},
+                    {name: 'genero', label: 'Gênero'},
+                    {name: 'raca', label: 'Raça/Cor'},
+                    {name: 'emailPublico', label: 'Email'},
+                    {name: 'emailPrivado', label: 'Email Privado'},
+                    {name: 'telefonePublico', label: 'Telefone Público'},
+                    {name: 'telefone1', label: 'Telefone 1'},
+                    {name: 'telefone2', label: 'Telefone 2'}
+                ],
+
                 relationApiQuery: {}
             }, MapasCulturais);
 

@@ -84,7 +84,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=false)
+     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
      */
     protected $sentTimestamp;
 
@@ -92,7 +92,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var array
      *
-     * @ORM\Column(name="agents_data", type="array", nullable=true)
+     * @ORM\Column(name="agents_data", type="json_array", nullable=true)
      */
     protected $_agentsData = array();
 
@@ -196,7 +196,7 @@ class Registration extends \MapasCulturais\Entity
         $owner = $this->owner;
         $owner->definition = $definitions['owner'];
         $agents = [$owner];
-        foreach($this->relatedAgents as $groupName=>$relatedAgents){
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
             $agent = $relatedAgents[0];
             $agent->groupName = $groupName;
             $agent->definition = $definitions[$groupName];
@@ -319,6 +319,7 @@ class Registration extends \MapasCulturais\Entity
 
         $this->status = self::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
+        $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
         $app->enableAccessControl();
     }
@@ -380,35 +381,35 @@ class Registration extends \MapasCulturais\Entity
         return $errorsResult;
     }
 
-    function exportAgentsData(){
-        //for backup, not being executed yet
-        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+    protected function _getAgentsData(){
+        $app = App::i();
 
-            $properties = Agent::getPropertiesMetadata();
+        $agentProperties = Agent::getPropertiesMetadata();
 
-            $errorsResult['properties'] = $properties;
+        $privatePropertiesToExport = $app->config['registration.privatePropertiesToExport'];
 
-            foreach($this->_getAgentsWithDefinitions() as $agent){
-                $exportData = [];
-                $exportData2 = [];
-                $errorsResult[$agent->name] = [];
-                foreach($properties as $p=>$details){
+        $exportData = [];
 
-                    $val = $agent->$p;
+        foreach($this->_getAgentsWithDefinitions() as $agent){
 
-                    if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
-                        continue;
-                    }
+            $exportData[$agent->definition->agentRelationGroupName] = [];
 
-                    if( !$details['isMetadata'] || !$details['private'] || in_array($p, $def->requiredProperties) ){
-                        $exportData[$p] = $val;
-                    }
+            foreach($agentProperties as $p => $details){
 
-                    $exportData2[$p] = $details;
+                $val = $agent->$p;
+
+                if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
+                    continue;
                 }
-                $errorsResult[$agent->name][] = $exportData;
+
+                if( !$details['isMetadata'] || !$details['private'] || in_array($p, $agent->definition->requiredProperties) || in_array($p, $privatePropertiesToExport) ){
+                    $exportData[$agent->definition->agentRelationGroupName][$p] = $val;
+                }
+
             }
         }
+
+        return $exportData;
     }
 
     protected function canUserView($user){
