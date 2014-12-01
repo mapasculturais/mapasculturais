@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .alert .close, .attachment-list .attachment-list-item .attachment-title:before, .attachment-list .attachment-list-item .attachment-template:before {
-  font-family: 'ElegantIcons';
+  font-family: "ElegantIcons";
   speak: none;
   font-style: normal;
   font-weight: normal;
