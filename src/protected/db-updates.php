@@ -167,13 +167,13 @@ return array(
             $$;');
     },
 
-    'alter table registration add columns related_agents_data' => function() use($conn){
-        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'registration' AND column_name = 'related_agents_data'")){
+    'alter table registration add columns agents_data' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'registration' AND column_name = 'agents_data'")){
             return true;
         }
 
-        echo "adicionando coluna use_registrations\n";
-        $conn->executeQuery("ALTER TABLE registration ADD COLUMN related_agents_data TEXT;");
+        echo "adicionando coluna agents_data\n";
+        $conn->executeQuery("ALTER TABLE registration ADD COLUMN agents_data TEXT;");
 
     },
 );

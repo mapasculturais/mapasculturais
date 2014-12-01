@@ -73,6 +73,29 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $owner;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
+     */
+    protected $createTimestamp;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=false)
+     */
+    protected $sentTimestamp;
+
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="agents_data", type="array", nullable=true)
+     */
+    protected $_agentsData = array();
+
 
     /**
      * @var integer
@@ -81,10 +104,12 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_DRAFT;
 
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+
 
     function __construct() {
         $this->owner = App::i()->user->profile;
@@ -212,6 +237,13 @@ class Registration extends \MapasCulturais\Entity
         return $definitions;
     }
 
+    function getAgentsData(){
+        if($this->canUser('view')){
+            return $this->_agentsData;
+        }else{
+            return [];
+        }
+    }
 
     function randomIdGeneratorFormat($id){
         return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
@@ -286,6 +318,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->status = self::STATUS_SENT;
+        $this->sentTimestamp = new \DateTime;
         $this->save(true);
         $app->enableAccessControl();
     }
@@ -305,21 +338,21 @@ class Registration extends \MapasCulturais\Entity
 
         foreach($definitionsWithAgents as $def){
             $errors = [];
-            
+
             // @TODO: validar o tipo do agente
-            
+
             if($def->use === 'required'){
                 if(!$def->agent){
                     $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                 }
             }
             if($def->agent){
-                
+
                 // @TODO: concatenar os campos obrigatórios não preenchidos numa única mensagem de erro
-                
+
                 foreach($def->requiredProperties as $requiredProperty){
                     $value = $def->agent->$requiredProperty;
-                    
+
                     if(!$value){
                         $errors[] = sprintf($app->txt('The field "%s" of the agent "%s" is required.'), $requiredProperty, $def->label);
                     }
