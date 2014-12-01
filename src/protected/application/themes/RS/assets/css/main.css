@@ -5935,9 +5935,11 @@ button.mfp-arrow-left {
   font-family: "FontAwesome";
   content: '\f137'; }
 
-#user-stats .icone.icon_plus:before {
-  font-family: "FontAwesome";
-  content: '\f067'; }
+#user-stats .icone.icon_plus {
+  padding: 4px 5px; }
+  #user-stats .icone.icon_plus:before {
+    font-family: "FontAwesome";
+    content: '\f067'; }
 
 .info:before {
   font-family: "FontAwesome";

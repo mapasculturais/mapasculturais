@@ -241,6 +241,7 @@
 #user-stats {
     .icone {
         &.icon_plus {
+            padding: 4px 5px;
             &:before {
                 font-family: $icon-font-name;
                 content: '\f067';
