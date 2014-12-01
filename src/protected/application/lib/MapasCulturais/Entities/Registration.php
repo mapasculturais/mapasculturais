@@ -181,7 +181,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
 
-    protected function _getDefinitionsWithAgents(){
+    function _getDefinitionsWithAgents(){
         $definitions = App::i()->getRegistrationAgentsDefinitions();
         foreach($definitions as $groupName=>$def){
             $metadata_name = $def->metadataName;
@@ -193,13 +193,21 @@ class Registration extends \MapasCulturais\Entity
             if($groupName === 'owner'){
                 $relation = $this->owner;
                 $meta_val = 'required';
+                $relation_status = 1;
             }else{
-                $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, false, true);
-                $relation = $related_agents ? $related_agents[0] : null;
+                $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+                if($related_agents){
+                    $relation = $related_agents[0]->agent;
+                    $relation_status = $related_agents[0]->status;
+                }else{
+                    $relation = null;
+                    $relation_status = null;
+                }
             }
 
             $definitions[$groupName]->use = $meta_val;
             $definitions[$groupName]->agent = $relation ? $relation : null;
+            $definitions[$groupName]->relationStatus = $relation_status;
         }
         return $definitions;
     }
