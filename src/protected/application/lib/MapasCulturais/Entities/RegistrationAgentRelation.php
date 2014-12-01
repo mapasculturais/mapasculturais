@@ -20,7 +20,7 @@ class RegistrationAgentRelation extends AgentRelation{
     protected $owner;
 
     public function save($flush = false) {
-        $old_relation = $this->repo()->findOneBy(array('group' => $this->group));
+        $old_relation = $this->repo()->findOneBy(array('group' => $this->group, 'owner' => $this));
         if($old_relation && !$this->equals($old_relation)){
             $old_relation->delete($flush);
         }
