@@ -231,7 +231,10 @@
         });
 
         $scope.sendFile = function(attrs){
-            $('#' + attrs.id + ' form').submit();
+            $('#' + attrs.id + ' form').submit().
+                    on('ajaxForm.success', function(){
+                        MapasCulturais.Messages.success('Alterações salvas.');
+                    });
         };
 
         $scope.openFileEditBox = function(id, index, event){
@@ -277,15 +280,10 @@
                 }) : [];
 
             $scope.editbox = EditBox;
-
             $scope.data = angular.extend({
                 uploadSpinner: false,
                 spinner: false,
-                apiQueryRegistrationAgent: {
-                    '@permissions': '@control',
-                    'type': 'EQ(1)' // type individual
-                },
-
+                
                 registrationCategories: categories,
                 registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
 
@@ -310,8 +308,22 @@
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovada'},
                     {value: 0, label: 'Reabrir formulário para alteração'}
-                ]
+                ],
+                
+                relationApiQuery: {}
             }, MapasCulturais);
+            
+            if(MapasCulturais.entity.registrationAgents){
+                MapasCulturais.entity.registrationAgents.forEach(function(e){
+                    $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
+                    if(e.agentRelationGroupName === 'owner'){
+                        $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
+                    }
+                });
+            }else{
+                $scope.data.relationApiQuery.owner = {'@permissions': '@control', 'type': 'EQ(1)'};
+            }
+            $scope.fns = {};
 
             $scope.hideStatusInfo = function(){
                 jQuery('#status-info').slideUp('fast');
@@ -385,30 +397,53 @@
                 if (ov && !nv)
                     adjustBoxPosition();
             });
+            
+            function replaceRegistrationAgentBy(groupName, agent){
+                for(var i in $scope.data.entity.registrationAgents){
+                    var def = $scope.data.entity.registrationAgents[i];
+                    if(def.agentRelationGroupName === groupName)
+                        def.agent = agent;
+                }
+            }
 
-            $scope.setRegistrationOwner = function(entity){
-                $scope.data.registration.owner = entity;
+            $scope.setRegistrationOwner = function(agent){
+                $scope.data.registration.owner = agent;
+                replaceRegistrationAgentBy('owner', agent);
+                jQuery('#ownerId').editable('setValue', agent.id);
+                setTimeout(function(){
+                    $('#submitButton').trigger('click');
+                });
                 EditBox.close('editbox-select-registration-owner');
             };
 
             $scope.setRegistrationAgent = function(entity, attrs){
+                if(attrs.name === 'owner'){
+                    $scope.setRegistrationOwner(entity);
+                    return;
+                }
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
                 RelatedAgentsService.create(attrs.name, entity.id).success(function(response){
-                    var $el = $('#registration-agent-' + attrs.name);
-                    $el.find('.js-registration-agent-name').html('<a href="'+response.agent.singleUrl+'">'+response.agent.name+'</a>');
-                    if(response.agent.avatar.length){
-                        $el.find('.js-registration-agent-avatar').attr('src', response.agent.avatar.url);
+                    console.log(response);
+                    if(response.agent.avatar){
+                        response.agent.avatarUrl = response.agent.avatar.avatarSmall.url;
                     }
+                    replaceRegistrationAgentBy(attrs.name, response.agent);
                     EditBox.close(editBoxId);
+                    MapasCulturais.Messages.success('Alterações salvas.');
                 });
             };
 
             $scope.unsetRegistrationAgent = function(entityId, groupName){
+                if(groupName === 'owner')
+                    return null;
+                
                 var editBoxId = 'editbox-select-registration-' + groupName;
                 RelatedAgentsService.remove(groupName, entityId).success(function(){
-                    var $el = $('#registration-agent-' + groupName);
-                    $el.find('.js-registration-agent-name').html('Não informado');
-                    $el.find('.js-registration-agent-avatar').attr('src', MapasCulturais.assets.avatarAgent);
+                    for(var i in $scope.data.entity.registrationAgents){
+                        var def = $scope.data.entity.registrationAgents[i];
+                        if(def.agentRelationGroupName === groupName)
+                            delete def.agent;
+                    }
                     EditBox.close(editBoxId);
                 });
             };

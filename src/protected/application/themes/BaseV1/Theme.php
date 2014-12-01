@@ -826,6 +826,15 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
+        $this->jsObject['entity']['registrationAgents'] = array();
+        foreach($entity->_getDefinitionsWithAgents() as $def){
+            $agent = $def->agent;
+            if($agent){
+                $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
+                $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+            }
+            $this->jsObject['entity']['registrationAgents'][] = $def;
+        }
     }
 
 

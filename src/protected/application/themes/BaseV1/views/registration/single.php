@@ -60,32 +60,37 @@ $this->includeAngularEntityAssets($entity);
     <div class="registration-fieldset">
         <h4>Agentes</h4>
         <p class="registration-help">Relacione os agentes a esta Inscrição</p>
-        <!-- agente responsável -->
+        <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
-            <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
-            <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
-            <!-- outros agentes -->
-            <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                if($project->{$def->metadataName} === 'dontUse'){
-                    continue;
-                }
-                $required = $project->{$def->metadataName} === 'required';
-                $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
-
-                $relation = $relation ? $relation[0] : null;
-
-                $agent = $relation ? $relation->agent : null;
-                $status = $relation ? $relation->status : null;
-                ?>
-                <?php $this->part('registration-agent', array(
-                    'name' => $def->agentRelationGroupName,
-                    'agent' => $agent,
-                    'status' => $status,
-                    'required' => $required,
-                    'type' => $def->type,
-                    'label' => $def->label,
-                    'description' => $def->description )); ?>
-            <?php endforeach; ?>
+            <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
+            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
+                <div class="registration-label">{{def.label}} <span ng-if="def.required" class="required">*</span></div>
+                <div class="registration-description">{{def.description}}</div>
+                
+                <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
+                    <p ng-if="def.relationStatus < 0" class="alert warning">Aguardando confirmação</p>
+                    <div class="clearfix">
+                        <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
+                        <div>
+                            <a ng-if="def.agent" src="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
+                            <span ng-if="!def.agent">Não informado</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div ng-if="data.isEditable" class="btn-group">
+                    <span ng-if="def.agent">
+                        <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">editar</a>
+                        <a ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" class="botao excluir hltip" title="Excluir {{def.label}}">excluir</a>
+                    </span>
+                    <a ng-if="!def.agent" class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Adicionar {{def.label}}">adicionar</a>
+                </div>
+                
+                <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                    <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p>
+                    <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
+                </edit-box>
+            </li>
         </ul>
     </div>
     <!-- anexos -->
