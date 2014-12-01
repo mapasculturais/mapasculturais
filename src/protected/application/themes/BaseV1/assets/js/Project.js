@@ -283,7 +283,7 @@
             $scope.data = angular.extend({
                 uploadSpinner: false,
                 spinner: false,
-                
+
                 registrationCategories: categories,
                 registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
 
@@ -307,12 +307,12 @@
                     {value: 3, label: 'Rejeitada'},
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovada'},
-                    {value: 0, label: 'Reabrir formulário para alteração'}
+                    {value: 0, label: 'Rascunho'}
                 ],
-                
+
                 relationApiQuery: {}
             }, MapasCulturais);
-            
+
             if(MapasCulturais.entity.registrationAgents){
                 MapasCulturais.entity.registrationAgents.forEach(function(e){
                     $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
@@ -397,7 +397,7 @@
                 if (ov && !nv)
                     adjustBoxPosition();
             });
-            
+
             function replaceRegistrationAgentBy(groupName, agent){
                 for(var i in $scope.data.entity.registrationAgents){
                     var def = $scope.data.entity.registrationAgents[i];
@@ -436,7 +436,7 @@
             $scope.unsetRegistrationAgent = function(entityId, groupName){
                 if(groupName === 'owner')
                     return null;
-                
+
                 var editBoxId = 'editbox-select-registration-' + groupName;
                 RelatedAgentsService.remove(groupName, entityId).success(function(){
                     for(var i in $scope.data.entity.registrationAgents){
