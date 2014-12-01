@@ -171,13 +171,13 @@ MapasCulturais.Editables = {
 
     initProjectUseRegistrationsEditable: function(){
         var $els = $('#inscricoes,#inscritos').add($('#tab-inscricoes,#tab-inscritos').parent());
-        $els.hide();
+        if(!MapasCulturais.entity.useRegistrations){
+            $els.hide();
+        }
         $('#editable-use-registrations').on('hidden', function(e, reason) {
             if($(this).editable('getValue', true) == '1'){
-                $('#editable-use-registrations').html('Este projeto utiliza inscrições online.');
                 $els.show('fast');
             }else{
-                $('#editable-use-registrations').html('Este projeto não utiliza inscrições online.');
                 $els.hide('fast');
             }
         });

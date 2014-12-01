@@ -102,11 +102,6 @@ $this->includeAngularEntityAssets($entity);
                 <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
 
-            <p>
-                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-            </p>
-
-
             <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
                 <div id="registration-period" >
                     <h4 ng-if="data.isEditable">Período de inscrições</h4>
@@ -123,24 +118,22 @@ $this->includeAngularEntityAssets($entity);
                 <!-- #registration-period -->
             <?php endif; ?>
 
-
-         <p>
-            <?php if($this->isEditable()): ?>
-                <div id="editable-use-registrations" class="js-editable" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Não'},{value: 1, text:'Sim'}]">
-                    <?php if ($entity->useRegistrations) : ?>
-                        Este projeto utiliza inscrições online.
-                    <?php else: ?>
-                        Este projeto não utiliza inscrições online.
-                    <?php endif; ?>
-                </div>
-            <?php else: ?>
-                <?php if ($entity->useRegistrations) : ?>
-                    Este projeto utiliza inscrições online.
+            <p>
+                <?php if($this->isEditable()): ?>
+                    <span class="label">Este projeto utiliza inscrições online:</span>
+                    <span id="editable-use-registrations" class="js-editable" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
+                        data-source="[{value: 0, text: 'Não'},{value: 1, text:'Sim'}]">
+                    </span>
                 <?php else: ?>
-                    Este projeto não utiliza inscrições online.
-                <?php endif; ?>
-            <?php endif; ?>
-        </p>
+                    <?php if ($entity->useRegistrations) : ?>
+                        Este projeto utiliza inscrições online. Faça sua <a href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()"> inscrição</a>.
+                   <?php endif; ?>
+               <?php endif; ?>
+           </p>
+
+            <p>
+                <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+            </p>
 
             <div class="servico">
                 <?php if($this->isEditable() || $entity->site): ?>
@@ -203,7 +196,6 @@ $this->includeAngularEntityAssets($entity);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($registrations as $registration) ?>
                         <tr>
                             <td class="registration-id-col">
                             <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
@@ -218,7 +210,7 @@ $this->includeAngularEntityAssets($entity);
                             ?>
                             <td class="registration-agents-col">
                                 <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
-                                <?php echo $agents[0]->name ?>
+                                    <?php echo $agents[0]->name ?>
                                 <?php endif; ?>
                             </td>
                             <?php endforeach; ?>
