@@ -26,6 +26,23 @@ class Registration extends EntityController {
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
+
+        $app->hook('entity(Registration).file(rfc_<<*>>).insert:before', function() use ($app){
+            // find registration file configuration
+            $rfc = null;
+            foreach($this->owner->project->registrationFileConfigurations as $r){
+                if($r->fileGroupName === $this->group){
+                    $rfc = $r;
+                }
+            }
+            $finfo = pathinfo($this->name);
+
+            $this->name = $this->owner->number . ' - ' . preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title) . '.' . $finfo['extension'];
+            $tmpFile = $this->tmpFile;
+            $tmpFile['name'] = $this->name;
+            $this->tmpFile = $tmpFile;
+        });
+
         parent::__construct();
     }
 
