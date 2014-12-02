@@ -15,6 +15,7 @@ return array(
     'Unexpected error.' => 'Erro inesperado.',
     'Please inform all required fields.' => 'Por favor, informe todos os campos obrigatórios.',
     'The agent "%s" is required.' => 'O agente "%s" é obrigatório.',
+    'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
     'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
 
