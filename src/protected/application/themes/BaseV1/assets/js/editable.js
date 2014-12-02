@@ -170,7 +170,7 @@ MapasCulturais.Editables = {
     },
 
     initProjectUseRegistrationsEditable: function(){
-        var $els = $('#inscricoes,#inscritos').add($('#tab-inscricoes,#tab-inscritos').parent());
+        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
         if(!MapasCulturais.entity.useRegistrations){
             $els.hide();
         }
