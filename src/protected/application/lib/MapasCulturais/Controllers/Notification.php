@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Request Controller
@@ -12,6 +13,7 @@ use MapasCulturais\App;
  *
  */
 class Notification extends EntityController {
+    use Traits\ControllerAPI;
 
     function POST_index() {
         App::i()->pass();

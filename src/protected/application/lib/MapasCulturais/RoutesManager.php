@@ -163,7 +163,11 @@ class RoutesManager{
 
     protected final function callAction(Controller $controller, $action_name, array $args, $api_call){
         $controller->setRequestData( $args );
-        $controller->callAction( $api_call ? 'API' : App::i()->request()->getMethod(), $action_name, $args );
+        if($api_call && !$controller->usesAPI()){
+            App::i()->pass();
+        }else{
+            $controller->callAction( $api_call ? 'API' : App::i()->request()->getMethod(), $action_name, $args );
+        }
     }
 
     public function createUrl($controller_id, $action_name = '', array $args = array()){
