@@ -84,4 +84,26 @@ class Registration extends \MapasCulturais\Repository{
 
         return $q->getResult();
     }
+
+    function countByProject(\MapasCulturais\Entities\Project $project, $include_draft = false){
+        if(!$project->id){
+            return 0;
+        }
+        
+        $dql_status = '';
+
+        if(!$include_draft){
+            $dql_status = "AND r.status > 0";
+        }
+
+        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.project = :proj $dql_status";
+
+        $q = $this->_em->createQuery($dql);
+
+        $q->setParameter('proj', $project);
+
+        $num = $q->getSingleScalarResult();
+
+        return $num;
+    }
 }

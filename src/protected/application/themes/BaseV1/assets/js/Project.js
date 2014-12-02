@@ -121,7 +121,8 @@
 
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
-            newFileConfiguration: angular.copy(fileConfigurationSkeleton)
+            newFileConfiguration: angular.copy(fileConfigurationSkeleton),
+            entity: $scope.$parent.data.entity
         };
 
         $scope.fileConfigurationBackups = [];
@@ -436,8 +437,7 @@
                 }
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
                 RelatedAgentsService.create(attrs.name, entity.id).success(function(response){
-                    console.log(response);
-                    if(response.agent.avatar){
+                    if(response.agent.avatar && response.agent.avatar.avatarSmall){
                         response.agent.avatarUrl = response.agent.avatar.avatarSmall.url;
                     }
                     replaceRegistrationAgentBy(attrs.name, response.agent);

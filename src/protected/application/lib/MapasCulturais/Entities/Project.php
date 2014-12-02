@@ -241,30 +241,8 @@ class Project extends \MapasCulturais\Entity
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
-
-    protected function canUserRegister($user = null){
-        if($user->is('guest'))
-            return false;
-
-        return $this->isRegistrationOpen();
-    }
-
-    function getEnabledRelations(){
-        $result = array();
-        foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-            $metadata_name = $def->metadataName;
-            $metadata_value = $this->$metadata_name;
-
-            if($this->$metadata_name !== 'dontUse'){
-                $obj = new \stdClass;
-                $obj->metadataName = $metadata_name;
-                $obj->required = $metadata_value;
-                $obj->label = $def->label;
-            }
-        }
-    }
-
     function setRegistrationCategories($value){
+        $new_value = $value;
         if(is_string($value) && trim($value)){
             $cats = [];
             foreach(explode("\n", trim($value)) as $opt){
@@ -273,10 +251,14 @@ class Project extends \MapasCulturais\Entity
                     $cats[] = $opt;
                 }
             }
-            $this->registrationCategories = $cats;
-        }else{
-            $this->registrationCategories = $value;
+            $new_value = $cats;
         }
+
+        if($new_value != $this->registrationCategories){
+            $this->checkPermission('modifyRegistrationFields');
+        }
+
+        $this->registrationCategories = $new_value;
     }
 
     function publishRegistrations(){
@@ -292,6 +274,37 @@ class Project extends \MapasCulturais\Entity
         return $this->$meta_name;
     }
 
+    function isRegistrationFieldsLocked(){
+        $app = App::i();
+        $cache_id = $this . ':' . __METHOD__;
+        if($app->rcache->contains($cache_id)){
+            return $app->rcache->fetch($cache_id);
+        }else{
+            $num = $app->repo('Registration')->countByProject($this, true);
+            $locked = $num > 0;
+
+            $app->rcache->save($cache_id, $locked);
+            return $locked;
+        }
+    }
+
+    protected function canUserModifyRegistrationFields($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($user->is('admin')){
+            return true;
+        }
+
+        if($this->isRegistrationFieldsLocked()){
+            return false;
+        }
+
+        return $this->canUser('modify', $user);
+
+    }
+
     protected function canUserPublishRegistrations($user){
         if($user->is('guest')){
             return false;
@@ -302,6 +315,14 @@ class Project extends \MapasCulturais\Entity
         }
 
         return $this->canUser('@control', $user);
+    }
+
+
+    protected function canUserRegister($user = null){
+        if($user->is('guest'))
+            return false;
+
+        return $this->isRegistrationOpen();
     }
 
     /** @ORM\PreRemove */
