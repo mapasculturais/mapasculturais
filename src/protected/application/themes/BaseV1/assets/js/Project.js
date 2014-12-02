@@ -543,10 +543,11 @@
                                 }else {
                                     $el = $('#' + field).find('div:first');
                                 }
-                                response.data[field].forEach(function(errorMessage){
-                                    var errorHtml = '<span title="' + errorMessage.replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
-                                    $el.append(errorHtml);
+                                var message = response.data[field].replace(/"/g, '&quot;');
+                                $scope.data.propLabels.forEach(function(prop){
+                                    message = message.replace('{{'+prop.name+'}}', prop.label);
                                 });
+                                $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                             });
                             MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                         }else{
