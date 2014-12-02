@@ -39,12 +39,13 @@ $this->includeAngularEntityAssets($entity);
             <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
         </div>
     </header>
-    <h3 class="registration-header">Formulário de Inscrição</h3>
-
-    <div class="registration-fieldset">
-        <h4>Horário de Envio:</h4>
+    <div class="alert success">
+        Inscrição enviada no dia
         <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i'); ?>
     </div>
+
+    <h3 class="registration-header">Formulário de Inscrição</h3>
+
     <div class="registration-fieldset">
         <h4>Número da Inscrição</h4>
         <div class="registration-id">
