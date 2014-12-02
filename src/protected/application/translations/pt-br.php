@@ -18,6 +18,7 @@ return array(
     'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
     'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
+    'The agent "%s" did not confirm your request.' => 'O agente %s ainda não confirmou sua requisição.',
 
     'The field "%s" of the agent "%s" is required.' => 'O campo "%s" do agente "%s" é obrigatório.',
 
