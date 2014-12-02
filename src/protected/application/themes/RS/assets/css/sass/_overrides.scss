@@ -36,38 +36,72 @@
 
 // extend fontawesome icons styles
 .icone {
-    @extend .fa;
-    font-family: $icon-font-name;
+    display: inline-block;
+    font: normal normal normal 14px/1 $icon-font-name; // shortening font declaration
+    font-size: inherit; // can't have font-size inherit on line above, so need to override
+    text-rendering: auto; // optimizelegibility throws things off #1094
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .icon_calendar {
-    @extend .fa-calendar-o;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f133';
+    }
 }
 .icon_building {
-    @extend .fa-building-o;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f0f7';
+    }
 }
 .icon_profile {
-    @extend .fa-user;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f007';
+    }
 }
 .icon_document_alt {
-    @extend .fa-file-text-o;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f0f6';
+    }
 }
 .icon_search {
-    @extend .fa-search;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f002';
+    }
 }
 .icon_tools {
-    @extend .fa-wrench;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f0ad';
+    }
 }
 .icon_house {
-    @extend .fa-home;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f015';
+    }
 }
 .icon_star {
-    @extend .fa-star;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f005';
+    }
 }
 .arrow_carrot-up {
-    @extend .fa-angle-up;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f106';
+    }
 }
 .arrow_carrot-down {
-    @extend .fa-angle-down;
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f107';
+    }
 }
 
 // dropdown icon

@@ -11,7 +11,7 @@
   src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.2.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff?v=4.2.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.2.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
-.fa, .icone {
+.fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -70,10 +70,10 @@
 .pull-left {
   float: left; }
 
-.fa.pull-left, .pull-left.icone {
+.fa.pull-left {
   margin-right: .3em; }
 
-.fa.pull-right, .pull-right.icone {
+.fa.pull-right {
   margin-left: .3em; }
 
 .fa-spin {
@@ -162,7 +162,7 @@
 .fa-music:before {
   content: ""; }
 
-.fa-search:before, .icon_search:before {
+.fa-search:before {
   content: ""; }
 
 .fa-envelope-o:before {
@@ -171,13 +171,13 @@
 .fa-heart:before {
   content: ""; }
 
-.fa-star:before, .icon_star:before {
+.fa-star:before {
   content: ""; }
 
 .fa-star-o:before {
   content: ""; }
 
-.fa-user:before, .icon_profile:before {
+.fa-user:before {
   content: ""; }
 
 .fa-film:before {
@@ -219,7 +219,7 @@
 .fa-trash-o:before {
   content: ""; }
 
-.fa-home:before, .icon_house:before {
+.fa-home:before {
   content: ""; }
 
 .fa-file-o:before {
@@ -657,7 +657,7 @@
 .fa-globe:before {
   content: ""; }
 
-.fa-wrench:before, .icon_tools:before {
+.fa-wrench:before {
   content: ""; }
 
 .fa-tasks:before {
@@ -840,10 +840,10 @@
 .fa-cutlery:before {
   content: ""; }
 
-.fa-file-text-o:before, .icon_document_alt:before {
+.fa-file-text-o:before {
   content: ""; }
 
-.fa-building-o:before, .icon_building:before {
+.fa-building-o:before {
   content: ""; }
 
 .fa-hospital-o:before {
@@ -885,10 +885,10 @@
 .fa-angle-right:before {
   content: ""; }
 
-.fa-angle-up:before, .arrow_carrot-up:before {
+.fa-angle-up:before {
   content: ""; }
 
-.fa-angle-down:before, .arrow_carrot-down:before {
+.fa-angle-down:before {
   content: ""; }
 
 .fa-desktop:before {
@@ -1011,7 +1011,7 @@
 .fa-shield:before {
   content: ""; }
 
-.fa-calendar-o:before, .icon_calendar:before {
+.fa-calendar-o:before {
   content: ""; }
 
 .fa-fire-extinguisher:before {
@@ -5856,7 +5856,52 @@ button.mfp-arrow-left {
   font-size: 1.6rem; }
 
 .icone {
-  font-family: "FontAwesome"; }
+  display: inline-block;
+  font: normal normal normal 14px/1 "FontAwesome";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon_calendar:before {
+  font-family: "FontAwesome";
+  content: '\f133'; }
+
+.icon_building:before {
+  font-family: "FontAwesome";
+  content: '\f0f7'; }
+
+.icon_profile:before {
+  font-family: "FontAwesome";
+  content: '\f007'; }
+
+.icon_document_alt:before {
+  font-family: "FontAwesome";
+  content: '\f0f6'; }
+
+.icon_search:before {
+  font-family: "FontAwesome";
+  content: '\f002'; }
+
+.icon_tools:before {
+  font-family: "FontAwesome";
+  content: '\f0ad'; }
+
+.icon_house:before {
+  font-family: "FontAwesome";
+  content: '\f015'; }
+
+.icon_star:before {
+  font-family: "FontAwesome";
+  content: '\f005'; }
+
+.arrow_carrot-up:before {
+  font-family: "FontAwesome";
+  content: '\f106'; }
+
+.arrow_carrot-down:before {
+  font-family: "FontAwesome";
+  content: '\f107'; }
 
 .dropdown .placeholder:after {
   font-family: "FontAwesome";
