@@ -821,6 +821,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
+        $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
