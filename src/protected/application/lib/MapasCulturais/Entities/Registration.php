@@ -347,7 +347,12 @@ class Registration extends \MapasCulturais\Entity
                     $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
                 }
             }
+
             if($def->agent){
+                if($def->agent->type->id !== $def->type){
+                    $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
+                    $errors[] = sprintf($app->txt('The agent "%s" must be of type "%s".'), $def->label, $typeDescription);
+                }
 
                 // @TODO: concatenar os campos obrigatórios não preenchidos numa única mensagem de erro
 
