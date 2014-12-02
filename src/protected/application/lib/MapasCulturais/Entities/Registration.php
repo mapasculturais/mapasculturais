@@ -351,22 +351,26 @@ class Registration extends \MapasCulturais\Entity
             if($def->agent){
                 if($def->agent->type->id !== $def->type){
                     $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
-                    $errors[] = sprintf($app->txt('The agent "%s" must be of type "%s".'), $def->label, $typeDescription);
+                    $errors[] = sprintf($app->txt('This agent must be of type "%s".'), $typeDescription);
                 }
 
-                // @TODO: concatenar os campos obrigatórios não preenchidos numa única mensagem de erro
-
+                $erroredProperties  = [];
                 foreach($def->requiredProperties as $requiredProperty){
                     $value = $def->agent->$requiredProperty;
-
                     if(!$value){
-                        $errors[] = sprintf($app->txt('The field "%s" of the agent "%s" is required.'), $requiredProperty, $def->label);
+                        $erroredProperties[] = '{{' . $requiredProperty . '}}';
                     }
                 }
+                if(count($erroredProperties) === 1){
+                    $errors[] = sprintf($app->txt('The field "%s" is required.'), $erroredProperties[0]);
+                }elseif(count($erroredProperties) > 1){
+                    $errors[] = sprintf($app->txt('The fields %s are required.'), implode(', ', $erroredProperties));
+                }
+
             }
 
             if($errors){
-                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = $errors;
+                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = implode(' ', $errors);
             }
 
         }
