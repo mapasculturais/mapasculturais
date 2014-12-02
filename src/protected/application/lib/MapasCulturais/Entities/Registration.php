@@ -208,7 +208,7 @@ class Registration extends \MapasCulturais\Entity
 
     function _getDefinitionsWithAgents(){
         $definitions = App::i()->getRegistrationAgentsDefinitions();
-        foreach($definitions as $groupName=>$def){
+        foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
 

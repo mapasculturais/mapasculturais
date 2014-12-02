@@ -851,31 +851,40 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $result = array();
 
                 if(is_array($permissions)){
-                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                        foreach($permissions as $perm){
-                            $perm = trim($perm);
-                            if($perm[0] === '!'){
-                                if($entity->canUser(substr($perm,1)))
-                                    return false;
-                            }else{
-                                if(!$entity->canUser($perm))
-                                    return false;
-                            }
-                        }
-
-                        return true;
-                    }));
+                    $permissions[] = 'view';
+                }else{
+                    $permissions = array('view');
                 }
+                $rs = array_values(array_filter($rs, function($entity) use($permissions){
+                    foreach($permissions as $perm){
+                        $perm = trim($perm);
+                        if($perm[0] === '!'){
+                            if($entity->canUser(substr($perm,1)))
+                                return false;
+                        }else{
+                            if(!$entity->canUser($perm))
+                                return false;
+                        }
+                    }
+
+                    return true;
+                }));
+
 
                 if($counting)
                     return count($rs);
 
                 $this->apiAddHeaderMetadata($rs);
 
+                if(!$page){
+                    $page = 1;
+                }
+
                 if($page && $limit){
                     $offset = (($page - 1) * $limit);
                     $rs = array_slice($rs, $offset, $limit);
                 }
+                
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);

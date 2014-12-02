@@ -149,6 +149,14 @@ class File extends \MapasCulturais\Entity
         return $this->owner->canUser('modify');
     }
 
+    protected function canUserView($user){
+        if($owner = $this->owner){
+            return $owner->canUser('view');
+        }else{
+            return false;
+        }
+    }
+
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
             throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
