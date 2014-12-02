@@ -306,7 +306,7 @@ $this->includeAngularEntityAssets($entity);
                         <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                             <div class="mc-editable js-open-editbox" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);">
                                 <div class="label">{{fileConfiguration.title}}</div>
-                                <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required === true ? 'Obrigatório' : 'Opcional'}})</span>
+                                <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</span>
                             </div>
                             <!-- edit-box to edit attachment -->
                             <edit-box id="editbox-registration-files-{{fileConfiguration.id}}" position="right" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
