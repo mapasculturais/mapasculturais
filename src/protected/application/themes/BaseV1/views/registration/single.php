@@ -99,13 +99,8 @@ $this->includeAngularEntityAssets($entity);
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
-                <div class="attachment-description">
-                    {{fileConfiguration.description}}
-                    <span ng-if="fileConfiguration.template">
-                        (<a class="attachment-template" target="_blank" href="{{fileConfiguration.template.url}}">baixar modelo</a>)
-                    </span>
-                </div>
                 <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.url}}" target="_blank">{{fileConfiguration.file.name}}</a>
+                <span ng-if="!fileConfiguration.file">Arquivo não enviado.</span>
             </li>
         </ul>
     </div>
