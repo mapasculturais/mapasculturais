@@ -2,11 +2,11 @@
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
     position: relative;
-    z-index: $z-index-10;
+    z-index: $z-index-main-header;
 }
 #main-header #busca {
     position: relative;
-    z-index: $z-index-13;
+    z-index: $z-index-busca;
 }
 #busca-avancada {
     background-color: $gray-light;
@@ -20,7 +20,7 @@
 /*filtro local*/
 #filtro-local {
     position: absolute;
-    z-index: $z-index-8;
+    z-index: $z-index-filtro-local;
     left: 0;
     height: 1.875rem;
 }
