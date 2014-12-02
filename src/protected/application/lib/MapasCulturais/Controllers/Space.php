@@ -18,7 +18,8 @@ class Space extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner;
+        Traits\ControllerChangeOwner,
+        Traits\ControllerAPI;
 
 
     function GET_create() {
