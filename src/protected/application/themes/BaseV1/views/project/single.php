@@ -325,7 +325,7 @@ $this->includeAngularEntityAssets($entity);
                             <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-{{fileConfiguration.id}}" position="right" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
                                 <input type="text" ng-model="fileConfiguration.title" placeholder="Nome do anexo"/>
                                 <textarea ng-model="fileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
-                                <p><label><input type="checkbox" ng-model="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
+                                <p><label><input type="checkbox" ng-model="fileConfiguration.required" ng-checked="fileConfiguration.required">  É obrigatório o envio deste anexo para se inscrever neste projeto</label></p>
                             </edit-box>
                             <div class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template">
                                 <span ng-if="data.entity.canUserModifyRegistrationFields" class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);">{{fileConfiguration.template.name}}</span>
