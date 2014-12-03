@@ -543,7 +543,8 @@
                                 }else {
                                     $el = $('#' + field).find('div:first');
                                 }
-                                var message = response.data[field].replace(/"/g, '&quot;');
+                                var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
+                                message = message.replace(/"/g, '&quot;');
                                 $scope.data.propLabels.forEach(function(prop){
                                     message = message.replace('{{'+prop.name+'}}', prop.label);
                                 });
