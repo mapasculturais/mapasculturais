@@ -408,17 +408,15 @@ $this->includeAngularEntityAssets($entity);
                     <li><span>Aprovada - avaliada e aprovada.</span></li>
                     <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
                 </ul>
-                <div class="close" ng-click="hideStatusInfo()"></div>
+                <div class="close"></div>
             </div>
-
-
             <table class="js-registration-list registrations-table" ng-class="{'no-options': !entity.registrationCategories, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
                 <thead>
                     <tr>
                         <th class="registration-id-col">
                             Inscrição
                         </th>
-                        <th ng-if="entity.registrationCategories" class="registration-option-col">
+                        <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                             <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
                         </th>
                         <th class="registration-agents-col">
@@ -445,7 +443,7 @@ $this->includeAngularEntityAssets($entity);
                     </tr>
                     <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
                         <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-                        <td ng-if="entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+                        <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
                         <td class="registration-agents-col">
                             <p>
                                 <span class="label">Responsável</span><br />
@@ -453,12 +451,12 @@ $this->includeAngularEntityAssets($entity);
                             </p>
 
                             <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
-                                <span class="label">relation.label</span><br />
+                                <span class="label">{{relation.label}}</span><br />
                                 <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                             </p>
                         </td>
                         <td class="registration-attachments-col">
-                            <a class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">file.name</span></a>
+                            <a class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>
