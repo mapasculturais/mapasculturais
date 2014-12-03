@@ -15,6 +15,11 @@ $(function(){
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
 
+    // bind alert close buttons
+    $('.alert .close').click(function(){
+        $(this).parent().hide('fast');
+    });
+
      if($('#funcao-do-agente').length){
         $('#funcao-do-agente .js-options li').click(function(){
             var roleToRemove = $('#funcao-do-agente .js-selected span').data('role');
