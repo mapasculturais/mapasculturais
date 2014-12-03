@@ -80,10 +80,9 @@ $this->includeAngularEntityAssets($entity);
                             <span ng-if="!def.agent">Não informado</span>
                         </div>
                     </div>
-                    <span ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
-                        <span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}
-                        <br>
-                    </span>
+                    <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
+                        <div><span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}</div>
+                    </div>
                 </div>
 
                 <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">

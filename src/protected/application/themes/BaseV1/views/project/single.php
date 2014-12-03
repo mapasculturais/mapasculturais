@@ -97,39 +97,31 @@ $this->includeAngularEntityAssets($entity);
     </ul>
 
     <div id="sobre" class="aba-content">
+
+
+        <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
+            <div class="highlighted-message clearfix">
+                <?php if($this->isEditable() || $entity->registrationFrom): ?>
+                    <div class="alignleft">
+                        Inscrições abertas de
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
+                        a
+                        <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
+                    </div>
+                <?php endif; ?>
+                <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
+                    <a class="botao principal alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
+                <?php endif; ?>
+                <div class="clear" ng-if="data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
+                        data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
+                </div>
+
+            </div>
+        <?php endif; ?>
         <div class="ficha-spcultura">
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                 <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
             <?php endif; ?>
-
-            <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
-                <div id="registration-period" >
-                    <h4 ng-if="data.isEditable">Período de inscrições</h4>
-
-                    <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                        <p class="highlighted-message">
-                            Inscrições abertas de
-                            <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong></span>
-                            a
-                            <span class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-showbuttons="false" data-original-title=""><strong><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong></span>.
-                        </p>
-                    <?php endif; ?>
-                </div>
-                <!-- #registration-period -->
-            <?php endif; ?>
-
-            <p>
-                <?php if($this->isEditable()): ?>
-                    <span class="label">Este projeto utiliza inscrições online:</span>
-                    <span id="editable-use-registrations" class="js-editable" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
-                        data-source="[{value: 0, text: 'Não'},{value: 1, text:'Sim'}]">
-                    </span>
-                <?php else: ?>
-                    <?php if ($entity->useRegistrations) : ?>
-                        Este projeto utiliza inscrições online. Faça sua <a href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()"> inscrição</a>.
-                   <?php endif; ?>
-               <?php endif; ?>
-           </p>
 
             <p>
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
@@ -266,7 +258,7 @@ $this->includeAngularEntityAssets($entity);
         ?>
             <div id="registration-categories" class="registration-fieldset">
                 <h4>3. Opções</h4>
-                <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">É possível criar opções para os proponentes escolherem na hora de se inscrever, como por exemplo categorias. Se não desejar utilizar este recurso, deixe em branco o campo "Opções".</p>
+                <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">É possível criar opções para os proponentes escolherem na hora de se inscrever, como, por exemplo, "categorias" ou "modalidades". Se não desejar utilizar este recurso, deixe em branco o campo "Opções".</p>
                 <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
                 <p>
                     <span class="label">Título das opções</span><br>
