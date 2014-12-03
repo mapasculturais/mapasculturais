@@ -17,7 +17,7 @@ $(function(){
 
     // bind alert close buttons
     $('.alert .close').click(function(){
-        $(this).parent().hide('fast');
+        $(this).parent().slideUp('fast');
     });
 
      if($('#funcao-do-agente').length){
