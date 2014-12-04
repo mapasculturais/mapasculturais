@@ -126,16 +126,16 @@
 	.registration-id-col {
 		width: 18%;
 	}
+	.registration-option-col {
+		width: 25%;
+		text-align: left;
+	}
 	.registration-agents-col {
-		width: 30%;
+		width: 25%;
 		text-align: left;
 	}
 	.registration-attachments-col {
 		width: 12%;
-	}
-	.registration-option-col {
-		width: 30%;
-		text-align: left;
 	}
 	.registration-status-col {
 		width: 20%;
@@ -150,27 +150,40 @@
 			width: 22%;
 		}
 		.registration-agents-col {
-			width: 34%;
+			width: 29%;
 			text-align: left;
 		}
 		.registration-option-col {
-			width: 34%;
+			width: 29%;
 			text-align: left;
 		}
 	}
 	//** Table that doesn't have registration-option-col.
 	&.no-options {
 		.registration-agents-col {
-			width: 60%;
+			width: 50%;
 			text-align: left;
 		}
 	}
+	&.no-attachments {
+		.registration-agents-col {
+			width: 37%;
+			text-align: left;
+		}
+	}
+	&.no-options.no-attachments {
+		.registration-agents-col {
+			width: 62%;
+			text-align: left;
+		}
+	}
+
 }
 //** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
 .my-registrations {
 	@extend .registrations-table;
 	.registration-agents-col {
-		width: 26%;
+		width: 27%;
 	}
 }
 
