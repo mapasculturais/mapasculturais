@@ -212,27 +212,33 @@ class Registration extends \MapasCulturais\Entity
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
 
-            if($meta_val === 'dontUse')
-                continue;
-
-            if($groupName === 'owner'){
-                $relation = $this->owner;
-                $meta_val = 'required';
-                $relation_status = 1;
-            }else{
-                $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
-                if($related_agents){
-                    $relation = $related_agents[0]->agent;
-                    $relation_status = $related_agents[0]->status;
-                }else{
-                    $relation = null;
-                    $relation_status = null;
-                }
-            }
-
             $definitions[$groupName]->use = $meta_val;
-            $definitions[$groupName]->agent = $relation ? $relation : null;
-            $definitions[$groupName]->relationStatus = $relation_status;
+
+            if($meta_val === 'dontUse'){
+                $definitions[$groupName]->agent = null;
+                $definitions[$groupName]->relationStatus = null;
+
+            }else{
+                if($groupName === 'owner'){
+                    $relation = $this->owner;
+                    $meta_val = 'required';
+                    $relation_status = 1;
+                    $definitions[$groupName]->use = 'required';
+                }else{
+                    $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+                    if($related_agents){
+                        $relation = $related_agents[0]->agent;
+                        $relation_status = $related_agents[0]->status;
+                    }else{
+                        $relation = null;
+                        $relation_status = null;
+                    }
+                }
+
+                
+                $definitions[$groupName]->agent = $relation ? $relation : null;
+                $definitions[$groupName]->relationStatus = $relation_status;
+            }
         }
         return $definitions;
     }

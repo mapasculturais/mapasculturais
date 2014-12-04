@@ -80,10 +80,9 @@ $this->includeAngularEntityAssets($entity);
                             <span ng-if="!def.agent">Não informado</span>
                         </div>
                     </div>
-                    <span ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
-                        <span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}
-                        <br>
-                    </span>
+                    <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
+                        <div><span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}</div>
+                    </div>
                 </div>
 
                 <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
@@ -94,7 +93,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <!-- anexos -->
-    <div id="registration-attachments" class="registration-fieldset">
+    <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos</h4>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">

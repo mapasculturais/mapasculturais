@@ -19,13 +19,13 @@ return array(
     'This agent is required.' => 'Este agente é obrigatório.',
     'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
     'This agent must be of type "%s".' => 'Este agente deve ser do tipo "%s".',
-    'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
-    'The fields %s are required.' => 'Os campos %s são obrigatórios.',
+    'The field "%s" is required.' => 'Este agente precisa ter o campo "%s" preenchido.',
+    'The fields %s are required.' => 'Este agente precisa ter os campos %s preenchidos.',
     'The field "%s" of the agent "%s" is required.' => 'O campo "%s" do agente "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
 
-    'The agent "%s" did not confirm your request.' => 'O agente %s ainda não confirmou sua requisição.',
-    
+    'The agent "%s" did not confirm your request.' => 'O agente %s ainda não confirmou sua participação neste projeto.',
+
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',
 

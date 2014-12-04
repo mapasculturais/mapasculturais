@@ -95,7 +95,7 @@ return array(
     'registration.agentRelations' => array(
         array(
             'required' => false,
-            'label' => 'Instituição',
+            'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
             'description' => 'Agente coletivo com CNPJ',
             'type' => 2,

@@ -63,8 +63,8 @@ $this->includeAngularEntityAssets($entity);
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
-            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
-                <div class="registration-label">{{def.label}} <span ng-if="def.required" class="required">*</span></div>
+            <li ng-repeat="def in data.entity.registrationAgents" ng-if="def.use != 'dontUse'" class="registration-list-item">
+                <div class="registration-label">{{def.label}} <span ng-if="def.use === 'required'" class="required">*</span></div>
                 <div class="registration-description">{{def.description}}</div>
 
                 <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
@@ -80,7 +80,7 @@ $this->includeAngularEntityAssets($entity);
 
                 <div ng-if="data.isEditable" class="btn-group">
                     <span ng-if="def.agent">
-                        <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">editar</a>
+                        <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">trocar agente</a>
                         <a ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" class="botao excluir hltip" title="Excluir {{def.label}}">excluir</a>
                     </span>
                     <a ng-if="!def.agent" class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Adicionar {{def.label}}">adicionar</a>
@@ -94,9 +94,9 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <!-- anexos -->
-    <div id="registration-attachments" class="registration-fieldset">
+    <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos</h4>
-        <p class="registration-help">Anexator descrivinhator helpior.</p>
+        <p class="registration-help">Para efetuar sua inscrição, faça upload dos seguintes anexos.</p>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
@@ -133,7 +133,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <div class="registration-fieldset">
-        <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. Depois de enviada, não será mais possível editá-la.</p>
+        <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. <strong>Depois de enviada, não será mais possível editá-la.</strong></p>
         <a class="botao principal" ng-click="sendRegistration()">enviar inscrição</a>
     </div>
 </article>

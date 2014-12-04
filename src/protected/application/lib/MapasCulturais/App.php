@@ -1202,7 +1202,7 @@ class App extends \Slim\Slim{
 
     function getRegistrationAgentsDefinitions(){
         $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
-        foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName=>$def){
+        foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
             $definitions[$groupName] = $def;
         }
         return $definitions;
