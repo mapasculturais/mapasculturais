@@ -405,7 +405,7 @@ $this->includeAngularEntityAssets($entity);
                 </ul>
                 <div class="close"></div>
             </div>
-            <table class="js-registration-list registrations-table" ng-class="{'no-options': !entity.registrationCategories, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
+            <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.fileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
                 <thead>
                     <tr>
                         <th class="registration-id-col">
