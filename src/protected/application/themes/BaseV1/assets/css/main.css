@@ -3342,14 +3342,14 @@ h1 .icone {
     list-style: none; }
   .registrations-table .registration-id-col, .my-registrations .registration-id-col {
     width: 18%; }
+  .registrations-table .registration-option-col, .my-registrations .registration-option-col {
+    width: 25%;
+    text-align: left; }
   .registrations-table .registration-agents-col, .my-registrations .registration-agents-col {
-    width: 30%;
+    width: 25%;
     text-align: left; }
   .registrations-table .registration-attachments-col, .my-registrations .registration-attachments-col {
     width: 12%; }
-  .registrations-table .registration-option-col, .my-registrations .registration-option-col {
-    width: 30%;
-    text-align: left; }
   .registrations-table .registration-status-col, .my-registrations .registration-status-col {
     width: 20%; }
     .registrations-table .registration-status-col .dropdown, .my-registrations .registration-status-col .dropdown {
@@ -3358,17 +3358,23 @@ h1 .icone {
   .registrations-table.registrations-results .registration-id-col, .registrations-results.my-registrations .registration-id-col {
     width: 22%; }
   .registrations-table.registrations-results .registration-agents-col, .registrations-results.my-registrations .registration-agents-col {
-    width: 34%;
+    width: 29%;
     text-align: left; }
   .registrations-table.registrations-results .registration-option-col, .registrations-results.my-registrations .registration-option-col {
-    width: 34%;
+    width: 29%;
     text-align: left; }
   .registrations-table.no-options .registration-agents-col, .no-options.my-registrations .registration-agents-col {
-    width: 60%;
+    width: 50%;
+    text-align: left; }
+  .registrations-table.no-attachments .registration-agents-col, .no-attachments.my-registrations .registration-agents-col {
+    width: 37%;
+    text-align: left; }
+  .registrations-table.no-options.no-attachments .registration-agents-col, .no-options.no-attachments.my-registrations .registration-agents-col {
+    width: 62%;
     text-align: left; }
 
 .my-registrations .registration-agents-col {
-  width: 26%; }
+  width: 27%; }
 
 .status-sent, .status-approved, .status-notapproved, .status-waitlist, .status-invalid, .status-draft {
   display: inline-block;
@@ -3412,6 +3418,7 @@ h1 .icone {
   .registration-form .input-text {
     box-sizing: border-box;
     height: 2rem;
+    margin-right: 5px;
     padding: 3px 6px;
     background: #fff;
     border: 1px solid #ccc;
