@@ -366,7 +366,7 @@
             };
 
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário?'))){
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                         if(registration.status === 0){
                             $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
@@ -412,11 +412,15 @@
                     adjustBoxPosition();
             });
 
-            function replaceRegistrationAgentBy(groupName, agent){
+            function replaceRegistrationAgentBy(groupName, agent, relationStatus){
                 for(var i in $scope.data.entity.registrationAgents){
                     var def = $scope.data.entity.registrationAgents[i];
-                    if(def.agentRelationGroupName === groupName)
+                    if(def.agentRelationGroupName === groupName){
                         def.agent = agent;
+                        if(typeof relationStatus !== 'undefined'){
+                            def.relationStatus = relationStatus;
+                        }
+                    }
                 }
             }
 
@@ -440,9 +444,10 @@
                     if(response.agent.avatar && response.agent.avatar.avatarSmall){
                         response.agent.avatarUrl = response.agent.avatar.avatarSmall.url;
                     }
-                    replaceRegistrationAgentBy(attrs.name, response.agent);
+                    replaceRegistrationAgentBy(attrs.name, response.agent, response.status);
                     EditBox.close(editBoxId);
-                    MapasCulturais.Messages.success('Alterações salvas.');
+                    if(response.status > 0)
+                        MapasCulturais.Messages.success('Alterações salvas.');
                 });
             };
 
@@ -543,7 +548,8 @@
                                 }else {
                                     $el = $('#' + field).find('div:first');
                                 }
-                                var message = response.data[field].replace(/"/g, '&quot;');
+                                var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
+                                message = message.replace(/"/g, '&quot;');
                                 $scope.data.propLabels.forEach(function(prop){
                                     message = message.replace('{{'+prop.name+'}}', prop.label);
                                 });

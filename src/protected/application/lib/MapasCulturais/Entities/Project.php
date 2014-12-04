@@ -271,7 +271,7 @@ class Project extends \MapasCulturais\Entity
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
         $meta_name = $def->getMetadataName();
-        return $this->$meta_name;
+        return $this->$meta_name != 'dontUse';
     }
 
     function isRegistrationFieldsLocked(){

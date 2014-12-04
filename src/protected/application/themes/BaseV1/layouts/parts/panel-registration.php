@@ -30,7 +30,4 @@ $proj = $registration->project;
         <div><span class="label"><?php echo $proj->registrationCategTitle ?>:</span> <?php echo $registration->category ?></div>
         <?php endif; ?>
     </div>
-    <div>
-        <a class="action" href="#">editar</a>
-    </div>
 </article>
