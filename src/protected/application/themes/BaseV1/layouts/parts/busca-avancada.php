@@ -104,7 +104,7 @@
                 <span class="label">Tipo</span>
                 <div id="tipo-de-agente" class="dropdown">
                     <div class="placeholder">{{getName(types.agent, data.agent.type)}}&nbsp;</div>
-                    <div class="submenu-dropdown">
+                    <div class="submenu-dropdown" data-closeonclick="true">
                         <ul>
                             <li ng-repeat="type in types.agent" ng-click="data.agent.type = type.id">
                                 <span>{{type.name}}</span>
