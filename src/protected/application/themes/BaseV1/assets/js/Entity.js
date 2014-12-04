@@ -390,11 +390,6 @@
                     }else{
                         $scope.model = item.value;
                     }
-
-                    $($event.target).parents('.js-submenu-dropdown').hide();
-                    setTimeout(function(){
-                        $($event.target).parents('.js-submenu-dropdown').css('display','');
-                    },500);
                 },
 
                 $scope.getSelectedValue = function(){
