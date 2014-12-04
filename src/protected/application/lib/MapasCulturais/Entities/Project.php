@@ -274,6 +274,16 @@ class Project extends \MapasCulturais\Entity
         return $this->$meta_name != 'dontUse';
     }
 
+
+    function getUsedAgentRelations(){
+        $app = App::i();
+        $r = [];
+        foreach($app->getRegistrationAgentsDefinitions() as $def)
+            if($this->useRegistrationAgentRelation($def))
+                $r[] = $def;
+        return $r;
+    }
+
     function isRegistrationFieldsLocked(){
         $app = App::i();
         $cache_id = $this . ':' . __METHOD__;
