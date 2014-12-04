@@ -6,7 +6,7 @@
 }
 #main-header #busca {
     position: relative;
-    z-index: $z-index-filtro-local;
+    z-index: $z-index-editable-entity;
 }
 #busca-avancada {
     background-color: $gray-light;
@@ -20,7 +20,7 @@
 /*filtro local*/
 #filtro-local {
     position: absolute;
-    z-index: $z-index-filtro-local;
+    z-index: $z-index-editable-entity;
     left: 0;
     height: 1.875rem;
 }
