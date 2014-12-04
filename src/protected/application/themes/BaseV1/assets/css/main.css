@@ -2524,10 +2524,7 @@ table.contratos td {
     background: #e2e2e2;
     border-radius: 2px;
     box-shadow: rgba(0, 0, 0, 0.35) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 1px 2px 0;
-    -webkit-transition: opacity .5s;
-    transition: opacity .5s;
-    opacity: 0; }
+    -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 1px 2px 0; }
     .dropdown .submenu-dropdown:before {
       content: '\42';
       position: absolute;
