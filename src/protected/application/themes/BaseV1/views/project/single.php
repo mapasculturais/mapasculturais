@@ -252,7 +252,7 @@ $this->includeAngularEntityAssets($entity);
             if($can_edit){
                 $registration_categories = $entity->registrationCategories ? implode("\n", $entity->registrationCategories) : '';
             }else{
-                $registration_categories = implode('; ', $entity->registrationCategories);
+                $registration_categories = is_array($entity->registrationCategories) ? implode('; ', $entity->registrationCategories) : '';
             }
 
         ?>
