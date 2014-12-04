@@ -96,7 +96,7 @@ $this->includeAngularEntityAssets($entity);
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos</h4>
-        <p class="registration-help">Para efetuar sua inscrição, faça upload dos seguintes anexos.</p>
+        <p class="registration-help">Para efetuar sua inscrição, faça upload dos seguintes anexos. Serão aceitos arquivos do Microsoft Office, LibreOffice, PDF, imagens (jpg e png) e arquivos de vídeo e áudio.</p>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
