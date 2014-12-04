@@ -264,9 +264,7 @@ $url_search_projects = $this->searchProjectsUrl;
 <article id="capa-desenvolvedores" class="js-page-menu-item objeto-capa clearfix fundo-roxo">
     <div class="box">
         <h1><span class="icone icon_tools"></span> Desenvolvedores</h1>
-        <p>
-             
-        </p>
+        <p><?php $this->dict('home: home_devs'); ?> </p>
     </div>
 </article>
 <nav id="capa-nav">
