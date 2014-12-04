@@ -93,7 +93,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <!-- anexos -->
-    <div id="registration-attachments" class="registration-fieldset">
+    <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos</h4>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">

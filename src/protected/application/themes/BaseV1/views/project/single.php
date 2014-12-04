@@ -188,6 +188,7 @@ $this->includeAngularEntityAssets($entity);
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($registrations as $registration): ?>
                         <tr>
                             <td class="registration-id-col">
                             <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
@@ -207,6 +208,7 @@ $this->includeAngularEntityAssets($entity);
                             </td>
                             <?php endforeach; ?>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
         <?php endif; ?>
@@ -282,7 +284,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
                     $metadata_name = $def->metadataName;
                     if($can_edit){
-                        $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'optional';
+                        $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
                     }else{
                         $option_label = $def->getOptionLabel($entity->$metadata_name);
                     }
@@ -367,6 +369,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
                 <form id="project-registration" class="registration-form clearfix">
+                    <p class="registration-help">Para iniciar sua inscrição, selecione o Agente responsável. Ele deve ser um agente individual, com um CPF válido preenchido.</p>
                     <div>
                         <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsável'}}</div>
                         <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
@@ -414,7 +417,7 @@ $this->includeAngularEntityAssets($entity);
                         <th class="registration-agents-col">
                             Agentes
                         </th>
-                        <th class="registration-attachments-col">
+                        <th ng-if="data.fileConfigurations.length > 0" class="registration-attachments-col">
                             Anexos
                         </th>
                         <th class="registration-status-col">
@@ -447,7 +450,7 @@ $this->includeAngularEntityAssets($entity);
                                 <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                             </p>
                         </td>
-                        <td class="registration-attachments-col">
+                        <td ng-if="data.fileConfigurations.length > 0" class="registration-attachments-col">
                             <a class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
                         </td>
                         <td class="registration-status-col">
