@@ -51,4 +51,22 @@ class Project extends EntityController {
             $app->redirect($app->request->getReferer());
         }
     }
+
+
+    function GET_report(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->repo()->find($this->urlData['id']);
+
+        if(!$entity)
+            $app->pass();
+
+        $entity->checkPermission('@control');
+
+        $this->render('report', array('entity' => $entity));
+    }
 }

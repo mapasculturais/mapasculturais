@@ -391,7 +391,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="#">Baixar lista de inscritos</a>
+                <a class="alignright botao download" target="_blank" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
             </div>
             <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
@@ -405,7 +405,7 @@ $this->includeAngularEntityAssets($entity);
                 </ul>
                 <div class="close"></div>
             </div>
-            <table class="js-registration-list registrations-table" ng-class="{'no-options': !entity.registrationCategories, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
+            <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
                 <thead>
                     <tr>
                         <th class="registration-id-col">
@@ -417,7 +417,7 @@ $this->includeAngularEntityAssets($entity);
                         <th class="registration-agents-col">
                             Agentes
                         </th>
-                        <th ng-if="data.fileConfigurations.length > 0" class="registration-attachments-col">
+                        <th ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
                             Anexos
                         </th>
                         <th class="registration-status-col">
@@ -450,8 +450,8 @@ $this->includeAngularEntityAssets($entity);
                                 <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                             </p>
                         </td>
-                        <td ng-if="data.fileConfigurations.length > 0" class="registration-attachments-col">
-                            <a class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
+                        <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
+                            <a ng-if="reg.files.zipArchive.url" class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>
