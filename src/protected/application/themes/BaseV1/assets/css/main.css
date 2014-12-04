@@ -2557,9 +2557,6 @@ table.contratos td {
       transition: all .2s; }
       .dropdown .submenu-dropdown li:focus, .dropdown .submenu-dropdown li:hover {
         background: #ccc; }
-  .dropdown:hover .submenu-dropdown {
-    display: block;
-    opacity: 1; }
 
 .dropdown-select {
   box-sizing: border-box;
