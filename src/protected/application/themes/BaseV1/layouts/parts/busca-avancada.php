@@ -102,7 +102,7 @@
             <!--.filtro-->
             <div class="filtro">
                 <span class="label">Tipo</span>
-                <div id="tipo-de-agente" class="dropdown">
+                <div id="tipo-de-agente" class="dropdown" data-closeonclick="true">
                     <div class="placeholder">{{getName(types.agent, data.agent.type)}}&nbsp;</div>
                     <div class="submenu-dropdown">
                         <ul>

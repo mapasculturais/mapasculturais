@@ -317,7 +317,7 @@
 
                 propLabels : [
                     {name: 'nomeCompleto', label: 'Nome Completo'},
-                    {name: 'documento', label: 'Documento'},
+                    {name: 'documento', label: 'CPF/CNPJ'},
                     {name: 'dataDeNascimento', label: 'Data de Nascimento/Fundação'},
                     {name: 'genero', label: 'Gênero'},
                     {name: 'raca', label: 'Raça/Cor'},

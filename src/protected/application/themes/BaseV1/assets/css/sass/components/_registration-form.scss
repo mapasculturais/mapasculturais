@@ -22,6 +22,7 @@
     .input-text {
         box-sizing: border-box;
         height: 2rem;
+        margin-right: 5px;
         padding: 3px 6px;
         background: #fff;
         border: 1px solid $gray;
@@ -125,7 +126,7 @@
     .attachment-list-item {
         position: relative;
         padding: $padding-base;
-        padding-right: 11rem;
+        padding-right: 14rem;
         border-bottom: 1px solid $gray-lighter;
         .attachment-title {
             font-size: $font-size-smaller;

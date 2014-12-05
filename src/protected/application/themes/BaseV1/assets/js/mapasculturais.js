@@ -20,6 +20,33 @@ $(function(){
         $(this).parent().slideUp('fast');
     }).css('cursor', 'pointer');
 
+    // dropdown
+
+
+    $('body').on('click', '.dropdown .placeholder', function(){
+        var $dropdown = $(this).parents('.dropdown'),
+            $submenu = $dropdown.find('.submenu-dropdown');
+
+        if($submenu.is(':visible')){
+            $submenu.hide();
+        }else{
+            $submenu.show();
+        }
+
+        if(!$dropdown.data('init')){
+            $dropdown.data('init', true);
+
+            if($dropdown.data('closeonclick')){
+                $submenu.click(function(){
+                    $submenu.hide();
+                });
+            }
+            $dropdown.mouseleave(function(){
+                $submenu.hide();
+            });
+        }
+    });
+
      if($('#funcao-do-agente').length){
         $('#funcao-do-agente .js-options li').click(function(){
             var roleToRemove = $('#funcao-do-agente .js-selected span').data('role');
