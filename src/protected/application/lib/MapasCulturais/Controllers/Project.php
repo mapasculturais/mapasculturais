@@ -51,4 +51,33 @@ class Project extends EntityController {
             $app->redirect($app->request->getReferer());
         }
     }
+
+
+    function GET_report(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->repo()->find($this->urlData['id']);
+
+        if(!$entity)
+            $app->pass();
+
+        $entity->checkPermission('@control');
+
+        $response = $app->response();
+        //$response['Content-Encoding'] = 'UTF-8';
+        $response['Content-Type'] = 'application/force-download';
+        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
+        $response['Pragma'] ='no-cache';
+
+        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        
+        ob_start();
+        $this->partial('report', array('entity' => $entity));
+        $output = ob_get_clean();
+        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
+    }
 }

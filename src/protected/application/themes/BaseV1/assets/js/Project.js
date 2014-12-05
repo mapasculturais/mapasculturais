@@ -232,10 +232,14 @@
         });
 
         $scope.sendFile = function(attrs){
-            $('#' + attrs.id + ' form').submit().
-                    on('ajaxForm.success', function(){
-                        MapasCulturais.Messages.success('Alterações salvas.');
-                    });
+            var $form = $('#' + attrs.id + ' form');
+            $form.submit();
+            if(!$form.data('onSuccess')){
+                $form.data('onSuccess', true);
+                $form.on('ajaxForm.success', function(){
+                    MapasCulturais.Messages.success('Alterações salvas.');
+                });
+            }
         };
 
         $scope.openFileEditBox = function(id, index, event){
@@ -313,7 +317,7 @@
 
                 propLabels : [
                     {name: 'nomeCompleto', label: 'Nome Completo'},
-                    {name: 'documento', label: 'Documento'},
+                    {name: 'documento', label: 'CPF/CNPJ'},
                     {name: 'dataDeNascimento', label: 'Data de Nascimento/Fundação'},
                     {name: 'genero', label: 'Gênero'},
                     {name: 'raca', label: 'Raça/Cor'},
