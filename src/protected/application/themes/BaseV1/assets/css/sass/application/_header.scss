@@ -185,6 +185,7 @@
 .submenu {
     display: none;
     position: absolute;
+    z-index: $z-index-main-header+1;
     top: 70px;
     margin: 0;
     padding: $padding-base;

@@ -2,11 +2,9 @@
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
     position: relative;
-    z-index: $z-index-main-header;
 }
 #main-header #busca {
     position: relative;
-    z-index: $z-index-editable-entity;
 }
 #busca-avancada {
     background-color: $gray-light;

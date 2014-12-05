@@ -506,12 +506,10 @@ h6 {
 /* =Busca avançada
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
-  position: relative;
-  z-index: 1700; }
+  position: relative; }
 
 #main-header #busca {
-  position: relative;
-  z-index: 9999; }
+  position: relative; }
 
 #busca-avancada {
   background-color: #e2e2e2;
@@ -1283,6 +1281,7 @@ h6 {
 .submenu {
   display: none;
   position: absolute;
+  z-index: 1701;
   top: 70px;
   margin: 0;
   padding: 0.75rem;
@@ -2202,6 +2201,7 @@ nav.sidebar-left .icone {
     border-color: #a6dfa6;
     color: #66cc66; }
   .alert.automatic {
+    padding: .25rem .75rem;
     background: #eee;
     border-color: #ddd;
     color: #666; }
@@ -2812,7 +2812,7 @@ h1 .icone {
   display: none;
   margin-top: 15px;
   padding: 1.5rem;
-  z-index: 3000;
+  z-index: 1900;
   background: #fff;
   border-top: 4px solid #f90;
   border-radius: 2px;
