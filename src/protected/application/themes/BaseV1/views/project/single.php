@@ -224,7 +224,7 @@ $this->includeAngularEntityAssets($entity);
         <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4>2. Regulamento</h4>
-            <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .xxx, .xxx, .xxx.</p>
+            <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf.</p>
             <a class="botao enviar hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
                 <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
