@@ -235,7 +235,7 @@ class Registration extends \MapasCulturais\Entity
                     }
                 }
 
-                
+
                 $definitions[$groupName]->agent = $relation ? $relation : null;
                 $definitions[$groupName]->relationStatus = $relation_status;
             }
@@ -365,7 +365,9 @@ class Registration extends \MapasCulturais\Entity
 
                     $erroredProperties  = [];
                     foreach($def->requiredProperties as $requiredProperty){
+                        $app->disableAccessControl();
                         $value = $def->agent->$requiredProperty;
+                        $app->enableAccessControl();
                         if(!$value){
                             $erroredProperties[] = '{{' . $requiredProperty . '}}';
                         }

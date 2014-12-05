@@ -18,7 +18,7 @@ $(function(){
     // bind alert close buttons
     $('.alert .close').click(function(){
         $(this).parent().slideUp('fast');
-    });
+    }).css('cursor', 'pointer');
 
     // dropdown
 
