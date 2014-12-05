@@ -60,8 +60,8 @@ if($this->isEditable()){
                 </div>
             <?php endif; ?>
             <!-- se estiver na página de edição e logado mostrar:-->
-            <?php if ($this->controller->action !== 'create'): ?>
-                <a href="<?php echo $this->controller->createUrl('single', array($entity->id)) ?>" class="botao principal js-toggle-edit">Sair do modo de edição</a>
+            <?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
+                <a href="<?php echo $entity->singleUrl?>" class="botao principal js-toggle-edit">Sair do modo de edição</a>
             <?php endif; ?>
             <a id="submitButton" class="botao principal" data-legend="Salvar" data-legend-submitted="salvo">Salvar</a>
         </div>

@@ -252,7 +252,7 @@
             openEditboxes: {},
 
             register: function(editboxId){
-                if(this.openEditboxes[editboxId])
+                if(this.openEditboxes[editboxId] && document.getElementById(editboxId))
                     throw new Error('EditBox with id ' + editboxId + ' already exists');
 
                 this.openEditboxes[editboxId] = false;
@@ -267,9 +267,13 @@
             },
 
             open: function(editboxId, $event){
-
                 if(typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
+
+                // close all
+                for(var id in this.openEditboxes){
+                    this.close(id);
+                }
 
                 this.openEditboxes[editboxId] = true;
 
@@ -280,7 +284,9 @@
 
                 var $firstInput = $($box.find('input,select,textarea').get(0));
                 $firstInput.focus();
-                setPosition($box, $event.target);
+
+
+                setTimeout(function(){ setPosition($box, $event.target); });
             },
 
             close: function(editboxId){
@@ -384,11 +390,6 @@
                     }else{
                         $scope.model = item.value;
                     }
-
-                    $($event.target).parents('.js-submenu-dropdown').hide();
-                    setTimeout(function(){
-                        $($event.target).parents('.js-submenu-dropdown').css('display','');
-                    },500);
                 },
 
                 $scope.getSelectedValue = function(){

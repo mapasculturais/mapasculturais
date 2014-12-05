@@ -73,6 +73,29 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $owner;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
+     */
+    protected $createTimestamp;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
+     */
+    protected $sentTimestamp;
+
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="agents_data", type="json_array", nullable=true)
+     */
+    protected $_agentsData = array();
+
 
     /**
      * @var integer
@@ -81,10 +104,12 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_DRAFT;
 
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+
 
     function __construct() {
         $this->owner = App::i()->user->profile;
@@ -96,6 +121,7 @@ class Registration extends \MapasCulturais\Entity
             'id' => $this->id,
             'project' => $this->project->simplify('id,name,singleUrl'),
             'number' => $this->number,
+            'category' => $this->category,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => array(),
             'files' => array(),
@@ -133,6 +159,14 @@ class Registration extends \MapasCulturais\Entity
         $this->project = $agent;
     }
 
+    function getSingleUrl(){
+        return App::i()->createUrl('registration', 'view', array($this->id));
+    }
+
+    function getEditUrl(){
+        return App::i()->createUrl('registration', 'view', array($this->id));
+    }
+
     /**
      *
      * @return
@@ -154,6 +188,66 @@ class Registration extends \MapasCulturais\Entity
             return $request->agent;
         }else{
             return $this->owner;
+        }
+    }
+
+    protected function _getAgentsWithDefinitions(){
+        $definitions = App::i()->getRegistrationAgentsDefinitions();
+        $owner = $this->owner;
+        $owner->definition = $definitions['owner'];
+        $agents = [$owner];
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+            $agent = $relatedAgents[0];
+            $agent->groupName = $groupName;
+            $agent->definition = $definitions[$groupName];
+            $agents[] = $agent;
+        }
+        return $agents;
+    }
+
+
+    function _getDefinitionsWithAgents(){
+        $definitions = App::i()->getRegistrationAgentsDefinitions();
+        foreach($definitions as $groupName => $def){
+            $metadata_name = $def->metadataName;
+            $meta_val = $this->project->$metadata_name;
+
+            $definitions[$groupName]->use = $meta_val;
+
+            if($meta_val === 'dontUse'){
+                $definitions[$groupName]->agent = null;
+                $definitions[$groupName]->relationStatus = null;
+
+            }else{
+                if($groupName === 'owner'){
+                    $relation = $this->owner;
+                    $meta_val = 'required';
+                    $relation_status = 1;
+                    $definitions[$groupName]->use = 'required';
+                }else{
+                    $related_agents = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
+                    if($related_agents){
+                        $relation = $related_agents[0]->agent;
+                        $relation_status = $related_agents[0]->status;
+                    }else{
+                        $relation = null;
+                        $relation_status = null;
+                    }
+                }
+
+                
+                $definitions[$groupName]->agent = $relation ? $relation : null;
+                $definitions[$groupName]->relationStatus = $relation_status;
+            }
+        }
+        return $definitions;
+    }
+
+    function getAgentsData(){
+        if($this->canUser('view')){
+            return $this->_agentsData;
+        }else{
+            return [];
         }
     }
 
@@ -221,9 +315,17 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $app->disableAccessControl();
-        // copiar dados dos agentes
+
+        // copies agents data including configured private
+
+        // creates zip archive of all files
+        if($this->files){
+            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . '.zip');
+        }
 
         $this->status = self::STATUS_SENT;
+        $this->sentTimestamp = new \DateTime;
+        $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
         $app->enableAccessControl();
     }
@@ -231,31 +333,55 @@ class Registration extends \MapasCulturais\Entity
     function getSendValidationErrors(){
         $app = App::i();
 
-        $result = [];
+        $errorsResult = [];
 
         $project = $this->project;
 
-
         if($project->registrationCategories && !$this->category){
-            $result['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+            $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
 
+        $definitionsWithAgents = $this->_getDefinitionsWithAgents();
 
-        foreach($app->getRegisteredRegistrationAgentRelations() as $def){
+        foreach($definitionsWithAgents as $def){
             $errors = [];
-            $metadata_name = $def->metadataName;
-            $meta_val = $project->$metadata_name;
-            $relation = $this->getRelatedAgents($def->agentRelationGroupName, true, true);
-            if($meta_val === 'dontUse') {
-               continue;
-            }elseif($meta_val === 'required'){
-               if(!$relation){
-                   $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
-               }
+
+            // @TODO: validar o tipo do agente
+
+            if($def->use === 'required'){
+                if(!$def->agent){
+                    $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+                }
             }
+
+            if($def->agent){
+                if($def->relationStatus < 0){
+                    $errors[] = sprintf($app->txt('The agent "%s" did not confirm your request.'), $def->agent->name);
+                }else{
+                    if($def->agent->type->id !== $def->type){
+                        $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
+                        $errors[] = sprintf($app->txt('This agent must be of type "%s".'), $typeDescription);
+                    }
+
+                    $erroredProperties  = [];
+                    foreach($def->requiredProperties as $requiredProperty){
+                        $value = $def->agent->$requiredProperty;
+                        if(!$value){
+                            $erroredProperties[] = '{{' . $requiredProperty . '}}';
+                        }
+                    }
+                    if(count($erroredProperties) === 1){
+                        $errors[] = sprintf($app->txt('The field "%s" is required.'), $erroredProperties[0]);
+                    }elseif(count($erroredProperties) > 1){
+                        $errors[] = sprintf($app->txt('The fields %s are required.'), implode(', ', $erroredProperties));
+                    }
+                }
+            }
+
             if($errors){
-                $result['registration-agent-' . $def->agentRelationGroupName] = $errors;
+                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = implode(' ', $errors);
             }
+
         }
 
         foreach($project->registrationFileConfigurations as $rfc){
@@ -266,18 +392,43 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
             if($errors){
-                $result['registration-file-' . $rfc->id] = $errors;
+                $errorsResult['registration-file-' . $rfc->id] = $errors;
             }
         }
 
-
-
-        // @TODO: validar agentes (retornar false se não for válido)
-        // @TODO: validar arquivos (retornar false se não for válido)
-
-        return $result;
+        return $errorsResult;
     }
 
+    protected function _getAgentsData(){
+        $app = App::i();
+
+        $agentProperties = Agent::getPropertiesMetadata();
+
+        $privatePropertiesToExport = $app->config['registration.privatePropertiesToExport'];
+
+        $exportData = [];
+
+        foreach($this->_getAgentsWithDefinitions() as $agent){
+
+            $exportData[$agent->definition->agentRelationGroupName] = [];
+
+            foreach($agentProperties as $p => $details){
+
+                $val = $agent->$p;
+
+                if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
+                    continue;
+                }
+
+                if( !$details['isMetadata'] || !$details['private'] || in_array($p, $agent->definition->requiredProperties) || in_array($p, $privatePropertiesToExport) ){
+                    $exportData[$agent->definition->agentRelationGroupName][$p] = $val;
+                }
+
+            }
+        }
+
+        return $exportData;
+    }
 
     protected function canUserView($user){
         if($user->is('guest')){

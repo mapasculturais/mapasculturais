@@ -78,22 +78,34 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-
+    'registration.privatePropertiesToExport' => array(
+        'documento',
+        'emailPrivado',
+        'telefone1',
+        'telefone2'
+    ),
+    'registration.ownerDefinition' => array(
+        'required' => true,
+        'label' => 'Agente Responsável',
+        'agentRelationGroupName' => 'owner',
+        'description' => 'Agente individual com CPF cadastrado',
+        'type' => 1,
+        'requiredProperties' => array('documento')
+    ),
     'registration.agentRelations' => array(
         array(
             'required' => false,
-            'label' => 'Instituição',
+            'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'agente coletivo com CNPJ',
+            'description' => 'Agente coletivo com CNPJ',
             'type' => 2,
             'requiredProperties' => array('documento')
         ),
-
         array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'agente coletivo sem CNPJ',
+            'description' => 'Agente coletivo sem CNPJ',
             'type' => 2,
             'requiredProperties' => array()
         )
@@ -219,7 +231,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscricao' => array('registration', 'single'),
+            'inscricao' => array('registration', 'view'),
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -230,7 +242,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
-            'inscricoes'      => 'registration',
+            'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration'
         ),
         'actions' => array(
@@ -241,6 +253,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'inscricoes'    => 'registrations'
         ),
 
         'readableNames' => array(

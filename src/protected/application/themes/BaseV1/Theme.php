@@ -88,8 +88,13 @@ class Theme extends MapasCulturais\Theme {
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
-                    $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
-                    $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
+                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
+                    }else{
+                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
+                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+                    }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
@@ -340,6 +345,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
             $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+
+            $this->jsObject['isEditable'] = $this->isEditable();
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -616,6 +623,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
 
+
+
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
@@ -811,16 +820,33 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addProjectToJs(Entities\Project $entity){
+        $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
+        $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
+        $this->jsObject['entity']['registrationAgents'] = array();
+        foreach($entity->_getDefinitionsWithAgents() as $def){
+            $agent = $def->agent;
+            if($agent){
+                $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
+                $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+                if($entity->status > 0){ // is sent
+                    foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
+                        $def->agent->$prop = $val;
+                    }
+                }
+            }
+            $this->jsObject['entity']['registrationAgents'][] = $def;
+        }
     }
 
 

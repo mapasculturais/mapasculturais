@@ -17,7 +17,8 @@ class Event extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner;
+        Traits\ControllerChangeOwner,
+        Traits\ControllerAPI;
 
     /**
      * Creates a new Event

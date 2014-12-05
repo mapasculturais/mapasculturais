@@ -149,8 +149,9 @@ class App extends \Slim\Slim{
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
         }
-
         $this->_cache->setNamespace($config['app.cache.namespace']);
+
+
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
@@ -268,7 +269,10 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
+        $doctrine_config->setMetadataCacheImpl($this->_cache);
         $doctrine_config->setQueryCacheImpl($this->_cache);
+        $doctrine_config->setResultCacheImpl($this->_cache);
+
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
@@ -1188,6 +1192,20 @@ class App extends \Slim\Slim{
      */
     function getRegisteredRegistrationAgentRelations(){
         return $this->_register['registration_agent_relations'];
+    }
+
+    function getRegistrationOwnerDefinition(){
+        $config = $this->getConfig('registration.ownerDefinition');
+        $definition = new Definitions\RegistrationAgentRelation($config);
+        return $definition;
+    }
+
+    function getRegistrationAgentsDefinitions(){
+        $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
+        foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
+            $definitions[$groupName] = $def;
+        }
+        return $definitions;
     }
 
     function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){

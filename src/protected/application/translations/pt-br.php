@@ -14,9 +14,17 @@ return array(
     'The uploaded file is larger than the allowed size.' => 'O arquivo enviado é maior do que o permitido.',
     'Unexpected error.' => 'Erro inesperado.',
     'Please inform all required fields.' => 'Por favor, informe todos os campos obrigatórios.',
+
     'The agent "%s" is required.' => 'O agente "%s" é obrigatório.',
-    'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
+    'This agent is required.' => 'Este agente é obrigatório.',
+    'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
+    'This agent must be of type "%s".' => 'Este agente deve ser do tipo "%s".',
+    'The field "%s" is required.' => 'Este agente precisa ter o campo "%s" preenchido.',
+    'The fields %s are required.' => 'Este agente precisa ter os campos %s preenchidos.',
+    'The field "%s" of the agent "%s" is required.' => 'O campo "%s" do agente "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
+
+    'The agent "%s" did not confirm your request.' => 'O agente %s ainda não confirmou sua participação neste projeto.',
 
     '%s Entities found.' => '%s Entidades encontradas.',
     '%s Entity found.' => '%s Entidade encontrada.',

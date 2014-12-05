@@ -163,7 +163,24 @@ MapasCulturais.Editables = {
 
             if(MapasCulturais.request.controller === 'space')
                 this.initSpacePublicEditable();
+
+            if(MapasCulturais.request.controller === 'project')
+                this.initProjectUseRegistrationsEditable();
         }
+    },
+
+    initProjectUseRegistrationsEditable: function(){
+        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
+        if(!MapasCulturais.entity.useRegistrations){
+            $els.hide();
+        }
+        $('#editable-use-registrations').on('hidden', function(e, reason) {
+            if($(this).editable('getValue', true) == '1'){
+                $els.show('fast');
+            }else{
+                $els.hide('fast');
+            }
+        });
     },
 
     initSpacePublicEditable: function(){
@@ -262,7 +279,7 @@ MapasCulturais.Editables = {
             };
 
             var select_value = null;
-
+            console.log(field_name, entity[field_name].type)
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
@@ -287,6 +304,11 @@ MapasCulturais.Editables = {
                     delete config.placeholder;
 
                     break;
+
+                case 'boolean':
+                    config.type = 'checklist';
+                    config.source = [{value : 0, text: 'false' }, { value: 1, text: 'true' }];
+                    config.emptytext = 'Não';
             }
 
             $(this).editable(config);

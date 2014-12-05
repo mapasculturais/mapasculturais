@@ -121,7 +121,8 @@
 
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
-            newFileConfiguration: angular.copy(fileConfigurationSkeleton)
+            newFileConfiguration: angular.copy(fileConfigurationSkeleton),
+            entity: $scope.$parent.data.entity
         };
 
         $scope.fileConfigurationBackups = [];
@@ -231,7 +232,14 @@
         });
 
         $scope.sendFile = function(attrs){
-            $('#' + attrs.id + ' form').submit();
+            var $form = $('#' + attrs.id + ' form');
+            $form.submit();
+            if(!$form.data('onSuccess')){
+                $form.data('onSuccess', true);
+                $form.on('ajaxForm.success', function(){
+                    MapasCulturais.Messages.success('Alterações salvas.');
+                });
+            }
         };
 
         $scope.openFileEditBox = function(id, index, event){
@@ -277,16 +285,12 @@
                 }) : [];
 
             $scope.editbox = EditBox;
-
             $scope.data = angular.extend({
                 uploadSpinner: false,
                 spinner: false,
-                apiQueryRegistrationAgent: {
-                    '@permissions': '@control',
-                    'type': 'EQ(1)' // type individual
-                },
 
                 registrationCategories: categories,
+                registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
 
                 registration: {
                     owner: null,
@@ -308,10 +312,40 @@
                     {value: 3, label: 'Rejeitada'},
                     {value: 8, label: 'Suplente'},
                     {value: 10, label: 'Aprovada'},
-                    {value: 0, label: 'Rascunho'},
+                    {value: 0, label: 'Rascunho'}
+                ],
 
-                ]
+                propLabels : [
+                    {name: 'nomeCompleto', label: 'Nome Completo'},
+                    {name: 'documento', label: 'CPF/CNPJ'},
+                    {name: 'dataDeNascimento', label: 'Data de Nascimento/Fundação'},
+                    {name: 'genero', label: 'Gênero'},
+                    {name: 'raca', label: 'Raça/Cor'},
+                    {name: 'emailPublico', label: 'Email'},
+                    {name: 'emailPrivado', label: 'Email Privado'},
+                    {name: 'telefonePublico', label: 'Telefone Público'},
+                    {name: 'telefone1', label: 'Telefone 1'},
+                    {name: 'telefone2', label: 'Telefone 2'}
+                ],
+
+                relationApiQuery: {}
             }, MapasCulturais);
+
+            if(MapasCulturais.entity.registrationAgents){
+                MapasCulturais.entity.registrationAgents.forEach(function(e){
+                    $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
+                    if(e.agentRelationGroupName === 'owner'){
+                        $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
+                    }
+                });
+            }else{
+                $scope.data.relationApiQuery.owner = {'@permissions': '@control', 'type': 'EQ(1)'};
+            }
+            $scope.fns = {};
+
+            $scope.hideStatusInfo = function(){
+                jQuery('#status-info').slideUp('fast');
+            };
 
             $scope.openEditBox = function(id, e){
                 EditBox.open(id, e);
@@ -336,7 +370,7 @@
             };
 
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário?'))){
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                         if(registration.status === 0){
                             $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
@@ -351,9 +385,20 @@
 
 
             $scope.showRegistration = function(registration){
-                var result = !$scope.data.registrationStatus || !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
+                var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
+                var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
 
-                return result;
+                return status && category;
+            };
+
+            $scope.getFilteredRegistrations = function(){
+                return $scope.data.entity.registrations.filter(function(e){
+                    return $scope.showRegistration(e);
+                });
+            };
+
+            $scope.usingFilters = function(){
+                return $scope.data.registrationStatus || $scope.data.registrationCategory;
             };
 
             var adjustBoxPosition = function () {
@@ -371,29 +416,56 @@
                     adjustBoxPosition();
             });
 
-            $scope.setRegistrationOwner = function(entity){
-                $scope.data.registration.owner = entity;
+            function replaceRegistrationAgentBy(groupName, agent, relationStatus){
+                for(var i in $scope.data.entity.registrationAgents){
+                    var def = $scope.data.entity.registrationAgents[i];
+                    if(def.agentRelationGroupName === groupName){
+                        def.agent = agent;
+                        if(typeof relationStatus !== 'undefined'){
+                            def.relationStatus = relationStatus;
+                        }
+                    }
+                }
+            }
+
+            $scope.setRegistrationOwner = function(agent){
+                $scope.data.registration.owner = agent;
+                replaceRegistrationAgentBy('owner', agent);
+                jQuery('#ownerId').editable('setValue', agent.id);
+                setTimeout(function(){
+                    $('#submitButton').trigger('click');
+                });
                 EditBox.close('editbox-select-registration-owner');
             };
 
             $scope.setRegistrationAgent = function(entity, attrs){
+                if(attrs.name === 'owner'){
+                    $scope.setRegistrationOwner(entity);
+                    return;
+                }
                 var editBoxId = 'editbox-select-registration-' + attrs.name;
                 RelatedAgentsService.create(attrs.name, entity.id).success(function(response){
-                    var $el = $('#registration-agent-' + attrs.name);
-                    $el.find('.js-registration-agent-name').html('<a href="'+response.agent.singleUrl+'">'+response.agent.name+'</a>');
-                    if(response.agent.avatar.length){
-                        $el.find('.js-registration-agent-avatar').attr('src', response.agent.avatar.url);
+                    if(response.agent.avatar && response.agent.avatar.avatarSmall){
+                        response.agent.avatarUrl = response.agent.avatar.avatarSmall.url;
                     }
+                    replaceRegistrationAgentBy(attrs.name, response.agent, response.status);
                     EditBox.close(editBoxId);
+                    if(response.status > 0)
+                        MapasCulturais.Messages.success('Alterações salvas.');
                 });
             };
 
             $scope.unsetRegistrationAgent = function(entityId, groupName){
+                if(groupName === 'owner')
+                    return null;
+
                 var editBoxId = 'editbox-select-registration-' + groupName;
                 RelatedAgentsService.remove(groupName, entityId).success(function(){
-                    var $el = $('#registration-agent-' + groupName);
-                    $el.find('.js-registration-agent-name').html('Não informado');
-                    $el.find('.js-registration-agent-avatar').attr('src', MapasCulturais.assets.avatarAgent);
+                    for(var i in $scope.data.entity.registrationAgents){
+                        var def = $scope.data.entity.registrationAgents[i];
+                        if(def.agentRelationGroupName === groupName)
+                            delete def.agent;
+                    }
                     EditBox.close(editBoxId);
                 });
             };
@@ -471,17 +543,21 @@
                     success(function(response){
                         $('.js-response-error').remove();
                         if(response.error){
-                            Object.keys(response.data).forEach(function(key, index){
-                                var errorHtml = '<span title="' + response.data[key][0].replace(/"/g, '&quot;') + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                            Object.keys(response.data).forEach(function(field, index){
                                 var $el;
-                                if(key === 'category'){
+                                if(field === 'category'){
                                     $el = $('.js-editable-registrationCategory').parent();
-                                }else if(key.indexOf('agent') !== -1){
-                                    $el = $('#' + key).parent().find('.registration-label');
+                                }else if(field.indexOf('agent') !== -1){
+                                    $el = $('#' + field).parent().find('.registration-label');
                                 }else {
-                                    $el = $('#' + key).find('div:first');
+                                    $el = $('#' + field).find('div:first');
                                 }
-                                $el.append(errorHtml);
+                                var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
+                                message = message.replace(/"/g, '&quot;');
+                                $scope.data.propLabels.forEach(function(prop){
+                                    message = message.replace('{{'+prop.name+'}}', prop.label);
+                                });
+                                $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                             });
                             MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                         }else{

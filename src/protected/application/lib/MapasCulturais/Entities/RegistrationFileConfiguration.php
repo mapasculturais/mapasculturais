@@ -84,6 +84,22 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         );
     }
 
+    protected function _canUser($user){
+        return $this->owner->canUser('modifyRegistrationFields', $user);
+    }
+
+    protected function canUserModify($user){
+        return $this->_canUser($user);
+    }
+
+    protected function canUserRemove($user){
+        return $this->_canUser($user);
+    }
+
+    protected function canUserCreate($user){
+        return $this->_canUser($user);
+    }
+
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:before', $args);
