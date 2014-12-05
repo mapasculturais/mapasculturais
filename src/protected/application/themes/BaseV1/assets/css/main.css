@@ -3986,7 +3986,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .leaflet-label {
   font: 0.75rem/1.5 "Open Sans", Helvetica, Arial, sans-serif;
   position: absolute;
-  z-index: 9999 !important;
+  z-index: 2000000 !important;
   display: block;
   margin: 0 8px;
   padding: 5px 10px;
