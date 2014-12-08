@@ -154,7 +154,7 @@
 //radio button
 .radio-button {
     &:before {
-        content: '\f10c';        
+        content: '\f10c';
     }
     &.selected{
         &:before {
@@ -248,7 +248,14 @@
 }
 
 // close button editable
-.icon_close { 
+.icon_close {
+    &:before {
+        font-family: $icon-font-name;
+        content: '\f00d';
+    }
+}
+
+.select2-container-multi .select2-search-choice-close {
     &:before {
         font-family: $icon-font-name;
         content: '\f00d';
@@ -275,6 +282,7 @@
 #user-stats {
     .icone {
         &.icon_plus {
+            margin-top: 4px;
             padding: 4px 5px;
             &:before {
                 font-family: $icon-font-name;
@@ -294,15 +302,15 @@
 .warning, .danger {
     &:before {
         font-family: $icon-font-name;
-        content: '\f129';
+        content: '\f12a';
+        margin: 0px 7px 0 0;
     }
 }
 .success {
     &:before {
-        content: '\f00c'        
+        content: '\f00c'
     }
 }
-
 
 //tag search
 .tag-selected {
@@ -310,5 +318,44 @@
         font-family: $icon-font-name;
         content: '\f00d';
         padding-left: 5px;
+    }
+}
+
+.busca-popover .icone {
+    &.social_twitter {
+        margin-left: 0.7rem;
+        &:before {
+            font-family: $icon-font-name;
+            content: '\f099';
+        }
+    }
+
+    &.social_facebook {
+        margin-left: 0.7rem;
+        &:before {
+            font-family: $icon-font-name;
+            content: '\f09a';
+        }
+    }
+
+    &.social_googleplus {
+        margin-left: 0.7rem;
+        &:before {
+            font-family: $icon-font-name;
+            content: '\f0d5';
+        }
+    }
+}
+
+// change font size for tools icons
+#ferramentas {
+    font-size: 1rem;
+}
+
+// vertical align icons
+#mc-entity-layers {
+    a:before {
+        display: block;
+        margin-top: 9px;
     }
 }
