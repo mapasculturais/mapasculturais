@@ -5973,6 +5973,10 @@ button.mfp-arrow-left {
   font-family: "FontAwesome";
   content: '\f00d'; }
 
+.select2-container-multi .select2-search-choice-close:before {
+  font-family: "FontAwesome";
+  content: '\f00d'; }
+
 .ui-datepicker .ui-datepicker-next:before {
   font-family: "FontAwesome";
   content: '\f138'; }
@@ -5981,6 +5985,7 @@ button.mfp-arrow-left {
   content: '\f137'; }
 
 #user-stats .icone.icon_plus {
+  margin-top: 4px;
   padding: 4px 5px; }
   #user-stats .icone.icon_plus:before {
     font-family: "FontAwesome";
@@ -5992,7 +5997,8 @@ button.mfp-arrow-left {
 
 .warning:before, .danger:before {
   font-family: "FontAwesome";
-  content: '\f129'; }
+  content: '\f12a';
+  margin: 0px 7px 0 0; }
 
 .success:before {
   content: ""; }
@@ -6001,5 +6007,28 @@ button.mfp-arrow-left {
   font-family: "FontAwesome";
   content: '\f00d';
   padding-left: 5px; }
+
+.busca-popover .icone.social_twitter {
+  margin-left: 0.7rem; }
+  .busca-popover .icone.social_twitter:before {
+    font-family: "FontAwesome";
+    content: '\f099'; }
+.busca-popover .icone.social_facebook {
+  margin-left: 0.7rem; }
+  .busca-popover .icone.social_facebook:before {
+    font-family: "FontAwesome";
+    content: '\f09a'; }
+.busca-popover .icone.social_googleplus {
+  margin-left: 0.7rem; }
+  .busca-popover .icone.social_googleplus:before {
+    font-family: "FontAwesome";
+    content: '\f0d5'; }
+
+#ferramentas {
+  font-size: 1rem; }
+
+#mc-entity-layers a:before {
+  display: block;
+  margin-top: 9px; }
 
 /*# sourceMappingURL=main.css.map */
