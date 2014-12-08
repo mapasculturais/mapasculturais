@@ -41,10 +41,12 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         }
 
 
+
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $app->redirect($this->createUrl('openid'));
         });
+
 
         $app->hook('<<GET|POST>>(auth.openid)', function () use($opauth, $config){
             $_POST['openid_url'] = $config['login_url'];
@@ -57,7 +59,13 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             if($app->auth->isUserAuthenticated()){
                 $app->redirect ($app->auth->getRedirectPath());
             }else{
-                $app->redirect ($this->createUrl(''));
+                if($app->config['app.mode'] === 'production'){
+                    $app->redirect ($this->createUrl('error'));
+                }else{
+                    echo '<pre>';
+                    var_dump($this->data, $_POST, $_GET, $_REQUEST, $_SESSION);
+                    die;
+                }
             }
         });
     }
