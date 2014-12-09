@@ -39,6 +39,8 @@ return array(
 
     'api.accessControlAllowOrigin' => '*',
 
+    'app.enableProjectRegistration' => true,
+
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(

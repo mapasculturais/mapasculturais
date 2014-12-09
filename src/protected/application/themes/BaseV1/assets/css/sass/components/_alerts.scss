@@ -59,6 +59,7 @@
         color: $brand-success;
     }
     &.automatic {
+        padding: .25rem .75rem;
         background: $gray-lighter;
         border-color: #ddd;
         color: $gray-dark;
