@@ -15,6 +15,14 @@
     <meta itemprop="description" content="O Mapas Culturais &eacute; uma plataforma livre para mapeamento cultural." />
     <meta itemprop="image" content="http://localhost:8000/assets/img/share.png" />
     <style type="text/css">
+        /** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {    margin: 0;  padding: 0; border: 0;  font-size: 100%;    font: inherit;  vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {    display: block;}body {  line-height: 1;}ol, ul {    list-style: none;}blockquote, q {   quotes: none;}blockquote:before, blockquote:after,q:before, q:after {   content: '';    content: none;}table {  border-collapse: collapse;  border-spacing: 0;}
+        .clearfix:after {
+            content: '.';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
         @font-face {
             font-family: 'Open Sans';
             src: url('OpenSans-Regular-webfont.eot');
@@ -59,13 +67,19 @@
             font-style: italic;
         }
         body {
-            font-size: 16px
-            line-height: 24px
+            font-size: 1.5rem;
+            line-height: 1.5;
             font-family: 'Open Sans';
+            background-color: #f90;
+            color: #fff;
+        }
+        strong {
+            font-weight: bold;
         }
         #main-header {
             border-top: 6px solid #000;
             background: #fff;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
         }
         #main-header h1 {
             margin-bottom: 0;
@@ -75,37 +89,36 @@
         }
         #brand-logo {
             float: left;
-            padding: .375rem $padding-large;
+            padding: .375rem 1.5rem;
         }
         #brand-logo img {
             width: 138px;
         }
-        #brand-logo a {
-            color: $brand-primary;
-        }
-        #brand-logo a:hover {
-            text-decoration: none;
-        }
-        #about-nav {
-            padding: 0 $padding-large;
-        }
         #logo-smc {
-            clear: both;
+            padding: .75rem 1.5rem;
+            float: right;
         }
         #logo-smc img {
             width: 90px;
             margin: 0 auto;
+        }
+        #main-section {
+
         }
         #capa-marca-dagua {
             position: fixed;
             z-index: 0;
             left: 0;
             right: 0;
-            top: 102px;
+            top: 78px;
             bottom: 0;
-            background-image: url(img/fundo.png);
+            background-image: url(fundo.png);
             background-position: 80% bottom;
             background-repeat: no-repeat;
+        }
+        .box {
+            margin: 4rem auto;
+            width: 60%;
         }
     </style>
 </head>
@@ -114,21 +127,20 @@
     <header id="main-header" class="clearfix">
         <h1 id="brand-logo"><img src="http://localhost:8000/assets/img/logo-spcultura.png" /></a>
         </h1>
-        <nav id="about-nav" class="alignright clearfix">
-            <h1 id="logo-smc">
-                <a href="http://www.prefeitura.sp.gov.br" target="_blank">
-                    <img src="http://localhost:8000/assets/img/logo-prefeitura.png" />
-                </a>
-            </h1>
-        </nav>
+        <h1 id="logo-smc">
+            <a href="http://www.prefeitura.sp.gov.br" target="_blank">
+                <img src="http://localhost:8000/assets/img/logo-prefeitura.png" />
+            </a>
+        </h1>
     </header>
     <section id="main-section" class="clearfix">
         <section id="capa-marca-dagua">
         </section>
-        <section id="capa-intro" class="js-page-menu-item objeto-capa clearfix fundo-laranja">
+        <section id="capa-intro">
             <div class="box">
                 <h1>Bem-vind@!</h1>
-                <p>O SP Cultura é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria Municipal de Cultura de São Paulo sobre o cenário cultural paulistano. No momento estamos em manutenção. Por favor, volte mais tarde.</p>
+                <p>O SP Cultura é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria Municipal de Cultura de São Paulo sobre o cenário cultural paulistano.</p>
+                <p>No momento estamos em <strong>manutenção</strong>. Por favor, volte mais tarde.</p>
             </div>
         </section>
     </section>
