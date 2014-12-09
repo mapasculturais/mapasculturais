@@ -366,7 +366,7 @@ $this->includeAngularEntityAssets($entity);
             <!-- #registration-attachments -->
         <?php endif; ?>
 
-        <?php if($entity->isRegistrationOpen() && !$this->isEditable()): ?>
+        <?php if($entity->isRegistrationOpen() && !$this->isEditable() && $entity->useRegistrations): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
                 <form id="project-registration" class="registration-form clearfix">
                     <p class="registration-help">Para iniciar sua inscrição, selecione o Agente responsável. Ele deve ser um agente individual, com um CPF válido preenchido.</p>

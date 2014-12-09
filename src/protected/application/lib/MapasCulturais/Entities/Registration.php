@@ -432,6 +432,18 @@ class Registration extends \MapasCulturais\Entity
         return $exportData;
     }
 
+    protected function canUserCreate($user){
+        if($user->is('guest')){
+            return false;
+        }
+        
+        if($this->project && !$this->project->useRegistrations){
+            return false;
+        }
+        
+        return $this->genericPermissionVerification($user);
+    }
+    
     protected function canUserView($user){
         if($user->is('guest')){
             return false;
