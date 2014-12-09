@@ -328,54 +328,67 @@ MapasCulturais.Editables = {
                 });
             }
 
-            if(config.type === 'date' && $(this).data('timepicker')){
+            if(config.type === 'date'){
 
                 var $datepicker = $(this);
 
-                var $timepicker = $($datepicker.data('timepicker'));
-                var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
+                if(!$(this).data('timepicker')){ //normal datepicker
 
-                $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
-
-                $timepicker.editable();
-                $hidden.editable({name: $datepicker.data('edit')});
-                $datepicker.editable(config);
-
-                if($timepicker.data('datetime-value'))
-                    $hidden.editable('setValue', $timepicker.data('datetime-value'));
-                else
-                    $hidden.editable('setValue', '');
-
-                $timepicker.on('save', function(e, params) {
-                    console.log(params);
-                    $hidden.editable('setValue',
-                        moment($datepicker.editable('getValue', true)).format('YYYY-M-D') + ' ' + params.newValue
-                    );
-                });
-
-                $datepicker.on('save', function(e, params) {
-                    console.log(params);
-                    if(params.newValue){
-                        if(!$timepicker.editable('getValue', true)){
-                            $timepicker.editable('setValue', '23:59');
+                    $datepicker.editable(config);
+                    $datepicker.on('hidden', function(e, editable) {
+                        if($(this).editable('getValue', true) == null){
+                            $(this).editable('setValue', '');
                         }
-                        $hidden.editable('setValue',
-                            moment(params.newValue).format('YYYY-M-D') + ' ' + $timepicker.editable('getValue', true)
-                        );
-                    }else{
-                        $hidden.editable('setValue', '');
-                        $timepicker.editable('setValue', '');
-                    }
-                });
+                    });
 
-                $timepicker.on('shown', function(e, editable) {
-                    var $input = editable.input.$input;
-                    $input.mask('00:00', {
-                        onComplete: function(time) {
-                          console.log('value', $input.val());
-                          console.log('moment', moment($input.val(), 'HH:mm').format('HH:mm'));
-                    }});
-                });
+                }else{ //datepicker with related timepicker field
+
+                    var $timepicker = $($datepicker.data('timepicker'));
+                    var $hidden = $('<input class="js-include-editable" type="text">').insertAfter($timepicker);
+
+                    $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
+
+                    $timepicker.editable();
+                    $hidden.editable({name: $datepicker.data('edit')});
+                    $datepicker.editable(config);
+
+                    if($timepicker.data('datetime-value'))
+                        $hidden.editable('setValue', $timepicker.data('datetime-value'));
+                    else
+                        $hidden.editable('setValue', '');
+
+                    $timepicker.on('save', function(e, params) {
+                        console.log(params);
+                        $hidden.editable('setValue',
+                            moment($datepicker.editable('getValue', true)).format('YYYY-M-D') + ' ' + params.newValue
+                        );
+                    });
+
+                    $datepicker.on('save', function(e, params) {
+                        console.log(params);
+                        if(params.newValue){
+                            if(!$timepicker.editable('getValue', true)){
+                                $timepicker.editable('setValue', '23:59');
+                            }
+                            $hidden.editable('setValue',
+                                moment(params.newValue).format('YYYY-M-D') + ' ' + $timepicker.editable('getValue', true)
+                            );
+                        }else{
+                            $hidden.editable('setValue', '');
+                            $timepicker.editable('setValue', '');
+                        }
+                    });
+
+                    $timepicker.on('shown', function(e, editable) {
+                        var $input = editable.input.$input;
+                        $input.mask('00:00', {
+                            onComplete: function(time) {
+                              console.log('value', $input.val());
+                              console.log('moment', moment($input.val(), 'HH:mm').format('HH:mm'));
+                        }});
+                    });
+
+                }
 
             }
 
