@@ -616,7 +616,7 @@ class Theme extends MapasCulturais\Theme {
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
-        $this->enqueueStyle('fonts', 'elegant', 'css/elegant-font.css');
+        $this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 

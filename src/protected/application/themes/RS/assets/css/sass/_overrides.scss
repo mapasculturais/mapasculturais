@@ -1,0 +1,208 @@
+//
+// Overrides
+// --------------------------------------------------
+//## Changes from parent theme.
+
+// editable-entity
+
+#small-logo {
+    display: none;
+    position: absolute;
+    left: .75rem;
+    margin-bottom: 0;
+    line-height: 2rem;
+}
+
+#small-logo img {
+    display: block;
+    height: 2.2rem;
+    width: auto;
+}
+
+// header icons size
+.menu {
+    > li {
+        div.icone {
+            font-size: 14px;
+        }
+    }
+}
+
+// home arrows icons size
+#capa-nav ul a.up,
+#capa-nav ul a.down {
+    font-size: 1.6rem;
+}
+
+// extend fontawesome icons styles
+.icone {
+    @extend .fa;
+}
+.icon_calendar {
+    @extend .fa-calendar-o;
+}
+.icon_building {
+    @extend .fa-building-o;
+}
+.icon_profile {
+    @extend .fa-user;
+}
+.icon_document_alt {
+    @extend .fa-file-text-o;
+}
+.icon_search {
+    @extend .fa-search;
+}
+.icon_tools {
+    @extend .fa-wrench;
+}
+.icon_house {
+    @extend .fa-home;
+}
+.icon_star {
+    @extend .fa-star;
+}
+.arrow_carrot-up {
+    @extend .fa-angle-up;
+}
+.arrow_carrot-down {
+    @extend .fa-angle-down;
+}
+
+// dropdown icon
+.dropdown {
+    .placeholder {
+        &:after {
+            content: '\f107';
+        }
+    }
+}
+
+// add icon
+.adicionar {
+    &:before {
+        content: '\f055';
+    }
+}
+
+.botao {
+    &.editar {
+        &:before {
+            content: '\f044';
+        }
+    }
+}
+
+// triangle tab projects
+.abas-objetos {
+    li {
+        &.active {
+            &:after {
+                content: '\f0d8'
+            }
+        }
+    }
+}
+
+//check search
+.icon_check {
+    &:before {
+        content: '\f00c';
+    }
+}
+
+// icon login panel
+.icon_lock {
+    &:before {
+        content: '\f023';
+    }
+}
+
+//icon bar header
+.icone {
+    &.icon_download {
+        &:before {
+            content: '\f019';
+        }
+    }
+    &.social_share {
+        &:before {
+            content: '\f1e0';
+        }
+    }
+    &.icon_menu-square_alt {
+        &:before {
+            content: '\f03a';
+        }
+    }
+    &.icon_map {
+        &:before {
+            content: '\f041';
+        }
+    }
+}
+
+//list of filters
+.lista-de-filtro {
+    li {
+        &:before {
+            content: '\f00c';
+        }
+    }
+}
+
+//list filters
+.dropdown {
+    .submenu-dropdown {
+        &:before {
+            content: '\f0d8'
+        }
+    }
+}
+
+//create
+.editable {
+    &:after {
+        content: '\f044';
+    }
+}
+
+// close button editable
+.icon_close { 
+    &:before {
+        content: '\f00d';
+    }
+}
+
+//datepicker arrow
+.ui-datepicker {
+    .ui-datepicker-next {
+        &:before {
+            content: '\f138';
+        }
+    }
+    .ui-datepicker-prev {
+        &:before {
+            content: '\f137';
+        }
+    }
+}
+
+// Users stats icon Plus
+#user-stats {
+    .icone {
+        &.icon_plus {
+            &:before {
+                content: '\f067';
+            }
+        }
+    }
+}
+
+//tag search
+.tag-selected {
+    &:after {
+        content: '\f00d';
+        padding-left: 5px;
+    }
+}
