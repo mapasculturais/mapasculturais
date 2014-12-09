@@ -45,8 +45,9 @@
   padding-left: 0;
   margin-left: 2.14286em;
   list-style-type: none; }
-  .fa-ul > li {
-    position: relative; }
+
+.fa-ul > li {
+  position: relative; }
 
 .fa-li {
   position: absolute;
@@ -54,8 +55,9 @@
   width: 2.14286em;
   top: 0.14286em;
   text-align: center; }
-  .fa-li.fa-lg {
-    left: -1.85714em; }
+
+.fa-li.fa-lg {
+  left: -1.85714em; }
 
 .fa-border {
   padding: .2em .25em .15em;
@@ -70,6 +72,7 @@
 
 .fa.pull-left {
   margin-right: .3em; }
+
 .fa.pull-right {
   margin-left: .3em; }
 
@@ -1661,3 +1664,5 @@
   content: ""; }
 
 /*# sourceMappingURL=font-awesome.css.map */
+
+/*# sourceMappingURL=fonts.css.map */
