@@ -209,16 +209,21 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setRegistrationFrom($date){
-        $this->registrationFrom = new \DateTime($date);
-        $this->registrationFrom->setTime(0,0,0);
+        if($date){
+            $this->registrationFrom = new \DateTime($date);
+            $this->registrationFrom->setTime(0,0,0);
+        }else{
+            $this->registrationFrom = null;
+        }
     }
-
 
     function setRegistrationTo($date){
-        $this->registrationTo = new \DateTime($date);
-        $this->registrationTo->setTime(23, 59, 59);
+        if($date){
+            $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
+        }else{
+            $this->registrationTo = null;
+        }
     }
-
 
     function validateDate($value){
         return !$value || $value instanceof \DateTime;
