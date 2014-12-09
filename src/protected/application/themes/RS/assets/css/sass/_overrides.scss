@@ -316,8 +316,10 @@
 .tag-selected {
     &:after {
         font-family: $icon-font-name;
+        font-size: 0.75rem;
         content: '\f00d';
         padding-left: 5px;
+        width: 0.75rem;
     }
 }
 
