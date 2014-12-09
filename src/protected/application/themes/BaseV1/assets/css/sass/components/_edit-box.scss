@@ -15,7 +15,7 @@
         content: '\6c';
         font-size: $font-size-base;
         line-height: 1rem;
-        font-family: 'ElegantIcons';
+        font-family: $icon-font-name;
         font-weight: normal;
         font-style: normal;
         vertical-align: initial;
@@ -25,7 +25,7 @@
 }
 .edit-box {
     position: absolute;
-    z-index: $z-index-7;
+    z-index: $z-index-infobox;
     min-width: 375px;
     display: none;
     padding: $padding-base;

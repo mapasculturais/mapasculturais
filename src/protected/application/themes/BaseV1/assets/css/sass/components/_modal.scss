@@ -5,8 +5,7 @@
     display: none;
     margin-top: 15px;
     padding: $padding-large;
-    //z-index: $z-index-7;
-    z-index: 3000;
+    z-index: $z-index-tip;
     background: #fff;
     border-top: 4px solid $brand-primary;
     border-radius: $border-radius-base;

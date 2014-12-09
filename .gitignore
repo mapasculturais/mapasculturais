@@ -14,3 +14,5 @@ src/pub
 src/assets
 *.log
 .idea
+main.css
+main.css.map
