@@ -52,45 +52,6 @@
         box-shadow: none;
     }
 }
-.botao.simples,
-.botao.adicionar,
-.botao.editar,
-.botao.enviar,
-.botao.download,
-.botao.excluir {
-    color: $gray-dark;
-    background: $gray-light;
-    border: 1px solid $gray;
-}
-.botao.simples:hover,
-.botao.adicionar:hover,
-.botao.editar:hover,
-.botao.enviar:hover,
-.botao.download:hover,
-.botao.excluir:hover {
-    color: $gray-darker;
-    background: $gray-lighter;
-    border: 1px solid $gray-dark;
-}
-.botao.adicionar:before,
-.botao.editar:before,
-.botao.enviar:before,
-.botao.download:before,
-.botao.excluir:before,
-.botao-grande.adicionar:before {
-    margin-right: 5px;
-}
-.botao-grande {
-    padding: $padding-small;
-    font-size: $font-size-small;
-    text-align: center;
-    color: #fff;
-    background: $brand-accent;
-}
-.botao-grande:hover {
-    background: $brand-primary;
-    border-color: $brand-primary;
-}
 .adicionar,
 .editar,
 .enviar,
@@ -131,7 +92,46 @@
 .inserir:before {
     content: '\37';
 }
-
+.botao.simples,
+.botao.adicionar,
+.botao.editar,
+.botao.enviar,
+.botao.download,
+.botao.excluir {
+    color: $gray-dark;
+    background: $gray-light;
+    border: 1px solid $gray;
+}
+.botao.simples:hover,
+.botao.adicionar:hover,
+.botao.editar:hover,
+.botao.enviar:hover,
+.botao.download:hover,
+.botao.excluir:hover {
+    color: $gray-darker;
+    background: $gray-lighter;
+    border: 1px solid $gray-dark;
+}
+.botao.adicionar:before,
+.botao.editar:before,
+.botao.enviar:before,
+.botao.download:before,
+.botao.excluir:before,
+.botao-grande.adicionar:before {
+    margin-right: 5px;
+}
+.botao-grande {
+    padding: $padding-small;
+    font-size: $font-size-small;
+    text-align: center;
+    color: #fff;
+    background: $brand-accent;
+}
+.botao-grande:hover {
+    background: $brand-primary;
+    border-color: $brand-primary;
+    color: $brand-accent;
+}
 .botao-de-icone {
     width: 1.375rem;
     line-height: 1.375rem !important;
