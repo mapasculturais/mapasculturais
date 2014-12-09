@@ -279,7 +279,7 @@ MapasCulturais.Editables = {
             };
 
             var select_value = null;
-            console.log(field_name, entity[field_name].type)
+
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
@@ -297,11 +297,13 @@ MapasCulturais.Editables = {
                     break;
 
                 case 'date':
+                case 'datetime':
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: "1900:+0" };
+                    config.datepicker = { weekStart: 1, yearRange: "1900:+0"};
                     delete config.placeholder;
+                    config.clear = 'Limpar';
 
                     break;
 
