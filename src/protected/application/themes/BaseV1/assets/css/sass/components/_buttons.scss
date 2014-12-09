@@ -6,21 +6,148 @@
 //== Base buttons
 //
 //## Different types of buttons used accros the project.
-.botao,
-.botao-grande {
+
+.btn {
     display: inline-block;
+    box-sizing: border-box;
+    height: 2rem;
+    padding: 0 $padding-small;
     border-radius: $border-radius-base;
+    line-height: 1.875rem;
+    font-size: $font-size-smaller;
+    font-family: $font-family-base;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    transition: all .3s;
     cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    -webkit-transition: all .3s;
-            transition: all .3s;
+    &:hover {
+        box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+        text-decoration: none;
+    }
 }
-.botao:hover,
-.botao-grande:hover {
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    text-decoration: none;
+
+// Buttons types
+// --------------------------------------------------
+.btn-default {
+    color: $gray-dark;
+    background-color: $gray-light;
+    border: 1px solid $gray;
+    &:hover {
+        color: $gray-darker;
+        background-color: $gray-lighter;
+        border: 1px solid $gray-dark;
+    }
 }
+.btn-primary {
+    color: #fff;
+    background-color: $brand-primary;
+    border: 1px solid $brand-primary;
+    &:hover {
+        border-color: darken($brand-primary, 10%);
+    }
+}
+.btn-accent {
+    color: #fff;
+    background-color: $brand-accent;
+    border: 1px solid $brand-accent;
+    &:hover {
+        background-color: $brand-primary;
+        border: 1px solid $brand-primary;
+    }
+}
+.btn-verified {
+    color: $btn-verified-color;
+    background-color: $btn-verified-bg;
+    &:hover {
+        color: $btn-verified-hover-color;
+        background-color: $btn-verified-hover-bg;
+    }
+}
+
+// Buttons states
+// --------------------------------------------------
+
+.btn.disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    &:hover {
+        box-shadow: none;
+    }
+}
+.btn.selected {
+
+}
+
+// Buttons sizes
+// --------------------------------------------------
+
+.btn-small {
+    height: 1.5rem;
+    padding: 0 $padding-small;
+    line-height: 1.5rem;
+    font-weight: normal;
+}
+.btn-large {
+    height: 2.5rem;
+    padding: $padding-small;
+    font-size: $font-size-small;
+}
+
+// Buttons actions
+// --------------------------------------------------
+
+.add,
+.edit,
+.send,
+.download,
+.delete,
+.insert {
+    color: $gray-dark;
+    &:hover {
+        color: $gray-darker;
+    }
+    &:before {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        font-size: $font-size-base;
+        font-family: $icon-font-name;
+        vertical-align: top;
+        text-transform: none;
+        font-weight: normal;
+        font-style: none;
+    }
+}
+.add:before {
+    content: '\e050';
+}
+.edit:before {
+    content: '\6c';
+}
+.send:before {
+    content: '\e091';
+}
+.download:before {
+    content: '\e092';
+}
+.delete:before {
+    content: '\e051';
+}
+.insert:before {
+    content: '\37';
+}
+
+.btn.add:before,
+.btn.edit:before,
+.btn.send:before,
+.btn.download:before,
+.btn.delete:before, {
+    margin-right: 5px;
+}
+
+
 .botao {
     height: 2rem;
     box-sizing: border-box;
