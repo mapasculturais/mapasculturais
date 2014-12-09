@@ -22,7 +22,7 @@
             right: 0;
             width: $padding-large;
             text-align: center;
-            font-family: 'ElegantIcons';
+            font-family: $icon-font-name;
             speak: none;
             font-size: $font-size-base;
             font-weight: normal;
@@ -36,7 +36,7 @@
         }
     }
     .submenu-dropdown {
-        z-index: $z-index-11;
+        z-index: $z-index-submenu-dropdown;
         position: absolute;
         top: 100%;
         right: 0;
@@ -58,7 +58,7 @@
             left: 0;
             padding-right: .25rem;
             color: $gray-light;
-            font-family: 'ElegantIcons';
+            font-family: $icon-font-name;
             speak: none;
             font-weight: normal;
             font-variant: normal;

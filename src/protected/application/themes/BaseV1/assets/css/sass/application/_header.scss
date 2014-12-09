@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: $z-index-10;
+    z-index: $z-index-main-header;
     border-top: 6px solid $brand-accent;
     background: #fff;
     h1 {
@@ -107,7 +107,7 @@
     right: 0;
     left: 0;
     width: 100%;
-    font-family: 'ElegantIcons';
+    font-family: $icon-font-name;
     speak: none;
     font-weight: normal;
     font-variant: normal;
@@ -185,6 +185,7 @@
 .submenu {
     display: none;
     position: absolute;
+    z-index: $z-index-main-header+1;
     top: 70px;
     margin: 0;
     padding: $padding-base;
