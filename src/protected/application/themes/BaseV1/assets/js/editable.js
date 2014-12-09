@@ -279,7 +279,7 @@ MapasCulturais.Editables = {
             };
 
             var select_value = null;
-            console.log(field_name, entity[field_name].type)
+
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
@@ -297,11 +297,13 @@ MapasCulturais.Editables = {
                     break;
 
                 case 'date':
+                case 'datetime':
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: "1900:+0" };
+                    config.datepicker = { weekStart: 1, yearRange: "1900:+0"};
                     delete config.placeholder;
+                    config.clear = 'Limpar';
 
                     break;
 
@@ -311,7 +313,9 @@ MapasCulturais.Editables = {
                     config.emptytext = 'Não';
             }
 
-            $(this).editable(config);
+            if(config.type !== 'date'){
+                $(this).editable(config);
+            }
 
             if(config.type === 'select')
                 $(this).editable('setValue', $(this).html());
@@ -323,6 +327,76 @@ MapasCulturais.Editables = {
                     $(that).text('');
                 });
             }
+
+            if(config.type === 'date'){
+
+                var $datepicker = $(this);
+
+                if(!$(this).data('timepicker')){ //normal datepicker
+
+                    $datepicker.editable(config);
+                    $datepicker.on('hidden', function(e, editable) {
+                        if($(this).editable('getValue', true) == null){
+                            $(this).editable('setValue', '');
+                        }
+                    });
+
+                }else{ //datepicker with related timepicker field
+
+                    var $timepicker = $($datepicker.data('timepicker'));
+                    var $hidden = $('<input class="js-include-editable" type="text">').insertAfter($timepicker);
+
+                    $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
+
+                    $timepicker.editable();
+                    $hidden.editable({name: $datepicker.data('edit')});
+                    $datepicker.editable(config);
+
+                    if($timepicker.data('datetime-value'))
+                        $hidden.editable('setValue', $timepicker.data('datetime-value'));
+                    else
+                        $hidden.editable('setValue', '');
+
+                    $timepicker.on('save', function(e, params) {
+                        console.log(params);
+                        if(!params.newValue){
+                            params.newValue = '23:59';
+                            $timepicker.editable('setValue', '23:59');
+                        }
+                        $hidden.editable('setValue',
+                            moment($datepicker.editable('getValue', true)).format('YYYY-M-D') + ' ' + params.newValue
+                        );
+                    });
+
+                    $datepicker.on('save', function(e, params) {
+                        console.log(params);
+                        if(params.newValue){
+                            if(!$timepicker.editable('getValue', true)){
+                                $timepicker.editable('setValue', '23:59');
+                            }
+                            $hidden.editable('setValue',
+                                moment(params.newValue).format('YYYY-M-D') + ' ' + $timepicker.editable('getValue', true)
+                            );
+                        }else{
+                            $hidden.editable('setValue', '');
+                            $timepicker.editable('setValue', '');
+                        }
+                    });
+
+                    $timepicker.on('shown', function(e, editable) {
+                        var $input = editable.input.$input;
+                        $input.mask('00:00', {
+                            onComplete: function(time) {
+                              console.log('value', $input.val());
+                              console.log('moment', moment($input.val(), 'HH:mm').format('HH:mm'));
+                        }});
+                    });
+
+                }
+
+            }
+
+
         });
 
     },
