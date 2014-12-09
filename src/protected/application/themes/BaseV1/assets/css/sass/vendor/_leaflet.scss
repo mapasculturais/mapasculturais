@@ -14,7 +14,7 @@
 //** Entity layers.
 #mc-entity-layers {
     position: absolute;
-    z-index: $z-index-8;
+    z-index: $z-index-editable-entity;
     right: 0rem;
     height: 1.875rem;
     font-size: $font-size-base;
@@ -27,7 +27,7 @@
 //** Fix leaflet top and bottom layers z-index from 1000 to header's -1.
 .leaflet-top,
 .leaflet-bottom {
-    z-index: $z-index-5;
+    z-index: $z-index-leaflet;
 }
 //** Fix Map top when in full-screen.
 .leaflet-container:-webkit-full-screen {
@@ -171,7 +171,7 @@
 .leaflet-label {
     font: .75rem/1.5 $font-family-base;
     position: absolute;
-    z-index: $z-index-13 !important;
+    z-index: $z-index-map-label !important;
     display: block;
     margin: 0 8px;
     padding: 5px 10px;
