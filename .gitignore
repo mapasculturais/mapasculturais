@@ -14,3 +14,5 @@ src/pub
 src/assets
 *.log
 .idea
+src/protected/appication/themes/*/assets/css/main.css
+src/protected/appication/themes/*/assets/css/main.css.map
