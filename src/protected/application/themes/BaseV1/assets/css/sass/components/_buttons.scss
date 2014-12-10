@@ -99,6 +99,8 @@
     background-color: $btn-primary-bg;
     border: 1px solid $btn-primary-border;
     &:hover {
+        color: $btn-primary-color;
+        background-color: lighten($btn-primary-bg, 5%);
         border: 1px solid darken($brand-primary, 10%);
     }
 }
@@ -111,6 +113,46 @@
         color: $btn-accent-color;
         background-color: $btn-accent-bg;
         border: 1px solid $btn-accent-border;
+    }
+}
+.btn-success {
+    color: $btn-success-color;
+    background-color: $btn-success-bg;
+    border: 1px solid $btn-success-border;
+    &:hover {
+        color: $btn-success-color;
+        background-color: lighten($btn-success-bg, 5%);
+        border: 1px solid darken($brand-success, 10%);
+    }
+}
+.btn-info {
+    color: $btn-info-color;
+    background-color: $btn-info-bg;
+    border: 1px solid $btn-info-border;
+    &:hover {
+        color: $btn-info-color;
+        background-color: lighten($btn-info-bg, 5%);
+        border: 1px solid darken($brand-info, 10%);
+    }
+}
+.btn-warning {
+    color: $btn-warning-color;
+    background-color: $btn-warning-bg;
+    border: 1px solid $btn-warning-border;
+    &:hover {
+        color: $btn-warning-color;
+        background-color: lighten($btn-warning-bg, 5%);
+        border: 1px solid darken($brand-warning, 10%);
+    }
+}
+.btn-danger {
+    color: $btn-danger-color;
+    background-color: $btn-danger-bg;
+    border: 1px solid $btn-danger-border;
+    &:hover {
+        color: $btn-danger-color;
+        background-color: lighten($btn-danger-bg, 5%);
+        border: 1px solid darken($brand-danger, 10%);
     }
 }
 .btn-verified {
