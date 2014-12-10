@@ -144,11 +144,9 @@ $btn-accent-color:               #fff !default;
 $btn-accent-bg:                  $brand-accent !default;
 $btn-accent-border:              darken($btn-accent-bg, 10%) !default;
 
-$btn-verified-color:             $gray-dark !default;
-$btn-verified-bg:                $gray-light !default;
-$btn-verified-border:            $gray !default;
-
-$btn-link-disabled-color:        $gray !default;
+$btn-verified-color:             #000 !default;
+$btn-verified-bg:                #fff !default;
+$btn-verified-border:            transparent !default;
 
 
 //== Forms

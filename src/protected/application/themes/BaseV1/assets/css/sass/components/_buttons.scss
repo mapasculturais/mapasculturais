@@ -34,34 +34,34 @@
     background-color: $btn-default-bg;
     border: 1px solid $btn-default-border;
     &:hover {
-        color: darken($btn-default-color, 10%);
-        background-color: $gray-lighter;
-        border: 1px solid $gray-dark;
+        color: darken($btn-default-color, 20%);
+        background-color: lighten($btn-default-bg, 5%);
+        border: 1px solid darken($btn-default-border, 10%);
     }
 }
 .btn-primary {
-    color: #fff;
-    background-color: $brand-primary;
-    border: 1px solid $brand-primary;
+    color: $btn-primary-color;
+    background-color: $btn-primary-bg;
+    border: 1px solid $btn-primary-border;
     &:hover {
-        border-color: darken($brand-primary, 10%);
+        border: 1px solid darken($brand-primary, 10%);
     }
 }
 .btn-accent {
-    color: #fff;
-    background-color: $brand-accent;
-    border: 1px solid $brand-accent;
-    &:hover {
-        background-color: $brand-primary;
-        border: 1px solid $brand-primary;
-    }
+    color: $btn-accent-color;
+    background-color: $btn-accent-bg;
+    border: 1px solid $btn-accent-border;
 }
 .btn-verified {
     color: $btn-verified-color;
     background-color: $btn-verified-bg;
-    &:hover {
-        color: darken($btn-verified-color, 10%);
-        background-color: $btn-verified-bg;
+    background-image: url(../img/verified-icon.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    &.selected {
+        color: #fff;
+        background-color: #000;
     }
 }
 
