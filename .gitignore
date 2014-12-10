@@ -7,7 +7,12 @@ nbproject
 .settings
 db/dump.sql
 db/arquivos.tar.gz
-src/protected/composer.lock
 src/protected/application/conf/config.php
 src/protected/application/lib/MapasCulturais/DoctrineProxies/*
 src/protected/vendor
+src/pub
+src/assets
+*.log
+.idea
+main.css
+main.css.map

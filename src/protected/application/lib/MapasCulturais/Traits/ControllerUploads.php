@@ -64,38 +64,42 @@ trait ControllerUploads{
 
         // the group of the files is the key in $_FILES array
         foreach(array_keys($_FILES) as $group_name){
-
+//            $this->errorJson('asd '.$this->id.' '.$group_name.' '.$app->getRegisteredFileGroup($this->id, $group_name));
             $upload_group = $app->getRegisteredFileGroup($this->id, $group_name);
             // if the group exists
             if($upload_group = $app->getRegisteredFileGroup($this->id, $group_name)){
-                $file = $app->handleUpload($group_name);
+                try {
+                    $file = $app->handleUpload($group_name);
+                    // if multiple files was uploaded and this group is unique, don't save this group of files.
+                    if(is_array($file) && $upload_group->unique){
+                        continue;
 
-                // if multiple files was uploaded and this group is unique, don't save this group of files.
-                if(is_array($file) && $upload_group->unique){
-                    continue;
+                    // else if multiple files was uploaded and this group accepts multiple files, set the group to this files and add them to $files array
+                    }elseif(is_array($file) && !$upload_group->unique){
+                        foreach($file as $f){
+                            if($error = $upload_group->getError($f)){
+                                $files[] = array('error' => $error, 'group' => $upload_group);
+                            }else{
+                                $f->group = $group_name;
+                                $files[] = $f;
+                            }
+                        }
 
-                // else if multiple files was uploaded and this group accepts multiple files, set the group to this files and add them to $files array
-                }elseif(is_array($file) && !$upload_group->unique){
-                    foreach($file as $f){
-                        if($error = $upload_group->getError($f)){
+                    // else if a single file was uploaded, add the group to this file and add this file to $files array
+                    }else{
+                        if(key_exists('description', $this->data) && is_array($this->data['description']) && key_exists($group_name, $this->data['description']))
+                            $file->description = $this->data['description'][$group_name];
+
+                        if($error = $upload_group->getError($file)){
                             $files[] = array('error' => $error, 'group' => $upload_group);
                         }else{
-                            $f->group = $group_name;
-                            $files[] = $f;
+                            $file->group = $group_name;
+                            $files[] = $file;
                         }
                     }
 
-                // else if a single file was uploaded, add the group to this file and add this file to $files array
-                }else{
-                    if(key_exists('description', $this->data) && is_array($this->data['description']) && key_exists($group_name, $this->data['description']))
-                        $file->description = $this->data['description'][$group_name];
-
-                    if($error = $upload_group->getError($file)){
-                        $files[] = array('error' => $error, 'group' => $upload_group);
-                    }else{
-                        $file->group = $group_name;
-                        $files[] = $file;
-                    }
+                }catch(\MapasCulturais\Exceptions\FileUploadError $e){
+                    $files[] = array('error' => App::txt($e->message), 'group' => $upload_group);
                 }
             }
         }

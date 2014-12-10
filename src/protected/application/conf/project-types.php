@@ -4,14 +4,21 @@
  */
 return array(
     'metadata' => array(
-        'criterios' => array(
-            'label' => 'Critérios de uso do espaço',
-            'type' => 'text'
-        ),
-
         'introInscricoes' => array(
             'label' => 'Texto introdutório das inscrições',
             'type' => 'text'
+        ),
+
+        'registrationCategTitle' => array(
+            'label' => 'Título das opções (ex: Categorias)',
+        ),
+
+        'registrationCategDescription' => array(
+            'label' => 'Descrição das opções (ex: Selecione uma categoria)',
+        ),
+
+        'registrationLimitPerOwner' => array(
+            'label' => 'Número máximo de inscrições por agente responsável'
         ),
 
         'site' => array(

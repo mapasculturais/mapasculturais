@@ -5,6 +5,7 @@
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
+            'private' => true,
             'label' => 'Nome completo ou Razão Social',
             'validations' => array(
                 //'required' => 'Seu nome completo ou jurídico deve ser informado.'
@@ -12,6 +13,7 @@ return array(
         ),
 
         'documento' => array(
+            'private' => true,
             'label' => 'CPF ou CNPJ',
 //            'validations' => array(
 //                'required' => 'Seu CPF ou CNPJ deve ser informado.',
@@ -22,13 +24,15 @@ return array(
         ),
 
         'idade' => array(
+            'private' => true,
             'label' => 'Idade',
             'validations' => array(
                 "v::int()->positive()" => "A idade/tempo deve ser um número positivo."
             )
         ),
-        
+
         'raca' => array(
+            'private' => true,
             'label' => 'Raça/cor',
             'type' => 'select',
             'options' => array(
@@ -42,6 +46,7 @@ return array(
         ),
 
         'dataDeNascimento' => array(
+            'private' => true,
             'label' => 'Data de Nascimento/Fundação',
             'type' => 'date',
             'validations' => array(
@@ -60,6 +65,7 @@ return array(
         ),
 
         'genero' => array(
+            'private' => true,
             'label' => 'Gênero',
             'type' => 'select',
             'options' => array(
@@ -77,8 +83,8 @@ return array(
         ),
 
         'emailPrivado' => array(
-            'label' => 'Email Privado',
             'private' => true,
+            'label' => 'Email Privado',
             'validations' => array(
                 //'required' => 'O email privado é obrigatório.',
                 'v::email()' => 'O email privado não é um email válido.'
@@ -94,9 +100,9 @@ return array(
         ),
 
         'telefone1' => array(
+            'private' => true,
             'label' => 'Telefone 1',
             'type' => 'string',
-            'private' => true,
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
             )
@@ -104,6 +110,7 @@ return array(
 
 
         'telefone2' => array(
+            'private' => true,
             'label' => 'Telefone 2',
             'type' => 'string',
             'validations' => array(
@@ -140,10 +147,6 @@ return array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
         ),
-
-        'sp_regiao' => array('label' => 'Região',),
-        'sp_subprefeitura' => array('label' => 'Subprefeitura',),
-        'sp_distrito' => array('label' => 'Distrito',),
 
     ),
     'items' => array(

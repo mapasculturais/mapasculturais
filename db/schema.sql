@@ -829,6 +829,55 @@ CREATE TABLE project_meta (
 ALTER TABLE public.project_meta OWNER TO mapasculturais;
 
 --
+-- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+CREATE TABLE registration_file_configuration (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    description text,
+    required boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.registration_file_configuration OWNER TO mapasculturais;
+
+--
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+--
+
+CREATE SEQUENCE registration_file_configuration_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registration_file_configuration_id_seq OWNER TO mapasculturais;
+
+--
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+--
+
+ALTER SEQUENCE registration_file_configuration_id_seq OWNED BY registration_file_configuration.id;
+
+
+--
+-- Name: registration_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+CREATE TABLE registration_meta (
+    object_id integer NOT NULL,
+    key character varying(32) NOT NULL,
+    value text
+);
+
+
+ALTER TABLE public.registration_meta OWNER TO mapasculturais;
+
+--
 -- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
 --
 
@@ -1037,19 +1086,17 @@ ALTER TABLE public.usr_id_seq OWNER TO mapasculturais;
 
 CREATE TABLE usr (
     id integer DEFAULT nextval('usr_id_seq'::regclass) NOT NULL,
-    profile_id integer,
     auth_provider smallint NOT NULL,
     auth_uid character varying(512) NOT NULL,
     email character varying(255) NOT NULL,
     last_login_timestamp timestamp without time zone NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-    status smallint NOT NULL
+    status smallint NOT NULL,
+    profile_id integer
 );
 
 
 ALTER TABLE public.usr OWNER TO mapasculturais;
-
-ALTER TABLE ONLY usr ADD CONSTRAINT user_profile_fk FOREIGN KEY (profile_id) REFERENCES agent(id);
 
 --
 -- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: mapasculturais
@@ -1105,6 +1152,13 @@ ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::r
 --
 
 ALTER TABLE ONLY project_event ALTER COLUMN id SET DEFAULT nextval('project_event_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration_file_configuration ALTER COLUMN id SET DEFAULT nextval('registration_file_configuration_id_seq'::regclass);
 
 
 --
@@ -1257,6 +1311,22 @@ ALTER TABLE ONLY project
 
 
 --
+-- Name: registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+ALTER TABLE ONLY registration_file_configuration
+    ADD CONSTRAINT registration_file_configuration_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+ALTER TABLE ONLY registration_meta
+    ADD CONSTRAINT registration_meta_pkey PRIMARY KEY (object_id, key);
+
+
+--
 -- Name: request_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace:
 --
 
@@ -1332,6 +1402,13 @@ CREATE INDEX agent_relation_all ON agent_relation USING btree (agent_id, object_
 --
 
 CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (status);
+
+
+--
+-- Name: registration_meta_key_value_index; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace:
+--
+
+CREATE INDEX registration_meta_key_value_index ON registration_meta USING btree (key, value);
 
 
 --
@@ -1491,6 +1568,14 @@ ALTER TABLE ONLY project_meta
 
 
 --
+-- Name: registration_meta_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY registration_file_configuration
+    ADD CONSTRAINT registration_meta_project_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE SET NULL;
+
+
+--
 -- Name: requester_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
 --
 
@@ -1547,11 +1632,34 @@ ALTER TABLE ONLY term_relation
 
 
 --
+-- Name: user_profile_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+--
+
+ALTER TABLE ONLY usr
+    ADD CONSTRAINT user_profile_fk FOREIGN KEY (profile_id) REFERENCES agent(id);
+
+
+--
 -- Name: usr_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
 --
 
 ALTER TABLE ONLY agent
     ADD CONSTRAINT usr_agent_fk FOREIGN KEY (user_id) REFERENCES usr(id);
+
+
+
+CREATE TABLE geo_division (
+    id serial PRIMARY KEY,
+    parent_id integer,
+    type character varying(32) NOT NULL,
+    cod character varying(32),
+    name character varying(128) NOT NULL,
+    geom geometry,
+    CONSTRAINT enforce_dims_geom CHECK ((st_ndims(geom) = 2)),
+    CONSTRAINT enforce_geotype_geom CHECK (((geometrytype(geom) = 'MULTIPOLYGON'::text) OR (geom IS NULL))),
+    CONSTRAINT enforce_srid_geom CHECK ((st_srid(geom) = 4326))
+);
+CREATE INDEX geo_divisions_geom_idx ON geo_division USING gist (geom);
 
 
 --

@@ -3,6 +3,7 @@ namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use MapasCulturais\Entities;
 
 /**
  * Project Controller
@@ -18,7 +19,8 @@ class Project extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner;
+        Traits\ControllerChangeOwner,
+        Traits\ControllerAPI;
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
@@ -31,7 +33,7 @@ class Project extends EntityController {
         parent::GET_create();
     }
 
-    function POST_register() {
+    function ALL_publish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -41,78 +43,41 @@ class Project extends EntityController {
         if(!$project)
             $app->pass();
 
-        if(!$project->isRegistrationOpen()){
-            $this->errorJson ($app->txt("The registration is not open"));
-            return;
-        }
+        $project->publishRegistrations();
 
-        if(!key_exists('agentId', $this->postData) || !trim($this->postData['agentId'])){
-            $this->errorJson ($app->txt("agent id is required"));
-            return;
-        }
-
-        $agent = $app->repo('Agent')->find($this->postData['agentId']);
-
-        if(!$agent){
-            $this->errorJson ($app->txt("agent not found"));
-            return;
-        }
-
-        $file = $app->handleUpload('registrationForm');
-        $registrationForm = $project->getFile('registrationForm');
-        if($registrationForm && !$file){
-            $this->errorJson ($app->txt("the registration form is required"));
-            return;
-        }else if($registrationForm){
-            $file->group = 'registrationForm';
-            $registration = $project->register($agent, $file);
+        if($app->request->isAjax()){
+            $this->json($project);
         }else{
-            $registration = $project->register($agent);
+            $app->redirect($app->request->getReferer());
         }
-
-        if(is_object($registration))
-            $this->json($registration);
-        else
-            $this->errorJson($registration);
     }
 
-    function POST_approveRegistration(){
-        $this->requireAuthentication();
 
+    function GET_report(){
+        $this->requireAuthentication();
         $app = App::i();
 
-        $project = $this->requestedEntity;
-
-        if(!$project)
+        if(!key_exists('id', $this->urlData))
             $app->pass();
 
-        if(!key_exists('agentId', $this->postData) || !trim($this->postData['agentId'])){
-            $this->errorJson ("agentId is required");
-            return;
-        }
+        $entity = $this->repo()->find($this->urlData['id']);
 
-        $agent = $app->repo('Agent')->find($this->postData['agentId']);
-
-        $this->json($project->approveRegistration($agent));
-    }
-
-    function POST_rejectRegistration(){
-        $this->requireAuthentication();
-
-        $app = App::i();
-
-        $project = $this->requestedEntity;
-
-        if(!$project)
+        if(!$entity)
             $app->pass();
 
-        if(!key_exists('agentId', $this->postData) || !trim($this->postData['agentId'])){
-            $this->errorJson ("agentId is required");
-            return;
-        }
+        $entity->checkPermission('@control');
 
-        $agent = $app->repo('Agent')->find($this->postData['agentId']);
+        $response = $app->response();
+        //$response['Content-Encoding'] = 'UTF-8';
+        $response['Content-Type'] = 'application/force-download';
+        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
+        $response['Pragma'] ='no-cache';
 
-        $this->json($project->rejectRegistration($agent));
+        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        
+        ob_start();
+        $this->partial('report', array('entity' => $entity));
+        $output = ob_get_clean();
+        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }
 }

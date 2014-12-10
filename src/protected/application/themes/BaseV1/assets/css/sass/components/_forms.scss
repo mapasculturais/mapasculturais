@@ -1,0 +1,34 @@
+.label {
+    font-weight: bold;
+}
+.js-dialog .label {
+    color: $brand-accent;
+    font-weight: normal;
+}
+.form-help {
+    margin-bottom: 0;
+    font-size: $font-size-smaller;
+    font-style: italic;
+    color: #999;
+}
+.radio-button {
+    color: $brand-accent;
+    font-family: $icon-font-name;
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.radio-button:before {
+    content: '\5b';
+}
+.radio-button.selected:before {
+    content: '\5c';
+}
+/* Date picker*/
+input.data {
+    width: 76px;
+}

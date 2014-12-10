@@ -1,0 +1,53 @@
+.agentes {
+    .avatar {
+        position: relative;
+        &:hover {
+            .descricao-do-agente {
+                display: block;
+            }
+        }
+        &.pending {
+            img {
+                opacity: .3;
+            }
+        }
+        .descricao-do-agente {
+            display: none;
+            position: absolute;
+            z-index: $z-index-descricao-do-agente;
+            top: 3.5rem;
+            right: -.75rem;
+            width: 200px;
+            padding: $padding-base;
+            font-size: $font-size-smaller;
+            background: #fff;
+            border-radius: $border-radius-base;
+                    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
+            -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
+            &:before {
+                content: '\42';
+                position: absolute;
+                top: -13px;
+                right: 0;
+                left: 0;
+                padding-right: $padding-large;
+                color: #fff;
+                font-family: $icon-font-name;
+                speak: none;
+                font-weight: normal;
+                font-variant: normal;
+                font-size: 24px;
+                text-align: right;
+                text-transform: none;
+                line-height: 1;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            h1 {
+                font-size: $font-size-base;
+                line-height: $line-height-base;
+                margin-bottom: 0;
+            }
+        }
+    }
+}

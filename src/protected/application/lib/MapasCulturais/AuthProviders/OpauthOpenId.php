@@ -41,10 +41,12 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         }
 
 
+
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $app->redirect($this->createUrl('openid'));
         });
+
 
         $app->hook('<<GET|POST>>(auth.openid)', function () use($opauth, $config){
             $_POST['openid_url'] = $config['login_url'];
@@ -57,32 +59,19 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             if($app->auth->isUserAuthenticated()){
                 $app->redirect ($app->auth->getRedirectPath());
             }else{
-                $app->redirect ($this->createUrl(''));
+                if($app->config['app.mode'] === 'production'){
+                    $app->redirect ($this->createUrl('error'));
+                }else{
+                    echo '<pre>';
+                    var_dump($this->data, $_POST, $_GET, $_REQUEST, $_SESSION);
+                    die;
+                }
             }
         });
     }
 
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
-    }
-
-    public function _requireAuthentication() {
-        $app = App::i();
-
-        if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
-        }else{
-            $this->_setRedirectPath($app->request->getPathInfo());
-            $app->redirect($app->controller('auth')->createUrl(''), 401);
-        }
-    }
-
-    /**
-     * Defines the URL to redirect after authentication
-     * @param string $redirect_path
-     */
-    protected function _setRedirectPath($redirect_path){
-        $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
     /**

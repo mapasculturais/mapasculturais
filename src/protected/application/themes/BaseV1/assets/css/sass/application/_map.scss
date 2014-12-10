@@ -1,0 +1,43 @@
+/* =Mapa
+-------------------------------------------------------------- */
+#mapa {
+    display: block;
+    position: fixed;
+    z-index: 0;
+    top: 96px;
+    bottom: 0;
+    left: 0; /*348px qdo abre a infobox*/
+    right: 0;
+}
+#infobox {
+    position: absolute;
+    z-index: $z-index-infobox;
+    top: 105px;
+    left: 0;
+    bottom: 0;
+    width: 400px;
+    overflow: auto;
+    padding: 2rem .75rem .75rem;
+    border-radius: 0;
+    background: #fff;
+}
+#infobox .icon_close {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+}
+#infobox .espaco-dos-eventos {
+    background: $gray-light;
+    border-radius: $border-radius-base;
+    padding: $padding-small;
+    font-size: $font-size-smaller;
+}
+#infobox .espaco-dos-eventos .icone {
+    margin: -3px 5px 0 0;
+}
+.animate-show,
+.animate-hide {
+    -webkit-transition: all linear 1s;
+            transition: all linear 1s;
+}

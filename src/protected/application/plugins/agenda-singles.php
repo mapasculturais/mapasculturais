@@ -44,5 +44,5 @@ $app->hook('GET(<<agent|space|project>>.agendaSingle)', function() use ($app) {
 });
 
 $app->hook('view.render(<<agent|space|project>>/<<single|edit>>):before', function() use ($app) {
-    $app->enqueueScript('app', 'agenda-single', '/js/agenda-single.js', array('mapasculturais'));
+    $app->view->enqueueScript('app', 'agenda-single', '/js/agenda-single.js', array('mapasculturais'));
 });

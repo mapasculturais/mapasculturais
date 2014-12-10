@@ -1,6 +1,11 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 
+if(!isset($asset_dir)){
+    $asset_dir = 'assets/';
+}
+
+
 // creating base url
 $prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
 //added @ for HTTP_HOST undefined in Tests
@@ -8,9 +13,17 @@ $host_part = @$_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 if(substr($host_part,-1) !== '/') $host_part .= '/';
 $base_url = $prot_part . $host_part;
 
+$num_folders = count(explode('/',BASE_PATH . 'public'));
+
 return array(
+    // theme namespaces
+    'namespaces' => array(
+        'MapasCulturais\Themes' => THEMES_PATH
+    ),
+
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
+    'base.assetUrl' => $base_url . $asset_dir,
 
     'vectorLayersPath' => 'geojson',
 
@@ -25,6 +38,83 @@ return array(
     'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
 
     'api.accessControlAllowOrigin' => '*',
+
+    'app.enableProjectRegistration' => true,
+
+    'app.offline' => false,
+    'app.offlineUrl' => '/offline',
+    'app.offlineBypassFunction' => null,
+
+    'themes.active' => 'MapasCulturais\Themes\BaseV1',
+    'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
+        'publishPath' => BASE_PATH . $asset_dir,
+
+        'mergeScripts' => false,
+        'mergeStyles' => false,
+
+        'process.js' => 'cp {IN} {OUT}', //'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /pub/{FILENAME}.map -b -p 7',
+        'process.css' => 'cp {IN} {OUT}', //'uglifycss {IN} > {OUT}',
+        'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
+    )),
+
+//    'maps.center' => array(-23.54894, -46.63882), // são paulo
+    'maps.center' => array(-14.2400732, -53.1805018), // brasil
+    'maps.zoom.default' => 5,
+    'maps.zoom.approximate' => 14,
+    'maps.zoom.precise' => 16,
+    'maps.zoom.max' => 18,
+    'maps.zoom.min' => 5,
+    'maps.includeGoogleLayers' => false,
+
+    'app.geoDivisionsHierarchy' => array(
+        'país',
+        'região',
+        'estado',
+        'mesorregião',
+        'microrregião',
+        'município',
+        'zona',
+        'subprefeitura',
+        'distrito'
+    ),
+
+    'registration.agentRelationsOptions' => array(
+        'dontUse' => 'Não utilizar',
+        'required' => 'Obrigatório',
+        'optional' => 'Opcional'
+    ),
+    'registration.privatePropertiesToExport' => array(
+        'documento',
+        'emailPrivado',
+        'telefone1',
+        'telefone2'
+    ),
+    'registration.ownerDefinition' => array(
+        'required' => true,
+        'label' => 'Agente Responsável',
+        'agentRelationGroupName' => 'owner',
+        'description' => 'Agente individual com CPF cadastrado',
+        'type' => 1,
+        'requiredProperties' => array('documento')
+    ),
+    'registration.agentRelations' => array(
+        array(
+            'required' => false,
+            'label' => 'Instituição responsável',
+            'agentRelationGroupName' => 'instituicao',
+            'description' => 'Agente coletivo com CNPJ',
+            'type' => 2,
+            'requiredProperties' => array('documento')
+        ),
+        array(
+            'required' => false,
+            'label' => 'Coletivo',
+            'agentRelationGroupName' => 'coletivo',
+            'description' => 'Agente coletivo sem CNPJ',
+            'type' => 2,
+            'requiredProperties' => array()
+        )
+    ),
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -46,19 +136,26 @@ return array(
     'app.log.translations' => false,
     'app.log.apiCache' => false,
     'app.log.apiDql' => false,
+    'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    
+    'app.cache.namespace' => BASE_PATH,
+
+    'app.useRegisteredAutoloadCache' => true,
+    'app.registeredAutoloadCache.lifetime' => 0,
+
+    'app.useAssetsUrlCache' => true,
+    'app.assetsUrlCache.lifetime' => 0,
+
     'app.useFileUrlCache' => true,
     'app.fileUrlCache.lifetime' => 604800,
-    
+
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
-    
 
     'app.useUsersWithControlCache' => true,
     'app.usersWithControlCache.lifetime' => 30,
@@ -122,7 +219,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-            // 'james-bond'                => array('agent', 'single', array('id' => '007')),
+             'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
@@ -139,6 +236,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
+            'inscricao' => array('registration', 'view'),
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -148,7 +246,9 @@ return array(
             'agentes'        => 'agent',
             'espacos'        => 'space',
             'arquivos'       => 'file',
-            'projetos'       => 'project'
+            'projetos'       => 'project',
+            'inscricoes'     => 'registration',
+            'anexos'         => 'registrationfileconfiguration'
         ),
         'actions' => array(
             'lista'         => 'list',
@@ -158,6 +258,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'inscricoes'    => 'registrations'
         ),
 
         'readableNames' => array(

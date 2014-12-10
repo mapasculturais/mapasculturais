@@ -13,14 +13,16 @@ function getParentWithAddress($child){
     }
 }
 
-function updateAddressData($sourceSpace, $destinySpace){
-    \MapasCulturais\App::i()->log->debug('--- UPDATING SPACE: '.$destinySpace);
+function updateAddressData($sourceSpace, $destinySpace) {
+    $app = \MapasCulturais\App::i();
+    $app->log->debug('--- UPDATING SPACE: '.$destinySpace);
     $destinySpace->endereco = $sourceSpace->endereco;
     $destinySpace->location = $sourceSpace->location;
-    $destinySpace->sp_regiao = $sourceSpace->sp_regiao;
-    $destinySpace->sp_subprefeitura = $sourceSpace->sp_subprefeitura;
-    $destinySpace->sp_distrito = $sourceSpace->sp_distrito;
-    \MapasCulturais\App::i()->log->debug('--- SPACE LOCATION '.$destinySpace->location);
+    foreach ($app->getRegisteredGeoDivisions() as $d) {
+        $metakey = $d->metakey;
+        $destinySpace->$metakey = $sourceSpace->$metakey;
+    }
+    $app->log->debug('--- SPACE LOCATION '.$destinySpace->location);
 }
 
 $app->hook('entity(space).save:before', function($args) use ($app) {

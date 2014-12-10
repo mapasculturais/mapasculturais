@@ -1,0 +1,164 @@
+//
+// Registration Form
+// --------------------------------------------------
+
+
+//## Registration form that shows on projects tab "Inscritos" when logged in and on view mode.
+
+.registration-form {
+	box-sizing: border-box;
+	border: 1px solid #eee;
+	border-radius: 2px;
+	padding: $padding-large;
+	margin-bottom: 2*$line-height-base;
+	> div {
+		float: left;
+		box-sizing: border-box;
+        width: 50%;
+        &:first-child {
+    		padding-right: .75rem;
+        }
+	}
+    .input-text {
+        box-sizing: border-box;
+        height: 2rem;
+        margin-right: 5px;
+        padding: 3px 6px;
+        background: #fff;
+        border: 1px solid $gray;
+        border-radius: $border-radius-base;
+        color: $gray-dark;
+        font-family: $font-family-base;
+        font-size: $font-size-smaller;
+    }
+	.botao {
+		width: 100%;
+		&.principal {
+			text-align: center;
+		}
+	}
+}
+
+
+//## Registration form that shows on projects tab "Inscritos" when editing.
+.registration-header {
+	background-color: $registration-header-bg;
+	color: $registration-header-color;
+	padding: $padding-base;
+	border-radius: $border-radius-base;
+}
+.registration-fieldset {
+	margin-bottom: $line-height-base;
+	padding: $padding-large;
+	border: 1px solid $gray-lighter;
+	border-radius: 2px;
+	&:hover {
+		background-color: #f4f4f4;
+	}
+	h4 {
+		margin-bottom: $line-height-half;
+	}
+
+}
+.registration-help {
+	font-style: italic;
+	color: #999;
+}
+.registration-id {
+	font-size: 3rem;
+	line-height: 1;
+}
+.registration-agent {
+	.warning {
+		display: none;
+	}
+	&.pendent {
+		.warning {
+			display: block;
+		}
+	}
+	.registration-agent-avatar {
+		float: left;
+		width: 2rem;
+		height: 2rem;
+		margin-right: $line-height-half;
+	}
+    .registration-agent-details {
+        font-size: $font-size-smaller;
+        padding-left: 2.75rem;
+    }
+}
+
+.registration-list {
+	margin: 0;
+	list-style: none;
+    .registration-list-item {
+        position: relative;
+        padding: $padding-base;
+        padding-right: 11rem;
+        border-bottom: 1px solid $gray-lighter;
+        a {
+        	font-weight: normal;
+        }
+        .registration-label {
+        	font-weight: bold;
+        }
+        .registration-description {
+        	font-size: $font-size-smaller;
+        	color: #999;
+        	margin-bottom: $line-height-half;
+        }
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
+        }
+        &:hover {
+        	background: $gray-lighter;
+        }
+    }
+}
+
+
+.attachment-list {
+	margin: 0;
+	list-style: none;
+    .attachment-list-item {
+        position: relative;
+        padding: $padding-base;
+        padding-right: 14rem;
+        border-bottom: 1px solid $gray-lighter;
+        .attachment-title {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            word-wrap: break-word;
+        	&:before {
+        		@extend %icon;
+        		content: "\e016";
+                margin-right: 3px;
+        	}
+        }
+        .attachment-description {
+        	font-size: $font-size-smaller;
+        	color: #999;
+        	margin-bottom: $line-height-half;
+        }
+        .attachment-template {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            &:before {
+                @extend %icon;
+                content:"\e092";
+                margin-right: 3px;
+            }
+        }
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
+        }
+        &:hover {
+        	background: $gray-lighter;
+        }
+    }
+}

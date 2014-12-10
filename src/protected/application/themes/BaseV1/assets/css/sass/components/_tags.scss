@@ -1,0 +1,61 @@
+/*Tags*/
+.tag {
+    display: inline-block;
+    margin-right: .25rem;
+    margin-bottom: .25rem;
+    padding: 0 $padding-small;
+    background-color: #fff;
+    border-radius: $border-radius-base;
+    font-family: $font-family-base;
+    font-size: .7rem;
+    line-height: $line-height-base;
+    font-weight: normal;
+    color: $brand-accent;
+    text-transform: uppercase;
+    -webkit-transition: all .3s;
+            transition: all .3s;
+    cursor: pointer;
+    &:hover {
+        color: #fff;
+        background: $brand-accent;
+        text-decoration: none;
+    }
+}
+.tag-selected {
+    @extend .tag;
+    padding-right: .3rem;
+    &:after {
+        content: '\4d';
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        margin-top: -3px;
+        font-size: $font-size-base;
+        line-height: 1rem;
+        font-family: $icon-font-name;
+        vertical-align: middle;
+        text-transform: none;
+    }
+}
+.tag-event {
+    background-color: $brand-event;
+}
+.tag-agent {
+    background-color: $brand-agent;
+}
+.tag-space {
+    background-color: $brand-space;
+}
+.tag-project {
+    background-color: $brand-project;
+}
+.tag-event,
+.tag-agent,
+.tag-space,
+.tag-project {
+    color: #fff;
+}
+.tag-clear {
+    color: #fff;
+    background: $brand-accent;
+}

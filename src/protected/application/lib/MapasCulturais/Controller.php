@@ -28,6 +28,8 @@ use \MapasCulturais\App;
  * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
  *
  *
+ * @property-read string $action
+ *
  * @property-read array $data URL + GET + POST + PUT + DELETE data
  * @property-read array $urlData URL data
  * @property-read array $requestData GET + POST + PUT + DELETE data

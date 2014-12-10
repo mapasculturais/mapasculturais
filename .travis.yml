@@ -7,8 +7,6 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: 5.6
 
 install:
   - composer self-update && composer --version
@@ -16,26 +14,10 @@ install:
   - pushd src/protected; composer update --prefer-dist; popd
 
 before_script:
-  - psql -c 'create user mapasculturais;' -U postgres
-  - psql -c 'create database mapasculturais_test owner mapasculturais;' -U postgres
-  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d mapasculturais_test
-  - psql -c 'CREATE EXTENSION unaccent;' -U postgres -d mapasculturais_test
-  - psql -f db/schema.sql -U mapasculturais -d mapasculturais_test
-  - psql -f db/test-data.sql -U mapasculturais -d mapasculturais_test
-
-  - tar xC db -f db/sp-shapefile-sql.tar.xz
-  - psql -c "DROP table IF EXISTS sp_regiao;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_regiao.sql -U mapasculturais -d mapasculturais_test
-  - psql -c "DROP table IF EXISTS sp_distrito;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_distrito.sql -U mapasculturais -d mapasculturais_test
-  - psql -c "DROP table IF EXISTS sp_subprefeitura;" -U mapasculturais -d mapasculturais_test
-  - psql -f db/sp-shapefile-sql/sp_subprefeitura.sql -U mapasculturais -d mapasculturais_test
-
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - php -S localhost:8000 -t src > /dev/null &
 
 script:
-  - phpunit tests
+  - ./scripts/run-tests.sh
 
 notifications:
   slack:

@@ -1,0 +1,8 @@
+<div class="dropdown js-dropdown" ng-class="classes" data-closeonclick="true">
+    <div class="placeholder">{{getSelectedLabel()}}</div>
+    <div class="submenu-dropdown js-submenu-dropdown">
+        <ul>
+            <li ng-repeat="item in data" ng-click="selectItem(item, $event)" ng-class="{selected: isSelected(item)}">{{item.label}}</li>
+        </ul>
+    </div>
+</div>

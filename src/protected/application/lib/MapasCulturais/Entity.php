@@ -198,6 +198,10 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
 
+    protected function canUserView($user){
+        return true;
+    }
+
     protected function canUserRemove($user){
         if($user->is('guest'))
             return false;

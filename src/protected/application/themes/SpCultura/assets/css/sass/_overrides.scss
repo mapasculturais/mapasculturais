@@ -1,0 +1,19 @@
+//
+// Overrides
+// --------------------------------------------------
+//## Changes from parent theme.
+
+// editable-entity
+
+#logo-peq {
+    display: none;
+    position: absolute;
+    left: .75rem;
+    margin-bottom: 0;
+    line-height: 2rem;
+}
+#logo-peq img {
+    display: block;
+    height: 2.2rem;
+    width: auto;
+}

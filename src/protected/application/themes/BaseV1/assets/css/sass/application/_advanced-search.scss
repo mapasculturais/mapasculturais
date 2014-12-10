@@ -1,0 +1,194 @@
+/* =Busca avançada
+-------------------------------------------------------------- */
+#main-header .busca-main-header {
+    position: relative;
+}
+#main-header #busca {
+    position: relative;
+}
+#busca-avancada {
+    background-color: $gray-light;
+    font-size: $font-size-small;
+}
+#busca-avancada .wrap {
+    position: relative;
+    padding: $padding-base;
+}
+
+/*filtro local*/
+#filtro-local {
+    position: absolute;
+    z-index: $z-index-editable-entity;
+    left: 0;
+    height: 1.875rem;
+}
+#filtro-local label {
+    display: none;
+}
+#filtro-local input[type='text'] {
+    width: 350px;
+    margin-right: 6px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    border: none;
+}
+#filtro-local input[type='text']:focus {
+    border: 1px solid $brand-accent;
+}
+#form-local {
+    display: inline-block;
+    vertical-align: top;
+}
+.botoes-do-mapa {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: $border-radius-base;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    background-color: $brand-accent;
+    color: #fff;
+    text-align: center;
+}
+#proximo-a-mim {
+    background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
+}
+#proximo-a-mim:hover {
+    background-color: $brand-primary;
+}
+.botoes-do-mapa.active {
+    background-color: $brand-primary;
+}
+
+/* filtros dos objetos*/
+.filtro-objeto {
+    position: relative;
+    clear: both;
+    padding: $padding-base 0;
+    color: $brand-accent;
+    font-size: $font-size-small;
+}
+#filtro-eventos {
+    background: $brand-event;
+}
+#filtro-agentes {
+    background: $brand-agent;
+}
+#filtro-espacos {
+    background: $brand-space;
+}
+#filtro-projetos {
+    background: $brand-project;
+}
+.filtro-objeto .icon_close {
+    position: absolute;
+    right: $line-height-half;
+    top: $line-height-half;
+    width: $line-height-base;
+    height: $line-height-base;
+    line-height: 2.5rem;
+    font-size: $line-height-base;
+}
+
+.filtro {
+    float: left;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 20%;
+    padding: 0 $padding-base;
+    border-left: 1px dotted $brand-accent;
+    line-height: 2rem;
+}
+.filtro:first-child {
+    border: none;
+}
+.filtro .label,
+.filtro label {
+    display: none;
+}
+.filtro .show-label {
+    display: inline;
+    font-size: $font-size-smaller;
+    cursor: default;
+}
+.filtro .tags {
+    margin-bottom: 0;
+    height: 144px;
+}
+.filtro .tag {
+    margin-bottom: 0;
+}
+.filtro .dropdown {
+    width: 100%;
+}
+.filtro .dropdown,
+.filtro .dropdown .submenu-dropdown {
+    background: #fff;
+}
+.filtro .dropdown .submenu-dropdown:before {
+    color: #fff;
+}
+.filtro .dropdown .submenu-dropdown li:hover {
+    background: $gray-lighter;
+    color: $brand-accent;
+}
+.filtro input {
+    margin-bottom: 0;
+    border: none;
+}
+.filtro .campo-de-busca {
+    width: 100%;
+}
+.lista-de-filtro {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.lista-de-filtro li {
+    cursor: pointer;
+    margin-bottom: .5rem;
+    padding: 0 2px;
+    line-height: $line-height-base;
+}
+.lista-de-filtro li:before {
+    display: inline-block;
+    content: '\4e';
+    margin: .325rem .75rem .325rem 0;
+    padding: 2px;
+    background: $gray-light;
+    -webkit-font-smoothing: antialiased;
+    font: normal .75rem/.75rem $icon-font-name;
+    text-align: center;
+    color: #fff;
+    border-radius: $border-radius-base;
+}
+.lista-de-filtro li:hover:before {
+    color: $brand-accent;
+    background: #fff;
+}
+.lista-de-filtro li.selected:before {
+    color: #fff;
+    background: $brand-accent;
+}
+.lista-de-filtro li span {
+    display: inline-block;
+    width: 80%;
+    vertical-align: top;
+}
+.filtro-prefeitura {
+    float: right;
+    text-align: center;
+}
+.filtro-prefeitura .botao {
+    color: #fff;
+    background-color: $brand-accent;
+    background-image: url(../img/verified-icon.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+.filtro-prefeitura .botao:hover,
+.filtro-prefeitura .botao.selected,
+.filtro-prefeitura .botao.selected:hover {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+}

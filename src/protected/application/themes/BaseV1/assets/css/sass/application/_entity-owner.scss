@@ -1,0 +1,16 @@
+#entity-owner {
+	clear: both;
+}
+.dono {
+    margin: $line-height-base 0;
+    padding-top: $padding-large;
+    border-top: 1px solid $gray-lighter;
+    font-size: $font-size-small;
+    .avatar {
+	    width: 3rem;
+	    height: 3rem;
+	}
+	.descricao-do-agente {
+	    font-style: italic;
+	}
+} 
