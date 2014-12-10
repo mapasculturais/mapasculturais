@@ -100,9 +100,10 @@ $this->includeAngularEntityAssets($entity);
                     </p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Raça/Cor:</span> <span class="js-editable" data-edit="raca" data-original-title="Raça/cor" data-emptytext="Selecione a raça/cor se for pessoa física"><?php echo $entity->raca; ?></span></p>
-                
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Email:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+
+                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
+                <p><span class="label">Email:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Insira um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
 
                 <?php if($this->isEditable() || $entity->telefonePublico): ?>
                 <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>
@@ -119,6 +120,22 @@ $this->includeAngularEntityAssets($entity);
             <?php if ( $this->isEditable() || ($entity->precisao && $lat && $lng) ): ?>
                 <!--.servico-->
                 <div class="servico clearfix">
+                    <div class="mapa">
+                        <?php if($this->isEditable()): ?>
+                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
+                        <?php endif; ?>
+                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
+                        </div>
+                        <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
+                        <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
+                        <?php if($this->isEditable()): ?>
+                        <script>
+                            $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
+                        </script>
+                    <?php endif; ?>
+                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
+                    </div>
+                    <!--.mapa-->
                     <div class="infos">
 
                         <?php if($this->isEditable()): ?>
@@ -136,22 +153,6 @@ $this->includeAngularEntityAssets($entity);
                         <?php endforeach; ?>
                     </div>
                     <!--.infos-->
-                    <div class="mapa">
-                        <?php if($this->isEditable()): ?>
-                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
-                        <?php endif; ?>
-                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
-                        </div>
-                        <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
-                        <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
-                        <?php if($this->isEditable()): ?>
-                        <script>
-                            $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
-                        </script>
-                    <?php endif; ?>
-                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
-                    </div>
-                    <!--.mapa-->
                 </div>
                 <!--.servico-->
             <?php endif; ?>

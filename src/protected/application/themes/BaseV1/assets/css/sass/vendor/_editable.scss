@@ -13,7 +13,7 @@
     content: '\6c';
     font-size: $font-size-base;
     line-height: 1rem;
-    font-family: 'ElegantIcons';
+    font-family: $icon-font-name;
     font-weight: normal;
     font-style: normal;
     vertical-align: initial;
@@ -57,7 +57,7 @@ a.editable-click:hover {
 
 /* balãozinho*/
 .tip-yellowsimple {
-    z-index: 1001;
+    z-index: $z-index-tip;
     padding: $padding-base;
     background: #fff;
     border: none;
@@ -158,7 +158,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     content: '\4d';
     font-size: $font-size-base;
     line-height: $line-height-base;
-    font-family: 'ElegantIcons';
+    font-family: $icon-font-name;
     font-weight: normal;
     font-style: normal;
     vertical-align: initial;
@@ -210,7 +210,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     speak: none;
     line-height: $line-height-base;
     font-size: $font-size-base;
-    font-family: 'ElegantIcons';
+    font-family: $icon-font-name;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;

@@ -25,7 +25,7 @@ trait MagicGetter{
         }else if($name[0] !== '_' && property_exists($this, $name)){
             return $this->$name;
 
-        }else if($this->usesMetadata()){
+        }else if(method_exists($this,'usesMetadata') && $this->usesMetadata()){
             return $this->__metadata__get($name);
 
         }else{

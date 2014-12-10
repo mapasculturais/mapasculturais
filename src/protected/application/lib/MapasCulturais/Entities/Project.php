@@ -205,20 +205,25 @@ class Project extends \MapasCulturais\Entity
             if($re->status > 0)
                 $result[] = $re;
         }
-        return $registrations;
+        return $result;
     }
 
     function setRegistrationFrom($date){
-        $this->registrationFrom = new \DateTime($date);
-        $this->registrationFrom->setTime(0,0,0);
+        if($date){
+            $this->registrationFrom = new \DateTime($date);
+            $this->registrationFrom->setTime(0,0,0);
+        }else{
+            $this->registrationFrom = null;
+        }
     }
-
 
     function setRegistrationTo($date){
-        $this->registrationTo = new \DateTime($date);
-        $this->registrationTo->setTime(23, 59, 59);
+        if($date){
+            $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
+        }else{
+            $this->registrationTo = null;
+        }
     }
-
 
     function validateDate($value){
         return !$value || $value instanceof \DateTime;
@@ -241,47 +246,98 @@ class Project extends \MapasCulturais\Entity
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
+    function setRegistrationCategories($value){
+        $new_value = $value;
+        if(is_string($value) && trim($value)){
+            $cats = [];
+            foreach(explode("\n", trim($value)) as $opt){
+                $opt = trim($opt);
+                if($opt && !in_array($opt, $cats)){
+                    $cats[] = $opt;
+                }
+            }
+            $new_value = $cats;
+        }
+
+        if($new_value != $this->registrationCategories){
+            $this->checkPermission('modifyRegistrationFields');
+        }
+
+        $this->registrationCategories = $new_value;
+    }
+
+    function publishRegistrations(){
+        $this->checkPermission('publishRegistrations');
+
+        $this->publishedRegistrations = true;
+
+        $this->save(true);
+    }
+
+    function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
+        $meta_name = $def->getMetadataName();
+        return $this->$meta_name != 'dontUse';
+    }
+
+
+    function getUsedAgentRelations(){
+        $app = App::i();
+        $r = [];
+        foreach($app->getRegistrationAgentsDefinitions() as $def)
+            if($this->useRegistrationAgentRelation($def))
+                $r[] = $def;
+        return $r;
+    }
+
+    function isRegistrationFieldsLocked(){
+        $app = App::i();
+        $cache_id = $this . ':' . __METHOD__;
+        if($app->rcache->contains($cache_id)){
+            return $app->rcache->fetch($cache_id);
+        }else{
+            $num = $app->repo('Registration')->countByProject($this, true);
+            $locked = $num > 0;
+
+            $app->rcache->save($cache_id, $locked);
+            return $locked;
+        }
+    }
+
+    protected function canUserModifyRegistrationFields($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($user->is('admin')){
+            return true;
+        }
+
+        if($this->isRegistrationFieldsLocked()){
+            return false;
+        }
+
+        return $this->canUser('modify', $user);
+
+    }
+
+    protected function canUserPublishRegistrations($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($this->registrationTo >= new \DateTime){
+            return false;
+        }
+
+        return $this->canUser('@control', $user);
+    }
+
 
     protected function canUserRegister($user = null){
         if($user->is('guest'))
             return false;
 
         return $this->isRegistrationOpen();
-    }
-
-    function getEnabledRelations(){
-        $result = array();
-        foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-            $metadata_name = $def->metadataName;
-            $metadata_value = $this->$metadata_name;
-
-            if($this->$metadata_name !== 'dontUse'){
-                $obj = new \stdClass;
-                $obj->metadataName = $metadata_name;
-                $obj->required = $metadata_value;
-                $obj->label = $def->label;
-            }
-        }
-    }
-
-    function setRegistrationCategories($value){
-        if(is_string($value)){
-            $this->registrationCategories = explode("\n", $value);
-        }else{
-            $this->registrationCategories = $value;
-        }
-    }
-
-    function publishRegistrations(){
-        $this->checkPermission('publishRegistrations');
-    }
-
-    protected function canUserPublishRegistrations($user){
-        if($user->is('guest'))
-            return false;
-
-        if($this->isRegistrationOpen())
-            return false;
     }
 
     /** @ORM\PreRemove */

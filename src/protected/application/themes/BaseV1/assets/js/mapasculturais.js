@@ -15,6 +15,51 @@ $(function(){
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
 
+    // bind alert close buttons
+    $('.alert .close').click(function(){
+        $(this).parent().slideUp('fast');
+    }).css('cursor', 'pointer');
+
+    // dropdown
+
+    if(MapasCulturais.request.controller === 'project') {
+        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
+        if(!MapasCulturais.entity.useRegistrations){
+            $els.hide();
+        }
+        $('#editable-use-registrations').on('hidden', function(e, reason) {
+            if($(this).editable('getValue', true) == '1'){
+                $els.fadeIn('fast');
+            }else{
+                $els.fadeOut('fast');
+            }
+        });
+    }
+
+    $('body').on('click', '.dropdown .placeholder', function(){
+        var $dropdown = $(this).parents('.dropdown'),
+            $submenu = $dropdown.find('.submenu-dropdown');
+
+        if($submenu.is(':visible')){
+            $submenu.hide();
+        }else{
+            $submenu.show();
+        }
+
+        if(!$dropdown.data('init')){
+            $dropdown.data('init', true);
+
+            if($dropdown.data('closeonclick')){
+                $submenu.click(function(){
+                    $submenu.hide();
+                });
+            }
+            $dropdown.mouseleave(function(){
+                $submenu.hide();
+            });
+        }
+    });
+
      if($('#funcao-do-agente').length){
         $('#funcao-do-agente .js-options li').click(function(){
             var roleToRemove = $('#funcao-do-agente .js-selected span').data('role');
@@ -67,6 +112,97 @@ $(function(){
 
 });
 
+MapasCulturais.utils = {
+    getObjectProperties: function (obj) {
+        var keys = [];
+        for (var key in obj) {
+            keys.push(key);
+        }
+        return keys;
+    },
+    sortOjectProperties: function(obj){
+        var newObj = {};
+
+        this.getObjectProperties(obj).sort().forEach(function(e){
+            newObj[e] = obj[e];
+        });
+
+        return newObj;
+    },
+
+    isObjectEquals: function(obj1, obj2){
+//        console.log(JSON.stringify(this.sortOjectProperties(obj1)), JSON.stringify(this.sortOjectProperties(obj2)));
+        return JSON.stringify(this.sortOjectProperties(obj1)) === JSON.stringify(this.sortOjectProperties(obj2));
+    },
+
+    inArray: function(array, obj){
+        for(var i in array){
+            if(this.isObjectEquals(array[i], obj)){
+                return true;
+            }
+        }
+        return false;
+    },
+
+    arraySearch: function(array, obj){
+        for(var i in array){
+            if(this.isObjectEquals(array[i], obj)){
+                return i;
+            }
+        }
+        return false;
+    }
+};
+
+MapasCulturais.createUrl = function(controller_id, action_name, args){
+    var shortcuts = this.routes.shortcuts,
+        actions = this.routes.actions,
+        controllers = this.routes.controllers,
+
+        u = MapasCulturais.utils,
+        route = '';
+
+    action_name = action_name || this.routes.default_action_name;
+
+    if(args){
+        args = u.sortOjectProperties(args);
+    }
+
+    if(args && u.inArray(shortcuts, [controller_id, action_name, args])){
+        route = u.arraySearch(shortcuts, [controller_id, action_name, args]) + '/';
+        args = null;
+    }else if(u.inArray(shortcuts, [controller_id, action_name])){
+        route = u.arraySearch(shortcuts, [controller_id, action_name]) + '/';
+    }else{
+        if(u.inArray(controllers, controller_id)){
+            route = u.arraySearch(controllers, controller_id) + '/';
+        }else{
+            route = controller_id + '/';
+        }
+
+        if(action_name !== this.routes.default_action_name){
+            if(u.inArray(actions, action_name)){
+                route += u.arraySearch(actions, action_name) + '/';
+            }else{
+                route += action_name + '/';
+            }
+        }
+    }
+
+    if(args){
+        for(var key in args){
+            var val = args[key];
+            if(key == parseInt(key)){ // is integer
+                route += val + '/';
+            }else{
+                route += key + ':' + val + '/';
+            }
+        }
+    }
+
+    return MapasCulturais.baseURL + route;
+};
+
 MapasCulturais.auth = {
     cb: null,
     require: function(cb){
@@ -105,7 +241,20 @@ MapasCulturais.TemplateManager = {
 
 MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
 
-MapasCulturais.isEditable = MapasCulturais.request.action == 'create' || MapasCulturais.request.action == 'edit';
+function editableEntityAddHash(){
+    $('#editable-entity').find('.js-toggle-edit').each(function(){
+        var href = $(this).attr('href'),
+            cleanHref = href.indexOf('#') !== -1 ? href.split('#')[0] : href;
+        $(this).attr('href', cleanHref+location.hash);
+    });
+}
+jQuery(document).ready(function(){
+    editableEntityAddHash();
+    $(window).on('hashchange', function(){
+        editableEntityAddHash();
+    });
+});
+
 
 MapasCulturais.Messages = {
     delayToFadeOut: 5000,

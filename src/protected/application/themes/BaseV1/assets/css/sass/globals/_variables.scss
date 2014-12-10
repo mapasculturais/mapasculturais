@@ -185,14 +185,18 @@ $form-fields-height:                   2rem !default;
 //
 // Note: These variables are not generated into the Customizer.
 
-$zindex-navbar:            1000 !default;
-$zindex-dropdown:          1000 !default;
-$zindex-popover:           1060 !default;
-$zindex-tooltip:           1070 !default;
-$zindex-navbar-fixed:      1030 !default;
-$zindex-modal-background:  1040 !default;
-$zindex-modal:             1050 !default;
-
+$z-index-descricao-do-agente:   800 !default;
+$z-index-capa-marca-dagua:      900 !default;
+$z-index-nav-title:             1000 !default;
+$z-index-capa-nav:              1200 !default;
+$z-index-leaflet:               1300 !default;
+$z-index-editable-entity:       1400 !default;
+$z-index-infobox:               1500 !default;
+$z-index-main-header:           1700 !default;
+$z-index-submenu-dropdown:      1800 !default;
+$z-index-tip:                   1900 !default;
+$z-index-busca:                 9999 !default;
+$z-index-map-label:          2000000 !default;
 
 //== Alerts
 //
@@ -233,6 +237,7 @@ $registration-header-color:	  #fff !default;
 //## Define editable entity bar colors.
 
 $small-brand-color:              $brand-primary;
+
 
 //== Media queries breakpoints
 //

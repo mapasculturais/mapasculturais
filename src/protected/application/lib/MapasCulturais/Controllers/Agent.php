@@ -18,7 +18,8 @@ class Agent extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner;
+        Traits\ControllerChangeOwner,
+        Traits\ControllerAPI;
 
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();

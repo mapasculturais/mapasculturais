@@ -149,8 +149,9 @@ class App extends \Slim\Slim{
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
         }
-
         $this->_cache->setNamespace($config['app.cache.namespace']);
+
+
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
@@ -268,7 +269,10 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
+        $doctrine_config->setMetadataCacheImpl($this->_cache);
         $doctrine_config->setQueryCacheImpl($this->_cache);
+        $doctrine_config->setResultCacheImpl($this->_cache);
+
 
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
@@ -494,6 +498,7 @@ class App extends \Slim\Slim{
                 'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
                 'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
                 'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+                'rules' => new Definitions\FileGroup('rules', array('^application/.*'), 'The uploaded file is not a valid document.', true),
             );
 
             // register file groups
@@ -516,6 +521,7 @@ class App extends \Slim\Slim{
             $this->registerFileGroup('project', $file_groups['avatar']);
             $this->registerFileGroup('project', $file_groups['downloads']);
             $this->registerFileGroup('project', $file_groups['gallery']);
+            $this->registerFileGroup('project', $file_groups['rules']);
 
             $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
@@ -780,6 +786,10 @@ class App extends \Slim\Slim{
                     $result[] = new \MapasCulturais\Entities\File($tmp_file);
                 }
             }else{
+
+                if($_FILES[$key]['error']){
+                    throw new \MapasCulturais\Exceptions\FileUploadError($key, $_FILES[$key]['error']);
+                }
                 $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name']);
                 $result = new \MapasCulturais\Entities\File($_FILES[$key]);
             }
@@ -990,7 +1000,7 @@ class App extends \Slim\Slim{
      * Getters
      **********************************************/
 
-    public function getMaxUploadSize(){
+    public function getMaxUploadSize($useSuffix=true){
         $MB = 1024;
         $GB = $MB * 1024;
 
@@ -1017,6 +1027,9 @@ class App extends \Slim\Slim{
         $memory_limit = $convertToKB(ini_get('memory_limit'));
 
         $result = min($max_upload, $max_post, $memory_limit);
+
+        if(!$useSuffix)
+            return $result;
 
         if($result < $MB){
             $result .= ' KB';
@@ -1179,6 +1192,20 @@ class App extends \Slim\Slim{
      */
     function getRegisteredRegistrationAgentRelations(){
         return $this->_register['registration_agent_relations'];
+    }
+
+    function getRegistrationOwnerDefinition(){
+        $config = $this->getConfig('registration.ownerDefinition');
+        $definition = new Definitions\RegistrationAgentRelation($config);
+        return $definition;
+    }
+
+    function getRegistrationAgentsDefinitions(){
+        $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
+        foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
+            $definitions[$groupName] = $def;
+        }
+        return $definitions;
     }
 
     function getRegisteredRegistrationAgentRelationByAgentRelationGroupName($group_name){

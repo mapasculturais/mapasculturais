@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
+
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 /**
  * File Controller
  *
@@ -8,6 +10,8 @@ use MapasCulturais\App;
  *
  */
 class EventOccurrence extends EntityController {
+    use Traits\ControllerAPI;
+    
     function POST_index() {
         App::i()->pass();
     }

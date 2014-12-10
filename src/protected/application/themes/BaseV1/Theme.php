@@ -30,9 +30,14 @@ class Theme extends MapasCulturais\Theme {
             'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
+
+            'home: abbreviation' => "MC",
+            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
+
             'home: colabore' => "Colabore com o Mapas Culturais",
 
-            'search: verified results' => 'Resultados Verificados'
+            'search: verified results' => 'Resultados Verificados',
+            'search: verified' => "Verificados"
         );
     }
 
@@ -87,8 +92,13 @@ class Theme extends MapasCulturais\Theme {
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
-                    $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
-                    $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
+                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
+                    }else{
+                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
+                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+                    }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
@@ -267,7 +277,7 @@ class Theme extends MapasCulturais\Theme {
                 case "MapasCulturais\Entities\RequestEventOccurrence":
                     $message = $origin->canUser('@control') ?
                             "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$origin->rule->description}</em> no espaço {$destination_link}.";
+                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
                     $message = $origin->canUser('@control') ?
@@ -335,6 +345,12 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
+            $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+            $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
+            $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
+            $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+
+            $this->jsObject['isEditable'] = $this->isEditable();
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -347,6 +363,7 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
+            $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();
             $this->includeVendorAssets();
@@ -600,7 +617,7 @@ class Theme extends MapasCulturais\Theme {
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
-        $this->enqueueStyle('fonts', 'elegant', 'css/elegant-font.css');
+        $this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
@@ -609,6 +626,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
         $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
+
+
 
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
@@ -619,6 +638,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeEditableEntityAssets() {
+
         $versions = $this->_libVersions;
         $this->assetManager->publishAsset('img/setinhas-editable.png');
 
@@ -627,7 +647,6 @@ class Theme extends MapasCulturais\Theme {
 
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2.png", 'css/select2.png');
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2-spinner.gif", 'css/select2-spinner.gif');
-
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
     }
@@ -697,14 +716,14 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['entity']['id'] = $entity->id;
 
-        $roles = []; if(!\MapasCulturais\App::i()->user->is('guest'))
-        foreach(\MapasCulturais\App::i()->user->roles as $r) $roles[] = $r->name;
-        $this->jsObject['roles'] = $roles;
-
-        if (!$this->isEditable()) {
-            return;
+        $roles = [];
+        if(!\MapasCulturais\App::i()->user->is('guest')){
+            foreach(\MapasCulturais\App::i()->user->roles as $r){
+                $roles[] = $r->name;
+            }
         }
 
+        $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
 
         $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(
@@ -804,10 +823,36 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
-    function addProjectRegistrationConfigurationToJs($entity){
+    function addProjectToJs(Entities\Project $entity){
+        $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
+        $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+        $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
+        $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
     }
+
+    function addRegistrationToJs(Entities\Registration $entity){
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
+        $this->jsObject['entity']['registrationFiles'] = $entity->files;
+        $this->jsObject['entity']['registrationAgents'] = array();
+        foreach($entity->_getDefinitionsWithAgents() as $def){
+            $agent = $def->agent;
+            if($agent){
+                $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
+                $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
+                if($entity->status > 0){ // is sent
+                    foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
+                        $def->agent->$prop = $val;
+                    }
+                }
+            }
+            $this->jsObject['entity']['registrationAgents'][] = $def;
+        }
+    }
+
 
     /**
     * Returns a verified entity with images in gallery
@@ -910,4 +955,21 @@ class Theme extends MapasCulturais\Theme {
         ));
     }
 
+    function getRegistrationStatusName($registration){
+        switch ($registration->status) {
+            case \MapasCulturais\Entities\Registration::STATUS_APPROVED:
+                return 'approved';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_REJECTED:
+                return 'rejected';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_MAYBE:
+                return 'maybe';
+                break;
+            case \MapasCulturais\Entities\Registration::STATUS_WAITING:
+                return 'waiting';
+                break;
+
+        }
+    }
 }

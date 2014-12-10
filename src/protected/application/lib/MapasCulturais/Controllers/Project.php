@@ -19,7 +19,8 @@ class Project extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner;
+        Traits\ControllerChangeOwner,
+        Traits\ControllerAPI;
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
@@ -32,7 +33,7 @@ class Project extends EntityController {
         parent::GET_create();
     }
 
-    function ALL_publishRegistrations(){
+    function ALL_publish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -44,5 +45,39 @@ class Project extends EntityController {
 
         $project->publishRegistrations();
 
+        if($app->request->isAjax()){
+            $this->json($project);
+        }else{
+            $app->redirect($app->request->getReferer());
+        }
+    }
+
+
+    function GET_report(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->repo()->find($this->urlData['id']);
+
+        if(!$entity)
+            $app->pass();
+
+        $entity->checkPermission('@control');
+
+        $response = $app->response();
+        //$response['Content-Encoding'] = 'UTF-8';
+        $response['Content-Type'] = 'application/force-download';
+        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
+        $response['Pragma'] ='no-cache';
+
+        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        
+        ob_start();
+        $this->partial('report', array('entity' => $entity));
+        $output = ob_get_clean();
+        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }
 }

@@ -1,6 +1,6 @@
 #editable-entity {
     position: fixed;
-    z-index: 123;
+    z-index: $z-index-editable-entity;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     width: 100%;
@@ -19,6 +19,7 @@
 #editable-entity .alert {
     display: none;
     margin-bottom: 0;
+    padding: .25rem $padding-base;
 }
 #editable-entity .controles {
     position: absolute;

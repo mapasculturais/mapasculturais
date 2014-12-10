@@ -124,7 +124,6 @@ MapasCulturais.Remove = {
                 var href = $this.data('href');
 
                 $.getJSON(href,function(r){
-                    console.log(r);
                     if(r.error){
                         MapasCulturais.Messages.error(r.data);
                     }else{
@@ -169,7 +168,6 @@ MapasCulturais.Editables = {
 
     initSpacePublicEditable: function(){
         $('#editable-space-status').on('hidden', function(e, reason) {
-
             if($(this).editable('getValue', true) == '1'){
                 $('#editable-space-status').html('<div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
             }else{
@@ -281,16 +279,25 @@ MapasCulturais.Editables = {
                     break;
 
                 case 'date':
+                case 'datetime':
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: "1900:+0" };
+                    config.datepicker = { weekStart: 1, yearRange: "1900:+0"};
                     delete config.placeholder;
+                    config.clear = 'Limpar';
 
                     break;
+
+                case 'boolean':
+                    config.type = 'checklist';
+                    config.source = [{value : 0, text: 'false' }, { value: 1, text: 'true' }];
+                    config.emptytext = 'Não';
             }
 
-            $(this).editable(config);
+            if(config.type !== 'date'){
+                $(this).editable(config);
+            }
 
             if(config.type === 'select')
                 $(this).editable('setValue', $(this).html());
@@ -302,6 +309,76 @@ MapasCulturais.Editables = {
                     $(that).text('');
                 });
             }
+
+            if(config.type === 'date'){
+
+                var $datepicker = $(this);
+
+                if(!$(this).data('timepicker')){ //normal datepicker
+
+                    $datepicker.editable(config);
+                    $datepicker.on('hidden', function(e, editable) {
+                        if($(this).editable('getValue', true) == null){
+                            $(this).editable('setValue', '');
+                        }
+                    });
+
+                }else{ //datepicker with related timepicker field
+
+                    var $timepicker = $($datepicker.data('timepicker'));
+                    var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
+
+                    $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
+
+                    $timepicker.editable();
+                    $hidden.editable({name: $datepicker.data('edit')});
+                    $datepicker.editable(config);
+
+                    if($timepicker.data('datetime-value'))
+                        $hidden.editable('setValue', $timepicker.data('datetime-value'));
+                    else
+                        $hidden.editable('setValue', '');
+
+                    $timepicker.on('save', function(e, params) {
+                        console.log(params);
+                        if(!params.newValue){
+                            params.newValue = '23:59';
+                            $timepicker.editable('setValue', '23:59');
+                        }
+                        $hidden.editable('setValue',
+                            moment($datepicker.editable('getValue', true)).format('YYYY-M-D') + ' ' + params.newValue
+                        );
+                    });
+
+                    $datepicker.on('save', function(e, params) {
+                        console.log(params);
+                        if(params.newValue){
+                            if(!$timepicker.editable('getValue', true)){
+                                $timepicker.editable('setValue', '23:59');
+                            }
+                            $hidden.editable('setValue',
+                                moment(params.newValue).format('YYYY-M-D') + ' ' + $timepicker.editable('getValue', true)
+                            );
+                        }else{
+                            $hidden.editable('setValue', '');
+                            $timepicker.editable('setValue', '');
+                        }
+                    });
+
+                    $timepicker.on('shown', function(e, editable) {
+                        var $input = editable.input.$input;
+                        $input.mask('00:00', {
+                            onComplete: function(time) {
+                              console.log('value', $input.val());
+                              console.log('moment', moment($input.val(), 'HH:mm').format('HH:mm'));
+                        }});
+                    });
+
+                }
+
+            }
+
+
         });
 
     },
@@ -370,7 +447,7 @@ MapasCulturais.Editables = {
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
-                                    var errorHtml = '<span title="'+'Erro: ' + response.data[p][k]+'" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
+                                    var errorHtml = '<span title="' + response.data[p][k] + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
                                     $field.parent().append(errorHtml);
                                 }else{
                                     unknow_errors.push(response.data[p][k]);
@@ -457,9 +534,13 @@ MapasCulturais.AjaxUploader = {
             var percent = $(this).parent().find('.js-ajax-upload-progress .percent');
 
             MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
-
+            var $this = $(this);
             // bind form using 'ajaxForm'
             $(this).ajaxForm({
+                beforeSend: function(xhr){
+                    $this.data('xhr', xhr);
+                    //@TODO validate size and type before upload
+                },
                 //target:        '#output1',   // target element(s) to be updated with server response
                 beforeSubmit: function(arr, $form, options) {
                     MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), true);
@@ -468,7 +549,6 @@ MapasCulturais.AjaxUploader = {
                     var percentVal = percentComplete + '%';
                     bar.animate({'width':percentVal});
                     percent.html(percentVal);
-                    console.log('percent',percentComplete);
                 },
                 success: function (response, statusText, xhr, $form)  {
 
@@ -538,7 +618,7 @@ MapasCulturais.AjaxUploader = {
 
                         }
                     }
-                    $form.trigger('ajaxform.success', [response]);
+                    $form.trigger('ajaxForm.success', [response]);
 
                     $form.get(0).reset();
                     if($form.parents('.js-editbox').data('success-callback'))

@@ -33,6 +33,7 @@
 }
 .sidebar.event {
     border-top: $brand-event 12px solid;
+    .event-project-link,
     .widget-list-item > a {
         color: $brand-event;
     }

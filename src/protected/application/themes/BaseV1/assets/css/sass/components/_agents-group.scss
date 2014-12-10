@@ -14,7 +14,7 @@
         .descricao-do-agente {
             display: none;
             position: absolute;
-            z-index: 2;
+            z-index: $z-index-descricao-do-agente;
             top: 3.5rem;
             right: -.75rem;
             width: 200px;
@@ -32,7 +32,7 @@
                 left: 0;
                 padding-right: $padding-large;
                 color: #fff;
-                font-family: 'ElegantIcons';
+                font-family: $icon-font-name;
                 speak: none;
                 font-weight: normal;
                 font-variant: normal;

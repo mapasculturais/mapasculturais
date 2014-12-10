@@ -191,7 +191,7 @@ return array(
 
 
         'Demais Equipamentos Culturais' => array(
-            'range' => array(100,200),
+            'range' => array(100,199),
             'items' => array(
                 100 => array( 'name' => 'Galeria de arte' ),
                 101 => array( 'name' => 'Livraria' ),
@@ -218,6 +218,13 @@ return array(
                 122 => array( 'name' => 'Gafieira' ),
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
                 124 => array( 'name' => 'Rádio Comunitária' )
+            )
+        ),
+        
+        'Bens culturais de natureza material' => array(
+            'range' => array(200, 299),
+            'items' => array(
+                200 => array( 'name' => 'Bens culturais de natureza material' )
             )
         ),
 

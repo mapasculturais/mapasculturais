@@ -73,7 +73,7 @@ trait EntityAgentRelation {
      * If the group name is given returns all agents related to this entity with the given group, otherwise
      * returns all related agents grouped by the group name.
      *
-     * @return \MapasCulturais\Entities\Agent[] The Agents related to this entity.
+     * @return \MapasCulturais\Entities\Agent[]|\MapasCulturais\Entities\AgentRelation[] The Agents related to this entity.
      */
     function getRelatedAgents($group = null, $return_relations = false, $include_pending_relations = false){
         if(!$this->id)
@@ -106,17 +106,17 @@ trait EntityAgentRelation {
 
     function getUsersWithControl(){
         $app = \MapasCulturais\App::i();
-        
-        // cache ids 
+
+        // cache ids
         $cache_id = "$this::usersWithControl";
-        
+
         if($app->config['app.useUsersWithControlCache'] && $app->cache->contains($cache_id)){
             $ids = $app->cache->fetch($cache_id);
             $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
             $q->setParameter('ids', $ids);
             return $q->getResult();
         }
-        
+
         $result = array($this->getOwnerUser());
         $ids = array($result[0]->id);
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
@@ -146,7 +146,7 @@ trait EntityAgentRelation {
                 $result[] = $u;
             }
         }
-        
+
         if($app->config['app.useUsersWithControlCache']){
             $app->cache->save($cache_id, $ids, $app->config['app.usersWithControlCache.lifetime']);
         }
@@ -156,7 +156,7 @@ trait EntityAgentRelation {
     function userHasControl($user){
         if($user->is('admin'))
             return true;
-        
+
         foreach($this->getUsersWithControl() as $u)
             if($u->id == $user->id)
                 return true;

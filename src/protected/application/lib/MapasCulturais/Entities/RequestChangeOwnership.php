@@ -19,7 +19,7 @@ class RequestChangeOwnership extends Request{
     }
 
     function setDestination(\MapasCulturais\Entity $agent){
-        $this->metadata['type'] = $agent->owner->canUser('@control') ? self::TYPE_REQUEST : self::TYPE_GIVE;
+        $this->metadata['type'] = $agent->canUser('@control') ? self::TYPE_REQUEST : self::TYPE_GIVE;
 
         parent::setDestination($agent);
     }

@@ -149,10 +149,18 @@ class File extends \MapasCulturais\Entity
         return $this->owner->canUser('modify');
     }
 
+    protected function canUserView($user){
+        if($owner = $this->owner){
+            return $owner->canUser('view');
+        }else{
+            return false;
+        }
+    }
+
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
             throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
-            
+
         parent::save($flush);
     }
 
@@ -208,17 +216,17 @@ class File extends \MapasCulturais\Entity
     public function getUrl(){
         $app = App::i();
         $cache_id = "{$this}:url";
-        
+
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         $url = $app->storage->getUrl($this);
-        
+
         if($app->config['app.useFileUrlCache']){
             $app->cache->save($cache_id, $url, $app->config['app.fileUrlCache.lifetime']);
         }
-        
+
         return $url;
     }
 
@@ -296,10 +304,12 @@ class File extends \MapasCulturais\Entity
 
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
-        App::i()->storage->add($this);
+        $app = App::i();
 
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
+        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
+
+        $app->storage->add($this);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
@@ -320,10 +330,11 @@ class File extends \MapasCulturais\Entity
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
-        App::i()->storage->remove($this);
+        $app = App::i();
+        $app->storage->remove($this);
 
         $_hook_class = $this->getHookClassPath($this->objectType);
-        App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
+        $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
 
         $this->owner->clearFilesCache();
     }

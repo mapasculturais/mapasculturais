@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 
-//## Registration form that shows on projects tab "Inscritos" when editing.
+//## Registration form that shows on projects tab "Inscritos" when logged in and on view mode.
 
 .registration-form {
 	box-sizing: border-box;
@@ -14,33 +14,33 @@
 	> div {
 		float: left;
 		box-sizing: border-box;
-		padding-right: .75rem;
-		&:nth-child(1){
-			width: 40%;
-		}
-		&:nth-child(2) {
-			width: 40%;
-		}
-		&:nth-child(3) {
-			width: 20%;
-			padding-right: 0;
-		}
-
+        width: 50%;
+        &:first-child {
+    		padding-right: .75rem;
+        }
 	}
-	.dropdown-select {
-		width: 100%;
-	}
+    .input-text {
+        box-sizing: border-box;
+        height: 2rem;
+        margin-right: 5px;
+        padding: 3px 6px;
+        background: #fff;
+        border: 1px solid $gray;
+        border-radius: $border-radius-base;
+        color: $gray-dark;
+        font-family: $font-family-base;
+        font-size: $font-size-smaller;
+    }
 	.botao {
 		width: 100%;
 		&.principal {
 			text-align: center;
 		}
-		&.simples {
-			white-space: nowrap;
-			overflow: hidden;
-		}
 	}
 }
+
+
+//## Registration form that shows on projects tab "Inscritos" when editing.
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;
@@ -83,6 +83,10 @@
 		height: 2rem;
 		margin-right: $line-height-half;
 	}
+    .registration-agent-details {
+        font-size: $font-size-smaller;
+        padding-left: 2.75rem;
+    }
 }
 
 .registration-list {
@@ -93,12 +97,16 @@
         padding: $padding-base;
         padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
+        a {
+        	font-weight: normal;
+        }
         .registration-label {
         	font-weight: bold;
         }
         .registration-description {
         	font-size: $font-size-smaller;
         	color: #999;
+        	margin-bottom: $line-height-half;
         }
         .btn-group {
             position: absolute;
@@ -118,46 +126,39 @@
     .attachment-list-item {
         position: relative;
         padding: $padding-base;
+        padding-right: 14rem;
         border-bottom: 1px solid $gray-lighter;
         .attachment-title {
-        	display: block;
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            word-wrap: break-word;
         	&:before {
         		@extend %icon;
         		content: "\e016";
+                margin-right: 3px;
         	}
         }
         .attachment-description {
         	font-size: $font-size-smaller;
         	color: #999;
+        	margin-bottom: $line-height-half;
         }
-    }
-    .is-editable {
-        padding-right: 4rem;
-        min-height: $line-height-base;
-        .botoes {
-            display: none;
-            position: absolute;
-            top: .75rem;
-            right: .75rem;
-        }
-        &:hover {
-            background: $gray-lighter;
-            border-radius: $border-radius-base;
-            .botoes {
-                display: inline-block;
+        .attachment-template {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            &:before {
+                @extend %icon;
+                content:"\e092";
+                margin-right: 3px;
             }
         }
-    }
-    a.icone,
-    a.editar {
-        margin-left: 5px;
-        color: $gray-dark;
-        cursor: pointer;
-        &:hover {
-            color: $gray-darker;
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
         }
-    }
-    a.icone {
-        font-size: 1rem;
+        &:hover {
+        	background: $gray-lighter;
+        }
     }
 }

@@ -2,10 +2,10 @@
 -------------------------------------------------------------- */
 #capa-marca-dagua {
     position: fixed;
-    z-index: 50;
+    z-index: $z-index-capa-marca-dagua;
     left: 0;
     right: 0;
-    top: 102px;
+    top: 80px;
     bottom: 0;
     background-image: url(../img/fundo.png);
     background-position: 80% bottom;
@@ -13,7 +13,7 @@
 }
 #capa-nav {
     position: fixed;
-    z-index: 100;
+    z-index: $z-index-capa-nav;
     top: 50%;
     bottom: 0;
 }
@@ -26,7 +26,7 @@
 }
 #capa-nav ul li a {
     position: relative;
-    z-index: 100;
+    z-index: $z-index-capa-nav;
     display: block;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -42,7 +42,7 @@
 }
 .nav-title {
     position: absolute;
-    z-index: 90;
+    z-index: $z-index-nav-title;
     top: 0;
     display: block;
          box-sizing: border-box;
@@ -92,7 +92,7 @@
     font-size: 4rem;
     text-align: center;
     position: relative;
-    z-index: 51;
+    z-index: $z-index-capa-marca-dagua;
 }
 .objeto-capa {
     float: none;
@@ -116,7 +116,7 @@
 }
 .objeto-capa .box {
     position: relative;
-    z-index: 100;
+    z-index: $z-index-capa-nav;
 }
 .objeto-capa .box h4 {
     font-family: 'Open Sans';
@@ -234,28 +234,30 @@
     line-height: 2.5rem;
     font-weight: bold;
     text-align: left;
-}
-#filtro-da-capa .placeholder:after {
-    margin-left: .75rem;
-    line-height: 2.5rem;
-    font-size: 1.5rem;
-    color: #fff;
-}
-#filtro-da-capa li {
-    padding: 0 $padding-base;
-    cursor: pointer;
-}
-#filtro-da-capa .submenu-dropdown {
-    top: 48px;
-    background: $brand-accent;
-}
-#filtro-da-capa .submenu-dropdown:before {
-    color: $brand-accent;
-}
-#filtro-da-capa .icone {
-    margin-right: 5px;
-    vertical-align: initial;
-    font-size: $font-size-base;
+    .placeholder {
+        padding-right: 2.5rem;
+        &:after {
+            margin-right: .5rem;
+            line-height: 2.5rem;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+    }
+    li {
+        padding: 0 $padding-base;
+        cursor: pointer;
+    }
+    .submenu-dropdown {
+        background: $brand-accent;
+        &:before {
+            color: $brand-accent;
+        }
+    }
+    .icone {
+        margin-right: 5px;
+        vertical-align: initial;
+        font-size: $font-size-base;
+    }
 }
 #filtro-de-eventos:hover,
 #filtro-de-eventos:focus {

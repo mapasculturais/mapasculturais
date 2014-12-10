@@ -5,11 +5,7 @@ $this->bodyProperties['ng-app'] = "Entity";
 
 $project = $entity->project;
 
-$this->addProjectRegistrationConfigurationToJs($project);
-
-// @TODO adicionar ao javascript as categorias para a inscrição
-
-$this->addRegistrationDataToJs($entity);
+$this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
 
@@ -43,103 +39,70 @@ $this->includeAngularEntityAssets($entity);
             <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
         </div>
     </header>
+    <div class="alert success">
+        Inscrição enviada no dia
+        <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i'); ?>
+    </div>
+
     <h3 class="registration-header">Formulário de Inscrição</h3>
-    <p class="registration-help">Itens com asterisco são obrigatórios.</p>
+
     <div class="registration-fieldset">
         <h4>Número da Inscrição</h4>
         <div class="registration-id">
-            <?php if($action !== 'create'): ?><?php echo $entity->registrationNumber ?><?php endif; ?>
+            <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
         </div>
     </div>
+    <?php if($project->registrationCategories): ?>
+        <div class="registration-fieldset">
+            <!-- selecionar categoria -->
+            <h4><?php echo $project->registrationCategTitle ?></h4>
+            <!-- <p class="registration-help"><?php echo $project->registrationCategDescription ?></p> -->
+            <p>
+                <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
+            </p>
+        </div>
+    <?php endif; ?>
     <div class="registration-fieldset">
-        <!-- selecionar categoria -->
-        <h4><?php echo $project->registrationCategoriesName ?></h4>
-        <p class="registration-help">Categoria xyz.</p>
-        <p>
-            <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
-        </p>
-    </div>
-    <div class="registration-fieldset">
-    <h4>Agentes</h4>
-    <p class="registration-help">Relacione os agentes a esta Inscrição</p>
-        <!-- agente responsável -->
+        <h4>Agentes</h4>
+        <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
-            <input type="hidden" name="ownerId" value="<?php echo $entity->registrationOwner->id ?>" class="js-editable" data-edit="ownerId"/>
-            <?php $this->part('registration-agent', array('name' => 'owner', 'agent' => $entity->registrationOwner, 'status' => $entity->registrationOwnerStatus, 'required' => true, 'type' => 1, 'label' => 'Agente Responsável', 'description' => 'Agente individual com CPF cadastrado' )); ?>
-            <!-- outros agentes -->
-            <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                $required = $project->{$def->metadataName} === 'required';
-                $relation = $entity->getRelatedAgents($def->agentRelationGroupName, true, true);
+            <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
+            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
+                <div class="registration-label">{{def.label}}</div>
+                <div class="registration-description">{{def.description}}</div>
 
-                $relation = $relation ? $relation[0] : null;
+                <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
+                    <p ng-if="def.relationStatus < 0" class="alert warning">Aguardando confirmação</p>
+                    <div class="clearfix">
+                        <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
+                        <div>
+                            <a ng-if="def.agent" href="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
+                            <span ng-if="!def.agent">Não informado</span>
+                        </div>
+                    </div>
+                    <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
+                        <div><span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}</div>
+                    </div>
+                </div>
 
-                $agent = $relation ? $relation->agent : null;
-                $status = $relation ? $relation->status : null;
-                ?>
-                <?php $this->part('registration-agent', array(
-                    'name' => $def->agentRelationGroupName,
-                    'agent' => $agent,
-                    'status' => $status,
-                    'required' => $required,
-                    'type' => $def->type,
-                    'label' => $def->label,
-                    'description' => $def->description )); ?>
-            <?php endforeach; ?>
+                <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                    <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p>
+                    <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
+                </edit-box>
+            </li>
         </ul>
     </div>
     <!-- anexos -->
-    <style>
-    .attachment-list-item .btn-group {
-        position: absolute;
-        bottom: 0.75rem;
-        right: 0.75rem;
-    }
-    </style>
-    <div id="registration-attachments" class="registration-fieldset">
-
+    <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos</h4>
-        <p class="registration-help">Anexator descrivinhator helpior.</p>
-        <!-- da parte downloads.php -->
-
-        <div ng-controller="RegistrationFileConfigurationsController">
-
-            <ul class="attachment-list">
-                <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item is-editable">
-                    <a class="attachment-title" href="{{}}"> {{fileConfiguration.title}}</a>
-                    <div class="attachment-description">
-                        {{fileConfiguration.description}}<br>
-                        {{fileConfiguration.required ? 'Obrigatório' : 'Opcional'}}
-                    </div>
-
-                    <div class="btn-group">
-                        <a class="botao simples" ng-click="openEditBox('editbox-select-registration-file-'+fileConfiguration.id, $event)">Selecionar arquivo</a>
-                        <a class="botao simples" target="_blank" ng-if="fileConfiguration.template" href="{{fileConfiguration.template.url}}">Fazer download modelo</a>
-                    </div>
-
-                    <edit-box id="editbox-select-registration-file-{{fileConfiguration.id}}" position="bottom" title="Editar Anexo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="closeEditFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
-
-                        <form class="js-ajax-upload" method="post" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
-                            <div class="alert danger escondido"></div>
-                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSize}}</p>
-                            <input type="file" name="{{uploadFileGroup}}" />
-                            <input type="submit" value="Enviar Modelo">
-
-                            <div class="js-ajax-upload-progress">
-                                <div class="progress">
-                                    <div class="bar"></div >
-                                    <div class="percent">0%</div >
-                                </div>
-                            </div>
-                        </form>
-
-                    </edit-box>
-
-                </li>
-            </ul>
-        </div>
-
+        <ul class="attachment-list" ng-controller="RegistrationFilesController">
+            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
+                <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
+                <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.url}}" target="_blank">{{fileConfiguration.file.name}}</a>
+                <span ng-if="!fileConfiguration.file">Arquivo não enviado.</span>
+            </li>
+        </ul>
     </div>
-
 </article>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>

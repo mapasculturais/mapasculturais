@@ -2,11 +2,9 @@
 -------------------------------------------------------------- */
 #main-header .busca-main-header {
     position: relative;
-    z-index: 152;
 }
 #main-header #busca {
     position: relative;
-    z-index: 151;
 }
 #busca-avancada {
     background-color: $gray-light;
@@ -16,17 +14,11 @@
     position: relative;
     padding: $padding-base;
 }
-#busca-avancada input {
-    margin-bottom: 0;
-    border: none;
-}
-#busca-avancada .campo-de-busca {
-    width: 100%;
-}
+
 /*filtro local*/
 #filtro-local {
     position: absolute;
-    z-index: 150;
+    z-index: $z-index-editable-entity;
     left: 0;
     height: 1.875rem;
 }
@@ -97,6 +89,7 @@
     line-height: 2.5rem;
     font-size: $line-height-base;
 }
+
 .filtro {
     float: left;
          box-sizing: border-box;
@@ -139,6 +132,13 @@
     background: $gray-lighter;
     color: $brand-accent;
 }
+.filtro input {
+    margin-bottom: 0;
+    border: none;
+}
+.filtro .campo-de-busca {
+    width: 100%;
+}
 .lista-de-filtro {
     margin-bottom: 0;
     list-style-type: none;
@@ -156,7 +156,7 @@
     padding: 2px;
     background: $gray-light;
     -webkit-font-smoothing: antialiased;
-    font: normal .75rem/.75rem 'ElegantIcons';
+    font: normal .75rem/.75rem $icon-font-name;
     text-align: center;
     color: #fff;
     border-radius: $border-radius-base;

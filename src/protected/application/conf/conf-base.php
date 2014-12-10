@@ -39,6 +39,8 @@ return array(
 
     'api.accessControlAllowOrigin' => '*',
 
+    'app.enableProjectRegistration' => true,
+
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
@@ -72,28 +74,40 @@ return array(
         'subprefeitura',
         'distrito'
     ),
-    
+
     'registration.agentRelationsOptions' => array(
-        'dontUse' => 'Não é necessário',
+        'dontUse' => 'Não utilizar',
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-    
+    'registration.privatePropertiesToExport' => array(
+        'documento',
+        'emailPrivado',
+        'telefone1',
+        'telefone2'
+    ),
+    'registration.ownerDefinition' => array(
+        'required' => true,
+        'label' => 'Agente Responsável',
+        'agentRelationGroupName' => 'owner',
+        'description' => 'Agente individual com CPF cadastrado',
+        'type' => 1,
+        'requiredProperties' => array('documento')
+    ),
     'registration.agentRelations' => array(
         array(
             'required' => false,
-            'label' => 'Instituição',
+            'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'agente coletivo com CNPJ',
+            'description' => 'Agente coletivo com CNPJ',
             'type' => 2,
             'requiredProperties' => array('documento')
         ),
-        
         array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'agente coletivo sem CNPJ',
+            'description' => 'Agente coletivo sem CNPJ',
             'type' => 2,
             'requiredProperties' => array()
         )
@@ -133,13 +147,13 @@ return array(
 
     'app.useFileUrlCache' => true,
     'app.fileUrlCache.lifetime' => 604800,
-    
+
     'app.useEventsCache' => true,
     'app.eventsCache.lifetime' => 600,
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
-    
+
     'app.useUsersWithControlCache' => true,
     'app.usersWithControlCache.lifetime' => 30,
 
@@ -202,7 +216,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-            // 'james-bond'                => array('agent', 'single', array('id' => '007')),
+             'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
@@ -219,7 +233,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscrever-se' => array('registration', 'create')
+            'inscricao' => array('registration', 'view'),
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -229,7 +243,9 @@ return array(
             'agentes'        => 'agent',
             'espacos'        => 'space',
             'arquivos'       => 'file',
-            'projetos'       => 'project'
+            'projetos'       => 'project',
+            'inscricoes'     => 'registration',
+            'anexos'         => 'registrationfileconfiguration'
         ),
         'actions' => array(
             'lista'         => 'list',
@@ -239,6 +255,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'inscricoes'    => 'registrations'
         ),
 
         'readableNames' => array(

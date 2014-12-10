@@ -24,9 +24,9 @@ cd tools
 
 REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies
 
+
 cd $DIR
-./db-update.sh 1
+./db-update.sh
+./compile-sass.sh
 
 cd $CDIR
-
-restart php5-fpm

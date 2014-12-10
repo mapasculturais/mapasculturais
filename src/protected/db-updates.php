@@ -31,7 +31,7 @@ return array(
         $conn->executeQuery('ALTER TABLE agent DROP COLUMN is_user_profile;');
     },
 
-    'create table registration teste' => function() use ($conn){
+    'create table registration ' => function() use ($conn){
 
         if($conn->fetchAll("SELECT tablename from pg_catalog.pg_tables WHERE tablename = 'registration' AND schemaname = 'public'")){
             return true;
@@ -45,7 +45,7 @@ return array(
                 project_id integer NOT NULL,
                 category varchar(255),
                 agent_id integer NOT NULL,
-                create_timespamp timestamp without time zone DEFAULT now() NOT NULL,
+                create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
                 sent_timestamp timestamp without time zone,
                 status integer NOT NULL
             );");
@@ -126,6 +126,10 @@ return array(
     },
 
     'alter table project add columns use_registrations AND publihed_registrations' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'project' AND column_name = 'use_registrations'")){
+            return true;
+        }
+
         echo "adicionando coluna use_registrations\n";
         $conn->executeQuery("ALTER TABLE project ADD COLUMN use_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
 
@@ -134,5 +138,42 @@ return array(
 
         echo "removendo coluna public_registration\n";
         $conn->executeQuery("ALTER TABLE project DROP COLUMN public_registration;");
-    }
+    },
+
+    'create or replace function random_id_generator' => function() use($conn){
+        $conn->executeQuery('
+            CREATE FUNCTION random_id_generator(table_name character varying, initial_range bigint) RETURNS bigint
+                LANGUAGE plpgsql
+                AS $$DECLARE
+              rand_int INTEGER;
+              count INTEGER := 1;
+              statement TEXT;
+            BEGIN
+              WHILE count > 0 LOOP
+                initial_range := initial_range * 10;
+
+                rand_int := (RANDOM() * initial_range)::BIGINT + initial_range / 10;
+
+                statement := CONCAT(\'SELECT count(id) FROM \', table_name, \' WHERE id = \', rand_int);
+
+                EXECUTE statement;
+                IF NOT FOUND THEN
+                  count := 0;
+                END IF;
+
+              END LOOP;
+              RETURN rand_int;
+            END;
+            $$;');
+    },
+
+    'alter table registration add columns agents_data' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'registration' AND column_name = 'agents_data'")){
+            return true;
+        }
+
+        echo "adicionando coluna agents_data\n";
+        $conn->executeQuery("ALTER TABLE registration ADD COLUMN agents_data TEXT;");
+
+    },
 );

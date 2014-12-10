@@ -3,6 +3,18 @@
 
     var app = angular.module('Entity', ['RelatedAgents', 'ChangeOwner', 'Project', 'Notifications', 'ngSanitize']);
 
+    app.factory('UrlService', [function(){
+        return function(controller){
+            this.create = function(action, params){
+                if(params == parseInt(params)){ // params is an integer, so it is an id
+                    return MapasCulturais.createUrl(controller, action, [params]);
+                }else{
+                    return MapasCulturais.createUrl(controller, action, params);
+                }
+            };
+        };
+    }]);
+
     app.factory('FindService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q){
         var baseUrl = MapasCulturais.baseURL + '/api/';
         var canceller;
@@ -240,7 +252,7 @@
             openEditboxes: {},
 
             register: function(editboxId){
-                if(this.openEditboxes[editboxId])
+                if(this.openEditboxes[editboxId] && document.getElementById(editboxId))
                     throw new Error('EditBox with id ' + editboxId + ' already exists');
 
                 this.openEditboxes[editboxId] = false;
@@ -255,9 +267,13 @@
             },
 
             open: function(editboxId, $event){
-
                 if(typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
+
+                // close all
+                for(var id in this.openEditboxes){
+                    this.close(id);
+                }
 
                 this.openEditboxes[editboxId] = true;
 
@@ -266,9 +282,11 @@
 
                 jQuery('#' + editboxId).trigger('open');
 
-                var $firstInput = $box.find('input:first,select:first,textarea:first');
+                var $firstInput = $($box.find('input,select,textarea').get(0));
                 $firstInput.focus();
-                setPosition($box, $event.target);
+
+
+                setTimeout(function(){ setPosition($box, $event.target); });
             },
 
             close: function(editboxId){
@@ -279,6 +297,8 @@
 
                 var $box = jQuery('#' + editboxId).find('>div.edit-box');
                 $box.hide();
+
+                jQuery('#' + editboxId).trigger('close');
             }
         };
 
@@ -336,8 +356,9 @@
                         EditBox.close(attrs.id);
 
                     if(angular.isFunction($scope.onCancel)){
-                        $scope.onCancel();
+                        $scope.onCancel(attrs);
                     }
+                    jQuery('#' + attrs.id).trigger('cancel');
                 };
 
                 if(angular.isFunction($scope.onOpen)){
@@ -356,17 +377,52 @@
             scope: {
                 data: '=',
                 model: '=',
-                placeholder: '@'
+                placeholder: '@',
+                setter: '=',
+                getter: '='
             },
             link: function($scope, el, attrs) {
                 $scope.classes = attrs.classes;
-                $scope.selectItem = function(item, $event){
-                    $($event.target).parents('.js-submenu-dropdown').hide();
-                    setTimeout(function(){
-                        $($event.target).parents('.js-submenu-dropdown').css('display','');
-                    },500);
 
-                    $scope.model = item;
+                $scope.selectItem = function(item, $event){
+                    if(angular.isFunction($scope.setter)){
+                        $scope.setter($scope.model, item);
+                    }else{
+                        $scope.model = item.value;
+                    }
+                },
+
+                $scope.getSelectedValue = function(){
+                    if($scope.model && angular.isFunction($scope.getter)){
+                        return $scope.getter($scope.model);
+                    }else{
+                        return $scope.model;
+                    }
+                };
+
+                $scope.getSelectedItem = function(){
+                    var item = null,
+                        selectedValue = $scope.getSelectedValue();
+
+                    $scope.data.forEach(function(e){
+                        if(e.value == selectedValue)
+                            item = e;
+                    });
+                    return item;
+                };
+
+                $scope.getSelectedLabel = function(){
+                    var item = $scope.getSelectedItem();
+
+                    if(item){
+                        return item.label;
+                    }else{
+                        return $scope.placeholder;
+                    }
+                };
+
+                $scope.isSelected = function(item){
+                    return item.value == $scope.getSelectedValue();
                 }
             }
         };

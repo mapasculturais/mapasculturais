@@ -17,17 +17,53 @@
 		margin-bottom: $line-height-base;
 		padding-bottom: $line-height-base;
 		border-bottom: 1px solid $color;
-	} 
+	}
 }
+
+
+//== Arrow
+//
+//## mixin to add arrows to elements
+
+@mixin arrow($direction, $size, $color) {
+    content: "";
+    position: absolute;
+    top: -$size;
+
+    @if $direction == down {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
+    }
+
+    @else if $direction == left {
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
+        border-top: $size solid transparent;
+    }
+
+    @else if $direction == right {
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
+        border-top: $size solid transparent;
+    }
+
+    @else if $direction == up {
+        border-bottom: $size solid $color;
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+    }
+}
+
 
 //== Placeholders
 //
 
 //== Icons
-//## Use it whenever you want to add these rules to an element that displays an icon 
+//## Use it whenever you want to add these rules to an element that displays an icon
 
 %icon {
-    font-family: 'ElegantIcons';
+    font-family: $icon-font-name;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -37,4 +73,7 @@
     -webkit-font-smoothing: antialiased;
     display: inline-block;
     vertical-align: middle;
+    &:hover {
+    	text-decoration: none;
+    }
 }
