@@ -55,7 +55,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
         >
             <?php if($this->isEditable()): ?>
-                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
@@ -71,7 +71,7 @@ $this->includeAngularEntityAssets($entity);
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
             <?php endif; ?>
                 <?php if($this->isEditable()): ?>
-                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
@@ -237,7 +237,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
 
             <?php if($entity->id && $entity->canUser('createChield')): ?>
-            <a class="botao adicionar" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">adicionar sub-espaço</a>
+            <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Adicionar sub-espaço</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

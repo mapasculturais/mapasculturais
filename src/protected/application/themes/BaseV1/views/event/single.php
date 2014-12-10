@@ -47,14 +47,14 @@ $this->includeMapAssets();
         <!-- .mapa -->
         <?php if($this->isEditable()): ?>
             <div class="clear">
-                <a class="editar botao js-open-dialog hltip"
+                <a class="btn btn-default edit js-open-dialog hltip"
                    data-dialog="#dialog-event-occurrence"
                    data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
                    data-dialog-title="Modificar Ocorrência"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='Editar Ocorrência'>editar</a>
-               <a class='excluir botao js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>excluir</a>
+                   href="#" title='Editar Ocorrência'>Editar</a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>Excluir</a>
             </div>
         <?php endif; ?>
     </div>
@@ -134,7 +134,7 @@ $this->includeMapAssets();
             <?php endif; ?>
             >
                 <?php if ($this->isEditable()): ?>
-                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
@@ -150,7 +150,7 @@ $this->includeMapAssets();
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
                     <?php endif; ?>
                     <?php if ($this->isEditable()): ?>
-                        <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
                         <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                             <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                         </div>
@@ -337,12 +337,12 @@ $this->includeMapAssets();
             <!--.servico.ocorrencia-->
             <?php if($this->isEditable()): ?>
                 <div class="textright">
-                    <a class="botao adicionar js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
+                    <a class="btn btn-default add js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
                        data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
                        data-dialog-title="Adicionar Ocorrência"
                        data-form-action='insert'
                        title="Clique para adicionar ocorrências">
-                        Adicionar Ocorrência
+                        Adicionar ocorrência
                     </a>
                 </div>
             <?php endif; ?>
@@ -422,7 +422,7 @@ $this->includeMapAssets();
         <div class="alert warning">
             Aparentemente o espaço procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um novo espaço clicando no botão abaixo.
         </div>
-        <a class="botao adicionar" href="#">adicionar espaço</a>-->
+        <a class="btn btn-default add" href="#">Adicionar espaço</a>-->
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="horario-de-inicio">Horário inicial:</label><br>
@@ -486,7 +486,7 @@ $this->includeMapAssets();
                 <p class="form-help">Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado.</p>
                 <div class="grupo-descricao-automatica clearfix">
                     <p id="descricao-automatica" class="alert automatic">Descrição gerada pelo sistema automaticamente.</p>
-                    <a class="botao simples inserir"></a>
+                    <a class="btn btn-default insert"></a>
                 </div>
                 <input type="text" name="description" value="{{rule.description}}">
             </div>

@@ -65,13 +65,13 @@ $template = "<li id='video-{{id}}'>
 </div>
 <?php if($this->isEditable()): ?>
     <p class="p-dos-botoes" ng-non-bindable>
-        <a class="botao adicionar js-open-editbox" href="#"
+        <a class="btn btn-default add js-open-editbox" href="#"
            data-dialog-title="Adicionar Vídeo"
            data-target="#editbox-videogallery"
            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
            data-response-target="ul.js-videogallery"
            data-metalist-action="insert"
            data-response-template="<?php echo $template; ?>"
-                        >adicionar vídeo</a>
+                        >Adicionar vídeo</a>
     </p>
 <?php endif; ?>

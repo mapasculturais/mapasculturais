@@ -72,7 +72,7 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </div>
         </form>
-        <p class="textcenter"><a class="botao-grande" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a></p>
+        <p class="textcenter"><a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a></p>
     </div>
     <div class="ver-mais"><a class="hltip icone arrow_carrot-down" href="#capa-eventos" title="Saiba mais"></a></div>
 </section>
@@ -114,8 +114,8 @@ $url_search_projects = $this->searchProjectsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_events ?>">Ver Todos Eventos da Semana</a>
-        <a class="botao-grande adicionar" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>">Ver Todos Eventos da Semana</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
     </div>
 </article>
 
@@ -163,8 +163,8 @@ $url_search_projects = $this->searchProjectsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_agents ?>">Ver Todos Agentes</a>
-        <a class="botao-grande adicionar" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar Agentes</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>">Ver Todos Agentes</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar Agentes</a>
     </div>
 </article>
 
@@ -213,8 +213,8 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_spaces ?>">Ver Todos Espaços</a>
-        <a class="botao-grande adicionar" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar Espaços</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>">Ver Todos Espaços</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar Espaços</a>
     </div>
 </article>
 
@@ -257,8 +257,8 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </a>
         <?php endif; ?>
-        <a class="botao-grande" href="<?php echo $url_search_projects ?>">Ver Todos Projetos</a>
-        <a class="botao-grande adicionar" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar Projetos</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>">Ver Todos Projetos</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar Projetos</a>
     </div>
 </article>
 <article id="capa-desenvolvedores" class="js-page-menu-item objeto-capa clearfix fundo-roxo">
