@@ -36,9 +36,9 @@
 .download,
 .delete,
 .insert {
-    color: $gray-dark;
+    color: $btn-default-color;
     &:hover {
-        color: $gray-darker;
+        color: darken($btn-default-color, 20%);
     }
     &:before {
         display: inline-block;
@@ -178,18 +178,14 @@
         box-shadow: none;
     }
 }
-.btn.selected {
-
-}
 
 // Buttons sizes
 // --------------------------------------------------
 
 .btn-small {
     height: 1.5rem;
-    line-height: 1.5rem;
     padding: 0 $padding-small;
-    line-height: 1.5rem;
+    line-height: 1.375rem;
     font-weight: normal;
 }
 .btn-large {
@@ -198,58 +194,6 @@
     font-size: $font-size-small;
 }
 
-
-
-.botao-de-icone {
-    width: 1.375rem;
-    line-height: 1.375rem !important;
-    font-size: $font-size-base;
-    font-family: $icon-font-name;
-    font-weight: normal;
-    text-align: center;
-    color: #999;
-}
-.botao-de-icone:hover,
-.botao-de-icone.selected {
-    color: $brand-accent;
-}
-.botoes-de-edicao {
-    position: absolute;
-    display: none;
-    padding: .2rem .5rem;
-    border-radius: $border-radius-base;
-    background: $gray-light;
-    border: 1px solid #999;
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-}
-
-.action {
-    display: inline-block;
-    padding: 0 $padding-small;
-    background: $brand-primary;
-    border-radius: $border-radius-base;
-    font-size: $font-size-smaller;
-    font-weight: normal;
-    -webkit-transition: all .3s;
-            transition: all .3s;
-}
-.action:hover {
-    text-decoration: none;
-    background: $brand-accent;
-    color: #fff;
-}
-
 .js-registration-action.selected {
     cursor: default !important;
-}
-
-.bt-remove-agent {
-    margin: $line-height-base 0 0;
-}
-
-.p-dos-botoes {
-    border-top: 1px solid $gray-lighter;
-    padding: $padding-base 0 0;
-    text-align: right;
 }
