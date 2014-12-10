@@ -344,7 +344,7 @@ MapasCulturais.Editables = {
                 }else{ //datepicker with related timepicker field
 
                     var $timepicker = $($datepicker.data('timepicker'));
-                    var $hidden = $('<input class="js-include-editable" type="text">').insertAfter($timepicker);
+                    var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
 
                     $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
 
