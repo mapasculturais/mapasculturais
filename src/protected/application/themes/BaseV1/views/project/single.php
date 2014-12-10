@@ -302,6 +302,11 @@ $this->includeAngularEntityAssets($entity);
 
                     </div>
                 <?php endforeach; ?>
+
+                <p>
+                    <span class="label">Número máximo de inscrições por agente responsável</span><br>
+                    <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições por agente responsável" data-emptytext="Insira o número máximo de inscrições por agente responsável"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '1'; ?></span>
+                </p>
             </div>
             <!-- #registration-agent-relations -->
             <div id="registration-attachments" class="registration-fieldset">
