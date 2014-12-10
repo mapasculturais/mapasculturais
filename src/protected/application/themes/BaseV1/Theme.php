@@ -36,7 +36,8 @@ class Theme extends MapasCulturais\Theme {
 
             'home: colabore' => "Colabore com o Mapas Culturais",
 
-            'search: verified results' => 'Resultados Verificados'
+            'search: verified results' => 'Resultados Verificados',
+            'search: verified' => "Verificados"
         );
     }
 

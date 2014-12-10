@@ -120,6 +120,22 @@ $this->includeAngularEntityAssets($entity);
             <?php if ( $this->isEditable() || ($entity->precisao && $lat && $lng) ): ?>
                 <!--.servico-->
                 <div class="servico clearfix">
+                    <div class="mapa">
+                        <?php if($this->isEditable()): ?>
+                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
+                        <?php endif; ?>
+                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
+                        </div>
+                        <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
+                        <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
+                        <?php if($this->isEditable()): ?>
+                        <script>
+                            $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
+                        </script>
+                    <?php endif; ?>
+                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
+                    </div>
+                    <!--.mapa-->
                     <div class="infos">
 
                         <?php if($this->isEditable()): ?>
@@ -137,22 +153,6 @@ $this->includeAngularEntityAssets($entity);
                         <?php endforeach; ?>
                     </div>
                     <!--.infos-->
-                    <div class="mapa">
-                        <?php if($this->isEditable()): ?>
-                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
-                        <?php endif; ?>
-                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
-                        </div>
-                        <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
-                        <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
-                        <?php if($this->isEditable()): ?>
-                        <script>
-                            $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
-                        </script>
-                    <?php endif; ?>
-                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
-                    </div>
-                    <!--.mapa-->
                 </div>
                 <!--.servico-->
             <?php endif; ?>

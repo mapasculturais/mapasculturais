@@ -163,29 +163,11 @@ MapasCulturais.Editables = {
 
             if(MapasCulturais.request.controller === 'space')
                 this.initSpacePublicEditable();
-
-            if(MapasCulturais.request.controller === 'project')
-                this.initProjectUseRegistrationsEditable();
         }
-    },
-
-    initProjectUseRegistrationsEditable: function(){
-        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
-        if(!MapasCulturais.entity.useRegistrations){
-            $els.hide();
-        }
-        $('#editable-use-registrations').on('hidden', function(e, reason) {
-            if($(this).editable('getValue', true) == '1'){
-                $els.show('fast');
-            }else{
-                $els.hide('fast');
-            }
-        });
     },
 
     initSpacePublicEditable: function(){
         $('#editable-space-status').on('hidden', function(e, reason) {
-
             if($(this).editable('getValue', true) == '1'){
                 $('#editable-space-status').html('<div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
             }else{
@@ -344,7 +326,7 @@ MapasCulturais.Editables = {
                 }else{ //datepicker with related timepicker field
 
                     var $timepicker = $($datepicker.data('timepicker'));
-                    var $hidden = $('<input class="js-include-editable" type="text">').insertAfter($timepicker);
+                    var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
 
                     $datepicker.attr('data-edit', $datepicker.data('edit') + '_datepicker');
 
