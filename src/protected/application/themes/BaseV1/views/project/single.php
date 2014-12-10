@@ -231,7 +231,7 @@ $this->includeAngularEntityAssets($entity);
             <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
                 <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
-                <a class="excluir hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
+                <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
             </div>
             <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
                 <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
@@ -334,7 +334,7 @@ $this->includeAngularEntityAssets($entity);
                             </edit-box>
                             <div class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template">
                                 <span ng-if="data.entity.canUserModifyRegistrationFields" class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);">{{fileConfiguration.template.name}}</span>
-                                <a ng-if="data.entity.canUserModifyRegistrationFields" class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" title="Excluir modelo"></a>
+                                <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" title="Excluir modelo"></a>
                             </div>
                             <p ng-if="!data.entity.canUserModifyRegistrationFields">
                                 <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
@@ -503,7 +503,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
 
             <?php if($entity->id && $entity->canUser('createChield')): ?>
-            <a class="btn btn-default add staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
+            <a class="btn btn-default add staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

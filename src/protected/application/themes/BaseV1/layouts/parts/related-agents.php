@@ -37,7 +37,7 @@ $this->addRelatedAgentsToJs($entity);
                         </div>
                     </div>
                     <div class="textright" ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
-                        <button type="submit" class="bt-remove-agent" ng-click="deleteRelation(relation)">Excluir</button>
+                        <a href="#" class="btn btn-accent" ng-click="deleteRelation(relation)">Excluir</a>
                     </div>
                 </div>
             </div>

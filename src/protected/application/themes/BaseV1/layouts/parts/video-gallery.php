@@ -11,7 +11,7 @@ $template = "<li id='video-{{id}}'>
                     <h1 class='title'>{{title}}</h1>
                 </a>
                 <div class='botoes-de-edicao'>
-                    <a class='js-open-editbox editar hltip'
+                    <a class='js-open-editbox edit hltip'
                         data-target='#editbox-videogallery'
                         data-dialog-callback='MapasCulturais.MetalistManager.updateDialog'
                         data-response-target='#video-{{id}}'
@@ -35,8 +35,8 @@ $template = "<li id='video-{{id}}'>
                     <h1 class="title"><?php echo $video->title;?></h1>
                 </a>
                 <?php if($this->isEditable()): ?>
-                    <div class="botoes-de-edicao">
-                        <a class="js-open-editbox editar hltip"
+                    <div class="btn btn-default">
+                        <a class="js-open-editbox edit hltip"
                            data-dialog-title="Editar Vídeo"
                            data-target="#editbox-videogallery"
                            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
@@ -44,7 +44,7 @@ $template = "<li id='video-{{id}}'>
                            data-metalist-action="edit"
                            data-item="<?php echo htmlentities(json_encode($video));?>"
                            href="#" title='Editar'></a>
-                           <a class='icone icon_close_alt js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Excluir este vídeo?" title='Excluir'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Excluir este vídeo?" title='Excluir'></a>
                     </div>
                 <?php endif; ?>
             </li>
@@ -64,7 +64,7 @@ $template = "<li id='video-{{id}}'>
     <?php endif; ?>
 </div>
 <?php if($this->isEditable()): ?>
-    <p class="p-dos-botoes" ng-non-bindable>
+    <p class="gallery-footer" ng-non-bindable>
         <a class="btn btn-default add js-open-editbox" href="#"
            data-dialog-title="Adicionar Vídeo"
            data-target="#editbox-videogallery"
