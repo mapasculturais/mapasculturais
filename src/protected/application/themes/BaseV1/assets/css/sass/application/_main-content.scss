@@ -1,10 +1,16 @@
 .main-content {
-    float: left;
-    width: 60%;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    margin-bottom: 4rem;
-    padding: 4rem;
     background: #fff;
     border-radius: 0 0 2px 2px;
+    padding: $padding-base;
+    @media screen and (min-width: $screen-sm-min) {
+        float: left;
+        width: 75%;
+        margin-bottom: 4rem;
+        padding: $padding-large;
+    }
+    @media screen and (min-width: $screen-md-min) {
+        width: 60%;
+    }
 }

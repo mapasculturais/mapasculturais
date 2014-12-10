@@ -1,5 +1,10 @@
 .main-content-header {
-    margin-bottom: 4rem;
+    margin-bottom: 1.75rem;
+    margin-top: 1rem;
+    @media screen and (min-width: $screen-sm-min) {
+        margin-bottom: 4rem;
+        margin-top: 0;
+    }
 }
 .imagem-do-header {
     position: relative;
@@ -23,18 +28,24 @@
 }
 .content-do-header {
     position: relative;
-    min-height: 9rem;
-    padding-left: 10.5rem;
+    @media screen and (min-width: $screen-xs-min) {
+        min-height: 9rem;
+        padding-left: 10.5rem;
+    }
     .avatar {
-        position: absolute;
-        left: 0;
-        width: 9rem;
-        height: 9rem;
-        margin: 0;
-        .botao.editar {
+        display: none;
+        @media screen and (min-width: $screen-xs-min) {
+            display: block;
             position: absolute;
-            right: $line-height-half;
-            bottom: $line-height-half;
+            left: 0;
+            width: 9rem;
+            height: 9rem;
+            margin: 0;
+            .botao.editar {
+                position: absolute;
+                right: $line-height-half;
+                bottom: $line-height-half;
+            }
         }
     }
     .entity-type {

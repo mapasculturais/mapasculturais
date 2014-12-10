@@ -1,5 +1,11 @@
 .botoes-de-compartilhar {
+    float: right;
+    margin-right: $line-height-half;
     height: 2rem;
+    @media screen and (min-width: $screen-sm-min) {
+        float: none;
+        margin: 0;
+    }
 }
 .botoes-de-compartilhar span {
     vertical-align: top !important;

@@ -1,11 +1,14 @@
 /* =Barra lateral
 -------------------------------------------------------------- */
 .sidebar {
-    float: left;
     position: relative;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    padding: $padding-large;
+    padding: $padding-base;
+    @media screen and (min-width: $screen-md-min) {
+        float: left;
+        padding: $padding-large;
+    }
     a.botao.adicionar {
         color: $gray-dark;
     }
@@ -26,11 +29,50 @@
     }
 }
 .sidebar-left {
-    width: 15%;
+    overflow: hidden;
+    @media screen and (min-width: $screen-lg-min) {
+        width: 15%;
+    }
+    @media screen and (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+        width: 20%;
+        &.sidebar {
+            border-top: none;
+            .setinha {
+                display: none;
+            }
+        }
+    }
+    @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        width: 25%;
+        float: right;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    .widget {
+        float: left;
+        margin: 0 $line-height-half 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        @media screen and (min-width: $screen-sm-min) {
+            float: none;
+            padding-bottom: 1.5rem;
+        }
+
+    }
 }
 .sidebar-right {
-    width: 25%;
+    @media screen and (min-width: $screen-lg-min) {
+        width: 25%;
+    }
+    @media screen and (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+        width: 20%;
+    }
+    @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        width: 25%;
+        float: right;
+    }
 }
+
 .sidebar.event {
     border-top: $brand-event 12px solid;
     .event-project-link,
