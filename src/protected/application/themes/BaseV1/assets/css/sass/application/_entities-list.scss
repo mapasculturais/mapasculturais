@@ -69,7 +69,7 @@
     font-size:  $font-size-smaller;
     color: #888;
     .label {
-        text-transform: uppercase;    
+        text-transform: uppercase;
         letter-spacing: .1em;
         font-size: .70rem;
     }
@@ -185,10 +185,6 @@
     border-radius: $border-radius-base;
     background: $gray-light;
     font-size: $font-size-smaller;
-    p {
-        margin-bottom: 0;
-        line-height: 2rem;
-    }
     .agenda-singles-datepicker {
         border:none;
         width:90px;
@@ -199,8 +195,10 @@
         text-align: center;
         margin: 0 3px;
     }
-    .spinner { 
-        float:right; 
-        display:none; 
+    .spinner {
+        display: none;
+    }
+    .btn {
+        float: right;
     }
 }
