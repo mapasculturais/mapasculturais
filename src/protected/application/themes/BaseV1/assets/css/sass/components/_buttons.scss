@@ -27,74 +27,6 @@
     }
 }
 
-// Buttons types
-// --------------------------------------------------
-.btn-default {
-    color: $btn-default-color;
-    background-color: $btn-default-bg;
-    border: 1px solid $btn-default-border;
-    &:hover {
-        color: darken($btn-default-color, 20%);
-        background-color: lighten($btn-default-bg, 5%);
-        border: 1px solid darken($btn-default-border, 10%);
-    }
-}
-.btn-primary {
-    color: $btn-primary-color;
-    background-color: $btn-primary-bg;
-    border: 1px solid $btn-primary-border;
-    &:hover {
-        border: 1px solid darken($brand-primary, 10%);
-    }
-}
-.btn-accent {
-    color: $btn-accent-color;
-    background-color: $btn-accent-bg;
-    border: 1px solid $btn-accent-border;
-}
-.btn-verified {
-    color: $btn-verified-color;
-    background-color: $btn-verified-bg;
-    background-image: url(../img/verified-icon.png);
-    background-position: 8px center;
-    background-repeat: no-repeat;
-    padding-left: 40px;
-    &.selected {
-        color: #fff;
-        background-color: #000;
-    }
-}
-
-// Buttons states
-// --------------------------------------------------
-
-.btn.disabled {
-    opacity: .65;
-    cursor: not-allowed;
-    pointer-events: none; // Future-proof disabling of clicks
-    &:hover {
-        box-shadow: none;
-    }
-}
-.btn.selected {
-
-}
-
-// Buttons sizes
-// --------------------------------------------------
-
-.btn-small {
-    height: 1.5rem;
-    padding: 0 $padding-small;
-    line-height: 1.5rem;
-    font-weight: normal;
-}
-.btn-large {
-    height: 2.5rem;
-    padding: $padding-small;
-    font-size: $font-size-small;
-}
-
 // Buttons actions
 // --------------------------------------------------
 
@@ -139,13 +71,92 @@
     content: '\37';
 }
 
-.btn.add:before,
-.btn.edit:before,
-.btn.send:before,
-.btn.download:before,
-.btn.delete:before, {
-    margin-right: 5px;
+.btn.add,
+.btn.edit,
+.btn.send,
+.btn.download,
+.btn.delete, {
+    &:before {
+        margin-right: 5px;
+    }
 }
+
+
+// Buttons types
+// --------------------------------------------------
+.btn-default {
+    color: $btn-default-color;
+    background-color: $btn-default-bg;
+    border: 1px solid $btn-default-border;
+    &:hover {
+        color: darken($btn-default-color, 20%);
+        background-color: lighten($btn-default-bg, 5%);
+        border: 1px solid darken($btn-default-border, 10%);
+    }
+}
+.btn-primary {
+    color: $btn-primary-color;
+    background-color: $btn-primary-bg;
+    border: 1px solid $btn-primary-border;
+    &:hover {
+        border: 1px solid darken($brand-primary, 10%);
+    }
+}
+.btn-accent {
+    color: $btn-accent-color;
+    background-color: $btn-accent-bg;
+    border: 1px solid $btn-accent-border;
+    /* must define below so it overrides button actions colors, when used combined eg: class="btn-accent add" */
+    &:hover {
+        color: $btn-accent-color;
+        background-color: $btn-accent-bg;
+        border: 1px solid $btn-accent-border;
+    }
+}
+.btn-verified {
+    color: $btn-verified-color;
+    background-color: $btn-verified-bg;
+    background-image: url(../img/verified-icon.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    &.selected {
+        color: #fff;
+        background-color: #000;
+    }
+}
+
+// Buttons states
+// --------------------------------------------------
+
+.btn.disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    &:hover {
+        box-shadow: none;
+    }
+}
+.btn.selected {
+
+}
+
+// Buttons sizes
+// --------------------------------------------------
+
+.btn-small {
+    height: 1.5rem;
+    padding: 0 $padding-small;
+    line-height: 1.5rem;
+    font-weight: normal;
+}
+.btn-large {
+    height: 2.5rem;
+    padding: $padding-small;
+    font-size: $font-size-small;
+}
+
+
 
 .botao-de-icone {
     width: 1.375rem;
