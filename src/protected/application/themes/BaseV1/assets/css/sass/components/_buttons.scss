@@ -174,7 +174,6 @@
 .btn.disabled {
     opacity: .65;
     cursor: not-allowed;
-    pointer-events: none; // Future-proof disabling of clicks
     &:hover {
         box-shadow: none;
     }
@@ -188,13 +187,14 @@
 
 .btn-small {
     height: 1.5rem;
+    line-height: 1.5rem;
     padding: 0 $padding-small;
     line-height: 1.5rem;
     font-weight: normal;
 }
 .btn-large {
     height: 2.5rem;
-    padding: $padding-small;
+    line-height: 2.5rem;
     font-size: $font-size-small;
 }
 
