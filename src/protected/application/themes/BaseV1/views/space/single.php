@@ -166,13 +166,6 @@ $this->includeAngularEntityAssets($entity);
             <?php $lat = $entity->location->latitude; $lng = $entity->location->longitude; ?>
             <?php if ( $this->isEditable() || ($lat && $lng) ): ?>
                 <div class="servico clearfix">
-                    <div class="infos">
-                        <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
-                        <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
-                            <p><span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span></p>
-                        <?php endforeach; ?>
-                    </div>
-                    <!--.infos-->
                     <div class="mapa">
                         <?php if($this->isEditable()): ?>
                             <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
@@ -187,6 +180,13 @@ $this->includeAngularEntityAssets($entity);
                         <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
                     </div>
                     <!--.mapa-->
+                    <div class="infos">
+                        <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
+                        <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
+                            <p><span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span></p>
+                        <?php endforeach; ?>
+                    </div>
+                    <!--.infos-->
                 </div>
             <?php endif; ?>
         </div>

@@ -88,11 +88,12 @@ $this->includeAngularEntityAssets($entity);
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
-        <li><a href="#inscricoes">Inscrições</a></li>
+
+        <li ng-if="data.projectRegistrationsEnabled"><a href="#inscricoes">Inscrições</a></li>
         <?php if($entity->publishedRegistrations): ?>
-            <li><a href="#inscritos">Resultado</a></li>
+            <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Resultado</a></li>
         <?php elseif($entity->canUser('@control')): ?>
-            <li><a href="#inscritos">Inscritos</a></li>
+            <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
     </ul>
 
@@ -113,9 +114,9 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 <?php endif; ?>
                 <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
-                    <a class="botao principal alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
+                    <a ng-if="data.projectRegistrationsEnabled" class="botao principal alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
                 <?php endif; ?>
-                <div class="clear" ng-if="data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
+                <div class="clear" ng-if="data.projectRegistrationsEnabled && data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
                         data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
                 </div>
 
@@ -160,7 +161,7 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-    <div id="inscricoes" class="aba-content">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <p ng-if="data.isEditable" class="alert info">
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
@@ -390,7 +391,7 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-    <div id="inscritos" class="aba-content privado">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content privado">
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>

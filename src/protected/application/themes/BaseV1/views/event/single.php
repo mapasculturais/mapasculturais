@@ -26,6 +26,8 @@ $this->includeMapAssets();
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
         {{#pending}}<div class="alert warning pending">Aguardando confirmação</div>{{/pending}}
+        <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
+        <!-- .mapa -->
         <div class="infos">
             <p><span class="label">Descrição Legível: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
             <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
@@ -43,8 +45,6 @@ $this->includeMapAssets();
             {{/rule.screen_until}}
         </div>
         <!-- .infos -->
-        <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
-        <!-- .mapa -->
         <?php if($this->isEditable()): ?>
             <div class="clear">
                 <a class="editar botao js-open-dialog hltip"
@@ -65,6 +65,8 @@ $this->includeMapAssets();
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
         </header>
+        <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
+        <!-- .mapa -->
         <div class="infos">
             <p class="descricao-legivel">{{occurrencesDescription}}</p>
             {{#occurrencesPrice}}
@@ -73,8 +75,6 @@ $this->includeMapAssets();
             <p><span class="label">Endereço:</span> {{space.endereco}}</p>
         </div>
         <!-- .infos -->
-        <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
-        <!-- .mapa -->
     </div>
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 

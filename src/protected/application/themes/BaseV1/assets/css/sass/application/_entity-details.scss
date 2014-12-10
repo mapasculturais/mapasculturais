@@ -18,15 +18,11 @@
     color: #888;
 }
 .infos {
-    float: left;
-    width: 40%;
+
 }
 .mapa {
-    float: right;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    width: 60%;
     height: 408px;
     margin-bottom: $line-height-base;
-    padding-left: $padding-large;
 }
