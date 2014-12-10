@@ -21,7 +21,7 @@ if($this->isEditable()){
         </script>
         <div class="controles">
             <?php if ($can_edit_roles): ?>
-                <div id="funcao-do-agente" class="dropdown">
+                <div id="funcao-do-agente" class="dropdown dropdown-select">
                     <div class="placeholder js-selected"> <?php
                         if ($entity->user->is('superAdmin'))
                             echo '<span data-role="superAdmin">' . $app->getRoleName('superAdmin') . '</span>';
