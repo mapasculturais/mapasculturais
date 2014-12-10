@@ -385,12 +385,6 @@ MapasCulturais.Editables = {
                         if($('.js-sp_regiao').length > 0        && response['sp_regiao'])           $('.js-sp_regiao').html(response['sp_regiao']);
                         if($('.js-sp_subprefeitura').length > 0 && response['sp_subprefeitura'])    $('.js-sp_subprefeitura').html(response['sp_subprefeitura']);
 
-                        var $endereco = $('.js-editable[data-edit="endereco"]');
-                        if($endereco.length && response['endereco']){
-                            $endereco.editable('setValue', response['endereco']);
-                            $endereco.trigger('changeAddress', response['endereco']);
-                        }
-
                         MapasCulturais.Messages.success('Edições salvas.');
 
                         $('.editable-unsaved').
