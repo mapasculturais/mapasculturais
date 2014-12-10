@@ -20,16 +20,6 @@
     margin: $padding-base 0 0;
     padding: 0 $padding-base;
 }
-#header-dos-resultados .botao-de-icone {
-    float: right;
-}
-#header-dos-resultados .botao-de-icone.active {
-    text-decoration: none;
-    background-color: $brand-accent;
-}
-#header-dos-resultados .icon_map {
-    margin-right: 5px;
-}
 #ferramentas {
     float: right;
     margin: $padding-base 0;
@@ -37,6 +27,22 @@
     margin-right: -165px;
     border-left: 2px solid #d3d3d3;
     box-sizing: border-box;
+    .icone {
+        float: right;
+        width: 1.375rem;
+        line-height: 1.375rem !important;
+        font-size: $font-size-base;
+        font-family: $icon-font-name;
+        font-weight: normal;
+        text-align: center;
+        color: #999;
+        &:hover, &.selected {
+           color: $brand-accent;
+        }
+    }
+    .icon_map {
+        margin-right: 5px;
+    }
 }
 #compartilhar {
     position: relative;
@@ -68,9 +74,6 @@
     height: $line-height-base;;
     margin-left: .75rem;
     font-size: 1.5rem;
-}
-.busca-popover .icone:hover {
-    color: $brand-accent;
 }
 .busca-popover.info {
     font-weight: normal;
