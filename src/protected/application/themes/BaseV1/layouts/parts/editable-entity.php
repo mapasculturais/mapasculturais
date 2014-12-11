@@ -21,7 +21,7 @@ if($this->isEditable()){
         </script>
         <div class="controles">
             <?php if ($can_edit_roles): ?>
-                <div id="funcao-do-agente" class="dropdown">
+                <div id="funcao-do-agente" class="dropdown dropdown-select">
                     <div class="placeholder js-selected"> <?php
                         if ($entity->user->is('superAdmin'))
                             echo '<span data-role="superAdmin">' . $app->getRoleName('superAdmin') . '</span>';
@@ -61,9 +61,9 @@ if($this->isEditable()){
             <?php endif; ?>
             <!-- se estiver na página de edição e logado mostrar:-->
             <?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
-                <a href="<?php echo $entity->singleUrl?>" class="botao principal js-toggle-edit">Sair do modo de edição</a>
+                <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit">Sair do modo de edição</a>
             <?php endif; ?>
-            <a id="submitButton" class="botao principal" data-legend="Salvar" data-legend-submitted="salvo">Salvar</a>
+            <a id="submitButton" class="btn btn-primary" data-legend="Salvar" data-legend-submitted="salvo">Salvar</a>
         </div>
     <?php elseif ($entity->canUser('modify')): ?>
         <script type="text/javascript">
@@ -71,14 +71,14 @@ if($this->isEditable()){
         </script>
         <div class="controles">
             <!-- se estiver na página comum e logado mostrar:-->
-            <a href="<?php echo $entity->editUrl ?>" class="botao principal js-toggle-edit">Editar</a>
+            <a href="<?php echo $entity->editUrl ?>" class="btn btn-primary js-toggle-edit">Editar</a>
 
             <?php if ($entity->canUser('remove') && $entity->status > 0): ?>
-                <a href="<?php echo $entity->deleteUrl ?>" class="botao selected">Excluir</a>
+                <a href="<?php echo $entity->deleteUrl ?>" class="btn btn-danger">Excluir</a>
             <?php elseif ($entity->canUser('undelete') && $entity->status < 0): ?>
-                <a href="<?php echo $entity->undeleteUrl ?>" class="botao selected">Recuperar</a>
+                <a href="<?php echo $entity->undeleteUrl ?>" class="btn btn-success">Recuperar</a>
                 <?php if($entity->canUser('destroy')): ?>
-                    <a class="botao selected" href="<?php echo $entity->destroyUrl; ?>">Excluir Definitivamente</a>
+                    <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>">Excluir Definitivamente</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

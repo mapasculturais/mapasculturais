@@ -33,7 +33,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
         >
         <?php if($this->isEditable()): ?>
-            <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
+            <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">editar</a>
             <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                 <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
             </div>
@@ -49,7 +49,7 @@ $this->includeAngularEntityAssets($entity);
                         <img class="js-avatar-img" src="<?php $this->asset('img/avatar--agent.png'); ?>" />
             <?php endif; ?>
                 <?php if($this->isEditable()): ?>
-                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
+                    <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
@@ -103,7 +103,10 @@ $this->includeAngularEntityAssets($entity);
 
                     <p class="privado"><span class="icone icon_lock"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
+
+                <?php if($this->isEditable() || $entity->emailPublico): ?>
                 <p><span class="label">Email:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Insira um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
+                <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->telefonePublico): ?>
                 <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>

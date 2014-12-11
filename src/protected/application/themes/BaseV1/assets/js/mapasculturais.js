@@ -207,7 +207,7 @@ MapasCulturais.auth = {
     cb: null,
     require: function(cb){
         MapasCulturais.auth.cb = cb;
-        $('#require-authentication').attr('src',MapasCulturais.baseURL + 'panel/requireAuth').fadeIn();
+            $('#require-authentication').attr('src',MapasCulturais.baseURL + 'panel/requireAuth').fadeIn();
     },
 
     finish: function(){

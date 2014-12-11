@@ -33,7 +33,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
         >
             <?php if($this->isEditable()): ?>
-                <a class="botao editar js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
@@ -48,7 +48,7 @@ $this->includeAngularEntityAssets($entity);
                     <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
                 <?php endif; ?>
                 <?php if($this->isEditable()): ?>
-                    <a class="botao editar js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
+                    <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
@@ -88,11 +88,12 @@ $this->includeAngularEntityAssets($entity);
     <ul class="abas clearfix">
         <li class="active"><a href="#sobre">Sobre</a></li>
         <li><a href="#agenda">Agenda</a></li>
-        <li><a href="#inscricoes">Inscrições</a></li>
+
+        <li ng-if="data.projectRegistrationsEnabled"><a href="#inscricoes">Inscrições</a></li>
         <?php if($entity->publishedRegistrations): ?>
-            <li><a href="#inscritos">Resultado</a></li>
+            <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Resultado</a></li>
         <?php elseif($entity->canUser('@control')): ?>
-            <li><a href="#inscritos">Inscritos</a></li>
+            <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
     </ul>
 
@@ -113,9 +114,9 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 <?php endif; ?>
                 <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
-                    <a class="botao principal alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
+                    <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
                 <?php endif; ?>
-                <div class="clear" ng-if="data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
+                <div class="clear" ng-if="data.projectRegistrationsEnabled && data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
                         data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
                 </div>
 
@@ -160,7 +161,7 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->part('agenda', array('entity' => $entity)); ?>
     </div>
     <!-- #agenda -->
-    <div id="inscricoes" class="aba-content">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscricoes" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <p ng-if="data.isEditable" class="alert info">
                 Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
@@ -224,14 +225,14 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!-- #intro-das-inscricoes -->
         <?php endif; ?>
-        <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="botao download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
+        <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4>2. Regulamento</h4>
             <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf.</p>
-            <a class="botao enviar hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
+            <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
             <div ng-if="data.entity.registrationRulesFile">
                 <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
-                <a class="excluir hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
+                <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
             </div>
             <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
                 <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
@@ -301,6 +302,12 @@ $this->includeAngularEntityAssets($entity);
 
                     </div>
                 <?php endforeach; ?>
+
+                <p>
+                    <span class="label">Número máximo de inscrições por agente responsável</span><br>
+                    <span class="registration-help">Zero (0) significa sem limites</span><br>
+                    <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições por agente responsável" data-emptytext="Insira o número máximo de inscrições por agente responsável"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
+                </p>
             </div>
             <!-- #registration-agent-relations -->
             <div id="registration-attachments" class="registration-fieldset">
@@ -311,7 +318,7 @@ $this->includeAngularEntityAssets($entity);
                     <?php if($this->controller->action == 'create'): ?>
                         <p class="allert warning">Antes de adicionar anexos é preciso salvar o projeto.</p>
                     <?php else: ?>
-                        <p ng-if="data.entity.canUserModifyRegistrationFields" ><a class="botao adicionar" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar anexo</a></p>
+                        <p ng-if="data.entity.canUserModifyRegistrationFields" ><a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)">Adicionar anexo</a></p>
                     <?php endif; ?>
                     <!-- edit-box to add attachment -->
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="Adicionar anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
@@ -334,7 +341,7 @@ $this->includeAngularEntityAssets($entity);
                             </edit-box>
                             <div class="file-{{fileConfiguration.template.id}}" ng-if="fileConfiguration.template">
                                 <span ng-if="data.entity.canUserModifyRegistrationFields" class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);">{{fileConfiguration.template.name}}</span>
-                                <a ng-if="data.entity.canUserModifyRegistrationFields" class="excluir hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" title="Excluir modelo"></a>
+                                <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(fileConfiguration.id, $index)" title="Excluir modelo"></a>
                             </div>
                             <p ng-if="!data.entity.canUserModifyRegistrationFields">
                                 <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
@@ -359,8 +366,8 @@ $this->includeAngularEntityAssets($entity);
                                 </form>
                             </edit-box>
                             <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
-                                <a class="botao enviar hltip" title="enviar modelo" ng-if="!fileConfiguration.template" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" >Enviar modelo</a>
-                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="removeFileConfiguration(fileConfiguration.id, $index)" class="botao excluir hltip" title="excluir anexo">Excluir</a>
+                                <a class="btn btn-default send hltip" title="enviar modelo" ng-if="!fileConfiguration.template" ng-click="openFileConfigurationTemplateEditBox(fileConfiguration.id, $index, $event);" >Enviar modelo</a>
+                                <a data-href="{{fileConfiguration.deleteUrl}}" ng-click="removeFileConfiguration(fileConfiguration.id, $index)" class="btn btn-default delete hltip" title="excluir anexo">Excluir</a>
                             </div>
                         </li>
                     </ul>
@@ -380,21 +387,21 @@ $this->includeAngularEntityAssets($entity);
                         </edit-box>
                     </div>
                     <div>
-                        <a class="botao principal" ng-click="register()">Fazer inscrição</a>
+                        <a class="btn btn-primary" ng-click="register()">Fazer inscrição</a>
                     </div>
                 </form>
             <?php else: ?>
                     <p>Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.</p>
-                    <a class="botao principal" href="<?php echo $app->createUrl('auth','login') ?>?redirectTo=<?php echo $entity->singleUrl , urlencode("#tab=inscricoes") ?>">Entrar</a>
+                    <a class="btn btn-primary" href="<?php echo $app->createUrl('auth','login') ?>?redirectTo=<?php echo $entity->singleUrl , urlencode("#tab=inscricoes") ?>">Entrar</a>
             <?php endif;?>
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-    <div id="inscritos" class="aba-content privado">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content privado">
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright botao download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
+                <a class="alignright btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
             </div>
             <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
@@ -474,7 +481,7 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 <?php else: ?>
                 <div class="clearfix">
-                    <a class="alignright botao principal <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
+                    <a class="alignright btn btn-primary <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
                 </div>
                 <?php endif; ?>
             <?php endif; ?>
@@ -503,7 +510,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
 
             <?php if($entity->id && $entity->canUser('createChield')): ?>
-            <a class="botao adicionar staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">adicionar sub-projeto</a>
+            <a class="btn btn-default add staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

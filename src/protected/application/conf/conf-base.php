@@ -41,6 +41,9 @@ return array(
 
     'app.enableProjectRegistration' => true,
 
+    'app.offline' => false,
+    'app.offlineUrl' => '/offline',
+    'app.offlineBypassFunction' => null,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(

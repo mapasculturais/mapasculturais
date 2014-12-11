@@ -80,10 +80,10 @@ $this->includeAngularEntityAssets($entity);
 
                 <div ng-if="data.isEditable" class="btn-group">
                     <span ng-if="def.agent">
-                        <a class="botao editar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">trocar agente</a>
-                        <a ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" class="botao excluir hltip" title="Excluir {{def.label}}">excluir</a>
+                        <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Editar {{def.label}}">Trocar agente</a>
+                        <a class="btn btn-default delete hltip" ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" title="Excluir {{def.label}}">Excluir</a>
                     </span>
-                    <a ng-if="!def.agent" class="botao adicionar hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Adicionar {{def.label}}">adicionar</a>
+                    <a class="btn btn-default add hltip" ng-if="!def.agent" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="Adicionar {{def.label}}">Adicionar</a>
                 </div>
 
                 <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
@@ -111,8 +111,8 @@ $this->includeAngularEntityAssets($entity);
                     <div class="btn-group">
                         <!-- se já subiu o arquivo-->
                         <!-- se não subiu ainda -->
-                        <a class="botao hltip" ng-class="{'enviar':!fileConfiguration.file,'editar':fileConfiguration.file}" ng-click="openFileEditBox(fileConfiguration.id, $index, $event)" title="{{!fileConfiguration.file ? 'enviar' : 'editar'}} anexo">{{!fileConfiguration.file ? 'enviar' : 'editar'}}</a>
-                        <a ng-if="!fileConfiguration.required && fileConfiguration.file" ng-click="removeFile(fileConfiguration.id, $index)" class="botao excluir hltip" title="excluir anexo">excluir</a>
+                        <a class="btn btn-default hltip" ng-class="{'send':!fileConfiguration.file,'edit':fileConfiguration.file}" ng-click="openFileEditBox(fileConfiguration.id, $index, $event)" title="{{!fileConfiguration.file ? 'enviar' : 'editar'}} anexo">{{!fileConfiguration.file ? 'Enviar' : 'Editar'}}</a>
+                        <a class="btn btn-default delete hltip" ng-if="!fileConfiguration.required && fileConfiguration.file" ng-click="removeFile(fileConfiguration.id, $index)" title="excluir anexo">Excluir</a>
                     </div>
                     <edit-box id="editbox-file-{{fileConfiguration.id}}" position="bottom" title="{{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendFile" submit-label="Enviar anexo" index="{{$index}}" spinner-condition="data.uploadSpinner">
                         <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{fileConfiguration.groupName}}"  enctype="multipart/form-data">
@@ -134,7 +134,7 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <div class="registration-fieldset">
         <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. <strong>Depois de enviada, não será mais possível editá-la.</strong></p>
-        <a class="botao principal" ng-click="sendRegistration()">enviar inscrição</a>
+        <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscrição</a>
     </div>
 </article>
 <div class="sidebar registration sidebar-right">

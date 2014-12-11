@@ -15,15 +15,15 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-.imagem-do-header .botao.editar {
+.imagem-do-header .btn {
     position: absolute;
     bottom: $line-height-base;
     right: $line-height-base;
 }
-.com-imagem .botao.editar {
+.com-imagem .btn {
     display: none;
 }
-.com-imagem:hover .botao.editar {
+.com-imagem:hover .btn {
     display: block;
 }
 .content-do-header {
@@ -33,9 +33,18 @@
         padding-left: 10.5rem;
     }
     .avatar {
+<<<<<<< HEAD
         display: none;
         @media screen and (min-width: $screen-xs-min) {
             display: block;
+=======
+        position: absolute;
+        left: 0;
+        width: 9rem;
+        height: 9rem;
+        margin: 0;
+        .btn {
+>>>>>>> master
             position: absolute;
             left: 0;
             width: 9rem;

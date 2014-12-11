@@ -89,7 +89,7 @@ class Registration extends \MapasCulturais\Repository{
         if(!$project->id){
             return 0;
         }
-        
+
         $dql_status = '';
 
         if(!$include_draft){
@@ -101,6 +101,23 @@ class Registration extends \MapasCulturais\Repository{
         $q = $this->_em->createQuery($dql);
 
         $q->setParameter('proj', $project);
+
+        $num = $q->getSingleScalarResult();
+
+        return $num;
+    }
+
+    function countByProjectAndOwner(\MapasCulturais\Entities\Project $project, \MapasCulturais\Entities\Agent $owner){
+        if(!$project->id || !$owner->id){
+            return 0;
+        }
+
+        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.project = :proj AND r.owner = :owner";
+
+        $q = $this->_em->createQuery($dql);
+
+        $q->setParameter('proj', $project);
+        $q->setParameter('owner', $owner);
 
         $num = $q->getSingleScalarResult();
 

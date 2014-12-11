@@ -4,51 +4,48 @@
 }
 .js-videogallery {
     margin-left: 0;
-}
-.js-videogallery li {
-    position: relative;
-    float: left;
-    width: 150px;
-    margin-right: .75rem;
-    padding: $padding-small;
-    border-radius: $border-radius-base;
-    list-style: none;
-}
-.js-videogallery li:hover,
-.js-videogallery li.active {
-    background: $gray-lighter;
-}
-.js-videogallery li h1 {
-    height: $line-height-base;;
-    margin-bottom: 0;
-    overflow: hidden;
-    font-size: $font-size-smaller;
-    line-height: $line-height-base;
-    font-family: 'Open Sans', sans-serif;
-    word-wrap: break-word;
-}
-.js-videogallery li .botoes-de-edicao {
-    top: .7rem;
-    right: .7rem;
-}
-.js-videogallery li:hover .botoes-de-edicao {
-    display: block;
+    li {
+        position: relative;
+        float: left;
+        width: 150px;
+        margin-right: .75rem;
+        padding: $padding-small;
+        border-radius: $border-radius-base;
+        list-style: none;
+        h1 {
+            height: $line-height-base;;
+            margin-bottom: 0;
+            overflow: hidden;
+            font-size: $font-size-smaller;
+            line-height: $line-height-base;
+            font-family: 'Open Sans', sans-serif;
+            word-wrap: break-word;
+        }
+        .btn {
+            position: absolute;
+            display: none;
+            top: .7rem;
+            right: .7rem;
+            .edit {
+                margin-right: 5px;
+            }
+        }
+        &.active {
+            background: $gray-lighter;
+        }
+        &:hover {
+            background: $gray-lighter;
+            .btn {
+                display: block;
+            }
+        }
+    }
+    .thumbnail_med_wide {
+        width: 150px;
+        height: 84px;
+    }
 }
 .js-metalist-item-display {
     display: block;
     cursor: pointer;
-}
-.js-remove-item {
-    color: $gray-dark;
-}
-.js-remove-item:hover {
-    color: $gray-darker;
-}
-.js-remove-item:before {
-    width: 1rem;
-    height: 1rem;
-}
-.js-videogallery .thumbnail_med_wide {
-    width: 150px;
-    height: 84px;
 }

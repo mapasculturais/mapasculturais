@@ -1,8 +1,11 @@
 .mfp-bg {
-    background-color: $brand-accent;
+    background-color: #000;
     opacity: 0.9;
+    z-index: $z-index-main-header+1;
 }
-
+.mfp-wrap {
+    z-index: $z-index-main-header+2;
+}
 .mfp-figure:after {
     box-shadow: none;
     background: transparent;

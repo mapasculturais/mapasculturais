@@ -178,17 +178,3 @@
     float: right;
     text-align: center;
 }
-.filtro-prefeitura .botao {
-    color: #fff;
-    background-color: $brand-accent;
-    background-image: url(../img/verified-icon.png);
-    background-position: 8px center;
-    background-repeat: no-repeat;
-    padding-left: 40px;
-}
-.filtro-prefeitura .botao:hover,
-.filtro-prefeitura .botao.selected,
-.filtro-prefeitura .botao.selected:hover {
-    background-color: $brand-primary;
-    border-color: $brand-primary;
-}

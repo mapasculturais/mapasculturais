@@ -20,15 +20,14 @@
 	    text-transform: uppercase;
 	    color: #888;
 	}
-    a.adicionar {
+    a.add {
         position: absolute;
         top: 0;
         right: 0;
-        color: #999;
         &:hover {
             color: $gray-darker;
         }
-        &.botao {
+        &.btn {
             position: static;
         }
     }
@@ -47,7 +46,7 @@
                 white-space: nowrap;
             }
         }
-        
+
     }
     //**  Widget list item when being edited. Editing buttons (edit & delete buttons) show on hover
     .is-editable {
@@ -68,14 +67,10 @@
             }
         }
     }
-    a.icone,
-    a.editar {
+    a.delete,
+    a.edit {
         margin-left: 5px;
-        color: $gray-dark;
         cursor: pointer;
-        &:hover {
-            color: $gray-darker;
-        }
     }
     a.icone {
         font-size: 1.5rem;

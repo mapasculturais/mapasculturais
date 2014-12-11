@@ -143,6 +143,15 @@ class App extends \Slim\Slim{
 
         session_start();
 
+        if($config['app.offline']){
+            $bypass_callable = $config['app.offlineBypassFunction'];
+            
+            if(!is_callable($bypass_callable) || !$bypass_callable()){
+                http_response_code(307);
+                header('Location: ' . $config['app.offlineUrl']);
+            }
+        }
+
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];

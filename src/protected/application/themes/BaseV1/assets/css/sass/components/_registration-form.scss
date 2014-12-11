@@ -31,12 +31,6 @@
         font-family: $font-family-base;
         font-size: $font-size-smaller;
     }
-	.botao {
-		width: 100%;
-		&.principal {
-			text-align: center;
-		}
-	}
 }
 
 
@@ -97,8 +91,10 @@
         padding: $padding-base;
         padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
-        a {
-        	font-weight: normal;
+        .registration-agent {
+            a {
+            	font-weight: normal;
+            }
         }
         .registration-label {
         	font-weight: bold;
