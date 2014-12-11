@@ -101,7 +101,26 @@ class App extends \Slim\Slim{
      *
      * @var type
      */
-    protected $_register = array();
+    protected $_register = array(
+            'controllers' => array(),
+            'auth_providers' => array(),
+            'controllers-by-class' => array(),
+            'controllers_default_actions' => array(),
+            'controllers_view_dirs' => array(),
+            'entity_type_groups' => array(),
+            'entity_types' => array(),
+            'entity_metadata_definitions' => array(),
+            'file_groups' => array(),
+            'metalist_groups' => array(),
+            'taxonomies' => array(
+                'by-id' => array(),
+                'by-slug' => array(),
+                'by-entity' => array(),
+            ),
+            'api_outputs' => array(),
+            'image_transformations' => array(),
+            'registration_agent_relations' => array()
+        );
 
     protected $_registerLocked = true;
 
@@ -145,7 +164,7 @@ class App extends \Slim\Slim{
 
         if($config['app.offline']){
             $bypass_callable = $config['app.offlineBypassFunction'];
-            
+
             if(!is_callable($bypass_callable) || !$bypass_callable()){
                 http_response_code(307);
                 header('Location: ' . $config['app.offlineUrl']);
@@ -427,27 +446,6 @@ class App extends \Slim\Slim{
     }
 
     public function register(){
-
-        $this->_register = array(
-            'controllers' => array(),
-            'auth_providers' => array(),
-            'controllers-by-class' => array(),
-            'controllers_default_actions' => array(),
-            'controllers_view_dirs' => array(),
-            'entity_type_groups' => array(),
-            'entity_types' => array(),
-            'entity_metadata_definitions' => array(),
-            'file_groups' => array(),
-            'metalist_groups' => array(),
-            'taxonomies' => array(
-                'by-id' => array(),
-                'by-slug' => array(),
-                'by-entity' => array(),
-            ),
-            'api_outputs' => array(),
-            'image_transformations' => array(),
-            'registration_agent_relations' => array()
-        );
 
         if($this->_config['app.useRegisterCache'] && $this->cache->contains('mapasculturais.register')){
             $this->_register = $this->cache->fetch('mapasculturais.register');
