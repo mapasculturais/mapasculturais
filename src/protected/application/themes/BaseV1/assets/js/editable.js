@@ -411,7 +411,8 @@ MapasCulturais.Editables = {
             var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
 
             if($editables.length === 1){
-                $editables.editable('option', 'url', target);
+                $('body').append('<input type="hidden" id="fixeditable"/>');
+                $editables = $editables.add($('#fixeditable'));
             }
 
             $editables.editable('submit', {
