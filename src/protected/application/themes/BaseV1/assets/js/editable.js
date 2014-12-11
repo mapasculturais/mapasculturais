@@ -387,7 +387,7 @@ MapasCulturais.Editables = {
     setButton : function (editableEntitySelector){
         var $submitButton = $($(editableEntitySelector).data('submit-button-selector'));
 
-        //Ctr+S:save
+        //Ctrl+S:save
         $(document.body).on('keydown', function(event){
             if(event.ctrlKey && event.keyCode === 83){
                 event.preventDefault();
@@ -395,7 +395,7 @@ MapasCulturais.Editables = {
                 $submitButton.trigger('click');
             }
         });
-        
+
         $submitButton.click(function(){
             if($submitButton.data('clicked'))
                 return false;
