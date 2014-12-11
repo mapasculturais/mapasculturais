@@ -447,7 +447,7 @@ MapasCulturais.Editables = {
                                 $field = $('#' + p);
                             }else if(p == 'type'){
                                 $field = $('.js-editable-type');
-                            }else if(p === 'owner' && MapasCulturais.request.controller === 'registration'){
+                            }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true;
                                 $field = $('#registration-agent-owner').parent().find('.registration-label span');
                             }else{
