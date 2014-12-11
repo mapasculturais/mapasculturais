@@ -33,18 +33,16 @@
         padding-left: 10.5rem;
     }
     .avatar {
-<<<<<<< HEAD
         display: none;
         @media screen and (min-width: $screen-xs-min) {
             display: block;
-=======
-        position: absolute;
-        left: 0;
-        width: 9rem;
-        height: 9rem;
-        margin: 0;
+            position: absolute;
+            left: 0;
+            width: 9rem;
+            height: 9rem;
+            margin: 0;
+        }
         .btn {
->>>>>>> master
             position: absolute;
             left: 0;
             width: 9rem;
