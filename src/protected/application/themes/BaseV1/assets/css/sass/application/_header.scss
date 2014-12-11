@@ -201,10 +201,6 @@
         position: relative;
         line-height: $line-height-base;
     }
-    li.row {
-        margin: .5rem;
-        border-top: 1px solid #fff;
-    }
 }
 .usuario:hover,
 .notificacoes:hover {
@@ -226,19 +222,23 @@
     .submenu {
         left: -2.5rem;
         width: 10rem;
-        background: $brand-primary;
+        background: $user-submenu-bg;
         li {
             position: relative;
             padding-right: 2rem;
+            &.row {
+                margin: .5rem;
+                border-top: 1px solid $user-submenu-divider;
+            }
         }
         a {
             display: block;
             vertical-align: middle;
-            color: $brand-accent;
+            color: $user-submenu-link;
             padding: $padding-small;
             font-weight: normal;
             &:hover {
-                color: #fff;
+                color: $user-submenu-link-hover;
                 text-decoration: none;
             }
         }
