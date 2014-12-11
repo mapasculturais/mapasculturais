@@ -17,6 +17,13 @@ return array(
             'label' => 'Descrição das opções (ex: Selecione uma categoria)',
         ),
 
+        'registrationLimitPerOwner' => array(
+            'label' => 'Número máximo de inscrições por agente responsável',
+            'validations' => array(
+                "v::int()" => "O número máximo de inscrições por agente responsável deve ser um número inteiro"
+            )
+        ),
+
         'site' => array(
             'label' => 'Site',
             'validations' => array(

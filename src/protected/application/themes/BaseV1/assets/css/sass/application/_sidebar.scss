@@ -49,15 +49,8 @@
         margin-bottom: 0;
     }
     .widget {
-        float: left;
-        margin: 0 $line-height-half 0;
-        padding-bottom: 0;
-        border-bottom: none;
-        @media screen and (min-width: $screen-sm-min) {
-            float: none;
-            padding-bottom: 1.5rem;
-        }
-
+        float: none;
+        padding-bottom: 1.5rem;
     }
 }
 .sidebar-right {

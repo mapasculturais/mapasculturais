@@ -5,7 +5,7 @@ $links = $entity->getMetaLists('links');
 $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'>
                 <a class='js-metalist-item-display' href='{{value}}'>{{title}}</a>
                 <div class='botoes'>
-                    <a class='editar js-open-editbox hltip'
+                    <a class='edit js-open-editbox hltip'
                         data-target='#editbox-links'
                         data-dialog-callback='MapasCulturais.MetalistManager.updateDialog'
                         data-response-target='#link-{{id}}'
@@ -20,7 +20,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
     <div class="widget" ng-non-bindable>
         <h3>Links</h3>
         <?php if($this->isEditable()): ?>
-            <a class="adicionar js-open-editbox hltip" data-target="#editbox-links" href="#"
+            <a class="add js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                data-response-target="ul.js-metalist"
                data-dialog-title="Adicionar Link"
@@ -35,14 +35,14 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                     <a class="js-metalist-item-display" href="<?php echo $link->value;?>"><span><?php echo $link->title;?></span></a>
                     <?php if($this->isEditable()): ?>
                         <div class="botoes">
-                            <a class="editar js-open-editbox hltip"
+                            <a class="edit js-open-editbox hltip"
                                data-target="#editbox-links"
                                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                                data-response-target="#link-<?php echo $link->id ?>"
                                data-metalist-action="edit"
                                data-item="<?php echo htmlentities(json_encode($link)) ?>"
                                href="#" title='editar'></a>
-                           <a class='icone icon_close js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Excluir este link?" title='excluir'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Excluir este link?" title='excluir'></a>
                         </div>
                     <?php endif; ?>
                 </li>

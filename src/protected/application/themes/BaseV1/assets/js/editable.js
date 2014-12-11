@@ -387,7 +387,7 @@ MapasCulturais.Editables = {
     setButton : function (editableEntitySelector){
         var $submitButton = $($(editableEntitySelector).data('submit-button-selector'));
 
-        //Ctr+S:save
+        //Ctrl+S:save
         $(document.body).on('keydown', function(event){
             if(event.ctrlKey && event.keyCode === 83){
                 event.preventDefault();
@@ -408,8 +408,14 @@ MapasCulturais.Editables = {
                 target = MapasCulturais.Editables.baseTarget+'/single/'+$(editableEntitySelector).data('id');
             else
                 target = MapasCulturais.Editables.baseTarget;
+            var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
 
-            MapasCulturais.Editables.getEditableElements().add('.js-include-editable').editable('submit', {
+            if($editables.length === 1){
+                $('body').append('<input type="hidden" id="fixeditable"/>');
+                $editables = $editables.add($('#fixeditable'));
+            }
+
+            $editables.editable('submit', {
                 url: target,
                 ajaxOptions: {
                     dataType: 'json', //assuming json response
@@ -427,13 +433,13 @@ MapasCulturais.Editables = {
                     }
                 },
                 success: function(response){
+                    $('.js-response-error').remove();
                     if(response.error){
                         var $field = null;
                         var errors = '';
                         var unknow_errors = [];
                         var field_found = false;
                         var firstShown = false;
-                        $('.js-response-error').remove();
                         for(var p in response.data){
                             if(MapasCulturais.request.controller === 'event' && p === 'project'){
                                 $field = $('.editable[data-field-name="projectId"');
@@ -441,9 +447,13 @@ MapasCulturais.Editables = {
                                 $field = $('#' + p);
                             }else if(p == 'type'){
                                 $field = $('.js-editable-type');
+                            }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
+                                firstShown = true;
+                                $field = $('#registration-agent-owner').parent().find('.registration-label span');
                             }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
                             }
+                            console.log(p);
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;

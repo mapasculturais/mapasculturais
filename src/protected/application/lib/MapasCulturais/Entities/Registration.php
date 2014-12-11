@@ -29,7 +29,8 @@ class Registration extends \MapasCulturais\Entity
 
     protected static $validations = array(
         'owner' => array(
-            'required' => "O agente responsável é obrigatório."
+            'required' => "O agente responsável é obrigatório.",
+            '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsável.',
         )
     );
 
@@ -151,7 +152,28 @@ class Registration extends \MapasCulturais\Entity
 
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
+        $this->setOwner($agent);
+    }
+
+    protected $_ownerChanged = false;
+
+    function setOwner(Agent $agent){
+        $this->_ownerChanged = true;
         $this->owner = $agent;
+    }
+
+    function validateOwnerLimit(){
+        // updating and changing owner
+        if($this->id && !$this->_ownerChanged){
+            return true;
+        }else{
+            $registrationCount = $this->repo()->countByProjectAndOwner($this->project, $this->owner);
+            $limit = $this->project->registrationLimitPerOwner;
+            if($limit > 0 && $registrationCount >= $limit){
+                return false;
+            }
+        }
+        return true;
     }
 
     function setProjectId($id){
@@ -436,14 +458,14 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
-        
+
         if($this->project && !$this->project->useRegistrations){
             return false;
         }
-        
+
         return $this->genericPermissionVerification($user);
     }
-    
+
     protected function canUserView($user){
         if($user->is('guest')){
             return false;

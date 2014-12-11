@@ -89,3 +89,8 @@
 .ui-datepicker td a:hover {
     background: #ddd;
 }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    color: #fff;
+    background: $brand-accent;
+}

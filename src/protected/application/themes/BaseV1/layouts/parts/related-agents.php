@@ -9,7 +9,7 @@ $this->addRelatedAgentsToJs($entity);
         <edit-box id="new-related-agent-group" position="left" title="Adicionar grupo de agentes" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
             <input type="text" ng-model="data.newGroupName" placeholder="Nome do grupo de agentes"/>
         </edit-box>
-        <a class="botao adicionar hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">adicionar grupo de agentes</a>
+        <a class="btn btn-default add hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">Adicionar grupo de agentes</a>
     </div>
     <div class="widget" ng-repeat="group in groups">
         <h3>{{group.name}}</h3>
@@ -37,7 +37,7 @@ $this->addRelatedAgentsToJs($entity);
                         </div>
                     </div>
                     <div class="textright" ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
-                        <button type="submit" class="bt-remove-agent" ng-click="deleteRelation(relation)">Excluir</button>
+                        <a href="#" class="btn btn-accent" ng-click="deleteRelation(relation)">Excluir</a>
                     </div>
                 </div>
             </div>

@@ -39,16 +39,6 @@
 }
 #funcao-do-agente {
     width: 135px;
-    background: #fff;
     text-align: left;
-}
-#funcao-do-agente .submenu-dropdown {
-    background: #fff;
-}
-#funcao-do-agente .submenu-dropdown:before {
-    color: #fff;
-}
-#funcao-do-agente .submenu-dropdown li:hover {
-    background: $gray-lighter;
-    color: $brand-accent;
+    vertical-align: middle;
 }

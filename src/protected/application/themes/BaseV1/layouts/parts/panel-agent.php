@@ -12,15 +12,15 @@
         <div><span class="label">Área de atuação:</span> <?php echo implode(',', $entity->terms['area'])?></div>
     </div>
     <div>
-        <a class="action" href="<?php echo $entity->editUrl; ?>">editar</a>
+        <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
         <?php if(!$entity->isUserProfile): ?>
-        
+
             <?php if($entity->status === \MapasCulturais\Entities\Agent::STATUS_ENABLED): ?>
-                <a class="action" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+                <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
             <?php else: ?>
-                <a class="action" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
+                <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
                 <?php if($entity->canUser('destroy')): ?>
-                    <a class="action" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>
+                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>
                 <?php endif; ?>
             <?php endif; ?>
         <?php endif; ?>
