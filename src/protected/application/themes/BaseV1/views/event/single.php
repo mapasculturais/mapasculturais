@@ -498,7 +498,7 @@ $this->includeMapAssets();
             </div>
         </div>
         <footer class="clearfix">
-            <input type="submit" value="enviar">
+            <input type="submit" value="Enviar">
         </footer>
     </form>
 </script>
