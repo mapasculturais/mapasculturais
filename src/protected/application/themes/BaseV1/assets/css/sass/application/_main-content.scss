@@ -3,14 +3,15 @@
     -moz-box-sizing: border-box;
     background: #fff;
     border-radius: 0 0 2px 2px;
-    padding: $padding-base;
-    @media screen and (min-width: $screen-sm-min) {
+    padding: 2rem;
+    @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
         float: left;
         width: 75%;
         margin-bottom: 4rem;
-        padding: 4rem;
     }
     @media screen and (min-width: $screen-md-min) {
+        display: inline-block;
+        padding: 4rem;
         width: 60%;
     }
 }
