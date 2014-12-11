@@ -506,7 +506,8 @@ class Theme extends MapasCulturais\Theme {
         }else {
             $description = $app->siteDescription;
         }
-
+        // for responsive
+        $this->documentMeta[] = array("name" => 'viewport', 'content' => 'width=device-width, initial-scale=1');
         // for google
         $this->documentMeta[] = array("name" => 'description', 'content' => $description);
         $this->documentMeta[] = array("name" => 'keywords', 'content' => $site_name);
