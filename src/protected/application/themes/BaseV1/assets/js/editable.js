@@ -433,13 +433,13 @@ MapasCulturais.Editables = {
                     }
                 },
                 success: function(response){
+                    $('.js-response-error').remove();
                     if(response.error){
                         var $field = null;
                         var errors = '';
                         var unknow_errors = [];
                         var field_found = false;
                         var firstShown = false;
-                        $('.js-response-error').remove();
                         for(var p in response.data){
                             if(MapasCulturais.request.controller === 'event' && p === 'project'){
                                 $field = $('.editable[data-field-name="projectId"');
@@ -447,9 +447,13 @@ MapasCulturais.Editables = {
                                 $field = $('#' + p);
                             }else if(p == 'type'){
                                 $field = $('.js-editable-type');
+                            }else if(p === 'owner' && MapasCulturais.request.controller === 'registration'){
+                                firstShown = true;
+                                $field = $('#registration-agent-owner').parent().find('.registration-label span');
                             }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
                             }
+                            console.log(p);
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
