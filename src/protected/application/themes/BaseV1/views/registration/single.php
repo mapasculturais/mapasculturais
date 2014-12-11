@@ -12,9 +12,6 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar registration">
-    <div class="setinha"></div>
-</div>
 <article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
         <div<?php if($header = $project->getFile('header')): ?> style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem" <?php endif; ?>>
@@ -104,6 +101,9 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
 </article>
+<div class="sidebar-left sidebar registration">
+    <div class="setinha"></div>
+</div>
 <div class="sidebar registration sidebar-right">
     <div class="setinha"></div>
 </div>

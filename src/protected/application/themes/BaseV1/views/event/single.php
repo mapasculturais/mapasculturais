@@ -79,51 +79,6 @@ $this->includeMapAssets();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<div class="sidebar-left sidebar event">
-    <div class="setinha"></div>
-    <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php if($this->isEditable()): ?>
-        <div class="widget">
-            <h3>Projeto</h3>
-            <a class="js-search js-include-editable"
-                data-field-name='projectId'
-                data-emptytext="Selecione um projeto"
-                data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um projeto"
-                data-entity-controller="project"
-                data-search-result-template="#agent-search-result-template"
-                data-selection-template="#agent-response-template"
-                data-no-result-template="#agent-response-no-results-template"
-                data-selection-format="chooseProject"
-                data-multiple="true"
-                data-allow-clear="1"
-                data-auto-open="true"
-                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
-                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
-                title="Selecionar um Projeto">
-                <?php echo $entity->project ? $entity->project->name : ''; ?>
-            </a>
-        </div>
-    <?php elseif($entity->project): ?>
-        <div class="widget">
-            <h3>Projeto</h3>
-            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
-        </div>
-    <?php endif; ?>
-    <div class="widget">
-        <h3>Linguagens</h3>
-        <?php if ($this->isEditable()): ?>
-            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
-        <?php else: ?>
-            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
-            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
-                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
-            <?php endif; endforeach; ?>
-        <?php endif; ?>
-    </div>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
 <article class="col-60 main-content event">
     <header class="main-content-header">
         <div
@@ -374,6 +329,51 @@ $this->includeMapAssets();
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
+<div class="sidebar-left sidebar event">
+    <div class="setinha"></div>
+    <?php $this->part('verified', array('entity' => $entity)); ?>
+    <?php if($this->isEditable()): ?>
+        <div class="widget">
+            <h3>Projeto</h3>
+            <a class="js-search js-include-editable"
+                data-field-name='projectId'
+                data-emptytext="Selecione um projeto"
+                data-search-box-width="400px"
+                data-search-box-placeholder="Selecione um projeto"
+                data-entity-controller="project"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="chooseProject"
+                data-multiple="true"
+                data-allow-clear="1"
+                data-auto-open="true"
+                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
+                title="Selecionar um Projeto">
+                <?php echo $entity->project ? $entity->project->name : ''; ?>
+            </a>
+        </div>
+    <?php elseif($entity->project): ?>
+        <div class="widget">
+            <h3>Projeto</h3>
+            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
+        </div>
+    <?php endif; ?>
+    <div class="widget">
+        <h3>Linguagens</h3>
+        <?php if ($this->isEditable()): ?>
+            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+        <?php else: ?>
+            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
+                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
+            <?php endif; endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+</div>
 <div class="sidebar event sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
