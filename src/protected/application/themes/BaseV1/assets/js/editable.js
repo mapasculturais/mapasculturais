@@ -395,7 +395,7 @@ MapasCulturais.Editables = {
                 $submitButton.trigger('click');
             }
         });
-
+        
         $submitButton.click(function(){
             if($submitButton.data('clicked'))
                 return false;
@@ -408,8 +408,13 @@ MapasCulturais.Editables = {
                 target = MapasCulturais.Editables.baseTarget+'/single/'+$(editableEntitySelector).data('id');
             else
                 target = MapasCulturais.Editables.baseTarget;
+            var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
 
-            MapasCulturais.Editables.getEditableElements().add('.js-include-editable').editable('submit', {
+            if($editables.length === 1){
+                $editables.editable('option', 'url', target);
+            }
+
+            $editables.editable('submit', {
                 url: target,
                 ajaxOptions: {
                     dataType: 'json', //assuming json response
