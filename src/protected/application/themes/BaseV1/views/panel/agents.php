@@ -4,7 +4,7 @@ $this->layout = 'panel'
 <div class="lista-sem-thumb main-content">
 	<header class="header-do-painel clearfix">
 		<h2 class="alignleft">Meus agentes</h2>
-		<a class="botao adicionar" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar novo agente</a>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar novo agente</a>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>

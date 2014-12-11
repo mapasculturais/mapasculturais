@@ -48,20 +48,20 @@
                                     <span ng-bind-html="notification.message"></span>
                                     <br>
 
-                                    <a ng-if="notification.request.permissionTo.approve" class="action" ng-click="approve(notification.id)">aceitar</a>
+                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)">aceitar</a>
 
                                     <span ng-if="notification.request.permissionTo.reject">
                                         <span ng-if="notification.request.requesterUser.id === MapasCulturais.userId">
-                                            <a class="action" ng-click="reject(notification.id)">cancelar</a>
-                                            <a class="action" ng-click="delete(notification.id)">ok</a>
+                                            <a class="btn btn-small btn-default" ng-click="reject(notification.id)">cancelar</a>
+                                            <a class="btn btn-small btn-success" ng-click="delete(notification.id)">ok</a>
                                         </span>
                                         <span ng-if="notification.request.requesterUser.id !== MapasCulturais.userId">
-                                            <a class="action" ng-click="reject(notification.id)">rejeitar</a>
+                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)">rejeitar</a>
                                         </span>
                                     </span>
 
                                     <span ng-if="!notification.isRequest">
-                                        <a class="action" ng-click="delete(notification.id)">ok</a>
+                                        <a class="btn btn-small btn-success" ng-click="delete(notification.id)">ok</a>
                                     </span>
 
                                 </p>
@@ -93,19 +93,19 @@
                     </li>
                     <li>
                         <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
-                        <a class="adicionar" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
+                        <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
                     </li>
                     <li>
                         <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
-                        <a class="adicionar" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
+                        <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
                     </li>
                     <li>
                         <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
-                        <a class="adicionar"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
+                        <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
                     </li>
                     <li>
                         <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
-                        <a class="adicionar" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
+                        <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                     </li>
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->

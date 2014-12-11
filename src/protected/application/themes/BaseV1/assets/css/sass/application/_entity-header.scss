@@ -10,15 +10,15 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-.imagem-do-header .botao.editar {
+.imagem-do-header .btn {
     position: absolute;
     bottom: $line-height-base;
     right: $line-height-base;
 }
-.com-imagem .botao.editar {
+.com-imagem .btn {
     display: none;
 }
-.com-imagem:hover .botao.editar {
+.com-imagem:hover .btn {
     display: block;
 }
 .content-do-header {
@@ -31,7 +31,7 @@
         width: 9rem;
         height: 9rem;
         margin: 0;
-        .botao.editar {
+        .btn {
             position: absolute;
             right: $line-height-half;
             bottom: $line-height-half;

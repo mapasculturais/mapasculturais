@@ -27,7 +27,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
+                <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
             </div>
             <!-- div.filtro-prefeitura -->
 
@@ -75,7 +75,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
+                <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -115,7 +115,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
+                <a class="hltip btn btn-verified" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>
@@ -160,7 +160,7 @@
             </div>
             <!--.filtro-->
             <div class="filtro filtro-prefeitura">
-                <a class="hltip botao" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
+                <a class="hltip btn btn-verified" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
             </div>
             <!-- div.filtro-prefeitura -->
         </div>

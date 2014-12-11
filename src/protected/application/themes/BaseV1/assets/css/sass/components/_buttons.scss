@@ -6,61 +6,39 @@
 //== Base buttons
 //
 //## Different types of buttons used accros the project.
-.botao,
-.botao-grande {
+
+.btn {
     display: inline-block;
-    border-radius: $border-radius-base;
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    -webkit-transition: all .3s;
-            transition: all .3s;
-}
-.botao:hover,
-.botao-grande:hover {
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    text-decoration: none;
-}
-.botao {
-    height: 2rem;
     box-sizing: border-box;
+    height: 2rem;
     padding: 0 $padding-small;
-    font-size: $font-size-smaller;
+    border-radius: $border-radius-base;
     line-height: 1.875rem;
-}
-.botao.principal {
-    color: #fff;
-    background: $brand-primary;
-    border: 1px solid $brand-primary;
+    font-size: $font-size-smaller;
+    font-family: $font-family-base;
+    font-weight: $btn-font-weight;
+    text-align: center;
+    white-space: nowrap;
+    transition: all .3s;
+    cursor: pointer;
     &:hover {
-    border-color: darken($brand-primary, 10%);
+        box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+        text-decoration: none;
     }
 }
-.botao.selected,
-.botao.selected:hover {
-    background-color: $brand-accent;
-    border: 1px solid $brand-accent;
-    color: #fff;
-}
-.botao.disabled {
-    background-color: $gray-light;
-    border: 1px solid $gray;
-    color: #fff;
-    cursor: default;
-    &:hover {
-        border: 1px solid $gray;
-        box-shadow: none;
-    }
-}
-.adicionar,
-.editar,
-.enviar,
+
+// Buttons actions
+// --------------------------------------------------
+
+.add,
+.edit,
+.send,
 .download,
-.excluir,
-.inserir {
-    color: $gray-dark;
+.delete,
+.insert {
+    color: $btn-default-color;
     &:hover {
-        color: $gray-darker;
+        color: darken($btn-default-color, 20%);
     }
     &:before {
         display: inline-block;
@@ -74,114 +52,148 @@
         font-style: none;
     }
 }
-.adicionar:before {
+.add:before {
     content: '\e050';
 }
-.editar:before {
+.edit:before {
     content: '\6c';
 }
-.enviar:before {
+.send:before {
     content: '\e091';
 }
 .download:before {
     content: '\e092';
 }
-.excluir:before {
+.delete:before {
     content: '\e051';
 }
-.inserir:before {
+.insert:before {
     content: '\37';
 }
-.botao.simples,
-.botao.adicionar,
-.botao.editar,
-.botao.enviar,
-.botao.download,
-.botao.excluir {
-    color: $gray-dark;
-    background: $gray-light;
-    border: 1px solid $gray;
-}
-.botao.simples:hover,
-.botao.adicionar:hover,
-.botao.editar:hover,
-.botao.enviar:hover,
-.botao.download:hover,
-.botao.excluir:hover {
-    color: $gray-darker;
-    background: $gray-lighter;
-    border: 1px solid $gray-dark;
-}
-.botao.adicionar:before,
-.botao.editar:before,
-.botao.enviar:before,
-.botao.download:before,
-.botao.excluir:before,
-.botao-grande.adicionar:before {
-    margin-right: 5px;
-}
-.botao-grande {
-    padding: $padding-small;
-    font-size: $font-size-small;
-    text-align: center;
-    color: #fff;
-    background: $brand-accent;
-}
-.botao-grande:hover {
-    background: $brand-primary;
-    border-color: $brand-primary;
-    color: $brand-accent;
-}
-.botao-de-icone {
-    width: 1.375rem;
-    line-height: 1.375rem !important;
-    font-size: $font-size-base;
-    font-family: $icon-font-name;
-    font-weight: normal;
-    text-align: center;
-    color: #999;
-}
-.botao-de-icone:hover,
-.botao-de-icone.selected {
-    color: $brand-accent;
-}
-.botoes-de-edicao {
-    position: absolute;
-    display: none;
-    padding: .2rem .5rem;
-    border-radius: $border-radius-base;
-    background: $gray-light;
-    border: 1px solid #999;
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+
+.btn.add,
+.btn.edit,
+.btn.send,
+.btn.download,
+.btn.delete, {
+    &:before {
+        margin-right: 5px;
+    }
 }
 
-.action {
-    display: inline-block;
-    padding: 0 $padding-small;
-    background: $brand-primary;
-    border-radius: $border-radius-base;
-    font-size: $font-size-smaller;
-    font-weight: normal;
-    -webkit-transition: all .3s;
-            transition: all .3s;
+
+// Buttons types
+// --------------------------------------------------
+.btn-default {
+    color: $btn-default-color;
+    background-color: $btn-default-bg;
+    border: 1px solid $btn-default-border;
+    &:hover {
+        color: darken($btn-default-color, 20%);
+        background-color: lighten($btn-default-bg, 5%);
+        border: 1px solid darken($btn-default-border, 10%);
+    }
 }
-.action:hover {
-    text-decoration: none;
-    background: $brand-accent;
-    color: #fff;
+.btn-primary {
+    color: $btn-primary-color;
+    background-color: $btn-primary-bg;
+    border: 1px solid $btn-primary-border;
+    &:hover {
+        color: $btn-primary-color;
+        background-color: lighten($btn-primary-bg, 5%);
+        border: 1px solid darken($brand-primary, 10%);
+    }
+}
+.btn-accent {
+    color: $btn-accent-color;
+    background-color: $btn-accent-bg;
+    border: 1px solid $btn-accent-border;
+    /* must define below so it overrides button actions colors, when used combined eg: class="btn-accent add" */
+    &:hover {
+        color: $btn-accent-color;
+        background-color: $btn-accent-bg;
+        border: 1px solid $btn-accent-border;
+    }
+}
+.btn-success {
+    color: $btn-success-color;
+    background-color: $btn-success-bg;
+    border: 1px solid $btn-success-border;
+    &:hover {
+        color: $btn-success-color;
+        background-color: lighten($btn-success-bg, 5%);
+        border: 1px solid darken($brand-success, 10%);
+    }
+}
+.btn-info {
+    color: $btn-info-color;
+    background-color: $btn-info-bg;
+    border: 1px solid $btn-info-border;
+    &:hover {
+        color: $btn-info-color;
+        background-color: lighten($btn-info-bg, 5%);
+        border: 1px solid darken($brand-info, 10%);
+    }
+}
+.btn-warning {
+    color: $btn-warning-color;
+    background-color: $btn-warning-bg;
+    border: 1px solid $btn-warning-border;
+    &:hover {
+        color: $btn-warning-color;
+        background-color: lighten($btn-warning-bg, 5%);
+        border: 1px solid darken($brand-warning, 10%);
+    }
+}
+.btn-danger {
+    color: $btn-danger-color;
+    background-color: $btn-danger-bg;
+    border: 1px solid $btn-danger-border;
+    &:hover {
+        color: $btn-danger-color;
+        background-color: lighten($btn-danger-bg, 5%);
+        border: 1px solid darken($brand-danger, 10%);
+    }
+}
+.btn-verified {
+    color: $btn-verified-color;
+    background-color: $btn-verified-bg;
+    background-image: url(../img/verified-icon.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    &.selected {
+        color: #fff;
+        background-color: #000;
+    }
+}
+
+// Buttons states
+// --------------------------------------------------
+
+.btn.disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    &:hover {
+        box-shadow: none;
+    }
+}
+
+// Buttons sizes
+// --------------------------------------------------
+
+.btn-small {
+    height: 1.5rem;
+    padding: 0 $padding-small;
+    line-height: 1.375rem;
+    font-weight: normal;
+}
+.btn-large {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: $font-size-small;
 }
 
 .js-registration-action.selected {
     cursor: default !important;
-}
-
-.bt-remove-agent {
-    margin: $line-height-base 0 0;
-}
-
-.p-dos-botoes {
-    border-top: 1px solid $gray-lighter;
-    padding: $padding-base 0 0;
-    text-align: right;
 }

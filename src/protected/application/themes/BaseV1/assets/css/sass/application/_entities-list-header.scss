@@ -22,13 +22,9 @@
 .header-do-objeto .icone {
     vertical-align: initial;
 }
-.header-do-objeto .botao.adicionar,
-.header-do-objeto .botao.adicionar:hover {
+.header-do-objeto .btn {
     float: right;
     margin: -1px $line-height-base;
-    color: #fff;
-    background: $brand-accent;
-    border: 1px solid $brand-accent;
 }
 #header-dos-eventos {
     border-left: 3rem solid $brand-event;
