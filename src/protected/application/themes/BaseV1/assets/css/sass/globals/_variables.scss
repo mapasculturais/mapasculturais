@@ -188,7 +188,6 @@ $form-fields-height:                   2rem !default;
 // Warning: Avoid customizing these values. They're used for a bird's eye view
 // of components dependent on the z-axis and are designed to all work together.
 //
-// Note: These variables are not generated into the Customizer.
 
 $z-index-descricao-do-agente:   800 !default;
 $z-index-capa-marca-dagua:      900 !default;
@@ -233,7 +232,7 @@ $alert-danger-border:         darken(#fcc, 10%) !default;
 //
 //## Define registration form header colors.
 
-$registration-header-bg:      $brand-project;
+$registration-header-bg:      $brand-project !default;
 $registration-header-color:	  #fff !default;
 
 
@@ -241,4 +240,22 @@ $registration-header-color:	  #fff !default;
 //
 //## Define editable entity bar colors.
 
-$small-brand-color:              $brand-primary;
+$small-brand-color:              $brand-primary  !default;
+
+
+//== User submenu
+//
+//## Define user submenu colors.
+
+$user-submenu-divider:			#fff !default;
+$user-submenu-link:				lighten($brand-primary, 50%) !default;
+$user-submenu-link-hover:		#fff !default;
+$user-submenu-bg:				$brand-primary !default;
+
+
+
+
+
+
+
+
