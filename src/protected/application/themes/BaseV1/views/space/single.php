@@ -31,6 +31,7 @@ $this->includeAngularEntityAssets($entity);
                     <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
+            <a class="verified-seal-small hltip active" title="" href="#" hltitle="Este Espaço é verificado."></a>
         </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">

@@ -25,3 +25,22 @@
         }
     }
 }
+
+.verified-seal-small {
+    background-image: url(../img/unverified-seal-small.png);
+    &.inactive {
+        opacity: .2;
+    }
+    &.active {
+        background-image: url(../img/verified-seal-small.png);
+    }
+    &.editable {
+        padding-top: 1rem;
+        background-position: center 1rem;
+        &:after {
+            margin-left: -.5rem;
+            position: absolute;
+            top: 0;
+        }
+    }
+}
