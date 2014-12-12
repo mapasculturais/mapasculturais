@@ -122,15 +122,15 @@
     }
 }
 
-.botao {
-    &.editar {
+.btn {
+    &.edit {
         &:before {
             font-family: $icon-font-name;
             content: '\f044';
         }
     }
 }
-.enviar {
+.send {
     &:before {
         content: '\f093';
     }
@@ -140,12 +140,12 @@
         content: '\f019';
     }
 }
-.excluir {
+.delete {
     &:before {
         content: '\f057';
     }
 }
-.inserir {
+.add {
     &:before {
         content: '\f057';
     }
