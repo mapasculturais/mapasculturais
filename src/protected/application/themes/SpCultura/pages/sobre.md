@@ -11,4 +11,4 @@ Mais informações sobre a ferramenta Mapas Culturais no site do <a href="http:/
 Para contato sobre dúvidas, sugestões, por favor, utilize o endereço <a href="mailto:spcultura@prefeitura.sp.gov.br">spcultura@prefeitura.sp.gov.br</a>.
 
 <h2>Realização</h2>
-<img class="alignleft" src="/public//img/instituto-tim-white.png" alt="Insituto Tim" /><img class="sobre-logo-prefeitura alignleft" src="/public//img/logo-prefeitura.png" alt="Prefeitura de São Paulo" />
+<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto Tim" /><img class="sobre-logo-prefeitura alignleft" src="/assets/img/logo-prefeitura.png" alt="Prefeitura de São Paulo" />

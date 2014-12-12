@@ -31,4 +31,14 @@ class Theme extends BaseV1\Theme{
     static function getThemeFolder() {
         return __DIR__;
     }
+
+    function _init() {
+        parent::_init();
+        $app = App::i();
+        $app->hook('view.render(<<*>>):before', function() use($app) {
+            $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
+            $this->jsObject['assets']['logo-prefeitura'] = $this->asset('img/logo-prefeitura.png', false);
+        });
+    }
+
 }
