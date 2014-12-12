@@ -23,12 +23,17 @@ abstract class AuthProvider {
 
     abstract function _cleanUserSession();
 
+    /**
+     * @return \MapasCulturais\Entities\User
+     */
+    abstract protected function _createUser($data);
+
     final function logout(){
         App::i()->applyHookBoundTo($this, 'auth.logout:before', array($this->_authenticatedUser));
 
         $this->_authenticatedUser = null;
         $this->_cleanUserSession();
-        
+
         App::i()->applyHookBoundTo($this, 'auth.logout:after');
     }
 
@@ -38,7 +43,7 @@ abstract class AuthProvider {
         $this->_setRedirectPath($redirect_url ? $redirect_url : $app->request->getPathInfo());
         $this->_requireAuthentication();
     }
-    
+
     protected function _requireAuthentication() {
         $app = App::i();
 
@@ -48,7 +53,7 @@ abstract class AuthProvider {
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }
     }
-    
+
 
     /**
      * Defines the URL to redirect after authentication
