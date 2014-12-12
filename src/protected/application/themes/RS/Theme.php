@@ -5,11 +5,6 @@ use MapasCulturais\App;
 
 class Theme extends BaseV1\Theme{
 
-    public function __construct(\MapasCulturais\AssetManager $asset_manager) {
-        App::i()->registerAuthProvider('OpauthLoginCidadao');
-        parent::__construct($asset_manager);
-    }
-
     protected static function _getTexts(){
         return array(
             'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",

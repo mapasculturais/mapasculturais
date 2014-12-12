@@ -41,7 +41,7 @@
             ],
             "authors": [
                 {
-                    "name": "Derek J. Lambert",
+                    "name": "Derek Lambert",
                     "email": "dlambert@dereklambert.com"
                 }
             ],
@@ -253,7 +253,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -329,7 +329,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -465,7 +465,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -573,7 +573,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -756,11 +756,11 @@
         },
         {
             "name": "opauth/logincidadao",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hacklabr/opauth-logincidadao.git",
-                "reference": "a030d7fa002e8c2075fae104cfe9912044a35ff7"
+                "reference": "8e7545ad02610e3c2d13184810cdc55d6b2c2f42"
             },
             "require": {
                 "opauth/opauth": ">=0.2.0",
@@ -788,7 +788,7 @@
                 "authentication",
                 "logincidadao"
             ],
-            "time": "2014-12-11 20:17:56"
+            "time": "2014-12-12 13:30:51"
         },
         {
             "name": "opauth/opauth",

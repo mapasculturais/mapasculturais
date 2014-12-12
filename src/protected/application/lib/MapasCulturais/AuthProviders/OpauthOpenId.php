@@ -186,6 +186,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             if(!$user){
                 $response = $this->_getResponse();
                 $user = $this->_createUser($response);
+                
                 $profile = $user->profile;
                 $this->_setRedirectPath($profile->editUrl);
 
@@ -211,7 +212,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
         $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
         $user->email = $response['auth']['info']['email'];
-        $this->_em->persist($user);
+        $app->em->persist($user);
 
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
@@ -224,8 +225,8 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             $agent->name = 'Sem nome';
 
 
-        $this->_em->persist($agent);
-        $this->_em->flush();
+        $app->em->persist($agent);
+        $app->em->flush();
 
         $user->profile = $agent;
         $user->save(true);

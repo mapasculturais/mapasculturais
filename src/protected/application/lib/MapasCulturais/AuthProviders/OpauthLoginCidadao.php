@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\AuthProviders;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 
 class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
@@ -144,6 +145,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $response = $this->_getResponse();
             $auth_uid = $response['auth']['uid'];
             $auth_provider = $app->getRegisteredAuthProviderId('logincidadao');
+            
             $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
             return $user;
         }else{
@@ -161,8 +163,10 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $user = $this->_getAuthenticatedUser();
             if(!$user){
                 $response = $this->_getResponse();
-                App::i()->repo('user')->createByAuthResponse($response);
-                $user = $this->_getAuthenticatedUser();
+                $user = $this->_createUser($response);
+                
+                $profile = $user->profile;
+                $this->_setRedirectPath($profile->editUrl);
             }
             $this->_setAuthenticatedUser($user);
             App::i()->applyHook('auth.successful');
@@ -183,28 +187,32 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         $user = new Entities\User;
         $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
-        $user->email = $response['auth']['info']['email'];
-        $this->_em->persist($user);
+        $user->email = $response['auth']['raw']['email'];
+        $app->em->persist($user);
 
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
 
-        if(isset($response['auth']['info']['name']))
-            $agent->name = $response['auth']['info']['name'];
-        elseif(isset($response['auth']['info']['first_name']) && isset($response['auth']['info']['last_name']))
-            $agent->name = $response['auth']['info']['first_name'] . ' ' . $response['auth']['info']['last_name'];
-        else
-            $agent->name = 'Sem nome';
+        if(isset($response['auth']['raw']['first_name']) && isset($response['auth']['raw']['surname'])){
+            $agent->name = $response['auth']['raw']['first_name'] . ' ' . $response['auth']['raw']['surname'];
+        }else if(isset($response['auth']['raw']['first_name'])){
+            $agent->name = $response['auth']['raw']['first_name'];
+        }else{
+            $agent->name = 'Sem Nome';
+        }
+        
+        $agent->emailPrivado = $user->email;
 
-
-        $this->_em->persist($agent);
-        $this->_em->flush();
+        $app->em->persist($agent);
+        $app->em->flush();
 
         $user->profile = $agent;
         $user->save(true);
 
         $app->enableAccessControl();
 
+        $this->_setRedirectPath($agent->editUrl);
+        
         return $user;
     }
 }

@@ -466,6 +466,8 @@ class App extends \Slim\Slim{
             // register auth providers
             // @TODO veridicar se isto está sendo usado, se não remover
             $this->registerAuthProvider('OpenID');
+            $this->registerAuthProvider('logincidadao');
+        
 
             // register controllers
 
