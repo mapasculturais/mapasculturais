@@ -151,7 +151,7 @@
                     <div>Entrar</div>
                 </a>
                 <?php if(!empty($fake_options)): ?>
-                    <ul class="submenu"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
+                    <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
                 <?php endif; ?>
             </li>
         <?php endif; ?>
