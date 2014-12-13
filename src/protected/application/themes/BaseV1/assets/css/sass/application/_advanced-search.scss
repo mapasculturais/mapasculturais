@@ -91,13 +91,15 @@
 }
 
 .filtro {
-    float: left;
-         box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    width: 20%;
-    padding: 0 $padding-base;
-    border-left: 1px dotted $brand-accent;
+    box-sizing: border-box;
+    padding: 0 $padding-base $padding-base;
     line-height: 2rem;
+    @media screen and (min-width: $screen-tablet) {
+        float: left;
+        width: 20%;
+        padding: 0 $padding-base;
+        border-left: 1px dotted $brand-accent;
+    }
 }
 .filtro:first-child {
     border: none;
@@ -175,6 +177,8 @@
     vertical-align: top;
 }
 .filtro-prefeitura {
-    float: right;
-    text-align: center;
+    @media screen and (min-width: $screen-tablet) {
+        float: right;
+        text-align: center;
+    }
 }
