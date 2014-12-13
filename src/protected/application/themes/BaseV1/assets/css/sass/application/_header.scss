@@ -1,5 +1,8 @@
-/* =Header
--------------------------------------------------------------- */
+//
+// Main Header
+// --------------------------------------------------
+
+
 #main-header {
     position: fixed;
     top: 0;
@@ -14,81 +17,114 @@
         }
     }
 }
+
+//== Branding
+//
+//## Site brand and Institution logo.
+
+//** Brand logo.
 #brand-logo {
-    font-size: 1.7rem;
-    line-height: 3.7rem;
-    margin: auto;
-    padding: .375rem $padding-large;
-    text-align: center;
-    @media screen and (min-width: $screen-xs-min) {
-        float: left;
-    }
-    @media screen and (min-width: $screen-lg-min) {
-        font-size: 2.25rem;
-    }
+    float: left;
+    padding: .25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     img {
         width: 138px;
     }
     a {
         color: $brand-primary;
+        &:hover {
+            text-decoration: none;
+        }
     }
-    a:hover {
-        text-decoration: none;
+    @media screen and (min-width: $screen-tablet) {
+        padding: .375rem $padding-base;
+        line-height: 3.75rem;
+    }
+    @media screen and (min-width: $screen-desktop) {
+        font-size: 1.25rem;
+        padding: .375rem $padding-large;
+    }
+    @media screen and (min-width: $screen-lg-desktop) {
+        font-size: 1.5rem; //24px
     }
 }
+//** About Nav.
 #about-nav {
-    display: none;
-    @media screen and (min-width: $screen-xs-min) {
-        display: block;
-        padding: 0 $padding-large;
+    float: right;
+    padding: .25rem;
+    @media screen and (min-width: $screen-tablet) {
+        padding: $padding-base;
+    }
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-base $padding-large;
     }
 }
 #logo-smc {
-    clear: both;
+    float: left;
     img {
-        width: 90px;
-        margin: 0 auto;
+        width: 60px;
+        @media screen and (min-width: $screen-tablet) {
+            width: 90px;
+            margin: 0 auto;
+        }
     }
 }
 #menu-secundario {
-    float: right;
+    display: none;
+    float: left;
     margin: 0;
     list-style: none;
-    font-size: .70rem;
-    text-transform: uppercase;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
     li {
-        display: inline-block;
-        margin-left: 10px;
-        &:first-child {
-            margin-left: 0;
-        }
+        float: left;
+        margin-left: $padding-base;
         a {
             font-weight: normal;
+            color: $gray;
+            &:hover {
+                color: #000;
+            }
         }
     }
 }
+
+
+//== Main Nav
+//
+//## Main nav includes entities menu and session menu.
+
+
+#main-nav {
+    clear: both;
+    @media screen and (min-width: $screen-tablet) {
+        clear: none;
+        float: right;
+    }
+}
+
+
+//** Both entities and session menus share common styles under the class '.menu'.
 .menu {
     position: relative;
-    float: left;
-    margin: -6px 0 0;
-    border-left: 1px solid $brand-accent;
+    margin: 0;
+    @media screen and (min-width: $screen-tablet) {
+        margin: -6px 0 0;
+    }
     > li {
         position: relative;
         list-style-type: none;
         float: left;
-        width: 3rem;
-        padding: $padding-base;
-        border-top: 6px solid transparent;
+        box-sizing: border-box;
+        padding: .25rem;
+        border-top: 3px solid $brand-accent;
                 box-shadow: 1px 0 0 0 $gray-lighter inset;
         -webkit-box-shadow: 1px 0 0 0 $gray-lighter inset;
-        @media screen and (min-width: $screen-md-min) {
-            width: 4rem;
-        }
-        @media screen and (min-width: $screen-lg-min) {
-            width: 5rem;
-        }
-        &:hover .submenu {
-            display: block;
+        @media screen and (min-width: $screen-tablet) {
+            border-top-width: 6px;
+            padding: $padding-base;
         }
         &:first-child {
                     box-shadow: none;
@@ -115,98 +151,124 @@
     }
 }
 
-/* Abas dos objetos */
-.abas-objetos li {
-    -webkit-transition: all .3s;
-            transition: all .3s;
-}
-.abas-objetos li.active:after {
-    content: '\42';
-    position: absolute;
-    right: 0;
-    left: 0;
-    width: 100%;
-    font-family: $icon-font-name;
-    speak: none;
-    font-weight: normal;
-    font-variant: normal;
-    font-size: 34px;
-    line-height: 18px;
-    text-align: center;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-#aba-eventos:hover,
-#aba-eventos.active {
-    border-top: 6px solid $brand-event;
-    color: $brand-event;
-}
-#aba-agentes:hover,
-#aba-agentes.active {
-    border-top: 6px solid $brand-agent;
-    color: $brand-agent;
-}
-#aba-espacos:hover,
-#aba-espacos.active {
-    border-top: 6px solid $brand-space;
-    color: $brand-space;
-}
-#aba-projetos:hover,
-#aba-projetos.active {
-    border-top: 6px solid $brand-project;
-    color: $brand-project;
-}
-#aba-eventos.enabled a,
-#aba-eventos.active a,
-#aba-eventos:hover a {
-    color: $brand-event;
-}
-#aba-eventos.enabled a div.icone {
-    background-color: $brand-event;
-}
-#aba-agentes.enabled a,
-#aba-agentes.active a,
-#aba-agentes:hover a {
-    color: $brand-agent;
-}
-#aba-agentes.enabled a div.icone {
-    background-color: $brand-agent;
-}
-#aba-espacos.enabled a,
-#aba-espacos.active a,
-#aba-espacos:hover a {
-    color: $brand-space;
-}
-#aba-espacos.enabled a div.icone {
-    background-color: $brand-space;
-}
-#aba-projetos.enabled a,
-#aba-projetos.active a,
-#aba-projetos:hover a {
-    color: $brand-project;
-}
-#aba-projetos.enabled a div.icone {
-    background-color: $brand-project;
-}
-.abas-objetos li.enabled a div.icone {
-    color: #fff !important;
-}
-.logado {
-    border-right: 1px solid $brand-accent;
-}
-.entrar:hover {
-    border-top: 6px solid $brand-primary;
-    &:hover > a {
-        color: $brand-primary;
+
+//** Entities Menu
+.entities-menu {
+    @media screen and (min-width: $screen-tablet) {
+        float: left;
+        border-left: 1px solid $brand-accent;
+    }
+    li {
+        -webkit-transition: all .3s;
+                transition: all .3s;
+        width: 25%;
+        @media screen and (min-width: $screen-tablet) {
+            width: 4.5rem;
+        }
+        @media screen and (min-width: $screen-desktop) {
+            width: 6.5rem;
+        }
+        &.active:after {
+            bottom: 0;
+            left: 50%;
+            margin-left: -$caret-width-base;
+        }
+        .entity-item-label {
+            display: none;
+            @media screen and (min-width: $screen-tablet) {
+                display: block;
+            }
+        }
     }
 }
-.submenu {
+//** Events
+#entities-menu-event {
+    &.active, &:hover {
+        border-top-color: $brand-event;
+        color: $brand-event;
+        a {
+            color: $brand-event;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-event);
+        }
+    }
+}
+//** Agents
+#entities-menu-agent {
+    &.active, &:hover {
+        border-top-color: $brand-agent;
+        color: $brand-event;
+        a {
+            color: $brand-agent;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-agent);
+        }
+    }
+}
+//** Spaces
+#entities-menu-space {
+    &.active, &:hover {
+        border-top-color: $brand-space;
+        color: $brand-space;
+        a {
+            color: $brand-space;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-space);
+        }
+    }
+}
+//** Projects
+#entities-menu-project {
+    &.active, &:hover {
+        border-top-color: $brand-project;
+        color: $brand-event;
+        a {
+            color: $brand-project;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-project);
+        }
+    }
+}
+
+//** Session Menu
+.session {
     display: none;
+    float: left;
+    border-right: 1px solid $brand-accent;
+    border-left: 1px solid $brand-accent;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
+}
+.login {
+    width: 6.5rem;
+    &:hover {
+        border-top: 6px solid $brand-primary;
+        > a {
+            color: $brand-primary;
+        }
+    }
+}
+//** Session user and notifications submenus share common styles under the class '.submenu'.
+.submenu {
     position: absolute;
+    box-sizing: border-box;
     z-index: $z-index-main-header+1;
-    top: 70px;
-    margin: 0;
+    top: 100%;
+    left: 50%;
+    margin: -$caret-width-base 0 0;
     padding: $padding-base;
     list-style: none;
     font-size: .8rem;
@@ -221,26 +283,24 @@
         line-height: $line-height-base;
     }
 }
-.usuario:hover,
-.notificacoes:hover {
-    border-top: 6px solid $brand-primary;
-}
-.usuario {
+//** User
+.user {
+    width: auto;
+    &::hover {
+        border-top: 6px solid $brand-primary;
+    }
     .avatar {
         float: none;
-        width: 3rem;
-        height: 3rem;
-        margin: 0 auto;
-    }
-    .setinha {
-        left: 50%;
-        top: -16px;
-        margin-left: -8px;
-        border-color: transparent transparent $brand-primary transparent;
+        width: 2rem;
+        height: 2rem;
+        margin: .5rem 0;
+        @media screen and (min-width: $screen-desktop) {
+            margin: .5rem;
+        }
     }
     .submenu {
-        left: -2.5rem;
-        width: 10rem;
+        width: 11.5rem;
+        margin-left: -5.75rem;
         background: $user-submenu-bg;
         li {
             position: relative;
@@ -266,15 +326,25 @@
             right: 0;
             top: 0;
         }
+        &:before {
+            @include arrow(up, $caret-width-base, $brand-primary);
+            left: 50%;
+            margin-left: -$caret-width-base;
+        }
     }
 }
-.notificacoes {
-    &:hover > a {
+//**Notifications
+.notifications {
+    width: 6.5rem;
+    &:hover {
+        border-top: 6px solid $brand-primary;
+        > a {
         color: $brand-primary;
+        }
     }
     .submenu {
-        left: -110px;
-        width: 300px;
+        width: 20rem;
+        margin-left: -10rem;
         background: $gray-light;
         .slimScrollDiv {
             margin-bottom: $line-height-half;
@@ -292,10 +362,10 @@
         .icon_check_alt:hover {
             color: $brand-primary;
         }
-        .setinha {
-            left: 142px;
-            top: -28px;
-            border-color: transparent transparent $gray-light transparent;
+        &:before {
+            @include arrow(up, $caret-width-base, $gray-light);
+            left: 50%;
+            margin-left: -$caret-width-base;
         }
         ul {
             overflow: hidden;
@@ -303,14 +373,14 @@
             height: 316px;
             margin: 0 1rem 0 0;
         }
-        .notificacao {
+        .notification {
             margin-bottom: $line-height-half;
             padding: $padding-small;
             background: #f8f8f8;
             border-left: 5px solid #999;
             border-radius: 0 2px 2px 0;
             &:hover,
-            &.lida {
+            &.read {
                 border-left: 5px solid $brand-primary;
                 background: #fff;
             }
