@@ -1,19 +1,30 @@
 .main-content-header {
-    margin-bottom: 1.75rem;
-    margin-top: 1rem;
+    margin-bottom: 2rem;
     @media screen and (min-width: $screen-sm-min) {
         margin-bottom: 4rem;
-        margin-top: 0;
+    }
+    h2 {
+        font-size: $font-size-h4;
+        line-height: $line-height-h4;
+        margin-top: $padding-base;
+        @media screen and (min-width: $screen-sm-min) {
+            font-size: $font-size-h2;
+            line-height: $line-height-h2;
+            margin-top: 0;
+        }
     }
 }
 .imagem-do-header {
     position: relative;
     height: 12rem;
-    margin: -4rem -4rem 4rem;
+    margin: -2rem -2rem 2rem;
     background-color: $gray;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    @media screen and (min-width: $screen-md-min) {
+        margin: -4rem -4rem 4rem;
+    }
 }
 .imagem-do-header .btn {
     position: absolute;
@@ -28,16 +39,22 @@
 }
 .content-do-header {
     position: relative;
+    margin-top: 5rem;
     @media screen and (min-width: $screen-xs-min) {
-        min-height: 9rem;
+        margin-top: 0;
         padding-left: 10.5rem;
+        min-height: 9rem;
     }
     .avatar {
-        display: none;
+        position: absolute;
+        left: 50%;
+        top: -8rem;
+        margin-left: -3rem;
+        width: 6rem;
+        height: 6rem;
         @media screen and (min-width: $screen-xs-min) {
-            display: block;
-            position: absolute;
             left: 0;
+            top: 0;
             width: 9rem;
             height: 9rem;
             margin: 0;

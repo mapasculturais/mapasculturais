@@ -16,13 +16,6 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar project">
-    <div class="setinha"></div>
-    <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
-
 <article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <div
@@ -490,6 +483,12 @@ $this->includeAngularEntityAssets($entity);
     <!--#inscritos-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
+<div class="sidebar-left sidebar project">
+    <div class="setinha"></div>
+    <?php $this->part('verified', array('entity' => $entity)); ?>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+</div>
 <div class="sidebar project sidebar-right">
     <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>

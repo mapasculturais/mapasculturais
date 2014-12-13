@@ -6,7 +6,6 @@
     -moz-box-sizing: border-box;
     padding: $padding-base;
     @media screen and (min-width: $screen-md-min) {
-        float: left;
         padding: $padding-large;
     }
     a.botao.adicionar {
@@ -42,9 +41,12 @@
             }
         }
     }
+    @media screen and (min-width: $screen-md-min) {
+        float: left;
+    }
     @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-        width: 25%;
         float: right;
+        width: 25%;
         padding-bottom: 0;
         margin-bottom: 0;
     }
@@ -62,6 +64,8 @@
     }
     @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
         width: 25%;
+    }
+    @media screen and (min-width: $screen-sm-min) {
         float: right;
     }
 }
