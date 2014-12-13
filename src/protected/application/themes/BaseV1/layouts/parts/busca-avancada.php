@@ -2,6 +2,7 @@
     <div id="busca-avancada" class="clearfix">
 
         <div id="filtro-projetos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'project'">
+            <div class="icone icon_close"></div>
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
                 <input ng-model="data.project.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Buscar projetos" />
