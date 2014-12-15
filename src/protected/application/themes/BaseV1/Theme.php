@@ -351,6 +351,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
             $this->jsObject['isEditable'] = $this->isEditable();
+            $this->jsObject['isSearch'] = $this->isSearch();
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
