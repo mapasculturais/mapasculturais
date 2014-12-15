@@ -36,6 +36,7 @@
         <!--#filtro-projetos-->
 
         <div id="filtro-eventos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'event'">
+            <div class="icone icon_close"></div>
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-evento">Palavra-chave</label>
                 <input ng-model="data.event.keyword" class="campo-de-busca" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
@@ -82,6 +83,7 @@
         </div>
         <!--#filtro-eventos-->
         <div id="filtro-agentes" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'agent'">
+            <div class="icone icon_close"></div>
             <form class="form-palavra-chave filtro">
                 <label>Palavra-chave</label>
                 <input ng-model="data.agent.keyword" class="campo-de-busca" type="text" name="busca" placeholder="Buscar agentes" />
@@ -122,6 +124,7 @@
         </div>
         <!--#filtro-agentes-->
         <div id="filtro-espacos" class="filtro-objeto clearfix" ng-show="data.global.filterEntity === 'space'">
+            <div class="icone icon_close"></div>
             <form class="form-palavra-chave filtro">
                 <label for="palavra-chave-espaco">Palavra-chave</label>
                 <input ng-model="data.space.keyword" class="campo-de-busca" type="text" name="palavra-chave-espaco" placeholder="Buscar espaços" />
