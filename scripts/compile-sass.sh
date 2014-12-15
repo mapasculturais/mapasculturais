@@ -11,8 +11,8 @@ ASSETS_FOLDER=$(HTTP_HOST='localhost' REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.
 echo "compilando main.css do tema BaseV1"
 sass $BaseV1/css/sass/main.scss:$BaseV1/css/main.css
 
-echo "aplicando o autoprefixer no main.css do tema ativo"
-autoprefixer $ASSETS_FOLDER/css/main.css
+echo "aplicando o autoprefixer no main.css do tema BaseV1"
+autoprefixer $BaseV1/css/main.css
 
 if [ -f $ASSETS_FOLDER/css/sass/main.scss ]; then
   echo "compilando main.css do tema ativo"
