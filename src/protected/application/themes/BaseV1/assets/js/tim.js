@@ -58,15 +58,15 @@
                     diffScrollTop = (lastScrollTop - scrollTop),
                     newHeaderTop = parseInt($mainHeader.css('top')) + diffScrollTop;
 
-            if ($('#busca').length) {
-                $busca = $('#busca');
+            if ($('#header-search-row').length) {
+                $busca = $('#header-search-row');
                 $mapa = $('#mapa');
                 if (!$busca.parent().is($mainHeader)) {
-                    $mainHeader.append($('<div class="clearfix busca-main-header" >').append($mainHeader.find('>*')));
+                    $mainHeader.append($('<div id="header-nav-row" class="clearfix">').append($mainHeader.find('>*')));
                     $busca.appendTo($mainHeader);
                 }
 
-                headerDosResultadosHeight = $("#header-dos-resultados").outerHeight(true);
+                headerDosResultadosHeight = $("#search-results-header").outerHeight(true);
 
                 headerHeight = $mainHeader.outerHeight() - headerDosResultadosHeight;
 
@@ -202,7 +202,7 @@
             alwaysVisible: true,
             railVisible: true
         });
-        $('.submenu-dropdown .lista-de-filtro').slimScroll({
+        $('.submenu-dropdown .filter-list').slimScroll({
             position: 'right',
             distance: '3px',
             color: '#000',

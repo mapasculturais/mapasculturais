@@ -18,6 +18,13 @@
     }
 }
 
+
+//** This is a div inserted via js when in search pages.
+//** It envolves all elements with the selectors below.
+#header-nav-row {
+    position: relative;
+}
+
 //== Branding
 //
 //## Site brand and Institution logo.
@@ -87,6 +94,17 @@
             &:hover {
                 color: #000;
             }
+        }
+    }
+}
+body.action-search {
+    #main-header {
+        border-top: none;
+    }
+    #brand-logo, #about-nav {
+        display: none;
+        @media screen and (min-width: $screen-tablet) {
+            display: block;
         }
     }
 }

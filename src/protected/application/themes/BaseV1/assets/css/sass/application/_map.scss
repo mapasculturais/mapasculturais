@@ -41,3 +41,48 @@
     -webkit-transition: all linear 1s;
             transition: all linear 1s;
 }
+
+/*filtro local*/
+#filtro-local {
+    position: absolute;
+    z-index: $z-index-editable-entity;
+    left: 0;
+    height: 1.875rem;
+}
+#filtro-local label {
+    display: none;
+}
+#filtro-local input[type='text'] {
+    width: 350px;
+    margin-right: 6px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    border: none;
+}
+#filtro-local input[type='text']:focus {
+    border: 1px solid $brand-accent;
+}
+#form-local {
+    display: inline-block;
+    vertical-align: top;
+}
+.botoes-do-mapa {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: $border-radius-base;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    background-color: $brand-accent;
+    color: #fff;
+    text-align: center;
+}
+#proximo-a-mim {
+    background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
+}
+#proximo-a-mim:hover {
+    background-color: $brand-primary;
+}
+.botoes-do-mapa.active {
+    background-color: $brand-primary;
+}

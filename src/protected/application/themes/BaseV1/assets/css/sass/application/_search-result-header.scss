@@ -1,26 +1,37 @@
-/* header dos resultados*/
-#header-dos-resultados {
+//
+// Search Results Header
+// --------------------------------------------------
+
+
+#search-results-header {
     position: relative;
-    min-height: $line-height-base;
+    min-height: 2*$line-height-base;
     padding: 0 165px 0 0;
     background-color: $gray-lighter;
-    font-size: $font-size-smaller;
     color: $brand-accent;
 }
-#resultados {
+#search-results {
     display: inline-block;
     margin: $padding-base 0;
     padding: 0 $padding-base;
     box-sizing: border-box;
-    border-right: 2px solid #d3d3d3;
+    font-size: .70rem;
+    white-space: nowrap;
+    @media screen and (min-width: $screen-tablet) {
+        border-right: 2px solid #d3d3d3;
+        font-size: $font-size-smaller;
+    }
 }
-#filtros-selecionados {
-    display: inline-block;
+#selected-filters {
+    display: none;
     vertical-align: top;
     margin: $padding-base 0 0;
     padding: 0 $padding-base;
+    @media screen and (min-width: $screen-tablet) {
+        display: inline-block;
+    }
 }
-#ferramentas {
+#search-tools {
     float: right;
     margin: $padding-base 0;
     padding: 0 $padding-base;
@@ -29,8 +40,7 @@
     box-sizing: border-box;
     .icone {
         float: right;
-        width: 1.375rem;
-        line-height: 1.375rem !important;
+        line-height: 1.5rem;
         font-size: $font-size-base;
         font-family: $icon-font-name;
         font-weight: normal;

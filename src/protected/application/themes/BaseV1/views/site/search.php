@@ -131,7 +131,7 @@ $this->includeMapAssets();
 
 <!-- Here ends the map view and starts the list view -->
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
-        <header id="header-dos-projetos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'project'">
+        <header id="project-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
                 <h1><span class="icone icon_document_alt"></span> Projetos</h1>
                 <a class="btn btn-accent add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
@@ -156,7 +156,7 @@ $this->includeMapAssets();
             <!--.objeto-->
         </div>
 
-        <header id="header-dos-agentes" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'agent'">
+        <header id="agent-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'agent'">
             <h1><span class="icone icon_profile"></span> Agentes</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
         </header>
@@ -181,7 +181,7 @@ $this->includeMapAssets();
                 </div>
             </article>
         </div>
-        <header id="header-dos-espacos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'space'">
+        <header id="space-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'space'">
             <h1><span class="icone icon_building"></span> Espaços</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
         </header>
@@ -207,7 +207,7 @@ $this->includeMapAssets();
                 </div>
             </article>
         </div>
-        <header id="header-dos-eventos" class="header-do-objeto clearfix" ng-show="data.global.filterEntity == 'event'">
+        <header id="event-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'event'">
             <h1><span class="icone icon_calendar"></span> Eventos</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
         </header>
