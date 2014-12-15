@@ -59,6 +59,10 @@ return array(
 
 //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
+    'maps.maxClusterRadius' => 60,
+    'maps.spiderfyDistanceMultiplier' => 1.3,
+    'maps.maxClusterElements' => 6,
+
     'maps.zoom.default' => 5,
     'maps.zoom.approximate' => 14,
     'maps.zoom.precise' => 16,
@@ -95,7 +99,7 @@ return array(
         'agentRelationGroupName' => 'owner',
         'description' => 'Agente individual com CPF cadastrado',
         'type' => 1,
-        'requiredProperties' => array('documento')
+        'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
     'registration.agentRelations' => array(
         array(
@@ -104,7 +108,7 @@ return array(
             'agentRelationGroupName' => 'instituicao',
             'description' => 'Agente coletivo com CNPJ',
             'type' => 2,
-            'requiredProperties' => array('documento')
+            'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
         array(
             'required' => false,
@@ -112,7 +116,7 @@ return array(
             'agentRelationGroupName' => 'coletivo',
             'description' => 'Agente coletivo sem CNPJ',
             'type' => 2,
-            'requiredProperties' => array()
+            'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
     ),
 

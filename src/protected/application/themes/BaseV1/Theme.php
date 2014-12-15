@@ -364,6 +364,10 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
+            $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
+
             $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();
