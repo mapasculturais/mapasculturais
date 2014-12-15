@@ -342,7 +342,7 @@ class Registration extends \MapasCulturais\Entity
 
         // creates zip archive of all files
         if($this->files){
-            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . '.zip');
+            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . ' - ' . uniqid() . '.zip');
         }
 
         $this->status = self::STATUS_SENT;
