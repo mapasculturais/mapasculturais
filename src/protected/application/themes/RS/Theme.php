@@ -7,7 +7,7 @@ class Theme extends BaseV1\Theme{
 
     protected static function _getTexts(){
         return array(
-            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
+            'home: welcome' => "Cultura RS é a plataforma livre, gratuita e colaborativa de mapeamento da Secretaria da Cultura do Rio Grande do Sul sobre o cenário cultural gaúcho. Ficou mais fácil se programar para conhecer as opções culturais que o estado oferece: shows musicais, espetáculos teatrais, sessões de cinema, saraus, entre outras. Além de conferir a agenda de eventos, você também pode colaborar na gestão da cultura do Rio Grande: basta criar seu perfil de agente cultural. A partir deste cadastro, é mais fácil participar dos editais de fomento às artes do Governo do Estado e também divulgar seus eventos, espaços ou projetos.",
             'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
             'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
