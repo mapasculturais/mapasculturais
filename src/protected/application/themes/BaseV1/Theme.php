@@ -335,6 +335,21 @@ class Theme extends MapasCulturais\Theme {
 
         /* ---------------------- */
 
+        $app->hook('mapasculturais.body:before', function() {
+            if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
+                <!--facebook compartilhar-->
+                    <div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                      var js, fjs = d.getElementsByTagName(s)[0];
+                      if (d.getElementById(id)) return;
+                      js = d.createElement(s); js.id = id;
+                      js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+                      fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));</script>
+                <!--fim do facebook-->
+                <?php
+            endif;
+        });
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
