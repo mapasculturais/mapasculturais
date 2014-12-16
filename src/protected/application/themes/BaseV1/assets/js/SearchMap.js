@@ -134,8 +134,8 @@
                 spiderfyOnMaxZoom: true,
                 showCoverageOnHover: false,
                 zoomToBoundsOnClick: false,
-                spiderfyDistanceMultiplier:1.3,
-                maxClusterRadius: 60,
+                spiderfyDistanceMultiplier: MapasCulturais.mapSpiderfyDistanceMultiplier,
+                maxClusterRadius: MapasCulturais.mapMaxClusterRadius,
                 iconCreateFunction: function (cluster) {
                     var iconClass = 'leaflet-cluster',
                         markers = getChildMarkers(cluster),
@@ -192,7 +192,7 @@
             });
 
             $scope.resultLayer.on('clusterclick', function (a) {
-                if(a.layer._childCount <= 6)
+                if(a.layer._childCount <= MapasCulturais.mapMaxClusterElements)
                     a.layer.spiderfy();
                 else{
                     a.layer.zoomToBounds();

@@ -481,7 +481,7 @@ trait ControllerAPI{
 
                 $rs = $query->getResult();
                 $result = array();
-                
+
                 $rs = array_values(array_filter($rs, function($entity) use($permissions){
                     foreach($permissions as $perm){
                         $perm = trim($perm);
@@ -614,8 +614,8 @@ trait ControllerAPI{
 
             }elseif($operator == 'NULL'){
                 $dql = $not ?
-                        "($key IS NOT NULL OR $key <> '')" :
-                        "($key IS NULL OR $key = '')";
+                        "($key IS NOT NULL)" :
+                        "($key IS NULL)";
 
             }elseif($operator == 'GEONEAR'){
                 $values = $this->_API_find_splitParam($value);

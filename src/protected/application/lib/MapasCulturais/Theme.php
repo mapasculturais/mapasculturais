@@ -466,6 +466,10 @@ abstract class Theme extends \Slim\View {
         return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
     }
 
+    function isSearch(){
+        return (bool) $this->controller->id === 'site' && $this->action === 'search';
+    }
+
     function bodyBegin(){
         App::i()->applyHook('mapasculturais.body:before');
     }

@@ -351,6 +351,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
             $this->jsObject['isEditable'] = $this->isEditable();
+            $this->jsObject['isSearch'] = $this->isSearch();
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -362,6 +363,10 @@ class Theme extends MapasCulturais\Theme {
                 'latitude' => $app->config['maps.center'][0],
                 'longitude' => $app->config['maps.center'][1]
             );
+
+            $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
 
             $this->jsObject['routes'] = $app->config['routes'];
 
