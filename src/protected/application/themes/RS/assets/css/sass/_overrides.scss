@@ -147,7 +147,7 @@
 }
 .add {
     &:before {
-        content: '\f057';
+        content: '\f055';
     }
 }
 
@@ -302,7 +302,7 @@
 .warning, .danger {
     &:before {
         font-family: $icon-font-name;
-        content: '\f12a';
+        content: '\f06a';
         margin: 0px 7px 0 0;
     }
 }
