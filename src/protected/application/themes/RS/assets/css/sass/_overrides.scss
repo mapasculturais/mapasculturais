@@ -361,3 +361,17 @@
         margin-top: 9px;
     }
 }
+
+button.mfp-arrow {
+    font-family: $icon-font-name;
+    font-size:1.3rem;
+
+    .arrow_carrot-right:after {
+        content: '\f054';
+    }
+
+    .arrow_carrot-left:after {
+        content: '\f053';
+    }
+
+}
