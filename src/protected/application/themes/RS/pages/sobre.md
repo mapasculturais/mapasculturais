@@ -10,5 +10,5 @@ Você encontra mais informações sobre a ferramenta Mapas Culturais no site do 
 
 
 <h2>Realização</h2>
-<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto Tim" /><img class="sobre-logo-prefeitura alignleft" src="/assets/img/logo-prefeitura.png" alt="Prefeitura de São Paulo" />
+<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto Tim" /><img class="sobre-logo-prefeitura alignleft" src="/assets/img/logo-governors.png" alt="Prefeitura de São Paulo" />
 
