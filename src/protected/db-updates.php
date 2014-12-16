@@ -176,4 +176,48 @@ return array(
         $conn->executeQuery("ALTER TABLE registration ADD COLUMN agents_data TEXT;");
 
     },
+
+    'import new openid data' => function () use($conn){
+
+        // this must be run on the open id server
+        // sudo -u postgres psql -d "openid-staging" -c "COPY (select u.username, u.email, p.openid from auth_user u, openid_provider_openid p where p.user_id = u.id) TO STDOUT" > /tmp/openid-new-data.tmp
+        $file = '/tmp/openid-new-data.tmp';
+        if(!file_exists($file)){
+            return false;
+        }
+        $data = file_get_contents($file);
+
+
+        $excecoes_data = "http://id.spcultura.prefeitura.sp.gov.br/users/volusiano/	comunicavolusiano@gmail.com	cybelle.a.oliveira@gmail.com
+http://id.spcultura.prefeitura.sp.gov.br/users/Parque/	parquechacaradojoquei@hotmail.com	parquechacaradojoquei@gmail.com
+http://id.spcultura.prefeitura.sp.gov.br/users/rosanaaraujo/	rosanadole@yahoo.com	rosanadole@yahoo.com.br
+http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.com.br	tonyneves2003@yahoo.com.br";
+        $excecoes = explode("\n", $excecoes_data);
+        foreach($excecoes as $ex){
+            $e = explode("\t", $ex);
+            list($auid, $old_email, $new_email) = $e;
+
+            $sql = "UPDATE usr SET email='$new_email' WHERE auth_uid = '$auid' AND email = '$old_email'\n";
+            echo $sql;
+            $conn->executeQuery($sql);
+        }
+
+
+        $users = explode("\n",$data);
+        foreach($users as $u){
+            if(!$u)
+                continue;
+
+            $d = explode("\t", $u);
+            list($username, $email, $openid) = $d;
+            if(count($d) != 3)
+                var_dump($d);
+
+            $auid = App::i()->config['auth.config']['login_url'] . str_replace('/openid/','',$openid);
+            $sql = "UPDATE usr SET auth_uid = '$auid' WHERE email = '$email'\n";
+            echo $sql;
+            $conn->executeQuery($sql);
+        }
+        return true;
+    }
 );
