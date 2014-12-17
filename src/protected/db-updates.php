@@ -219,5 +219,16 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
             $conn->executeQuery($sql);
         }
         return true;
+    },
+
+    'replace "relacioanr" in notification messages asd' => function() use($conn) {
+        $count = $conn->fetchAssoc("SELECT count(*) AS total FROM notification WHERE message LIKE '%relacioanr%'");
+        if($count['total'] > 0){
+            echo 'Atualizando ' . $count['total'] . ' notificações com o erro de grafia "relacioanr"'."\n";
+            $sql = "UPDATE notification SET message = replace(message, 'relacioanr', 'relacionar') WHERE message LIKE '%relacioanr%'";
+            echo $sql;
+            $conn->executeQuery($sql);
+        }
+        return true;
     }
 );
