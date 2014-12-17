@@ -359,13 +359,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
+        $single_url = $entity->singleUrl;
+
         $entity->delete(true);
 
         if($this->isAjax()){
             $this->json(true);
         }else{
             //e redireciona de volta para o referer
-            $app->redirect($app->request()->getReferer());
+            $redirect_url = $app->request()->getReferer();
+            if($redirect_url === $single_url)
+                $redirect_url = $app->createUrl ('panel');
+
+            $app->redirect($redirect_url);
         }
     }
 
