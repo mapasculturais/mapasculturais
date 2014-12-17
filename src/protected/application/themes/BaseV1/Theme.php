@@ -93,10 +93,10 @@ class Theme extends MapasCulturais\Theme {
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                        $message = "{$profile_link} quer relacionar o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
                         $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} a inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
                     }else{
-                        $message = "{$profile_link} quer relacioanr o agente {$destination_link} ao {$origin_type} {$origin_link}.";
+                        $message = "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}.";
                         $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
                     }
                     break;
