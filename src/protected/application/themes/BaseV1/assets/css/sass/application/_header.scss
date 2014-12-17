@@ -25,6 +25,7 @@
     position: relative;
 }
 
+
 //== Branding
 //
 //## Site brand and Institution logo.
@@ -258,7 +259,6 @@ body.action-search {
         }
     }
 }
-
 //** Session Menu
 .session {
     display: none;
@@ -303,7 +303,7 @@ body.action-search {
 //** User
 .user {
     width: auto;
-    &::hover {
+    &:hover {
         border-top: 6px solid $brand-primary;
     }
     .avatar {
