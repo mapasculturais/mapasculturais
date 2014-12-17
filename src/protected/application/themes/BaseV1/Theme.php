@@ -547,7 +547,7 @@ class Theme extends MapasCulturais\Theme {
         $this->documentMeta[] = array("name" => 'twitter:image', 'content' => $image_url);
 
         // for facebook
-        $this->documentMeta[] = array("property" => 'og:image', 'content' => $title);
+        $this->documentMeta[] = array("property" => 'og:title', 'content' => $title);
         $this->documentMeta[] = array("property" => 'og:type', 'content' => 'article');
         $this->documentMeta[] = array("property" => 'og:image', 'content' => $image_url);
         $this->documentMeta[] = array("property" => 'og:description', 'content' => $description);
