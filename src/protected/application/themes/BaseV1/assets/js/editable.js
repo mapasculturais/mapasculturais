@@ -299,8 +299,15 @@ MapasCulturais.Editables = {
                 $(this).editable(config);
             }
 
-            if(config.type === 'select')
-                $(this).editable('setValue', $(this).html());
+            if(config.type === 'select'){
+                var $e = $(this);
+                var v = $e.html();
+                config.source.forEach(function(e){
+                    if(e.value === v){
+                        $e.editable('setValue', v);
+                    }
+                });
+            }
 
             if($(this).data('notext')){
                 $(this).text('');

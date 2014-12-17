@@ -23,11 +23,11 @@
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
-                
+
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
                 <?php endif; ?>
-                
+
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
                         <a href="<?php echo $r->files['zipArchive']->url; ?>">zip</a>
@@ -37,7 +37,7 @@
                 <?php
                 foreach($r->_getDefinitionsWithAgents() as $def):
                     $agent = $def->agent;
-                    
+
                     if($def->use == 'dontUse')
                         continue;
 

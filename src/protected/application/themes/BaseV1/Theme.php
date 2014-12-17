@@ -384,6 +384,14 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
             $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
 
+            $this->jsObject['labels'] = array(
+                'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
+                'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),
+                'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
+                'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
+                'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels(),
+            );
+
             $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();

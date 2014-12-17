@@ -87,11 +87,28 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-    'registration.privatePropertiesToExport' => array(
+    'registration.propertiesToExport' => array(
+        'id',
+        'name',
+        'nomeCompleto',
         'documento',
-        'emailPrivado',
+        'dataDeNascimento',
+        'genero',
+        'raca',
+        'location',
+        'endereco',
+        'geoZona',
+        'geoSubprefeitura',
+        'geoDistrito',
         'telefone1',
-        'telefone2'
+        'telefone2',
+        'telefonePublico',
+        'emailPrivado',
+        'emailPublico',
+        'site',
+        'googleplus',
+        'facebook',
+        'twitter'
     ),
     'registration.ownerDefinition' => array(
         'required' => true,
@@ -119,6 +136,23 @@ return array(
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
     ),
+
+    /* ============ ENTITY PROPERTIES LABELS ============= */
+    'app.entityPropertiesLabels' => array(
+        '@default' => array(
+            'id' => 'Id',
+            'name' => 'Nome',
+            'createTimestamp' => 'Data de Criação',
+            'shortDescription' => 'Descrição Curta',
+            'longDescription' => 'Descrição Longa',
+            'status' => 'Status',
+            'location' => 'Localização Geográfica',
+            '_type' => 'Tipo'
+        ),
+
+//        'MapasCulturais\Entities\Agent' => array()
+    ),
+
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 

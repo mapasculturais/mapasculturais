@@ -81,7 +81,7 @@ $this->includeAngularEntityAssets($entity);
                         </div>
                     </div>
                     <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
-                        <div><span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}</div>
+                        <div><span class="label">{{prop.label}}</span>: {{prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}</div>
                     </div>
                 </div>
 
