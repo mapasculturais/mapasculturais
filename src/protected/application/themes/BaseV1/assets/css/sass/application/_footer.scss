@@ -6,18 +6,21 @@
     padding: $padding-large;
     background: $brand-accent;
     color: #fff;
-}
-#main-footer a {
-    color: #fff;
-}
-#main-footer ul {
-    margin: 0;
-    list-style: none;
-}
-#main-footer li {
-    display: inline-block;
-    margin-right: 10px;
-}
-#main-footer li a {
-    font-weight: normal;
+    a {
+        color: #fff;
+    }
+    ul {
+        margin: 0;
+        list-style: none;
+        li {
+            display: inline-block;
+            margin-right: 10px;
+            a {
+                font-weight: normal;
+            }
+        }
+    }
+    @media print {
+        display: none;
+    }
 }
