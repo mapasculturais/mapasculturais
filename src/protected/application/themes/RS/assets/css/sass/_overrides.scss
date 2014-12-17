@@ -248,7 +248,7 @@
 }
 
 // close button editable
-.icon_close {
+.icon_close, .alert .close {
     &:before {
         font-family: $icon-font-name;
         content: '\f00d';
