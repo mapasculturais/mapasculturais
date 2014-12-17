@@ -550,6 +550,7 @@ class Theme extends MapasCulturais\Theme {
         $this->documentMeta[] = array("property" => 'og:title', 'content' => $title);
         $this->documentMeta[] = array("property" => 'og:type', 'content' => 'article');
         $this->documentMeta[] = array("property" => 'og:image', 'content' => $image_url);
+        $this->documentMeta[] = array("property" => 'og:image:url', 'content' => $image_url);
         $this->documentMeta[] = array("property" => 'og:description', 'content' => $description);
         $this->documentMeta[] = array("property" => 'og:site_name', 'content' => $site_name);
 
