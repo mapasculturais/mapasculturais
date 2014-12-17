@@ -1,4 +1,5 @@
 #editable-entity {
+    display: none;
     position: fixed;
     z-index: $z-index-editable-entity;
          box-sizing: border-box;
@@ -9,24 +10,27 @@
     border-left: 8px solid $brand-primary;
     background: $gray-light;
     text-align: center;
-}
-#editable-entity.editable-entity-edit {
-    padding: .25rem 245px;
-}
-#editable-entity.can-edit-roles {
-    padding: .25rem 380px;
-}
-#editable-entity .alert {
-    display: none;
-    margin-bottom: 0;
-    padding: .25rem $padding-base;
-}
-#editable-entity .controles {
-    position: absolute;
-    top: .25rem;
-    right: .75rem;
-    width: 370px;
-    text-align: right;
+    &.editable-entity-edit {
+        padding: .25rem 245px;
+    }
+    &.can-edit-roles {
+        padding: .25rem 380px;
+    }
+    .alert {
+        display: none;
+        margin-bottom: 0;
+        padding: .25rem $padding-base;
+    }
+    .controles {
+        position: absolute;
+        top: .25rem;
+        right: .75rem;
+        width: 370px;
+        text-align: right;
+    }
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
 }
 #small-brand {
     position: absolute;
