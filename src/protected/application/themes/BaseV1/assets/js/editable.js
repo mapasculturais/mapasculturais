@@ -283,7 +283,7 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: "1900:+0"};
+                    config.datepicker = { weekStart: 1, yearRange: "1900:+2"};
                     delete config.placeholder;
                     config.clear = 'Limpar';
 
