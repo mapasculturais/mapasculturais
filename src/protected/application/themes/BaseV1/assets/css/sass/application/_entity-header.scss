@@ -1,5 +1,8 @@
 .main-content-header {
     margin-bottom: 4rem;
+    @media print {
+        margin-bottom: $line-height-base;
+    }
 }
 .imagem-do-header {
     position: relative;
@@ -74,5 +77,13 @@
         &:after {
             content: ' »';
         }
+    }
+    @media print {
+        min-height: 0;
+        padding-left: 0;
+        .avatar {
+            display: none;
+        }
+
     }
 }

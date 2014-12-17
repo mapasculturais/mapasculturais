@@ -13,6 +13,10 @@
             display: block;
         }
     }
+    @media print {
+        position: relative;
+        border-top: none;
+    }
 }
 #brand-logo {
     float: left;
@@ -29,6 +33,9 @@
 }
 #about-nav {
     padding: 0 $padding-large;
+    @media print {
+        padding: $padding-base $padding-large;
+    }
 }
 #logo-smc {
     clear: both;
@@ -52,6 +59,9 @@
         a {
             font-weight: normal;
         }
+    }
+        @media print {
+        display: none;
     }
 }
 .menu {
@@ -93,6 +103,9 @@
             line-height: $line-height-base;
             border-radius: $border-radius-base;
         }
+    }
+    @media print {
+        display: none;
     }
 }
 

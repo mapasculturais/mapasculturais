@@ -40,6 +40,10 @@
 	color: $registration-header-color;
 	padding: $padding-base;
 	border-radius: $border-radius-base;
+    @media print {
+        color: #000;
+        padding: 0;
+    }
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
@@ -52,7 +56,9 @@
 	h4 {
 		margin-bottom: $line-height-half;
 	}
-
+    @media print {
+        padding: $padding-base;
+    }
 }
 .registration-help {
 	font-style: italic;
@@ -61,6 +67,10 @@
 .registration-id {
 	font-size: 3rem;
 	line-height: 1;
+    @media print {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
 }
 .registration-agent {
 	.warning {
