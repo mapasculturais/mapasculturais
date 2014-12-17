@@ -192,5 +192,8 @@
         &:hover {
         	background: $gray-lighter;
         }
+        &:last-child {
+            border-bottom: none;
+        }
     }
 }
