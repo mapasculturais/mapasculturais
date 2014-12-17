@@ -35,14 +35,23 @@
 
 
 //## Registration form that shows on projects tab "Inscritos" when editing.
+.registration .alert.success {
+    @media print {
+        border: none;
+        padding: 0;
+        color: #000;
+        &:before {
+            content:"";
+        }
+    }
+}
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;
 	padding: $padding-base;
 	border-radius: $border-radius-base;
     @media print {
-        color: #000;
-        padding: 0;
+        display: none;
     }
 }
 .registration-fieldset {
@@ -57,7 +66,14 @@
 		margin-bottom: $line-height-half;
 	}
     @media print {
-        padding: $padding-base;
+        padding: 0 0 $padding-base;
+        border: none;
+        border-bottom: 1px solid $gray;
+        border-radius: 0;
+        h4 {
+            font-size: 1rem;
+            line-height: 1;
+        }
     }
 }
 .registration-help {
@@ -113,6 +129,9 @@
         	font-size: $font-size-smaller;
         	color: #999;
         	margin-bottom: $line-height-half;
+            @media print {
+                display: none;
+            }
         }
         .btn-group {
             position: absolute;
@@ -121,6 +140,13 @@
         }
         &:hover {
         	background: $gray-lighter;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+        @media print {
+            padding: 0 0 $padding-base;
+            margin-bottom: $padding-base;
         }
     }
 }
