@@ -1,3 +1,34 @@
+<?php
+use MapasCulturais\Entities\Registration as R;
+use MapasCulturais\Entities\Agent;
+
+function echoStatus($registration){
+    switch ($registration->status){
+        case R::STATUS_APPROVED:
+            echo 'aprovado';
+            break;
+
+        case R::STATUS_NOTAPPROVED:
+            echo 'rejeitada';
+            break;
+
+        case R::STATUS_WAITLIST:
+            echo 'suplente';
+            break;
+
+        case R::STATUS_INVALID:
+            echo 'inválida';
+            break;
+
+        case R::STATUS_SENT:
+            echo 'pendente';
+            break;
+    }
+}
+
+$_properties = $app->config['registration.propertiesToExport'];
+
+?>
 <style>
     tbody td, table th{
         text-align: left !important;
@@ -8,14 +39,16 @@
     <thead>
         <tr>
             <th>Número</th>
+            <th>Status</th>
             <?php if($entity->registrationCategories):?>
-                <th>Categoria</th>
+                <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
             <th>Arquivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
-                <th><?php echo $def->label; ?> CPF/CNPJ</th>
-                <th><?php echo $def->label; ?> Email Privado</th>
+                <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
+                    <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
+                <?php endforeach; ?>
             <?php endforeach; ?>
         </tr>
     </thead>
@@ -23,6 +56,7 @@
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
+                <td><?php echo echoStatus($r); ?></td>
 
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
@@ -36,39 +70,27 @@
 
                 <?php
                 foreach($r->_getDefinitionsWithAgents() as $def):
+                    if($def->use == 'dontUse') continue;
                     $agent = $def->agent;
-
-                    if($def->use == 'dontUse')
-                        continue;
-
-                    if(!$agent){
-                        ?>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <?php
-                        continue;
-                    }else{
-                        $agent = $agent->simplify('id,name,shortDescription,singleUrl');
-                        foreach($r->agentsData[$def->agentRelationGroupName] as $prop => $val){
-                            $agent->$prop = $val;
-                        }
-                    }
                 ?>
-                <td>
-                    <a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $agent->name;?></a>
-                </td>
-                <td>
-                    <?php if(isset($agent->documento)): ?>
-                        <?php echo $agent->documento;?>
+
+                    <?php if($agent): ?>
+                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+
+                        <?php
+                        foreach($_properties as $prop):
+                            if($prop === 'name') continue;
+                        $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
+                        ?>
+                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
+                        <?php echo str_repeat('<td></td>', count($_protperties)) ?>
                     <?php endif; ?>
-                </td>
-                <td>
-                    <?php if(isset($agent->emailPrivado)): ?>
-                        <?php echo $agent->emailPrivado;?>
-                    <?php endif; ?>
-                </td>
-            <?php endforeach; ?>
+
+                <?php endforeach ?>
             </tr>
         <?php endforeach; ?>
     </tbody>

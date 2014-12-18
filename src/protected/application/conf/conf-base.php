@@ -146,7 +146,7 @@ return array(
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
             'status' => 'Status',
-            'location' => 'Localização Geográfica',
+            'location' => 'Coordenada Geográfica',
             '_type' => 'Tipo'
         ),
 
