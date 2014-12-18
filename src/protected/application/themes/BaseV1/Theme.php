@@ -720,7 +720,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
 
-        $this->enqueueScript('app', 'map', 'js/map.js');
+        $this->enqueueScript('app', 'map', 'http://devel.mapasculturais.hacklab.com.br/assets/js/map-1415906408.js');
     }
 
     function includeAngularEntityAssets($entity) {

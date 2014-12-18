@@ -123,7 +123,7 @@ $this->includeAngularEntityAssets($entity);
             <?php if ( $this->isEditable() || ($entity->precisao && $lat && $lng) ): ?>
                 <!--.servico-->
                 <div class="servico clearfix">
-                    <div class="mapa">
+                    <div class="mapa js-map-container">
                         <?php if($this->isEditable()): ?>
                             <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
                         <?php endif; ?>

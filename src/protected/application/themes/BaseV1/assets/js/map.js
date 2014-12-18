@@ -65,10 +65,7 @@
 
             var changePrecision = function(value, isPrecise, map, mapMarkerLayer, circle, $dataTarget) {
                 var mapId = map._container.id;
-                if (value) {
-                    $('#' + mapId).parent().show();
-                } else {
-                    $('#' + mapId).parent().hide();
+                if (!value) {
                     $dataTarget.editable('setValue', [0, 0]);
                 }
                 if (isPrecise) {
@@ -88,6 +85,10 @@
 
 
             $(mapSelector).each(function() {
+                if($(this).data('init')){
+                    return;
+                }
+                $(this).data('init',true);
                 var id = $(this).attr('id');
                 var isEditable = initializerOptions.isMapEditable===false ? false : MapasCulturais.isEditable;
                 if (!isEditable)
@@ -184,16 +185,7 @@
 
                 if (isPositionDefined) {
                     marker.setLatLng(mapCenter).addTo(map);
-                } else {
-                    // Find the user location
-                    //map.locate({setView : true, maxZoom:defaultLocateMaxZoom});
-
-                    //Só esconde o mapa caso exista a opção de alterar precisão. Caso contrário, sempre mostra
-                    if ($dataPrecisionOption.length)
-                        $(this).parent().hide();
                 }
-
-
 
                 /* Events */
                 map.on('locationfound', function(e) {
@@ -244,7 +236,6 @@
 
                     editable.input.$input.on('change', function(ev) {
                         editable.setValue(this.value);
-                        editable.hide('save');
                         editable.$element.triggerHandler('changePrecision');
                     });
 
@@ -491,7 +482,44 @@
                 e.stopPropagation();
             });
 
+
+
     };
+    $(function(){
+        if($('body').hasClass('action-search')){
+            MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+        }
+
+        if($('body').hasClass('controller-agent') && MapasCulturais.isEditable){
+            if($('#map-precisionOption').editable('getValue').precisao){
+                MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+            }else{
+                $('.js-map').parent().hide();
+            }
+            $('#map-precisionOption').on('hidden', function(){
+                var val = $(this).data('editable').value;
+                if(val){
+                    $('.js-map-container').show();
+                    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                }else{
+                    $('.js-map-container').hide();
+                }
+
+            });
+
+        }
+        var timeout;
+        $(window).scroll(function() {
+            try{
+                leaflet.map.scrollWheelZoom.disable();
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    leaflet.map.scrollWheelZoom.enable();
+                }, 400);
+            }catch(e){ }
+        });
+
+    });
 
     // Fix Leaflet FUllScreen control that not allows keyboard inputs
     (function(){
