@@ -1,4 +1,5 @@
 <h1>Como usar</h1>
+<a href="{{asset:manual.pdf}}">Faça download do manual completo.</a>
 
 <section id="como-usar-encontre" class="como-usar clearfix">
 	<img class="como-usar-img alignleft" src="{{asset:img/tour/tour01.png}}" alt="" />
@@ -33,4 +34,3 @@
         A prática de compartilhar cultura se dá inclusive na abertura do código-fonte do projeto. Você pode ter acesso e colaborar de diversas maneiras. A primeira é através da nossa API. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o {{dict: site: name}} é construído a partir do sofware livre Mapas Culturais, e você pode contribuir para o seu desenvolvimento através do Github.
     </div>
 </section>
-<a href="{{asset:manual.pdf}}">Faça download do manual completo.</a>
