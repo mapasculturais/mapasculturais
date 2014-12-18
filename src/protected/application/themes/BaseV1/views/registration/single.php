@@ -67,7 +67,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
-            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
+            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item" ng-if="def.use !== 'dontUse'">
                 <div class="registration-label">{{def.label}}</div>
                 <div class="registration-description">{{def.description}}</div>
 
