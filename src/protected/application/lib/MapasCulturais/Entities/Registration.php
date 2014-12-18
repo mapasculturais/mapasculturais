@@ -426,28 +426,15 @@ class Registration extends \MapasCulturais\Entity
     protected function _getAgentsData(){
         $app = App::i();
 
-        $agentProperties = Agent::getPropertiesMetadata();
-
-        $privatePropertiesToExport = $app->config['registration.privatePropertiesToExport'];
+        $propertiesToExport = $app->config['registration.propertiesToExport'];
 
         $exportData = [];
 
         foreach($this->_getAgentsWithDefinitions() as $agent){
-
             $exportData[$agent->definition->agentRelationGroupName] = [];
 
-            foreach($agentProperties as $p => $details){
-
-                $val = $agent->$p;
-
-                if(empty($val) || $details['isEntityRelation'] || $p === 'createTimestamp'){
-                    continue;
-                }
-
-                if( !$details['isMetadata'] || !$details['private'] || in_array($p, $agent->definition->requiredProperties) || in_array($p, $privatePropertiesToExport) ){
-                    $exportData[$agent->definition->agentRelationGroupName][$p] = $val;
-                }
-
+            foreach($propertiesToExport as $p){
+                $exportData[$agent->definition->agentRelationGroupName][$p] = $agent->$p;
             }
         }
 

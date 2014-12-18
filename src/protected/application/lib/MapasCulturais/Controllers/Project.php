@@ -74,7 +74,7 @@ class Project extends EntityController {
         $response['Pragma'] ='no-cache';
 
         $app->contentType('application/vnd.ms-excel; charset=UTF-8');
-        
+
         ob_start();
         $this->partial('report', array('entity' => $entity));
         $output = ob_get_clean();

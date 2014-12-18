@@ -230,5 +230,38 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
             $conn->executeQuery($sql);
         }
         return true;
+    },
+
+    'fix select values' => function() use($conn){
+        $conn->executeQuery("
+            UPDATE
+                agent_meta
+            SET
+                value = ''
+            WHERE
+                (key = 'raca' AND value='Selecione a raça/cor se for pessoa física') OR
+                (key = 'genero' AND value='Selecione o gênero se for pessoa física')
+                ");
+
+        $conn->executeQuery("
+            UPDATE
+                space_meta
+            SET
+                value = ''
+            WHERE
+                (key = 'acessibilidade' AND value='Acessibilidade')
+                ");
+
+        $conn->executeQuery("
+            UPDATE
+                event_meta
+            SET
+                value = ''
+            WHERE
+                (key = 'classificacaoEtaria' AND value='Informe a classificação etária do evento') OR
+                (key = 'traducaoLibras' AND value='Tradução para LIBRAS') OR
+                (key = 'descricaoSonora' AND value='Áudio descrição')
+                ");
+        return true;
     }
 );

@@ -125,6 +125,8 @@ class Registration extends EntityController {
     }
 
     function GET_view(){
+        $this->requireAuthentication();
+
         $entity = $this->requestedEntity;
 
         $entity->checkPermission('view');
