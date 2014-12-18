@@ -18,6 +18,10 @@
     @media screen and (min-width: $screen-tablet) {
         border-top: 6px solid $brand-accent;
     }
+    @media print {
+        position: relative;
+        border-top: none;
+    }
 }
 
 
@@ -67,7 +71,7 @@
         float: right;
         padding: $padding-base;
     }
-    @media screen and (min-width: $screen-desktop) {
+    @media print, screen and (min-width: $screen-desktop) {
         padding: $padding-base $padding-large;
     }
 }
@@ -99,6 +103,9 @@
                 color: #000;
             }
         }
+    }
+        @media print {
+        display: none;
     }
 }
 body.action-search {
@@ -181,6 +188,9 @@ body.action-search {
                 color: $brand-primary;
             }
         }
+    }
+    @media print {
+        display: none;
     }
 }
 

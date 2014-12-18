@@ -13,6 +13,9 @@
             margin-top: 0;
         }
     }
+    @media print {
+        margin-bottom: $line-height-base;
+    }
 }
 .imagem-do-header {
     position: relative;
@@ -109,5 +112,18 @@
         &:after {
             content: ' »';
         }
+    }
+    @media print {
+        min-height: 0;
+        padding-left: 0;
+        .avatar {
+            display: none;
+        }
+        > h2 {
+            font-size: 1.5rem;
+            line-height: 1;
+            margin-bottom: #line-height-half;
+        }
+
     }
 }

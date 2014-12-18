@@ -315,21 +315,18 @@
                     {value: 0, label: 'Rascunho'}
                 ],
 
-                propLabels : [
-                    {name: 'nomeCompleto', label: 'Nome Completo'},
-                    {name: 'documento', label: 'CPF/CNPJ'},
-                    {name: 'dataDeNascimento', label: 'Data de Nascimento/Fundação'},
-                    {name: 'genero', label: 'Gênero'},
-                    {name: 'raca', label: 'Raça/Cor'},
-                    {name: 'emailPublico', label: 'Email'},
-                    {name: 'emailPrivado', label: 'Email Privado'},
-                    {name: 'telefonePublico', label: 'Telefone Público'},
-                    {name: 'telefone1', label: 'Telefone 1'},
-                    {name: 'telefone2', label: 'Telefone 2'}
-                ],
+                propLabels : [],
 
                 relationApiQuery: {}
             }, MapasCulturais);
+
+            for(var name in MapasCulturais.labels.agent){
+                var label = MapasCulturais.labels.agent[name];
+                $scope.data.propLabels.push({
+                    name: name,
+                    label: label
+                });
+            }
 
             if(MapasCulturais.entity.registrationAgents){
                 MapasCulturais.entity.registrationAgents.forEach(function(e){
@@ -381,6 +378,16 @@
 
             $scope.getRegistrationStatus = function(registration){
                 return registration.status;
+            };
+
+            $scope.getReadableLocation = function(location){
+                if(angular.isString(location) && location){
+                    location = JSON.parse(location);
+                }
+
+                if(location){
+                    return location.latitude + ',' + location.longitude;
+                }
             };
 
 
@@ -566,6 +573,7 @@
                     });
 
             };
+
 
             var url = new UrlService('project');
 

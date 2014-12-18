@@ -37,4 +37,8 @@ class Test extends \MapasCulturais\AuthProvider{
     public function setAuthenticatedUser(\MapasCulturais\Entities\User $user){
         $this->_setAuthenticatedUser($user);
     }
+    
+    protected function _createUser($data) {
+        ;
+    }
 }

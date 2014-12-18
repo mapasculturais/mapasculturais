@@ -283,7 +283,7 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: "1900:+0"};
+                    config.datepicker = { weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
                     config.clear = 'Limpar';
 
@@ -299,8 +299,15 @@ MapasCulturais.Editables = {
                 $(this).editable(config);
             }
 
-            if(config.type === 'select')
-                $(this).editable('setValue', $(this).html());
+            if(config.type === 'select'){
+                var $e = $(this);
+                var v = $e.html();
+                config.source.forEach(function(e){
+                    if(e.value === v){
+                        $e.editable('setValue', v);
+                    }
+                });
+            }
 
             if($(this).data('notext')){
                 $(this).text('');

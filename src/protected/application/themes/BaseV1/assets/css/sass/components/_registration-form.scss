@@ -35,11 +35,24 @@
 
 
 //## Registration form that shows on projects tab "Inscritos" when editing.
+.registration .alert.success {
+    @media print {
+        border: none;
+        padding: 0;
+        color: #000;
+        &:before {
+            content:"";
+        }
+    }
+}
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;
 	padding: $padding-base;
 	border-radius: $border-radius-base;
+    @media print {
+        display: none;
+    }
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
@@ -52,7 +65,16 @@
 	h4 {
 		margin-bottom: $line-height-half;
 	}
-
+    @media print {
+        padding: 0 0 $padding-base;
+        border: none;
+        border-bottom: 1px solid $gray;
+        border-radius: 0;
+        h4 {
+            font-size: 1rem;
+            line-height: 1;
+        }
+    }
 }
 .registration-help {
 	font-style: italic;
@@ -61,6 +83,10 @@
 .registration-id {
 	font-size: 3rem;
 	line-height: 1;
+    @media print {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
 }
 .registration-agent {
 	.warning {
@@ -103,6 +129,9 @@
         	font-size: $font-size-smaller;
         	color: #999;
         	margin-bottom: $line-height-half;
+            @media print {
+                display: none;
+            }
         }
         .btn-group {
             position: absolute;
@@ -111,6 +140,13 @@
         }
         &:hover {
         	background: $gray-lighter;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+        @media print {
+            padding: 0 0 $padding-base;
+            margin-bottom: $padding-base;
         }
     }
 }
@@ -155,6 +191,9 @@
         }
         &:hover {
         	background: $gray-lighter;
+        }
+        &:last-child {
+            border-bottom: none;
         }
     }
 }

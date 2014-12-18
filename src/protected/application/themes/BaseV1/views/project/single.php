@@ -98,9 +98,9 @@ $this->includeAngularEntityAssets($entity);
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
                     <div class="alignleft">
                         Inscrições abertas de
-                        <strong class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong>
+                        <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong>
                         a
-                        <strong class="js-editable" data-type="date" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Data final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong>
+                        <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Data final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong>
                         às
                         <strong class="js-editable" id="registrationTo_time" data-datetime-value="<?php echo $entity->registrationTo ? $entity->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="Hora final" data-emptytext="Hora final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('H:i') : ''; ?></strong>
                         .
@@ -221,26 +221,32 @@ $this->includeAngularEntityAssets($entity);
         <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
         <div ng-if="data.isEditable" class="registration-fieldset">
             <h4>2. Regulamento</h4>
-            <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf.</p>
-            <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento">Enviar</a>
-            <div ng-if="data.entity.registrationRulesFile">
-                <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
-                <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
-            </div>
-            <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
-                <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
-                    <div class="alert danger escondido"></div>
-                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
-                    <input type="file" name="rules" />
 
-                    <div class="js-ajax-upload-progress">
-                        <div class="progress">
-                            <div class="bar"></div>
-                            <div class="percent">0%</div>
+            <?php if($this->controller->action == 'create'): ?>
+                <p class="allert warning">Antes de subir o regulamento é preciso salvar o projeto.</p>
+
+            <?php else: ?>
+                <p class="registration-help">Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf.</p>
+                <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar regulamento" >Enviar</a>
+                <div ng-if="data.entity.registrationRulesFile">
+                    <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
+                    <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="excluir regulamento"></a>
+                </div>
+                <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+                    <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
+                        <div class="alert danger escondido"></div>
+                        <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
+                        <input type="file" name="rules" />
+
+                        <div class="js-ajax-upload-progress">
+                            <div class="progress">
+                                <div class="bar"></div>
+                                <div class="percent">0%</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </edit-box>
+                    </form>
+                </edit-box>
+            <?php endif ?>
         </div>
         <!-- #registration-rules -->
         <?php if($this->isEditable()):

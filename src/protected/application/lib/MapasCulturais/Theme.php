@@ -457,6 +457,12 @@ abstract class Theme extends \Slim\View {
             }
         }
 
+        if(preg_match_all('#\{\{dict:([^\}]+)\}\}#', $markdown, $matches)){
+            foreach($matches[0] as $i => $tag){
+                $markdown = str_replace($tag, $this->dict(trim($matches[1][$i]), false), $markdown);
+            }
+        }
+
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);
@@ -464,6 +470,10 @@ abstract class Theme extends \Slim\View {
 
     function isEditable(){
         return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+    }
+
+    function isSearch(){
+        return (bool) $this->controller->id === 'site' && $this->action === 'search';
     }
 
     function bodyBegin(){

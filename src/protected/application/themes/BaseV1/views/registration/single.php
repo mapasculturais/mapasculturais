@@ -54,9 +54,9 @@ $this->includeAngularEntityAssets($entity);
             <!-- selecionar categoria -->
             <h4><?php echo $project->registrationCategTitle ?></h4>
             <!-- <p class="registration-help"><?php echo $project->registrationCategDescription ?></p> -->
-            <p>
-                <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
-            </p>
+            <div>
+                <?php echo $entity->category ?>
+            </div>
         </div>
     <?php endif; ?>
     <div class="registration-fieldset">
@@ -64,7 +64,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
-            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item">
+            <li ng-repeat="def in data.entity.registrationAgents" class="registration-list-item" ng-if="def.use !== 'dontUse'">
                 <div class="registration-label">{{def.label}}</div>
                 <div class="registration-description">{{def.description}}</div>
 
@@ -78,7 +78,7 @@ $this->includeAngularEntityAssets($entity);
                         </div>
                     </div>
                     <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
-                        <div><span class="label">{{prop.label}}</span>: {{def.agent[prop.name]}}</div>
+                        <div><span class="label">{{prop.label}}</span>: {{prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}</div>
                     </div>
                 </div>
 

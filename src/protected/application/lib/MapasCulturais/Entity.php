@@ -235,6 +235,32 @@ abstract class Entity implements \JsonSerializable{
             throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
     }
 
+    public static function getPropertiesLabels(){
+        $result = [];
+        foreach(self::getPropertiesMetadata() as $key => $metadata){
+            if(isset($metadata['@select'])){
+                $key = $metadata['@select'];
+            }
+            $result[$key] = $metadata['label'];
+        }
+        return $result;
+    }
+
+    public static function getPropertyLabel($property_name){
+        $app = App::i();
+        $label = '';
+
+        $class = get_called_class();
+
+        if(isset($app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name])){
+            $label = $app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name];
+        }elseif(isset($app->config['app.entityPropertiesLabels']['@default'][$property_name])){
+            $label = $app->config['app.entityPropertiesLabels']['@default'][$property_name];
+        }
+
+        return $label;
+    }
+
     /**
      * Returns the metadata of this entity properties.
      *
@@ -261,12 +287,13 @@ abstract class Entity implements \JsonSerializable{
      * @return array the metadata of this entity properties.
      */
     public static function getPropertiesMetadata(){
-        $class_metadata = App::i()->em->getClassMetadata(get_called_class())->fieldMappings;
-        $class_relations = App::i()->em->getClassMetadata(get_called_class())->getAssociationMappings();
+        $__class = get_called_class();
+        $class = $__class::getClassName();
+
+        $class_metadata = App::i()->em->getClassMetadata($class)->fieldMappings;
+        $class_relations = App::i()->em->getClassMetadata($class)->getAssociationMappings();
 
         $data_array = array();
-
-        $class = self::getClassName();
 
         foreach ($class_metadata as $key => $value){
             $metadata = array(
@@ -275,7 +302,8 @@ abstract class Entity implements \JsonSerializable{
 
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
-                'length' => $value['length']
+                'length' => $value['length'],
+                'label' => $class::getPropertyLabel($key)
             );
 
             if($key[0] == '_'){
@@ -295,7 +323,8 @@ abstract class Entity implements \JsonSerializable{
                 'isEntityRelation' => true,
 
                 'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
-                'isOwningSide' => $value['isOwningSide']
+                'isOwningSide' => $value['isOwningSide'],
+                'label' => $class::getPropertyLabel($key)
             );
         }
 

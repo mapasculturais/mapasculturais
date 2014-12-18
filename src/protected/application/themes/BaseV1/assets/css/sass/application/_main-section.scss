@@ -3,8 +3,15 @@
 #main-section {
     position: relative;
     margin-top: 78px;
-    background: $gray-lighter;
+    background-color: $gray-lighter;
+    @media print {
+        margin-top: 0;
+        background-color: #fff;
+    }
 }
 body.editable #main-section {
     margin-top: 136px;
+    @media print {
+        margin-top: 0;
+    }
 }

@@ -1,3 +1,28 @@
+<?php if($app->getConfig('auth.provider') === 'Fake' && $app->user->id !== 1): ob_start(); ?>
+    <style>
+        span.fake-dummy{
+            white-space:nowrap; padding: 0.5rem 0 0 0.5rem; cursor:default;
+        }
+        span.fake-dummy a{
+            display:inline !important; font-weight:bold !important; vertical-align: baseline !important;
+        }
+    </style>
+    <span class="fake-dummy">
+        Admin:
+        <a onclick="jQuery.get('<?php echo $app->createUrl('auth', 'fakeLogin') ?>/?fake_authentication_user_id=1',
+            function(){
+                console.info('Logado como Admin');
+                MapasCulturais.Messages.success('Logado como Admin.');
+            })">
+            Login
+        </a>
+        <a onclick="jQuery.get('<?php echo $app->createUrl('auth', 'fakeLogin') ?>/?fake_authentication_user_id=1',
+            function(){ location.reload();})">
+            Reload
+        </a>
+    </span>
+<?php $fake_options = ob_get_clean(); endif; ?>
+
 <nav id="main-nav" class="clearfix">
     <ul class="menu entities-menu clearfix">
         <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
@@ -108,6 +133,7 @@
                     <li>
                         <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
                             <a href="<?php echo $app->createUrl('auth'); ?>">Trocar Usuário</a>
+                            <?php if(!empty($fake_options)) echo $fake_options; ?>
                         <?php endif; ?>
                         <a href="<?php echo $app->createUrl('auth', 'logout'); ?>">Sair</a>
                     </li>
@@ -120,6 +146,9 @@
                     <div class="icone icon_lock"></div>
                     <div class="menu-item-label">Entrar</div>
                 </a>
+                <?php if(!empty($fake_options)): ?>
+                    <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
+                <?php endif; ?>
             </li>
         <?php endif; ?>
     </ul>

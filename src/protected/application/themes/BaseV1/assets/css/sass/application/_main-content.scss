@@ -14,4 +14,8 @@
         padding: 4rem;
         width: 60%;
     }
+    @media print {
+    	width: 100%;
+    	padding: $padding-large;
+    }
 }

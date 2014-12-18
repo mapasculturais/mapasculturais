@@ -26,6 +26,9 @@
         left: 50%;
         margin-left: -8px;
     }
+    @media print {
+        display: none;
+    }
 }
 .sidebar-left {
     overflow: hidden;

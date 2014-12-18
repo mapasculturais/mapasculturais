@@ -122,15 +122,15 @@
     }
 }
 
-.botao {
-    &.editar {
+.btn {
+    &.edit {
         &:before {
             font-family: $icon-font-name;
             content: '\f044';
         }
     }
 }
-.enviar {
+.send {
     &:before {
         content: '\f093';
     }
@@ -140,14 +140,14 @@
         content: '\f019';
     }
 }
-.excluir {
+.delete {
     &:before {
         content: '\f057';
     }
 }
-.inserir {
+.add {
     &:before {
-        content: '\f057';
+        content: '\f055';
     }
 }
 
@@ -248,7 +248,7 @@
 }
 
 // close button editable
-.icon_close {
+.icon_close, .alert .close {
     &:before {
         font-family: $icon-font-name;
         content: '\f00d';
@@ -302,7 +302,7 @@
 .warning, .danger {
     &:before {
         font-family: $icon-font-name;
-        content: '\f12a';
+        content: '\f06a';
         margin: 0px 7px 0 0;
     }
 }
@@ -360,4 +360,18 @@
         display: block;
         margin-top: 9px;
     }
+}
+
+button.mfp-arrow {
+    font-family: $icon-font-name;
+    font-size:1.3rem;
+
+    .arrow_carrot-right:after {
+        content: '\f054';
+    }
+
+    .arrow_carrot-left:after {
+        content: '\f053';
+    }
+
 }

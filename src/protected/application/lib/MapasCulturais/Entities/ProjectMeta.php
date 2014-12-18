@@ -44,6 +44,10 @@ class ProjectMeta extends \MapasCulturais\Entity
      */
     protected $owner;
 
+    function canUser($action, $userOrAgent = null) {
+        return $this->owner->canUser($action, $userOrAgent);
+    }
+
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').insert:before', $args);
