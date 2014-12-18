@@ -8,13 +8,15 @@
     top: 0;
     width: 100%;
     z-index: $z-index-main-header;
-    border-top: 6px solid $brand-accent;
     background: #fff;
     h1 {
         margin-bottom: 0;
         img {
             display: block;
         }
+    }
+    @media screen and (min-width: $screen-tablet) {
+        border-top: 6px solid $brand-accent;
     }
 }
 
@@ -35,7 +37,7 @@
     float: left;
     padding: .25rem;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.875rem;
     img {
         width: 138px;
     }
@@ -59,26 +61,27 @@
 }
 //** About Nav.
 #about-nav {
-    float: right;
+    float: left;
     padding: .25rem;
     @media screen and (min-width: $screen-tablet) {
+        float: right;
         padding: $padding-base;
     }
     @media screen and (min-width: $screen-desktop) {
         padding: $padding-base $padding-large;
     }
 }
-#logo-smc {
+#organization-logo {
     float: left;
     img {
-        width: 60px;
+        width: 74px;
         @media screen and (min-width: $screen-tablet) {
             width: 90px;
             margin: 0 auto;
         }
     }
 }
-#menu-secundario {
+#secondary-menu {
     display: none;
     float: left;
     margin: 0;
@@ -140,14 +143,6 @@ body.action-search {
         border-top: 3px solid $brand-accent;
                 box-shadow: 1px 0 0 0 $gray-lighter inset;
         -webkit-box-shadow: 1px 0 0 0 $gray-lighter inset;
-        @media screen and (min-width: $screen-tablet) {
-            border-top-width: 6px;
-            padding: $padding-base;
-        }
-        &:first-child {
-                    box-shadow: none;
-            -webkit-box-shadow: none;
-        }
         > a {
             display: block;
             vertical-align: middle;
@@ -165,6 +160,26 @@ body.action-search {
             font-size: $font-size-base;
             line-height: $line-height-base;
             border-radius: $border-radius-base;
+        }
+        .menu-item-label {
+            display: none;
+            @media screen and (min-width: $screen-tablet) {
+                display: block;
+            }
+        }
+        @media screen and (min-width: $screen-tablet) {
+            border-top-width: 6px;
+            padding: $padding-base;
+        }
+        &:first-child {
+                    box-shadow: none;
+            -webkit-box-shadow: none;
+        }
+        &:hover {
+            border-top-color: $brand-primary;
+            > a {
+                color: $brand-primary;
+            }
         }
     }
 }
@@ -190,12 +205,6 @@ body.action-search {
             bottom: 0;
             left: 50%;
             margin-left: -$caret-width-base;
-        }
-        .entity-item-label {
-            display: none;
-            @media screen and (min-width: $screen-tablet) {
-                display: block;
-            }
         }
     }
 }
@@ -261,21 +270,31 @@ body.action-search {
 }
 //** Session Menu
 .session {
-    display: none;
-    float: left;
-    border-right: 1px solid $brand-accent;
-    border-left: 1px solid $brand-accent;
+    @media screen and (max-width: $screen-tablet) {
+        position: absolute;
+        top: 0;
+        right: $padding-small;
+        > li {
+            border-top: none;
+        }
+    }
+
     @media screen and (min-width: $screen-tablet) {
         display: block;
+        float: left;
+        border-right: 1px solid $brand-accent;
+        border-left: 1px solid $brand-accent;
     }
 }
 .login {
-    width: 6.5rem;
-    &:hover {
-        border-top: 6px solid $brand-primary;
-        > a {
-            color: $brand-primary;
+    @media screen and (max-width: $screen-tablet) {
+        width: auto;
+        &:hover {
+            border-top: none;
         }
+    }
+    @media screen and (min-width: $screen-tablet) {
+        width: 6.5rem;
     }
 }
 //** Session user and notifications submenus share common styles under the class '.submenu'.
@@ -284,8 +303,7 @@ body.action-search {
     box-sizing: border-box;
     z-index: $z-index-main-header+1;
     top: 100%;
-    left: 50%;
-    margin: -$caret-width-base 0 0;
+    margin: 0;
     padding: $padding-base;
     list-style: none;
     font-size: .8rem;
@@ -299,25 +317,31 @@ body.action-search {
         position: relative;
         line-height: $line-height-base;
     }
+    @media screen and (min-width: $screen-tablet) {
+        margin: -$caret-width-base 0 0;
+        left: 50%;
+    }
 }
 //** User
 .user {
     width: auto;
-    &:hover {
-        border-top: 6px solid $brand-primary;
-    }
     .avatar {
         float: none;
-        width: 2rem;
-        height: 2rem;
-        margin: .5rem 0;
+        width: 1.875rem;
+        height: 1.875rem;
+        margin: 0;
+        @media screen and (min-width: $screen-tablet) {
+            width: 2rem;
+            height: 2rem;
+            margin: .5rem 0;
+        }
         @media screen and (min-width: $screen-desktop) {
             margin: .5rem;
         }
     }
     .submenu {
+        right: 0;
         width: 11.5rem;
-        margin-left: -5.75rem;
         background: $user-submenu-bg;
         li {
             position: relative;
@@ -345,23 +369,26 @@ body.action-search {
         }
         &:before {
             @include arrow(up, $caret-width-base, $brand-primary);
-            left: 50%;
-            margin-left: -$caret-width-base;
+            right: 0.6875rem; //11px
+        }
+        @media screen and (min-width: $screen-tablet) {
+            margin-left: -5.75rem; //half its width
+            &:before {
+                right: auto;
+                left: 50%;
+                margin-left: -$caret-width-base;
+            }
         }
     }
 }
 //**Notifications
 .notifications {
-    width: 6.5rem;
-    &:hover {
-        border-top: 6px solid $brand-primary;
-        > a {
-        color: $brand-primary;
-        }
+    @media screen and (min-width: $screen-tablet) {
+        width: 6.5rem;
     }
     .submenu {
+        right: -2.875rem;
         width: 20rem;
-        margin-left: -10rem;
         background: $gray-light;
         .slimScrollDiv {
             margin-bottom: $line-height-half;
@@ -381,8 +408,7 @@ body.action-search {
         }
         &:before {
             @include arrow(up, $caret-width-base, $gray-light);
-            left: 50%;
-            margin-left: -$caret-width-base;
+            right: 3.375rem;
         }
         ul {
             overflow: hidden;
@@ -400,6 +426,15 @@ body.action-search {
             &.read {
                 border-left: 5px solid $brand-primary;
                 background: #fff;
+            }
+        }
+        @media screen and (min-width: $screen-tablet) {
+            right: auto;
+            margin-left: -10rem; // half its width
+            &:before {
+                right: auto;
+                left: 50%;
+                margin-left: -$caret-width-base;
             }
         }
     }
