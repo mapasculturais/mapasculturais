@@ -280,7 +280,7 @@ body.action-search {
 }
 //** Session Menu
 .session {
-    @media screen and (max-width: $screen-tablet) {
+    @media screen and (max-width: $screen-xs-max) {
         position: absolute;
         top: 0;
         right: $padding-small;
