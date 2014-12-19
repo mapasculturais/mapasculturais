@@ -486,9 +486,6 @@
 
     };
     $(function(){
-        if($('body').hasClass('action-search')){
-            MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-        }
 
         if($('body').hasClass('controller-agent') && MapasCulturais.isEditable){
             if($('#map-precisionOption').editable('getValue').precisao){
