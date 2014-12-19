@@ -244,11 +244,11 @@
         });
 
         //Botão de busca da home
-        if($('#form-de-busca-geral').length){
+        if($('#home-search-form').length){
             $('#campo-de-busca').focus();
-            $('#filtro-da-capa .submenu-dropdown li').click(function() {
+            $('#home-search-filter .submenu-dropdown li').click(function() {
                 var url_template = $(this).data('searh-url-template') ?
-                        $(this).data('searh-url-template') : $("#filtro-da-capa").data('searh-url-template');
+                        $(this).data('searh-url-template') : $("#home-search-filter").data('searh-url-template');
 
                 var params = {
                     entity: $(this).data('entity'),
@@ -268,34 +268,34 @@
                     return false;
                 }else if(event.keyCode === 38){
                     // up
-                    if($('#filtro-da-capa .submenu-dropdown li:focus').is($('#filtro-da-capa .submenu-dropdown li:first'))){
-                       $('#filtro-da-capa .submenu-dropdown li:last').focus();
+                    if($('#home-search-filter .submenu-dropdown li:focus').is($('#home-search-filter .submenu-dropdown li:first'))){
+                       $('#home-search-filter .submenu-dropdown li:last').focus();
                     }else{
-                        $('#filtro-da-capa .submenu-dropdown li:focus').prev().focus();
+                        $('#home-search-filter .submenu-dropdown li:focus').prev().focus();
                     }
                     event.preventDefault();
 
                 }else if(event.keyCode === 40){
                     // down
-                    if($('#filtro-da-capa .submenu-dropdown li:focus').is($('#filtro-da-capa .submenu-dropdown li:last'))){
-                       $('#filtro-da-capa .submenu-dropdown li:first').focus();
+                    if($('#home-search-filter .submenu-dropdown li:focus').is($('#home-search-filter .submenu-dropdown li:last'))){
+                       $('#home-search-filter .submenu-dropdown li:first').focus();
                     }else{
-                        $('#filtro-da-capa .submenu-dropdown li:focus').next().focus();
+                        $('#home-search-filter .submenu-dropdown li:focus').next().focus();
                     }
                     event.preventDefault();
                 }
 
             });
 
-            $('#form-de-busca-geral').on('submit', function(){
+            $('#home-search-form').on('submit', function(){
                 $('.submenu-dropdown').css({display:'block',opacity:1});
                 $('.submenu-dropdown li:first').focus();
                 return false;
             });
-            $('#form-de-busca-geral #campo-de-busca').on('blur', function(){
+            $('#home-search-form #campo-de-busca').on('blur', function(){
                 $('.submenu-dropdown').attr('style','');
             });
-            $('#form-de-busca-geral #campo-de-busca').on('keydown', function(event){
+            $('#home-search-form #campo-de-busca').on('keydown', function(event){
                 var kc = event.keyCode;
                 if(event.keyCode === 9){
                     $('.submenu-dropdown').css({display:'block',opacity:1});
@@ -315,8 +315,8 @@
         }
         //Scroll da Home ////////////////////////////////////////////////////
 
-        $('#capa-intro div.ver-mais a').click(function() {
-            $('nav#capa-nav a.down').click();
+        $('#home-intro div.view-more a').click(function() {
+            $('nav#home-nav a.down').click();
             return false;
         });
 
@@ -356,12 +356,12 @@
             var show_hide_scrolls = function(skip_animation) {
                 var speed = skip_animation ? 0 : 200;
                 find_prev_page_menu_item() ?
-                        $('nav#capa-nav a.up').animate({opacity: 1}, speed) :
-                        $('nav#capa-nav a.up').animate({opacity: 0}, speed);
+                        $('nav#home-nav a.up').animate({opacity: 1}, speed) :
+                        $('nav#home-nav a.up').animate({opacity: 0}, speed);
 
                 find_next_page_menu_item() ?
-                        $('nav#capa-nav a.down').animate(speed) :
-                        $('nav#capa-nav a.down').fadeOut(speed);
+                        $('nav#home-nav a.down').animate(speed) :
+                        $('nav#home-nav a.down').fadeOut(speed);
             };
 
             var scroll_timeout = null;
@@ -370,7 +370,7 @@
                 scroll_timeout = setTimeout(show_hide_scrolls, 100);
             });
 
-            $('nav#capa-nav a.down').click(function() {
+            $('nav#home-nav a.down').click(function() {
                 var __this = this;
                 var $next_page_item = find_next_page_menu_item();
                 var scrollto;
@@ -388,7 +388,7 @@
             });
 
 
-            $('nav#capa-nav a.up').click(function() {
+            $('nav#home-nav a.up').click(function() {
                 var __this = this;
                 var $next_page_item = find_prev_page_menu_item();
                 var scrollto;
@@ -408,7 +408,7 @@
                 return false;
             });
 
-            $('nav#capa-nav a').not('.up').not('.down').click(function() {
+            $('nav#home-nav a').not('.up').not('.down').click(function() {
                 var $target = $($(this).attr('href'));
                 scrollto = $target.offset().top - $('#main-header').outerHeight(true);
                 if (scrollto > $('body').scrollTop())
@@ -436,22 +436,22 @@
 
             };
 
-            $('nav#capa-nav a.up, nav#capa-nav a.down').mouseenter(nav_mouseenter).mouseleave(function() {
+            $('nav#home-nav a.up, nav#home-nav a.down').mouseenter(nav_mouseenter).mouseleave(function() {
                 $(this).find('.balao').hide().find('.balao-text').html('');
             });
         } else {
-            $('nav#capa-nav').hide();
+            $('nav#home-nav').hide();
         }
 
 
         ////////// Menu da Home //////////
 
-        $('#capa-nav ul span.nav-title').each(function() {
+        $('#home-nav ul span.nav-title').each(function() {
             $(this).css('margin-left', ($(this).width() * -1) + 'px');
             //$(this).css('margin-left', '40px');
         })
 
-        $('#capa-nav ul li a').hover(function() {
+        $('#home-nav ul li a').hover(function() {
             $(this).siblings('span.nav-title').animate({marginLeft: '40px'}, 'fast');
         }, function() {
             var $slider = $(this).siblings('span.nav-title');
