@@ -487,22 +487,26 @@
     };
     $(function(){
 
-        if($('body').hasClass('controller-agent') && MapasCulturais.isEditable){
-            if($('#map-precisionOption').editable('getValue').precisao){
-                MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-            }else{
-                $('.js-map').parent().hide();
-            }
-            $('#map-precisionOption').on('hidden', function(){
-                var val = $(this).data('editable').value;
-                if(val){
-                    $('.js-map-container').show();
+        if($('body').hasClass('controller-agent')){
+            if(MapasCulturais.isEditable){
+                if($('#map-precisionOption').editable('getValue').precisao){
                     MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                 }else{
-                    $('.js-map-container').hide();
+                    $('.js-map').parent().hide();
                 }
+                $('#map-precisionOption').on('hidden', function(){
+                    var val = $(this).data('editable').value;
+                    if(val){
+                        $('.js-map-container').show();
+                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                    }else{
+                        $('.js-map-container').hide();
+                    }
 
-            });
+                });
+            }else{
+                MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+            }
 
         }
         var timeout;
