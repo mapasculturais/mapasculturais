@@ -115,8 +115,8 @@ $url_search_projects = $this->searchProjectsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>">Ver Todos Eventos da Semana</a>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar Eventos</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>">Ver eventos</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar eventos</a>
     </div>
 </article>
 
@@ -167,8 +167,8 @@ $url_search_projects = $this->searchProjectsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>">Ver Todos Agentes</a>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar Agentes</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>">Ver agentes</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar agentes</a>
     </div>
 </article>
 
@@ -220,8 +220,8 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>">Ver Todos Espaços</a>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar Espaços</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>">Ver espaços</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar espaços</a>
     </div>
 </article>
 
@@ -265,8 +265,8 @@ $url_search_projects = $this->searchProjectsUrl;
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>">Ver Todos Projetos</a>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar Projetos</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>">Ver projetos</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projetos</a>
     </div>
 </article>
 <article id="home-developers" class="js-page-menu-item home-entity clearfix">

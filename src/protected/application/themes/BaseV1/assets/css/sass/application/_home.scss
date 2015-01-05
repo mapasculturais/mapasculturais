@@ -99,6 +99,7 @@
 //** Home sections
 .home-entity {
     position: relative;
+    z-index: $z-index-home-watermark + 1;
     min-height: 100vh;
     color: #fff;
     h2,
@@ -111,9 +112,6 @@
     }
     h1 .icone {
         vertical-align: initial;
-    }
-    .btn-large {
-        margin-bottom: $line-height-base;
     }
     .box {
         position: relative;
@@ -163,7 +161,7 @@
         margin-bottom: $line-height-base;
         border-radius: $border-radius-base;
         overflow: hidden;
-        background-color: $brand-accent;
+        background-color: #fff;
         //background-image is inserted dynamically inline
         background-position: center;
         background-size: contain;
@@ -180,9 +178,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: $padding-large;
+            overflow: hidden;
             background-color: $brand-accent;
-            border-radius: $border-radius-base;
+            border: $padding-small solid $brand-accent;
+            border-radius: 0 0 $border-radius-base $border-radius-base;
             color: #fff;
             font-weight: normal;
             font-size: $font-size-small;
@@ -192,13 +191,16 @@
                 text-decoration: none;
             }
             h3 {
+                display: none;
                 font-size: $font-size-smaller;
                 line-height: $line-height-base;
                 font-family: 'Open Sans';
                 text-transform: uppercase;
+                margin-bottom: 0;
+
             }
             h2 {
-                font-size: 1.5rem;
+                font-size: $font-size-base;
                 line-height: $line-height-base;
             }
         }
@@ -209,10 +211,20 @@
         }
         @media screen and (min-width: $screen-tablet) {
             margin-top: 4.5rem;
+            .feature-content {
+                border-width: $padding-large;
+                h2 {
+                    font-size: $line-height-base;
+                }
+            }
         }
         @media screen and (min-width: $screen-desktop) {
             .feature-content {
                 top: 100%;
+                border-radius: $border-radius-base;
+                h3 {
+                    display: block;
+                }
             }
             &:hover {
                 .feature-content {
@@ -225,24 +237,27 @@
     }
     .tag-box {
         border: 1px solid $brand-accent;
-        margin-bottom: $line-height-base;
         padding: $padding-base;
         border-radius: $border-radius-base;
     }
-    @media screen and (max-width: $screen-xs-max) and (min-height: 501px) {
-        padding-left: 40px;
+    @media screen and (max-width: $screen-sm-max) and (min-height: 501px) {
+        padding-left: 40px; // to fit nav.home-nav
     }
-    @media screen and (min-width: $screen-tablet) {
+    @media screen and (min-width: $screen-desktop) {
         width: 75%;
         padding: 0 12.5%;
         .box {
             float: left;
             width: 50%;
         }
+        .tag-box {
+            margin-bottom: $line-height-base;
+        }
     }
 }
 //** Intro Section
 #home-intro {
+    z-index: $z-index-home-watermark + 2;
     min-height: calc(100vh - 4.875rem); // viewport height minus header height
     background: $brand-primary;
     .box {
