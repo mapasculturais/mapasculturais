@@ -211,17 +211,19 @@
         }
         @media screen and (min-width: $screen-tablet) {
             margin-top: 4.5rem;
-            .feature-content {
-                border-width: $padding-large;
-                h2 {
-                    font-size: $line-height-base;
-                }
-            }
         }
         @media screen and (min-width: $screen-desktop) {
             .feature-content {
+                    border-width: $padding-large;
+                }
+        }
+        @media screen and (min-width: $screen-lg-desktop) {
+            .feature-content {
                 top: 100%;
                 border-radius: $border-radius-base;
+                h2 {
+                    font-size: $line-height-base;
+                }
                 h3 {
                     display: block;
                 }
@@ -243,7 +245,7 @@
     @media screen and (max-width: $screen-sm-max) and (min-height: 501px) {
         padding-left: 40px; // to fit nav.home-nav
     }
-    @media screen and (min-width: $screen-desktop) {
+    @media screen and (min-width: $screen-tablet) {
         width: 75%;
         padding: 0 12.5%;
         .box {
@@ -252,6 +254,9 @@
         }
         .tag-box {
             margin-bottom: $line-height-base;
+        }
+        .btn-large {
+            margin-bottom: $line-height-half;
         }
     }
 }
