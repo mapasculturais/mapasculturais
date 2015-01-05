@@ -507,8 +507,12 @@
             }else{
                 MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
             }
-
         }
+        
+        if($('body').hasClass('controller-space')){
+            MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});    
+        }
+        
         var timeout;
         $(window).scroll(function() {
             try{
