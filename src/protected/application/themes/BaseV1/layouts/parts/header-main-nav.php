@@ -51,7 +51,7 @@
         </li>
     </ul>
     <!--.menu.entities-menu-->
-    <ul class="menu session clearfix">
+    <ul class="menu session-menu clearfix">
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
 
@@ -150,7 +150,8 @@
                     <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
                 <?php endif; ?>
             </li>
+            <!--.login-->
         <?php endif; ?>
     </ul>
-    <!--.menu.logado-->
+    <!--.menu.session-menu-->
 </nav>

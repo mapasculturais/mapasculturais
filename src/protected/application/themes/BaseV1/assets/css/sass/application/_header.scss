@@ -109,7 +109,7 @@
     }
 }
 body.action-search {
-    @media screen and (max-width: $screen-tablet) {
+    @media screen and (max-width: $screen-xs-max) {
         #main-header {
             border-top: none;
         }
@@ -279,7 +279,7 @@ body.action-search {
     }
 }
 //** Session Menu
-.session {
+.session-menu {
     @media screen and (max-width: $screen-xs-max) {
         position: absolute;
         top: 0;
@@ -294,6 +294,15 @@ body.action-search {
         float: left;
         border-right: 1px solid $brand-accent;
         border-left: 1px solid $brand-accent;
+    }
+}
+
+//** When on search pages on small screen, session menu isn't shown.
+@media screen and (max-width: $screen-xs-max) {
+    body.action-search {
+        .session-menu {
+            display: none;
+        }
     }
 }
 .login {
