@@ -104,9 +104,7 @@
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: 3rem;
-    padding: 0 3rem;
     .objeto {
-        padding: $line-height-base;
         background-color: #f8f8f8;
         &:hover {
         background-color: #fff;
@@ -115,32 +113,38 @@
             border-bottom: $thin-row;
         }
     }
-    .objeto-thumb {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6rem;
-        height: 6rem;
-    }
-    .objeto-resumo {
-        float: left;
-        min-height: 6rem;
-        margin-right: 30%;
-        margin-bottom: 0;
-        padding: 0 $padding-large 0 7.5rem;
-        font-size: $font-size-small;
-    }
-    .objeto-meta {
-        clear: none;
-        float: right;
-        width: 30%;
-        min-height: 6rem;
-        margin-bottom: 0;
-        margin-left: -30%;
-        padding-left: $padding-large;
-        padding-top: 0;
-        border-top: none;
-        border-left: 1px solid $gray-lighter;
+    @media screen and (min-width: $screen-tablet ) {
+        padding: 0 3rem;
+        .objeto {
+            padding: $line-height-base;
+        }
+        .objeto-thumb {
+            width: 6rem;
+            height: 6rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .objeto-resumo {
+            float: left;
+            min-height: 6rem;
+            margin-bottom: 0;
+            margin-right: 30%;
+            padding: 0 $padding-large 0 7.5rem;
+            font-size: $font-size-small;
+        }
+        .objeto-meta {
+            clear: none;
+            float: right;
+            width: 30%;
+            min-height: 6rem;
+            margin-left: -30%;
+            margin-bottom: 0;
+            padding-left: $padding-large;
+            padding-top: 0;
+            border-top: none;
+            border-left: 1px solid $gray-lighter;
+        }
     }
 }
 

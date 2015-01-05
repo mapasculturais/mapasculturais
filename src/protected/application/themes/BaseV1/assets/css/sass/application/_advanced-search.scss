@@ -25,7 +25,7 @@
     padding: 0;
     color: $brand-accent;
     font-size: $font-size-small;
-    @media screen and (min-width: $screen-tablet) {
+    @media screen and (min-width: $screen-desktop) {
         padding: $padding-base 0;
     }
     //** only shown on phones
@@ -43,7 +43,7 @@
         .icon_adjust-vert {
             float: right;
         }
-        @media screen and (min-width: $screen-tablet) {
+        @media screen and (min-width: $screen-desktop) {
             display: none;
         }
     }
