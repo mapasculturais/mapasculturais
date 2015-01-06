@@ -67,6 +67,7 @@
     padding: 0 $padding-base $padding-base;
     line-height: 2rem;
     @media screen and (min-width: $screen-desktop) {
+        display: block !important;
         float: left;
         width: 20%;
         padding: 0 $padding-base;

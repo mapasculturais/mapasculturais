@@ -12,29 +12,37 @@
 #infobox {
     position: absolute;
     z-index: $z-index-infobox;
-    top: 105px;
+    top: 48px;
     left: 0;
     bottom: 0;
-    width: 400px;
+    width: 100%;
+    max-width: 424px;
     overflow: auto;
+    box-sizing: border-box;
     padding: 2rem .75rem .75rem;
     border-radius: 0;
     background: #fff;
-}
-#infobox .icon_close {
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    cursor: pointer;
-}
-#infobox .espaco-dos-eventos {
-    background: $gray-light;
-    border-radius: $border-radius-base;
-    padding: $padding-small;
-    font-size: $font-size-smaller;
-}
-#infobox .espaco-dos-eventos .icone {
-    margin: -3px 5px 0 0;
+    .icon_close {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        cursor: pointer;
+    }
+    .espaco-dos-eventos {
+        background: $gray-light;
+        border-radius: $border-radius-base;
+        padding: $padding-small;
+        font-size: $font-size-smaller;
+        .icone {
+            margin: -3px 5px 0 0;
+        }
+    }
+    @media screen and (min-width: $screen-tablet) {
+        top: 88px;
+    }
+    @media screen and (min-width: $screen-desktop) {
+        top: 105px;
+    }
 }
 .animate-show,
 .animate-hide {

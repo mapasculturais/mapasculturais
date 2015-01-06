@@ -49,7 +49,7 @@
 }
 #mapa .leaflet-control-layers {
     display: none;
-    @media screen and (min-width: $screen-tablet) {
+    @media screen and (min-width: 872px) {
         display: block;
     }
 
