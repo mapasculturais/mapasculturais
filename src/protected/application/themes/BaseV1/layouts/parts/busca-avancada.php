@@ -187,26 +187,22 @@
     <!--#filter-spaces-->
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
-            <div id="compartilhar">
-                <a class="botao-de-icone icone social_share"></a>
-                <form id="compartilhar-url" class="busca-popover">
-                    <div class="setinha"></div>
-                    <label for="url-da-busca">Compartilhar esse resultado: </label>
-                    <input id="url-da-busca" name="url-da-busca" type="text" ng-value="location.absUrl()" />
+            <div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
+                <a class="hltip icone icon_menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
+                <a class="hltip icone icon_map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
+            </div>
+            <div id="export-tools" data-toggle="share-search-results">
+                <a class="hltip icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+            </div>
+            <div id="share-tools">
+                <a class="hltip icone social_share" title="Compartilhar resultado"></a>
+                <form id="share-url" class="share-search-results">
+                    <label for="search-url">Compartilhar resultado: </label>
+                    <input id="search-url" name="search-url" type="text" ng-value="location.absUrl()" />
                     <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icone social_twitter"></a>
                     <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_facebook"></a>
                     <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_googleplus"></a>
                 </form>
-            </div>
-            <div id="exportar-resultados" data-toggle="busca-popover">
-                <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
-                <div class="busca-popover">
-                    <a class="hltip botao-de-icone icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
-                </div>
-            </div>
-            <div id="views" class="clearfix" ng-if="!showFilters('project')">
-                <a class="hltip botao-de-icone icone icon_menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
-                <a class="hltip botao-de-icone icone icon_map"              ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
             </div>
         </div>
         <!--#search-tools-->

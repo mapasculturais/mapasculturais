@@ -198,7 +198,7 @@
             position: 'right',
             distance: '0px',
             color: '#000',
-            height: '144px',
+            height: '148px',
             alwaysVisible: true,
             railVisible: true
         });
@@ -222,10 +222,10 @@
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({height: 'initial', maxHeight: 216});
         });
 
-        $('#compartilhar a.social_share').click(function() {
-            if ($('form#compartilhar-url').is(':hidden')) {
-                $('form#compartilhar-url').show();
-                var $input = $('form#compartilhar-url input');
+        $('#share-tools a.social_share').click(function() {
+            if ($('form#share-url').is(':hidden')) {
+                $('form#share-url').show();
+                var $input = $('form#share-url input');
                 $input.on('focus click', function() {
                     window.setTimeout(function() {
                         $input.select();
@@ -234,12 +234,12 @@
                 //$input.focus();
                 event.stopPropagation();
             } else {
-                $('form#compartilhar-url').hide();
+                $('form#share-url').hide();
             }
         });
         $('html').on('click', function(event) {
-            if (!$(event.target).parents('#compartilhar').length) {
-                $('form#compartilhar-url').hide();
+            if (!$(event.target).parents('#share-tools').length) {
+                $('form#share-url').hide();
             }
         });
 

@@ -136,6 +136,13 @@
 	}
 	.registration-attachments-col {
 		width: 12%;
+		.icon_download {
+		    width: 1rem;
+		    height: 1rem;
+		}
+		.icone.icon_download:before {
+		    font-size: $font-size-base;
+		}
 	}
 	.registration-status-col {
 		width: 20%;
