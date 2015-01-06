@@ -44,20 +44,28 @@
 
 /*filtro local*/
 #filtro-local {
-    position: absolute;
-    z-index: $z-index-editable-entity;
-    left: 0;
     height: 1.875rem;
+    @media screen and (min-width: $screen-desktop){
+        position: absolute;
+        z-index: $z-index-editable-entity;
+        left: 0;
+    }
 }
 #filtro-local label {
     display: none;
 }
 #filtro-local input[type='text'] {
-    width: 350px;
+    width: 259px;
     margin-right: 6px;
     margin-bottom: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
     border: none;
+    @media screen and (min-width: $screen-phone) {
+        width: 350px;
+    }
+    @media screen and (min-width: $screen-tablet) {
+        width: 350px;
+    }
 }
 #filtro-local input[type='text']:focus {
     border: 1px solid $brand-accent;

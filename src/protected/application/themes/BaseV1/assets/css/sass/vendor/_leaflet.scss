@@ -14,8 +14,8 @@
 //** Entity layers.
 #mc-entity-layers {
     position: absolute;
-    z-index: $z-index-editable-entity;
-    right: 0rem;
+    bottom: 18px;
+    right: 42px;
     height: 1.875rem;
     font-size: $font-size-base;
     line-height: $line-height-base;
@@ -47,19 +47,23 @@
     color: #fff;
     background-color: $brand-accent;
 }
-//** This margin is set to fit #mc-entity-layers.
 #mapa .leaflet-control-layers {
-    margin-right: 124px !important;
+    display: none;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
+
 }
 .leaflet-control-layers-expanded {
     padding: $padding-base;
     background-color: $brand-primary;
 }
-.leaflet-control-layers-toggle {
+.leaflet-control-layers-toggle, .leaflet-retina .leaflet-control-layers-toggle {
     width: 32px;
     height: 32px;
     background-image: url(../img/layers.png);
 }
+
 .leaflet-control-layers-separator {
     margin: .75rem 0;
     border-top: 1px solid #fff;
@@ -96,7 +100,7 @@
     }
 }
 //** zoom
-.leaflet-control-zoom-fullscreen {
+.leaflet-control-zoom-fullscreen,  .leaflet-retina .leaflet-control-zoom-fullscreen {
     background-image: url(../img/icon-fullscreen.png);
 }
 .leaflet-control-zoom-in,
@@ -128,11 +132,16 @@
 }
 //** Draw
 .leaflet-draw {
-    margin-left: 411px !important;
+    display: none;
+    @media screen and (min-width: $screen-desktop) {
+        display: block;
+        margin-left: 411px !important;
+    }
 }
-.leaflet-draw-toolbar .leaflet-draw-draw-circle {
+.leaflet-draw-toolbar .leaflet-draw-draw-circle, .leaflet-retina .leaflet-draw-toolbar .leaflet-draw-draw-circle {
     background-image: url(../img/icon-circulo.png);
     background-position: center;
+    background-size: auto;
 }
 .leaflet-draw-tooltip {
     font-family: 'Open Sans';
