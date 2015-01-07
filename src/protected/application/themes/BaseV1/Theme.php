@@ -715,6 +715,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['assets']['pinShadow'] = $this->asset('img/pin-sombra.png', false);
         $this->jsObject['assets']['pinMarker'] = $this->asset('img/marker-icon.png', false);
+        $this->jsObject['assets']['markerShadow'] = $this->asset("vendor/leaflet/lib/leaflet-{$this->_libVersions['leaflet']}/images/marker-shadow.png", false);
 
         $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agente.png', false);
         $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-espaco.png', false);
