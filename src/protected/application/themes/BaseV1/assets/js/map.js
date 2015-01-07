@@ -98,7 +98,7 @@
             if (isPositionDefined) {
                 marker.setLatLng(mapCenter).addTo(map);
             }
-            
+
             /* Events */
             marker.on('move', function(e) {
                 if (isEditable) {
@@ -124,7 +124,7 @@
                     marker.setLatLng(e.latlng);
             });
 
-            $('#buttonLocateMe').click(function() {
+            $('#button-locate-me').click(function() {
                 map.locate({setView: true, maxZoom: defaultLocateMaxZoom});
             });
 

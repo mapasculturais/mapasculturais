@@ -118,14 +118,14 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
             </div>
 
-
             <?php $lat = $entity->location->latitude; $lng = $entity->location->longitude; ?>
             <?php if ( $this->isEditable() || ($entity->localizacao === 'Pública' && $lat && $lng) ): ?>
-                <!--.servico-->
                 <div class="servico clearfix">
                     <div class="mapa js-map-container">
-                        <?php if( FALSE && $this->isEditable()): ?>
-                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
+                        <?php if($this->isEditable()): ?>
+                            <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
+                                <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="Encontrar minha localização"></a>
+                            </div>
                         <?php endif; ?>
                         <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
                         <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
