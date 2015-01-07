@@ -546,34 +546,36 @@
             }
 
             $scope.sendRegistration = function(){
-                RegistrationService.send($scope.data.entity.id).
-                    success(function(response){
-                        $('.js-response-error').remove();
-                        if(response.error){
-                            Object.keys(response.data).forEach(function(field, index){
-                                var $el;
-                                if(field === 'category'){
-                                    $el = $('.js-editable-registrationCategory').parent();
-                                }else if(field.indexOf('agent') !== -1){
-                                    $el = $('#' + field).parent().find('.registration-label');
-                                }else {
-                                    $el = $('#' + field).find('div:first');
-                                }
-                                var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
-                                message = message.replace(/"/g, '&quot;');
-                                $scope.data.propLabels.forEach(function(prop){
-                                    message = message.replace('{{'+prop.name+'}}', prop.label);
-                                });
-                                $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
+                RegistrationService.send($scope.data.entity.id).success(function(response){
+                    $('.js-response-error').remove();
+                    if(response.error){
+                        var focused = false;
+                        Object.keys(response.data).forEach(function(field, index){
+                            var $el;
+                            if(field === 'category'){
+                                $el = $('.js-editable-registrationCategory').parent();
+                            }else if(field.indexOf('agent') !== -1){
+                                $el = $('#' + field).parent().find('.registration-label');
+                            }else {
+                                $el = $('#' + field).find('div:first');
+                            }
+                            var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
+                            message = message.replace(/"/g, '&quot;');
+                            $scope.data.propLabels.forEach(function(prop){
+                                message = message.replace('{{'+prop.name+'}}', prop.label);
                             });
-                            MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
-                        }else{
-                            document.location = response.singleUrl;
-                        }
-                    });
-
+                            $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
+                            if(!focused){
+                                $('html,body').animate({scrollTop: $el.parents('li').get(0).offsetTop - 10}, 300);
+                                focused = true;
+                            }
+                        });
+                        MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                    }else{
+                        document.location = response.singleUrl;
+                    }
+                });
             };
-
 
             var url = new UrlService('project');
 

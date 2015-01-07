@@ -247,6 +247,12 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public static function getPropertyLabel($property_name){
+        $labels = self::getPropertiesLabels();
+
+        return isset($labels[$property_name]) ? $labels[$property_name] : '';
+    }
+
+    public static function _getConfiguredPropertyLabel($property_name){
         $app = App::i();
         $label = '';
 
@@ -303,7 +309,7 @@ abstract class Entity implements \JsonSerializable{
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
                 'length' => $value['length'],
-                'label' => $class::getPropertyLabel($key)
+                'label' => $class::_getConfiguredPropertyLabel($key)
             );
 
             if($key[0] == '_'){
@@ -324,7 +330,7 @@ abstract class Entity implements \JsonSerializable{
 
                 'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
                 'isOwningSide' => $value['isOwningSide'],
-                'label' => $class::getPropertyLabel($key)
+                'label' => $class::_getConfiguredPropertyLabel($key)
             );
         }
 

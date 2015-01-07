@@ -1,18 +1,10 @@
 //Inicia o mapa para a busca e configura o timeout do scroll
 jQuery(document).ready(function() {
 
-    if(!$('.js-map').length) return;
+    if ($('body').hasClass('action-search')) {
+        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter: MapasCulturais.mapCenter});
+    }
 
-    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-
-    var timeout;
-    $(window).scroll(function() {
-        leaflet.map.scrollWheelZoom.disable();
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-            leaflet.map.scrollWheelZoom.enable();
-        }, 400);
-    });
 });
 
 
