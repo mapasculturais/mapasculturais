@@ -89,22 +89,23 @@
                 markerIcon = MapasCulturais.Map.iconOptions[MapasCulturais.request.controller].icon;
             else if(MapasCulturais.request.controller == 'event')
                 markerIcon = MapasCulturais.Map.iconOptions['space'].icon;
-            if(Object.keys(markerIcon).length)
+
+            if(Object.keys(markerIcon).length){
                 marker.setIcon(markerIcon);
-
-            map.addLayer(marker);
-
-            marker.on('move', function(e) {
-                if (isEditable)
-                    $dataTarget.editable('setValue', [e.latlng.lng, e.latlng.lat]);
-
-            });
+                map.addLayer(marker);
+            }
 
             if (isPositionDefined) {
                 marker.setLatLng(mapCenter).addTo(map);
             }
-
+            
             /* Events */
+            marker.on('move', function(e) {
+                if (isEditable) {
+                    $dataTarget.editable('setValue', [e.latlng.lng, e.latlng.lat]);
+                }
+            });
+
             map.on('locationfound', function(e) {
                 var radius = e.accuracy / 2;
                 if (true || radius > defaultMaxCircleRadius)
