@@ -142,7 +142,7 @@ $this->includeAngularEntityAssets($entity);
                         <?php if($this->isEditable()): ?>
                             <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
                         <?php endif; ?>
-                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
+                        <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
                         </div>
                         <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
                         <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>

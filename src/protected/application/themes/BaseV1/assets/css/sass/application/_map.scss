@@ -1,14 +1,26 @@
 /* =Mapa
 -------------------------------------------------------------- */
-#mapa {
+//== Structure
+//
+//## Map elements from app.
+//** Map container in single pages.
+#single-map-container {
+    width: 100%;
+    height: 100%;
+}
+//** Map container in search.
+#search-map-container {
     display: block;
     position: fixed;
     z-index: 0;
     top: 96px;
     bottom: 0;
-    left: 0; /*348px qdo abre a infobox*/
+    left: 0; /*348px when infobox is open*/
     right: 0;
+    width: auto;
+    height: auto;
 }
+//** Box which is shown on map left side when a pin is clicked, containing its info.
 #infobox {
     position: absolute;
     z-index: $z-index-infobox;
@@ -44,61 +56,120 @@
         top: 105px;
     }
 }
+
 .animate-show,
 .animate-hide {
     -webkit-transition: all linear 1s;
             transition: all linear 1s;
 }
-
-/*filtro local*/
+//** Map buttons
+.btn-map {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: $border-radius-base;
+    box-shadow: $box-shadow-map;
+    background-color: $brand-accent;
+    color: #fff;
+    text-align: center;
+}
+//** filtro local
 #filtro-local {
     height: 1.875rem;
+    label {
+        display: none;
+    }
+    input[type='text'] {
+        width: 259px;
+        margin-right: 6px;
+        margin-bottom: 0;
+        box-shadow: $box-shadow-map;
+        border: none;
+        &:focus {
+            border: 1px solid $brand-accent;
+        }
+        @media screen and (min-width: $screen-phone) {
+            width: 350px;
+        }
+        @media screen and (min-width: $screen-tablet) {
+            width: 350px;
+        }
+    }
+    #form-local {
+        display: inline-block;
+        vertical-align: top;
+    }
+    #near-me {
+        display: inline-block;
+        background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
+        &:hover {
+            background-color: $brand-primary;
+        }
+    }
     @media screen and (min-width: $screen-desktop){
         position: absolute;
         z-index: $z-index-editable-entity;
         left: 0;
     }
 }
-#filtro-local label {
-    display: none;
-}
-#filtro-local input[type='text'] {
-    width: 259px;
-    margin-right: 6px;
-    margin-bottom: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    border: none;
-    @media screen and (min-width: $screen-phone) {
-        width: 350px;
-    }
-    @media screen and (min-width: $screen-tablet) {
-        width: 350px;
-    }
-}
-#filtro-local input[type='text']:focus {
-    border: 1px solid $brand-accent;
-}
-#form-local {
-    display: inline-block;
-    vertical-align: top;
-}
-.botoes-do-mapa {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    border-radius: $border-radius-base;
-    box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    background-color: $brand-accent;
+
+//** Entity layers.
+#mc-entity-layers {
+    position: absolute;
+    bottom: 16px;
+    right: 42px;
+    height: 2rem;
+    font-family: $font-family-base;
     color: #fff;
-    text-align: center;
-}
-#proximo-a-mim {
-    background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
-}
-#proximo-a-mim:hover {
-    background-color: $brand-primary;
-}
-.botoes-do-mapa.active {
-    background-color: $brand-primary;
+    border-radius: $border-radius-base;
+    box-shadow: $box-shadow-map;
+    div {
+        float: left;
+    }
+    div.label {
+        float: left;
+        padding: 0 $padding-small;
+        background-color: $brand-accent;
+        border-radius: $border-radius-base 0 0 $border-radius-base;
+        font-size: $font-size-smaller;
+        line-height: 2rem;
+    }
+    .btn-map {
+        float: left;
+        margin-left: 1px;
+        font-size: $font-size-base;
+        color: #fff;
+        border-radius: 0;
+        box-shadow: none;
+        &:before {
+            @extend %icon;
+        }
+        &:last-child {
+            border-radius: 0 $border-radius-base $border-radius-base 0;
+        }
+    }
+    .btn-map-event {
+        &:before {
+            content: "\e023";
+        }
+        &.active, &:hover {
+            background-color: $brand-event;
+        }
+    }
+    .btn-map-agent {
+        &:before {
+            content: "\e08a";
+        }
+        &.active, &:hover {
+            background-color: $brand-agent;
+        }
+    }
+    .btn-map-space {
+        &:before {
+            content: "\e0ef";
+        }
+        &.active, &:hover {
+            background-color: $brand-space;
+        }
+    }
 }

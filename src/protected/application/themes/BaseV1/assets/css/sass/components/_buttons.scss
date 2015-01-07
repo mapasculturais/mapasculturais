@@ -41,15 +41,10 @@
         color: darken($btn-default-color, 20%);
     }
     &:before {
-        display: inline-block;
+        @extend %icon;
         width: 1rem;
         height: 1rem;
         font-size: $font-size-base;
-        font-family: $icon-font-name;
-        vertical-align: top;
-        text-transform: none;
-        font-weight: normal;
-        font-style: none;
     }
 }
 .add:before {

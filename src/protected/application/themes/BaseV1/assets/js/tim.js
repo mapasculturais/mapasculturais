@@ -60,7 +60,7 @@
 
             if ($('#header-search-row').length) {
                 $busca = $('#header-search-row');
-                $mapa = $('#mapa');
+                $mapa = $('#search-map-container');
                 if (!$busca.parent().is($mainHeader)) {
                     $mainHeader.append($('<div id="header-nav-row" class="clearfix">').append($mainHeader.find('>*')));
                     $busca.appendTo($mainHeader);
@@ -88,7 +88,7 @@
                         window.leaflet.map.invalidateSize();
 
                     if ($('#infobox'))
-                        $('#infobox').height($('#mapa').height() - 44)
+                        $('#infobox').height($('#search-map-container').height() - 44)
 
                     $mapa.data('oldHeight', $mapa.height());
                 } else if (scrollTop == 0 && !$mapa.is(':visible'))
