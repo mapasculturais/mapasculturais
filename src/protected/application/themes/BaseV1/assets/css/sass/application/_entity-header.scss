@@ -64,15 +64,8 @@
         }
         .btn {
             position: absolute;
-            left: 0;
-            width: 9rem;
-            height: 9rem;
-            margin: 0;
-            .botao.editar {
-                position: absolute;
-                right: $line-height-half;
-                bottom: $line-height-half;
-            }
+            right: $line-height-half;
+            bottom: $line-height-half;
         }
     }
     .entity-type {
