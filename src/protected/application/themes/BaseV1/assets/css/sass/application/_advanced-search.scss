@@ -27,6 +27,9 @@
     font-size: $font-size-small;
     @media screen and (min-width: $screen-desktop) {
         padding: $padding-base 0;
+        > div {
+            display: block !important;
+        }
     }
     //** only shown on phones
     header {
@@ -67,7 +70,6 @@
     padding: 0 $padding-base $padding-base;
     line-height: 2rem;
     @media screen and (min-width: $screen-desktop) {
-        display: block !important;
         float: left;
         width: 20%;
         padding: 0 $padding-base;
