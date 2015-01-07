@@ -64,6 +64,15 @@ return array(
             )
         ),
 
+        'localizacao' => array(
+            'label' => 'Localização',
+            'type' => 'select',
+            'options' => array(
+                'Pública' => 'Pública',
+                'Privada' => 'Privada'
+            )
+        ),
+
         'genero' => array(
             'private' => true,
             'label' => 'Gênero',
