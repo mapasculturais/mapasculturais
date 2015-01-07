@@ -63,27 +63,6 @@
 
             var mapSelector = initializerOptions.mapSelector;
 
-            var changePrecision = function(value, isPrecise, map, mapMarkerLayer, circle, $dataTarget) {
-                var mapId = map._container.id;
-                if (!value) {
-                    $dataTarget.editable('setValue', [0, 0]);
-                }
-                if (isPrecise) {
-                    mapMarkerLayer.setIcon(MapasCulturais.Map.iconOptions[MapasCulturais.request.controller].icon);
-                    map.removeLayer(circle);
-                    setTimeout(function() {
-                        map.setZoom(config.zoomPrecise);
-                    }, 200);
-                } else {
-                    mapMarkerLayer.setIcon(new L.divIcon({className: 'marker-circle-icon', iconSize: new L.Point(circle._radius * 2, circle._radius * 2)}));
-                    map.addLayer(circle);
-                    setTimeout(function() {
-                        map.setZoom(config.zoomApproximate);
-                    });
-                }
-            };
-
-
             $(mapSelector).each(function() {
                 if($(this).data('init')){
                     return;
@@ -99,14 +78,6 @@
                 var defaultLocateMaxZoom = config.zoomPrecise;
                 var defaultAproximatePrecisionZoom = config.zoomApproximate;
                 var defaultMaxCircleRadius = 1000;
-                var $dataPrecisionOption = $('#' + id + '-precisionOption');
-                //var dataPrecisionOptionFieldName = $dataPrecisionOption.data('edit'); //precisao
-                //var $dataPrecision = $('[data-edit="'+dataPrecisionOptionField+'"]').html();
-                var dataPrecisionValue = $dataPrecisionOption.html();
-                var dataPrecisionTrueValue = $dataPrecisionOption.data('truevalue');
-                //$('#mapa-precisionOption').editable('getValue')[$('#mapa-precisionOption').data('edit')];
-                var isPrecise = (dataPrecisionValue == dataPrecisionTrueValue);
-                var defaultCircleStrokeWeight = 2;
                 var mapCenter = isPositionDefined ? new L.LatLng($(this).data('lat'), $(this).data('lng')) : new L.LatLng(config.latitude, config.longitude);
                 var options = $(this).data('options') ? $(this).data('options') : {dragging: true, zoomControl: true, doubleClickZoom: true, scrollWheelZoom: true};
 
@@ -149,38 +120,10 @@
 
                 map.addLayer(marker);
 
-
-                var circle = new L.Circle(mapCenter, defaultMaxCircleRadius, {className : 'vetorial-padrao'});
-                circle.addTo(map);
-
-                var circleIcon = L.divIcon({
-                    className: 'marker-circle-icon',
-                    iconSize: new L.Point(circle._radius * 2, circle._radius * 2)
-                });
-
                 marker.on('move', function(e) {
-                    //var position = e.latlng;
-                    circle.setLatLng(e.latlng);
-                    //se for só visualização, não tem editable, não seta valor
                     if (isEditable)
                         $dataTarget.editable('setValue', [e.latlng.lng, e.latlng.lat]);
 
-                });
-
-
-                if (!isPrecise) {
-                    marker.setIcon(new L.divIcon({className: 'marker-circle-icon', iconSize: new L.Point(circle._radius * 2, circle._radius * 2)}));
-                    setTimeout(function() {
-                        map.setZoom(defaultAproximatePrecisionZoom);
-                    });
-                } else {
-                    map.removeLayer(circle);
-                    //map.setZoom(defaultLocateMaxZoom);
-                }
-
-                map.on('zoomend', function() {
-                    if (!isPrecise)
-                        marker.setIcon(new L.divIcon({className: 'marker-circle-icon', iconSize: new L.Point(circle._radius * 2, circle._radius * 2)}));
                 });
 
                 if (isPositionDefined) {
@@ -194,11 +137,6 @@
                         radius = defaultMaxCircleRadius;
 
                     marker.setLatLng(e.latlng);
-                    //circle = new L.Circle(mapCenter, defaultMaxCircleRadius, {draggable: true, weight:defaultCircleStrokeWeight});
-                    if (!isPrecise)
-                        marker.setIcon(circleIcon);
-                    else
-                        map.removeLayer(circle);
                 });
 
                 map.on('locationerror', function(e) {
@@ -206,46 +144,9 @@
                     // console.log(e.message);
                 });
 
-
-                marker.on('drag', function(e) {
-                    circle.setLatLng(e.target.getLatLng());
-                });
-
                 map.on('click', function(e) {
-
-                    //se for só visualização, não edição
                     if (isEditable && MapasCulturais.request.controller !== 'event')
                         marker.setLatLng(e.latlng);
-                });
-
-                var $dataPrecisionRadios = $('input[name="' + id + '-precisionOption"]');
-                $dataPrecisionRadios.each(function() {
-                    $(this).on('change', function() {
-
-                        var editable = $('#' + id + '-precisionOption').data('editable');
-                        editable.setValue(this.value);
-                        isPrecise = (this.value == dataPrecisionTrueValue);
-                        changePrecision(this.value, isPrecise, map, marker, circle, $dataTarget);
-                    });
-                });
-
-                $dataPrecisionOption.on("shown", function(e) {
-                    var editable = $(this).data('editable');
-                    if (!editable.input.$input)
-                        return;
-
-                    editable.input.$input.on('change', function(ev) {
-                        editable.setValue(this.value);
-                        editable.$element.triggerHandler('changePrecision');
-                    });
-
-                });
-
-                $dataPrecisionOption.on("changePrecision", function() {
-                    var editable = $(this).data('editable');
-                    var v = editable.input.$input.val();
-                    isPrecise = (v == dataPrecisionTrueValue);
-                    changePrecision(v, isPrecise, map, marker, circle, $dataTarget);
                 });
 
                 $('#buttonLocateMe').click(function() {
@@ -276,14 +177,7 @@
                         );
                 };
 
-                /*Esconde os controles antigos por enquanto*/
-                $('.btn-group[data-toggle="buttons-radio"],#buttonLocateMe').hide();
-                $('#buttonSubprefs, #buttonSubprefs_off').hide();
-
-
-
                 // activate google service
-
                 var geocoder = null;
                 if(typeof google !== 'undefined')
                     geocoder =  new google.maps.Geocoder();
@@ -296,7 +190,7 @@
                     if (status == google.maps.GeocoderStatus.OK) {
                         var location = results[0].geometry.location;
                         var foundLocation = new L.latLng(location.lat(), location.lng());
-                        map.setView(foundLocation, isPrecise ? config.zoomPrecisse : config.zoomApproximate);
+                        map.setView(foundLocation, config.zoomPrecise);
                         marker.setLatLng(foundLocation);
                     }
                 }
@@ -482,37 +376,14 @@
                 e.stopPropagation();
             });
 
-
-
     };
+
     $(function(){
 
-        if($('body').hasClass('controller-agent')){
-            if(MapasCulturais.isEditable){
-                if($('#map-precisionOption').editable('getValue').precisao){
-                    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-                }else{
-                    $('.js-map').parent().hide();
-                }
-                $('#map-precisionOption').on('hidden', function(){
-                    var val = $(this).data('editable').value;
-                    if(val){
-                        $('.js-map-container').show();
-                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-                    }else{
-                        $('.js-map-container').hide();
-                    }
+        if($('body').hasClass('controller-agent') || $('body').hasClass('controller-space')){
+            MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+        }
 
-                });
-            }else{
-                MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-            }
-        }
-        
-        if($('body').hasClass('controller-space')){
-            MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});    
-        }
-        
         var timeout;
         $(window).scroll(function() {
             try{
