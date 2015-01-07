@@ -5,19 +5,28 @@
 
 #search-results-header {
     position: relative;
-    min-height: 2*$line-height-base;
+    max-height: 2*$line-height-base;
     padding: 0 141px 0 0;
     background-color: $gray-lighter;
     color: $brand-accent;
+    @media screen and (min-width: $screen-tablet) {
+        min-height: 2*$line-height-base;
+        max-height: auto;
+    }
 }
 #search-results {
     display: inline-block;
+    max-width: 100%;
     margin: $padding-base 0;
     padding: 0 $padding-base;
     box-sizing: border-box;
     font-size: .70rem;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     @media screen and (min-width: $screen-tablet) {
+        max-width: none;
+        overflow: auto;
         border-right: 2px solid #d3d3d3;
         font-size: $font-size-smaller;
     }
