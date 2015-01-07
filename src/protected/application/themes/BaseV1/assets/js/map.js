@@ -354,13 +354,10 @@
 
                 };
 
-
                 if (initializerOptions.exportToGlobalScope) {
                     window.leaflet.map = map;
-                    window.leaflet.circle = circle;
                     window.leaflet.marker = marker;
                 }
-
             });
 
 
