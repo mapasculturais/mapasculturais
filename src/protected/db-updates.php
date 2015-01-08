@@ -263,5 +263,18 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
                 (key = 'descricaoSonora' AND value='Áudio descrição')
                 ");
         return true;
-    }
+    },
+
+    'agent_meta location from precise/approximate to public/private' => function() use($conn) {
+        $conn->executeQuery("
+            INSERT INTO agent_meta (object_id, key, value)
+            SELECT object_id, 'localizacao', 'Pública' FROM agent_meta WHERE key = 'precisao' AND value = 'Precisa'
+        ");
+        $conn->executeQuery("
+            INSERT INTO agent_meta (object_id, key, value)
+            SELECT object_id, 'localizacao', 'Privada' FROM agent_meta WHERE key = 'precisao' AND value = 'Aproximada'
+        ");
+        return true;
+    },
+
 );
