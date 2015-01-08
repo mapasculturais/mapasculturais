@@ -81,14 +81,12 @@ $this->includeMapAssets();
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <article class="col-60 main-content event">
     <header class="main-content-header">
-        <div
-        <?php if ($header = $entity->getFile('header')): ?>
-                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-            <?php elseif($this->isEditable()): ?>
-                class="imagem-do-header js-imagem-do-header"
+        <div class="imagem-do-header js-imagem-do-header"
+            <?php if($header = $entity->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
-            >
-                <?php if ($this->isEditable()): ?>
+        >
+            <?php if ($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
@@ -330,7 +328,6 @@ $this->includeMapAssets();
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">
-    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if($this->isEditable()): ?>
         <div class="widget">
@@ -375,7 +372,6 @@ $this->includeMapAssets();
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <div class="sidebar event sidebar-right">
-    <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
     <?php endif; ?>

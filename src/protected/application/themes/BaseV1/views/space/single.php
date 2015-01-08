@@ -18,11 +18,9 @@ $this->includeAngularEntityAssets($entity);
 
 <article class="main-content space">
     <header class="main-content-header">
-        <div
+        <div class="imagem-do-header js-imagem-do-header"
             <?php if($header = $entity->getFile('header')): ?>
-                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-                 <?php elseif($this->isEditable()): ?>
-                 class="imagem-do-header js-imagem-do-header"
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
         >
             <?php if($this->isEditable()): ?>
@@ -190,7 +188,6 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar space">
-    <div class="setinha"></div>
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
         <h3>Status</h3>
@@ -219,7 +216,6 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <div class="sidebar space sidebar-right">
-    <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
     <?php endif; ?>

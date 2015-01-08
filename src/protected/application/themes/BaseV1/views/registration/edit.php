@@ -15,6 +15,11 @@ $this->includeAngularEntityAssets($entity);
 <article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
         <div<?php if($header = $project->getFile('header')): ?> style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem" <?php endif; ?>>
+        <div class="imagem-do-header"
+            <?php if($header = $project->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
+            <?php endif; ?>
+        >
         </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">
@@ -135,8 +140,6 @@ $this->includeAngularEntityAssets($entity);
     </div>
 </article>
 <div class="sidebar-left sidebar registration">
-    <div class="setinha"></div>
 </div>
 <div class="sidebar registration sidebar-right">
-    <div class="setinha"></div>
 </div>
