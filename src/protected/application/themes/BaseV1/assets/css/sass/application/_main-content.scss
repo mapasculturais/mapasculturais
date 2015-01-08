@@ -4,15 +4,25 @@
     background: #fff;
     border-radius: 0 0 2px 2px;
     padding: 2rem;
-    @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    @media screen and (min-width: $screen-tablet) {
         float: left;
-        width: 75%;
         margin-bottom: 4rem;
     }
-    @media screen and (min-width: $screen-md-min) {
-        display: inline-block;
-        padding: 4rem;
+    @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
+        width: 75%;
+
+    }
+    @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
         width: 60%;
+        margin-left: 20%;
+        margin-right: -80%;
+        padding: 4rem;
+    }
+    @media screen and (min-width: 1367px) {
+        width: 60%;
+        margin-left: 15%;
+        margin-right: -85%;
+        padding: 4rem;
     }
     @media print {
     	width: 100%;
