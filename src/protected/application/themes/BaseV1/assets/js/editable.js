@@ -490,7 +490,7 @@ MapasCulturais.Editables = {
 
                     }else{
 
-                        $('.js-geo-division').each(function(){
+                        $('.js-geo-division-address').each(function(){
                             var r = response[$(this).data('metakey')];
                             $(this).html(r ? r : '');
                             $(this).parent().css('display', r ? 'block' : 'none');
