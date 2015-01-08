@@ -339,7 +339,29 @@
 
     $(function(){
 
-        if($('body').hasClass('controller-agent') || $('body').hasClass('controller-space')){
+        if($('body').hasClass('controller-agent')){
+            if(MapasCulturais.isEditable){
+                if($('[data-edit="localizacao"]').editable('getValue').localizacao){
+                    MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                }else{
+                    $('.js-map').parent().hide();
+                }
+                $('[data-edit="localizacao"]').on('hidden', function(){
+                    var val = $(this).data('editable').value;
+                    if(val){
+                        $('.js-map-container').show();
+                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                    }else{
+                        $('.js-map-container').hide();
+                    }
+
+                });
+            }else{
+                MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+            }
+        }
+
+        if($('body').hasClass('controller-space')){
             MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
         }
 

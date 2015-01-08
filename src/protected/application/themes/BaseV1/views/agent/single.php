@@ -135,7 +135,7 @@ $this->includeAngularEntityAssets($entity);
                         <?php if($this->isEditable()): ?>
                             <p class="privado">
                                 <span class="icone icon_lock"></span><span class="label">Localização:</span>
-                                <span class="js-editable" data-edit="localizacao"><?php echo $entity->localizacao ? $entity->localizacao : 'Pública'; ?></span>
+                                <span class="js-editable" data-edit="localizacao" data-emptytext="Não Informar"><?php echo $entity->localizacao ? $entity->localizacao : ''; ?></span>
                             </p>
                         <?php endif; ?>
                         <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
