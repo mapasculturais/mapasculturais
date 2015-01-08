@@ -352,6 +352,7 @@
                         $('.js-map-container').show();
                         MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                     }else{
+                        $dataTarget.editable('setValue', [0, 0]);
                         $('.js-map-container').hide();
                     }
 
