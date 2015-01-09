@@ -114,7 +114,7 @@ return array(
         'required' => true,
         'label' => 'Agente Responsável',
         'agentRelationGroupName' => 'owner',
-        'description' => 'Agente individual com CPF, Raça/Cor, Data de Nascimento, Gênero, Email Privado e Telefone 1',
+        'description' => 'Agente individual com CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1',
         'type' => 1,
         'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
