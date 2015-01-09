@@ -3,9 +3,10 @@
     -moz-box-sizing: border-box;
     background: #fff;
     border-radius: 0 0 2px 2px;
-    padding: 2rem;
+    padding: $padding-base;
     @media screen and (min-width: $screen-tablet) {
         float: left;
+        padding: 2rem;
         margin-bottom: 4rem;
     }
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {

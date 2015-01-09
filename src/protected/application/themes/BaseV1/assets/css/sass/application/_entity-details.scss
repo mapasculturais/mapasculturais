@@ -1,10 +1,13 @@
 .ficha-spcultura {
     margin-bottom: $line-height-base;
-    padding: $padding-large;
+    padding: $padding-base;
     background: #f8f8f8;
     border-radius: $border-radius-base;
     font-size: $font-size-small;
     color: #888;
+    @media screen and (min-width: $screen-tablet) {
+        padding: $padding-large;
+    }
 }
 .servico {
     margin-bottom: $line-height-base;
