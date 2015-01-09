@@ -123,7 +123,7 @@ return array(
             'required' => false,
             'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'Agente coletivo com CNPJ',
+            'description' => 'Agente coletivo com CNPJ, Data de Nascimento, Email Privado e Telefone 1',
             'type' => 2,
             'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
@@ -131,7 +131,7 @@ return array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'Agente coletivo sem CNPJ',
+            'description' => 'Agente coletivo sem CNPJ, com Data de Nascimento e Email Privado',
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
