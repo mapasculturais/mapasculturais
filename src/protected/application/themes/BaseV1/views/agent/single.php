@@ -138,7 +138,7 @@ $this->includeAngularEntityAssets($entity);
                                 <span class="js-editable" data-edit="localizacao" data-emptytext="Não Informar"><?php echo $entity->localizacao ? $entity->localizacao : ''; ?></span>
                             </p>
                         <?php endif; ?>
-                        <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
+                        <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
                         <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
                             <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
                                 <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
