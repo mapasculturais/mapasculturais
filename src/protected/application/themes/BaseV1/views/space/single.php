@@ -137,23 +137,20 @@ $this->includeAngularEntityAssets($entity);
             <?php if ( $this->isEditable() || ($lat && $lng) ): ?>
                 <div class="servico clearfix">
                     <div class="mapa">
-                        <?php if($this->isEditable()): ?>
-                            <button id="buttonLocateMe" class="btn btn-small btn-success" >Localize-me</button>
+                        <?php if( $this->isEditable()): ?>
+                            <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
+                                <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="Encontrar minha localização"></a>
+                            </div>
                         <?php endif; ?>
-                        <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>">
-                        </div>
-                        <button id="buttonSubprefs" class="btn btn-small btn-success" ><i class="icon-map-marker"></i>Mostrar Subprefeituras</button>
-                        <button id="buttonSubprefs_off" class="btn btn-small btn-danger" ><i class="icon-map-marker"></i>Esconder Subprefeituras</button>
-                        <script>
-                            $('input[name="map-precisionOption"][value="<?php echo $entity->precisao; ?>"]').attr('checked', true);
-                        </script>
                         <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
                     </div>
                     <!--.mapa-->
                     <div class="infos">
                         <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço, se optar pela localização aproximada, informe apenas o CEP" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
                         <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
-                            <p><span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span></p>
+                            <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
+                                <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
+                            </p>
                         <?php endforeach; ?>
                     </div>
                     <!--.infos-->

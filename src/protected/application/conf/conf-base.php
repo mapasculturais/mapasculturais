@@ -114,7 +114,7 @@ return array(
         'required' => true,
         'label' => 'Agente Responsável',
         'agentRelationGroupName' => 'owner',
-        'description' => 'Agente individual com CPF cadastrado',
+        'description' => 'Agente individual com os campos CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos',
         'type' => 1,
         'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
@@ -123,7 +123,7 @@ return array(
             'required' => false,
             'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'Agente coletivo com CNPJ',
+            'description' => 'Agente coletivo com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
             'type' => 2,
             'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
@@ -131,7 +131,7 @@ return array(
             'required' => false,
             'label' => 'Coletivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'Agente coletivo sem CNPJ',
+            'description' => 'Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email Privado obrigatoriamente preenchidos',
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )

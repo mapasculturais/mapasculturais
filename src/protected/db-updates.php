@@ -263,5 +263,27 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
                 (key = 'descricaoSonora' AND value='Áudio descrição')
                 ");
         return true;
-    }
+    },
+
+    'agent_meta location from precise/approximate to public/private' => function() use($conn) {
+        echo 'Inserindo em agent_meta "localização" = "Pública" onde "precisao" = "Precisa"'."\n";
+        $conn->executeQuery("
+            INSERT INTO agent_meta (object_id, key, value)
+            SELECT object_id, 'localizacao', 'Pública' FROM agent_meta WHERE key = 'precisao' AND value = 'Precisa'
+        ");
+        echo 'Inserindo em agent_meta "localização" = "Privada" onde "precisao" = "Aproximada"'."\n";
+        $conn->executeQuery("
+            INSERT INTO agent_meta (object_id, key, value)
+            SELECT object_id, 'localizacao', 'Privada' FROM agent_meta WHERE key = 'precisao' AND value = 'Aproximada'
+        ");
+        echo 'Inserindo em agent_meta "localização" = "Privada" para agentes com _geo_location mas sem precisão definida'."\n";
+        $conn->executeQuery("
+            INSERT INTO agent_meta (object_id, key, value)
+            SELECT id, 'localizacao', 'Privada' FROM agent
+            WHERE _geo_location IS NOT NULL AND _geo_location != ST_Transform(ST_GeomFromText('POINT(0 0)',4326),4326)
+            AND id NOT IN (SELECT DISTINCT (object_id) FROM agent_meta WHERE key = 'precisao')
+        ");
+        return true;
+    },
+
 );

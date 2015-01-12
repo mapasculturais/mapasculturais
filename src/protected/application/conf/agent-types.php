@@ -68,6 +68,7 @@ return array(
             'label' => 'Localização',
             'type' => 'select',
             'options' => array(
+                '' => 'Não Informar',
                 'Pública' => 'Pública',
                 'Privada' => 'Privada'
             )
