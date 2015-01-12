@@ -10,7 +10,7 @@
       method="post"
       action="<?php echo $this->controller->createUrl('upload', array('id' => $file_owner->id)) ?>"
       enctype="multipart/form-data">
-    <div class="alert danger escondido"></div>
+    <div class="alert danger hidden"></div>
     <?php if($response_template): ?><script type="js-template"><?php echo $response_template; ?></script><?php endif; ?>
     <?php if($add_description): ?> <input type="text" name="description[<?php echo $file_group ?>]" placeholder="Título" /><br /><?php endif; ?>
 

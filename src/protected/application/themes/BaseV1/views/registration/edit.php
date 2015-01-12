@@ -116,7 +116,7 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                     <edit-box id="editbox-file-{{fileConfiguration.id}}" position="bottom" title="{{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendFile" submit-label="Enviar anexo" index="{{$index}}" spinner-condition="data.uploadSpinner">
                         <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{fileConfiguration.groupName}}"  enctype="multipart/form-data">
-                            <div class="alert danger escondido"></div>
+                            <div class="alert danger hidden"></div>
                             <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                             <input type="file" name="{{fileConfiguration.groupName}}" />
 

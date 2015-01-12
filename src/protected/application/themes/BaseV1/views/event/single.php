@@ -396,7 +396,7 @@ $this->includeMapAssets();
 <?php if ($this->isEditable()): ?>
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
     <form action="{{formAction}}" method="POST">
-        <div class="alert danger escondido"></div>
+        <div class="alert danger hidden"></div>
         <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
         <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
