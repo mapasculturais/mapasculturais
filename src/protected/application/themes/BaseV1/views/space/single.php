@@ -142,6 +142,7 @@ $this->includeAngularEntityAssets($entity);
                                 <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="Encontrar minha localização"></a>
                             </div>
                         <?php endif; ?>
+                        <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
                         <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
                     </div>
                     <!--.mapa-->
