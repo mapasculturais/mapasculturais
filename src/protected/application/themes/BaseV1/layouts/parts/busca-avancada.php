@@ -1,9 +1,9 @@
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <div id="filter-projects" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'project'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Projetos
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -26,7 +26,7 @@
             </div>
             <!--.filter-->
             <div class="filter">
-                <span class="icone icon_check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
+                <span class="icon check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
                 <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">Inscrições Abertas</span>
             </div>
             <!--.filter-->
@@ -39,9 +39,9 @@
     <!--#filter-projects-->
     <div id="filter-events" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'event'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Eventos
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -92,9 +92,9 @@
     <!--#filter-events-->
     <div id="filter-agents" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'agent'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Agentes
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -139,9 +139,9 @@
     <!--#filter-agents-->
     <div id="filter-spaces" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'space'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Espaços
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -178,7 +178,7 @@
             </div>
             <!--.filter-->
             <div class="filter">
-                <span class="icone icon_check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
+                <span class="icon check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
                 <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
             </div>
             <!--.filter-->
@@ -192,20 +192,20 @@
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
             <div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
-                <a class="hltip icone icon_menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
-                <a class="hltip icone icon_map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
+                <a class="hltip icon menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
+                <a class="hltip icon map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
             </div>
             <div id="export-tools" data-toggle="share-search-results">
-                <a class="hltip icone icon_download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                <a class="hltip icon download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
             </div>
             <div id="share-tools">
-                <a class="hltip icone social_share" title="Compartilhar resultado"></a>
+                <a class="hltip icon share" title="Compartilhar resultado"></a>
                 <form id="share-url" class="share-search-results">
                     <label for="search-url">Compartilhar resultado: </label>
                     <input id="search-url" name="search-url" type="text" ng-value="location.absUrl()" />
-                    <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icone social_twitter"></a>
-                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icone social_facebook"></a>
-                    <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icone social_googleplus"></a>
+                    <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icon twitter"></a>
+                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icon facebook"></a>
+                    <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icon googleplus"></a>
                 </form>
             </div>
         </div>

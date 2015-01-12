@@ -332,7 +332,7 @@ MapasCulturais.Modal = {
 
             $dialog.data('dialog-init', 1);
             $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
-            $dialog.prepend('<a href="#" class="js-close icone icon_close"></a>');
+            $dialog.prepend('<a href="#" class="js-close icon close"></a>');
 
             // close button
             $dialog.find('.js-close').click(function (){

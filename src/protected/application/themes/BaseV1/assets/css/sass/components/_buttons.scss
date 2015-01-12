@@ -48,22 +48,22 @@
     }
 }
 .add:before {
-    content: '\e050';
+    content: $unicode_plus_alt;
 }
 .edit:before {
-    content: '\6c';
+    content: $unicode_pencil-edit;
 }
 .send:before {
-    content: '\e091';
+    content: $unicode_upload;
 }
 .download:before {
-    content: '\e092';
+    content: $unicode_download;
 }
 .delete:before {
-    content: '\e051';
+    content: $unicode_close_alt;
 }
 .insert:before {
-    content: '\37';
+    content: $unicode_arrow_carrot-2down;
 }
 
 .btn.add,

@@ -15,19 +15,19 @@
     font-style: none;
 }
 .info:before {
-    content: '\e007';
+    content: $unicode_lightbulb_alt;
     color: $brand-info;
 }
 .warning:before {
-    content: '\e061';
+    content: $unicode_error-circle;
     color: $brand-warning;
 }
 .danger:before {
-    content: '\e061';
+    content: $unicode_error-circle;
     color: $brand-danger;
 }
 .success:before {
-    content: '\e052';
+    content: $unicode_check_alt;
     color: $brand-success;
 }
 .alert {
@@ -75,7 +75,7 @@
         font-size: 1rem;
         line-height: 1.5rem;
         &:before {
-            content: '\e051';
+            content: $unicode_close_alt;
         }
     }
     ul {

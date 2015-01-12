@@ -34,7 +34,7 @@
     padding: 2rem .75rem .75rem;
     border-radius: 0;
     background: #fff;
-    .icon_close {
+    .close {
         position: absolute;
         top: .5rem;
         right: .5rem;
@@ -45,7 +45,7 @@
         border-radius: $border-radius-base;
         padding: $padding-small;
         font-size: $font-size-smaller;
-        .icone {
+        .icon {
             margin: -3px 5px 0 0;
         }
     }
@@ -157,7 +157,7 @@
     }
     .btn-map-event {
         &:before {
-            content: "\e023";
+            content: $unicode_calendar;
         }
         &.active, &:hover {
             background-color: $brand-event;
@@ -165,7 +165,7 @@
     }
     .btn-map-agent {
         &:before {
-            content: "\e08a";
+            content: $unicode_profile;
         }
         &.active, &:hover {
             background-color: $brand-agent;
@@ -173,7 +173,7 @@
     }
     .btn-map-space {
         &:before {
-            content: "\e0ef";
+            content: $unicode_building;
         }
         &.active, &:hover {
             background-color: $brand-space;

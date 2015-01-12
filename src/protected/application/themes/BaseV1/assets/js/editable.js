@@ -1,7 +1,7 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
 jQuery(function(){
-    $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button><button type="button" class="editable-cancel"><span class="icone icon_close"></span></button>';
+    $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button><button type="button" class="editable-cancel"><span class="icon close"></span></button>';
     $.fn.select2.defaults.separator = '; ';
     $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.Editables.init('#editable-entity');
@@ -169,9 +169,9 @@ MapasCulturais.Editables = {
     initSpacePublicEditable: function(){
         $('#editable-space-status').on('hidden', function(e, reason) {
             if($(this).editable('getValue', true) == '1'){
-                $('#editable-space-status').html('<div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon lock-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
             }else{
-                $('#editable-space-status').html('<div class="venue-status"><div class="icone icon_lock"></div>Publicação restrita</div><p class="venue-status-definition">Requer autorização para criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon lock"></div>Publicação restrita</div><p class="venue-status-definition">Requer autorização para criar eventos.</p>');
             }
         });
     },

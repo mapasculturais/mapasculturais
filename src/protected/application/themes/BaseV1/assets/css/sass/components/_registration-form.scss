@@ -166,7 +166,7 @@
             word-wrap: break-word;
         	&:before {
         		@extend %icon;
-        		content: "\e016";
+        		content: $unicode_paperclip;
                 margin-right: 3px;
         	}
         }

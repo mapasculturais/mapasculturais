@@ -11,7 +11,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                         data-response-target='#link-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='editar'></a>
-                    <a class='icone icon_close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='Excluir este link?' title='excluir'></a>
+                    <a class='icon close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='Excluir este link?' title='excluir'></a>
                 </div>
             </li>";
 ?>

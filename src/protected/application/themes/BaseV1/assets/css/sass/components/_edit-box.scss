@@ -12,7 +12,7 @@
     }
     &:after {
         margin-left: 5px;
-        content: '\6c';
+        content: $unicode_pencil-edit;
         font-size: $font-size-base;
         line-height: 1rem;
         font-family: $icon-font-name;
@@ -69,7 +69,7 @@
 .edit-box .mc-cancel {
     padding: 3px;
 }
-.edit-box .mc-cancel .icon_close {
+.edit-box .mc-cancel .close {
     font-size: 1.5rem;
 }
 .edit-box.mc-top .mc-arrow,

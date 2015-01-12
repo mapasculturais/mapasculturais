@@ -23,10 +23,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 .radio-button:before {
-    content: '\5b';
+    content: $unicode_circle-empty;
 }
 .radio-button.selected:before {
-    content: '\5c';
+    content: $unicode_circle-slelected;
 }
 /* Date picker*/
 input.data {

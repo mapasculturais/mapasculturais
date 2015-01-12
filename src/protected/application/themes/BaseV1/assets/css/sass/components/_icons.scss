@@ -1,38 +1,164 @@
 /*ícones*/
-.icone {
-    display: inline-block;
-    vertical-align: middle;
+.icon {
+    @extend %icon;
 }
-a.icone:hover {
-    text-decoration: none;
-}
-h1 .icone {
+h1 .icon {
     width: 2rem;
     height: 2rem;
     margin-right: .75rem;
     font-size: 2rem;
     line-height: inherit;
 }
-.icon_check {
+.adjust-vert {
+    &:before {
+        content: $unicode_adjust-vert;
+    }
+}
+.arrow_carrot-down {
+    &:before {
+        content: $unicode_arrow_carrot-down;
+    }
+}
+.arrow_left {
+    &:before {
+        content: $unicode_arrow_left;
+    }
+}
+.arrow_carrot-up {
+    &:before {
+        content: $unicode_arrow_carrot-up;
+    }
+}
+.building {
+    &:before {
+        content: $unicode_building;
+    }
+}
+.calendar {
+    &:before {
+        content: $unicode_calendar;
+    }
+}
+.check {
     margin-right: .5rem;
     background: #fff;
     color: $gray;
     padding: 2px;
     border-radius: $border-radius-base;
+    &:before {
+        content: $unicode_check;
+    }
+    &:hover {
+        color: $brand-accent;
+    }
+    &.selected {
+        background: $brand-accent;
+        color: #fff !important;
+    }
 }
-.icon_check:hover {
-    color: $brand-accent;
+.close {
+    &:before {
+        content: $unicode_close;
+    }
 }
-.icon_check.selected {
-    background: $brand-accent;
-    color: #fff !important;
+.comment {
+    &:before {
+        content: $unicode_comment;
+    }
 }
-.social_twitter {
+.document_alt {
+    &:before {
+        content: $unicode_document_alt;
+    }
+}
+.download {
+    &:before {
+        content: $unicode_download;
+    }
+}
+.info {
+    &:before {
+        content: $unicode_info;
+    }
+}
+.house {
+    &:before {
+        content: $unicode_house;
+    }
+}
+.lock {
+    &:before {
+        content: $unicode_lock;
+    }
+}
+.lock-open {
+    &:before {
+        content: $unicode_lock-open;
+    }
+}
+.map {
+    &:before {
+        content: $unicode_map;
+    }
+}
+.menu-square_alt {
+    &:before {
+        content: $unicode_menu-square_alt;
+    }
+}
+.pin {
+    &:before {
+        content: $unicode_pin;
+    }
+}
+.plus {
+    &:before {
+        content: $unicode_plus;
+    }
+}
+.profile {
+    &:before {
+        content: $unicode_profile;
+    }
+}
+.question_alt {
+    &:before {
+        content: $unicode_question_alt;
+    }
+}
+.search {
+    &:before {
+        content: $unicode_search;
+    }
+}
+.share {
+    &:before {
+        content: $unicode_share;
+    }
+}
+.tools {
+    &:before {
+        content: $unicode_tools;
+    }
+}
+
+/* social icons */
+
+.twitter {
     color: #00acee !important;
+    &:before {
+        content: $unicode_twitter;
+    }
 }
-.social_facebook {
+.facebook {
     color: #3b5998 !important;
+    &:before {
+        content: $unicode_facebook;
+    }
 }
-.social_googleplus {
+.googleplus {
     color: #dd4b39 !important;
+    &:before {
+        content: $unicode_googleplus;
+    }
 }

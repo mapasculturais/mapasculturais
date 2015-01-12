@@ -197,7 +197,7 @@
 
                         var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
                         controlUI.title = 'Localizar sua posição através do navegador';
-                        controlUI.innerHTML = '<span class="icone icon_pin"></span> Localize-me';
+                        controlUI.innerHTML = '<span class="icon pin"></span> Localize-me';
                         return controlDiv;
                     }
                 });

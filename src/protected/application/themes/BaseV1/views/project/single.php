@@ -47,7 +47,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.avatar-->
             <div class="entity-type project-type">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon document_alt"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='project' data-value='<?php echo $entity->type ?>'>
                     <?php echo $entity->type? $entity->type->name : ''; ?>
                 </a>
@@ -397,7 +397,7 @@ $this->includeAngularEntityAssets($entity);
     <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content privado">
         <?php if($entity->canUser('@control')): ?>
             <div class="clearfix">
-                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
+                <h3 class="alignleft"><span class="icon lock"></span>Inscritos</h3>
                 <a class="alignright btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
             </div>
             <div id='status-info' class="alert info">
@@ -458,7 +458,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                            <a ng-if="reg.files.zipArchive.url" class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
+                            <a ng-if="reg.files.zipArchive.url" class="icon download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>

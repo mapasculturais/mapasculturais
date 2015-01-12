@@ -87,7 +87,49 @@ $icon-font-name:          "ElegantIcons" !default;
 //** Element ID within SVG icon file.
 $icon-font-svg-id:        "ElegantIcons" !default;
 
-
+//** Icon's unicode
+$unicode_arrow_carrot-2down:    "\37"   !default;
+$unicode_arrow_carrot-down:     "\33"   !default;
+$unicode_arrow_carrot-left:     "\e045" !default;
+$unicode_arrow_carrot-right:    "\e046" !default;
+$unicode_arrow_carrot-up:       "\32"   !default;
+$unicode_arrow_expand_alt3:     "\e042" !default;
+$unicode_arrow_left:            "\e03b" !default;
+$unicode_adjust-vert:           "\67"   !default;
+$unicode_building:              "\e0ef" !default;
+$unicode_calendar:              "\e023" !default;
+$unicode_check:                 "\4e"   !default;
+$unicode_check_alt:             "\e052" !default;
+$unicode_circle-empty:          "\5b"   !default;
+$unicode_circle-slelected:      "\5c"   !default;
+$unicode_close:                 "\4d"   !default;
+$unicode_close_alt:             "\e051" !default;
+$unicode_comment:               "\e065" !default;
+$unicode_document_alt:          "\68"   !default;
+$unicode_download:              "\e092" !default;
+$unicode_error-circle:          "\e061" !default;
+$unicode_info:                  "\e060" !default;
+$unicode_house:                 "\e074" !default;
+$unicode_lightbulb_alt:         "\e007" !default;
+$unicode_lock:                  "\e06c" !default;
+$unicode_lock-open:             "\e000" !default;
+$unicode_map:                   "\e083" !default;
+$unicode_menu-square_alt:       "\e056" !default;
+$unicode_paperclip:             "\e016" !default;
+$unicode_pencil-edit:           "\6c"   !default;
+$unicode_pin:                   "\e081" !default;
+$unicode_plus:                  "\4c"   !default;
+$unicode_plus_alt:              "\e050" !default;
+$unicode_profile:               "\e08a" !default;
+$unicode_question_alt:          "\e064" !default;
+$unicode_search:                "\55"   !default;
+$unicode_tools:                 "\e035" !default;
+$unicode_upload:                "\e091" !default;
+// social icons
+$unicode_share:                "\e0a0"   !default;
+$unicode_twitter:               "\e094" !default;
+$unicode_facebook:              "\e093" !default;
+$unicode_googleplus:            "\e096" !default;
 
 //== Components
 //
