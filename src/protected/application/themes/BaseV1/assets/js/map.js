@@ -124,7 +124,7 @@
                     marker.setLatLng(e.latlng);
             });
 
-            $('#button-locate-me').click(function() {
+            $('#locate-me').click(function() {
                 map.locate({setView: true, maxZoom: defaultLocateMaxZoom});
             });
 

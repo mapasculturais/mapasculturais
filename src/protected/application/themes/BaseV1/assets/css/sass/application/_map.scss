@@ -73,6 +73,13 @@
     color: #fff;
     text-align: center;
 }
+#near-me, #locate-me {
+    display: inline-block;
+    background: $brand-accent url(../img/icon-localizacao.png) center no-repeat;
+    &:hover {
+        background-color: $brand-primary;
+    }
+}
 //** filtro local
 #filtro-local {
     height: 1.875rem;
