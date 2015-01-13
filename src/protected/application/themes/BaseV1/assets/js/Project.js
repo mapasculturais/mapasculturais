@@ -301,17 +301,17 @@
                     {value: null, label: 'Todas'},
                     {value: 1, label: 'Pendente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Rejeitada'},
+                    {value: 3, label: 'Não selecionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovada'}
+                    {value: 10, label: 'Selecionada'}
                 ],
 
                 registrationStatusesNames: [
                     {value: 1, label: 'Pendente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Rejeitada'},
+                    {value: 3, label: 'Não selecionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovada'},
+                    {value: 10, label: 'Selecionada'},
                     {value: 0, label: 'Rascunho'}
                 ],
 
