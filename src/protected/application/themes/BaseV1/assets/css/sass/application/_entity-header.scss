@@ -20,11 +20,14 @@
 .imagem-do-header {
     position: relative;
     height: 12rem;
-    margin: -2rem -2rem 2rem;
+    margin: -$padding-base;
     background-color: $gray;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    @media screen and (min-width: $screen-tablet) {
+        margin: -2rem -2rem 2rem;
+    }
     @media screen and (min-width: $screen-lg-desktop) {
         margin: -4rem -4rem 4rem;
     }
