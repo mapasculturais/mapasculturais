@@ -13,9 +13,12 @@
     border-radius: $border-radius-base;
     font-size: $font-size-smaller;
     line-height: 1.875rem;
+    vertical-align: top; //to fix white space below due to hidden overflow
     .placeholder {
         padding: 0 $padding-large 0 $padding-small;
         cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
         &:after {
             content: '\33';
             position: absolute;
