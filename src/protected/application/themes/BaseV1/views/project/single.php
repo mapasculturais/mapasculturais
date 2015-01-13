@@ -397,15 +397,16 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content privado">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content">
         <?php if($entity->canUser('@control')): ?>
-            <div class="clearfix">
-                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
-            </div>
-            <div class="alert info hide-tablet">
-                <p>Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.</p>
-            </div>
+            <header id="header-inscritos" class="clearfix">
+                <h3>Inscritos</h3>
+                <div class="alert info hide-tablet">
+                    Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.
+                    <div class="close"></div>
+                </div>
+                <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
+            </header>
             <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
                 <ul>
@@ -484,7 +485,7 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 <?php else: ?>
                 <div class="clearfix">
-                    <a class="alignright btn btn-primary <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
+                    <a id="btn-publish-results" class="btn btn-primary <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
                 </div>
                 <?php endif; ?>
             <?php endif; ?>
