@@ -94,7 +94,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <div class="highlighted-message clearfix">
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                    <div class="alignleft">
+                    <div class="registration-dates">
                         Inscrições abertas de
                         <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong>
                         a
@@ -105,7 +105,7 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 <?php endif; ?>
                 <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
-                    <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
+                    <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
                 <?php endif; ?>
                 <div class="clear" ng-if="data.projectRegistrationsEnabled && data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
                         data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
@@ -375,6 +375,9 @@ $this->includeAngularEntityAssets($entity);
 
         <?php if($entity->isRegistrationOpen() && !$this->isEditable() && $entity->useRegistrations): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
+                <div class="registration-fieldset hide-tablet">
+                    <p class="registration-help">Não é possível realizar as inscrições online através desse dispositivo. Tente se inscrever a partir de um dispositivo com a tela maior.</p>
+                </div>
                 <form id="project-registration" class="registration-form clearfix">
                     <p class="registration-help">Para iniciar sua inscrição, selecione o Agente responsável. Ele deve ser um agente individual, com um CPF válido preenchido.</p>
                     <div>
@@ -400,14 +403,17 @@ $this->includeAngularEntityAssets($entity);
                 <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
                 <a class="alignright btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
             </div>
+            <div class="alert info hide-tablet">
+                <p>Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.</p>
+            </div>
             <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
                 <ul>
                     <li><span>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</span></li>
                     <li><span>Pendente - ainda não avaliada.</span></li>
-                    <li><span>Rejeitada - avaliada, mas não aprovada.</span></li>
+                    <li><span>Não selecionada - avaliada, mas não selecionada.</span></li>
                     <li><span>Suplente - avaliada, mas aguardando vaga.</span></li>
-                    <li><span>Aprovada - avaliada e aprovada.</span></li>
+                    <li><span>Selecionada - avaliada e selecionada.</span></li>
                     <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
                 </ul>
                 <div class="close"></div>
