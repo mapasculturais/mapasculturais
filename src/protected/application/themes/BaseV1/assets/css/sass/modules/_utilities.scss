@@ -44,6 +44,13 @@
 .last {
     margin-right: 0;
 }
+
+//responsive
+@media screen and (min-width: $screen-tablet) {
+    .hide-tablet {
+        display: none;
+    }
+}
 .oculto {
     display: none;
 }
