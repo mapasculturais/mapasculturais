@@ -19,7 +19,7 @@ $this->includeAngularEntityAssets($entity);
                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
         >
-
+        </div>
         <!--.imagem-do-header-->
         <div class="content-do-header">
             <?php if($avatar = $project->avatar): ?>
