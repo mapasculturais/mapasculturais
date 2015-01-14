@@ -37,6 +37,7 @@
     border-style: solid;
     border-width: 1px;
     font-size: $font-size-smaller;
+    text-align: left; //to make sure it's always aligned to the left.
     &.info {
         background: #cff;
         border-color: #9be7ee;
