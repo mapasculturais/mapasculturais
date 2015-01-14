@@ -3,7 +3,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
             Projetos
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -41,7 +41,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
             Eventos
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -94,7 +94,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
             Agentes
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -141,7 +141,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icone arrow_left"></a>
             Espaços
-            <a class="icone icon_adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">

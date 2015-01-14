@@ -143,6 +143,7 @@
         // animações do scroll
         $(window).scroll(adjustHeader).resize(adjustHeader);
         adjustHeader();
+        window.adjustHeader = adjustHeader;
 
         $('ul.abas').each(function() {
             // For each set of tabs, we want to keep track of

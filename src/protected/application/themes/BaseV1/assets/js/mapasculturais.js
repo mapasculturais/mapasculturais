@@ -36,6 +36,19 @@ $(function(){
         });
     }
 
+    //main nav submenus toggle on click
+    $('body').on('click', '.js-submenu-toggle', function(){
+        var $self = $(this),
+            $target = eval($self.data('submenu-target'));
+        //hides by clicking outside
+        $('body').one('click', function(event){
+            if($self.find(event.target).length == 0){
+                $target.fadeOut(0);
+            }
+        });
+        $target.fadeToggle(100);
+    });
+
     $('body').on('click', '.dropdown .placeholder', function(){
         var $dropdown = $(this).parents('.dropdown'),
             $submenu = $dropdown.find('.submenu-dropdown');

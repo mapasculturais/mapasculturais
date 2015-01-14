@@ -55,11 +55,11 @@
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
 
-                <a ng-click="notificationsSubmenu = !notificationsSubmenu">
+                <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="icone icon_comment"></div>
                     <div class="menu-item-label">Notificações</div>
                 </a>
-                <ul class="submenu" ng-show="notificationsSubmenu">
+                <ul class="submenu hidden">
                     <li>
                         <div class="clearfix">
                             <h6 class="alignleft">Notificações</h6>
@@ -99,7 +99,7 @@
             </li>
             <!--.notifications-->
             <li class="user">
-                <a href="#" ng-click="userSubmenu = !userSubmenu">
+                <a href="#" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="avatar">
                         <?php if ($app->user->profile->avatar): ?>
                             <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
@@ -108,7 +108,7 @@
                         <?php endif; ?>
                     </div>
                 </a>
-                <ul class="submenu" ng-show="userSubmenu">
+                <ul class="submenu hidden">
                     <li>
                         <a href="<?php echo $app->createUrl('panel'); ?>">Painel</a>
                     </li>
