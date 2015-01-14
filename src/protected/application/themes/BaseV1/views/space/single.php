@@ -18,7 +18,7 @@ $this->includeAngularEntityAssets($entity);
 
 <article class="main-content space">
     <header class="main-content-header">
-        <div class="imagem-do-header js-imagem-do-header"
+        <div class="header-image js-imagem-do-header"
             <?php if($header = $entity->getFile('header')): ?>
                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
@@ -31,12 +31,12 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
             <a class="verified-seal-small hltip active" title="" href="#" hltitle="Este Espaço é verificado."></a>
         </div>
-        <!--.imagem-do-header-->
+        <!--.header-image-->
         <!-- pro responsivo!!! -->
         <?php if($entity->isVerified): ?>
             <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
         <?php endif; ?>
-        <div class="content-do-header">
+        <div class="header-content">
             <?php if($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />

@@ -14,18 +14,18 @@ $this->includeAngularEntityAssets($entity);
 
 <article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
-        <div class="imagem-do-header"
+        <div class="header-image"
             <?php if($header = $project->getFile('header')): ?>
                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
         >
         </div>
-        <!--.imagem-do-header-->
+        <!--.header-image-->
         <!-- pro responsivo!!! -->
         <?php if($project->isVerified): ?>
             <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
         <?php endif; ?>
-        <div class="content-do-header">
+        <div class="header-content">
             <?php if($avatar = $project->avatar): ?>
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />

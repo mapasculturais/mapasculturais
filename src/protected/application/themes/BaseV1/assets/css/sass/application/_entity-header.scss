@@ -30,14 +30,19 @@
     }
 }
 
-.imagem-do-header {
+.header-image {
     position: relative;
     height: 12rem;
     margin: -$padding-base;
-    background-color: $gray;
+    background-image: url(../img/fundo.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    .btn {
+        position: absolute;
+        bottom: $line-height-base;
+        right: $line-height-base;
+    }
     @media screen and (min-width: $screen-tablet) {
         margin: -2rem -2rem 2rem;
     }
@@ -45,18 +50,27 @@
         margin: -4rem -4rem 4rem;
     }
 }
-.imagem-do-header .btn {
-    position: absolute;
-    bottom: $line-height-base;
-    right: $line-height-base;
+article.agent {
+    .header-image {
+        background-color: $brand-agent;
+    }
 }
-.com-imagem .btn {
-    display: none;
+article.space {
+    .header-image {
+        background-color: $brand-space;
+    }
 }
-.com-imagem:hover .btn {
-    display: block;
+article.event {
+    .header-image {
+        background-color: $brand-event;
+    }
 }
-.content-do-header {
+article.project {
+    .header-image {
+        background-color: $brand-project;
+    }
+}
+.header-content {
     position: relative;
     margin-top: 5rem;
     text-align: center;
