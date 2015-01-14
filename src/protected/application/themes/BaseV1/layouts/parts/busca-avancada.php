@@ -5,7 +5,7 @@
             Projetos
             <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
-        <div ng-show="collapsed">
+        <div ng-show="!collapsedFilters && !showInfobox()">
             <form class="form-palavra-chave filter">
                 <label for="palavra-chave-evento">Palavra-chave</label>
                 <input ng-model="data.project.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar projetos" />
@@ -43,7 +43,7 @@
             Eventos
             <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
-        <div ng-show="collapsed">
+        <div ng-show="!collapsedFilters && !showInfobox()">
             <form class="form-palavra-chave filter">
                 <label for="palavra-chave-evento">Palavra-chave</label>
                 <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
@@ -96,7 +96,7 @@
             Agentes
             <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
-        <div ng-show="collapsed">
+        <div ng-show="!collapsedFilters && !showInfobox()">
             <form class="form-palavra-chave filter">
                 <label>Palavra-chave</label>
                 <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="Buscar agentes" />
@@ -143,7 +143,7 @@
             Espaços
             <a class="icone icon_adjust-vert" ng-click="toggleAdvancedFilters()"></a>
         </header>
-        <div ng-show="collapsed">
+        <div ng-show="!collapsedFilters && !showInfobox()">
             <form class="form-palavra-chave filter">
                 <label for="palavra-chave-espaco">Palavra-chave</label>
                 <input ng-model="data.space.keyword" class="search-field" type="text" name="palavra-chave-espaco" placeholder="Buscar espaços" />
