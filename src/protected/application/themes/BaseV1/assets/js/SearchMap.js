@@ -113,6 +113,8 @@
                     $scope.openEntity = {};
                     $scope.openEntity[entity] = {name: item.name};
 
+                    $scope.$parent.collapsedFilters = true;
+
                     $scope.$apply();
 
                     FindOneService($scope.data);
