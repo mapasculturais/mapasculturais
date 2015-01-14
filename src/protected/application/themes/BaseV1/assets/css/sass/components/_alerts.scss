@@ -5,7 +5,6 @@
     display: inline-block;
     width: 1rem;
     height: inherit;
-    margin: 0 5px;
     font-size: $font-size-base;
     line-height: inherit;
     font-family: $icon-font-name;
@@ -33,7 +32,7 @@
 .alert {
     position: relative;
     margin-bottom: $line-height-base;
-    padding: $padding-base;
+    padding: $padding-base 2.5rem;
     border-radius: $border-radius-base;
     border-style: solid;
     border-width: 1px;
@@ -65,7 +64,9 @@
         color: $gray-dark;
     }
     &:before {
-        float: left;
+        position: absolute;
+        margin: 0;
+        left: $padding-base;
     }
     .close {
         @extend %icon;
