@@ -114,16 +114,11 @@ $thin-row: 1px solid $gray-lighter !default;
 
 //== Tables
 //
-//## Customizes the `.table` component with basic values, each used across all table variations.
+//## Customizes the `table` element with basic values, each used across all table variations.
 
-//** Padding for `<th>`s and `<td>`s.
-$table-cell-padding:            $padding-small !default;
-
-//** Default background color used for all tables.
-$table-bg:                      transparent !default;
-
-//** Border color for table and cell borders.
-$table-border-color:            $gray !default;
+//** Table caption
+$table-caption-color: #fff !default;
+$table-caption-bg: $brand-primary !default;
 
 
 //== Buttons
