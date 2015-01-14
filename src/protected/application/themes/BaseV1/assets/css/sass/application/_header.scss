@@ -382,6 +382,7 @@ body.action-search {
             }
         }
         .add {
+            display: none;
             position: absolute;
             right: 0;
             top: 0;
@@ -396,6 +397,9 @@ body.action-search {
                 right: auto;
                 left: 50%;
                 margin-left: -$caret-width-base;
+            }
+            .add {
+                display: block;
             }
         }
     }
