@@ -160,12 +160,12 @@ $this->includeAngularEntityAssets($entity);
             </p>
         <?php endif; ?>
         <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
-                <h4>Minhas Inscrições</h4>
                 <table class="my-registrations">
+                    <caption>Minhas inscrições</caption>
                     <thead>
                         <tr>
                             <th class="registration-id-col">
-                                Nº
+                                Inscrição
                             </th>
                             <th class="registration-agents-col">
                                 Agente Responsável
