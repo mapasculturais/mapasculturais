@@ -55,6 +55,7 @@
     font-style: italic;
     padding-left: $padding-base;
     margin: 0 0 $line-height-half;
+    clear: both;
     a {
         color: $gray-darker;
     }
@@ -151,7 +152,7 @@
 //== Entity Calendar of Events
 //
 //## Styles for calendar of events that shows up on entities' single pages.
-
+@media screen and (min-width: $screen-desktop) {
 #agenda {
          box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -182,7 +183,7 @@
     }
 
 }
-
+}
 .entinty-calendar-header {
     margin-bottom: 3rem;
     padding: $padding-base;
