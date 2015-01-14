@@ -86,9 +86,9 @@ body.action-single {
 }
 
 .sidebar.event {
-    border-top-color: $brand-event !important;
+    border-top-color: $brand-event;
     &:before {
-        border-top-color: $brand-event;
+        border-top-color: $brand-event !important;
     }
     .event-project-link,
     .widget-list-item > a {
