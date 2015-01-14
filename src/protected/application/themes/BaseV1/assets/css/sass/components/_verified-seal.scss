@@ -1,5 +1,9 @@
 .widget-verified {
     text-align: center;
+    display: none;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
 }
 .verified-seal {
     display: inline-block;

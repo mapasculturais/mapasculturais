@@ -31,6 +31,11 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
         </div>
         <!--.imagem-do-header-->
+
+        <!-- pro responsivo!!! -->
+        <?php if($entity->isVerified): ?>
+            <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+        <?php endif; ?>
         <div class="content-do-header">
             <div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
                 <?php if($avatar = $entity->avatar): ?>
