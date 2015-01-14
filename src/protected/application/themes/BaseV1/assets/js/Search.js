@@ -454,5 +454,13 @@
 
             return from !== to ? 'de ' + from + ' a ' + to : from;
         };
+
+        $scope.toggleAdvancedFilters = function(){
+            $scope.collapsed = !$scope.collapsed;
+            setTimeout(function(){
+                window.adjustHeader();
+            }, 10);
+        };
+
     }]);
 })(angular);
