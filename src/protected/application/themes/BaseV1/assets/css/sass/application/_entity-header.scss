@@ -1,7 +1,19 @@
 .main-content-header {
     margin-bottom: 2rem;
+    position: relative;
+    .verified-seal {
+        position: absolute;
+        top: $padding-base;
+        left: $padding-base;
+        width: 3rem;
+        height: 3rem;
+        background-size: contain;
+    }
     @media screen and (min-width: $screen-tablet) {
         margin-bottom: 4rem;
+        .verified-seal {
+            display: none;
+        }
     }
     h2 {
         font-size: $font-size-h4;
@@ -17,6 +29,7 @@
         margin-bottom: $line-height-base;
     }
 }
+
 .imagem-do-header {
     position: relative;
     height: 12rem;

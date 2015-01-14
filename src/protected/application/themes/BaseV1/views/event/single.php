@@ -79,7 +79,7 @@ $this->includeMapAssets();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<article class="col-60 main-content event">
+<article class="main-content event">
     <header class="main-content-header">
         <div class="imagem-do-header js-imagem-do-header"
             <?php if($header = $entity->getFile('header')): ?>
@@ -94,6 +94,11 @@ $this->includeMapAssets();
             <?php endif; ?>
         </div>
         <!--.imagem-do-header-->
+
+        <!-- pro responsivo!!! -->
+        <?php if($entity->isVerified): ?>
+            <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+        <?php endif; ?>
         <div class="content-do-header">
             <?php if ($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">

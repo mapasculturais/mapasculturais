@@ -21,6 +21,11 @@ $this->includeAngularEntityAssets($entity);
         >
         </div>
         <!--.imagem-do-header-->
+
+        <!-- pro responsivo!!! -->
+        <?php if($project->isVerified): ?>
+            <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
+        <?php endif; ?>
         <div class="content-do-header">
             <?php if($avatar = $project->avatar): ?>
                 <div class="avatar com-imagem">
