@@ -9,14 +9,14 @@ h1 .icon {
     font-size: 2rem;
     line-height: inherit;
 }
-.adjust-vert {
+.icon-show-advanced-search {
     &:before {
-        content: $unicode_adjust-vert;
+        content: $unicode-show-advanced-search;
     }
 }
 .arrow_carrot-down {
     &:before {
-        content: $unicode_arrow_carrot-down;
+        content: $unicode-select-arrow;
     }
 }
 .arrow_left {
@@ -29,24 +29,24 @@ h1 .icon {
         content: $unicode_arrow_carrot-up;
     }
 }
-.building {
+.icon-space {
     &:before {
-        content: $unicode_building;
+        content: $unicode-space;
     }
 }
-.calendar {
+.icon-event {
     &:before {
-        content: $unicode_calendar;
+        content: $unicode-event;
     }
 }
-.check {
+.icon-check {
     margin-right: .5rem;
     background: #fff;
     color: $gray;
     padding: 2px;
     border-radius: $border-radius-base;
     &:before {
-        content: $unicode_check;
+        content: $unicode-check;
     }
     &:hover {
         color: $brand-accent;
@@ -56,64 +56,74 @@ h1 .icon {
         color: #fff !important;
     }
 }
-.close {
+.icon-close {
     &:before {
-        content: $unicode_close;
+        content: $unicode-close;
     }
 }
-.comment {
+.icon-comment {
     &:before {
-        content: $unicode_comment;
+        content: $unicode-comment;
     }
 }
-.document_alt {
+.icon-project {
     &:before {
-        content: $unicode_document_alt;
+        content: $unicode-project;
     }
 }
-.download {
+.icon-download {
     &:before {
-        content: $unicode_download;
+        content: $unicode-download;
     }
 }
-.info {
+.icon-about {
     &:before {
-        content: $unicode_info;
+        content: $unicode-about;
     }
 }
-.house {
+.icon-home {
     &:before {
-        content: $unicode_house;
+        content: $unicode-home;
     }
 }
-.lock {
+.icon-login {
     &:before {
-        content: $unicode_lock;
+        content: $unicode-login;
     }
 }
-.lock-open {
+.icon-private-info {
     &:before {
-        content: $unicode_lock-open;
+        content: $unicode-private-info;
     }
 }
-.map {
+.icon-publication-status-open {
     &:before {
-        content: $unicode_map;
+        content: $unicode-space-publication-status-open;
     }
 }
-.menu-square_alt {
+.icon-publication-status-locked {
     &:before {
-        content: $unicode_menu-square_alt;
+        content: $unicode-space-publication-status-locked;
     }
 }
-.pin {
+.icon-show-search-on-map {
     &:before {
-        content: $unicode_pin;
+        content: $unicode-show-search-on-map;
     }
 }
-.plus {
+.icon-show-search-on-list {
     &:before {
-        content: $unicode_plus;
+        content: $unicode-show-search-on-list;
+    }
+}
+.icon-show-map {
+    &:before {
+        content: $unicode-show-map;
+    }
+}
+.icon-add {
+    &:before {
+        content: $unicode-add;
     }
 }
 .profile {

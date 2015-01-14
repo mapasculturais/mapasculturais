@@ -23,7 +23,7 @@ $this->includeMapAssets();
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon pin"></span></a>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon icon-show-map"></span></a>
         </header>
         {{#pending}}<div class="alert warning pending">Aguardando confirmação</div>{{/pending}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -37,7 +37,7 @@ $this->includeMapAssets();
             {{/rule.duration}}
             <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
             <?php if($this->isEditable()): ?>
-                <p class="privado"><span class="icon lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
+                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
             {{#rule.screen_until}}
@@ -63,7 +63,7 @@ $this->includeMapAssets();
     <div class="regra clearfix">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon pin"></span></a>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon icon-show-map"></span></a>
         </header>
         <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
         <!-- .mapa -->
@@ -111,7 +111,7 @@ $this->includeMapAssets();
                 </div>
                 <!--.avatar-->
                 <div class="entity-type event-type">
-                    <div class="icon calendar"></div>
+                    <div class="icon icon-event"></div>
                     <a href="#">Evento</a>
                 </div>
                 <!--.entity-type-->

@@ -64,10 +64,11 @@ $url_search_projects = $this->searchProjectsUrl;
                 <div class="placeholder"><span class="icon search"></span> Buscar</div>
                 <div class="submenu-dropdown">
                     <ul>
-                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icon calendar"></span> Eventos</li>
+                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icon icon-event
+                    <a href="#">Evento</a>"></span> Eventos</li>
                         <li tabindex="3" id="agents-filter"  data-entity="agent"><span class="icon profile"></span> Agentes</li>
-                        <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon building"></span> Espaços</li>
-                        <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icon document_alt"></span> Projetos</li>
+                        <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon icon-space"></span> Espaços</li>
+                        <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icon icon-project"></span> Projetos</li>
                     </ul>
                 </div>
             </div>
@@ -79,7 +80,8 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-events" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon calendar"></span> Eventos</h1>
+        <h1><span class="icon icon-event
+                    <a href="#">Evento</a>"></span> Eventos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_events ?></div>
@@ -175,7 +177,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-spaces" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon building"></span> Espaços</h1>
+        <h1><span class="icon icon-space"></span> Espaços</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_spaces ?></div>
@@ -228,7 +230,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-projects" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon document_alt"></span> Projetos</h1>
+        <h1><span class="icon icon-project"></span> Projetos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_projects; ?></div>
@@ -279,11 +281,12 @@ $url_search_projects = $this->searchProjectsUrl;
     <ul>
         <li><a class="up icon arrow_carrot-up" href="#"></a></li>
         <li id="nav-intro">
-            <a class="icon house" href="#home-intro"></a>
+            <a class="icon icon-home" href="#home-intro"></a>
             <span class="nav-title">Introdução</span>
         </li>
         <li id="nav-events">
-            <a class="icon calendar" href="#home-events"></a>
+            <a class="icon icon-event
+                    <a href="#">Evento</a>" href="#home-events"></a>
             <span class="nav-title">Eventos</span>
         </li>
         <li id="nav-agents">
@@ -291,11 +294,11 @@ $url_search_projects = $this->searchProjectsUrl;
             <span class="nav-title">Agentes</span>
         </li>
         <li id="nav-spaces">
-            <a class="icon building" href="#home-spaces"></a>
+            <a class="icon icon-space" href="#home-spaces"></a>
             <span class="nav-title">Espaços</span>
         </li>
         <li id="nav-projects">
-            <a class="icon document_alt" href="#home-projects"></a>
+            <a class="icon icon-project" href="#home-projects"></a>
             <span class="nav-title">Projetos</span>
         </li>
         <li id="nav-developers">

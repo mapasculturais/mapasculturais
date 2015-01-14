@@ -15,19 +15,19 @@
     font-style: none;
 }
 .info:before {
-    content: $unicode_lightbulb_alt;
+    content: $unicode-info;
     color: $brand-info;
 }
 .warning:before {
-    content: $unicode_error-circle;
+    content: $unicode-warning;
     color: $brand-warning;
 }
 .danger:before {
-    content: $unicode_error-circle;
+    content: $unicode-danger;
     color: $brand-danger;
 }
 .success:before {
-    content: $unicode_check_alt;
+    content: $unicode-success;
     color: $brand-success;
 }
 .alert {
@@ -75,7 +75,7 @@
         font-size: 1rem;
         line-height: 1.5rem;
         &:before {
-            content: $unicode_close_alt;
+            content: $unicode-close;
         }
     }
     ul {

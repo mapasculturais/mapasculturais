@@ -48,22 +48,22 @@
     }
 }
 .add:before {
-    content: $unicode_plus_alt;
+    content: $unicode-add-button;
 }
 .edit:before {
-    content: $unicode_pencil-edit;
+    content: $unicode-edit;
 }
 .send:before {
     content: $unicode_upload;
 }
 .download:before {
-    content: $unicode_download;
+    content: $unicode-download;
 }
 .delete:before {
-    content: $unicode_close_alt;
+    content: $unicode-delete;
 }
 .insert:before {
-    content: $unicode_arrow_carrot-2down;
+    content: $unicode-insert;
 }
 
 .btn.add,

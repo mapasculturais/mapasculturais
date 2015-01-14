@@ -49,7 +49,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.avatar-->
             <div class="entity-type space-type">
-                <div class="icon building"></div>
+                <div class="icon icon-space"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
             </div>
             <?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
@@ -91,7 +91,7 @@ $this->includeAngularEntityAssets($entity);
             </p>
             <div class="servico">
                 <?php if($this->isEditable()): ?>
-                    <p style="display:none" class="privado"><span class="icon lock"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
+                    <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
                 <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->acessibilidade): ?>
@@ -120,7 +120,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()):?>
-                    <p class="privado"><span class="icon lock"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->telefonePublico): ?>
@@ -128,8 +128,8 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()):?>
-                    <p class="privado"><span class="icon lock"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
-                    <p class="privado"><span class="icon lock"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                 <?php endif; ?>
             </div>
 
@@ -192,19 +192,19 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable()): ?>
             <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
                 <?php if ($entity->public) : ?>
-                    <div class="venue-status"><div class="icon lock-open"></div>Publicação livre</div>
+                    <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
                     <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
                 <?php else: ?>
-                    <div class="venue-status"><div class="icon lock"></div>Publicação restrita</div>
+                    <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
                     <p class="venue-status-definition">Requer autorização para criar eventos.</p>
                 <?php endif; ?>
             </div>
         <?php else: ?>
             <?php if ($entity->public) : ?>
-                <div class="venue-status"><div class="icon lock-open"></div>Publicação livre</div>
+                <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
                 <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
             <?php else: ?>
-                <div class="venue-status"><div class="icon lock"></div>Publicação restrita</div>
+                <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
                 <p class="venue-status-definition">Requer autorização para criar eventos.</p>
             <?php endif; ?>
         <?php endif; ?>

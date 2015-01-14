@@ -157,7 +157,7 @@
     }
     .btn-map-event {
         &:before {
-            content: $unicode_calendar;
+            content: $unicode-event;
         }
         &.active, &:hover {
             background-color: $brand-event;
@@ -173,7 +173,7 @@
     }
     .btn-map-space {
         &:before {
-            content: $unicode_building;
+            content: $unicode-space;
         }
         &.active, &:hover {
             background-color: $brand-space;

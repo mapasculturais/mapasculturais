@@ -166,7 +166,7 @@
             word-wrap: break-word;
         	&:before {
         		@extend %icon;
-        		content: $unicode_paperclip;
+        		content: $unicode-attachment;
                 margin-right: 3px;
         	}
         }

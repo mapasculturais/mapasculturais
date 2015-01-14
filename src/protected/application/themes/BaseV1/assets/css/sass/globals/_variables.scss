@@ -88,38 +88,131 @@ $icon-font-name:          "ElegantIcons" !default;
 $icon-font-svg-id:        "ElegantIcons" !default;
 
 //** Icon's unicode
-$unicode_arrow_carrot-2down:    "\37"   !default;
-$unicode_arrow_carrot-down:     "\33"   !default;
+
+// used in _buttons.scss
+// .insert class
+$unicode-insert:    "\37"   !default;
+
+// used in _editable.scss
+// .select2-arrow
+$unicode-select-arrow:          "\33"   !default;
 $unicode_arrow_carrot-left:     "\e045" !default;
 $unicode_arrow_carrot-right:    "\e046" !default;
 $unicode_arrow_carrot-up:       "\32"   !default;
 $unicode_arrow_expand_alt3:     "\e042" !default;
 $unicode_arrow_left:            "\e03b" !default;
-$unicode_adjust-vert:           "\67"   !default;
-$unicode_building:              "\e0ef" !default;
-$unicode_calendar:              "\e023" !default;
-$unicode_check:                 "\4e"   !default;
-$unicode_check_alt:             "\e052" !default;
-$unicode_circle-empty:          "\5b"   !default;
-$unicode_circle-slelected:      "\5c"   !default;
-$unicode_close:                 "\4d"   !default;
-$unicode_close_alt:             "\e051" !default;
-$unicode_comment:               "\e065" !default;
-$unicode_document_alt:          "\68"   !default;
-$unicode_download:              "\e092" !default;
-$unicode_error-circle:          "\e061" !default;
-$unicode_info:                  "\e060" !default;
-$unicode_house:                 "\e074" !default;
-$unicode_lightbulb_alt:         "\e007" !default;
-$unicode_lock:                  "\e06c" !default;
-$unicode_lock-open:             "\e000" !default;
-$unicode_map:                   "\e083" !default;
-$unicode_menu-square_alt:       "\e056" !default;
-$unicode_paperclip:             "\e016" !default;
-$unicode_pencil-edit:           "\6c"   !default;
-$unicode_pin:                   "\e081" !default;
-$unicode_plus:                  "\4c"   !default;
-$unicode_plus_alt:              "\e050" !default;
+
+// used on .icon-show-advanced-search on _icons.scss file
+$unicode-show-advanced-search:  "\67"   !default;
+
+// this is the "Space" icon
+// used on:
+// .space on _icons.scss file
+// .btn-map-space on _maps.scss file
+$unicode-space:                 "\e0ef" !default;
+
+// this is the "Event" icon
+// used on:
+// .event on _icons.scss file
+// .btn-map-event on _maps.scss file
+$unicode-event:                 "\e023" !default;
+
+// used on:
+// .check on _icons.scss file
+// .filter-list li on _advanced-search.scss file
+$unicode-check:                 "\4e"   !default;
+
+// used on .icon-success on _alerts.scss file
+$unicode-success:               "\e052" !default;
+
+// used on .icon-radio-button on _forms.scss file
+$unicode-radio-button:          "\5b"   !default;
+
+// used on .icon-radio-button.selected on _forms.scss file
+$unicode-radio-button-selected: "\5c"   !default;
+
+// used on:
+// .close on _alerts.scss file
+// .icon-close on _icons.scss file
+// .tag-selected on _tags.scss file
+$unicode-close:                 "\4d"   !default;
+
+// alias for $unicode-close
+// used on .delete on _buttons.scss file
+$unicode-delete:                $unicode-close   !default;
+
+// used on .icon-comment on _icons.scss file
+$unicode-comment:               "\e065" !default;
+
+// used on .icon-project on _icons.scss file
+$unicode-project:               "\68"   !default;
+
+// used on .download on _buttons and _icons.scss file
+$unicode-download:              "\e092" !default;
+
+// error icon
+$unicode-error:                 "\e061" !default;
+
+// alias for $unicode-error
+// used on .danger on _alerts.scss file
+$unicode-danger:                $unicode-error !default;
+
+// alias for $unicode-error
+// used on .warning on _alerts.scss file
+$unicode-warning:               $unicode-error !default;
+
+// used on .icon-about on _icons.scss file
+$unicode-about:                 "\e060" !default;
+
+// used on .icon-home on _icons.scss file
+$unicode-home:                  "\e074" !default;
+
+// used on .icon-info on _alerts.scss file
+$unicode-info:                  "\e007" !default;
+
+// lock icons
+$unicode-lock:                  "\e06c" !default;
+$unicode-lock-open:             "\e000" !default;
+
+// alias for $unicode-lock
+// used on .icon-login on _icons.scss file
+$unicode-login:                           $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-private-info on _icons.scss file
+$unicode-private-info:                    $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-publication-status-locked on _icons.scss file
+$unicode-space-publication-status-locked: $unicode-lock !default;
+
+// alias for $unicode-lock-open
+// used on .icon-publication-status-open on _icons.scss file
+$unicode-space-publication-status-open:   $unicode-lock-open !default;
+
+// used on .icon-show-search-on-map on _icons.scss file
+$unicode-show-search-on-map:    "\e083" !default;
+
+// used on .icon-show-search-on-list on _icons.scss file
+$unicode-show-search-on-list:   "\e056" !default;
+
+// used on .attachment-title on _registration-form.scss file
+$unicode-attachment:            "\e016" !default;
+
+// used on:
+// .edit on _buttons.scss
+// .edit-box on _edit_box.scss
+// .editable on _editable.scss
+$unicode-edit:                  "\6c"   !default;
+
+// used on .icon-show-map on _icons.scss
+$unicode-show-map:              "\e081" !default;
+
+// used on .icon-add on _icons.scss
+$unicode-add:                   "\4c"   !default;
+
+// used on .add on _buttons.scss 
+$unicode-add-button:            "\e050" !default;
 $unicode_profile:               "\e08a" !default;
 $unicode_question_alt:          "\e064" !default;
 $unicode_search:                "\55"   !default;

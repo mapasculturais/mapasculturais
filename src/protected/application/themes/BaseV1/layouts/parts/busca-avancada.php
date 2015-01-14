@@ -3,7 +3,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Projetos
-            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon icon-show-advanced-search" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -26,7 +26,7 @@
             </div>
             <!--.filter-->
             <div class="filter">
-                <span class="icon check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
+                <span class="icon icon-check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
                 <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">Inscrições Abertas</span>
             </div>
             <!--.filter-->
@@ -41,7 +41,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Eventos
-            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon icon-show-advanced-search" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -94,7 +94,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Agentes
-            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon icon-show-advanced-search" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -141,7 +141,7 @@
         <header class="clearfix">
             <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
             Espaços
-            <a class="icon adjust-vert" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
+            <a class="icon icon-show-advanced-search" ng-model="collapsed" ng-click="collapsed=!collapsed"></a>
         </header>
         <div ng-show="collapsed">
             <form class="form-palavra-chave filter">
@@ -178,7 +178,7 @@
             </div>
             <!--.filter-->
             <div class="filter">
-                <span class="icon check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
+                <span class="icon icon-check" ng-click="data.space.acessibilidade = !data.space.acessibilidade" ng-class="{'selected':data.space.acessibilidade}"></span>
                 <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
             </div>
             <!--.filter-->
@@ -192,11 +192,11 @@
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
             <div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
-                <a class="hltip icon menu-square_alt"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
-                <a class="hltip icon map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
+                <a class="hltip icon icon-show-search-on-list"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="Ver resultados em lista"></a>
+                <a class="hltip icon icon-show-search-on-map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="Ver resultados no mapa"></a>
             </div>
             <div id="export-tools" data-toggle="share-search-results">
-                <a class="hltip icon download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
+                <a class="hltip icon icon-download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
             </div>
             <div id="share-tools">
                 <a class="hltip icon share" title="Compartilhar resultado"></a>

@@ -10,7 +10,8 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Eventos</span>
-                <div class="icon calendar alignright"></div>
+                <div class="icon icon-event
+                    <a href="#">Evento</a> alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events; ?></a>
@@ -30,7 +31,7 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Espaços</span>
-                <div class="icon building alignright"></div>
+                <div class="icon icon-space alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver meus espaços"><?php echo $count->spaces; ?></a>
@@ -40,7 +41,7 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Projetos</span>
-                <div class="icon document_alt alignright"></div>
+                <div class="icon icon-project alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects; ?></a>
