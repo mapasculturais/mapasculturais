@@ -4,16 +4,21 @@
 
 //**  Stuff that shows on projects tab "Inscritos" before the table.
 #header-inscritos {
-	.btn {
-		margin-bottom: $line-height-half;
+	h3 {
+		@media screen and (min-width: 536px) {
+			float: left;
+		}
 	}
-	@media screen and (min-width: $screen-tablet) {
-
+	.btn {
+		margin-bottom: $line-height-base;
+		@media screen and (min-width: 536px) {
+			float: right;
+		}
 	}
 }
 #status-info {
 	display: none;
-	@media screen and (min-width: $screen-tablet) {
+	@media screen and (min-width: 536px) {
 		display: block;
 	}
 }
@@ -212,13 +217,13 @@
 			text-align: left;
 		}
 	}
-	@media screen and (min-width: $screen-tablet) {
+	@media screen and (min-width: 536px) {
 		display: table;
 	}
 }
 #btn-publish-results {
 	display: none;
-	@media screen and (min-width: $screen-tablet) {
+	@media screen and (min-width: 536px) {
 		display: inline-block;
 		float: right;
 	}
