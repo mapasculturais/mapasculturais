@@ -449,10 +449,10 @@
             if(!project.registrationFrom)
                 return false;
 
-            var from = moment(project.registrationFrom).format('DD/MM/YYYY');
-            var to = moment(project.registrationTo).format('DD/MM/YYYY');
+            var from = moment(project.registrationFrom.date).format('DD/MM/YYYY');
+            var to = moment(project.registrationTo.date).format('DD/MM/YYYY');
 
-            return from !== to ? from + ' - ' + to : from;
+            return from !== to ? 'de ' + from + ' a ' + to : from;
         };
     }]);
 })(angular);

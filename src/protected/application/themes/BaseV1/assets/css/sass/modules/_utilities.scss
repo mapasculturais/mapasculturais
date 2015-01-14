@@ -51,17 +51,15 @@
         display: none;
     }
 }
-.oculto {
-    display: none;
-}
-.screen-reader,
-.escondido {
+
+.hidden {
     display: none;
 }
 /* Text meant only for screen readers */
 .screen-reader-text {
-    position: absolute;
-    left: -9000px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .sombra {
             box-shadow: 0 2px 2px 0 rgba(0,0,0,.15);

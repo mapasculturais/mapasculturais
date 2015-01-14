@@ -232,7 +232,7 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 <edit-box id="edibox-upload-rules" position="bottom" title="Regulamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
                     <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
-                        <div class="alert danger escondido"></div>
+                        <div class="alert danger hidden"></div>
                         <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                         <input type="file" name="rules" />
 
@@ -349,7 +349,7 @@ $this->includeAngularEntityAssets($entity);
                                     <a class="file-{{fileConfiguration.template.id}} attachment-template"  href="{{fileConfiguration.template.url}}" target="_blank">{{fileConfiguration.template.name}}</a>
                                 </p>
                                 <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(fileConfiguration.id)}}" enctype="multipart/form-data">
-                                    <div class="alert danger escondido"></div>
+                                    <div class="alert danger hidden"></div>
                                     <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
                                     <input type="file" name="{{uploadFileGroup}}" />
 
@@ -465,7 +465,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                            <a ng-if="reg.files.zipArchive.url" class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader">Baixar arquivos</span></a>
+                            <a ng-if="reg.files.zipArchive.url" class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader-text">Baixar arquivos</span></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>
