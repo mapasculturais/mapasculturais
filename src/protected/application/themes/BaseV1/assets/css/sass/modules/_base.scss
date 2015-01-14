@@ -194,6 +194,13 @@ table {
     margin: 0 0 $line-height-base;
     font-size: $font-size-smaller;
 }
+caption {
+    padding: $padding-small;
+    font-weight: bold;
+    color: $table-caption-color;
+    background: $table-caption-bg;
+    border-radius: $border-radius-base $border-radius-base 0 0;
+}
 th,
 td {
     padding: $padding-base;
