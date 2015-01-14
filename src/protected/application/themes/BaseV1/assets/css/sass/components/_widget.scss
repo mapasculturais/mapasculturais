@@ -28,8 +28,13 @@
             color: $gray-darker;
         }
         &.btn {
+            display: none;
             position: static;
+            @media screen and (min-width: $screen-tablet) {
+                display: inline-block;
+            }
         }
+
     }
 }
 //**  Widget list.
