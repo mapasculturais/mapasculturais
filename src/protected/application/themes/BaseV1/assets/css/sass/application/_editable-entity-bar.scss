@@ -6,12 +6,12 @@
     -moz-box-sizing: border-box;
     width: 100%;
     min-height: 42px;
-    padding: .25rem 130px;
+    padding: .25rem 142px;
     border-left: 8px solid $brand-primary;
     background: $gray-light;
     text-align: center;
     &.editable-entity-edit {
-        padding: .25rem 245px;
+        padding: .25rem 240px;
     }
     &.can-edit-roles {
         padding: .25rem 380px;
@@ -35,7 +35,7 @@
 #small-brand {
     position: absolute;
     left: .75rem;
-    font-size: 20px;
+    font-size: 1rem;
     line-height: 2rem;
     a {
         color: $small-brand-color;
