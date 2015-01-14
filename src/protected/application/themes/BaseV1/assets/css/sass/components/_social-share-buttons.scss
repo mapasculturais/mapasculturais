@@ -1,12 +1,6 @@
-.botoes-de-compartilhar {
-    float: right;
-    margin-right: $line-height-half;
+.btn-social-share {
     height: 2rem;
-    @media screen and (min-width: $screen-sm-min) {
-        float: none;
-        margin: 0;
-    }
-}
-.botoes-de-compartilhar span {
-    vertical-align: top !important;
+    span {
+    	vertical-align: top !important;
+	}
 }
