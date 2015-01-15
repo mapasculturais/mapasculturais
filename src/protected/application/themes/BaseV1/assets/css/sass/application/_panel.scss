@@ -1,0 +1,41 @@
+//
+// Control panel
+// --------------------------------------------------
+
+.panel-main-content {
+    position: relative;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 0 0 2px 2px;
+    padding: $padding-base;
+    @media screen and (min-width: $screen-tablet) {
+        float: left;
+        padding: 2rem;
+        margin-bottom: 4rem;
+        width: 75%;
+    }
+    @media screen and (min-width: $screen-lg-desktop) {
+        width: 60%;
+        padding: 4rem;
+    }
+    @media print {
+    	width: 100%;
+    	padding: $padding-large;
+    }
+}
+
+.sidebar-panel {
+    display: none;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+        position: relative;
+        float: left;
+        box-sizing: border-box;
+        width: 25%;
+        padding: $padding-base;
+    }
+    @media screen and (min-width: $screen-lg-desktop) {
+        width: 20%;
+        padding: $padding-large;
+    }
+}

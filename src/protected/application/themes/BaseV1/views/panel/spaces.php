@@ -1,7 +1,7 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb main-content">
+<div class="lista-sem-thumb panel-main-content">
 	<header class="header-do-painel clearfix">
 		<h2 class="alignleft">Meus espaços</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar novo espaço</a>

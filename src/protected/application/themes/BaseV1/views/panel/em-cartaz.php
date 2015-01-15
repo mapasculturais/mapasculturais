@@ -11,7 +11,7 @@
 
     .main-content a{color:#880000}
 </style>
-<div class="main-content">
+<div class="panel-main-content">
     <h1>Revista Em Cartaz</h1>
     <div class="clearfix">
             Filtrar Eventos

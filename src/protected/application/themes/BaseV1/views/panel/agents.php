@@ -1,7 +1,7 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb main-content">
+<div class="lista-sem-thumb panel-main-content">
 	<header class="header-do-painel clearfix">
 		<h2 class="alignleft">Meus agentes</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar novo agente</a>

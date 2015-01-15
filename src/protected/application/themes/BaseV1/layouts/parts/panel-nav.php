@@ -1,4 +1,4 @@
-<nav id="nav-do-painel" class="sidebar-left sidebar painel">
+<nav id="panel-nav" class="sidebar-panel">
     <ul>
         <?php $app->applyHookBoundTo($this, 'panel.menu:before') ?>
     	<li><a <?php if($this->template == 'panel/index') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel') ?>"><span class="icone icon_house"></span> Início</a></li>
@@ -10,5 +10,4 @@
         <?php $app->applyHookBoundTo($this, 'panel.menu:after') ?>
     </ul>
 </nav>
-<!--#nav-do-painel-->
-
+<!--#panel-nav-->

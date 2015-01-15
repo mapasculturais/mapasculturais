@@ -1,7 +1,7 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="main-content">
+<div class="panel-main-content">
 
     <p class="highlighted-message">
         Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php echo $app->siteName; ?>!
@@ -51,17 +51,8 @@ $this->layout = 'panel'
     </section>
     <?php if($app->user->notifications): ?>
     <section id="atividades">
-        <header class="clearfix">
-            <h2 class="alignleft">Atividades</h2>
-            <div id="status-das-atividades" class="dropdown alignright">
-                <div class="placeholder">Pendentes</div>
-                <div class="submenu-dropdown">
-                    <ul>
-                        <li>Pendentes</li>
-                        <li>Todas</li>
-                    </ul>
-                </div>
-            </div>
+        <header>
+            <h2>Atividades</h2>
         </header>
 
         <?php foreach ($app->user->notifications as $notification): ?>
@@ -89,7 +80,4 @@ $this->layout = 'panel'
         <?php endforeach; ?>
     </section>
     <?php endif; ?>
-</div>
-<div class="ficha sidebar-right">
-
 </div>
