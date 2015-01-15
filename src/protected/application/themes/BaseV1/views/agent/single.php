@@ -47,7 +47,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.avatar-->
             <div class="entity-type agent-type">
-                <div class="icon profile"></div>
+                <div class="icon icon-agent"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'>
                     <?php echo $entity->type->name; ?>
                 </a>

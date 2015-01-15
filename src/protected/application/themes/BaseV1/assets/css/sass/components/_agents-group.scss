@@ -25,9 +25,9 @@
                     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
             -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
             &:before {
-                content: $unicode_arrow_expand_alt3;
-                position: absolute;
-                top: -13px;
+                @include arrow(up, $caret-width-base, #fff);
+                //position: absolute;
+                //top: -13px;
                 right: 0;
                 left: 0;
                 padding-right: $padding-large;

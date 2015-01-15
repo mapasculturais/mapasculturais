@@ -159,7 +159,7 @@ $this->includeMapAssets();
         </div>
 
         <header id="agent-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'agent'">
-            <h1><span class="icon profile"></span> Agentes</h1>
+            <h1><span class="icon icon-agent"></span> Agentes</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
         </header>
 
@@ -210,8 +210,7 @@ $this->includeMapAssets();
             </article>
         </div>
         <header id="event-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'event'">
-            <h1><span class="icon icon-event
-                    <a href="#">Evento</a>"></span> Eventos</h1>
+            <h1><span class="icon icon-event"></span> Eventos</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
         </header>
 

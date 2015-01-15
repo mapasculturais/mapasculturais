@@ -14,7 +14,7 @@ h1 .icon {
         content: $unicode-show-advanced-search;
     }
 }
-.arrow_carrot-down {
+.icon-select-arrow {
     &:before {
         content: $unicode-select-arrow;
     }
@@ -126,49 +126,48 @@ h1 .icon {
         content: $unicode-add;
     }
 }
-.profile {
+.icon-agent {
     &:before {
-        content: $unicode_profile;
+        content: $unicode-agent;
     }
 }
-.question_alt {
+.icon-how-to-use {
     &:before {
-        content: $unicode_question_alt;
+        content: $unicode-how-to-use;
     }
 }
-.search {
+.icon-search {
     &:before {
-        content: $unicode_search;
+        content: $unicode-search;
     }
 }
-.share {
+.icon-developers {
     &:before {
-        content: $unicode_share;
-    }
-}
-.tools {
-    &:before {
-        content: $unicode_tools;
+        content: $unicode-developers;
     }
 }
 
 /* social icons */
-
-.twitter {
+.icon-share {
+    &:before {
+        content: $unicode-share;
+    }
+}
+.icon-twitter {
     color: #00acee !important;
     &:before {
-        content: $unicode_twitter;
+        content: $unicode-twitter;
     }
 }
-.facebook {
+.icon-facebook {
     color: #3b5998 !important;
     &:before {
-        content: $unicode_facebook;
+        content: $unicode-facebook;
     }
 }
-.googleplus {
+.icon-googleplus {
     color: #dd4b39 !important;
     &:before {
-        content: $unicode_googleplus;
+        content: $unicode-googleplus;
     }
 }

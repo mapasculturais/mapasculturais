@@ -165,7 +165,7 @@
     }
     .btn-map-agent {
         &:before {
-            content: $unicode_profile;
+            content: $unicode-agent;
         }
         &.active, &:hover {
             background-color: $brand-agent;

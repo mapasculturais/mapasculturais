@@ -180,7 +180,7 @@
             font-weight: normal;
             &:before {
                 @extend %icon;
-                content:"\e092";
+                content: $unicode-download;
                 margin-right: 3px;
             }
         }

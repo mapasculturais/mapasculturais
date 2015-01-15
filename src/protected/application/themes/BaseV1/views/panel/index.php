@@ -10,8 +10,7 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Eventos</span>
-                <div class="icon icon-event
-                    <a href="#">Evento</a> alignright"></div>
+                <div class="icon icon-event alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events; ?></a>
@@ -21,7 +20,7 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Agentes</span>
-                <div class="icon profile alignright"></div>
+                <div class="icon icon-agent alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="Ver meus agentes"><?php echo $count->agents; ?></a>

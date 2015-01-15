@@ -199,13 +199,13 @@
                 <a class="hltip icon icon-download" ng-href="{{apiURL}}&@type=excel" title="Exportar dados"></a>
             </div>
             <div id="share-tools">
-                <a class="hltip icon share" title="Compartilhar resultado"></a>
+                <a class="hltip icon icon-share" title="Compartilhar resultado"></a>
                 <form id="share-url" class="share-search-results">
                     <label for="search-url">Compartilhar resultado: </label>
                     <input id="search-url" name="search-url" type="text" ng-value="location.absUrl()" />
-                    <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icon twitter"></a>
-                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icon facebook"></a>
-                    <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icon googleplus"></a>
+                    <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icon icon-twitter"></a>
+                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icon icon-facebook"></a>
+                    <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icon icon-googleplus"></a>
                 </form>
             </div>
         </div>

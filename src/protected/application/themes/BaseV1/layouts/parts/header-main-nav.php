@@ -39,7 +39,7 @@
         </li>
         <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                <div class="icon profile"></div>
+                <div class="icon icon-agent"></div>
                 <div class="menu-item-label">Agentes</div>
             </a>
         </li>

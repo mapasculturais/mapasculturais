@@ -61,12 +61,11 @@ $url_search_projects = $this->searchProjectsUrl;
         <form id="home-search-form" class="clearfix" ng-non-bindable>
             <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
             <div id="home-search-filter" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
-                <div class="placeholder"><span class="icon search"></span> Buscar</div>
+                <div class="placeholder"><span class="icon icon-search"></span> Buscar</div>
                 <div class="submenu-dropdown">
                     <ul>
-                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icon icon-event
-                    <a href="#">Evento</a>"></span> Eventos</li>
-                        <li tabindex="3" id="agents-filter"  data-entity="agent"><span class="icon profile"></span> Agentes</li>
+                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icon icon-event"></span> Eventos</li>
+                        <li tabindex="3" id="agents-filter"  data-entity="agent"><span class="icon icon-agent"></span> Agentes</li>
                         <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon icon-space"></span> Espaços</li>
                         <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icon icon-project"></span> Projetos</li>
                     </ul>
@@ -75,13 +74,12 @@ $url_search_projects = $this->searchProjectsUrl;
         </form>
         <a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a>
     </div>
-    <div class="view-more"><a class="hltip icon arrow_carrot-down" href="#home-events" title="Saiba mais"></a></div>
+    <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="Saiba mais"></a></div>
 </section>
 
 <article id="home-events" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon icon-event
-                    <a href="#">Evento</a>"></span> Eventos</h1>
+        <h1><span class="icon icon-event"></span> Eventos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_events ?></div>
@@ -125,7 +123,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-agents" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon profile"></span> Agentes</h1>
+        <h1><span class="icon icon-agent"></span> Agentes</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_agents ?></div>
@@ -273,7 +271,7 @@ $url_search_projects = $this->searchProjectsUrl;
 </article>
 <article id="home-developers" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon tools"></span> Desenvolvedores</h1>
+        <h1><span class="icon icon-developerss"></span> Desenvolvedores</h1>
         <p><?php $this->dict('home: home_devs'); ?> </p>
     </div>
 </article>
@@ -285,12 +283,11 @@ $url_search_projects = $this->searchProjectsUrl;
             <span class="nav-title">Introdução</span>
         </li>
         <li id="nav-events">
-            <a class="icon icon-event
-                    <a href="#">Evento</a>" href="#home-events"></a>
+            <a class="icon icon-event" href="#home-events"></a>
             <span class="nav-title">Eventos</span>
         </li>
         <li id="nav-agents">
-            <a class="icon profile" href="#home-agents"></a>
+            <a class="icon icon-agent" href="#home-agents"></a>
             <span class="nav-title">Agentes</span>
         </li>
         <li id="nav-spaces">
@@ -302,9 +299,9 @@ $url_search_projects = $this->searchProjectsUrl;
             <span class="nav-title">Projetos</span>
         </li>
         <li id="nav-developers">
-            <a class="icon tools" href="#home-developers"></a>
+            <a class="icon icon-developerss" href="#home-developers"></a>
             <span class="nav-title">Desenvolvedores</span>
         </li>
-        <li><a class="down icon arrow_carrot-down" href="#"></a></li>
+        <li><a class="down icon icon-select-arrow" href="#"></a></li>
     </ul>
 </nav>
