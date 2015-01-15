@@ -340,7 +340,7 @@
     .submenu-dropdown {
         background: $brand-accent;
         &:before {
-            color: $brand-accent;
+            border-bottom-color: $brand-accent;
         }
     }
     .icon {
