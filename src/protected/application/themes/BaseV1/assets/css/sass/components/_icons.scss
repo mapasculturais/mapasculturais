@@ -19,14 +19,9 @@ h1 .icon {
         content: $unicode-select-arrow;
     }
 }
-.arrow_left {
+.icon-go-back {
     &:before {
-        content: $unicode_arrow_left;
-    }
-}
-.arrow_carrot-up {
-    &:before {
-        content: $unicode_arrow_carrot-up;
+        content: $unicode-go-back;
     }
 }
 .icon-space {

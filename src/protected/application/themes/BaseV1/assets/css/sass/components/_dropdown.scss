@@ -54,23 +54,8 @@
                 box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
         -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
         &:before {
-            content: '\42';
-            position: absolute;
-            top: -13px;
-            right: 0;
-            left: 0;
-            padding-right: .25rem;
-            color: $gray-light;
-            font-family: $icon-font-name;
-            speak: none;
-            font-weight: normal;
-            font-variant: normal;
-            font-size: 24px;
-            text-align: right;
-            text-transform: none;
-            line-height: 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            @include arrow(up, $caret-width-base, #fff);
+            right: .25rem;
         }
         ul {
             list-style: none;

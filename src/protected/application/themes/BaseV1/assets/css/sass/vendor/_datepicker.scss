@@ -48,10 +48,10 @@
     font-style: none;
 }
 .ui-datepicker .ui-datepicker-prev:before {
-    content: $unicode_arrow_carrot-left;
+    content: $unicode-datepicker-arrow-left;
 }
 .ui-datepicker .ui-datepicker-next:before {
-    content: $unicode_arrow_carrot-right;
+    content: $unicode-datepicker-arrow-right;
 }
 .ui-datepicker .ui-datepicker-title {
     text-align: center;

@@ -1,7 +1,7 @@
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <div id="filter-projects" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'project'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
             Projetos
             <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
         </header>
@@ -39,7 +39,7 @@
     <!--#filter-projects-->
     <div id="filter-events" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'event'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
             Eventos
             <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
         </header>
@@ -92,7 +92,7 @@
     <!--#filter-events-->
     <div id="filter-agents" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'agent'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
             Agentes
             <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
         </header>
@@ -139,7 +139,7 @@
     <!--#filter-agents-->
     <div id="filter-spaces" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'space'">
         <header class="clearfix">
-            <a href="<?php echo $app->getBaseUrl() ?>" class="icon arrow_left"></a>
+            <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
             Espaços
             <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
         </header>

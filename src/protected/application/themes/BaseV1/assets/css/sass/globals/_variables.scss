@@ -88,15 +88,6 @@ $icon-font-name:          "ElegantIcons" !default;
 $icon-font-svg-id:        "ElegantIcons" !default;
 
 
-//## Icon's unicode variables
-
-$unicode_arrow_carrot-left:     "\e045" !default;
-$unicode_arrow_carrot-right:    "\e046" !default;
-$unicode_arrow_carrot-up:       "\32"   !default;
-$unicode_arrow_expand_alt3:     "\e042" !default;
-$unicode_arrow_left:            "\23" !default;
-
-
 //** About icon
 // used on .icon-about on _icons.scss file
 $unicode-about:                 "\e060" !default;
@@ -139,6 +130,11 @@ $unicode-delete:                "\e051"   !default;
 // used on .icon-comment on _icons.scss file
 $unicode-comment:               "\e065" !default;
 
+//** Datepicker's arrows icons
+// used on .ui-datepicker-prev and .ui-datepicker-next on _datepicker.scss file
+$unicode-datepicker-arrow-left:     "\e045" !default;
+$unicode-datepicker-arrow-right:    "\e046" !default;
+
 //** Developers icon
 // used on .icon-developers on _icons.scss
 $unicode-developers:            "\e035" !default;
@@ -171,6 +167,10 @@ $unicode-warning:               $unicode-error !default;
 // .icon-event on _icons.scss file
 // .btn-map-event on _maps.scss file
 $unicode-event:                 "\e023" !default;
+
+//** Go back icon
+// used on .icon-go-back on _icons.scss file
+$unicode-go-back:               "\e03b" !default;
 
 //** Home icon
 // used on .icon-home on _icons.scss file
