@@ -2,6 +2,8 @@
 // Control panel
 // --------------------------------------------------
 
+//** These classes are also used on pages
+
 .panel-main-content {
     position: relative;
     box-sizing: border-box;
@@ -21,6 +23,65 @@
     @media print {
     	width: 100%;
     	padding: $padding-large;
+    }
+}
+.panel-header {
+    h2 {
+        font-size: 1.5rem;
+        line-height: 1;
+        text-align: center;
+        @media screen and (min-width: $screen-tablet) {
+            float: left;
+            text-align: left;
+        }
+    }
+    .btn {
+        display: none;
+        float: right;
+        margin: .5rem 0;
+        @media screen and (min-width: $screen-tablet) {
+            display: inline-block;
+        }
+    }
+}
+.panel-list .objeto h1 .icon {
+    width: $line-height-base;;
+    height: $line-height-base;;
+    margin-right: 0;
+    background: #fff;
+    border-radius: $border-radius-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: #999;
+    border: 1px solid #ddd;
+    text-align: center;
+    &:hover {
+        color: $brand-accent;
+    }
+    &.active, &.active:hover {
+        color: #fff;
+        background: $brand-accent;
+        border: 1px solid $brand-accent;
+    }
+
+}
+.panel-list .objeto-meta {
+    margin-bottom: $line-height-half;
+    padding-top: 0;
+    border-top: 0;
+    div {
+             box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        margin-right: 5px;
+        @media screen and (min-width: $screen-tablet) {
+            display: inline-block;
+        }
+    }
+}
+.entity-actions {
+    display: none;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
     }
 }
 

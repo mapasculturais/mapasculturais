@@ -127,6 +127,9 @@
                         <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
                         <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                     </li>
+                    <li>
+                        <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
+                    </li>
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->
                     <li>

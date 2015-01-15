@@ -8,7 +8,7 @@
                     <div><span class="label">Classificação:</span> <?php echo $entity->classificacaoEtaria; ?></div>
                 <?php endif; ?>
 	</div>
-    <div>
+    <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Event::STATUS_ENABLED): ?>

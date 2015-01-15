@@ -1,34 +1,49 @@
 #user-stats {
+    margin-right: -$padding-base;
     margin-bottom: $line-height-base;
-    div.box {
-        display: block;
-        float: left;
-        width: 25%;
-        border: $padding-base solid #fff;
-        border-radius: 14px;
-        background: $gray-lighter;
-        color: $brand-accent;
-        -webkit-transition: all .3s;
-                transition: all .3s;
-        &:hover {
-            background: $brand-primary;
-            .plus {
-                background: $brand-accent;
-                color: #fff;
-                -webkit-transition: all .3s;
-                        transition: all .3s;
-                &:hover {
-                    background: #fff;
-                    color: $brand-accent;
+    > div {
+        > div {
+            box-sizing: border-box;
+            margin-right: $padding-base;
+            margin-bottom: $padding-base;
+            padding: $padding-base;
+            border-radius: 2px;
+            background: $gray-lighter;
+            color: $brand-accent;
+            -webkit-transition: all .3s;
+                    transition: all .3s;
+            &:hover {
+                background: $brand-primary;
+                .icon-add {
+                    background: $brand-accent;
+                    color: #fff;
+                    -webkit-transition: all .3s;
+                            transition: all .3s;
+                    &:hover {
+                        background: #fff;
+                        color: $brand-accent;
+                    }
                 }
             }
         }
+        @media screen and (min-width: $screen-phone) {
+            float: left;
+            width: 50%;
+        }
+
+        @media screen and (min-width: $screen-desktop) {
+            float: left;
+            width: 25%;
+            margin-bottom: 0;
+        }
+
+
     }
     .icon {
         display: block;
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        &.plus {
+        &.icon-add {
             margin-top: 1rem;
             margin-bottom: 0;
             background: $gray-light;

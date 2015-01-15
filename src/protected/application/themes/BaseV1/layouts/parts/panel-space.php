@@ -11,7 +11,7 @@
 		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
 		<div><span class="label">Acessibilidade:</span> Sim</div>
 	</div>
-    <div>
+    <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Space::STATUS_ENABLED): ?>

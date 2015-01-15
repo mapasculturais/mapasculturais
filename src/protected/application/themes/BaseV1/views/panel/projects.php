@@ -1,9 +1,9 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb panel-main-content">
-	<header class="header-do-painel clearfix">
-		<h2 class="alignleft">Meus projetos</h2>
+<div class="panel-list panel-main-content">
+	<header class="panel-header clearfix">
+		<h2>Meus projetos</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar novo projeto</a>
 	</header>
     <ul class="abas clearfix clear">

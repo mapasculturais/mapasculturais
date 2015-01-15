@@ -5,8 +5,8 @@ $this->layout = 'panel';
 $drafts = $app->repo('Registration')->findByUser($app->user, Registration::STATUS_DRAFT);
 $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
 ?>
-<div class="lista-sem-thumb panel-main-content">
-    <header class="header-do-painel clearfix">
+<div class="panel-list panel-main-content">
+    <header class="panel-header clearfix">
             <h2>Minhas inscrições</h2>
     </header>
     <ul class="abas clearfix clear">
