@@ -94,7 +94,7 @@ $unicode_arrow_carrot-left:     "\e045" !default;
 $unicode_arrow_carrot-right:    "\e046" !default;
 $unicode_arrow_carrot-up:       "\32"   !default;
 $unicode_arrow_expand_alt3:     "\e042" !default;
-$unicode_arrow_left:            "\e03b" !default;
+$unicode_arrow_left:            "\23" !default;
 
 
 //** About icon
@@ -132,9 +132,8 @@ $unicode-check:                 "\4e"   !default;
 // .tag-selected on _tags.scss file
 $unicode-close:                 "\4d"   !default;
 
-// alias for $unicode-close
 // used on .delete on _buttons.scss file
-$unicode-delete:                $unicode-close   !default;
+$unicode-delete:                "\e051"   !default;
 
 //** Comment icon
 // used on .icon-comment on _icons.scss file

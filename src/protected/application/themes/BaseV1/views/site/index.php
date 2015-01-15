@@ -271,7 +271,7 @@ $url_search_projects = $this->searchProjectsUrl;
 </article>
 <article id="home-developers" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon icon-developerss"></span> Desenvolvedores</h1>
+        <h1><span class="icon icon-developers"></span> Desenvolvedores</h1>
         <p><?php $this->dict('home: home_devs'); ?> </p>
     </div>
 </article>
@@ -299,7 +299,7 @@ $url_search_projects = $this->searchProjectsUrl;
             <span class="nav-title">Projetos</span>
         </li>
         <li id="nav-developers">
-            <a class="icon icon-developerss" href="#home-developers"></a>
+            <a class="icon icon-developers" href="#home-developers"></a>
             <span class="nav-title">Desenvolvedores</span>
         </li>
         <li><a class="down icon icon-select-arrow" href="#"></a></li>

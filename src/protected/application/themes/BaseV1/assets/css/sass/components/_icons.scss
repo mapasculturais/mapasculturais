@@ -45,6 +45,8 @@ h1 .icon {
     color: $gray;
     padding: 2px;
     border-radius: $border-radius-base;
+    line-height: 1;
+    vertical-align: middle;
     &:before {
         content: $unicode-check;
     }

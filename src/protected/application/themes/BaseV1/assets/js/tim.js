@@ -223,7 +223,7 @@
             $(this).css({height: 'initial', maxHeight: 192}).parents('.slimScrollDiv').css({height: 'initial', maxHeight: 216});
         });
 
-        $('#share-tools a.social_share').click(function() {
+        $('#share-tools a.icon-share').click(function() {
             if ($('form#share-url').is(':hidden')) {
                 $('form#share-url').show();
                 var $input = $('form#share-url input');
