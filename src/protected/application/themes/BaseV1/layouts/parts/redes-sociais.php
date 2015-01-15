@@ -24,19 +24,19 @@
         <h3>Seguir</h3>
 
         <?php if ($this->isEditable() || $entity->twitter): ?>
-        <a class="icone social_twitter js-editable" data-edit="twitter" data-notext="true" data-original-title="Perfil no Twitter"
+        <a class="icon icon-twitter js-editable" data-edit="twitter" data-notext="true" data-original-title="Perfil no Twitter"
            href="<?php echo $entity->twitter ? $entity->twitter : '#" onclick="return false; ' ?>"
            data-value="<?php echo $entity->twitter ?>"></a>
         <?php endif; ?>
 
         <?php if ($this->isEditable() || $entity->facebook): ?>
-        <a class="icone social_facebook js-editable" data-edit="facebook" data-notext="true" data-original-title="Perfil no Facebook"
+        <a class="icon icon-facebook js-editable" data-edit="facebook" data-notext="true" data-original-title="Perfil no Facebook"
            href="<?php echo $entity->facebook ? $entity->facebook : '#" onclick="return false; ' ?>"
            data-value="<?php echo $entity->facebook ?>"></a>
         <?php endif; ?>
 
         <?php if ($this->isEditable() || $entity->googleplus): ?>
-        <a class="icone social_googleplus js-editable" data-edit="googleplus" data-notext="true" data-original-title="Perfil no Google Plus"
+        <a class="icon icon-googleplus js-editable" data-edit="googleplus" data-notext="true" data-original-title="Perfil no Google Plus"
            href="<?php echo $entity->googleplus ? $entity->googleplus : '#" onclick="return false; ' ?>"
            data-value="<?php echo $entity->googleplus ?>"></a>
         <?php endif; ?>

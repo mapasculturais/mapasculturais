@@ -2,15 +2,15 @@
     position: relative;
     padding-right: $padding-large;
 }
-.privado .icone {
+.privado .icon {
     width: 1rem;
     height: 1rem;
 }
-.privado h3 .icone {
+.privado h3 .icon {
     line-height: 1rem;
     vertical-align: top;
 }
-.privado .icon_lock:before {
+.privado .lock:before {
     font-size: $font-size-smaller;
     color: $gray;
 }

@@ -20,7 +20,7 @@
         overflow: hidden;
         white-space: nowrap;
         &:after {
-            content: '\33';
+            content: $unicode-select-arrow;
             position: absolute;
             right: 0;
             width: $padding-large;

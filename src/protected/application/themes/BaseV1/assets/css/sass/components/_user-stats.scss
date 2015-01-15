@@ -12,7 +12,7 @@
                 transition: all .3s;
         &:hover {
             background: $brand-primary;
-            .icon_plus {
+            .plus {
                 background: $brand-accent;
                 color: #fff;
                 -webkit-transition: all .3s;
@@ -24,11 +24,11 @@
             }
         }
     }
-    .icone {
+    .icon {
         display: block;
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        &.icon_plus {
+        &.plus {
             margin-top: 1rem;
             margin-bottom: 0;
             background: $gray-light;

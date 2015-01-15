@@ -10,7 +10,7 @@
 }
 .editable:after {
     margin-left: 5px;
-    content: '\6c';
+    content: $unicode-edit;
     font-size: $font-size-base;
     line-height: 1rem;
     font-family: $icon-font-name;
@@ -47,7 +47,7 @@ a.editable-click:hover {
     line-height: 3rem;
 }
 .agentes-relacionados .editable:after {
-    content: '\e050';
+    content: $unicode-add;
     color: $gray-dark;
     margin-left: 0;
 }
@@ -89,7 +89,7 @@ a.editable-click:hover {
 .editable-buttons button.editable-cancel {
     padding: 3px;
 }
-.editable-buttons button.editable-cancel .icon_close {
+.editable-buttons button.editable-cancel .close {
     font-size: 1.5rem;
 }
 .editable-buttons.editable-buttons-bottom {
@@ -155,7 +155,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     background: none;
 }
 .select2-container-multi .select2-search-choice-close:before {
-    content: '\4d';
+    content: $unicode-close;
     font-size: $font-size-base;
     line-height: $line-height-base;
     font-family: $icon-font-name;
@@ -204,7 +204,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     background-image: none;
 }
 .select2-container .select2-choice .select2-arrow:before {
-    content: '\33';
+    content: $unicode-select-arrow;
     display: inline-block;
     width: $line-height-base;;
     speak: none;

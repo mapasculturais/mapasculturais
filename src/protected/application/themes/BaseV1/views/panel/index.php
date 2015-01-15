@@ -10,41 +10,41 @@ $this->layout = 'panel'
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Eventos</span>
-                <div class="icone icon_calendar alignright"></div>
+                <div class="icon icon-event alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events; ?></a>
-                <a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="Adicionar eventos"></a>
+                <a class="icon plus alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="Adicionar eventos"></a>
             </div>
         </div>
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Agentes</span>
-                <div class="icone icon_profile alignright"></div>
+                <div class="icon icon-agent alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="Ver meus agentes"><?php echo $count->agents; ?></a>
-                <a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="Adicionar agentes"></a>
+                <a class="icon plus alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="Adicionar agentes"></a>
             </div>
         </div>
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Espaços</span>
-                <div class="icone icon_building alignright"></div>
+                <div class="icon icon-space alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver meus espaços"><?php echo $count->spaces; ?></a>
-                <a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar espaços"></a>
+                <a class="icon plus alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar espaços"></a>
             </div>
         </div>
         <div class="box">
             <div class="clearfix">
                 <span class="alignleft">Projetos</span>
-                <div class="icone icon_document_alt alignright"></div>
+                <div class="icon icon-project alignright"></div>
             </div>
             <div class="clearfix">
                 <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects; ?></a>
-                <a class="icone icon_plus alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
+                <a class="icon plus alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
             </div>
         </div>
 

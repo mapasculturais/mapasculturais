@@ -14,19 +14,19 @@
     font-style: none;
 }
 .info:before {
-    content: '\e007';
+    content: $unicode-info;
     color: $brand-info;
 }
 .warning:before {
-    content: '\e061';
+    content: $unicode-warning;
     color: $brand-warning;
 }
 .danger:before {
-    content: '\e061';
+    content: $unicode-danger;
     color: $brand-danger;
 }
 .success:before {
-    content: '\e052';
+    content: $unicode-success;
     color: $brand-success;
 }
 .alert {
@@ -77,7 +77,7 @@
         font-size: 1rem;
         line-height: 1.5rem;
         &:before {
-            content: '\e051';
+            content: $unicode-close;
         }
     }
     ul {

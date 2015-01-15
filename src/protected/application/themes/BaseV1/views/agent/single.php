@@ -52,7 +52,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.avatar-->
             <div class="entity-type agent-type">
-                <div class="icone icon_profile"></div>
+                <div class="icon icon-agent"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='agent' data-value='<?php echo $entity->type ?>'>
                     <?php echo $entity->type->name; ?>
                 </a>
@@ -86,17 +86,17 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()): ?>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Completo ou Razão Social" data-emptytext="Insira seu nome completo ou razão social"><?php echo $entity->nomeCompleto; ?></span></p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">CPF/CNPJ:</span> <span class="js-editable" data-edit="documento" data-original-title="CPF/CNPJ" data-emptytext="Insira o CPF ou CNPJ com pontos, hífens e barras"><?php echo $entity->documento; ?></span></p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Data de Nascimento/Fundação:</span>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Completo ou Razão Social" data-emptytext="Insira seu nome completo ou razão social"><?php echo $entity->nomeCompleto; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">CPF/CNPJ:</span> <span class="js-editable" data-edit="documento" data-original-title="CPF/CNPJ" data-emptytext="Insira o CPF ou CNPJ com pontos, hífens e barras"><?php echo $entity->documento; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Data de Nascimento/Fundação:</span>
                         <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="Data de Nascimento/Fundação" data-emptytext="Insira a data de nascimento ou fundação do agente">
                             <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                         </span>
                     </p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Raça/Cor:</span> <span class="js-editable" data-edit="raca" data-original-title="Raça/cor" data-emptytext="Selecione a raça/cor se for pessoa física"><?php echo $entity->raca; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Raça/Cor:</span> <span class="js-editable" data-edit="raca" data-original-title="Raça/cor" data-emptytext="Selecione a raça/cor se for pessoa física"><?php echo $entity->raca; ?></span></p>
 
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->emailPublico): ?>
@@ -108,8 +108,8 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()): ?>
-                <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
-                <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
+                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
+                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                 <?php endif; ?>
             </div>
 
@@ -129,7 +129,7 @@ $this->includeAngularEntityAssets($entity);
                     <div class="infos">
                         <?php if($this->isEditable()): ?>
                             <p class="privado">
-                                <span class="icone icon_lock"></span><span class="label">Localização:</span>
+                                <span class="icon icon-private-info"></span><span class="label">Localização:</span>
                                 <span class="js-editable" data-edit="localizacao" data-emptytext="Não Informar"><?php echo $entity->localizacao ? $entity->localizacao : ''; ?></span>
                             </p>
                         <?php endif; ?>

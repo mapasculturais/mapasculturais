@@ -160,7 +160,7 @@ body.action-search {
                 text-decoration: none;
             }
         }
-        div.icone {
+        div.icon {
             width: $line-height-base;;
             height: $line-height-base;;
             margin: 0 auto .25rem;
@@ -416,7 +416,7 @@ body.action-search {
         .slimScrollDiv {
             margin-bottom: $line-height-half;
         }
-        .icon_check_alt {
+        .check_alt {
             float: right;
             display: inline-block;
             width: 1.25rem;
@@ -426,7 +426,7 @@ body.action-search {
             vertical-align: middle;
             color: #999;
         }
-        .icon_check_alt:hover {
+        .check_alt:hover {
             color: $brand-primary;
         }
         &:before {

@@ -48,22 +48,22 @@
     }
 }
 .add:before {
-    content: '\e050';
+    content: $unicode-add-button;
 }
 .edit:before {
-    content: '\6c';
+    content: $unicode-edit;
 }
 .send:before {
-    content: '\e091';
+    content: $unicode-send;
 }
 .download:before {
-    content: '\e092';
+    content: $unicode-download;
 }
 .delete:before {
-    content: '\e051';
+    content: $unicode-delete;
 }
 .insert:before {
-    content: '\37';
+    content: $unicode-insert;
 }
 
 .btn.add,

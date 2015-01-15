@@ -61,25 +61,25 @@ $url_search_projects = $this->searchProjectsUrl;
         <form id="home-search-form" class="clearfix" ng-non-bindable>
             <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
             <div id="home-search-filter" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
-                <div class="placeholder"><span class="icone icon_search"></span> Buscar</div>
+                <div class="placeholder"><span class="icon icon-search"></span> Buscar</div>
                 <div class="submenu-dropdown">
                     <ul>
-                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icone icon_calendar"></span> Eventos</li>
-                        <li tabindex="3" id="agents-filter"  data-entity="agent"><span class="icone icon_profile"></span> Agentes</li>
-                        <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icone icon_building"></span> Espaços</li>
-                        <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icone icon_document_alt"></span> Projetos</li>
+                        <li tabindex="2" id="events-filter"  data-entity="event"><span class="icon icon-event"></span> Eventos</li>
+                        <li tabindex="3" id="agents-filter"  data-entity="agent"><span class="icon icon-agent"></span> Agentes</li>
+                        <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon icon-space"></span> Espaços</li>
+                        <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icon icon-project"></span> Projetos</li>
                     </ul>
                 </div>
             </div>
         </form>
         <a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a>
     </div>
-    <div class="view-more"><a class="hltip icone arrow_carrot-down" href="#home-events" title="Saiba mais"></a></div>
+    <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="Saiba mais"></a></div>
 </section>
 
 <article id="home-events" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icone icon_calendar"></span> Eventos</h1>
+        <h1><span class="icon icon-event"></span> Eventos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_events ?></div>
@@ -123,7 +123,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-agents" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icone icon_profile"></span> Agentes</h1>
+        <h1><span class="icon icon-agent"></span> Agentes</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_agents ?></div>
@@ -175,7 +175,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-spaces" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icone icon_building"></span> Espaços</h1>
+        <h1><span class="icon icon-space"></span> Espaços</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_spaces ?></div>
@@ -228,7 +228,7 @@ $url_search_projects = $this->searchProjectsUrl;
 
 <article id="home-projects" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icone icon_document_alt"></span> Projetos</h1>
+        <h1><span class="icon icon-project"></span> Projetos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_projects; ?></div>
@@ -271,37 +271,37 @@ $url_search_projects = $this->searchProjectsUrl;
 </article>
 <article id="home-developers" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icone icon_tools"></span> Desenvolvedores</h1>
+        <h1><span class="icon icon-developerss"></span> Desenvolvedores</h1>
         <p><?php $this->dict('home: home_devs'); ?> </p>
     </div>
 </article>
 <nav id="home-nav">
     <ul>
-        <li><a class="up icone arrow_carrot-up" href="#"></a></li>
+        <li><a class="up icon arrow_carrot-up" href="#"></a></li>
         <li id="nav-intro">
-            <a class="icone icon_house" href="#home-intro"></a>
+            <a class="icon icon-home" href="#home-intro"></a>
             <span class="nav-title">Introdução</span>
         </li>
         <li id="nav-events">
-            <a class="icone icon_calendar" href="#home-events"></a>
+            <a class="icon icon-event" href="#home-events"></a>
             <span class="nav-title">Eventos</span>
         </li>
         <li id="nav-agents">
-            <a class="icone icon_profile" href="#home-agents"></a>
+            <a class="icon icon-agent" href="#home-agents"></a>
             <span class="nav-title">Agentes</span>
         </li>
         <li id="nav-spaces">
-            <a class="icone icon_building" href="#home-spaces"></a>
+            <a class="icon icon-space" href="#home-spaces"></a>
             <span class="nav-title">Espaços</span>
         </li>
         <li id="nav-projects">
-            <a class="icone icon_document_alt" href="#home-projects"></a>
+            <a class="icon icon-project" href="#home-projects"></a>
             <span class="nav-title">Projetos</span>
         </li>
         <li id="nav-developers">
-            <a class="icone icon_tools" href="#home-developers"></a>
+            <a class="icon icon-developerss" href="#home-developers"></a>
             <span class="nav-title">Desenvolvedores</span>
         </li>
-        <li><a class="down icone arrow_carrot-down" href="#"></a></li>
+        <li><a class="down icon icon-select-arrow" href="#"></a></li>
     </ul>
 </nav>

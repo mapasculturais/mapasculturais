@@ -88,6 +88,189 @@ $icon-font-name:          "ElegantIcons" !default;
 $icon-font-svg-id:        "ElegantIcons" !default;
 
 
+//## Icon's unicode variables
+
+$unicode_arrow_carrot-left:     "\e045" !default;
+$unicode_arrow_carrot-right:    "\e046" !default;
+$unicode_arrow_carrot-up:       "\32"   !default;
+$unicode_arrow_expand_alt3:     "\e042" !default;
+$unicode_arrow_left:            "\e03b" !default;
+
+
+//** About icon
+// used on .icon-about on _icons.scss file
+$unicode-about:                 "\e060" !default;
+
+//** Add icon
+// used on .icon-add on _icons.scss
+$unicode-add:                   "\4c"   !default;
+
+//** Add button icon
+// used on .add on _buttons.scss
+$unicode-add-button:            "\e050" !default;
+
+//** Agent icon
+// used on:
+// .icon-agent on _icons.scss file
+// .btn-map-agent on _maps.scss file
+$unicode-agent:                 "\e08a" !default;
+
+//** Attachment icon
+// used on .attachment-title on _registration-form.scss file
+$unicode-attachment:            "\e016" !default;
+
+//** Check icon
+// used on:
+// .check on _icons.scss file
+// .filter-list li on _advanced-search.scss file
+$unicode-check:                 "\4e"   !default;
+
+//** Close icon
+// used on:
+// .close on _alerts.scss file
+// .icon-close on _icons.scss file
+// .tag-selected on _tags.scss file
+$unicode-close:                 "\4d"   !default;
+
+// alias for $unicode-close
+// used on .delete on _buttons.scss file
+$unicode-delete:                $unicode-close   !default;
+
+//** Comment icon
+// used on .icon-comment on _icons.scss file
+$unicode-comment:               "\e065" !default;
+
+//** Developers icon
+// used on .icon-developers on _icons.scss
+$unicode-developers:            "\e035" !default;
+
+//** Download icon
+// used on .download on _buttons and _icons.scss file
+$unicode-download:              "\e092" !default;
+
+//** Edit icon
+// used on:
+// .edit on _buttons.scss
+// .edit-box on _edit_box.scss
+// .editable on _editable.scss
+$unicode-edit:                  "\6c"   !default;
+
+//** Error icon
+// error icon
+$unicode-error:                 "\e061" !default;
+
+// alias for $unicode-error
+// used on .danger on _alerts.scss file
+$unicode-danger:                $unicode-error !default;
+
+// alias for $unicode-error
+// used on .warning on _alerts.scss file
+$unicode-warning:               $unicode-error !default;
+
+//** Event icon
+// used on:
+// .icon-event on _icons.scss file
+// .btn-map-event on _maps.scss file
+$unicode-event:                 "\e023" !default;
+
+//** Home icon
+// used on .icon-home on _icons.scss file
+$unicode-home:                  "\e074" !default;
+
+//** How to use icon
+// used on .icon-how-to-use on _icons.scss
+$unicode-how-to-use:            "\e064" !default;
+
+//** Info icon
+// used on .icon-info on _alerts.scss file
+$unicode-info:                  "\e007" !default;
+
+//** Insert icon
+// used on .insert class on _buttons.scss
+$unicode-insert:                "\37"   !default;
+
+//** Lock icon
+// lock icons
+$unicode-lock:                  "\e06c" !default;
+$unicode-lock-open:             "\e000" !default;
+
+// alias for $unicode-lock
+// used on .icon-login on _icons.scss file
+$unicode-login:                           $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-private-info on _icons.scss file
+$unicode-private-info:                    $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-publication-status-locked on _icons.scss file
+$unicode-space-publication-status-locked: $unicode-lock !default;
+
+// alias for $unicode-lock-open
+// used on .icon-publication-status-open on _icons.scss file
+$unicode-space-publication-status-open:   $unicode-lock-open !default;
+
+//** Project icon
+// used on .icon-project on _icons.scss file
+$unicode-project:               "\68"   !default;
+
+//** Radio icon
+// used on .icon-radio-button on _forms.scss file
+$unicode-radio-button:          "\5b"   !default;
+
+// used on .icon-radio-button.selected on _forms.scss file
+$unicode-radio-button-selected: "\5c"   !default;
+
+//** Search icon
+// used on .icon-search on _icons.scss
+$unicode-search:                "\55"   !default;
+
+// Select arrow icon
+// used on:
+// .placeholder on _dropdown.scss file
+// .select2-arrow on _editable.scss file
+// .icon-select-arrow on _icons.scss file
+$unicode-select-arrow:          "\33"   !default;
+
+//** Send icon
+// used on .send on _buttons.scss
+$unicode-send:                  "\e091" !default;
+
+//** Show advanced search icon
+// used on .icon-show-advanced-search on _icons.scss file
+$unicode-show-advanced-search:  "\67"   !default;
+
+//** Show map icon
+// used on .icon-show-map on _icons.scss
+$unicode-show-map:              "\e081" !default;
+
+//** Show search on list icon
+// used on .icon-show-search-on-list on _icons.scss file
+$unicode-show-search-on-list:   "\e056" !default;
+
+//** Show search on map icon
+// used on .icon-show-search-on-map on _icons.scss file
+$unicode-show-search-on-map:    "\e083" !default;
+
+//** Space icon
+// used on:
+// .icon-space on _icons.scss file
+// .btn-map-space on _maps.scss file
+$unicode-space:                 "\e0ef" !default;
+
+//** Sucess icon
+// used on .icon-success on _alerts.scss file
+$unicode-success:               "\e052" !default;
+
+//** Social icons
+// used on .icon-share on _icons.scss file
+$unicode-share:                 "\e0a0" !default;
+// used on .icon-twitter on _icons.scss file
+$unicode-twitter:               "\e094" !default;
+// used on .icon-facebook on _icons.scss file
+$unicode-facebook:              "\e093" !default;
+// used on .icon-googleplus on _icons.scss file
+$unicode-googleplus:            "\e096" !default;
 
 //== Components
 //

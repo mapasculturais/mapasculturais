@@ -37,7 +37,7 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
             <!--.avatar-->
             <div class="entity-type registration-type">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon icon-project"></div>
                 <a><?php echo $project->type->name; ?></a>
             </div>
             <!--.entity-type-->

@@ -27,25 +27,25 @@
     <ul class="menu entities-menu clearfix">
         <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
-                <div class="icone icon_calendar"></div>
+                <div class="icon icon-event"></div>
                 <div class="menu-item-label">Eventos</div>
             </a>
         </li>
         <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
-                <div class="icone icon_building"></div>
+                <div class="icon icon-space"></div>
                 <div class="menu-item-label">Espaços</div>
             </a>
         </li>
         <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                <div class="icone icon_profile"></div>
+                <div class="icon icon-agent"></div>
                 <div class="menu-item-label">Agentes</div>
             </a>
         </li>
         <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon icon-project"></div>
                 <div class="menu-item-label">Projetos</div>
             </a>
         </li>
@@ -54,16 +54,15 @@
     <ul class="menu session-menu clearfix">
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
-
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
-                    <div class="icone icon_comment"></div>
+                    <div class="icon icon_comment"></div>
                     <div class="menu-item-label">Notificações</div>
                 </a>
                 <ul class="submenu hidden">
                     <li>
                         <div class="clearfix">
                             <h6 class="alignleft">Notificações</h6>
-                            <a href="#" style="display:none" class="staging-hidden hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
+                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="Marcar todas como lidas"></a>
                         </div>
                         <ul>
                             <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
@@ -143,7 +142,7 @@
         <?php else: ?>
             <li class="login">
                 <a href="<?php echo $app->createUrl('panel') ?>">
-                    <div class="icone icon_lock"></div>
+                    <div class="icon icon-login"></div>
                     <div class="menu-item-label">Entrar</div>
                 </a>
                 <?php if(!empty($fake_options)): ?>

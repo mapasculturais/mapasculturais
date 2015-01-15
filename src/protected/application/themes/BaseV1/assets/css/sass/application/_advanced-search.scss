@@ -35,7 +35,7 @@
     header {
         padding: $padding-base;
         line-height: 1rem;
-        .icone {
+        .icon {
             font-size: $font-size-base;
             font-weight: normal;
         }
@@ -43,7 +43,7 @@
             float: left;
             margin-right: 5px;
         }
-        .icon_adjust-vert {
+        .show-advanced-search {
             float: right;
         }
         @media screen and (min-width: $screen-desktop) {
@@ -119,7 +119,7 @@
         line-height: $line-height-base;
         &:before {
             display: inline-block;
-            content: '\4e';
+            content: $unicode-check;
             margin: .325rem .75rem .325rem 0;
             padding: 2px;
             background: $gray-light;

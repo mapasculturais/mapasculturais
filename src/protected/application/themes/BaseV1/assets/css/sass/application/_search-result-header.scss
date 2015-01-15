@@ -47,7 +47,7 @@
     margin-right: -141px;
     border-left: 2px solid #d3d3d3;
     box-sizing: border-box;
-    .icone {
+    .icon {
         float: right;
         line-height: 1.5rem;
         font-size: $font-size-base;
@@ -59,7 +59,7 @@
            color: $brand-accent;
         }
     }
-    .icon_map {
+    .map {
         margin-right: 5px;
     }
     #share-tools {
@@ -84,7 +84,7 @@
                 @include arrow(up, $caret-width-base, #fff);
                 right: 8px;
             }
-            .icone {
+            .icon {
                 float: left;
                 width: $line-height-base;;
                 height: $line-height-base;;

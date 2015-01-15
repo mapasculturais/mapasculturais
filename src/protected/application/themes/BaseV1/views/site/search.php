@@ -41,7 +41,7 @@ $this->includeMapAssets();
     </div>
 
     <div id="infobox" ng-show="showInfobox()" class="{{data.global.openEntity.type}}">
-        <a class="icone icon_close" ng-click="data.global.openEntity.id=null"></a>
+        <a class="icon icon-close" ng-click="data.global.openEntity.id=null"></a>
 
         <article class="objeto clearfix" ng-if="openEntity.agent">
             <h1><a href="{{openEntity.agent.singleUrl}}">{{openEntity.agent.name}}</a></h1>
@@ -83,7 +83,7 @@ $this->includeMapAssets();
         <div ng-if="openEntity.event">
             <p class="espaco-dos-eventos">Eventos encontrados em:<br>
                 <a href="{{openEntity.event.space.singleUrl}}">
-                    <span class="icone icon_building"></span>{{openEntity.event.space.name}}
+                    <span class="icon icon-space"></span>{{openEntity.event.space.name}}
                 </a><br>
                 {{openEntity.event.space.endereco}}
             </p>
@@ -135,7 +135,7 @@ $this->includeMapAssets();
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         <header id="project-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'project'">
             <div class="clearfix">
-                <h1><span class="icone icon_document_alt"></span> Projetos</h1>
+                <h1><span class="icon icon-project"></span> Projetos</h1>
                 <a class="btn btn-accent add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
             </div>
         </header>
@@ -159,7 +159,7 @@ $this->includeMapAssets();
         </div>
 
         <header id="agent-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'agent'">
-            <h1><span class="icone icon_profile"></span> Agentes</h1>
+            <h1><span class="icon icon-agent"></span> Agentes</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
         </header>
 
@@ -184,7 +184,7 @@ $this->includeMapAssets();
             </article>
         </div>
         <header id="space-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'space'">
-            <h1><span class="icone icon_building"></span> Espaços</h1>
+            <h1><span class="icon icon-space"></span> Espaços</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
         </header>
         <div id="lista-dos-espacos" class="lista space" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
@@ -210,7 +210,7 @@ $this->includeMapAssets();
             </article>
         </div>
         <header id="event-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'event'">
-            <h1><span class="icone icon_calendar"></span> Eventos</h1>
+            <h1><span class="icon icon-event"></span> Eventos</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar evento</a>
         </header>
 

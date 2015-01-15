@@ -1,38 +1,173 @@
 /*ícones*/
-.icone {
-    display: inline-block;
-    vertical-align: middle;
+.icon {
+    @extend %icon;
 }
-a.icone:hover {
-    text-decoration: none;
-}
-h1 .icone {
+h1 .icon {
     width: 2rem;
     height: 2rem;
     margin-right: .75rem;
     font-size: 2rem;
     line-height: inherit;
 }
-.icon_check {
+.icon-show-advanced-search {
+    &:before {
+        content: $unicode-show-advanced-search;
+    }
+}
+.icon-select-arrow {
+    &:before {
+        content: $unicode-select-arrow;
+    }
+}
+.arrow_left {
+    &:before {
+        content: $unicode_arrow_left;
+    }
+}
+.arrow_carrot-up {
+    &:before {
+        content: $unicode_arrow_carrot-up;
+    }
+}
+.icon-space {
+    &:before {
+        content: $unicode-space;
+    }
+}
+.icon-event {
+    &:before {
+        content: $unicode-event;
+    }
+}
+.icon-check {
     margin-right: .5rem;
     background: #fff;
     color: $gray;
     padding: 2px;
     border-radius: $border-radius-base;
+    &:before {
+        content: $unicode-check;
+    }
+    &:hover {
+        color: $brand-accent;
+    }
+    &.selected {
+        background: $brand-accent;
+        color: #fff !important;
+    }
 }
-.icon_check:hover {
-    color: $brand-accent;
+.icon-close {
+    &:before {
+        content: $unicode-close;
+    }
 }
-.icon_check.selected {
-    background: $brand-accent;
-    color: #fff !important;
+.icon-comment {
+    &:before {
+        content: $unicode-comment;
+    }
 }
-.social_twitter {
+.icon-project {
+    &:before {
+        content: $unicode-project;
+    }
+}
+.icon-download {
+    &:before {
+        content: $unicode-download;
+    }
+}
+.icon-about {
+    &:before {
+        content: $unicode-about;
+    }
+}
+.icon-home {
+    &:before {
+        content: $unicode-home;
+    }
+}
+.icon-login {
+    &:before {
+        content: $unicode-login;
+    }
+}
+.icon-private-info {
+    &:before {
+        content: $unicode-private-info;
+    }
+}
+.icon-publication-status-open {
+    &:before {
+        content: $unicode-space-publication-status-open;
+    }
+}
+.icon-publication-status-locked {
+    &:before {
+        content: $unicode-space-publication-status-locked;
+    }
+}
+.icon-show-search-on-map {
+    &:before {
+        content: $unicode-show-search-on-map;
+    }
+}
+.icon-show-search-on-list {
+    &:before {
+        content: $unicode-show-search-on-list;
+    }
+}
+.icon-show-map {
+    &:before {
+        content: $unicode-show-map;
+    }
+}
+.icon-add {
+    &:before {
+        content: $unicode-add;
+    }
+}
+.icon-agent {
+    &:before {
+        content: $unicode-agent;
+    }
+}
+.icon-how-to-use {
+    &:before {
+        content: $unicode-how-to-use;
+    }
+}
+.icon-search {
+    &:before {
+        content: $unicode-search;
+    }
+}
+.icon-developers {
+    &:before {
+        content: $unicode-developers;
+    }
+}
+
+/* social icons */
+.icon-share {
+    &:before {
+        content: $unicode-share;
+    }
+}
+.icon-twitter {
     color: #00acee !important;
+    &:before {
+        content: $unicode-twitter;
+    }
 }
-.social_facebook {
+.icon-facebook {
     color: #3b5998 !important;
+    &:before {
+        content: $unicode-facebook;
+    }
 }
-.social_googleplus {
+.icon-googleplus {
     color: #dd4b39 !important;
+    &:before {
+        content: $unicode-googleplus;
+    }
 }
