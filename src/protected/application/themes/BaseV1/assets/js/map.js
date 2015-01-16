@@ -362,7 +362,7 @@
             }
         }
 
-        if($('body').hasClass('controller-space')){
+        if($('body').hasClass('controller-space') || $('body').hasClass('controller-event')){
             MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
         }
 
