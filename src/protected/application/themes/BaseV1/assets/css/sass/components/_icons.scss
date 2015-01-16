@@ -83,6 +83,11 @@ h1 .icon {
         content: $unicode-panel;
     }
 }
+.icon-home {
+    &:before {
+        content: $unicode-home;
+    }
+}
 .icon-login {
     &:before {
         content: $unicode-login;
