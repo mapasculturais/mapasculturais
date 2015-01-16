@@ -89,8 +89,9 @@ a.editable-click:hover {
 .editable-buttons button.editable-cancel {
     padding: 3px;
 }
-.editable-buttons button.editable-cancel .close {
+.editable-buttons button.editable-cancel .icon-close {
     font-size: 1.5rem;
+    line-height: 1;
 }
 .editable-buttons.editable-buttons-bottom {
     text-align: right;
