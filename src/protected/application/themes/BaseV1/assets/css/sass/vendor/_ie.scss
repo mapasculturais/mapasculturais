@@ -14,10 +14,11 @@
     width: 124px;
 }
 
-.ie .btn.edit:before {
-    margin-top: 1rem;
-}
-
 .ie .abas-objetos li.active:after {
     margin-top: 1px;
+}
+
+.ie .tag-selected:after {
+    height: 0.5rem;
+    margin-top: 0.5rem;
 }

@@ -124,7 +124,10 @@
             padding: 2px;
             background: $gray-light;
             -webkit-font-smoothing: antialiased;
-            font: normal .75rem/.75rem $icon-font-name;
+            font-family: $icon-font-name;
+            font-size: $font-size-smaller;
+            font-style: normal;
+            line-height: 1;
             text-align: center;
             color: #fff;
             border-radius: $border-radius-base;
