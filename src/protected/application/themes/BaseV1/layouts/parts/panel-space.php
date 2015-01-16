@@ -7,7 +7,7 @@
     <h1><a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a></h1>
 	<div class="objeto-meta">
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
-		<div><span class="label">Área de atuação:</span> Cinema</div>
+		<div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms['area'])?></div>
 		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
 		<div><span class="label">Acessibilidade:</span> Sim</div>
 	</div>
