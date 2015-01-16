@@ -9,7 +9,7 @@
     </h1>
     <div class="objeto-meta">
         <div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
-        <div><span class="label">Área de atuação:</span> <?php echo implode(',', $entity->terms['area'])?></div>
+        <div><span class="label">Área de atuação:</span> <?php echo implode(', ', $entity->terms['area'])?></div>
     </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
