@@ -14,11 +14,17 @@ $this->layout = 'panel'
         <?php foreach($user->enabledSpaces as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledSpaces): ?>
+            <div class="alert info">Você não possui nenhum espaço cadastrado.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedSpaces as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedSpaces): ?>
+            <div class="alert info">Você não possui nenhum espaço na lixeira.</div>
+        <?php endif; ?>
     </div>
 </div>

@@ -14,11 +14,17 @@ $this->layout = 'panel'
         <?php foreach($user->enabledEvents as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledEvents): ?>
+            <div class="alert info">Você não possui nenhum evento cadastrado.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedEvents as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedEvents): ?>
+            <div class="alert info">Você não possui nenhum evento na lixeira.</div>
+        <?php endif; ?>
     </div>
 </div>

@@ -14,12 +14,18 @@ $this->layout = 'panel'
         <?php foreach($user->enabledProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto na lixeira.</div>
+        <?php endif; ?>
     </div>
     <!-- #lixeira-->
 </div>
