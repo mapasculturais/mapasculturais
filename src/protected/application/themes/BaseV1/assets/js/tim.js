@@ -2,7 +2,7 @@
     // to prevent jQuery bug
     $(document).unbind('DOMNodeInserted.mask');
 
-    // Analytivs
+    // Analytics
     if(MapasCulturais.mode !== 'development'){
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -15,6 +15,22 @@
 
 
     $(document).ready(function() {
+
+        var deviceAgent = navigator.userAgent.toLowerCase();
+
+        var isTouchDevice = 'ontouchstart' in document.documentElement ||
+        (deviceAgent.match(/(iphone|ipod|ipad)/) ||
+        deviceAgent.match(/(android)/)  ||
+        deviceAgent.match(/(iemobile)/) ||
+        deviceAgent.match(/iphone/i) ||
+        deviceAgent.match(/ipad/i) ||
+        deviceAgent.match(/ipod/i) ||
+        deviceAgent.match(/blackberry/i) ||
+        deviceAgent.match(/bada/i));
+
+        window.isTouchDevice = isTouchDevice;
+        $('body').addClass('touch-device');
+
         if(MapasCulturais.mode !== 'development')
             $('.staging-hidden').remove();
 
@@ -471,6 +487,9 @@
          */
         tip: {
             init: function() {
+
+                if(window.isTouchDevice) return false;
+
                 $(document.body).on('mouseenter click', ".hltip", function(e) {
                     var tip = $(this).data('tip');
                     var $this = $(this);

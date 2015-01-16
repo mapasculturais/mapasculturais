@@ -14,12 +14,18 @@ $this->layout = 'panel'
         <?php foreach($user->enabledAgents as $entity): ?>
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledAgents): ?>
+            <div class="alert info">Você não possui nenhum agente cadastrado.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($app->user->trashedAgents as $entity): ?>
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedAgents): ?>
+            <div class="alert info">Você não possui nenhum agente na lixeira.</div>
+        <?php endif; ?>
     </div>
     <!-- #lixeira-->
 </div>
