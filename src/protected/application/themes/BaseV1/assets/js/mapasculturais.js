@@ -67,8 +67,23 @@ $(function(){
                     $submenu.hide();
                 });
             }
-            $submenu.mouseleave(function(){
-                $(this).hide();
+            //mouse leave disabled
+            // var $timeout;
+            // $submenu.on('mouseleave', function(){
+            //     $timeout = setTimeout(function(){
+            //         $submenu.hide();
+            //     }, 100);
+            // });
+            // $submenu.on('mouseenter', function(){
+            //     clearTimeout($timeout);
+            // });
+            // $dropdown.on('mouseenter', function(){
+            //     clearTimeout($timeout);
+            // });
+            $('body').on('click', function(event){
+                if($submenu.find(event.target).length == 0 && $dropdown.find(event.target).length == 0){
+                    $submenu.hide();
+                }
             });
         }
     });
