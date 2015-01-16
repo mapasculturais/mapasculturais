@@ -48,6 +48,9 @@
             margin-bottom: 0;
             background: $gray-light;
             border-radius: $border-radius-base;
+            @media screen and (max-width: $screen-tablet) {
+                display: none;
+            }
         }
     }
 }
