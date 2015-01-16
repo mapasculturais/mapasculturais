@@ -15,8 +15,7 @@
         margin-bottom: -1px;
         padding: 5px $padding-small;
         border-bottom: $thin-row;
-        -webkit-transition: all .3s;
-                transition: all .3s;
+
         &:hover {
             border-bottom: 1px solid $brand-accent;
             a {
@@ -35,6 +34,8 @@
         font-size: $font-size-small;
         li {
             padding: 5px $padding-large;
+            -webkit-transition: all .3s;
+                transition: all .3s;
         }
     }
 }
