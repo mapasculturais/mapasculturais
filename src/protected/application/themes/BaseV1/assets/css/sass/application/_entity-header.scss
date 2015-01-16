@@ -65,7 +65,7 @@ article.event {
         background-color: $brand-event;
     }
 }
-article.project {
+article.project, article.registration {
     .header-image {
         background-color: $brand-project;
     }
