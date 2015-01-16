@@ -67,8 +67,8 @@ $(function(){
                     $submenu.hide();
                 });
             }
-            $dropdown.mouseleave(function(){
-                $submenu.hide();
+            $submenu.mouseleave(function(){
+                $(this).hide();
             });
         }
     });
