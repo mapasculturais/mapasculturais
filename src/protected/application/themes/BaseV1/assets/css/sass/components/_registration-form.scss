@@ -75,7 +75,7 @@ article.project .highlighted-message .btn {
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
-	padding: $padding-large;
+	padding: $padding-base;
 	border: 1px solid $gray-lighter;
 	border-radius: 2px;
 	&:hover {
@@ -93,6 +93,9 @@ article.project .highlighted-message .btn {
             font-size: 1rem;
             line-height: 1;
         }
+    }
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-large;
     }
 }
 .registration-help {
@@ -134,7 +137,6 @@ article.project .highlighted-message .btn {
     .registration-list-item {
         position: relative;
         padding: $padding-base;
-        padding-right: 11rem;
         border-bottom: 1px solid $gray-lighter;
         .registration-agent {
             a {
@@ -163,6 +165,9 @@ article.project .highlighted-message .btn {
         &:last-child {
             border-bottom: none;
         }
+        &.registration-edit-mode {
+            padding-right: 11rem;
+        }
         @media print {
             padding: 0 0 $padding-base;
             margin-bottom: $padding-base;
@@ -177,7 +182,6 @@ article.project .highlighted-message .btn {
     .attachment-list-item {
         position: relative;
         padding: $padding-base;
-        padding-right: 14rem;
         border-bottom: 1px solid $gray-lighter;
         .attachment-title {
             font-size: $font-size-smaller;
@@ -213,6 +217,9 @@ article.project .highlighted-message .btn {
         }
         &:last-child {
             border-bottom: none;
+        }
+        &.registration-edit-mode {
+            padding-right: 14rem;
         }
     }
 }

@@ -69,7 +69,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
-            <li ng-repeat="def in data.entity.registrationAgents" ng-if="def.use != 'dontUse'" class="registration-list-item">
+            <li ng-repeat="def in data.entity.registrationAgents" ng-if="def.use != 'dontUse'" class="registration-list-item registration-edit-mode">
                 <div class="registration-label">{{def.label}} <span ng-if="def.use === 'required'" class="required">*</span></div>
                 <div class="registration-description">{{def.description}}</div>
 
@@ -104,7 +104,7 @@ $this->includeAngularEntityAssets($entity);
         <h4>Anexos</h4>
         <p class="registration-help">Para efetuar sua inscrição, faça upload dos seguintes anexos. Serão aceitos arquivos do Microsoft Office, LibreOffice, PDF, imagens (jpg e png) e arquivos de vídeo e áudio.</p>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
-            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
+            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item registration-edit-mode">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
                 <div class="attachment-description">
                     {{fileConfiguration.description}}
