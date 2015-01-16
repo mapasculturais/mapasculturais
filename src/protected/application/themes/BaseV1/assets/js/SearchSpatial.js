@@ -147,6 +147,17 @@
             });
 
 
+            $('#endereco').on('click dblclick', function(){
+                var $self = $(this);
+                $self.focus();
+                $self.stopPropagation();
+                $('body').one('click', function(event){
+                    if($self.parent().find(event.target).length == 0){
+                        $self.blur();
+                    }
+                });
+            });
+
         });
 
 
