@@ -447,273 +447,266 @@ class App extends \Slim\Slim{
 
     public function register(){
 
-        if($this->_config['app.useRegisterCache'] && $this->cache->contains('mapasculturais.register')){
-            $this->_register = $this->cache->fetch('mapasculturais.register');
-        }else{
-            // get types and metadata configurations
-            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
-            $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
+        // get types and metadata configurations
+        $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
 
-            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
-            $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
+        $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
 
-            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
-            $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
+        $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
 
-            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
-            $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
+        $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
 
-            // register auth providers
-            // @TODO veridicar se isto está sendo usado, se não remover
-            $this->registerAuthProvider('OpenID');
-            $this->registerAuthProvider('logincidadao');
-        
-
-            // register controllers
-
-            $this->registerController('site',    'MapasCulturais\Controllers\Site');
-            $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
-            $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
-
-            $this->registerController('event',   'MapasCulturais\Controllers\Event');
-            $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
-            $this->registerController('space',   'MapasCulturais\Controllers\Space');
-            $this->registerController('project', 'MapasCulturais\Controllers\Project');
-
-            $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
-            $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
-
-            $this->registerController('term',           'MapasCulturais\Controllers\Term');
-            $this->registerController('file',           'MapasCulturais\Controllers\File');
-            $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
-            $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
-
-            //workflow controllers
-            $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
+        // register auth providers
+        // @TODO veridicar se isto está sendo usado, se não remover
+        $this->registerAuthProvider('OpenID');
+        $this->registerAuthProvider('logincidadao');
 
 
-            $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
-            $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
-            $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
+        // register controllers
 
-            /**
-             * @todo melhores mensagens de erro
-             */
+        $this->registerController('site',    'MapasCulturais\Controllers\Site');
+        $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
+        $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
 
-            // all file groups
-            $file_groups = array(
-                'downloads' => new Definitions\FileGroup('downloads'),
-                'avatar' => new Definitions\FileGroup('avatar', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
-                'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
-                'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
-                'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
-                'rules' => new Definitions\FileGroup('rules', array('^application/.*'), 'The uploaded file is not a valid document.', true),
-            );
+        $this->registerController('event',   'MapasCulturais\Controllers\Event');
+        $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
+        $this->registerController('space',   'MapasCulturais\Controllers\Space');
+        $this->registerController('project', 'MapasCulturais\Controllers\Project');
 
-            // register file groups
-            $this->registerFileGroup('agent', $file_groups['downloads']);
-            $this->registerFileGroup('agent', $file_groups['header']);
-            $this->registerFileGroup('agent', $file_groups['avatar']);
-            $this->registerFileGroup('agent', $file_groups['gallery']);
+        $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
+        $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
 
-            $this->registerFileGroup('space', $file_groups['downloads']);
-            $this->registerFileGroup('space', $file_groups['header']);
-            $this->registerFileGroup('space', $file_groups['avatar']);
-            $this->registerFileGroup('space', $file_groups['gallery']);
+        $this->registerController('term',           'MapasCulturais\Controllers\Term');
+        $this->registerController('file',           'MapasCulturais\Controllers\File');
+        $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
+        $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
 
-            $this->registerFileGroup('event', $file_groups['header']);
-            $this->registerFileGroup('event', $file_groups['avatar']);
-            $this->registerFileGroup('event', $file_groups['downloads']);
-            $this->registerFileGroup('event', $file_groups['gallery']);
-
-            $this->registerFileGroup('project', $file_groups['header']);
-            $this->registerFileGroup('project', $file_groups['avatar']);
-            $this->registerFileGroup('project', $file_groups['downloads']);
-            $this->registerFileGroup('project', $file_groups['gallery']);
-            $this->registerFileGroup('project', $file_groups['rules']);
-
-            $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
-
-            $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
-            foreach($image_transformations as $name => $transformation)
-                $this->registerImageTransformation($name, $transformation);
+        //workflow controllers
+        $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
 
-            // registration agent relations
+        $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
+        $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
+        $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
 
-            foreach($this->config['registration.agentRelations'] as $config){
-                $def = new Definitions\RegistrationAgentRelation($config);
-                $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
+        /**
+         * @todo melhores mensagens de erro
+         */
 
-                $this->registerRegistrationAgentRelation($def);
-            }
+        // all file groups
+        $file_groups = array(
+            'downloads' => new Definitions\FileGroup('downloads'),
+            'avatar' => new Definitions\FileGroup('avatar', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
+            'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
+            'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+            'rules' => new Definitions\FileGroup('rules', array('^application/.*'), 'The uploaded file is not a valid document.', true),
+        );
 
-            // all metalist groups
-            $metalist_groups = array(
-                'links' => new Definitions\MetaListGroup('links',
-                    array(
-                        'title' => array(
-                            'label' => 'Nome'
-                        ),
-                        'value' => array(
-                            'label' => 'Link',
-                            'validations' => array(
-                                'required' => 'O link do vídeo é obrigatório',
-                                "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
-                            )
-                        ),
+        // register file groups
+        $this->registerFileGroup('agent', $file_groups['downloads']);
+        $this->registerFileGroup('agent', $file_groups['header']);
+        $this->registerFileGroup('agent', $file_groups['avatar']);
+        $this->registerFileGroup('agent', $file_groups['gallery']);
+
+        $this->registerFileGroup('space', $file_groups['downloads']);
+        $this->registerFileGroup('space', $file_groups['header']);
+        $this->registerFileGroup('space', $file_groups['avatar']);
+        $this->registerFileGroup('space', $file_groups['gallery']);
+
+        $this->registerFileGroup('event', $file_groups['header']);
+        $this->registerFileGroup('event', $file_groups['avatar']);
+        $this->registerFileGroup('event', $file_groups['downloads']);
+        $this->registerFileGroup('event', $file_groups['gallery']);
+
+        $this->registerFileGroup('project', $file_groups['header']);
+        $this->registerFileGroup('project', $file_groups['avatar']);
+        $this->registerFileGroup('project', $file_groups['downloads']);
+        $this->registerFileGroup('project', $file_groups['gallery']);
+        $this->registerFileGroup('project', $file_groups['rules']);
+
+        $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+
+        $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
+        foreach($image_transformations as $name => $transformation)
+            $this->registerImageTransformation($name, $transformation);
+
+
+        // registration agent relations
+
+        foreach($this->config['registration.agentRelations'] as $config){
+            $def = new Definitions\RegistrationAgentRelation($config);
+            $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
+
+            $this->registerRegistrationAgentRelation($def);
+        }
+
+        // all metalist groups
+        $metalist_groups = array(
+            'links' => new Definitions\MetaListGroup('links',
+                array(
+                    'title' => array(
+                        'label' => 'Nome'
                     ),
-                    'The uploaded file is not a valid image.',
-                    true
-                ),
-                'videos' => new Definitions\MetaListGroup('videos',
-                    array(
-                        'title' => array(
-                            'label' => 'Nome'
-                        ),
-                        'value' => array(
-                            'label' => 'Link',
-                            'validations' => array(
-                                'required' => 'O link do vídeo é obrigatório',
-                                "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
-                            )
-                        ),
+                    'value' => array(
+                        'label' => 'Link',
+                        'validations' => array(
+                            'required' => 'O link do vídeo é obrigatório',
+                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                        )
                     ),
-                    'The uploaded file is not a valid image.',
-                    true
                 ),
-            );
+                'The uploaded file is not a valid image.',
+                true
+            ),
+            'videos' => new Definitions\MetaListGroup('videos',
+                array(
+                    'title' => array(
+                        'label' => 'Nome'
+                    ),
+                    'value' => array(
+                        'label' => 'Link',
+                        'validations' => array(
+                            'required' => 'O link do vídeo é obrigatório',
+                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                        )
+                    ),
+                ),
+                'The uploaded file is not a valid image.',
+                true
+            ),
+        );
 
-            // register metalist groups
-            $this->registerMetaListGroup('agent', $metalist_groups['links']);
-            $this->registerMetaListGroup('agent', $metalist_groups['videos']);
+        // register metalist groups
+        $this->registerMetaListGroup('agent', $metalist_groups['links']);
+        $this->registerMetaListGroup('agent', $metalist_groups['videos']);
 
-            $this->registerMetaListGroup('space', $metalist_groups['links']);
-            $this->registerMetaListGroup('space', $metalist_groups['videos']);
+        $this->registerMetaListGroup('space', $metalist_groups['links']);
+        $this->registerMetaListGroup('space', $metalist_groups['videos']);
 
-            $this->registerMetaListGroup('event', $metalist_groups['links']);
-            $this->registerMetaListGroup('event', $metalist_groups['videos']);
+        $this->registerMetaListGroup('event', $metalist_groups['links']);
+        $this->registerMetaListGroup('event', $metalist_groups['videos']);
 
-            $this->registerMetaListGroup('project', $metalist_groups['links']);
-            $this->registerMetaListGroup('project', $metalist_groups['videos']);
+        $this->registerMetaListGroup('project', $metalist_groups['links']);
+        $this->registerMetaListGroup('project', $metalist_groups['videos']);
 
-            // register space types and spaces metadata
-            foreach($space_types['items'] as $group_name => $group_config){
-                $entity_class = 'MapasCulturais\Entities\Space';
-                $group = new Definitions\EntityTypeGroup($entity_class, $group_name, $group_config['range'][0], $group_config['range'][1]);
-                $this->registerEntityTypeGroup($group);
+        // register space types and spaces metadata
+        foreach($space_types['items'] as $group_name => $group_config){
+            $entity_class = 'MapasCulturais\Entities\Space';
+            $group = new Definitions\EntityTypeGroup($entity_class, $group_name, $group_config['range'][0], $group_config['range'][1]);
+            $this->registerEntityTypeGroup($group);
 
-                $group_meta = key_exists('metadata', $group_config) ? $group_config['metadata'] : array();
+            $group_meta = key_exists('metadata', $group_config) ? $group_config['metadata'] : array();
 
-                foreach ($group_config['items'] as $type_id => $type_config){
-                    $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-                    $group->registerType($type);
-                    $this->registerEntityType($type);
+            foreach ($group_config['items'] as $type_id => $type_config){
+                $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+                $group->registerType($type);
+                $this->registerEntityType($type);
 
-                    $type_meta = $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+                $type_meta = $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
 
-                    // add group metadata to space type
-                    if(key_exists('metadata', $group_config))
-                        foreach($group_meta as $meta_key => $meta_config)
-                            if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-                                    $type_config['metadata'][$meta_key] = $meta_config;
-
-                    // add space metadata to space type
-                    foreach($space_meta as $meta_key => $meta_config)
+                // add group metadata to space type
+                if(key_exists('metadata', $group_config))
+                    foreach($group_meta as $meta_key => $meta_config)
                         if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
                                 $type_config['metadata'][$meta_key] = $meta_config;
 
-                    foreach($type_config['metadata'] as $meta_key => $meta_config){
-                       $metadata = new Definitions\Metadata($meta_key, $meta_config);
-                       $this->registerMetadata($metadata, $entity_class, $type_id);
-                    }
-                }
-            }
-
-            // register agent types and agent metadata
-            $entity_class = 'MapasCulturais\Entities\Agent';
-
-            foreach($agent_types['items'] as $type_id => $type_config){
-                $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-
-                $this->registerEntityType($type);
-                $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
-
-                // add agents metadata definition to agent type
-                foreach($agents_meta as $meta_key => $meta_config)
+                // add space metadata to space type
+                foreach($space_meta as $meta_key => $meta_config)
                     if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-                        $type_config['metadata'][$meta_key] = $meta_config;
+                            $type_config['metadata'][$meta_key] = $meta_config;
 
                 foreach($type_config['metadata'] as $meta_key => $meta_config){
-
-                    $metadata = new Definitions\Metadata($meta_key, $meta_config);
-                    $this->registerMetadata($metadata, $entity_class, $type_id);
+                   $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                   $this->registerMetadata($metadata, $entity_class, $type_id);
                 }
             }
-
-            // register event types and event metadata
-            $entity_class = 'MapasCulturais\Entities\Event';
-
-            foreach($event_types['items'] as $type_id => $type_config){
-                $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-
-                $this->registerEntityType($type);
-                $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
-
-                // add events metadata definition to event type
-                foreach($event_meta as $meta_key => $meta_config)
-                    if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-                        $type_config['metadata'][$meta_key] = $meta_config;
-
-                foreach($type_config['metadata'] as $meta_key => $meta_config){
-                    $metadata = new Definitions\Metadata($meta_key, $meta_config);
-                    $this->registerMetadata($metadata, $entity_class, $type_id);
-                }
-            }
-
-            // register project types and project metadata
-            $entity_class = 'MapasCulturais\Entities\Project';
-
-            foreach($project_types['items'] as $type_id => $type_config){
-                $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-
-                $this->registerEntityType($type);
-                $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
-
-                // add projects metadata definition to project type
-                foreach($projects_meta as $meta_key => $meta_config)
-                    if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-                        $type_config['metadata'][$meta_key] = $meta_config;
-
-                foreach($type_config['metadata'] as $meta_key => $meta_config){
-                    $metadata = new Definitions\Metadata($meta_key, $meta_config);
-                    $this->registerMetadata($metadata, $entity_class, $type_id);
-                }
-            }
-
-            // register taxonomies
-            $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
-
-            foreach($taxonomies as $taxonomy_id => $taxonomy_definition){
-                $taxonomy_slug = $taxonomy_definition['slug'];
-                $taxonomy_required = key_exists('required', $taxonomy_definition) ? $taxonomy_definition['required'] : false;
-                $taxonomy_description = key_exists('description', $taxonomy_definition) ? $taxonomy_definition['description'] : '';
-                $restricted_terms = key_exists('restricted_terms', $taxonomy_definition) ? $taxonomy_definition['restricted_terms'] : false;
-
-                $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required);
-
-                $entity_classes = $taxonomy_definition['entities'];
-
-                foreach($entity_classes as $entity_class){
-                    $this->registerTaxonomy($entity_class, $definition);
-                }
-            }
-
-            $this->view->register();
-
-            $this->cache->save('mapasculturais.register', $this->_register, $this->_config['app.registerCache.lifeTime']);
         }
 
+        // register agent types and agent metadata
+        $entity_class = 'MapasCulturais\Entities\Agent';
+
+        foreach($agent_types['items'] as $type_id => $type_config){
+            $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+
+            $this->registerEntityType($type);
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+
+            // add agents metadata definition to agent type
+            foreach($agents_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
+
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
+        }
+
+        // register event types and event metadata
+        $entity_class = 'MapasCulturais\Entities\Event';
+
+        foreach($event_types['items'] as $type_id => $type_config){
+            $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+
+            $this->registerEntityType($type);
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+
+            // add events metadata definition to event type
+            foreach($event_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
+
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
+        }
+
+        // register project types and project metadata
+        $entity_class = 'MapasCulturais\Entities\Project';
+
+        foreach($project_types['items'] as $type_id => $type_config){
+            $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+
+            $this->registerEntityType($type);
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+
+            // add projects metadata definition to project type
+            foreach($projects_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
+
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
+        }
+
+        // register taxonomies
+        $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+
+        foreach($taxonomies as $taxonomy_id => $taxonomy_definition){
+            $taxonomy_slug = $taxonomy_definition['slug'];
+            $taxonomy_required = key_exists('required', $taxonomy_definition) ? $taxonomy_definition['required'] : false;
+            $taxonomy_description = key_exists('description', $taxonomy_definition) ? $taxonomy_definition['description'] : '';
+            $restricted_terms = key_exists('restricted_terms', $taxonomy_definition) ? $taxonomy_definition['restricted_terms'] : false;
+
+            $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required);
+
+            $entity_classes = $taxonomy_definition['entities'];
+
+            foreach($entity_classes as $entity_class){
+                $this->registerTaxonomy($entity_class, $definition);
+            }
+        }
+
+        $this->view->register();
 
         $this->applyHook('app.register');
     }
