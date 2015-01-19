@@ -893,8 +893,10 @@ class Theme extends MapasCulturais\Theme {
                 $def->agent = $agent->simplify('id,name,shortDescription,singleUrl');
                 $def->agent->avatarUrl = $agent->avatar ? $agent->avatar->transform('avatarSmall')->url : null;
                 if($entity->status > 0){ // is sent
-                    foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
-                        $def->agent->$prop = $val;
+                    if(isset($entity->agentsData[$def->agentRelationGroupName])){
+                        foreach($entity->agentsData[$def->agentRelationGroupName] as $prop => $val){
+                            $def->agent->$prop = $val;
+                        }
                     }
                 }
             }
