@@ -88,12 +88,13 @@ article.project, article.registration {
         }
         .verified-seal {
             position: absolute;
-            top: 0;
-            right: 0;
+            bottom: .25rem;
+            right: .25rem;
             width: 2rem;
             height: 2rem;
             background-size: contain;
             background-position: top;
+            background-image: url(../img/verified-icon.png);
         }
         @media screen and (min-width: $screen-tablet) {
             left: 0;
