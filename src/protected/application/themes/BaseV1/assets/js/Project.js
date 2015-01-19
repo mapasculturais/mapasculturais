@@ -572,7 +572,8 @@
                         });
                         MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                     }else{
-                        document.location = response.singleUrl;
+                        console.log(response);
+                        //document.location = response.singleUrl;
                     }
                 });
             };

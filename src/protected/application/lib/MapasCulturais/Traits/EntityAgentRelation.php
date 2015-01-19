@@ -88,6 +88,9 @@ trait EntityAgentRelation {
         foreach ($this->getAgentRelations(null, $include_pending_relations) as $agentRelation)
             $result[$agentRelation->group][] = $return_relations ? $agentRelation : $agentRelation->agent;
 
+
+//        die(var_dump($result));
+
         ksort($result);
 
         if(is_null($group))
