@@ -75,7 +75,7 @@ article.project .highlighted-message .btn {
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
-	padding: $padding-base;
+	padding: $padding-small;
 	border: 1px solid $gray-lighter;
 	border-radius: 2px;
 	&:hover {
@@ -95,7 +95,7 @@ article.project .highlighted-message .btn {
         }
     }
     @media screen and (min-width: $screen-desktop) {
-        padding: $padding-large;
+        padding: $padding-base;
     }
 }
 .registration-help {
@@ -103,7 +103,7 @@ article.project .highlighted-message .btn {
 	color: #999;
 }
 .registration-id {
-	font-size: 3rem;
+	font-size: 2rem;
 	line-height: 1;
     @media print {
         font-size: 1rem;
