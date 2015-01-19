@@ -1,19 +1,8 @@
 .main-content-header {
     margin-bottom: 2rem;
     position: relative;
-    .verified-seal {
-        position: absolute;
-        top: $padding-base;
-        left: $padding-base;
-        width: 3rem;
-        height: 3rem;
-        background-size: contain;
-    }
     @media screen and (min-width: $screen-tablet) {
         margin-bottom: 4rem;
-        .verified-seal {
-            display: none;
-        }
     }
     h2 {
         font-size: $font-size-h4;
@@ -33,7 +22,10 @@
 .header-image {
     position: relative;
     height: 12rem;
-    margin: -$padding-base;
+    margin-top: -$padding-base;
+    margin-right: -$padding-base;
+    margin-bottom: -3.75rem;
+    margin-left: -$padding-base;
     background-image: url(../img/fundo.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -72,10 +64,12 @@ article.project, article.registration {
 }
 .header-content {
     position: relative;
-    margin-top: 5rem;
+    margin-top: 3.75rem;
+    padding-top: 3.75rem;
     text-align: center;
     @media screen and (min-width: $screen-tablet) {
         margin-top: 0;
+        padding-top: 0;
         padding-left: 10.5rem;
         min-height: 9rem;
         text-align: left;
@@ -83,21 +77,33 @@ article.project, article.registration {
     .avatar {
         position: absolute;
         left: 50%;
-        top: -8rem;
+        top: -3rem;
         margin-left: -3rem;
         width: 6rem;
         height: 6rem;
+        .btn {
+            position: absolute;
+            right: $line-height-half;
+            bottom: $line-height-half;
+        }
+        .verified-seal {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2rem;
+            height: 2rem;
+            background-size: contain;
+            background-position: top;
+        }
         @media screen and (min-width: $screen-tablet) {
             left: 0;
             top: 0;
             width: 9rem;
             height: 9rem;
             margin: 0;
-        }
-        .btn {
-            position: absolute;
-            right: $line-height-half;
-            bottom: $line-height-half;
+            .verified-seal {
+                display: none;
+            }
         }
     }
     .entity-type {

@@ -18,24 +18,21 @@ $this->includeAngularEntityAssets($entity);
 
 <article class="main-content space">
     <header class="main-content-header">
-        <div class="header-image js-imagem-do-header"
-            <?php if($header = $entity->getFile('header')): ?>
-                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
+        <div
+            <?php if ($header = $entity->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="header-image js-imagem-do-header"
+            <?php elseif($this->isEditable()): ?>
+                class="header-image js-imagem-do-header"
             <?php endif; ?>
-        >
-            <?php if($this->isEditable()): ?>
+            >
+            <?php if ($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                    <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
-            <a class="verified-seal-small hltip active" title="" href="#" hltitle="Este Espaço é verificado."></a>
         </div>
         <!--.header-image-->
-        <!-- pro responsivo!!! -->
-        <?php if($entity->isVerified): ?>
-            <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
-        <?php endif; ?>
         <div class="header-content">
             <?php if($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">
@@ -49,6 +46,10 @@ $this->includeAngularEntityAssets($entity);
                     <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
                         <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
+                <?php endif; ?>
+                <!-- pro responsivo!!! -->
+                <?php if($entity->isVerified): ?>
+                    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
                 <?php endif; ?>
             </div>
             <!--.avatar-->
