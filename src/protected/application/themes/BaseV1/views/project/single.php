@@ -406,7 +406,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->canUser('@control')): ?>
             <header id="header-inscritos" class="clearfix">
                 <h3>Inscritos</h3>
-                <div class="alert info hide-no-table">
+                <div class="alert info hide-tablet">
                     Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.
                     <div class="close"></div>
                 </div>
