@@ -470,7 +470,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                            <a ng-if="reg.files.zipArchive.url" class="icon icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader-text">Baixar arquivos</span></a>
+                            <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text">Baixar arquivos</div></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>

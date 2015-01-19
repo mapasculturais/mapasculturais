@@ -64,14 +64,17 @@
 
 %icon {
     display: inline-block;
-    font-family: $icon-font-name;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    vertical-align: top;
+    &:before {
+        display: inline-block;
+        font-family: $icon-font-name;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        -webkit-font-smoothing: antialiased;
+        vertical-align: top;
+    }
     &:hover {
     	text-decoration: none;
     }
