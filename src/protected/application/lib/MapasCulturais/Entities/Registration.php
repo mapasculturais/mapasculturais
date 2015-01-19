@@ -219,7 +219,7 @@ class Registration extends \MapasCulturais\Entity
         $owner->definition = $definitions['owner'];
         $agents = [$owner];
         foreach($this->relatedAgents as $groupName => $relatedAgents){
-            $agent = $relatedAgents[0];
+            $agent = clone $relatedAgents[0];
             $agent->groupName = $groupName;
             $agent->definition = $definitions[$groupName];
             $agents[] = $agent;
