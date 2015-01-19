@@ -17,6 +17,12 @@ abstract class AuthProvider {
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();
         $this->_guestUser = new GuestUser();
+
+        App::i()->hook('auth.successful', function(){
+            $user = App::i()->user;
+            $user->lastLoginTimestamp = new \DateTime;
+            $user->save(true);
+        });
     }
 
     abstract protected function _init();
