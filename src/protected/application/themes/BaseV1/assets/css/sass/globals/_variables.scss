@@ -126,9 +126,9 @@ $unicode-close:                 "\4d"   !default;
 // used on .delete on _buttons.scss file
 $unicode-delete:                "\e051"   !default;
 
-//** Comment icon
-// used on .icon-comment on _icons.scss file
-$unicode-comment:               "\e065" !default;
+//** Notifications icon
+// used on .icon-notifications on _icons.scss file
+$unicode-notifications:               "\e065" !default;
 
 //** Datepicker's arrows icons
 // used on .ui-datepicker-prev and .ui-datepicker-next on _datepicker.scss file
@@ -181,8 +181,8 @@ $unicode-panel:                  "\e0f2" !default;
 $unicode-home:                  "\e074" !default;
 
 //** How to use icon
-// used on .icon-how-to-use on _icons.scss
-$unicode-how-to-use:            "\e064" !default;
+// used on .icon-help on _icons.scss
+$unicode-help:            "\e064" !default;
 
 //** Info icon
 // used on .icon-info on _alerts.scss file

@@ -58,9 +58,9 @@ h1 .icon {
         content: $unicode-close;
     }
 }
-.icon-comment {
+.icon-notifications {
     &:before {
-        content: $unicode-comment;
+        content: $unicode-notifications;
     }
 }
 .icon-project {
@@ -133,9 +133,9 @@ h1 .icon {
         content: $unicode-agent;
     }
 }
-.icon-how-to-use {
+.icon-help {
     &:before {
-        content: $unicode-how-to-use;
+        content: $unicode-help;
     }
 }
 .icon-search {
