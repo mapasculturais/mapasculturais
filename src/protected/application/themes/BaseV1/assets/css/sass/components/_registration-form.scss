@@ -5,14 +5,20 @@
 
 //## .highlighted-message that shows on projects tab "Sobre".
 .registration-dates {
-    float: left;
-    width: 100%;
-    padding-right: 125px;
     box-sizing: border-box;
+    margin-bottom: $line-height-half;
+    @media screen and (min-width: $screen-tablet) {
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+        padding-right: 125px;
+    }
 }
 article.project .highlighted-message .btn {
-    float: right;
-    margin-left: -125px;
+    @media screen and (min-width: $screen-tablet) {
+        float: right;
+        margin-left: -125px;
+    }
 }
 
 //## Registration form that shows on projects tab "Inscritos" when logged in and on view mode.
@@ -127,7 +133,7 @@ article.project .highlighted-message .btn {
 	}
     .registration-agent-details {
         font-size: $font-size-smaller;
-        padding-left: 2.75rem;
+        padding-top: $padding-base;
     }
 }
 
