@@ -3,17 +3,26 @@
 // --------------------------------------------------
 //## Changes from parent theme.
 
-// editable-entity
+//_header.scss
+#brand-logo {
+    img {
+        width: 70px;
+        @media screen and (min-width: $screen-tablet) {
+		    width: 138px;
+        }
+    }
+}
 
-#logo-peq {
+// _editable-entity-bar.scss
+#small-brand {
     display: none;
     position: absolute;
     left: .75rem;
     margin-bottom: 0;
     line-height: 2rem;
-}
-#logo-peq img {
-    display: block;
-    height: 2.2rem;
-    width: auto;
+    img {
+	    display: block;
+	    height: 2.2rem;
+	    width: auto;
+	}
 }

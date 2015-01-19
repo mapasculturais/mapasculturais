@@ -42,9 +42,6 @@
     padding: .25rem;
     font-size: 1rem;
     line-height: 1.875rem;
-    img {
-        width: 138px;
-    }
     a {
         color: $brand-primary;
         &:hover {
@@ -78,7 +75,7 @@
 #organization-logo {
     float: left;
     img {
-        width: 74px;
+        width: 56px;
         @media screen and (min-width: $screen-tablet) {
             width: 90px;
             margin: 0 auto;
