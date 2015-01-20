@@ -19,6 +19,11 @@ h1 .icon {
         content: $unicode-select-arrow;
     }
 }
+.icon-arrow-up {
+    &:before {
+        content: $unicode-arrow-up;
+    }
+}
 .icon-go-back {
     &:before {
         content: $unicode-go-back;

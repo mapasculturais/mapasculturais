@@ -155,7 +155,7 @@
 }
 //** Label
 .leaflet-label {
-    font: .75rem/1.5 $font-family-base;
+    font: .75rem/1.5 $font-stack-base;
     position: absolute;
     z-index: $z-index-map-label !important;
     display: block;

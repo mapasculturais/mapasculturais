@@ -46,10 +46,24 @@ $link-hover-color:      $link-color !default;
 //
 //## Font, line-height, and color for body text, headings, and more.
 //** Load fonts from this directory.
-$font-path:          "../fonts/" !default;
+$font-path:					'../fonts/' !default;
+//** Font family name
+$font-family-base:			'Open Sans' !default;
+//** Font file names and svg ids
+$font-regular-name:			'OpenSans-Regular-webfont' !default;
+$font-regular-svg-id:		'open_sansregular' !default;
+$font-italic-name:			'OpenSans-Italic-webfont' !default;
+$font-italic-svg-id:		'open_sansitalic' !default;
+$font-bold-name:			'OpenSans-Bold-webfont' !default;
+$font-bold-svg-id:			'open_sansbold' !default;
+$font-bolditalic-name:		'OpenSans-BoldItalic-webfont' !default;
+$font-bolditalic-svg-id:	'open_sansbold_italic' !default;
+
+
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-$font-family-monospace:   'Courier New', monospace !default;
-$font-family-base:        'Open Sans', Helvetica, Arial, sans-serif !default;
+$font-stack-monospace:   'Courier New', monospace !default;
+//** Default font stack
+$font-stack-base:        $font-family-base, Helvetica, Arial, sans-serif !default;
 
 $font-size-base:          1rem !default; // 16px
 $font-size-small:         .875rem !default; // 14px
@@ -72,9 +86,15 @@ $line-height-h4:            $line-height-base !default; // 24px
 $line-height-h5:            $line-height-base !default; // 24px
 $line-height-h6:            $line-height-base !default; // 24px
 
-$headings-font-family:    'aleo', serif !default;
-$headings-font-weight:    normal !default;
-$headings-color:          $brand-accent !default;
+//** Headings font family name
+$headings-font-family:		'aleo' !default;
+//** Headings font file name
+$headings-font-name:		'aleo-regular-webfont' !default;
+$headings-font-svg-id:		'aleoregular' !default;
+//** Default headings font stack
+$headings-font-stack:		$headings-font-family, serif !default;
+$headings-font-weight:		normal !default;
+$headings-color:			$brand-accent !default;
 
 
 //== Iconography
@@ -228,12 +248,17 @@ $unicode-radio-button-selected: "\5c"   !default;
 // used on .icon-search on _icons.scss
 $unicode-search:                "\55"   !default;
 
-// Select arrow icon
+//** Select arrow icon
 // used on:
 // .placeholder on _dropdown.scss file
 // .select2-arrow on _editable.scss file
 // .icon-select-arrow on _icons.scss file
 $unicode-select-arrow:          "\33"   !default;
+
+//** Up arrow icon
+// used on:
+// .icon-arrow-up on _icon.scss file
+$unicode-arrow-up:				"\32"	!default;
 
 //** Send icon
 // used on .send on _buttons.scss
@@ -359,7 +384,7 @@ $form-fields-border-radius:            $border-radius-base !default;
 $form-fields-border-focus:             $gray-darker !default;
 $form-fields-color-placeholder:        $gray !default;
 $form-fields-color-placeholder:        $gray !default;
-$form-fields-font:                     $font-family-base !default;
+$form-fields-font:                     $font-stack-base !default;
 $form-fields-font-size:                $font-size-smaller !default;
 $form-fields-height:                   2rem !default;
 

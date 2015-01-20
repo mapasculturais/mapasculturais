@@ -277,7 +277,7 @@ $url_search_projects = $this->searchProjectsUrl;
 </article>
 <nav id="home-nav">
     <ul>
-        <li><a class="up icon arrow_carrot-up" href="#"></a></li>
+        <li><a class="up icon icon-arrow-up" href="#"></a></li>
         <li id="nav-intro">
             <a class="icon icon-home" href="#home-intro"></a>
             <span class="nav-title">Introdução</span>
