@@ -56,6 +56,9 @@
     @media screen and (max-height: 500px) {
         display: none;
     }
+    @media print {
+        display: none;
+    }
 }
 .nav-title {
     position: absolute;
@@ -259,6 +262,12 @@
             margin-bottom: $line-height-half;
         }
     }
+    @media print {
+        color: #000;
+        h2,h3,h1,h4,h5,h6 {
+            color: #000;
+        }
+    }
 }
 //** Intro Section
 #home-intro {
@@ -310,6 +319,9 @@
     .check {
         vertical-align: middle;
         margin-left: .5rem;
+    }
+    @media print {
+        display: none;
     }
 }
 //** Search filters

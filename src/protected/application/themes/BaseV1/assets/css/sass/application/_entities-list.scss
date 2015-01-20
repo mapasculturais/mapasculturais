@@ -63,12 +63,15 @@
 
 .objeto-meta {
     clear: both;
-             box-sizing: border-box;
+    box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding-top: $padding-base;
     border-top:  1px solid #fff;
     font-size:  $font-size-smaller;
     color: #888;
+    @media print {
+        padding-top: 0;
+    }
     .label {
         text-transform: uppercase;
         letter-spacing: .1em;
@@ -145,6 +148,14 @@
             padding-top: 0;
             border-top: none;
             border-left: 1px solid $gray-lighter;
+        }
+    }
+    @media print {
+        .objeto {
+            padding: $line-height-half 0;
+        }
+        .objeto-resumo {
+            margin-bottom: $line-height-half;
         }
     }
 }

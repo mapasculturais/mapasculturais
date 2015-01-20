@@ -31,6 +31,9 @@
             display: block !important;
         }
     }
+    @media print {
+        display: none;
+    }
     //** only shown on phones
     header {
         padding: $padding-base;

@@ -47,6 +47,9 @@
     margin-right: -141px;
     border-left: 2px solid #d3d3d3;
     box-sizing: border-box;
+    @media print {
+        display: none;
+    }
     .icon {
         float: right;
         line-height: 1.5rem;
