@@ -129,6 +129,9 @@ return array(
         ),
 
         'endereco' => array(
+            'private' => function(){
+                return !$this->publicLocation;
+            },
             'label' => 'Endereço',
             'type' => 'text'
         ),

@@ -341,14 +341,19 @@
 
         if($('body').hasClass('controller-agent')){
             if(MapasCulturais.isEditable){
-                if($('[data-edit="localizacao"]').editable('getValue').localizacao){
+                var publicLocation = $('[data-edit="publicLocation"]').editable('getValue').publicLocation;
+                var empty = publicLocation === undefined;
+
+                if(!empty){
                     MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                 }else{
                     $('.js-map').parent().hide();
                 }
-                $('[data-edit="localizacao"]').on('hidden', function(){
-                    var val = $(this).data('editable').value;
-                    if(val){
+                
+                $('[data-edit="publicLocation"]').on('hidden', function(){
+                    var publicLocation = $(this).data('editable').value;
+                    var empty = publicLocation === 'null';
+                    if(!empty){
                         $('.js-map-container').show();
                         MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                     }else{

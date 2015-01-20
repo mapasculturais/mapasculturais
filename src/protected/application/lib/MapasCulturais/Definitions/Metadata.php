@@ -114,7 +114,7 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->is_unique = key_exists('validations', $config) && key_exists('unique', $config['validations']);
 
-        $this->private = key_exists('private', $config) && $config['private'];
+        $this->private = key_exists('private', $config) ? $config['private'] : false;
 
         if($this->is_unique) {
             $this->is_unique_error_message = $config['validations']['unique'];
