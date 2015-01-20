@@ -48,6 +48,12 @@
             text-decoration: none;
         }
     }
+    img {
+        width: 70px;
+        @media screen and (min-width: $screen-tablet) {
+            width: 138px;
+        }
+    }
     @media screen and (min-width: $screen-tablet) {
         padding: .375rem $padding-base;
         line-height: 3.75rem;

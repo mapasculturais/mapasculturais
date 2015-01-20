@@ -24,6 +24,16 @@ h1 .icon {
         content: $unicode-arrow-up;
     }
 }
+.icon-arrow-left {
+    &:before {
+        content: $unicode-arrow-left;
+    }
+}
+.icon-arrow-right {
+    &:before {
+        content: $unicode-arrow-right;
+    }
+}
 .icon-go-back {
     &:before {
         content: $unicode-go-back;
@@ -151,6 +161,11 @@ h1 .icon {
 .icon-developers {
     &:before {
         content: $unicode-developers;
+    }
+}
+.icon-em-cartaz {
+    &:before {
+        content: $unicode-em-cartaz;
     }
 }
 

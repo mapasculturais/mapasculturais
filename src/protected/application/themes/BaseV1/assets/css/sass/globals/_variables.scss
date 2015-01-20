@@ -101,11 +101,13 @@ $headings-color:			$brand-accent !default;
 //
 //## Specify custom location and filename of the included ElegantIcons icon font.
 //** Load fonts from this directory.
-$icon-font-path:          $font-path !default;
+$icon-font-path:			$font-path !default;
+//** Icon font family name
+$icon-font-family:			'ElegantIcons' !default;
 //** File name for all font files.
-$icon-font-name:          "ElegantIcons" !default;
+$icon-font-name:			'ElegantIcons' !default;
 //** Element ID within SVG icon file.
-$icon-font-svg-id:        "ElegantIcons" !default;
+$icon-font-svg-id:			'ElegantIcons' !default;
 
 
 //** About icon
@@ -130,6 +132,10 @@ $unicode-agent:                 "\e08a" !default;
 // used on .attachment-title on _registration-form.scss file
 $unicode-attachment:            "\e016" !default;
 
+//** Arrow icons used on _icons.scss file (Image Gallery)
+$unicode-arrow-left:			"\34" !default;
+$unicode-arrow-right:			"\35" !default;
+
 //** Check icon
 // used on:
 // .check on _icons.scss file
@@ -145,10 +151,6 @@ $unicode-close:                 "\4d"   !default;
 
 // used on .delete on _buttons.scss file
 $unicode-delete:                "\e051"   !default;
-
-//** Notifications icon
-// used on .icon-notifications on _icons.scss file
-$unicode-notifications:               "\e065" !default;
 
 //** Datepicker's arrows icons
 // used on .ui-datepicker-prev and .ui-datepicker-next on _datepicker.scss file
@@ -170,6 +172,10 @@ $unicode-download:              "\e092" !default;
 // .editable on _editable.scss
 $unicode-edit:                  "\6c"   !default;
 
+//** Em cartaz icon
+// used on .icon-em-cartaz on icons.scss
+$unicode-em-cartaz:				"\e033" !default;
+
 //** Error icon
 // error icon
 $unicode-error:                 "\e061" !default;
@@ -190,7 +196,7 @@ $unicode-event:                 "\e023" !default;
 
 //** Go back icon
 // used on .icon-go-back on _icons.scss file
-$unicode-go-back:               "\e03b" !default;
+$unicode-go-back:               "\23" !default;
 
 //** Panel icon
 // used on .icon-panel on _icons.scss file
@@ -232,6 +238,10 @@ $unicode-space-publication-status-locked: $unicode-lock !default;
 // alias for $unicode-lock-open
 // used on .icon-publication-status-open on _icons.scss file
 $unicode-space-publication-status-open:   $unicode-lock-open !default;
+
+//** Notifications icon
+// used on .icon-notifications on _icons.scss file
+$unicode-notifications:               "\e065" !default;
 
 //** Project icon
 // used on .icon-project on _icons.scss file

@@ -51,11 +51,11 @@
             $('.js-gallery').magnificPopup({
                 delegate: 'a', // child items selector, by clicking on it popup will open
                 type: 'image',
-                closeMarkup: '<span class="mfp-close icon_close"><span class="screen-reader-text">Fechar</span></span>',
+                closeMarkup: '<span class="mfp-close icon icon-close"></span>',
                 gallery:{
                     enabled:true,
 
-                    arrowMarkup: '<button title="%title%" type="button" class="mfp-arrow mfp-arrow-%dir%"><span class="arrow_carrot-%dir% mfp-prevent-close"></span></button>', // markup of an arrow button
+                    arrowMarkup: '<button title="%title%" type="button" class="mfp-arrow mfp-arrow-%dir%"><span class="icon icon-arrow-%dir% mfp-prevent-close"></span></button>', // markup of an arrow button
                     tPrev: 'Anterior', // title for left button
                     tNext: 'Próxima', // title for right button
                     tCounter: '%curr% de %total%' // markup of counter

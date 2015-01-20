@@ -37,8 +37,14 @@
     left: .75rem;
     font-size: 1rem;
     line-height: 2rem;
+    margin-bottom: 0;
     a {
         color: $small-brand-color;
+    }
+    img {
+        display: block;
+        height: 2.2rem;
+        width: auto;
     }
 }
 #funcao-do-agente {

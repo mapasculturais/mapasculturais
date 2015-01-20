@@ -130,7 +130,7 @@ $this->includeAngularEntityAssets($entity);
                     <div class="infos">
                         <?php if($this->isEditable()): ?>
                             <p class="privado">
-                                <span class="icone icon_lock"></span><span class="label">Localização:</span>
+                                <span class="icon icon-private-info"></span><span class="label">Localização:</span>
                                 <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-emptytext="Não Informar"
                                     data-value="<?php
                                         if($entity->publicLocation) echo '1';
