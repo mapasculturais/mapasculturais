@@ -421,6 +421,7 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
+            $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
         });
 
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
@@ -526,7 +527,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $this->printStyles('vendor');
-        $this->printStyles('fonts');
+        //$this->printStyles('fonts');
         $this->printStyles('app');
 
         $app->applyHook('mapasculturais.styles');
@@ -666,7 +667,7 @@ class Theme extends MapasCulturais\Theme {
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
-        $this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
+        //$this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
