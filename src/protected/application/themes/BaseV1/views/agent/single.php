@@ -115,7 +115,7 @@ $this->includeAngularEntityAssets($entity);
             </div>
 
             <?php $lat = $entity->location->latitude; $lng = $entity->location->longitude; ?>
-            <?php if ( $this->isEditable() || ($entity->localizacao === 'Pública' && $lat && $lng) ): ?>
+            <?php if ( $this->isEditable() || ($entity->publicLocation && $lat && $lng) ): ?>
                 <div class="servico clearfix">
                     <div class="mapa js-map-container">
                         <?php if($this->isEditable()): ?>
@@ -130,8 +130,14 @@ $this->includeAngularEntityAssets($entity);
                     <div class="infos">
                         <?php if($this->isEditable()): ?>
                             <p class="privado">
-                                <span class="icon icon-private-info"></span><span class="label">Localização:</span>
-                                <span class="js-editable" data-edit="localizacao" data-emptytext="Não Informar"><?php echo $entity->localizacao ? $entity->localizacao : ''; ?></span>
+                                <span class="icone icon_lock"></span><span class="label">Localização:</span>
+                                <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-emptytext="Não Informar"
+                                    data-value="<?php
+                                        if($entity->publicLocation) echo '1';
+                                        elseif(is_null($entity->publicLocation)) echo 'null';
+                                        else echo '0'; ?>"
+                                    data-source="[{value: 'null', text: 'Não Informar'}, {value: 1, text: 'Pública'},{value: 0, text:'Privada'}]">
+                                </span>
                             </p>
                         <?php endif; ?>
                         <p><span class="label">Endereço:</span> <span class="js-editable" data-edit="endereco" data-original-title="Endereço" data-emptytext="Insira o endereço" data-showButtons="bottom"><?php echo $entity->endereco ?></span></p>
