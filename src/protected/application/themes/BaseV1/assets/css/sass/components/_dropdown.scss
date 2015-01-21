@@ -54,7 +54,7 @@
                 box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
         -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
         &:before {
-            @include arrow(up, $caret-width-base, #fff);
+            @include arrow(up, $caret-width-base, $gray-light);
             right: .25rem;
         }
         ul {

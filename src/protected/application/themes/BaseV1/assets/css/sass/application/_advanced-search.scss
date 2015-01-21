@@ -95,7 +95,7 @@
         .submenu-dropdown {
             background: #fff;
             &:before {
-                color: #fff;
+                border-bottom-color: #fff;
             }
             li:hover {
                 background: $gray-lighter;
