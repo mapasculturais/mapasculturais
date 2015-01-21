@@ -55,7 +55,7 @@
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
-                    <div class="icon icon_comment"></div>
+                    <div class="icon icon-notifications"></div>
                     <div class="menu-item-label">Notificações</div>
                 </a>
                 <ul class="submenu hidden">
