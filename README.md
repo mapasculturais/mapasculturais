@@ -2,6 +2,7 @@
 
 Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) for Development, [![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais) for Test, [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais) for Deploy
 
+- [Entidades dos Mapas Culturais](entidades.md)
 - [API](doc/api.md)
 - [Guia do desenvolvedor](doc/developer-guide.md)
 
