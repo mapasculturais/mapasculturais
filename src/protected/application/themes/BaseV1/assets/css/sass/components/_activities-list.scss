@@ -1,12 +1,16 @@
-#atividades .dropdown {
-    width: 120px;
-    margin: 11px 0;
+#activities header h2 {
+	font-size: 1.5rem;
+	line-height: 1;
 }
-.atividade {
+.activity {
     margin-bottom: $line-height-base;
     padding-bottom: $padding-large;
     border-bottom: 1px solid $gray;
-}
-.atividade p {
-    margin-bottom: $line-height-half;
+    p {
+	    margin-bottom: $line-height-half;
+	    font-size: $font-size-small;
+	    @media screen and (min-width: $screen-tablet) {
+	    	font-size: $font-size-base;
+	    }
+	}
 }

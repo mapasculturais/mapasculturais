@@ -1,11 +1,13 @@
 /* =Barra lateral
 -------------------------------------------------------------- */
 .sidebar {
-    float: left;
     position: relative;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    padding: $padding-large;
+    padding: $padding-base;
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-large;
+    }
     .avatar {
         float: left;
         width: 3rem;
@@ -13,56 +15,111 @@
         margin-right: .75rem;
         background-size: cover;
     }
-    .setinha {
-        top: 0;
+    &:before {
         left: 50%;
         margin-left: -8px;
+        margin-top: 8px;
     }
     @media print {
         display: none;
     }
 }
 .sidebar-left {
-    width: 15%;
+    overflow: hidden;
+    //tablet
+    @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
+        float: right;
+        width: 25%;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    //note
+    @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
+        float: left;
+        width: 20%;
+        &.sidebar {
+            border-top: none;
+        }
+    }
+    @media screen and (min-width: 1367px) {
+        float: left;
+        width: 15%;
+    }
+    .widget {
+        float: none;
+        padding-bottom: 1.5rem;
+    }
 }
 .sidebar-right {
-    width: 25%;
+    @media screen and (min-width: $screen-tablet) {
+        float: right;
+    }
+    @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
+        width: 25%;
+    }
+    @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
+        width: 20%;
+    }
+    @media screen and (min-width: 1367px) {
+        width: 25%;
+    }
 }
+body.action-single {
+    .sidebar-left {
+        @media screen and (min-width: $screen-tablet) {
+            border-top-width: 12px;
+            border-top-style: solid;
+            &:before {
+                @include arrow(down, $caret-width-base, #fff);
+            }
+        }
+    }
+    .sidebar-right {
+        @media screen and (min-width: $screen-lg-desktop) {
+            border-top-width: 12px;
+            border-top-style: solid;
+            &:before {
+                @include arrow(down, $caret-width-base, #fff);
+            }
+        }
+    }
+}
+
 .sidebar.event {
-    border-top: $brand-event 12px solid;
+    border-top-color: $brand-event;
+    &:before {
+        border-top-color: $brand-event !important;
+    }
     .event-project-link,
     .widget-list-item > a {
         color: $brand-event;
     }
-    .setinha {
-        border-color: $brand-event transparent transparent transparent;
-    }
 }
 .sidebar.agent {
-    border-top: $brand-agent 12px solid;
+    border-top-color: $brand-agent;
+    &:before {
+        border-top-color: $brand-agent !important;
+    }
     .widget-list-item > a {
         color: $brand-agent;
     }
-    .setinha {
-        border-color: $brand-agent transparent transparent transparent;
-    }
 }
 .sidebar.space {
-    border-top: $brand-space 12px solid;
+    border-top-color: $brand-space;
+    &:before {
+        border-top-color: $brand-space !important;
+    }
     .widget-list-item > a {
         color: $brand-space;
     }
-    .setinha {
-        border-color: $brand-space transparent transparent transparent;
-    }
 }
 .sidebar.project {
-    border-top: $brand-project 12px solid;
+    border-top-color: $brand-project;
+    &:before {
+        border-top-color: $brand-project !important;
+    }
     .widget-list-item > a {
         color: $brand-project;
-    }
-    .setinha {
-        border-color: $brand-project transparent transparent transparent;
     }
 }
 .sidebar.registration {

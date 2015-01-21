@@ -1,26 +1,28 @@
-nav.sidebar-left ul {
+nav.sidebar-panel ul {
     list-style: none;
-    margin: 0 -$line-height-base;
+    margin: 0 -$padding-base;
     font-size: $font-size-small;
-}
-nav.sidebar-left a {
-    display: block;
-    padding: $padding-base;
-    border-left: $gray 6px solid;
-    -webkit-transition: all .3s;
-            transition: all .3s;
-}
-nav.sidebar-left a.active {
-    background: #fff;
-    border-left-color: $brand-primary;
-}
-nav.sidebar-left a:hover {
-    background: $brand-primary;
-    border-left-color: $brand-primary;
-    color: #fff;
-    text-decoration: none;
-}
-nav.sidebar-left .icone {
-    vertical-align: initial;
-    margin-right: 5px;
+    a {
+        display: block;
+        padding: $padding-base;
+        border-left: $gray 6px solid;
+        transition: all .3s;
+        &.active {
+            background: #fff;
+            border-left-color: $brand-primary;
+        }
+        &:hover {
+            background: $brand-primary;
+            border-left-color: $brand-primary;
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+    .icon {
+        vertical-align: initial;
+        margin-right: 5px;
+    }
+    @media screen and (min-width: $screen-lg-desktop){
+        margin: 0 -$padding-large;
+    }
 }

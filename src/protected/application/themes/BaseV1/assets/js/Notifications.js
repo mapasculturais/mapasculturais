@@ -68,7 +68,7 @@
         };
 
         $scope.adjustScroll = function(){
-            jQuery('.notificacoes .submenu ul').slimScroll({
+            jQuery('.notifications .submenu ul').slimScroll({
                 position: 'right',
                 distance: '0px',
                 color: '#000',

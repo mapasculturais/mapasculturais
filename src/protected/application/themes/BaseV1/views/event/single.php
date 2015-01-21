@@ -23,7 +23,7 @@ $this->includeMapAssets();
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon icon-show-map"></span></a>
         </header>
         {{#pending}}<div class="alert warning pending">Aguardando confirmação</div>{{/pending}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -37,7 +37,7 @@ $this->includeMapAssets();
             {{/rule.duration}}
             <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
             <?php if($this->isEditable()): ?>
-                <p class="privado"><span class="icone icon_lock"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
+                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
             <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
             {{#rule.screen_until}}
@@ -63,7 +63,7 @@ $this->includeMapAssets();
     <div class="regra clearfix">
         <header class="clearfix">
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icone icon_pin"></span></a>
+            <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon icon-show-map"></span></a>
         </header>
         <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
         <!-- .mapa -->
@@ -79,69 +79,24 @@ $this->includeMapAssets();
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
-<div class="sidebar-left sidebar event">
-    <div class="setinha"></div>
-    <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php if($this->isEditable()): ?>
-        <div class="widget">
-            <h3>Projeto</h3>
-            <a class="js-search js-include-editable"
-                data-field-name='projectId'
-                data-emptytext="Selecione um projeto"
-                data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um projeto"
-                data-entity-controller="project"
-                data-search-result-template="#agent-search-result-template"
-                data-selection-template="#agent-response-template"
-                data-no-result-template="#agent-response-no-results-template"
-                data-selection-format="chooseProject"
-                data-multiple="true"
-                data-allow-clear="1"
-                data-auto-open="true"
-                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
-                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
-                title="Selecionar um Projeto">
-                <?php echo $entity->project ? $entity->project->name : ''; ?>
-            </a>
-        </div>
-    <?php elseif($entity->project): ?>
-        <div class="widget">
-            <h3>Projeto</h3>
-            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
-        </div>
-    <?php endif; ?>
-    <div class="widget">
-        <h3>Linguagens</h3>
-        <?php if ($this->isEditable()): ?>
-            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
-        <?php else: ?>
-            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
-            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
-                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
-            <?php endif; endforeach; ?>
-        <?php endif; ?>
-    </div>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
-<article class="col-60 main-content event">
+<article class="main-content event">
     <header class="main-content-header">
         <div
-        <?php if ($header = $entity->getFile('header')): ?>
-                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
+            <?php if ($header = $entity->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="header-image js-imagem-do-header"
             <?php elseif($this->isEditable()): ?>
-                class="imagem-do-header js-imagem-do-header"
+                class="header-image js-imagem-do-header"
             <?php endif; ?>
             >
-                <?php if ($this->isEditable()): ?>
+            <?php if ($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
                     <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
         </div>
-        <!--.imagem-do-header-->
-        <div class="content-do-header">
+        <!--.header-image-->
+        <div class="header-content">
             <?php if ($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
@@ -155,10 +110,14 @@ $this->includeMapAssets();
                             <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                         </div>
                     <?php endif; ?>
+                    <!-- pro responsivo!!! -->
+                    <?php if($entity->isVerified): ?>
+                        <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+                    <?php endif; ?>
                 </div>
                 <!--.avatar-->
                 <div class="entity-type event-type">
-                    <div class="icone icon_calendar"></div>
+                    <div class="icon icon-event"></div>
                     <a href="#">Evento</a>
                 </div>
                 <!--.entity-type-->
@@ -169,7 +128,7 @@ $this->includeMapAssets();
                 </h4>
             <?php endif; ?>
         </div>
-        <!--.content-do-header-->
+        <!--.header-content-->
     </header>
     <!--.main-content-header-->
     <div id="sobre" class="aba-content">
@@ -374,8 +333,51 @@ $this->includeMapAssets();
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
+<div class="sidebar-left sidebar event">
+    <?php $this->part('verified', array('entity' => $entity)); ?>
+    <?php if($this->isEditable()): ?>
+        <div class="widget">
+            <h3>Projeto</h3>
+            <a class="js-search js-include-editable"
+                data-field-name='projectId'
+                data-emptytext="Selecione um projeto"
+                data-search-box-width="400px"
+                data-search-box-placeholder="Selecione um projeto"
+                data-entity-controller="project"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="chooseProject"
+                data-multiple="true"
+                data-allow-clear="1"
+                data-auto-open="true"
+                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
+                title="Selecionar um Projeto">
+                <?php echo $entity->project ? $entity->project->name : ''; ?>
+            </a>
+        </div>
+    <?php elseif($entity->project): ?>
+        <div class="widget">
+            <h3>Projeto</h3>
+            <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
+        </div>
+    <?php endif; ?>
+    <div class="widget">
+        <h3>Linguagens</h3>
+        <?php if ($this->isEditable()): ?>
+            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+        <?php else: ?>
+            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
+                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
+            <?php endif; endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+</div>
 <div class="sidebar event sidebar-right">
-    <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
     <?php endif; ?>

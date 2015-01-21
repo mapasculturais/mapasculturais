@@ -23,7 +23,7 @@
                 <?php endif; ?>
 		<div><span class="label">Organização:</span> <?php echo $entity->owner->name; ?></div>
 	</div>
-    <div>
+    <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Project::STATUS_ENABLED): ?>

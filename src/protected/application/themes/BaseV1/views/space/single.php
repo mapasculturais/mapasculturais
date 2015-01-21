@@ -16,53 +16,24 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar space">
-    <div class="setinha"></div>
-    <?php $this->part('verified', array('entity' => $entity)); ?>
-    <div class="widget">
-        <h3>Status</h3>
-        <?php if($this->isEditable()): ?>
-            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
-                <?php if ($entity->public) : ?>
-                    <div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div>
-                    <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
-                <?php else: ?>
-                    <div class="venue-status"><div class="icone icon_lock"></div>Publicação restrita</div>
-                    <p class="venue-status-definition">Requer autorização para criar eventos.</p>
-                <?php endif; ?>
-            </div>
-        <?php else: ?>
-            <?php if ($entity->public) : ?>
-                <div class="venue-status"><div class="icone icon_lock-open"></div>Publicação livre</div>
-                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
-            <?php else: ?>
-                <div class="venue-status"><div class="icone icon_lock"></div>Publicação restrita</div>
-                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
-            <?php endif; ?>
-        <?php endif; ?>
-    </div>
-    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
 <article class="main-content space">
     <header class="main-content-header">
         <div
-            <?php if($header = $entity->getFile('header')): ?>
-                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-                 <?php elseif($this->isEditable()): ?>
-                 class="imagem-do-header js-imagem-do-header"
+            <?php if ($header = $entity->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="header-image js-imagem-do-header"
+            <?php elseif($this->isEditable()): ?>
+                class="header-image js-imagem-do-header"
             <?php endif; ?>
-        >
-            <?php if($this->isEditable()): ?>
+            >
+            <?php if ($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                    <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
         </div>
-        <!--.imagem-do-header-->
-        <div class="content-do-header">
+        <!--.header-image-->
+        <div class="header-content">
             <?php if($avatar = $entity->avatar): ?>
                 <div class="avatar com-imagem">
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
@@ -76,10 +47,14 @@ $this->includeAngularEntityAssets($entity);
                         <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
+                <!-- pro responsivo!!! -->
+                <?php if($entity->isVerified): ?>
+                    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+                <?php endif; ?>
             </div>
             <!--.avatar-->
             <div class="entity-type space-type">
-                <div class="icone icon_building"></div>
+                <div class="icon icon-space"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
             </div>
             <?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
@@ -121,7 +96,7 @@ $this->includeAngularEntityAssets($entity);
             </p>
             <div class="servico">
                 <?php if($this->isEditable()): ?>
-                    <p style="display:none" class="privado"><span class="icone icon_lock"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
+                    <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
                 <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->acessibilidade): ?>
@@ -150,7 +125,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()):?>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                 <?php endif; ?>
 
                 <?php if($this->isEditable() || $entity->telefonePublico): ?>
@@ -158,8 +133,8 @@ $this->includeAngularEntityAssets($entity);
                 <?php endif; ?>
 
                 <?php if($this->isEditable()):?>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
-                    <p class="privado"><span class="icone icon_lock"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                 <?php endif; ?>
             </div>
 
@@ -169,10 +144,10 @@ $this->includeAngularEntityAssets($entity);
                     <div class="mapa">
                         <?php if( $this->isEditable()): ?>
                             <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
-                                <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="Encontrar minha localização"></a>
+                                <a id ="locate-me" class="control-infobox-open hltip btn-map" title="Encontrar minha localização"></a>
                             </div>
                         <?php endif; ?>
-                        <div id="map" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
+                        <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
                         <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
                     </div>
                     <!--.mapa-->
@@ -215,8 +190,35 @@ $this->includeAngularEntityAssets($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
+<div class="sidebar-left sidebar space">
+    <?php $this->part('verified', array('entity' => $entity)); ?>
+    <div class="widget">
+        <h3>Status</h3>
+        <?php if($this->isEditable()): ?>
+            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
+                <?php if ($entity->public) : ?>
+                    <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
+                    <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+                <?php else: ?>
+                    <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
+                    <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <?php if ($entity->public) : ?>
+                <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
+                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+            <?php else: ?>
+                <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
+                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+</div>
 <div class="sidebar space sidebar-right">
-    <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</div>
     <?php endif; ?>

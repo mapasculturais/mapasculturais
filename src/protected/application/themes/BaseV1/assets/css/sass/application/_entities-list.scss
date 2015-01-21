@@ -55,6 +55,7 @@
     font-style: italic;
     padding-left: $padding-base;
     margin: 0 0 $line-height-half;
+    clear: both;
     a {
         color: $gray-darker;
     }
@@ -62,12 +63,15 @@
 
 .objeto-meta {
     clear: both;
-             box-sizing: border-box;
+    box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding-top: $padding-base;
     border-top:  1px solid #fff;
     font-size:  $font-size-smaller;
     color: #888;
+    @media print {
+        padding-top: 0;
+    }
     .label {
         text-transform: uppercase;
         letter-spacing: .1em;
@@ -104,9 +108,7 @@
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: 3rem;
-    padding: 0 3rem;
     .objeto {
-        padding: $line-height-base;
         background-color: #f8f8f8;
         &:hover {
         background-color: #fff;
@@ -115,39 +117,53 @@
             border-bottom: $thin-row;
         }
     }
-    .objeto-thumb {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6rem;
-        height: 6rem;
+    @media screen and (min-width: $screen-tablet ) {
+        padding: 0 3rem;
+        .objeto {
+            padding: $line-height-base;
+        }
+        .objeto-thumb {
+            width: 6rem;
+            height: 6rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .objeto-resumo {
+            float: left;
+            min-height: 6rem;
+            margin-bottom: 0;
+            margin-right: 30%;
+            padding: 0 $padding-large 0 7.5rem;
+            font-size: $font-size-small;
+        }
+        .objeto-meta {
+            clear: none;
+            float: right;
+            width: 30%;
+            min-height: 6rem;
+            margin-left: -30%;
+            margin-bottom: 0;
+            padding-left: $padding-large;
+            padding-top: 0;
+            border-top: none;
+            border-left: 1px solid $gray-lighter;
+        }
     }
-    .objeto-resumo {
-        float: left;
-        min-height: 6rem;
-        margin-right: 30%;
-        margin-bottom: 0;
-        padding: 0 $padding-large 0 7.5rem;
-        font-size: $font-size-small;
-    }
-    .objeto-meta {
-        clear: none;
-        float: right;
-        width: 30%;
-        min-height: 6rem;
-        margin-bottom: 0;
-        margin-left: -30%;
-        padding-left: $padding-large;
-        padding-top: 0;
-        border-top: none;
-        border-left: 1px solid $gray-lighter;
+    @media print {
+        .objeto {
+            padding: $line-height-half 0;
+        }
+        .objeto-resumo {
+            margin-bottom: $line-height-half;
+        }
     }
 }
 
 //== Entity Calendar of Events
 //
 //## Styles for calendar of events that shows up on entities' single pages.
-
+@media screen and (min-width: $screen-desktop) {
 #agenda {
          box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -178,7 +194,7 @@
     }
 
 }
-
+}
 .entinty-calendar-header {
     margin-bottom: 3rem;
     padding: $padding-base;
@@ -186,12 +202,12 @@
     background: $gray-light;
     font-size: $font-size-smaller;
     .agenda-singles-datepicker {
-        border:none;
-        width:90px;
-        cursor:pointer;
+        border: none;
+        width: 75px;
+        cursor: pointer;
         font-size: .8rem;
         font-weight: bold;
-        padding:0;
+        padding: 0;
         text-align: center;
         margin: 0 3px;
     }

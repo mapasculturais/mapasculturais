@@ -1,377 +1,76 @@
 //
 // Overrides
 // --------------------------------------------------
-//## Changes from parent theme.
+//## Style rules that overrides the default theme's ones.
+//## To make it easy to maintain and to avoid cascading problems,
+//## just before the new rules, document the name of the Sass partial
+//## where the original styles leave, group them per folder and keep
+//## them in the same order as the original styles are imported to the main.scss.
 
-// editable-entity
+//
+// application/
+// --------------------------------------------------
 
-#small-logo {
-    display: none;
-    position: absolute;
-    left: .75rem;
-    margin-bottom: 0;
-    line-height: 2rem;
-}
 
-#small-logo img {
-    display: block;
-    height: 2.2rem;
-    width: auto;
-}
-
-// header icons size
+// _header.scss
 .menu {
     > li {
-        div.icone {
+        div.icon {
             font-size: 14px;
         }
     }
 }
 
-// home arrows icons size
-#capa-nav ul a.up,
-#capa-nav ul a.down {
-    font-size: 1.6rem;
+// _search-result-header.scss
+#search-tools .icon-show-search-on-map {
+    margin-right: 10px;
 }
 
-// extend fontawesome icons styles
-.icone {
-    display: inline-block;
-    font: normal normal normal 14px/1 $icon-font-name; // shortening font declaration
-    font-size: inherit; // can't have font-size inherit on line above, so need to override
-    text-rendering: auto; // optimizelegibility throws things off #1094
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-.icon_calendar {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f133';
-    }
-}
-.icon_building {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f0f7';
-    }
-}
-.icon_profile {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f007';
-    }
-}
-.icon_document_alt {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f0f6';
-    }
-}
-.icon_search {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f002';
-    }
-}
-.icon_tools {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f0ad';
-    }
-}
-.icon_house {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f015';
-    }
-}
-.icon_star {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f005';
-    }
-}
-.arrow_carrot-up {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f106';
-    }
-}
-.arrow_carrot-down {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f107';
-    }
-}
 
-// dropdown icon
-.dropdown {
-    .placeholder {
-        &:after {
-            font-family: $icon-font-name;
-            content: '\f107';
-        }
-    }
-}
 
-// add icon
-.adicionar {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f055';
-    }
-}
+//
+// components/
+// --------------------------------------------------
 
-.btn {
-    &.edit {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f044';
-        }
-    }
-}
-.send {
-    &:before {
-        content: '\f093';
-    }
-}
-.download {
-    &:before {
-        content: '\f019';
-    }
-}
-.delete {
-    &:before {
-        content: '\f057';
-    }
-}
-.add {
-    &:before {
-        content: '\f055';
-    }
-}
-
-//radio button
-.radio-button {
-    &:before {
-        content: '\f10c';
-    }
-    &.selected{
-        &:before {
-            content: '\f192';
-        }
-    }
-}
-
-// triangle tab projects
-.abas-objetos {
-    li {
-        &.active {
-            &:after {
-                font-family: $icon-font-name;
-                content: '\f0d8'
-            }
-        }
-    }
-}
-
-//check search
-.icon_check {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f00c';
-    }
-}
-
-// icon login panel
-.icon_lock {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f023';
-    }
-}
-
-//icon bar header
-.icone {
-    &.icon_download {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f019';
-        }
-    }
-    &.social_share {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f1e0';
-        }
-    }
-    &.icon_menu-square_alt {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f03a';
-        }
-    }
-    &.icon_map {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f041';
-        }
-    }
-}
-
-//list of filters
-.lista-de-filtro {
-    li {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f00c';
-        }
-    }
-}
-
-//list filters
-.dropdown {
-    .submenu-dropdown {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f0d8'
-        }
-    }
-}
-
-//create
-.editable, .mc-editable {
-    &:after {
-        font-family: $icon-font-name;
-        content: '\f044';
-    }
-}
-
-// close button editable
-.icon_close, .alert .close {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f00d';
-    }
-}
-
-.select2-container-multi .select2-search-choice-close {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f00d';
-    }
-}
-
-//datepicker arrow
-.ui-datepicker {
-    .ui-datepicker-next {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f138';
-        }
-    }
-    .ui-datepicker-prev {
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f137';
-        }
-    }
-}
-
-// Users stats icon Plus
-#user-stats {
-    .icone {
-        &.icon_plus {
-            margin-top: 4px;
-            padding: 4px 5px;
-            &:before {
-                font-family: $icon-font-name;
-                content: '\f067';
-            }
-        }
-    }
-}
-
-//alerts
-.info {
-    &:before {
-        font-family: $icon-font-name;
-        content: '\f0eb';
-    }
-}
+// _alerts.scss
 .warning, .danger {
     &:before {
-        font-family: $icon-font-name;
-        content: '\f06a';
         margin: 0px 7px 0 0;
     }
 }
-.success {
-    &:before {
-        content: '\f00c'
-    }
+
+// _icons.scss
+.icon {
+    font-size: inherit;
+    text-rendering: auto;
 }
 
-//tag search
+// _tags.scss
 .tag-selected {
     &:after {
-        font-family: $icon-font-name;
         font-size: 0.75rem;
-        content: '\f00d';
         padding-left: 5px;
         width: 0.75rem;
     }
 }
 
-.busca-popover .icone {
-    &.social_twitter {
-        margin-left: 0.7rem;
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f099';
-        }
-    }
-
-    &.social_facebook {
-        margin-left: 0.7rem;
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f09a';
-        }
-    }
-
-    &.social_googleplus {
-        margin-left: 0.7rem;
-        &:before {
-            font-family: $icon-font-name;
-            content: '\f0d5';
+// _user-stats.scss
+#user-stats {
+    .icon {
+        &.icon-add {
+            margin-top: 4px;
+            padding: 4px 5px;
         }
     }
 }
 
-// change font size for tools icons
-#ferramentas {
-    font-size: 1rem;
-}
 
-// vertical align icons
-#mc-entity-layers {
-    a:before {
-        display: block;
-        margin-top: 9px;
-    }
-}
 
+//
+// vendor/
+// --------------------------------------------------
+
+// _magnific-popup.scss
 button.mfp-arrow {
-    font-family: $icon-font-name;
     font-size:1.3rem;
-
-    .arrow_carrot-right:after {
-        content: '\f054';
-    }
-
-    .arrow_carrot-left:after {
-        content: '\f053';
-    }
-
 }

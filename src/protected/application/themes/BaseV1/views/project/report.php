@@ -5,11 +5,11 @@ use MapasCulturais\Entities\Agent;
 function echoStatus($registration){
     switch ($registration->status){
         case R::STATUS_APPROVED:
-            echo 'aprovado';
+            echo 'selecionada';
             break;
 
         case R::STATUS_NOTAPPROVED:
-            echo 'rejeitada';
+            echo 'não selecionada';
             break;
 
         case R::STATUS_WAITLIST:

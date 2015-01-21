@@ -10,10 +10,10 @@
 }
 .editable:after {
     margin-left: 5px;
-    content: '\6c';
+    content: $unicode-edit;
     font-size: $font-size-base;
     line-height: 1rem;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     font-weight: normal;
     font-style: normal;
     vertical-align: initial;
@@ -47,7 +47,7 @@ a.editable-click:hover {
     line-height: 3rem;
 }
 .agentes-relacionados .editable:after {
-    content: '\e050';
+    content: $unicode-add-button;
     color: $gray-dark;
     margin-left: 0;
 }
@@ -89,8 +89,9 @@ a.editable-click:hover {
 .editable-buttons button.editable-cancel {
     padding: 3px;
 }
-.editable-buttons button.editable-cancel .icon_close {
+.editable-buttons button.editable-cancel .icon-close {
     font-size: 1.5rem;
+    line-height: 1;
 }
 .editable-buttons.editable-buttons-bottom {
     text-align: right;
@@ -128,7 +129,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     margin: -1px 0;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
-    font-family: $font-family-base;
+    font-family: $font-stack-base;
 }
 .select2-container-multi .select2-choices .select2-search-choice {
     padding: 0 $padding-large 0 $padding-small;
@@ -155,10 +156,10 @@ div.ficha-spcultura .editable-buttons-bottom {
     background: none;
 }
 .select2-container-multi .select2-search-choice-close:before {
-    content: '\4d';
+    content: $unicode-close;
     font-size: $font-size-base;
     line-height: $line-height-base;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     font-weight: normal;
     font-style: normal;
     vertical-align: initial;
@@ -204,13 +205,13 @@ div.ficha-spcultura .editable-buttons-bottom {
     background-image: none;
 }
 .select2-container .select2-choice .select2-arrow:before {
-    content: '\33';
+    content: $unicode-select-arrow;
     display: inline-block;
     width: $line-height-base;;
     speak: none;
     line-height: $line-height-base;
     font-size: $font-size-base;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;

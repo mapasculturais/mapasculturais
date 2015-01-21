@@ -1,22 +1,36 @@
 //
 // Overrides
 // --------------------------------------------------
-//## Changes from parent theme.
+//## Style rules that overrides the default theme's ones.
+//## To make it easy to maintain and to avoid cascading problems,
+//## just before the new rules, document the name of the Sass partial
+//## where the original styles leave, group them per folder and keep
+//## them in the same order as the original styles are imported to the main.scss.
 
+//
+// application/
+// --------------------------------------------------
+
+
+// _header.scss
 #brand-logo {
-	a {
-		img {
-			max-width: 137px;
-		}
-	}
+    img {
+        width: 68px;
+        @media screen and (min-width: $screen-tablet) {
+            width: 137px;
+        }
+    }
+}
+#secondary-menu {
+	margin-top: 14px;
 }
 
-//Marca d'agua
-#capa-marca-dagua {
+//_home.scss
+#home-watermark {
 	background-position: 80% center;
 }
 
-//Content Como Usar
+//_pages.scss
 .como-usar-content {
 	width: 100%;
 }

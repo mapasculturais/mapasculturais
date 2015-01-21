@@ -15,7 +15,7 @@
     border-radius: $border-radius-base;
     line-height: 1.875rem;
     font-size: $font-size-smaller;
-    font-family: $font-family-base;
+    font-family: $font-stack-base;
     font-weight: $btn-font-weight;
     text-align: center;
     white-space: nowrap;
@@ -41,34 +41,29 @@
         color: darken($btn-default-color, 20%);
     }
     &:before {
-        display: inline-block;
+        @extend %icon;
         width: 1rem;
         height: 1rem;
         font-size: $font-size-base;
-        font-family: $icon-font-name;
-        vertical-align: top;
-        text-transform: none;
-        font-weight: normal;
-        font-style: none;
     }
 }
 .add:before {
-    content: '\e050';
+    content: $unicode-add-button;
 }
 .edit:before {
-    content: '\6c';
+    content: $unicode-edit;
 }
 .send:before {
-    content: '\e091';
+    content: $unicode-send;
 }
 .download:before {
-    content: '\e092';
+    content: $unicode-download;
 }
 .delete:before {
-    content: '\e051';
+    content: $unicode-delete;
 }
 .insert:before {
-    content: '\37';
+    content: $unicode-insert;
 }
 
 .btn.add,

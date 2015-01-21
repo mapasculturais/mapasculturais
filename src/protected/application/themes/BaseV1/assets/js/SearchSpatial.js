@@ -143,9 +143,21 @@
 
             map.on('locationerror', function(e) {
                 /* @TODO alert de erro para o usuário */
-//                console.log(e.message);
+                //console.log(e.message);
             });
 
+            //to fix address field not getting focus on touch screens
+            $('#endereco').on('click dblclick', function(){
+                var $self = $(this);
+                $self.focus();
+                $self.stopPropagation();
+                //loose focus on click outslide
+                $('body').one('click', function(event){
+                    if($self.parent().find(event.target).length == 0){
+                        $self.blur();
+                    }
+                });
+            });
 
         });
 

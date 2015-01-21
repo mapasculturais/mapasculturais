@@ -1,9 +1,9 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb main-content">
-	<header class="header-do-painel clearfix">
-		<h2 class="alignleft">Meus eventos</h2>
+<div class="panel-list panel-main-content">
+	<header class="panel-header clearfix">
+		<h2>Meus eventos</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar novo evento</a>
 	</header>
     <ul class="abas clearfix clear">
@@ -14,11 +14,17 @@ $this->layout = 'panel'
         <?php foreach($user->enabledEvents as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledEvents): ?>
+            <div class="alert info">Você não possui nenhum evento cadastrado.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedEvents as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedEvents): ?>
+            <div class="alert info">Você não possui nenhum evento na lixeira.</div>
+        <?php endif; ?>
     </div>
 </div>

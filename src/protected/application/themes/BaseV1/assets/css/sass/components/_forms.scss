@@ -13,7 +13,7 @@
 }
 .radio-button {
     color: $brand-accent;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     speak: none;
     font-weight: normal;
     font-variant: normal;
@@ -23,12 +23,13 @@
     -moz-osx-font-smoothing: grayscale;
 }
 .radio-button:before {
-    content: '\5b';
+    content: $unicode-radio-button;
 }
 .radio-button.selected:before {
-    content: '\5c';
+    content: $unicode-radio-button-selected;
 }
 /* Date picker*/
 input.data {
-    width: 76px;
+    width: 72px;
+    padding: 3px;
 }

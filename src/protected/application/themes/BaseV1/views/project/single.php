@@ -16,31 +16,24 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar project">
-    <div class="setinha"></div>
-    <?php $this->part('verified', array('entity' => $entity)); ?>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
-
 <article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <div
-            <?php if($header = $entity->getFile('header')): ?>
-                 style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem js-imagem-do-header"
-                 <?php elseif($this->isEditable()): ?>
-                 class="imagem-do-header js-imagem-do-header"
+            <?php if ($header = $entity->getFile('header')): ?>
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="header-image js-imagem-do-header"
+            <?php elseif($this->isEditable()): ?>
+                class="header-image js-imagem-do-header"
             <?php endif; ?>
-        >
-            <?php if($this->isEditable()): ?>
+            >
+            <?php if ($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
                 <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php $this->ajaxUploader ($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+                    <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
                 </div>
             <?php endif; ?>
         </div>
-        <!--.imagem-do-header-->
-        <div class="content-do-header">
+        <!--.header-image-->
+        <div class="header-content">
             <div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
                 <?php if($avatar = $entity->avatar): ?>
                     <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
@@ -53,10 +46,14 @@ $this->includeAngularEntityAssets($entity);
                         <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
                     </div>
                 <?php endif; ?>
+                <!-- pro responsivo!!! -->
+                <?php if($entity->isVerified): ?>
+                    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+                <?php endif; ?>
             </div>
             <!--.avatar-->
             <div class="entity-type project-type">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon icon-project"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='project' data-value='<?php echo $entity->type ?>'>
                     <?php echo $entity->type? $entity->type->name : ''; ?>
                 </a>
@@ -103,7 +100,7 @@ $this->includeAngularEntityAssets($entity);
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <div class="highlighted-message clearfix">
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                    <div class="alignleft">
+                    <div class="registration-dates">
                         Inscrições abertas de
                         <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong>
                         a
@@ -114,7 +111,7 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 <?php endif; ?>
                 <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
-                    <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary alignright" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
+                    <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
                 <?php endif; ?>
                 <div class="clear" ng-if="data.projectRegistrationsEnabled && data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
                         data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
@@ -169,12 +166,12 @@ $this->includeAngularEntityAssets($entity);
             </p>
         <?php endif; ?>
         <?php if($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
-                <h4>Minhas Inscrições</h4>
                 <table class="my-registrations">
+                    <caption>Minhas inscrições</caption>
                     <thead>
                         <tr>
                             <th class="registration-id-col">
-                                Nº
+                                Inscrição
                             </th>
                             <th class="registration-agents-col">
                                 Agente Responsável
@@ -384,6 +381,9 @@ $this->includeAngularEntityAssets($entity);
 
         <?php if($entity->isRegistrationOpen() && !$this->isEditable() && $entity->useRegistrations): ?>
             <?php if($app->auth->isUserAuthenticated()):?>
+                <div class="registration-fieldset hide-tablet">
+                    <p class="registration-help">Não é possível realizar as inscrições online através desse dispositivo. Tente se inscrever a partir de um dispositivo com a tela maior.</p>
+                </div>
                 <form id="project-registration" class="registration-form clearfix">
                     <p class="registration-help">Para iniciar sua inscrição, selecione o Agente responsável. Ele deve ser um agente individual, com um CPF válido preenchido.</p>
                     <div>
@@ -403,20 +403,24 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
     </div>
     <!--#inscricoes-->
-    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content privado">
+    <div ng-if="data.projectRegistrationsEnabled" id="inscritos" class="aba-content">
         <?php if($entity->canUser('@control')): ?>
-            <div class="clearfix">
-                <h3 class="alignleft"><span class="icone icon_lock"></span>Inscritos</h3>
-                <a class="alignright btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
-            </div>
+            <header id="header-inscritos" class="clearfix">
+                <h3>Inscritos</h3>
+                <div class="alert info hide-tablet">
+                    Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.
+                    <div class="close"></div>
+                </div>
+                <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>">Baixar lista de inscritos</a>
+            </header>
             <div id='status-info' class="alert info">
                 <p>Altere os status das inscrições na última coluna da tabela de acordo com o seguinte critério:</p>
                 <ul>
                     <li><span>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</span></li>
                     <li><span>Pendente - ainda não avaliada.</span></li>
-                    <li><span>Rejeitada - avaliada, mas não aprovada.</span></li>
+                    <li><span>Não selecionada - avaliada, mas não selecionada.</span></li>
                     <li><span>Suplente - avaliada, mas aguardando vaga.</span></li>
-                    <li><span>Aprovada - avaliada e aprovada.</span></li>
+                    <li><span>Selecionada - avaliada e selecionada.</span></li>
                     <li><span>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</span></li>
                 </ul>
                 <div class="close"></div>
@@ -467,7 +471,7 @@ $this->includeAngularEntityAssets($entity);
                             </p>
                         </td>
                         <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                            <a ng-if="reg.files.zipArchive.url" class="icone icon_download" href="{{reg.files.zipArchive.url}}"><span class="screen-reader-text">Baixar arquivos</span></a>
+                            <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text">Baixar arquivos</div></a>
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>
@@ -487,7 +491,7 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 <?php else: ?>
                 <div class="clearfix">
-                    <a class="alignright btn btn-primary <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
+                    <a id="btn-publish-results" class="btn btn-primary <?php if(!$entity->canUser('publishRegistrations')) echo 'disabled hltip'; ?>" <?php if(!$entity->canUser('publishRegistrations')) echo 'title="Você só pode publicar a lista de aprovados após o término do período de inscrições."'; ?> href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
                 </div>
                 <?php endif; ?>
             <?php endif; ?>
@@ -496,8 +500,12 @@ $this->includeAngularEntityAssets($entity);
     <!--#inscritos-->
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
+<div class="sidebar-left sidebar project">
+    <?php $this->part('verified', array('entity' => $entity)); ?>
+    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+</div>
 <div class="sidebar project sidebar-right">
-    <div class="setinha"></div>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>
     <?php endif; ?>

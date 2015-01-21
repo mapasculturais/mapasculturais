@@ -26,7 +26,7 @@ $app->hook('panel.menu:after', function() use ($app){
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
 
     $url = $app->createUrl('panel', 'em-cartaz');
-    echo "<li><a class='$a_class' href='$url'><span class='icone icon_star'></span> Em Cartaz</a></li>";
+    echo "<li><a class='$a_class' href='$url'><span class='icon icon-em-cartaz'></span> Em Cartaz</a></li>";
 });
 
 

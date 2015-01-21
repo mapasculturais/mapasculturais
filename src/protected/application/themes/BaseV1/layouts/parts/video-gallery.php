@@ -17,7 +17,7 @@ $template = "<li id='video-{{id}}'>
                         data-response-target='#video-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='Editar'></a>
-                    <a class='icone icon_close_alt js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#video-{{id}}' data-confirm-message='Excluir este vídeo?' title='Excluir'></a>
+                    <a class='icon icon-close_alt js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#video-{{id}}' data-confirm-message='Excluir este vídeo?' title='Excluir'></a>
                 </div>
             </li>";
 ?>

@@ -41,17 +41,17 @@
     margin: 0 5px;
     font-size: $font-size-base;
     line-height: inherit;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     vertical-align: top;
     text-transform: none;
     font-weight: normal;
     font-style: none;
 }
 .ui-datepicker .ui-datepicker-prev:before {
-    content: '\e045';
+    content: $unicode-datepicker-arrow-left;
 }
 .ui-datepicker .ui-datepicker-next:before {
-    content: '\e046';
+    content: $unicode-datepicker-arrow-right;
 }
 .ui-datepicker .ui-datepicker-title {
     text-align: center;

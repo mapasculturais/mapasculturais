@@ -23,53 +23,50 @@
     </span>
 <?php $fake_options = ob_get_clean(); endif; ?>
 
-<nav id="main-nav" class="alignright clearfix">
-    <ul class="menu abas-objetos clearfix">
-        <li id="aba-eventos" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
+<nav id="main-nav" class="clearfix">
+    <ul class="menu entities-menu clearfix">
+        <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
-                <div class="icone icon_calendar"></div>
-                <div>Eventos</div>
+                <div class="icon icon-event"></div>
+                <div class="menu-item-label">Eventos</div>
             </a>
         </li>
-        <li id="aba-espacos" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
+        <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
-                <div class="icone icon_building"></div>
-                <div>Espaços</div>
+                <div class="icon icon-space"></div>
+                <div class="menu-item-label">Espaços</div>
             </a>
         </li>
-        <li id="aba-agentes" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
+        <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                <div class="icone icon_profile"></div>
-                <div>Agentes</div>
+                <div class="icon icon-agent"></div>
+                <div class="menu-item-label">Agentes</div>
             </a>
         </li>
-        <li id="aba-projetos"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
+        <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
             <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
-                <div class="icone icon_document_alt"></div>
-                <div>Projetos</div>
+                <div class="icon icon-project"></div>
+                <div class="menu-item-label">Projetos</div>
             </a>
         </li>
     </ul>
-    <!--.menu.abas-objetos-->
-    <ul class="menu logado clearfix">
+    <!--.menu.entities-menu-->
+    <ul class="menu session-menu clearfix">
         <?php if ($app->auth->isUserAuthenticated()): ?>
-
-            <li class="notificacoes" ng-controller="NotificationController" ng-hide="data.length == 0">
-
-                <a>
-                    <div class="icone icon_comment"></div>
-                    <div>Notificações</div>
+            <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
+                <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
+                    <div class="icon icon_comment"></div>
+                    <div class="menu-item-label">Notificações</div>
                 </a>
-                <ul class="submenu">
+                <ul class="submenu hidden">
                     <li>
-                        <div class="setinha"></div>
                         <div class="clearfix">
                             <h6 class="alignleft">Notificações</h6>
-                            <a href="#" style="display:none" class="staging-hidden hltip icone icon_check_alt" title="Marcar todas como lidas"></a>
+                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="Marcar todas como lidas"></a>
                         </div>
                         <ul>
                             <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
-                                <p class="notificacao clearfix">
+                                <p class="notification clearfix">
                                     <span ng-bind-html="notification.message"></span>
                                     <br>
 
@@ -99,10 +96,9 @@
                 </ul>
                 <!--.submenu-->
             </li>
-            <!--.notificacoes-->
-
-            <li class="usuario">
-                <a href="<?php echo $app->createUrl('panel'); ?>">
+            <!--.notifications-->
+            <li class="user">
+                <a href="#" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="avatar">
                         <?php if ($app->user->profile->avatar): ?>
                             <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
@@ -111,8 +107,7 @@
                         <?php endif; ?>
                     </div>
                 </a>
-                <ul class="submenu">
-                    <div class="setinha"></div>
+                <ul class="submenu hidden">
                     <li>
                         <a href="<?php echo $app->createUrl('panel'); ?>">Painel</a>
                     </li>
@@ -132,6 +127,9 @@
                         <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
                         <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                     </li>
+                    <li>
+                        <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
+                    </li>
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->
                     <li>
@@ -143,18 +141,19 @@
                     </li>
                 </ul>
             </li>
-            <!--.usuario-->
+            <!--.user-->
         <?php else: ?>
-            <li class="entrar">
+            <li class="login">
                 <a href="<?php echo $app->createUrl('panel') ?>">
-                    <div class="icone icon_lock"></div>
-                    <div>Entrar</div>
+                    <div class="icon icon-login"></div>
+                    <div class="menu-item-label">Entrar</div>
                 </a>
                 <?php if(!empty($fake_options)): ?>
                     <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
                 <?php endif; ?>
             </li>
+            <!--.login-->
         <?php endif; ?>
     </ul>
-    <!--.menu.logado-->
+    <!--.menu.session-menu-->
 </nav>
