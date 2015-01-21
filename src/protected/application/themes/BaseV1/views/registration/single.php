@@ -47,16 +47,21 @@ $this->includeAngularEntityAssets($entity);
     <div class="alert success">
         Inscrição enviada no dia
         <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i'); ?>
-
-        <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
     </div>
 
     <h3 class="registration-header">Formulário de Inscrição</h3>
 
-    <div class="registration-fieldset">
+    <div class="registration-fieldset clearfix">
         <h4>Número da Inscrição</h4>
-        <div class="registration-id">
+        <div class="registration-id alignleft">
             <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
+        </div>
+        <div class="alignright">
+            <?php if($entity->publishedRegistrations): ?>
+                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusSlug(reg.status)}}</span>
+            <?php else: ?>
+                <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+            <?php endif; ?>
         </div>
     </div>
     <?php if($project->registrationCategories): ?>

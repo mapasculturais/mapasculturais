@@ -236,7 +236,7 @@
 	}
 }
 
-%status-caption {
+.status {
 	display: block;
     height: 2rem;
     padding: 0 $padding-small;
@@ -246,26 +246,20 @@
     color: #fff;
 }
 .status-sent {
-	@extend %status-caption;
 	background-color: $gray-light;
 }
 .status-approved {
-	@extend %status-caption;
 	background-color: $brand-success;
 }
 .status-notapproved {
-	@extend %status-caption;
 	background-color: $brand-danger;
 }
 .status-waitlist {
-	@extend %status-caption;
 	background-color: $brand-warning;
 }
 .status-invalid {
-	@extend %status-caption;
 	background-color: #000;
 }
 .status-draft {
-	@extend %status-caption;
 	background-color: $gray-light;
 }
