@@ -101,8 +101,6 @@
 }
 //** Home sections
 .home-entity {
-    position: relative;
-    z-index: $z-index-home-watermark + 1;
     min-height: 100vh;
     color: #fff;
     h2,
@@ -271,7 +269,6 @@
 }
 //** Intro Section
 #home-intro {
-    z-index: $z-index-home-watermark + 2;
     min-height: calc(100vh - 4.875rem); // viewport height minus header height
     background: $brand-primary;
     .box {
@@ -285,10 +282,8 @@
         margin: auto;
     }
     .view-more {
-        position: absolute;
-        z-index: $z-index-home-watermark;
-        bottom: 0;
-        left: 50%;
+        position: relative;
+        z-index: $z-index-home-watermark + 1;
         margin-left: -2rem;
         font-size: 4rem;
         text-align: center;

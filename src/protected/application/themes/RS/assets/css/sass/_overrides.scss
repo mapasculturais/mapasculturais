@@ -1,10 +1,18 @@
 //
 // Overrides
 // --------------------------------------------------
-//## Changes from parent theme.
+//## Style rules that overrides the default theme's ones.
+//## To make it easy to maintain and to avoid cascading problems,
+//## just before the new rules, document the name of the Sass partial
+//## where the original styles leave, group them per folder and keep
+//## them in the same order as the original styles are imported to the main.scss.
+
+//
+// application/
+// --------------------------------------------------
 
 
-// header icons size
+// _header.scss
 .menu {
     > li {
         div.icon {
@@ -13,13 +21,40 @@
     }
 }
 
-// extend fontawesome icons styles
-.icon {
-    font-size: inherit; // can't have font-size inherit on line above, so need to override
-    text-rendering: auto; // optimizelegibility throws things off #1094
+// _search-result-header.scss
+#search-tools .icon-show-search-on-map {
+    margin-right: 10px;
 }
 
-// Users stats icon add
+
+
+//
+// components/
+// --------------------------------------------------
+
+// _alerts.scss
+.warning, .danger {
+    &:before {
+        margin: 0px 7px 0 0;
+    }
+}
+
+// _icons.scss
+.icon {
+    font-size: inherit;
+    text-rendering: auto;
+}
+
+// _tags.scss
+.tag-selected {
+    &:after {
+        font-size: 0.75rem;
+        padding-left: 5px;
+        width: 0.75rem;
+    }
+}
+
+// _user-stats.scss
 #user-stats {
     .icon {
         &.icon-add {
@@ -29,26 +64,13 @@
     }
 }
 
-.warning, .danger {
-    &:before {
-        margin: 0px 7px 0 0;
-    }
-}
 
-//tag search
-.tag-selected {
-    &:after {
-        font-size: 0.75rem;
-        padding-left: 5px;
-        width: 0.75rem;
-    }
-}
 
-// change font size for tools icons
-#search-tools .icon-show-search-on-map {
-    margin-right: 10px;
-}
-// image gallery arrows (magnificpopup)
+//
+// vendor/
+// --------------------------------------------------
+
+// _magnific-popup.scss
 button.mfp-arrow {
     font-size:1.3rem;
 }
