@@ -44,6 +44,14 @@
 .last {
     margin-right: 0;
 }
+
+//responsive
+@media screen and (min-width: $screen-tablet) {
+    .hide-tablet {
+        display: none;
+    }
+}
+
 .hidden {
     display: none;
 }
@@ -78,7 +86,6 @@
     display: none;
 }
 
-.setinha,
 .mc-arrow {
     position: absolute;
     width: 0;

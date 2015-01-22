@@ -124,7 +124,7 @@
                     marker.setLatLng(e.latlng);
             });
 
-            $('#button-locate-me').click(function() {
+            $('#locate-me').click(function() {
                 map.locate({setView: true, maxZoom: defaultLocateMaxZoom});
             });
 
@@ -197,7 +197,7 @@
 
                         var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
                         controlUI.title = 'Localizar sua posição através do navegador';
-                        controlUI.innerHTML = '<span class="icone icon_pin"></span> Localize-me';
+                        controlUI.innerHTML = '<span class="icon icon-show-map"></span> Localize-me';
                         return controlDiv;
                     }
                 });
@@ -341,14 +341,19 @@
 
         if($('body').hasClass('controller-agent')){
             if(MapasCulturais.isEditable){
-                if($('[data-edit="localizacao"]').editable('getValue').localizacao){
+                var publicLocation = $('[data-edit="publicLocation"]').editable('getValue').publicLocation;
+                var empty = publicLocation === undefined;
+
+                if(!empty){
                     MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                 }else{
                     $('.js-map').parent().hide();
                 }
-                $('[data-edit="localizacao"]').on('hidden', function(){
-                    var val = $(this).data('editable').value;
-                    if(val){
+                
+                $('[data-edit="publicLocation"]').on('hidden', function(){
+                    var publicLocation = $(this).data('editable').value;
+                    var empty = publicLocation === 'null';
+                    if(!empty){
                         $('.js-map-container').show();
                         MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
                     }else{

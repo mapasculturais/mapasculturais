@@ -5,39 +5,39 @@
     display: inline-block;
     width: 1rem;
     height: inherit;
-    margin: 0 5px;
     font-size: $font-size-base;
     line-height: inherit;
-    font-family: $icon-font-name;
+    font-family: $icon-font-family;
     vertical-align: top;
     text-transform: none;
     font-weight: normal;
     font-style: none;
 }
 .info:before {
-    content: '\e007';
+    content: $unicode-info;
     color: $brand-info;
 }
 .warning:before {
-    content: '\e061';
+    content: $unicode-warning;
     color: $brand-warning;
 }
 .danger:before {
-    content: '\e061';
+    content: $unicode-danger;
     color: $brand-danger;
 }
 .success:before {
-    content: '\e052';
+    content: $unicode-success;
     color: $brand-success;
 }
 .alert {
     position: relative;
     margin-bottom: $line-height-base;
-    padding: $padding-base;
+    padding: $padding-base 2.5rem;
     border-radius: $border-radius-base;
     border-style: solid;
     border-width: 1px;
     font-size: $font-size-smaller;
+    text-align: left; //to make sure it's always aligned to the left.
     &.info {
         background: #cff;
         border-color: #9be7ee;
@@ -65,7 +65,9 @@
         color: $gray-dark;
     }
     &:before {
-        float: left;
+        position: absolute;
+        margin: 0;
+        left: $padding-base;
     }
     .close {
         @extend %icon;
@@ -75,7 +77,7 @@
         font-size: 1rem;
         line-height: 1.5rem;
         &:before {
-            content: '\e051';
+            content: $unicode-close;
         }
     }
     ul {

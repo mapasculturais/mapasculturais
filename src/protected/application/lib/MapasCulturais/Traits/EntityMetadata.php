@@ -106,10 +106,17 @@ trait EntityMetadata{
 
         $can_view = $this->canUser('viewPrivateData');
 
-        foreach($metas as $k => $v)
-            if($v->private && !$can_view)
+        foreach($metas as $k => $v){
+            $private = $v->private;
+            if(is_callable($private)){
+                $private = \Closure::bind($private, $this);
+                if($private() && !$can_view){
+                    unset($metas[$k]);
+                }
+            }else if($private && !$can_view){
                 unset($metas[$k]);
-
+            }
+        }
 
         if($meta_key)
             return key_exists ($meta_key, $metas) ? $metas[$meta_key] : null;

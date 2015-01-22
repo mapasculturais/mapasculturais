@@ -36,6 +36,19 @@ $(function(){
         });
     }
 
+    //main nav submenus toggle on click
+    $('body').on('click', '.js-submenu-toggle', function(){
+        var $self = $(this),
+            $target = eval($self.data('submenu-target'));
+        //hides by clicking outside
+        $('body').one('click', function(event){
+            if($self.find(event.target).length == 0){
+                $target.fadeOut(0);
+            }
+        });
+        $target.fadeToggle(100);
+    });
+
     $('body').on('click', '.dropdown .placeholder', function(){
         var $dropdown = $(this).parents('.dropdown'),
             $submenu = $dropdown.find('.submenu-dropdown');
@@ -54,8 +67,23 @@ $(function(){
                     $submenu.hide();
                 });
             }
-            $dropdown.mouseleave(function(){
-                $submenu.hide();
+            //mouse leave disabled
+            // var $timeout;
+            // $submenu.on('mouseleave', function(){
+            //     $timeout = setTimeout(function(){
+            //         $submenu.hide();
+            //     }, 100);
+            // });
+            // $submenu.on('mouseenter', function(){
+            //     clearTimeout($timeout);
+            // });
+            // $dropdown.on('mouseenter', function(){
+            //     clearTimeout($timeout);
+            // });
+            $('body').on('click', function(event){
+                if($submenu.find(event.target).length == 0 && $dropdown.find(event.target).length == 0){
+                    $submenu.hide();
+                }
             });
         }
     });
@@ -332,7 +360,7 @@ MapasCulturais.Modal = {
 
             $dialog.data('dialog-init', 1);
             $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
-            $dialog.prepend('<a href="#" class="js-close icone icon_close"></a>');
+            $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
 
             // close button
             $dialog.find('.js-close').click(function (){

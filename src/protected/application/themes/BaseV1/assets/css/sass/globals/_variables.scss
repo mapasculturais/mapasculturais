@@ -46,10 +46,24 @@ $link-hover-color:      $link-color !default;
 //
 //## Font, line-height, and color for body text, headings, and more.
 //** Load fonts from this directory.
-$font-path:          "../fonts/" !default;
+$font-path:					'../fonts/' !default;
+//** Font family name
+$font-family-base:			'Open Sans' !default;
+//** Font file names and svg ids
+$font-regular-name:			'OpenSans-Regular-webfont' !default;
+$font-regular-svg-id:		'open_sansregular' !default;
+$font-italic-name:			'OpenSans-Italic-webfont' !default;
+$font-italic-svg-id:		'open_sansitalic' !default;
+$font-bold-name:			'OpenSans-Bold-webfont' !default;
+$font-bold-svg-id:			'open_sansbold' !default;
+$font-bolditalic-name:		'OpenSans-BoldItalic-webfont' !default;
+$font-bolditalic-svg-id:	'open_sansbold_italic' !default;
+
+
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-$font-family-monospace:   'Courier New', monospace !default;
-$font-family-base:        'Open Sans', Helvetica, Arial, sans-serif !default;
+$font-stack-monospace:   'Courier New', monospace !default;
+//** Default font stack
+$font-stack-base:        $font-family-base, Helvetica, Arial, sans-serif !default;
 
 $font-size-base:          1rem !default; // 16px
 $font-size-small:         .875rem !default; // 14px
@@ -72,22 +86,229 @@ $line-height-h4:            $line-height-base !default; // 24px
 $line-height-h5:            $line-height-base !default; // 24px
 $line-height-h6:            $line-height-base !default; // 24px
 
-$headings-font-family:    'aleo', serif !default;
-$headings-font-weight:    normal !default;
-$headings-color:          $brand-accent !default;
+//** Headings font family name
+$headings-font-family:		'aleo' !default;
+//** Headings font file name
+$headings-font-name:		'aleo-regular-webfont' !default;
+$headings-font-svg-id:		'aleoregular' !default;
+//** Default headings font stack
+$headings-font-stack:		$headings-font-family, serif !default;
+$headings-font-weight:		normal !default;
+$headings-color:			$brand-accent !default;
 
 
 //== Iconography
 //
 //## Specify custom location and filename of the included ElegantIcons icon font.
 //** Load fonts from this directory.
-$icon-font-path:          $font-path !default;
+$icon-font-path:			$font-path !default;
+//** Icon font family name
+$icon-font-family:			'ElegantIcons' !default;
 //** File name for all font files.
-$icon-font-name:          "ElegantIcons" !default;
+$icon-font-name:			'ElegantIcons' !default;
 //** Element ID within SVG icon file.
-$icon-font-svg-id:        "ElegantIcons" !default;
+$icon-font-svg-id:			'ElegantIcons' !default;
 
 
+//** About icon
+// used on .icon-about on _icons.scss file
+$unicode-about:                 "\e060" !default;
+
+//** Add icon
+// used on .icon-add on _icons.scss
+$unicode-add:                   "\4c"   !default;
+
+//** Add button icon
+// used on .add on _buttons.scss
+$unicode-add-button:            "\e050" !default;
+
+//** Agent icon
+// used on:
+// .icon-agent on _icons.scss file
+// .btn-map-agent on _maps.scss file
+$unicode-agent:                 "\e08a" !default;
+
+//** Attachment icon
+// used on .attachment-title on _registration-form.scss file
+$unicode-attachment:            "\e016" !default;
+
+//** Arrow icons used on _icons.scss file (Image Gallery)
+$unicode-arrow-left:			"\34" !default;
+$unicode-arrow-right:			"\35" !default;
+
+//** Check icon
+// used on:
+// .check on _icons.scss file
+// .filter-list li on _advanced-search.scss file
+$unicode-check:                 "\4e"   !default;
+
+//** Close icon
+// used on:
+// .close on _alerts.scss file
+// .icon-close on _icons.scss file
+// .tag-selected on _tags.scss file
+$unicode-close:                 "\4d"   !default;
+
+// used on .delete on _buttons.scss file
+$unicode-delete:                "\e051"   !default;
+
+//** Datepicker's arrows icons
+// used on .ui-datepicker-prev and .ui-datepicker-next on _datepicker.scss file
+$unicode-datepicker-arrow-left:     "\e045" !default;
+$unicode-datepicker-arrow-right:    "\e046" !default;
+
+//** Developers icon
+// used on .icon-developers on _icons.scss
+$unicode-developers:            "\e035" !default;
+
+//** Download icon
+// used on .download on _buttons and _icons.scss file
+$unicode-download:              "\e092" !default;
+
+//** Edit icon
+// used on:
+// .edit on _buttons.scss
+// .edit-box on _edit_box.scss
+// .editable on _editable.scss
+$unicode-edit:                  "\6c"   !default;
+
+//** Em cartaz icon
+// used on .icon-em-cartaz on icons.scss
+$unicode-em-cartaz:				"\e033" !default;
+
+//** Error icon
+// error icon
+$unicode-error:                 "\e061" !default;
+
+// alias for $unicode-error
+// used on .danger on _alerts.scss file
+$unicode-danger:                $unicode-error !default;
+
+// alias for $unicode-error
+// used on .warning on _alerts.scss file
+$unicode-warning:               $unicode-error !default;
+
+//** Event icon
+// used on:
+// .icon-event on _icons.scss file
+// .btn-map-event on _maps.scss file
+$unicode-event:                 "\e023" !default;
+
+//** Go back icon
+// used on .icon-go-back on _icons.scss file
+$unicode-go-back:               "\23" !default;
+
+//** Panel icon
+// used on .icon-panel on _icons.scss file
+$unicode-panel:                  "\e0f2" !default;
+
+//** Panel icon
+// used on .icon-home on _icons.scss file
+$unicode-home:                  "\e074" !default;
+
+//** How to use icon
+// used on .icon-help on _icons.scss
+$unicode-help:            "\e064" !default;
+
+//** Info icon
+// used on .icon-info on _alerts.scss file
+$unicode-info:                  "\e007" !default;
+
+//** Insert icon
+// used on .insert class on _buttons.scss
+$unicode-insert:                "\37"   !default;
+
+//** Lock icon
+// lock icons
+$unicode-lock:                  "\e06c" !default;
+$unicode-lock-open:             "\e000" !default;
+
+// alias for $unicode-lock
+// used on .icon-login on _icons.scss file
+$unicode-login:                           $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-private-info on _icons.scss file
+$unicode-private-info:                    $unicode-lock !default;
+
+// alias for $unicode-lock
+// used on .icon-publication-status-locked on _icons.scss file
+$unicode-space-publication-status-locked: $unicode-lock !default;
+
+// alias for $unicode-lock-open
+// used on .icon-publication-status-open on _icons.scss file
+$unicode-space-publication-status-open:   $unicode-lock-open !default;
+
+//** Notifications icon
+// used on .icon-notifications on _icons.scss file
+$unicode-notifications:               "\e065" !default;
+
+//** Project icon
+// used on .icon-project on _icons.scss file
+$unicode-project:               "\68"   !default;
+
+//** Radio icon
+// used on .icon-radio-button on _forms.scss file
+$unicode-radio-button:          "\5b"   !default;
+
+// used on .icon-radio-button.selected on _forms.scss file
+$unicode-radio-button-selected: "\5c"   !default;
+
+//** Search icon
+// used on .icon-search on _icons.scss
+$unicode-search:                "\55"   !default;
+
+//** Select arrow icon
+// used on:
+// .placeholder on _dropdown.scss file
+// .select2-arrow on _editable.scss file
+// .icon-select-arrow on _icons.scss file
+$unicode-select-arrow:          "\33"   !default;
+
+//** Up arrow icon
+// used on:
+// .icon-arrow-up on _icon.scss file
+$unicode-arrow-up:				"\32"	!default;
+
+//** Send icon
+// used on .send on _buttons.scss
+$unicode-send:                  "\e091" !default;
+
+//** Show advanced search icon
+// used on .icon-show-advanced-search on _icons.scss file
+$unicode-show-advanced-search:  "\67"   !default;
+
+//** Show map icon
+// used on .icon-show-map on _icons.scss
+$unicode-show-map:              "\e081" !default;
+
+//** Show search on list icon
+// used on .icon-show-search-on-list on _icons.scss file
+$unicode-show-search-on-list:   "\e056" !default;
+
+//** Show search on map icon
+// used on .icon-show-search-on-map on _icons.scss file
+$unicode-show-search-on-map:    "\e083" !default;
+
+//** Space icon
+// used on:
+// .icon-space on _icons.scss file
+// .btn-map-space on _maps.scss file
+$unicode-space:                 "\e0ef" !default;
+
+//** Sucess icon
+// used on .icon-success on _alerts.scss file
+$unicode-success:               "\e052" !default;
+
+//** Social icons
+// used on .icon-share on _icons.scss file
+$unicode-share:                 "\e0a0" !default;
+// used on .icon-twitter on _icons.scss file
+$unicode-twitter:               "\e094" !default;
+// used on .icon-facebook on _icons.scss file
+$unicode-facebook:              "\e093" !default;
+// used on .icon-googleplus on _icons.scss file
+$unicode-googleplus:            "\e096" !default;
 
 //== Components
 //
@@ -114,16 +335,11 @@ $thin-row: 1px solid $gray-lighter !default;
 
 //== Tables
 //
-//## Customizes the `.table` component with basic values, each used across all table variations.
+//## Customizes the `table` element with basic values, each used across all table variations.
 
-//** Padding for `<th>`s and `<td>`s.
-$table-cell-padding:            $padding-small !default;
-
-//** Default background color used for all tables.
-$table-bg:                      transparent !default;
-
-//** Border color for table and cell borders.
-$table-border-color:            $gray !default;
+//** Table caption
+$table-caption-color: #fff !default;
+$table-caption-bg: $brand-primary !default;
 
 
 //== Buttons
@@ -178,7 +394,7 @@ $form-fields-border-radius:            $border-radius-base !default;
 $form-fields-border-focus:             $gray-darker !default;
 $form-fields-color-placeholder:        $gray !default;
 $form-fields-color-placeholder:        $gray !default;
-$form-fields-font:                     $font-family-base !default;
+$form-fields-font:                     $font-stack-base !default;
 $form-fields-font-size:                $font-size-smaller !default;
 $form-fields-height:                   2rem !default;
 
@@ -189,10 +405,10 @@ $form-fields-height:                   2rem !default;
 // of components dependent on the z-axis and are designed to all work together.
 //
 
-$z-index-descricao-do-agente:   800 !default;
-$z-index-capa-marca-dagua:      900 !default;
+$z-index-descricao-do-agente:    800 !default;
+$z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
-$z-index-capa-nav:              1200 !default;
+$z-index-home-nav:              1200 !default;
 $z-index-leaflet:               1300 !default;
 $z-index-editable-entity:       1400 !default;
 $z-index-infobox:               1500 !default;
@@ -240,8 +456,50 @@ $registration-header-color:	  #fff !default;
 //
 //## Define editable entity bar colors.
 
-$small-brand-color:              $brand-primary  !default;
+$small-brand-color:              $brand-primary;
 
+
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / portrait phone
+$screen-xxs:                 320px !default;
+$screen-xxs-min:             $screen-xxs !default;
+$screen-small-phone:         $screen-xxs-min !default;
+
+// Small screen / landscape phone
+$screen-xs:                  480px !default;
+$screen-xs-min:              $screen-xs !default;
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+$screen-md:                  992px !default;
+$screen-md-min:              $screen-md !default;
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+$screen-lg:                  1200px !default;
+$screen-lg-min:              $screen-lg !default;
+$screen-lg-desktop:          $screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xxs-max:             ($screen-xs-min - 1) !default;
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+
+//== Box shadows
+//
+//## Define box-shadows.
+
+$box-shadow-map: 0 2px 6px rgba(0,0,0,.5);
 
 //== User submenu
 //
@@ -251,11 +509,3 @@ $user-submenu-divider:			#fff !default;
 $user-submenu-link:				lighten($brand-primary, 50%) !default;
 $user-submenu-link-hover:		#fff !default;
 $user-submenu-bg:				$brand-primary !default;
-
-
-
-
-
-
-
-

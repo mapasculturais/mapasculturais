@@ -1,47 +1,114 @@
 .main-content-header {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    position: relative;
+    @media screen and (min-width: $screen-tablet) {
+        margin-bottom: 4rem;
+    }
+    h2 {
+        font-size: $font-size-h4;
+        line-height: $line-height-h4;
+        margin-top: $padding-base;
+        @media screen and (min-width: $screen-tablet) {
+            font-size: $font-size-h2;
+            line-height: $line-height-h2;
+            margin-top: 0;
+        }
+    }
     @media print {
         margin-bottom: $line-height-base;
     }
 }
-.imagem-do-header {
+
+.header-image {
     position: relative;
     height: 12rem;
-    margin: -4rem -4rem 4rem;
-    background-color: $gray;
+    margin-top: -$padding-base;
+    margin-right: -$padding-base;
+    margin-bottom: -3.75rem;
+    margin-left: -$padding-base;
+    background-image: url(../img/fundo.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    .btn {
+        position: absolute;
+        bottom: $line-height-base;
+        right: $line-height-base;
+    }
+    @media screen and (min-width: $screen-tablet) {
+        margin: -2rem -2rem 2rem;
+    }
+    @media screen and (min-width: $screen-lg-desktop) {
+        margin: -4rem -4rem 4rem;
+    }
 }
-.imagem-do-header .btn {
-    position: absolute;
-    bottom: $line-height-base;
-    right: $line-height-base;
+article.agent {
+    .header-image {
+        background-color: $brand-agent;
+    }
 }
-.com-imagem .btn {
-    display: none;
+article.space {
+    .header-image {
+        background-color: $brand-space;
+    }
 }
-.com-imagem:hover .btn {
-    display: block;
+article.event {
+    .header-image {
+        background-color: $brand-event;
+    }
 }
-.content-do-header {
+article.project, article.registration {
+    .header-image {
+        background-color: $brand-project;
+    }
+}
+.header-content {
     position: relative;
-    min-height: 9rem;
-    padding-left: 10.5rem;
+    margin-top: 3.75rem;
+    padding-top: 3.75rem;
+    text-align: center;
+    @media screen and (min-width: $screen-tablet) {
+        margin-top: 0;
+        padding-top: 0;
+        padding-left: 10.5rem;
+        min-height: 9rem;
+        text-align: left;
+    }
     .avatar {
         position: absolute;
-        left: 0;
-        width: 9rem;
-        height: 9rem;
-        margin: 0;
+        left: 50%;
+        top: -3rem;
+        margin-left: -3rem;
+        width: 6rem;
+        height: 6rem;
         .btn {
             position: absolute;
             right: $line-height-half;
             bottom: $line-height-half;
         }
+        .verified-seal {
+            position: absolute;
+            bottom: .25rem;
+            right: .25rem;
+            width: 2rem;
+            height: 2rem;
+            background-size: contain;
+            background-position: top;
+            background-image: url(../img/verified-seal-small.png);
+        }
+        @media screen and (min-width: $screen-tablet) {
+            left: 0;
+            top: 0;
+            width: 9rem;
+            height: 9rem;
+            margin: 0;
+            .verified-seal {
+                display: none;
+            }
+        }
     }
     .entity-type {
-        .icone {
+        .icon {
             vertical-align: baseline;
         }
         a {

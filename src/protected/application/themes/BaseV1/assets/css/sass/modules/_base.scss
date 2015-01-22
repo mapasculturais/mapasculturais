@@ -126,7 +126,7 @@ select {
     border: 1px solid $gray;
     border-radius: $border-radius-base;
     color: $gray-dark;
-    font-family: $font-family-base;
+    font-family: $font-stack-base;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -193,6 +193,13 @@ video {
 table {
     margin: 0 0 $line-height-base;
     font-size: $font-size-smaller;
+}
+caption {
+    padding: $padding-small;
+    font-weight: bold;
+    color: $table-caption-color;
+    background: $table-caption-bg;
+    border-radius: $border-radius-base $border-radius-base 0 0;
 }
 th,
 td {

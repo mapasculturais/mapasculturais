@@ -63,16 +63,18 @@
 //## Use it whenever you want to add these rules to an element that displays an icon
 
 %icon {
-    font-family: $icon-font-name;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
     display: inline-block;
-    vertical-align: middle;
+    &:before {
+        display: inline-block;
+        font-family: $icon-font-family;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        -webkit-font-smoothing: antialiased;
+        vertical-align: top;
+    }
     &:hover {
     	text-decoration: none;
     }

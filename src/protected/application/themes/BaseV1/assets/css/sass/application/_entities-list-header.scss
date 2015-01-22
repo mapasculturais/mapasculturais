@@ -1,44 +1,49 @@
 /* header do objeto*/
-.header-do-objeto {
+.entity-list-header {
+    display: none;
     position: relative;
     margin-bottom: 5px;
     padding: .5625rem;
     background: #fff;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
+    h1 {
+        float: left;
+        width: auto;
+        height: 1.875rem;
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        line-height: 1.875rem;
+        .icon {
+            width: $line-height-base;;
+            height: 1.875rem;
+            line-height: 1.875rem;
+            font-size: 1.5rem;
+        }
+    }
+    .icon {
+        vertical-align: initial;
+    }
+    .btn {
+        float: right;
+        margin: -1px $line-height-base;
+    }
 }
-.header-do-objeto h1 {
-    float: left;
-    width: auto;
-    height: 1.875rem;
-    margin-bottom: 0;
-    font-size: 1.5rem;
-    line-height: 1.875rem;
-}
-.header-do-objeto h1 .icone {
-    width: $line-height-base;;
-    height: 1.875rem;
-    line-height: 1.875rem;
-    font-size: 1.5rem;
-}
-.header-do-objeto .icone {
-    vertical-align: initial;
-}
-.header-do-objeto .btn {
-    float: right;
-    margin: -1px $line-height-base;
-}
-#header-dos-eventos {
+
+#event-list-header {
     border-left: 3rem solid $brand-event;
     border-right: 3rem solid $brand-event;
 }
-#header-dos-agentes {
+#agent-list-header {
     border-left: 3rem solid $brand-agent;
     border-right: 3rem solid $brand-agent;
 }
-#header-dos-espacos {
+#space-list-header {
     border-left: 3rem solid $brand-space;
     border-right: 3rem solid $brand-space;
 }
-#header-dos-projetos {
+#project-list-header {
     border-left: 3rem solid $brand-project;
     border-right: 3rem solid $brand-project;
 }

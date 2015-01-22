@@ -75,6 +75,13 @@ class Agent extends \MapasCulturais\Entity
     protected $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="public_location", type="boolean", nullable=true)
+     */
+    protected $publicLocation = null;
+
+    /**
      * @var \MapasCulturais\Types\GeoPoint
      *
      * @ORM\Column(name="location", type="point", nullable=false)
@@ -197,12 +204,21 @@ class Agent extends \MapasCulturais\Entity
 
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
-        
+
         $this->user->profile = $this;
-        
+
         $this->user->save(true);
     }
-    
+
+    function setPublicLocation($val){
+
+        if(is_string($val) && $val === 'null'){
+            $this->publicLocation = null;
+        }else{
+            $this->publicLocation = (bool) $val;
+        }
+    }
+
     function getIsUserProfile(){
         return $this->equals($this->user->profile);
     }
@@ -229,6 +245,14 @@ class Agent extends \MapasCulturais\Entity
             return $parent;
         }else{
             return $this->user ? $this->user->profile : App::i()->user->profile;
+        }
+    }
+
+    function getLocation(){
+        if($this->publicLocation || $this->canUser('viewPrivateData')){
+            return $this->location;
+        }else{
+            return new \MapasCulturais\Types\GeoPoint(0,0);
         }
     }
 

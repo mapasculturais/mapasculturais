@@ -1,9 +1,9 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb main-content">
-	<header class="header-do-painel clearfix">
-		<h2 class="alignleft">Meus espaços</h2>
+<div class="panel-list panel-main-content">
+	<header class="panel-header clearfix">
+		<h2>Meus espaços</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar novo espaço</a>
 	</header>
     <ul class="abas clearfix clear">
@@ -14,11 +14,17 @@ $this->layout = 'panel'
         <?php foreach($user->enabledSpaces as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledSpaces): ?>
+            <div class="alert info">Você não possui nenhum espaço cadastrado.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedSpaces as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedSpaces): ?>
+            <div class="alert info">Você não possui nenhum espaço na lixeira.</div>
+        <?php endif; ?>
     </div>
 </div>

@@ -6,7 +6,7 @@
     padding: 0 $padding-small;
     background-color: #fff;
     border-radius: $border-radius-base;
-    font-family: $font-family-base;
+    font-family: $font-stack-base;
     font-size: .7rem;
     line-height: $line-height-base;
     font-weight: normal;
@@ -25,14 +25,14 @@
     @extend .tag;
     padding-right: .3rem;
     &:after {
-        content: '\4d';
+        content: $unicode-close;
         display: inline-block;
         width: 1rem;
         height: 1rem;
         margin-top: -3px;
         font-size: $font-size-base;
         line-height: 1rem;
-        font-family: $icon-font-name;
+        font-family: $icon-font-family;
         vertical-align: middle;
         text-transform: none;
     }

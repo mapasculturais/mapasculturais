@@ -133,6 +133,7 @@
                     $scope.data.fileConfigurations.push(response);
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
+                    MapasCulturais.Messages.success('Anexo criado.');
                 }
             });
         };
@@ -142,6 +143,7 @@
                 RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fileConfigurations.splice($index, 1);
+                        MapasCulturais.Messages.alert('Anexo removido.');
                     }
                 });
             }
@@ -159,6 +161,7 @@
             RegistrationFileConfigurationService.edit(data).then(function(response){
                 if(!response.error){
                     EditBox.close('editbox-registration-files-'+data.id);
+                    MapasCulturais.Messages.success('Alterações Salvas.');
                 }
             });
         };
@@ -187,6 +190,7 @@
             if(confirm('Deseja remover este modelo?')){
                 $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
                     delete $scope.data.fileConfigurations[$index].template;
+                    MapasCulturais.Messages.alert('Modelo removido.');
                 });
             }
         };
@@ -301,17 +305,17 @@
                     {value: null, label: 'Todas'},
                     {value: 1, label: 'Pendente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Rejeitada'},
+                    {value: 3, label: 'Não selecionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovada'}
+                    {value: 10, label: 'Selecionada'}
                 ],
 
                 registrationStatusesNames: [
                     {value: 1, label: 'Pendente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Rejeitada'},
+                    {value: 3, label: 'Não selecionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Aprovada'},
+                    {value: 10, label: 'Selecionada'},
                     {value: 0, label: 'Rascunho'}
                 ],
 

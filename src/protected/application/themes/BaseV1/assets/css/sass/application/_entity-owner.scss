@@ -1,16 +1,19 @@
-#entity-owner {
+.owner {
 	clear: both;
-}
-.dono {
     margin: $line-height-base 0;
     padding-top: $padding-large;
     border-top: 1px solid $gray-lighter;
     font-size: $font-size-small;
+    h6 {
+    	margin-bottom: $line-height-half;
+    }
     .avatar {
 	    width: 3rem;
 	    height: 3rem;
+	    margin-bottom: $line-height-half;
 	}
-	.descricao-do-agente {
+	.owner-description {
+		clear: both;
 	    font-style: italic;
 	}
-} 
+}

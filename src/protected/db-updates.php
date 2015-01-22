@@ -286,4 +286,23 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
         return true;
     },
 
+    'migrate agent privateLocation from agent_meta to entity' => function() use($conn) {
+         if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'agent' AND column_name = 'public_location'")){
+            return true;
+        }
+        echo "Adicionando coluna public_location\n";
+        $conn->executeQuery("ALTER TABLE agent ADD COLUMN public_location BOOLEAN DEFAULT NULL;");
+
+        echo 'Migrando dados do metadado localizacao para public_location';
+        $conn->executeQuery("
+            UPDATE agent SET public_location = TRUE
+            WHERE id IN (SELECT object_id FROM agent_meta WHERE key = 'localizacao' AND value = 'Pública')
+        ");
+        $conn->executeQuery("
+            UPDATE agent SET public_location = FALSE
+            WHERE id IN (SELECT object_id FROM agent_meta WHERE key = 'localizacao' AND value = 'Privada')
+        ");
+        return true;
+    }
+
 );

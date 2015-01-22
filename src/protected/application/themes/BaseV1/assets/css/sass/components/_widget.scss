@@ -14,7 +14,7 @@
 	    margin-bottom: $line-height-half;
 	    font-size: .70rem;
 	    line-height: $line-height-base;
-	    font-family: $font-family-base;
+	    font-family: $font-stack-base;
         font-weight: bold;
 	    letter-spacing: .1em;
 	    text-transform: uppercase;
@@ -28,8 +28,13 @@
             color: $gray-darker;
         }
         &.btn {
+            display: none;
             position: static;
+            @media screen and (min-width: $screen-tablet) {
+                display: inline-block;
+            }
         }
+
     }
 }
 //**  Widget list.
@@ -72,7 +77,7 @@
         margin-left: 5px;
         cursor: pointer;
     }
-    a.icone {
+    a.icon {
         font-size: 1.5rem;
     }
 }

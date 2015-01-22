@@ -1,9 +1,9 @@
 <?php
 $this->layout = 'panel'
 ?>
-<div class="lista-sem-thumb main-content">
-	<header class="header-do-painel clearfix">
-		<h2 class="alignleft">Meus projetos</h2>
+<div class="panel-list panel-main-content">
+	<header class="panel-header clearfix">
+		<h2>Meus projetos</h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar novo projeto</a>
 	</header>
     <ul class="abas clearfix clear">
@@ -14,12 +14,18 @@ $this->layout = 'panel'
         <?php foreach($user->enabledProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->enabledProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto.</div>
+        <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="lixeira">
         <?php foreach($user->trashedProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
+        <?php if(!$user->trashedProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto na lixeira.</div>
+        <?php endif; ?>
     </div>
     <!-- #lixeira-->
 </div>

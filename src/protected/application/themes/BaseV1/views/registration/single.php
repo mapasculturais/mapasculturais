@@ -12,27 +12,32 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar registration">
-    <div class="setinha"></div>
-</div>
 <article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
-        <div<?php if($header = $project->getFile('header')): ?> style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem" <?php endif; ?>>
-        </div>
-        <!--.imagem-do-header-->
-        <div class="content-do-header">
-            <?php if($avatar = $project->avatar): ?>
-                <div class="avatar com-imagem">
-                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-                </div>
-            <?php else: ?>
-                <div class="avatar">
-                    <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
-                </div>
+        <div
+            <?php if($header = $project->getFile('header')): ?>
+                class="header-image"
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
+        >
+        </div>
+        <!--.header-image-->
+        <div class="header-content">
+        <?php if($avatar = $project->avatar): ?>
+            <div class="avatar com-imagem">
+                <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+        <?php else: ?>
+            <div class="avatar">
+                <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
+        <?php endif; ?>
+            <!-- pro responsivo!!! -->
+            <?php if($project->isVerified): ?>
+                <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
+            <?php endif; ?>
+            </div>
             <!--.avatar-->
             <div class="entity-type registration-type">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon icon-project"></div>
                 <a><?php echo $project->type->name; ?></a>
             </div>
             <!--.entity-type-->
@@ -46,10 +51,17 @@ $this->includeAngularEntityAssets($entity);
 
     <h3 class="registration-header">Formulário de Inscrição</h3>
 
-    <div class="registration-fieldset">
+    <div class="registration-fieldset clearfix">
         <h4>Número da Inscrição</h4>
-        <div class="registration-id">
+        <div class="registration-id alignleft">
             <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
+        </div>
+        <div class="alignright">
+            <?php if($entity->publishedRegistrations): ?>
+                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusSlug(reg.status)}}</span>
+            <?php else: ?>
+                <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+            <?php endif; ?>
         </div>
     </div>
     <?php if($project->registrationCategories): ?>
@@ -80,8 +92,8 @@ $this->includeAngularEntityAssets($entity);
                             <span ng-if="!def.agent">Não informado</span>
                         </div>
                     </div>
-                    <div class="registration-agent-details" ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]">
-                        <div><span class="label">{{prop.label}}</span>: {{prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}</div>
+                    <div class="registration-agent-details">
+                        <div ng-repeat="prop in data.propLabels" ng-if="def.agent[prop.name]"><span class="label">{{prop.label}}</span>: {{prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}</div>
                     </div>
                 </div>
 
@@ -104,6 +116,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
 </article>
+<div class="sidebar-left sidebar registration">
+</div>
 <div class="sidebar registration sidebar-right">
-    <div class="setinha"></div>
 </div>

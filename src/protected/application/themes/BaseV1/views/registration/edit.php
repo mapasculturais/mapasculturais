@@ -12,27 +12,32 @@ $this->includeAngularEntityAssets($entity);
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<div class="sidebar-left sidebar registration">
-    <div class="setinha"></div>
-</div>
 <article class="main-content registration" ng-controller="ProjectController">
     <header class="main-content-header">
-        <div<?php if($header = $project->getFile('header')): ?> style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="imagem-do-header com-imagem" <?php endif; ?>>
-        </div>
-        <!--.imagem-do-header-->
-        <div class="content-do-header">
-            <?php if($avatar = $project->avatar): ?>
-                <div class="avatar com-imagem">
-                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-                </div>
-            <?php else: ?>
-                <div class="avatar">
-                    <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
-                </div>
+        <div
+            <?php if($header = $project->getFile('header')): ?>
+                class="header-image"
+                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
             <?php endif; ?>
+        >
+        </div>
+        <!--.header-image-->
+        <div class="header-content">
+        <?php if($avatar = $project->avatar): ?>
+            <div class="avatar com-imagem">
+                <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
+        <?php else: ?>
+            <div class="avatar">
+                <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
+        <?php endif; ?>
+            <!-- pro responsivo!!! -->
+            <?php if($project->isVerified): ?>
+                <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
+            <?php endif; ?>
+            </div>
             <!--.avatar-->
             <div class="entity-type registration-type">
-                <div class="icone icon_document_alt"></div>
+                <div class="icon icon-project"></div>
                 <a><?php echo $project->type->name; ?></a>
             </div>
             <!--.entity-type-->
@@ -63,7 +68,7 @@ $this->includeAngularEntityAssets($entity);
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
-            <li ng-repeat="def in data.entity.registrationAgents" ng-if="def.use != 'dontUse'" class="registration-list-item">
+            <li ng-repeat="def in data.entity.registrationAgents" ng-if="def.use != 'dontUse'" class="registration-list-item registration-edit-mode">
                 <div class="registration-label">{{def.label}} <span ng-if="def.use === 'required'" class="required">*</span></div>
                 <div class="registration-description">{{def.description}}</div>
 
@@ -98,7 +103,7 @@ $this->includeAngularEntityAssets($entity);
         <h4>Anexos</h4>
         <p class="registration-help">Para efetuar sua inscrição, faça upload dos seguintes anexos. Serão aceitos arquivos do Microsoft Office, LibreOffice, PDF, imagens (jpg e png) e arquivos de vídeo e áudio.</p>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
-            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
+            <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item registration-edit-mode">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
                 <div class="attachment-description">
                     {{fileConfiguration.description}}
@@ -137,6 +142,7 @@ $this->includeAngularEntityAssets($entity);
         <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscrição</a>
     </div>
 </article>
+<div class="sidebar-left sidebar registration">
+</div>
 <div class="sidebar registration sidebar-right">
-    <div class="setinha"></div>
 </div>
