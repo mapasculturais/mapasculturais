@@ -267,18 +267,11 @@
             <a class="tag-selected tag-space" ng-if="showFilters('space') && data.space.acessibilidade" ng-click="data.space.acessibilidade = !data.space.acessibilidade">acessibilidade</a>
 
             <a class="tag-selected tag-project" ng-if="showFilters('project') && data.project.ropen" ng-click="data.project.ropen = !data.project.ropen">inscrições abertas</a>
-            <style>
-                .filter-verified {
-                    background-image: url(/assets/img/verified-icon.png);
-                    background-position: -3px center;
-                    background-repeat: no-repeat;
-                    padding-left: 25px;
-                }
-            </style>
-            <a class="tag-selected tag-event" ng-if="showFilters('event') && data.event.isVerified" ng-click="toggleVerified('event')"><span class="filter-verified"></span><?php $this->dict('search: verified'); ?></a>
-            <a class="tag-selected tag-agent" ng-if="showFilters('agent') && data.agent.isVerified" ng-click="toggleVerified('agent')"><span class="filter-verified"></span><?php $this->dict('search: verified'); ?></a>
-            <a class="tag-selected tag-space" ng-if="showFilters('space') && data.space.isVerified" ng-click="toggleVerified('space')"><span class="filter-verified"></span><?php $this->dict('search: verified'); ?></a>
-            <a class="tag-selected tag-project" ng-if="showFilters('project') && data.project.isVerified" ng-click="toggleVerified('project')"><span class="filter-verified"></span><?php $this->dict('search: verified'); ?></a>
+
+            <a class="tag-selected tag-event" ng-if="showFilters('event') && data.event.isVerified" ng-click="toggleVerified('event')"><?php $this->dict('search: verified'); ?></a>
+            <a class="tag-selected tag-agent" ng-if="showFilters('agent') && data.agent.isVerified" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified'); ?></a>
+            <a class="tag-selected tag-space" ng-if="showFilters('space') && data.space.isVerified" ng-click="toggleVerified('space')"><?php $this->dict('search: verified'); ?></a>
+            <a class="tag-selected tag-project" ng-if="showFilters('project') && data.project.isVerified" ng-click="toggleVerified('project')"><?php $this->dict('search: verified'); ?></a>
 
             <a class="tag-selected tag-event" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
 
