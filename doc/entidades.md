@@ -1,6 +1,8 @@
 Entidades dos Mapas Culturais
 =============================
 
+O banco de dados é composto, basicamente, por quatro entidades: Agentes, Espaços, Eventos e Projetos
+
 As quatro entidades possuem em comum:
 -------------------------------------
 * Entidade Verificada ou não pelo mantenedor do sistema
@@ -192,7 +194,8 @@ Eventos possuem exclusivamente:
 	* Tradução para LIBRAS
 	*Áudio Desrição
 * Projeto ao qual pertence
-* Ocorrências em Espaços:
+* Ocorrências: um evento pode ter várias ocorrências, cada ocorrência possui:
+	* Espaço relacionado
 	* Regras de Repetição de Datas, Horários, Duração
 	* Preço
 
