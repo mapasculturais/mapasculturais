@@ -193,7 +193,7 @@ article.project .highlighted-message .btn {
 	list-style: none;
     .attachment-list-item {
         position: relative;
-        padding: $padding-base;
+        padding: $padding-base 14.5rem $padding-base $padding-base;
         border-bottom: 1px solid $gray-lighter;
         .attachment-title {
             font-size: $font-size-smaller;

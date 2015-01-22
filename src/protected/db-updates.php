@@ -213,7 +213,7 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
             if(count($d) != 3)
                 var_dump($d);
 
-            $auid = App::i()->config['auth.config']['login_url'] . str_replace('/openid/','',$openid);
+            $auid = App::i()->config['auth.config']['login_url'] . str_replace('/openid/','',$openid) . '/';
             $sql = "UPDATE usr SET auth_uid = '$auid' WHERE email = '$email'\n";
             echo $sql;
             $conn->executeQuery($sql);

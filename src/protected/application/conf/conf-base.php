@@ -178,7 +178,7 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    'app.cache.namespace' => BASE_PATH,
+    'app.cache.namespace' => $base_url,
 
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
