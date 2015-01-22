@@ -65,6 +65,7 @@ class FileSystem extends \MapasCulturais\Storage{
             }
 
             rename($file->tmpFile['tmp_name'], $filename);
+            chmod($filename, 0666);
         }else{
             return false;
         }
