@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
- * 
+ *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
  * @ORM\Table(name="usr")
@@ -85,14 +85,14 @@ class User extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] User Roles
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
-    protected $roles;
+    protected $roles = array();
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -102,8 +102,8 @@ class User extends \MapasCulturais\Entity
      * })
      */
     protected $profile;
-    
-    
+
+
     public function __construct() {
         parent::__construct();
 
@@ -118,13 +118,13 @@ class User extends \MapasCulturais\Entity
     function setAuthProvider($provider_name){
         $this->authProvider = App::i()->getRegisteredAuthProviderId($provider_name);
     }
-    
+
     function setProfile(Agent $agent){
         $this->checkPermission('changeProfile');
-        
+
         if(!$this->equals($agent->user))
             throw new \Exception ('error');
-        
+
         $this->profile = $agent;
     }
 
@@ -295,7 +295,7 @@ class User extends \MapasCulturais\Entity
         if(is_null($status)){
             $status_operator =  '>';
             $status = '0';
-            
+
         }else{
             $status_operator =  '=';
         }
@@ -317,7 +317,7 @@ class User extends \MapasCulturais\Entity
 
         $entityList = $query->getResult();
         return $entityList;
-        
+
     }
 
     //============================================================= //
