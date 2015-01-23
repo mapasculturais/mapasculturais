@@ -1,2 +1,2 @@
-- [Sobre o Mapas Culturais](/sobre/)
+- [Sobre o {{dict: site: name}}](/sobre/)
 - [Como usar](/como-usar/)
