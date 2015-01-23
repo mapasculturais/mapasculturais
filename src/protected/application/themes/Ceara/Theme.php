@@ -7,6 +7,7 @@ class Theme extends BaseV1\Theme{
 
     protected static function _getTexts(){
         return array(
+            'site: in the region' => 'no Estado do Ceará',
             'site: of the region' => 'do Estado do Ceará',
             'site: owner' => 'Secretaria da Cultura do Estado do Ceará',
             'site: by the site owner' => 'pela Secretaria da Cultura do Estado do Ceará',

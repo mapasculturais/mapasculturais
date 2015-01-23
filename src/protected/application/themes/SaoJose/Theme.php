@@ -8,6 +8,7 @@ class Theme extends BaseV1\Theme{
     protected static function _getTexts(){
         return array(
             'site: name' => 'Lugares da Cultura',
+            'site: in the region' => 'na cidade de São José dos Campos',
             'site: of the region' => 'da cidade de São José dos Campos',
             'site: owner' => 'Fundação Cultural Cassiano Ricardo',
             'site: by the site owner' => 'pela Fundação Cultural Cassiano Ricardo',

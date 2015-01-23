@@ -27,6 +27,7 @@ class Theme extends MapasCulturais\Theme {
         return array(
             'site: name' => App::i()->config['app.siteName'],
             'site: description' => App::i()->config['app.siteDescription'],
+            'site: in the region' => 'na região',
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',

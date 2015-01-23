@@ -7,6 +7,7 @@ class Theme extends BaseV1\Theme{
 
     protected static function _getTexts(){
         return array(
+            'site: in the region' => 'na cidade de Sobral',
             'site: of the region' => 'da cidade de Sobral',
             'site: owner' => 'Secretaria de Cultura e Turismo de Sobral',
             'site: by the site owner' => 'pela Secretaria de Cultura e Turismo de Sobral',
