@@ -46,7 +46,7 @@
             var isEditable = initializerOptions.isMapEditable===false ? false : MapasCulturais.isEditable;
             if (!isEditable)
                 $('#' + id + ':active').css({'cursor': 'default'});
-            var $dataTarget = $('#' + id + '-target');
+            var $dataTarget = $('#map-target');
             var isPositionDefined = $(this).data('lat') ? true : false;
             var defaultZoom = isPositionDefined ? config.zoomPrecise : config.zoomDefault;
             var defaultLocateMaxZoom = config.zoomPrecise;
@@ -349,7 +349,7 @@
                 }else{
                     $('.js-map').parent().hide();
                 }
-                
+
                 $('[data-edit="publicLocation"]').on('hidden', function(){
                     var publicLocation = $(this).data('editable').value;
                     var empty = publicLocation === 'null';
