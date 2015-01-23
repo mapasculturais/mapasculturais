@@ -4,7 +4,7 @@ $this->layout = 'panel'
 <div class="panel-main-content">
 
     <p class="highlighted-message">
-        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php echo $app->siteName; ?>!
+        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php $this->dict('site: name'); ?>!
     </p>
     <section id="user-stats" class="clearfix">
         <div>
