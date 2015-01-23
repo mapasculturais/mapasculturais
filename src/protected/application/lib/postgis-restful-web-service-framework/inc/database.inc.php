@@ -11,15 +11,18 @@
 //{
 //	$_SERVER['DOCUMENT_ROOT'] = dirname("c:/inetpub/wwwroot/rest");
 //}
-	
+
 
 /**
  * Return postgres data connection
  * @return 		object		- adodb data connection
  */
 function pgConnection() {
-	$conn = new PDO ("pgsql:host=127.0.0.1;dbname=mapasculturais","mapasculturais","mapasculturais", array(PDO::ATTR_PERSISTENT => true));
-    return $conn;
+    //$conn = new PDO ("pgsql:host=server_name;dbname=dbname","username","password", array(PDO::ATTR_PERSISTENT => true));
+    //return $conn;
+    //Gets PDO From Doctrine Connection
+    include '../../../bootstrap.php';
+    return $app->em->getConnection()->getWrappedConnection();
 }
 
 
@@ -34,5 +37,5 @@ function camaConnection() {
 
 
 
-	
+
 ?>
