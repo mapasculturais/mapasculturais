@@ -7,6 +7,7 @@ class Theme extends BaseV1\Theme{
 
     protected static function _getTexts(){
         return array(
+            'site: name' => 'JP Cultura',
             'site: in the region' => 'na cidade de João Pessoa',
             'site: of the region' => 'da cidade de João Pessoa',
             'site: owner' => 'Fundação Cultural de João Pessoa',
