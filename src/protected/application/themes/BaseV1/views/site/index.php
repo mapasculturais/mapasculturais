@@ -32,16 +32,16 @@ $agent_types = $app->getRegisteredEntityTypes($class_agent);
 $space_types = $app->getRegisteredEntityTypes($class_space);
 $project_types = $app->getRegisteredEntityTypes($class_project);
 
-$agent = $this->getOneVerifiedEntityWithImages($class_agent);
+$agent = $this->getOneVerifiedEntity($class_agent);
 if($agent) $agent_img_url = $this->getEntityFeaturedImageUrl($agent);
 
-$space = $this->getOneVerifiedEntityWithImages($class_space);
+$space = $this->getOneVerifiedEntity($class_space);
 if($space) $space_img_url = $this->getEntityFeaturedImageUrl($space);
 
-$event = $this->getOneVerifiedEntityWithImages($class_event);
+$event = $this->getOneVerifiedEntity($class_event);
 if($event) $event_img_url = $this->getEntityFeaturedImageUrl($event);
 
-$project = $this->getOneVerifiedEntityWithImages($class_project);
+$project = $this->getOneVerifiedEntity($class_project);
 if($project) $project_img_url = $this->getEntityFeaturedImageUrl($project);
 
 
