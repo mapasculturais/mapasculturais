@@ -63,6 +63,8 @@ return array(
     'maps.spiderfyDistanceMultiplier' => 1.3,
     'maps.maxClusterElements' => 6,
 
+    'maps.geometryFieldQuery' => "ST_SimplifyPreserveTopology(geom, 0.001)",
+
     'maps.zoom.default' => 5,
     'maps.zoom.approximate' => 14,
     'maps.zoom.precise' => 16,

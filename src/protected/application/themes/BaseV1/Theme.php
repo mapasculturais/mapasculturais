@@ -403,6 +403,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
             $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
 
+            $this->jsObject['mapGeometryFieldQuery'] = $app->config['maps.geometryFieldQuery'];
+
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
                 'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),

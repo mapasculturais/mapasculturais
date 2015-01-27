@@ -242,14 +242,15 @@
                 geotable: '"geo_division"',
                 fields: "id,name",
                 //where: 'true',
-                geomFieldName: "ST_SimplifyPreserveTopology(geom,0.001)",
+                geomFieldName: MapasCulturais.mapGeometryFieldQuery,
                 uniqueField: "id",
                 srid: 4326,
                 showAll: true,
                 mouseoverEvent: function(feature, event) {
                     var labelText = feature.properties.name;
-                    feature.vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
-                    map.showLabel(feature.vector.label.setLatLng(feature.vector.getCenter()));
+                    var vector = feature.vectors instanceof Array ? feature.vectors[0] : feature.vector;
+                    vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
+                    map.showLabel(vector.label.setLatLng(vector.getCenter()));
                 },
                 singlePopup: true,
                 symbology: {
