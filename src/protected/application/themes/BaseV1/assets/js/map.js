@@ -389,8 +389,10 @@
     (function(){
         window.fullScreenApi.requestFullScreen = function(el) {
 
-            //Change the element to use <html> tag
-            el = document.querySelector('html');
+            //Change the element to use <html> tag in Search
+            if(MapasCulturais.request.controller === 'site'){
+                el = document.querySelector('html');
+            }
 
             //Add permission to allow keyboard input
             return (this.prefix === '') ?
