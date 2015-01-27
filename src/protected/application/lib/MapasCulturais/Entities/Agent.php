@@ -47,8 +47,19 @@ class Agent extends \MapasCulturais\Entity
         ),
         'type' => array(
             'required' => 'O tipo do agente é obrigatório',
+        ),
+        'location' => array(
+            '$this->validateLocation()' => 'A localização geográfica do agente é obrigatória',
         )
     );
+
+    protected function validateLocation(){
+        if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * @var integer
@@ -79,7 +90,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="public_location", type="boolean", nullable=true)
      */
-    protected $publicLocation = null;
+    protected $publicLocation = true;
 
     /**
      * @var \MapasCulturais\Types\GeoPoint
@@ -208,15 +219,6 @@ class Agent extends \MapasCulturais\Entity
         $this->user->profile = $this;
 
         $this->user->save(true);
-    }
-
-    function setPublicLocation($val){
-
-        if(is_string($val) && $val === 'null'){
-            $this->publicLocation = null;
-        }else{
-            $this->publicLocation = (bool) $val;
-        }
     }
 
     function getIsUserProfile(){

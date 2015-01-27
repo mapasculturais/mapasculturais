@@ -455,12 +455,14 @@ MapasCulturais.Editables = {
                             }else if(p == 'type'){
                                 $field = $('.js-editable-type');
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
-                                firstShown = true;
+                                firstShown = true; // don't show editable
                                 $field = $('#registration-agent-owner').parent().find('.registration-label span');
+                            }else if(MapasCulturais.request.controller === 'agent' && p === 'location'){
+                                firstShown = true; // don't show editable
+                                $field = $('.js-editable[data-edit="publicLocation"]');
                             }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
                             }
-                            console.log(p);
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;

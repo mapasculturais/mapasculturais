@@ -132,6 +132,9 @@ return array(
             'private' => function(){
                 return !$this->publicLocation;
             },
+            'validations' => array(
+                'required' => 'O endereço do agente é obrigatório',
+            ),
             'label' => 'Endereço',
             'type' => 'text'
         ),

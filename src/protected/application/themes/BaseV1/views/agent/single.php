@@ -124,19 +124,16 @@ $this->includeAngularEntityAssets($entity);
                             </div>
                         <?php endif; ?>
                         <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
-                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
+                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php echo '[' . $lng . ',' . $lat . ']'; ?>"/>
                     </div>
                     <!--.mapa-->
                     <div class="infos">
                         <?php if($this->isEditable()): ?>
                             <p class="privado">
                                 <span class="icon icon-private-info"></span><span class="label">Localização:</span>
-                                <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-emptytext="Não Informar"
-                                    data-value="<?php
-                                        if($entity->publicLocation) echo '1';
-                                        elseif(is_null($entity->publicLocation)) echo 'null';
-                                        else echo '0'; ?>"
-                                    data-source="[{value: 'null', text: 'Não Informar'}, {value: 1, text: 'Pública'},{value: 0, text:'Privada'}]">
+                                <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-showbuttons="false"
+                                    data-value="<?php echo $entity->publicLocation ? '1' : '0';?>"
+                                    data-source="[{value: 1, text: 'Pública'},{value: 0, text:'Privada'}]">
                                 </span>
                             </p>
                         <?php endif; ?>
