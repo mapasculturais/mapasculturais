@@ -266,8 +266,8 @@
             (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
             var geoDivisionsObj = {};
             for(var div_id in MapasCulturais.geoDivisionsHierarchy){
-                var div = MapasCulturais.geoDivisionsHierarchy[div_id];
-                geoDivisionsObj['<span class="js-geo-division" data-type="' + div + '">' + div + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+                var div_label = MapasCulturais.geoDivisionsHierarchy[div_id];
+                geoDivisionsObj['<span class="js-geo-division" data-type="' + div_id + '">' + div_label + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
             };
 
             var layersControl = new L.Control.Layers(camadasBase, geoDivisionsObj);
