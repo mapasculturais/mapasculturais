@@ -60,7 +60,7 @@ $this->includeAngularEntityAssets($entity);
             <?php if($project->publishedRegistrations): ?>
                 <span class="status status-{{getStatusSlug(<?php echo $entity->status ?>)}}">{{getStatusNameById(<?php echo $entity->status ?>)}}</span>
             <?php elseif($project->canUser('@control')): ?>
-                <mc-select model="data.registration" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+                <mc-select class="status status-{{getStatusSlug(data.registration.status)}}" model="data.registration" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
             <?php endif; ?>
         </div>
     </div>
