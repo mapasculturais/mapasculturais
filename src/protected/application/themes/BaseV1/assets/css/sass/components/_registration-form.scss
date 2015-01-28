@@ -92,31 +92,40 @@ article.project .highlighted-message .btn {
 	}
     .dropdown {
         width: 125px;
-        &.invalid {
+    }
+    .invalid {
+        .dropdown {
             background-color: #000;
             .placeholder {
                 color: #fff;
             }
         }
-        &.approved {
+    }
+    .approved {
+        .dropdown {
             background-color: $brand-success;
             .placeholder {
                 color: #fff;
             }
         }
-        &.notapproved {
+    }
+    .notapproved {
+        .dropdown {
             background-color: $brand-danger;
             .placeholder {
                 color: #fff;
             }
         }
-        &.waitlist {
+    }
+    .waitlist {
+        .dropdown {
             background-color: $brand-warning;
             .placeholder {
                 color: #fff;
             }
         }
     }
+
     .status {
         width: 100px;
     }
