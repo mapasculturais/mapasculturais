@@ -5,6 +5,10 @@
     margin-bottom: 5px;
     padding: .5625rem;
     background: #fff;
+    border-left-style: solid;
+    border-left-width: 3rem;
+    border-right-style: solid;
+    border-right-width: 3rem;
     @media screen and (min-width: $screen-tablet) {
         display: block;
     }
@@ -29,21 +33,28 @@
         float: right;
         margin: -1px $line-height-base;
     }
+    @media print {
+        display: block;
+        border: none;
+        .btn {
+            display: none;
+        }
+    }
 }
 
 #event-list-header {
-    border-left: 3rem solid $brand-event;
-    border-right: 3rem solid $brand-event;
+    border-left-color: $brand-event;
+    border-right-color: $brand-event;
 }
 #agent-list-header {
-    border-left: 3rem solid $brand-agent;
-    border-right: 3rem solid $brand-agent;
+    border-left-color: $brand-agent;
+    border-right-color: $brand-agent;
 }
 #space-list-header {
-    border-left: 3rem solid $brand-space;
-    border-right: 3rem solid $brand-space;
+    border-left-color: $brand-space;
+    border-right-color: $brand-space;
 }
 #project-list-header {
-    border-left: 3rem solid $brand-project;
-    border-right: 3rem solid $brand-project;
+    border-left-color: $brand-project;
+    border-right-color: $brand-project;
 }

@@ -35,7 +35,7 @@
         bottom: $line-height-base;
         right: $line-height-base;
     }
-    @media screen and (min-width: $screen-tablet) {
+    @media print, screen and (min-width: $screen-tablet) {
         margin: -2rem -2rem 2rem;
     }
     @media screen and (min-width: $screen-lg-desktop) {
@@ -67,13 +67,6 @@ article.project, article.registration {
     margin-top: 3.75rem;
     padding-top: 3.75rem;
     text-align: center;
-    @media screen and (min-width: $screen-tablet) {
-        margin-top: 0;
-        padding-top: 0;
-        padding-left: 10.5rem;
-        min-height: 9rem;
-        text-align: left;
-    }
     .avatar {
         position: absolute;
         left: 50%;
@@ -95,16 +88,6 @@ article.project, article.registration {
             background-size: contain;
             background-position: top;
             background-image: url(../img/verified-seal-small.png);
-        }
-        @media screen and (min-width: $screen-tablet) {
-            left: 0;
-            top: 0;
-            width: 9rem;
-            height: 9rem;
-            margin: 0;
-            .verified-seal {
-                display: none;
-            }
         }
     }
     .entity-type {
@@ -145,17 +128,21 @@ article.project, article.registration {
             content: ' »';
         }
     }
-    @media print {
-        min-height: 0;
-        padding-left: 0;
+    @media print, screen and (min-width: $screen-tablet) {
+        margin-top: 0;
+        padding-top: 0;
+        padding-left: 10.5rem;
+        min-height: 9rem;
+        text-align: left;
         .avatar {
-            display: none;
+            left: 0;
+            top: 0;
+            width: 9rem;
+            height: 9rem;
+            margin: 0;
+            .verified-seal {
+                display: none;
+            }
         }
-        > h2 {
-            font-size: 1.5rem;
-            line-height: 1;
-            margin-bottom: #line-height-half;
-        }
-
     }
 }

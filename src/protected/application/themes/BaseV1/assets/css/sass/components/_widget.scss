@@ -36,6 +36,12 @@
         }
 
     }
+    @media print {
+        .slimScrollDiv, .js-slimScroll {
+            overflow: auto !important;
+            max-height: none !important;
+        }
+    }
 }
 //**  Widget list.
 .widget-list {

@@ -104,6 +104,12 @@
 //
 //## Styles for entities when in list view mode.
 
+#lista {
+    @media print {
+        margin-top: 0 !important;
+    }
+}
+
 .lista {
          box-sizing: border-box;
     -moz-box-sizing: border-box;
