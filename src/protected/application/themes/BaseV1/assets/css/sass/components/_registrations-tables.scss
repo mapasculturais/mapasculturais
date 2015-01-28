@@ -236,7 +236,14 @@
 .my-registrations {
 	@extend .registrations-table;
 	.registration-agents-col {
-		width: 27%;
+		width: 46%;
+	}
+	.registration-status-col {
+		width: 36%;
+		text-align: left;
+		a.btn {
+			color: #fff;
+		}
 	}
 }
 

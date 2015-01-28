@@ -174,20 +174,10 @@ $this->includeAngularEntityAssets($entity);
                                 Inscrição
                             </th>
                             <th class="registration-agents-col">
-                                Agente Responsável
+                                Agentes
                             </th>
-                            <?php
-                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                                if(!$entity->useRegistrationAgentRelation($def))
-                                    continue;
-
-                            ?>
-                            <th class="registration-agents-col">
-                                <?php echo $def->label ?>
-                            </th>
-                            <?php endforeach; ?>
-                            <th class="registration-agents-col">
-                                Data de envio
+                            <th class="registration-status-col">
+                                Status
                             </th>
                         </tr>
                     </thead>
@@ -195,27 +185,32 @@ $this->includeAngularEntityAssets($entity);
                         <?php foreach($registrations as $registration): ?>
                         <tr>
                             <td class="registration-id-col">
-                            <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
+                                <a href="<?php echo $registration->singleUrl ?>"><?php echo $registration->number ?></a>
                             </td>
                             <td class="registration-agents-col">
-                                <?php echo $registration->owner->name ?>
+                                <p>
+                                    <span class="label">Responsável</span><br>
+                                    <?php echo $registration->owner->name ?>
+                                </p>
+                                <?php
+                                foreach($app->getRegisteredRegistrationAgentRelations() as $def):
+                                    if(!$entity->useRegistrationAgentRelation($def))
+                                        continue;
+                                ?>
+                                    <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
+                                        <p>
+                                            <span class="label"><?php echo $def->label ?></span><br>
+                                            <?php echo $agents[0]->name ?>
+                                        </p>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </td>
-                            <?php
-                            foreach($app->getRegisteredRegistrationAgentRelations() as $def):
-                                if(!$entity->useRegistrationAgentRelation($def))
-                                    continue;
-                            ?>
-                            <td class="registration-agents-col">
-                                <?php if($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
-                                    <?php echo $agents[0]->name ?>
-                                <?php endif; ?>
-                            </td>
-                            <?php endforeach; ?>
-                            <td>
+                            <td class="registration-status-col">
                                 <?php if($registration->status > 0): ?>
-                                    <?php echo $registration->sentTimestamp->format('d/m/Y à\s H:i'); ?>
+                                    Enviada em <?php echo $registration->sentTimestamp->format('d/m/Y à\s H:i'); ?>.
                                 <?php else: ?>
-                                    <a href="<?php echo $registration->singleUrl ?>">Editar e enviar</a>
+                                    Não enviada.<br>
+                                    <a class="btn btn-small btn-primary" href="<?php echo $registration->singleUrl ?>">Editar e enviar</a>
                                 <?php endif; ?>
                             </td>
                         </tr>
