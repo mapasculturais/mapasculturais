@@ -57,8 +57,8 @@ $this->includeAngularEntityAssets($entity);
             <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
         </div>
         <div class="alignright">
-            <?php if($entity->publishedRegistrations): ?>
-                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusSlug(reg.status)}}</span>
+            <?php if($project->publishedRegistrations): ?>
+                <span class="status status-{{getStatusSlug(<?php echo $entity->status ?>)}}">{{getStatusNameById(<?php echo $entity->status ?>)}}</span>
             <?php elseif($project->canUser('@control')): ?>
                 <mc-select model="data.registration" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
             <?php endif; ?>
