@@ -186,6 +186,9 @@ $this->includeAngularEntityAssets($entity);
                                 <?php echo $def->label ?>
                             </th>
                             <?php endforeach; ?>
+                            <th class="registration-agents-col">
+                                Data de envio
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -208,6 +211,13 @@ $this->includeAngularEntityAssets($entity);
                                 <?php endif; ?>
                             </td>
                             <?php endforeach; ?>
+                            <td>
+                                <?php if($registration->status > 0): ?>
+                                    <?php echo $registration->sentTimestamp->format('d/m/Y à\s H:i'); ?>
+                                <?php else: ?>
+                                    <a href="<?php echo $registration->singleUrl ?>">Editar e enviar</a>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
