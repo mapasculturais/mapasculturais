@@ -148,6 +148,10 @@
 		}
 		a {
 			color: $brand-project;
+			&.icon-download {
+				width: 100%;
+				vertical-align: top;
+			}
 		}
 		ul {
 			margin: 0;

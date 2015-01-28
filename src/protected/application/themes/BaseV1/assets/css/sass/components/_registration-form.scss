@@ -92,6 +92,30 @@ article.project .highlighted-message .btn {
 	}
     .dropdown {
         width: 125px;
+        &.invalid {
+            background-color: #000;
+            .placeholder {
+                color: #fff;
+            }
+        }
+        &.approved {
+            background-color: $brand-success;
+            .placeholder {
+                color: #fff;
+            }
+        }
+        &.notapproved {
+            background-color: $brand-danger;
+            .placeholder {
+                color: #fff;
+            }
+        }
+        &.waitlist {
+            background-color: $brand-warning;
+            .placeholder {
+                color: #fff;
+            }
+        }
     }
     .status {
         width: 100px;
