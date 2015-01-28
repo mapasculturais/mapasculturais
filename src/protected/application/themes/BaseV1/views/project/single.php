@@ -475,7 +475,7 @@ $this->includeAngularEntityAssets($entity);
                         </td>
                         <td class="registration-status-col">
                             <?php if($entity->publishedRegistrations): ?>
-                                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusSlug(reg.status)}}</span>
+                                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
                             <?php else: ?>
                                 <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                             <?php endif; ?>

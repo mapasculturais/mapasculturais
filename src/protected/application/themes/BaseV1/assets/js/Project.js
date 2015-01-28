@@ -370,6 +370,14 @@
                 }
             };
 
+            $scope.getStatusNameById = function(id){
+                var statuses = $scope.data.registrationStatusesNames
+                for(var s in statuses){
+                    if(statuses[s].value == id)
+                        return statuses[s].label;
+                }
+            };
+
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
