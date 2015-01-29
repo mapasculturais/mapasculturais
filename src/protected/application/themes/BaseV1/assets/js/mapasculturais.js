@@ -842,16 +842,16 @@ MapasCulturais.Search = {
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'//, // page number
-                //'@files':'(avatar.avatarSmall):url'
+                '@order':'name ASC', // page number
+                '@files':'(avatar.avatarSmall):url'
             },
             'agent':{ //apenas adicionei a shortDescription
                 name: 'ilike(*'+term.replace(' ', '*')+'*)', //search term,
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'//, // page number
-                //'@files':'(avatar.avatarSmall):url'
+                '@order':'name ASC', // page number
+                '@files':'(avatar.avatarSmall):url'
             }
         };
 
@@ -862,7 +862,7 @@ MapasCulturais.Search = {
         }
     },
 
-    processEntity: function(entity){
+    processEntity: function(entity, $selector){
         entity.areas = function(){
             if(this.terms && this.terms.area)
                 return this.terms.area.join(', ');
@@ -885,16 +885,17 @@ MapasCulturais.Search = {
         };
 
         entity.thumbnail = function(){
-            if(this.files && this.files.avatar && this.files.avatar.files && this.files.avatar.files['avatarSmall'])
-                return this.files.avatar.files['avatarSmall'].url;
+            var entityDefaultAvatar = MapasCulturais.assets['avatar'+$selector.data('entity-controller')[0].toUpperCase() + $selector.data('entity-controller').slice(1)];
+            if(this['@files:avatar.avatarSmall'])
+                return this['@files:avatar.avatarSmall'].url;
             else
-                return '';
+                return entityDefaultAvatar;
         };
 
     },
 
-    renderTemplate : function(template, entity){
-        this.processEntity(entity);
+    renderTemplate : function(template, entity, $selector){
+        this.processEntity(entity, $selector);
         return Mustache.render(template, entity);
     },
 
@@ -909,7 +910,7 @@ MapasCulturais.Search = {
 
     formatResult : function (entity, $selector) {
         var searchResultTemplate = $($selector.data('search-result-template')).text();
-        return this.renderTemplate(searchResultTemplate, entity);
+        return this.renderTemplate(searchResultTemplate, entity, $selector);
     },
 
     ajaxData: function(searchParams, $selector){
@@ -923,7 +924,7 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
-            apiMethod : 'findByUserApprovedRegistration',
+            //apiMethod : 'findByUserApprovedRegistration',
             onSave: function($selector){
                 var entity = $selector.data('entity');
                 $selector.data('value', entity.id);
