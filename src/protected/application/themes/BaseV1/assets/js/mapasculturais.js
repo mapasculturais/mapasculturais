@@ -735,7 +735,13 @@ MapasCulturais.Search = {
                         cb({id: $selector.data('value'), name: $selector.data('editable').$element.html()});
                     },
                     ajax: {
-                        url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
+                        url: function(){
+                            var format = $selector.data('selection-format');
+                            var apiMethod = 'find';
+                            if(MapasCulturais.Search.formats[format] && MapasCulturais.Search.formats[format].apiMethod)
+                                apiMethod =  MapasCulturais.Search.formats[format].apiMethod;
+                            return MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/' + apiMethod;
+                        },
                         dataType: 'json',
                         quietMillis: 350,
                         data: function (term, page) { // page is the one-based page number tracked by Select2
@@ -836,14 +842,16 @@ MapasCulturais.Search = {
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'// page number
+                '@order':'name ASC'//, // page number
+                //'@files':'(avatar.avatarSmall):url'
             },
             'agent':{ //apenas adicionei a shortDescription
                 name: 'ilike(*'+term.replace(' ', '*')+'*)', //search term,
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'// page number
+                '@order':'name ASC'//, // page number
+                //'@files':'(avatar.avatarSmall):url'
             }
         };
 
@@ -915,6 +923,7 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
+            apiMethod : 'findByUserApprovedRegistration',
             onSave: function($selector){
                 var entity = $selector.data('entity');
                 $selector.data('value', entity.id);
