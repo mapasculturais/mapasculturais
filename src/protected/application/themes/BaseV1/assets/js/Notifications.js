@@ -46,10 +46,12 @@
 
         var getNotifications = function (){
             NotificationService.get().then(function(data){
-                data.forEach(function(value,index){
-                    data[index].message = $sce.trustAsHtml(value.message);
-                });
-                $scope.data = data;
+                if(data){
+                    data.forEach(function(value,index){
+                        data[index].message = $sce.trustAsHtml(value.message);
+                    });
+                    $scope.data = data;
+                }
             });
         };
 
