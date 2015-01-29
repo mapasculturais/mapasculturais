@@ -80,4 +80,27 @@ class Project extends EntityController {
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }
+
+
+    function API_findByUserApprovedRegistration(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $dql = "SELECT r
+                FROM \MapasCulturais\Entities\Registration r
+                JOIN r.project p
+                JOIN r.owner a
+                WHERE a.user = :user
+                AND r.status > 0";
+        $query = $app->em->createQuery($dql)->setParameters(array('user' => $app->user));
+
+        $registrations = $query->getResult();
+
+
+        $projects = array_map(function($r){
+            return $r->project;
+        }, $registrations);
+
+        $this->apiResponse($projects);
+    }
 }
