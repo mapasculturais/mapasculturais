@@ -492,6 +492,10 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if(!$this->project->isRegistrationOpen()){
+            return false;
+        }
+
         if($this->getSendValidationErrors()){
             return false;
         }
