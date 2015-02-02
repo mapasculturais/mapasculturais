@@ -55,22 +55,6 @@
 .edit-box footer button {
     margin-bottom: 0;
 }
-.edit-box footer .mc-cancel {
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    height: 2rem;
-    margin-left: 7px;
-    padding: 0 $padding-base;
-    vertical-align: bottom;
-    width: auto;
-}
-.edit-box .mc-cancel {
-    padding: 3px;
-}
-.edit-box .mc-cancel .close {
-    font-size: 1.5rem;
-}
 .edit-box.mc-top .mc-arrow,
 .edit-box.mc-bottom .mc-arrow {
     left: 50%;

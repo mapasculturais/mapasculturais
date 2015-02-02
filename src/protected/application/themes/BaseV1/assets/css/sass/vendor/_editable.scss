@@ -87,11 +87,7 @@ a.editable-click:hover {
     margin-bottom: 0;
 }
 .editable-buttons button.editable-cancel {
-    padding: 3px;
-}
-.editable-buttons button.editable-cancel .icon-close {
-    font-size: 1.5rem;
-    line-height: 1;
+    margin-left: 0;
 }
 .editable-buttons.editable-buttons-bottom {
     text-align: right;
@@ -186,10 +182,10 @@ div.ficha-spcultura .editable-buttons-bottom {
     border-radius: $border-radius-base;
 }
 .select2-container .select2-choice {
-    height: inherit;
+    height: 1.875rem;
     padding: 0 0 0 $padding-small;
     border: 1px solid $gray;
-    line-height: $line-height-base;
+    line-height: 1.875rem;
     font-size: $font-size-smaller;
     font-weight: normal;
     color: #888;

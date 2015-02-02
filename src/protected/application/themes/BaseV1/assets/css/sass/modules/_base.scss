@@ -145,16 +145,18 @@ button[type='submit'] {
     width: auto;
     padding: 0 $padding-base;
     vertical-align: bottom;
-    color: #fff;
+    color: $btn-primary-color;
     font-weight: bold;
     font-size: $font-size-smaller;
-    background: $brand-accent;
+    background-color: $btn-primary-bg;
     cursor: pointer;
-    border: none;
-}
-input[type='submit']:hover,
-button[type='submit']:hover {
-    box-shadow: $box-shadow-button;
+    border: 1px solid $btn-primary-border;
+    &:hover {
+        color: $btn-primary-color;
+        background-color: lighten($btn-primary-bg, 5%);
+        border: 1px solid darken($brand-primary, 10%);
+        box-shadow: $box-shadow-button;
+    }
 }
 input[type='radio'],
 input[type='checkbox'] {
