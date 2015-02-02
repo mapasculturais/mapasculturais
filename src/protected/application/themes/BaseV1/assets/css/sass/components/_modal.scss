@@ -53,7 +53,7 @@
     margin-left: 5px;
 }
 .js-dialog footer {
-    border-top: 1px solid $gray;
+    border-top: $thin-row;
     padding-top: $padding-base;
 }
 .js-metalist-form input[type=text],
@@ -75,7 +75,7 @@
     left: -1px;
     width: 122px;
     border-top: none;
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
 }
 .js-dialog .dropdown .submenu-dropdown:before {
     content: none;

@@ -122,22 +122,22 @@ textarea,
 button,
 select {
     padding: 3px 6px;
-    background: #fff;
-    border: 1px solid $gray;
-    border-radius: $border-radius-base;
-    color: $gray-dark;
-    font-family: $font-stack-base;
+    background: $form-fields-bg;
+    border: 1px solid $form-fields-border;
+    border-radius: $form-fields-border-radius;
+    color: $form-fields-color;
+    font-family: $form-fields-font;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 input,
 textarea {
-    font-size: $font-size-smaller;
+    font-size: $form-fields-font-size;
 }
 input,
 button,
 select {
-    height: 2rem;
+    height: $form-fields-height;
     margin: 0 0 .75rem;
 }
 input[type='submit'],

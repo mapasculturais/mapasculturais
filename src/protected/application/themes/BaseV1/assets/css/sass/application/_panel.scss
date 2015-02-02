@@ -8,7 +8,7 @@
     position: relative;
     box-sizing: border-box;
     background: #fff;
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
     padding: $padding-base;
     @media screen and (min-width: $screen-tablet) {
         float: left;

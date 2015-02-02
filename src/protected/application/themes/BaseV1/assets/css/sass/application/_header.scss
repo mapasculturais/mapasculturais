@@ -447,7 +447,7 @@ body.action-search {
             padding: $padding-small;
             background: #f8f8f8;
             border-left: 5px solid #999;
-            border-radius: 0 2px 2px 0;
+            border-radius: 0 $border-radius-base $border-radius-base 0;
             &:hover,
             &.read {
                 border-left: 5px solid $brand-primary;

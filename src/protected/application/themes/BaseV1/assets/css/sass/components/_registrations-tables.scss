@@ -57,18 +57,18 @@
 				}
 			}
 			th:first-child {
-				border-radius: 2px 0 0 0;
+				border-radius: $border-radius-base 0 0 0;
 				border-left: none;
 			}
 			th:last-child {
-				border-radius: 0 2px 0 0;
+				border-radius: 0 $border-radius-base 0 0;
 			}
 		}
 	}
 	tbody {
 		tr {
 			border-left: 3px solid $gray-lighter;
-			border-right: 1px solid $gray-lighter;
+			border-right: $thin-row;
 			&:nth-child(odd) {
 				background-color: lighten($gray-lighter, 3%);
 				border-left: 3px solid $gray-light;

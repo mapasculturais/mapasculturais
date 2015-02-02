@@ -39,7 +39,7 @@
 .edit-box header {
     margin-bottom: $line-height-half;
     padding-bottom: $padding-base;
-    border-bottom: 1px solid #ddd;
+    border-bottom: $thin-row;
 }
 .edit-box header h1 {
     font-size: $font-size-base;

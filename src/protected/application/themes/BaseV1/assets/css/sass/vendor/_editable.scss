@@ -170,7 +170,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .select2-drop-active {
     border: 1px solid $gray;
     border-top: none;
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
 }
 .select2-drop.select2-drop-above.select2-drop-active {
     border-top: 1px solid $gray;
@@ -231,7 +231,7 @@ div.ficha-spcultura .editable-buttons-bottom {
     background-image: none;
 }
 .select2-container.select2-drop-above .select2-choice {
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
     background-image: none;
 }
 .select2-results .select2-no-results,
