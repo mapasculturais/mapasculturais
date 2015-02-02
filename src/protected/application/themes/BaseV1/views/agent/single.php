@@ -180,7 +180,7 @@ $this->includeAngularEntityAssets($entity);
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.</p>
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 

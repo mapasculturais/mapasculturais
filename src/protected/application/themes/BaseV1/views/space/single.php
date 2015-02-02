@@ -221,7 +221,7 @@ $this->includeAngularEntityAssets($entity);
 <div class="sidebar space sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.</p>
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.<span class="close"></span></p>
         </div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
