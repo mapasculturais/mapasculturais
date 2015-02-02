@@ -494,11 +494,12 @@ $screen-md-max:              ($screen-lg-min - 1) !default;
 //== Box shadows
 //
 //## Define box-shadows.
-
-$box-shadow-map: 0 2px 6px rgba(0,0,0,.5);
-$box-shadow-dropdown: 0 2px 4px rgba(0,0,0,.3);
-$box-shadow-button:  0 1px 2px 0 rgba(0,0,0, .25);
-$box-shadow-modal:  0 3px 10px 0 rgba(0,0,0,.3);
+$box-shadow-header:			0 2px 2px 0 rgba(0,0,0,.15) !default;
+$box-shadow-map:			0 2px 6px rgba(0,0,0,.5) !default;
+$box-shadow-dropdown:		0 2px 4px rgba(0,0,0,.3) !default;
+$box-shadow-button:			0 1px 2px 0 rgba(0,0,0, .25) !default;
+$box-shadow-modal:			0 3px 10px 0 rgba(0,0,0,.3) !default;
+$box-shadow-image:			0 2px 2px 2px rgba(0,0,0,.25) !default;
 
 //== User submenu
 //
