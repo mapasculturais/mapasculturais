@@ -138,8 +138,17 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <div class="registration-fieldset">
-        <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. <strong>Depois de enviada, não será mais possível editá-la.</strong></p>
-        <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscrição</a>
+        <?php if($entity->project->isRegistrationOpen()): ?>
+            <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. <strong>Depois de enviada, não será mais possível editá-la.</strong></p>
+            <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscrição</a>
+        <?php else: ?>
+            <p class="registration-help">
+                <strong>
+                As inscrições encerraram-se em <?php echo $entity->project->registrationTo->format('d/m/Y'); ?>
+                às <?php echo $entity->project->registrationTo->format('H:i'); ?>.
+                </strong>
+            </p>
+        <?php endif; ?>
     </div>
 </article>
 <div class="sidebar-left sidebar registration">
