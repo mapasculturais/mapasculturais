@@ -81,8 +81,7 @@
             padding: $padding-base;
             background: #fff;
             border-radius: $border-radius-base;
-                    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
-            -webkit-box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
+            box-shadow: $box-shadow-dropdown;
             &:before {
                 @include arrow(up, $caret-width-base, #fff);
                 right: 8px;

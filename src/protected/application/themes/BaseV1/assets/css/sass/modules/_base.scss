@@ -154,8 +154,7 @@ button[type='submit'] {
 }
 input[type='submit']:hover,
 button[type='submit']:hover {
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+    box-shadow: $box-shadow-button;
 }
 input[type='radio'],
 input[type='checkbox'] {
