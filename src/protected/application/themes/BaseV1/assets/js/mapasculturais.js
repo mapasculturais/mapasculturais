@@ -498,7 +498,7 @@ MapasCulturais.EditBox = {
             var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
             var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
 
-            $dialog.append('<footer><button type="submit" class="mc-submit">' + submit_label + '</button> <button class="mc-cancel botao simples">' + cancel_label + '</button></footer><div class="mc-arrow"></div>');
+            $dialog.append('<footer><button class="mc-cancel btn btn-default">' + cancel_label + '</button> <button type="submit" class="mc-submit">' + submit_label + '</button> </footer><div class="mc-arrow"></div>');
 
             // close button
             $dialog.find('.mc-cancel').click(function (){

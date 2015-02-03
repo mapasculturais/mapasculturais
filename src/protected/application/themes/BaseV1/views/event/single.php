@@ -379,7 +379,9 @@ $this->includeMapAssets();
 </div>
 <div class="sidebar event sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
-        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.</div>
+        <div class="widget">
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.<span class="close"></span></p>
+        </div>
     <?php endif; ?>
 
     <!-- Related Agents BEGIN -->

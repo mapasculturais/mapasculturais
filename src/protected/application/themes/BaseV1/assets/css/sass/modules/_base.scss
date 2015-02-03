@@ -122,22 +122,22 @@ textarea,
 button,
 select {
     padding: 3px 6px;
-    background: #fff;
-    border: 1px solid $gray;
-    border-radius: $border-radius-base;
-    color: $gray-dark;
-    font-family: $font-stack-base;
+    background: $form-fields-bg;
+    border: 1px solid $form-fields-border;
+    border-radius: $form-fields-border-radius;
+    color: $form-fields-color;
+    font-family: $form-fields-font;
          box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 input,
 textarea {
-    font-size: $font-size-smaller;
+    font-size: $form-fields-font-size;
 }
 input,
 button,
 select {
-    height: 2rem;
+    height: $form-fields-height;
     margin: 0 0 .75rem;
 }
 input[type='submit'],
@@ -145,17 +145,18 @@ button[type='submit'] {
     width: auto;
     padding: 0 $padding-base;
     vertical-align: bottom;
-    color: #fff;
+    color: $btn-primary-color;
     font-weight: bold;
     font-size: $font-size-smaller;
-    background: $brand-accent;
+    background-color: $btn-primary-bg;
     cursor: pointer;
-    border: none;
-}
-input[type='submit']:hover,
-button[type='submit']:hover {
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
-    -webkit-box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+    border: 1px solid $btn-primary-border;
+    &:hover {
+        color: $btn-primary-color;
+        background-color: lighten($btn-primary-bg, 5%);
+        border: 1px solid darken($brand-primary, 10%);
+        box-shadow: $box-shadow-button;
+    }
 }
 input[type='radio'],
 input[type='checkbox'] {

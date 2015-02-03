@@ -51,8 +51,7 @@
         padding: $padding-small 0;
         background: $gray-light;
         border-radius: $border-radius-base;
-                box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
-        -webkit-box-shadow: rgba(0,0,0, .35) 0 1px 2px 0;
+        box-shadow: $box-shadow-dropdown;
         &:before {
             @include arrow(up, $caret-width-base, $gray-light);
             right: .25rem;
@@ -98,7 +97,7 @@
         background-color: lighten($btn-default-bg, 5%);
         border: 1px solid darken($btn-default-border, 10%);
         .placeholder {
-            box-shadow: rgba(0,0,0, .25) 0 1px 2px 0;
+            box-shadow: $box-shadow-button;
             &:after {
                 background-color: lighten($btn-default-bg, 5%);
             }

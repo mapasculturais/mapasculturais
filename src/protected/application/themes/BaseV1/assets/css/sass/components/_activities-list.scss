@@ -5,7 +5,7 @@
 .activity {
     margin-bottom: $line-height-base;
     padding-bottom: $padding-large;
-    border-bottom: 1px solid $gray;
+    border-bottom: $thin-row;
     p {
 	    margin-bottom: $line-height-half;
 	    font-size: $font-size-small;
