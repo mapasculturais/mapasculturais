@@ -312,7 +312,7 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
                 $app->storage->createZipOfEntityFiles($registration, $fileName = $registration->number . ' - ' . uniqid() . '.zip');
             }
         }
-        return false;
+        return true;
     }
 
 );
