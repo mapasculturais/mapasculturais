@@ -53,5 +53,5 @@ sudo npm install -g uglify-js uglifycss autoprefixer
 ```shell
 sudo gem install -g sass
 ```
-
-[<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/10346655_10152478219659636_7235974946349859716_n.png?oh=a2dd23e4c9d7daf25bb1f47f7e8bc270&oe=5526F051&__gda__=1433079532_c274f04cda725a7f7c6c560c057d8426">](http://www.hipchat.com/gAMisvNwG) Canal de Suporte
+### Suporte
+[<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/10346655_10152478219659636_7235974946349859716_n.png?oh=a2dd23e4c9d7daf25bb1f47f7e8bc270&oe=5526F051&__gda__=1433079532_c274f04cda725a7f7c6c560c057d8426">](http://www.hipchat.com/gAMisvNwG) Chat de suporte em tempo real
