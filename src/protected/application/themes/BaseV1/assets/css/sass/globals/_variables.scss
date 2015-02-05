@@ -132,7 +132,8 @@ $unicode-agent:                 "\e08a" !default;
 // used on .attachment-title on _registration-form.scss file
 $unicode-attachment:            "\e016" !default;
 
-//** Arrow icons used on _icons.scss file (Image Gallery)
+//** Arrow icons
+// used on .icon-arrow-left and .icon-arrow-right on _icons.scss file (Image Gallery)
 $unicode-arrow-left:			"\34" !default;
 $unicode-arrow-right:			"\35" !default;
 
@@ -322,11 +323,6 @@ $padding-small:    $line-height-base/3 !default; // 8px
 
 $border-radius-base: 2px !default;
 
-//** Global color for active items (e.g., navs or dropdowns).
-$component-active-color:    #fff !default;
-//** Global background color for active items (e.g., navs or dropdowns).
-$component-active-bg:       $brand-primary !default;
-
 //** Width of the `border` for generating arrows.
 $caret-width-base:          8px !default;
 
@@ -498,8 +494,12 @@ $screen-md-max:              ($screen-lg-min - 1) !default;
 //== Box shadows
 //
 //## Define box-shadows.
-
-$box-shadow-map: 0 2px 6px rgba(0,0,0,.5);
+$box-shadow-header:			0 2px 2px 0 rgba(0,0,0,.15) !default;
+$box-shadow-map:			0 2px 6px rgba(0,0,0,.5) !default;
+$box-shadow-dropdown:		0 2px 4px rgba(0,0,0,.3) !default;
+$box-shadow-button:			0 1px 2px 0 rgba(0,0,0, .25) !default;
+$box-shadow-modal:			0 3px 10px 0 rgba(0,0,0,.3) !default;
+$box-shadow-image:			0 2px 2px 2px rgba(0,0,0,.25) !default;
 
 //== User submenu
 //

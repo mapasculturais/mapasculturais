@@ -26,8 +26,8 @@ article.project .highlighted-message .btn {
 .registration-form {
     display: none; //it shows only on tablet screen size and wider screens
 	box-sizing: border-box;
-	border: 1px solid #eee;
-	border-radius: 2px;
+	border: $thin-row;
+	border-radius: $border-radius-base;
 	padding: $padding-large;
 	margin-bottom: 2*$line-height-base;
 	> div {
@@ -82,8 +82,8 @@ article.project .highlighted-message .btn {
 .registration-fieldset {
 	margin-bottom: $line-height-base;
 	padding: $padding-small;
-	border: 1px solid $gray-lighter;
-	border-radius: 2px;
+	border: $thin-row;
+	border-radius: $border-radius-base;
 	&:hover {
 		background-color: #f4f4f4;
 	}
@@ -132,7 +132,7 @@ article.project .highlighted-message .btn {
     @media print {
         padding: 0 0 $padding-base;
         border: none;
-        border-bottom: 1px solid $gray;
+        border-bottom: $thin-row;
         border-radius: 0;
         h4 {
             font-size: 1rem;
@@ -182,7 +182,7 @@ article.project .highlighted-message .btn {
     .registration-list-item {
         position: relative;
         padding: $padding-base;
-        border-bottom: 1px solid $gray-lighter;
+        border-bottom: $thin-row;
         .registration-agent {
             a {
             	font-weight: normal;
@@ -227,7 +227,7 @@ article.project .highlighted-message .btn {
     .attachment-list-item {
         position: relative;
         padding: $padding-base 14.5rem $padding-base $padding-base;
-        border-bottom: 1px solid $gray-lighter;
+        border-bottom: $thin-row;
         .attachment-title {
             font-size: $font-size-smaller;
             font-weight: normal;

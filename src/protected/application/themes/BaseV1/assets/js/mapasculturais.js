@@ -498,7 +498,7 @@ MapasCulturais.EditBox = {
             var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
             var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
 
-            $dialog.append('<footer><button type="submit" class="mc-submit">' + submit_label + '</button> <button class="mc-cancel botao simples">' + cancel_label + '</button></footer><div class="mc-arrow"></div>');
+            $dialog.append('<footer><button class="mc-cancel btn btn-default">' + cancel_label + '</button> <button type="submit" class="mc-submit">' + submit_label + '</button> </footer><div class="mc-arrow"></div>');
 
             // close button
             $dialog.find('.mc-cancel').click(function (){
@@ -735,7 +735,13 @@ MapasCulturais.Search = {
                         cb({id: $selector.data('value'), name: $selector.data('editable').$element.html()});
                     },
                     ajax: {
-                        url: MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/find',
+                        url: function(){
+                            var format = $selector.data('selection-format');
+                            var apiMethod = 'find';
+                            if(MapasCulturais.Search.formats[format] && MapasCulturais.Search.formats[format].apiMethod)
+                                apiMethod =  MapasCulturais.Search.formats[format].apiMethod;
+                            return MapasCulturais.baseURL + 'api/' + $selector.data('entity-controller') + '/' + apiMethod;
+                        },
                         dataType: 'json',
                         quietMillis: 350,
                         data: function (term, page) { // page is the one-based page number tracked by Select2
@@ -836,14 +842,16 @@ MapasCulturais.Search = {
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'// page number
+                '@order':'name ASC', // page number
+                '@files':'(avatar.avatarSmall):url'
             },
             'agent':{ //apenas adicionei a shortDescription
                 name: 'ilike(*'+term.replace(' ', '*')+'*)', //search term,
                 '@select': 'id,name,terms,type',
                 '@limit': MapasCulturais.Search.limit, // page size
                 '@page': page,
-                '@order':'name ASC'// page number
+                '@order':'name ASC', // page number
+                '@files':'(avatar.avatarSmall):url'
             }
         };
 
@@ -854,7 +862,7 @@ MapasCulturais.Search = {
         }
     },
 
-    processEntity: function(entity){
+    processEntity: function(entity, $selector){
         entity.areas = function(){
             if(this.terms && this.terms.area)
                 return this.terms.area.join(', ');
@@ -877,16 +885,17 @@ MapasCulturais.Search = {
         };
 
         entity.thumbnail = function(){
-            if(this.files && this.files.avatar && this.files.avatar.files && this.files.avatar.files['avatarSmall'])
-                return this.files.avatar.files['avatarSmall'].url;
+            var entityDefaultAvatar = MapasCulturais.assets['avatar'+$selector.data('entity-controller')[0].toUpperCase() + $selector.data('entity-controller').slice(1)];
+            if(this['@files:avatar.avatarSmall'])
+                return this['@files:avatar.avatarSmall'].url;
             else
-                return '';
+                return entityDefaultAvatar;
         };
 
     },
 
-    renderTemplate : function(template, entity){
-        this.processEntity(entity);
+    renderTemplate : function(template, entity, $selector){
+        this.processEntity(entity, $selector);
         return Mustache.render(template, entity);
     },
 
@@ -901,7 +910,7 @@ MapasCulturais.Search = {
 
     formatResult : function (entity, $selector) {
         var searchResultTemplate = $($selector.data('search-result-template')).text();
-        return this.renderTemplate(searchResultTemplate, entity);
+        return this.renderTemplate(searchResultTemplate, entity, $selector);
     },
 
     ajaxData: function(searchParams, $selector){
@@ -915,6 +924,7 @@ MapasCulturais.Search = {
 
     formats: {
         chooseProject:{
+            //apiMethod : 'findByUserApprovedRegistration',
             onSave: function($selector){
                 var entity = $selector.data('entity');
                 $selector.data('value', entity.id);

@@ -9,8 +9,7 @@
     background: #fff;
     border-top: 4px solid $brand-primary;
     border-radius: $border-radius-base;
-            box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
-    -webkit-box-shadow: 0 3px 10px 0 rgba(0,0,0,.3);
+    box-shadow: $box-shadow-modal;
 }
 .js-dialog-content {
     padding-right: 1rem;
@@ -53,7 +52,7 @@
     margin-left: 5px;
 }
 .js-dialog footer {
-    border-top: 1px solid $gray;
+    border-top: $thin-row;
     padding-top: $padding-base;
 }
 .js-metalist-form input[type=text],
@@ -75,7 +74,7 @@
     left: -1px;
     width: 122px;
     border-top: none;
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
 }
 .js-dialog .dropdown .submenu-dropdown:before {
     content: none;

@@ -64,10 +64,10 @@
         background-color: $brand-primary;
     }
     &:first-child {
-        border-radius: 2px 2px 0 0;
+        border-radius: $border-radius-base $border-radius-base 0 0;
     }
     &:last-child {
-        border-radius: 0 0 2px 2px;
+        border-radius: 0 0 $border-radius-base $border-radius-base;
     }
     &:only-of-type {
         border-radius: $border-radius-base;
@@ -102,7 +102,7 @@
        -moz-border-radius: $border-radius-base;
             border-radius: $border-radius-base;
     background-color: $brand-accent;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.15);
+    box-shadow: $box-shadow-map;
     &:hover {
         background-color: $brand-primary;
     }
@@ -142,8 +142,8 @@
         }
     }
     li:last-child a {
-        -webkit-border-radius: 0 2px 2px 0;
-                border-radius: 0 2px 2px 0;
+        -webkit-border-radius: 0 $border-radius-base $border-radius-base 0;
+                border-radius: 0 $border-radius-base $border-radius-base 0;
     }
 }
 .leaflet-bar a.leaflet-draw-toolbar-button-enabled {

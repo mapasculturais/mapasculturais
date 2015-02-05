@@ -36,8 +36,8 @@ $this->addRelatedAgentsToJs($entity);
                             <span class="slider-button" ng-class="{'on':relation.hasControl}">{{relation.hasControl ? 'Sim' : 'Não' }}</span>
                         </div>
                     </div>
-                    <div class="textright" ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
-                        <a href="#" class="btn btn-accent" ng-click="deleteRelation(relation)">Excluir</a>
+                    <div ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteRelation(relation)">Excluir</a>
                     </div>
                 </div>
             </div>

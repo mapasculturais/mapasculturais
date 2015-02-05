@@ -516,7 +516,9 @@ $this->includeAngularEntityAssets($entity);
 </div>
 <div class="sidebar project sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
-        <div class="widget">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.</div>
+        <div class="widget">
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.<span class="close"></span></p>
+        </div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
