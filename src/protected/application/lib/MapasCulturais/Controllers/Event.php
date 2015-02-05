@@ -127,19 +127,28 @@ class Event extends EntityController {
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+        $spaces     = key_exists('space',   $query_data) ? $query_data['space'] : null;
 
         unset(
             $query_data['@from'],
-            $query_data['@to']
+            $query_data['@to'],
+            $query_data['space']
         );
 
-        if(key_exists('_geoLocation', $query_data)){
+        if(key_exists('_geoLocation', $query_data) || $spaces){
             $space_controller = App::i()->controller('space');
 
             $space_data = array(
-                '@select' => 'id',
-                '_geoLocation' => $this->data['_geoLocation']
+                '@select' => 'id'
             );
+
+            if(key_exists('_geoLocation', $query_data)){
+                $space_data['_geoLocation'] = $this->data['_geoLocation'];
+            }
+
+            if($spaces){
+                $space_data['id'] = $spaces;
+            }
 
             $space_ids = array_map(
                 function($e){
@@ -202,7 +211,9 @@ class Event extends EntityController {
 
             if(is_array($result)){
                 foreach($result as $k => $r){
-                    $result[$k] = array_merge($result_occurrences[$r['id']], $r);
+                    if(isset($result_occurrences[$r['id']])){
+                        $result[$k] = array_merge($result_occurrences[$r['id']], $r);
+                    }
                 }
             }
         }else{

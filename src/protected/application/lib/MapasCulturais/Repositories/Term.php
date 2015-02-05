@@ -14,6 +14,10 @@ class Term extends \MapasCulturais\Repository{
      */
     public function getTermsAsString($taxonomy_slug){
         $taxonomy_definition = \MapasCulturais\App::i()->getRegisteredTaxonomyBySlug($taxonomy_slug);
+        if(!$taxonomy_definition){
+            throw new \Exception("Invalid taxonomy slug \"$taxonomy_slug\".");
+            return;
+        }
         if($taxonomy_definition->restrictedTerms){
             $terms = $taxonomy_definition->restrictedTerms;
             sort($terms);
