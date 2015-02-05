@@ -43,4 +43,14 @@ divulgar seus <a href=\"{$url_search_events}\">eventos</a>, <a href=\"{$url_sea
     static function getThemeFolder() {
         return __DIR__;
     }
+
+    public function addDocumentMetas() {
+        parent::addDocumentMetas();
+        $app = App::i();
+        foreach ($this->documentMeta as $key => $meta){
+            if(isset($meta['property']) && ($meta['property'] === 'og:image' || $meta['property'] === 'og:image:url')){
+                $this->documentMeta[$key] = array('property' => $meta['property'] , 'content' => $app->view->asset('img/share-sobral.png', false));
+            }
+        }
+    }
 }
