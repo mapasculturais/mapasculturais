@@ -584,8 +584,8 @@
                         });
                         MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
                     }else{
-                        console.log(response);
-                        //document.location = response.singleUrl;
+                        MapasCulturais.Messages.success('Inscrição enviada. Aguarde tela de sumário.');
+                        document.location = response.singleUrl;
                     }
                 });
             };

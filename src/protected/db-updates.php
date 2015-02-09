@@ -303,6 +303,16 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
             WHERE id IN (SELECT object_id FROM agent_meta WHERE key = 'localizacao' AND value = 'Privada')
         ");
         return true;
+    },
+
+    'regenerate sent registration zip files' => function() use($app){
+        $registrations = $app->repo('Registration')->findAll();
+        foreach($registrations as $registration){
+            if($registration->status > 0 && $registration->files){
+                $app->storage->createZipOfEntityFiles($registration, $fileName = $registration->number . ' - ' . uniqid() . '.zip');
+            }
+        }
+        return true;
     }
 
 );
