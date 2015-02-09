@@ -33,22 +33,23 @@ Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturai
     curl -sS https://getcomposer.org/installer | php
     sudo mv composer.phar /usr/local/bin/composer
 ```
-- PostgreSQL >= 9.1
+- PostgreSQL >= 9.3
 - Postgis Contrib (for Unaccent extension)
-- Postgis >= 1.5
+- Postgis >= 2.1
 -  PostgreSQL Postgis Scripts
+
 Em distribuições GNU/Linux baseadas em Debian:
 ```shell
 sudo apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 ```
-- Node.JS
+- Node.JS >= 0.10
   - NPM
   - UglifyJS
   - UglifyCSS
 ```shell
 sudo npm install -g uglify-js uglifycss autoprefixer
 ```
-- Ruby
+- Ruby  >= 1.9.3
   - SASS
 ```shell
 sudo gem install -g sass
