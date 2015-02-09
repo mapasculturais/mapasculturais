@@ -360,6 +360,8 @@ abstract class Theme extends \Slim\View {
             $title .= $entity->name ? ' '.$entity->name : '';
         }elseif($this->controller->id == 'site' && $this->controller->action === 'index'){
             $title = $app->siteName;
+        }elseif($this->controller->id == 'panel' && $this->controller->action === 'index'){
+            $title = $app->getReadableName('panel');
         }else{
             $title =$app->getReadableName($this->controller->action);
         }

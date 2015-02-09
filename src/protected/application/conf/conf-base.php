@@ -303,21 +303,22 @@ return array(
 
         'readableNames' => array(
             //controllers
-                'panel'     => 'Painel',
-                'auth'      => 'Autenticação',
-                'site'      => 'Site',
-                'event'     => 'Evento',    'events'    => 'Eventos',
-                'agent'     => 'Agente',    'agents'    => 'Agentes',
-                'space'     => 'Espaço',    'spaces'    => 'Espaços',
-                'project'   => 'Projeto',   'projects'  => 'Projetos',
-                'file'      => 'Arquivo',   'files'     => 'Arquivos',
+                'panel'         => 'Painel',
+                'auth'          => 'Autenticação',
+                'site'          => 'Site',
+                'event'         => 'Evento',    'events'        => 'Eventos',
+                'agent'         => 'Agente',    'agents'        => 'Agentes',
+                'space'         => 'Espaço',    'spaces'        => 'Espaços',
+                'project'       => 'Projeto',   'projects'      => 'Projetos',
+                'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
+                'file'          => 'Arquivo',   'files'         => 'Arquivos',
             //actions
-                'list'      => 'Listando',
-                'index'     => 'Índice',
-                'delete'    => 'Apagando',
-                'edit'      => 'Editando',
-                'create'    => 'Criando novo',
-                'search'    => 'Busca'
+                'list'          => 'Listando',
+                'index'         => 'Índice',
+                'delete'        => 'Apagando',
+                'edit'          => 'Editando',
+                'create'        => 'Criando novo',
+                'search'        => 'Busca'
         )
     )
 );
