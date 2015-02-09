@@ -10,19 +10,55 @@
     }
 
     .main-content a{color:#880000}
+    .emcartaz-datepicker-container{
+        display:inline;
+        padding:5px 5px;
+        cursor: pointer;
+
+    }
+    .emcartaz-datepicker-container .emcartaz-datepicker{
+        background:transparent;
+    }
+    .emcartaz-datepicker-container:hover{
+        background: #ddd;
+    }
+    .emcartaz-datepicker-container:after{
+        content: "l";
+        font-size: 1rem;
+        line-height: 1rem;
+        font-family: "ElegantIcons";
+        font-weight: normal;
+        font-style: normal;
+        vertical-align: initial;
+        text-transform: none;
+        color: #666;
+    }
 </style>
+<script>
+$(function(){
+    $('.emcartaz-datepicker-container').on('click', function(){
+       $(this).children('.emcartaz-datepicker').datepicker('show');
+    });
+});
+
+</script>
 <div class="panel-main-content">
     <h1>Revista Em Cartaz</h1>
     <div class="clearfix">
             Filtrar Eventos
             <label for="data-de-inicio">de</label>
-            <input id="from-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
+            <div class="emcartaz-datepicker-container">
+                <input id="from-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
                    readonly="readonly" placeholder="00/00/0000" value="<?php echo $from->format('d/m/Y'); ?>">
+            </div>
             <input id="from" name="startsOn" type="hidden" value="<?php echo $from->format('Y-m-d'); ?>">
 
             <label for="data-de-fim">a</label>
-            <input id="to-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
+
+            <div class="emcartaz-datepicker-container">
+                <input id="to-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
                    readonly="readonly" placeholder="00/00/0000" value="<?php echo $to->format('d/m/Y'); ?>">
+            </div>
             <input id="to" name="until" type="hidden" value="<?php echo $to->format('Y-m-d'); ?>">
     </div>
 
