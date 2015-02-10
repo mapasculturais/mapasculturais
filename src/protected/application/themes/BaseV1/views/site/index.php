@@ -32,18 +32,27 @@ $agent_types = $app->getRegisteredEntityTypes($class_agent);
 $space_types = $app->getRegisteredEntityTypes($class_space);
 $project_types = $app->getRegisteredEntityTypes($class_project);
 
+$agent_img_attributes = $space_img_attributes = $event_img_attributes = $project_img_attributes = 'class="random-feature no-image"';
+
 $agent = $this->getOneVerifiedEntity($class_agent);
-if($agent) $agent_img_url = $this->getEntityFeaturedImageUrl($agent);
+if($agent && $img_url = $this->getEntityFeaturedImageUrl($agent)){
+    $agent_img_attributes = 'class="random-feature" style="background-image: url(' . $img_url . ');"';
+}
 
 $space = $this->getOneVerifiedEntity($class_space);
-if($space) $space_img_url = $this->getEntityFeaturedImageUrl($space);
+if($space && $img_url = $this->getEntityFeaturedImageUrl($space)){
+    $space_img_attributes = 'class="random-feature" style="background-image: url(' . $img_url . ');"';
+}
 
 $event = $this->getOneVerifiedEntity($class_event);
-if($event) $event_img_url = $this->getEntityFeaturedImageUrl($event);
+if($event && $img_url = $this->getEntityFeaturedImageUrl($event)){
+    $event_img_attributes = 'class="random-feature" style="background-image: url(' . $img_url . ');"';
+}
 
 $project = $this->getOneVerifiedEntity($class_project);
-if($project) $project_img_url = $this->getEntityFeaturedImageUrl($project);
-
+if($project && $img_url = $this->getEntityFeaturedImageUrl($project)){
+    $project_img_attributes = 'class="random-feature" style="background-image: url(' . $img_url . ');"';
+}
 
 $url_search_agents = $this->searchAgentsUrl;
 $url_search_spaces = $this->searchSpacesUrl;
@@ -106,7 +115,7 @@ $url_search_projects = $this->searchProjectsUrl;
     <div class="box">
         <?php if($event): ?>
         <a href="<?php echo $event->singleUrl ?>">
-            <div class="random-feature" style="background-image: url(<?php echo $event_img_url ?>);">
+            <div <?php echo $event_img_attributes;?>>
                 <div class="feature-content">
                     <h3>destaque</h3>
                     <h2><?php echo $event->name ?></h2>
@@ -158,7 +167,7 @@ $url_search_projects = $this->searchProjectsUrl;
     <div class="box">
         <?php if($agent): ?>
         <a href="<?php echo $agent->singleUrl ?>">
-            <div class="random-feature" style="background-image: url(<?php echo $agent_img_url ?>)">
+            <div <?php echo $agent_img_attributes;?>>
                 <div class="feature-content">
                     <h3>destaque</h3>
                     <h2><?php echo $agent->name ?></h2>
@@ -211,7 +220,7 @@ $url_search_projects = $this->searchProjectsUrl;
     <div class="box">
         <?php if($space): ?>
             <a href="<?php echo $space->singleUrl ?>">
-                <div class="random-feature" style="background-image: url(<?php echo $space_img_url ?>);">
+                <div <?php echo $space_img_attributes;?>>
                     <div class="feature-content">
                         <h3>destaque</h3>
                         <h2><?php echo $space->name ?></h2>
@@ -256,7 +265,7 @@ $url_search_projects = $this->searchProjectsUrl;
     <div class="box">
         <?php if($project): ?>
             <a href="<?php echo $project->singleUrl ?>">
-                <div class="random-feature" style="background-image: url(<?php echo $project_img_url ?>);">
+                <div <?php echo $project_img_attributes;?>>
                     <div class="feature-content">
                         <h3>destaque</h3>
                         <h2><?php echo $project->name ?></h2>
