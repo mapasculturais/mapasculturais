@@ -8,22 +8,22 @@ trait RepositoryKeyword{
         return true;
     }
 
-    protected function _getKeywordDQLFrom(){
+    protected function _getKeywordDQLFrom($keyword){
         $class = $this->getClassName();
 
         $join = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', array(&$join));
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', array(&$join, $keyword));
 
         return "$class e $join";
     }
 
-    protected function _getKeywordDQLWhere(){
+    protected function _getKeywordDQLWhere($keyword){
         $class = $this->getClassName();
 
         $where = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', array(&$where));
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', array(&$where, $keyword));
 
         return "unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) $where";
     }
@@ -31,8 +31,8 @@ trait RepositoryKeyword{
     function getIdsByKeyword($keyword){
         $keyword = "%{$keyword}%";
 
-        $from = $this->_getKeywordDQLFrom();
-        $where = $this->_getKeywordDQLWhere();
+        $from = $this->_getKeywordDQLFrom($keyword);
+        $where = $this->_getKeywordDQLWhere($keyword);
 
         $dql = "SELECT DISTINCT e.id FROM $from WHERE $where";
         $query = $this->_em->createQuery($dql);
@@ -46,11 +46,11 @@ trait RepositoryKeyword{
         return $ids;
     }
 
-    function findByKeyword(array $keyword, $orderBy = null, $limit = null, $offset = null) {
+    function findByKeyword($keyword, $orderBy = null, $limit = null, $offset = null) {
         $keyword = "%{$keyword}%";
 
-        $from = $this->_getKeywordDQLFrom();
-        $where = $this->_getKeywordDQLWhere();
+        $from = $this->_getKeywordDQLFrom($keyword);
+        $where = $this->_getKeywordDQLWhere($keyword);
 
         $ob = '';
         if(is_array($orderBy)){

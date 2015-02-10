@@ -473,7 +473,7 @@ class Theme extends MapasCulturais\Theme {
         });
 
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins) {
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
             $class = $this->getClassName();
@@ -491,11 +491,11 @@ class Theme extends MapasCulturais\Theme {
                             t.taxonomy = '{$taxonomy->id}'";
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where) {
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins) {
+        $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $joins .= " LEFT JOIN e.project p
                 LEFT JOIN MapasCulturais\Entities\EventMeta m
                     WITH
@@ -504,9 +504,16 @@ class Theme extends MapasCulturais\Theme {
                 ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where) {
-            $where .= " OR unaccent(lower(p.name)) LIKE unaccent(lower(:keyword))
-                OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
+        $app->hook('repo(Event).getIdsByKeywordDQL.where', function(&$where, $keyword) use($app) {
+            $projects = $app->repo('Project')->findByKeyword($keyword);
+            $project_ids = [];
+            foreach($projects as $project){
+                $project_ids = array_merge($project_ids, [$project->id], $project->getChildrenIds());
+            }
+            if($project_ids){
+                $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
+            }
+            $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
     }
 
@@ -951,7 +958,7 @@ class Theme extends MapasCulturais\Theme {
 
 
         $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
-        
+
         if ($ids) {
             $id = $ids[array_rand($ids)]['id'];
             return $app->repo($entity_class)->find($id);
