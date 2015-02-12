@@ -74,7 +74,7 @@ article.project, article.registration {
         margin-left: -3rem;
         width: 6rem;
         height: 6rem;
-        .btn {
+        >.btn {
             position: absolute;
             right: $line-height-half;
             bottom: $line-height-half;
