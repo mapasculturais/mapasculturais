@@ -197,8 +197,8 @@ return array(
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
 
-    'app.useUsersWithControlCache' => true,
-    'app.usersWithControlCache.lifetime' => 30,
+    'app.usePermissionsCache' => true,
+    'app.permissionsCache.lifetime' => 120,
 
     'app.apiCache.lifetimeByController' => array(
         'notification' => 0,

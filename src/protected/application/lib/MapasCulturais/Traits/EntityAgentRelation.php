@@ -106,6 +106,24 @@ trait EntityAgentRelation {
         return $this->getRelatedAgents($group, true, $include_pending_relations);
 
     }
+    
+    function getIdsOfUsersWithControl(){
+        $app = \MapasCulturais\App::i();
+        
+        $cache_id = "$this::usersWithControl";
+
+        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
+            return $app->cache->fetch($cache_id);
+        }else{
+            $users = $this->getUsersWithControl();
+            $ids = array_map(function($u){
+                return $u->id;
+                
+            }, $users);
+            
+            return $ids;
+        }
+    }
 
     function getUsersWithControl(){
         $app = \MapasCulturais\App::i();
@@ -113,29 +131,39 @@ trait EntityAgentRelation {
         // cache ids
         $cache_id = "$this::usersWithControl";
 
-        if($app->config['app.useUsersWithControlCache'] && $app->cache->contains($cache_id)){
+        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
             $ids = $app->cache->fetch($cache_id);
             $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
+            $q->useQueryCache(true);
+            $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
             $q->setParameter('ids', $ids);
             return $q->getResult();
         }
 
         $result = array($this->getOwnerUser());
         $ids = array($result[0]->id);
+        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
+        
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
             foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
                     $ids[] = $u->id;
+                    if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                     $result[] = $u;
                 }
             }
         }
 
-        if($this->usesNested() && $this->getParent() && !$this->getParent()->equals($this)){
-            foreach($this->getParent()->getUsersWithControl() as $u){
-                if(!in_array($u->id, $ids)){
-                    $ids[] = $u->id;
-                    $result[] = $u;
+        if($this->usesNested()) {
+            $parent = $this->getParent();
+        
+            if(is_object($parent) && !$parent->equals($this)){
+                foreach($parent->getUsersWithControl() as $u){
+                    if(!in_array($u->id, $ids)){
+                        $ids[] = $u->id;
+                        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
+                        $result[] = $u;
+                    }
                 }
             }
         }
@@ -146,40 +174,27 @@ trait EntityAgentRelation {
             $u = $relation->agent->user;
             if(!in_array($u->id, $ids)){
                 $ids[] = $u->id;
+                if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                 $result[] = $u;
             }
         }
 
-        if($app->config['app.useUsersWithControlCache']){
-            $app->cache->save($cache_id, $ids, $app->config['app.usersWithControlCache.lifetime']);
+        if($app->config['app.usePermissionsCache']){
+            $app->cache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
+        
+        
         return $result;
+        
     }
 
     function userHasControl($user){
         if($user->is('admin'))
             return true;
-
-        foreach($this->getUsersWithControl() as $u)
-            if($u->id == $user->id)
-                return true;
-
         
-        if($this->usesOwnerAgent()){
-            $owner = $this->owner;
-            if(is_object($owner) && $owner->userHasControl($user)){
-                return true;
-            }
-        }
+        $ids = $this->getIdsOfUsersWithControl();
         
-        if($this->usesNested()){
-            $parent = $this->parent;
-            if(is_object($parent) && !$this->equals($parent) && $parent->userHasControl($user)){
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($user->id, $ids);
     }
 
     function createAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $has_control = false, $save = true, $flush = true){

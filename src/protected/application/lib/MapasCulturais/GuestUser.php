@@ -11,6 +11,10 @@ class GuestUser{
     function __construct() {
         $this->profile = new \stdClass;
     }
+    
+    function __toString() {
+        return "guest:" . session_id();
+    }
 
     function is($role){
         return $role == 'guest';

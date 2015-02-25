@@ -486,12 +486,14 @@ trait ControllerAPI{
                     foreach($permissions as $perm){
                         $perm = trim($perm);
                         if($perm[0] === '!'){
-                            if($entity->canUser(substr($perm,1)))
-                                return false;
+                            $not = true;
+                            $_perm = substr($perm,1);
                         }else{
-                            if(!$entity->canUser($perm))
-                                return false;
+                            $not = false;
+                            $_perm = $perm;
                         }
+                        $can = $entity->canUser($_perm);
+                        return $not ? !$can : $can;
                     }
 
                     return true;

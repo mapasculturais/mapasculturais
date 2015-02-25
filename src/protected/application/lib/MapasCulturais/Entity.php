@@ -218,16 +218,29 @@ abstract class Entity implements \JsonSerializable{
             return true;
 
         $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
+        
+        $use_cache = false; //$app->config['app.usePermissionsCache'];
+        $cache_id = "{$this}->{$user}->$action";
+        
+        if($use_cache & $app->cache->contains($cache_id)){
+            return $app->cache->fetch($cache_id);
+        }
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation())
-            return $this->userHasControl($user) || $user->is('admin');
+            $result = $this->userHasControl($user) || $user->is('admin');
 
         if(method_exists($this, 'canUser' . $action)){
             $method = 'canUser' . $action;
-            return $this->$method($user);
-        }else{
-            return $this->genericPermissionVerification($user);
+            $result = $this->$method($user);
+        }elseif($action != '@control'){
+            $result = $this->genericPermissionVerification($user);
         }
+        
+        if($use_cache){
+            $app->cache->save($cache_id, $result, $app->config['app.permissionsCache.lifetime']);
+        }
+        
+        return $result;
     }
 
     public function checkPermission($action){
