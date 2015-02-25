@@ -164,11 +164,20 @@ trait EntityAgentRelation {
             if($u->id == $user->id)
                 return true;
 
-        if($this->usesOwnerAgent() && $this->owner->userHasControl($user))
-            return true;
-
-        if($this->usesNested() && is_object($this->parent) && !$this->equals($this->parent) && $this->parent->userHasControl($user))
-            return true;
+        
+        if($this->usesOwnerAgent()){
+            $owner = $this->owner;
+            if(is_object($owner) && $owner->userHasControl($user)){
+                return true;
+            }
+        }
+        
+        if($this->usesNested()){
+            $parent = $this->parent;
+            if(is_object($parent) && !$this->equals($parent) && $parent->userHasControl($user)){
+                return true;
+            }
+        }
 
         return false;
     }
