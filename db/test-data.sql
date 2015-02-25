@@ -15,15 +15,15 @@ SET search_path = public, pg_catalog;
 -- Data for Name: usr; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
-COPY usr (id, profile_id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status) FROM stdin;
-5	5	1	1	Staff1@local	2014-05-21 17:41:23	2014-05-21 17:41:23	1
-6	6	1	1	Staff2@local	2014-05-21 17:42:02	2014-05-21 17:42:02	1
-7	7	1	1	Normal1@local	2014-05-21 17:42:35	2014-05-21 17:42:35	1
-1	1	1	1	SuperAdmin1@local	2014-05-21 17:45:03	2014-05-21 17:45:03	1
-8	8	1	1	Normal2@local	2014-05-21 17:42:51	2014-05-21 17:42:51	1
-2	2	1	1	SuperAdmin2@local	2014-05-21 17:38:59	2014-05-21 17:38:59	1
-3	3	1	1	Admin1@local	2014-05-21 17:39:34	2014-05-21 17:39:34	1
-4	4	1	1	Admin2@local	2014-05-21 17:40:15	2014-05-21 17:40:15	1
+COPY usr (id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status) FROM stdin;
+5	1	1	Staff1@local	2014-05-21 17:41:23	2014-05-21 17:41:23	1
+6	1	1	Staff2@local	2014-05-21 17:42:02	2014-05-21 17:42:02	1
+7	1	1	Normal1@local	2014-05-21 17:42:35	2014-05-21 17:42:35	1
+1	1	1	SuperAdmin1@local	2014-05-21 17:45:03	2014-05-21 17:45:03	1
+8	1	1	Normal2@local	2014-05-21 17:42:51	2014-05-21 17:42:51	1
+2	1	1	SuperAdmin2@local	2014-05-21 17:38:59	2014-05-21 17:38:59	1
+3	1	1	Admin1@local	2014-05-21 17:39:34	2014-05-21 17:39:34	1
+4	1	1	Admin2@local	2014-05-21 17:40:15	2014-05-21 17:40:15	1
 \.
 
 
@@ -43,6 +43,8 @@ COPY agent (id, user_id, type, name, location, _geo_location, short_description,
 \.
 
 
+
+UPDATE usr SET profile_id = id;
 --
 -- Name: agent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapasculturais
 --
@@ -94,7 +96,7 @@ programação virada cultural	2014-05-07 12:48:05.991509
 -- Data for Name: project; Type: TABLE DATA; Schema: public; Owner: mapasculturais
 --
 
-COPY project (id, name, short_description, long_description, public_registration, create_timestamp, status, agent_id, is_verified, type, parent_id, registration_from, registration_to) FROM stdin;
+COPY project (id, name, short_description, long_description, published_registrations, create_timestamp, status, agent_id, is_verified, type, parent_id, registration_from, registration_to) FROM stdin;
 8	Project 8	of Normal User 1	\N	t	2014-05-21 18:04:41	1	8	f	1	\N	\N	\N
 1	Project 1	of Super Admin 1	\N	t	2014-05-21 18:04:41	1	1	t	1	\N	\N	\N
 2	Project 2	of Super Admin 2	\N	t	2014-05-21 18:04:41	1	2	f	1	\N	\N	\N

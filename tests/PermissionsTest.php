@@ -205,12 +205,18 @@ class PermissionsTest extends MapasCulturais_TestCase{
         /*
          * Asserting that staff users can verify entities
          */
+        
+        $this->resetTransactions();
 
         $this->user = 'staff';
 
         foreach($this->entities as $class => $plural){
             $this->assertPermissionDenied(function() use ($class, $app){
                 $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
+                if(!$entity){
+                    var_dump(array($class, $app->user->id));
+                    
+                }
                 $entity->verify();
                 $entity->save(true);
             }, "Asserting that a staff user CANNOT verify $plural of other user.");
@@ -862,48 +868,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event->project = $project;
             $event->save();
         }, 'Asserting that a user WITH control of a project CAN create events to this project');
-        $this->app->enableWorkflow();
-    }
-
-    function testProjectRegistrationPermissions(){
-        $this->app->disableWorkflow();
-        
-        $this->resetTransactions();
-        $user1 = $this->getUser('normal', 0);
-        $user2 = $this->getUser('normal', 1);
-        
-        $this->assertPermissionGranted(function() use($user1, $user2){
-            $this->user = $user1;
-            
-            $project = $this->getNewEntity('Project');
-            $project->owner = $user1->profile;
-            $project->type = 1;
-            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24);
-            $project->registrationTo = date('Y-m-d', time() + 3600 * 24);
-            $project->save(true);
-            
-            $this->user = $user2;
-            
-            $project->register($user2->profile);
-
-        }, "Asserting that a normal user CAN register in a project with registration open");
-        
-        
-        $this->assertPermissionDenied(function() use($user1, $user2){
-            $this->user = $user1;
-            
-            $project = $this->getNewEntity('Project');
-            $project->owner = $user1->profile;
-            $project->type = 1;
-            $project->registrationFrom = date('Y-m-d', time() - 3600 * 24 * 2);
-            $project->registrationTo = date('Y-m-d', time() - 3600 * 24);
-            $project->save(true);
-            
-            $this->user = $user2;
-            
-            $project->register($user2->profile);
-
-        }, "Asserting that a normal user CANNOT register in a project with registration closed");
         $this->app->enableWorkflow();
     }
     

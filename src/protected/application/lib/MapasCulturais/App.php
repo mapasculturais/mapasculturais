@@ -444,8 +444,14 @@ class App extends \Slim\Slim{
 
         $this->enableAccessControl();
     }
+    
+    private $_registered = false;
 
     public function register(){
+        if($this->_registered)
+            return;
+        
+        $this->_registered = true;
 
         // get types and metadata configurations
         $space_types = include APPLICATION_PATH.'/conf/space-types.php';

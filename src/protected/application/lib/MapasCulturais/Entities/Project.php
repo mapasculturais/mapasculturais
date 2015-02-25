@@ -209,7 +209,9 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setRegistrationFrom($date){
-        if($date){
+        if($date instanceof \DateTime){
+            $this->registrationFrom = $date;
+        }elseif($date){
             $this->registrationFrom = new \DateTime($date);
             $this->registrationFrom->setTime(0,0,0);
         }else{
@@ -218,7 +220,9 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setRegistrationTo($date){
-        if($date){
+        if($date instanceof \DateTime){
+            $this->registrationTo = $date;
+        }elseif($date){
             $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
         }else{
             $this->registrationTo = null;
