@@ -9,20 +9,60 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
+--
+-- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
 SET search_path = public, pg_catalog;
 
 --
--- Name: frequency; Type: DOMAIN; Schema: public; Owner: mapasculturais
+-- Name: frequency; Type: DOMAIN; Schema: public; Owner: -
 --
 
 CREATE DOMAIN frequency AS character varying
 	CONSTRAINT frequency_check CHECK (((VALUE)::text = ANY (ARRAY[('once'::character varying)::text, ('daily'::character varying)::text, ('weekly'::character varying)::text, ('monthly'::character varying)::text, ('yearly'::character varying)::text])));
 
 
-ALTER DOMAIN frequency OWNER TO mapasculturais;
-
 --
--- Name: days_in_month(date); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: days_in_month(date); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION days_in_month(check_date date) RETURNS integer
@@ -36,10 +76,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.days_in_month(check_date date) OWNER TO mapasculturais;
-
 --
--- Name: generate_recurrences(interval, date, date, date, date, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: generate_recurrences(interval, date, date, date, date, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION generate_recurrences(duration interval, original_start_date date, original_end_date date, range_start date, range_end date, repeat_month integer, repeat_week integer, repeat_day integer) RETURNS SETOF date
@@ -92,10 +130,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.generate_recurrences(duration interval, original_start_date date, original_end_date date, range_start date, range_end date, repeat_month integer, repeat_week integer, repeat_day integer) OWNER TO mapasculturais;
-
 --
--- Name: interval_for(frequency); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: interval_for(frequency); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION interval_for(recurs frequency) RETURNS interval
@@ -117,10 +153,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.interval_for(recurs frequency) OWNER TO mapasculturais;
-
 --
--- Name: intervals_between(date, date, interval); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: intervals_between(date, date, interval); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION intervals_between(start_date date, end_date date, duration interval) RETURNS double precision
@@ -146,10 +180,8 @@ END
 $$;
 
 
-ALTER FUNCTION public.intervals_between(start_date date, end_date date, duration interval) OWNER TO mapasculturais;
-
 --
--- Name: random_id_generator(character varying, bigint); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: random_id_generator(character varying, bigint); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION random_id_generator(table_name character varying, initial_range bigint) RETURNS bigint
@@ -177,14 +209,12 @@ CREATE FUNCTION random_id_generator(table_name character varying, initial_range 
             $$;
 
 
-ALTER FUNCTION public.random_id_generator(table_name character varying, initial_range bigint) OWNER TO mapasculturais;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: event_occurrence; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE event_occurrence (
@@ -206,10 +236,8 @@ CREATE TABLE event_occurrence (
 );
 
 
-ALTER TABLE event_occurrence OWNER TO mapasculturais;
-
 --
--- Name: recurrences_for(event_occurrence, timestamp without time zone, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: recurrences_for(event_occurrence, timestamp without time zone, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION recurrences_for(event event_occurrence, range_start timestamp without time zone, range_end timestamp without time zone) RETURNS SETOF date
@@ -256,10 +284,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.recurrences_for(event event_occurrence, range_start timestamp without time zone, range_end timestamp without time zone) OWNER TO mapasculturais;
-
 --
--- Name: recurring_event_occurrence_for(timestamp without time zone, timestamp without time zone, character varying, integer); Type: FUNCTION; Schema: public; Owner: mapasculturais
+-- Name: recurring_event_occurrence_for(timestamp without time zone, timestamp without time zone, character varying, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION recurring_event_occurrence_for(range_start timestamp without time zone, range_end timestamp without time zone, time_zone character varying, event_occurrence_limit integer) RETURNS SETOF event_occurrence
@@ -385,10 +411,8 @@ CREATE FUNCTION recurring_event_occurrence_for(range_start timestamp without tim
             $$;
 
 
-ALTER FUNCTION public.recurring_event_occurrence_for(range_start timestamp without time zone, range_end timestamp without time zone, time_zone character varying, event_occurrence_limit integer) OWNER TO mapasculturais;
-
 --
--- Name: agent_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: agent_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE agent_id_seq
@@ -399,10 +423,8 @@ CREATE SEQUENCE agent_id_seq
     CACHE 1;
 
 
-ALTER TABLE agent_id_seq OWNER TO mapasculturais;
-
 --
--- Name: agent; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE agent (
@@ -422,17 +444,15 @@ CREATE TABLE agent (
 );
 
 
-ALTER TABLE agent OWNER TO mapasculturais;
-
 --
--- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: mapasculturais
+-- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN agent.location IS 'type=POINT';
 
 
 --
--- Name: agent_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_meta; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE agent_meta (
@@ -442,10 +462,8 @@ CREATE TABLE agent_meta (
 );
 
 
-ALTER TABLE agent_meta OWNER TO mapasculturais;
-
 --
--- Name: agent_relation; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_relation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE agent_relation (
@@ -460,10 +478,8 @@ CREATE TABLE agent_relation (
 );
 
 
-ALTER TABLE agent_relation OWNER TO mapasculturais;
-
 --
--- Name: agent_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: agent_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE agent_relation_id_seq
@@ -474,17 +490,15 @@ CREATE SEQUENCE agent_relation_id_seq
     CACHE 1;
 
 
-ALTER TABLE agent_relation_id_seq OWNER TO mapasculturais;
-
 --
--- Name: agent_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: agent_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE agent_relation_id_seq OWNED BY agent_relation.id;
 
 
 --
--- Name: comment; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: comment; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE comment (
@@ -499,10 +513,8 @@ CREATE TABLE comment (
 );
 
 
-ALTER TABLE comment OWNER TO mapasculturais;
-
 --
--- Name: contract; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: contract; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE contract (
@@ -517,10 +529,8 @@ CREATE TABLE contract (
 );
 
 
-ALTER TABLE contract OWNER TO mapasculturais;
-
 --
--- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE contract_id_seq
@@ -531,17 +541,15 @@ CREATE SEQUENCE contract_id_seq
     CACHE 1;
 
 
-ALTER TABLE contract_id_seq OWNER TO mapasculturais;
-
 --
--- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE contract_id_seq OWNED BY contract.id;
 
 
 --
--- Name: db_update; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: db_update; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE db_update (
@@ -550,10 +558,8 @@ CREATE TABLE db_update (
 );
 
 
-ALTER TABLE db_update OWNER TO mapasculturais;
-
 --
--- Name: event; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE event (
@@ -571,10 +577,8 @@ CREATE TABLE event (
 );
 
 
-ALTER TABLE event OWNER TO mapasculturais;
-
 --
--- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE event_id_seq
@@ -585,17 +589,15 @@ CREATE SEQUENCE event_id_seq
     CACHE 1;
 
 
-ALTER TABLE event_id_seq OWNER TO mapasculturais;
-
 --
--- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE event_id_seq OWNED BY event.id;
 
 
 --
--- Name: event_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_meta; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE event_meta (
@@ -605,10 +607,8 @@ CREATE TABLE event_meta (
 );
 
 
-ALTER TABLE event_meta OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_cancellation; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_cancellation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE event_occurrence_cancellation (
@@ -618,10 +618,8 @@ CREATE TABLE event_occurrence_cancellation (
 );
 
 
-ALTER TABLE event_occurrence_cancellation OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE event_occurrence_cancellation_id_seq
@@ -632,17 +630,15 @@ CREATE SEQUENCE event_occurrence_cancellation_id_seq
     CACHE 1;
 
 
-ALTER TABLE event_occurrence_cancellation_id_seq OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE event_occurrence_cancellation_id_seq OWNED BY event_occurrence_cancellation.id;
 
 
 --
--- Name: event_occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE event_occurrence_id_seq
@@ -653,17 +649,15 @@ CREATE SEQUENCE event_occurrence_id_seq
     CACHE 1;
 
 
-ALTER TABLE event_occurrence_id_seq OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE event_occurrence_id_seq OWNED BY event_occurrence.id;
 
 
 --
--- Name: event_occurrence_recurrence; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_recurrence; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE event_occurrence_recurrence (
@@ -675,10 +669,8 @@ CREATE TABLE event_occurrence_recurrence (
 );
 
 
-ALTER TABLE event_occurrence_recurrence OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE event_occurrence_recurrence_id_seq
@@ -689,17 +681,15 @@ CREATE SEQUENCE event_occurrence_recurrence_id_seq
     CACHE 1;
 
 
-ALTER TABLE event_occurrence_recurrence_id_seq OWNER TO mapasculturais;
-
 --
--- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE event_occurrence_recurrence_id_seq OWNED BY event_occurrence_recurrence.id;
 
 
 --
--- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE file_id_seq
@@ -710,10 +700,8 @@ CREATE SEQUENCE file_id_seq
     CACHE 1;
 
 
-ALTER TABLE file_id_seq OWNER TO mapasculturais;
-
 --
--- Name: file; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: file; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE file (
@@ -729,10 +717,8 @@ CREATE TABLE file (
 );
 
 
-ALTER TABLE file OWNER TO mapasculturais;
-
 --
--- Name: geo_division; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: geo_division; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE geo_division (
@@ -748,10 +734,8 @@ CREATE TABLE geo_division (
 );
 
 
-ALTER TABLE geo_division OWNER TO mapasculturais;
-
 --
--- Name: geo_division_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: geo_division_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE geo_division_id_seq
@@ -762,17 +746,15 @@ CREATE SEQUENCE geo_division_id_seq
     CACHE 1;
 
 
-ALTER TABLE geo_division_id_seq OWNER TO mapasculturais;
-
 --
--- Name: geo_division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: geo_division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE geo_division_id_seq OWNED BY geo_division.id;
 
 
 --
--- Name: metadata; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE metadata (
@@ -783,10 +765,8 @@ CREATE TABLE metadata (
 );
 
 
-ALTER TABLE metadata OWNER TO mapasculturais;
-
 --
--- Name: metalist_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: metalist_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE metalist_id_seq
@@ -797,10 +777,8 @@ CREATE SEQUENCE metalist_id_seq
     CACHE 1;
 
 
-ALTER TABLE metalist_id_seq OWNER TO mapasculturais;
-
 --
--- Name: metalist; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: metalist; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE metalist (
@@ -816,10 +794,8 @@ CREATE TABLE metalist (
 );
 
 
-ALTER TABLE metalist OWNER TO mapasculturais;
-
 --
--- Name: notification_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: notification_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE notification_id_seq
@@ -830,10 +806,8 @@ CREATE SEQUENCE notification_id_seq
     CACHE 1;
 
 
-ALTER TABLE notification_id_seq OWNER TO mapasculturais;
-
 --
--- Name: notification; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: notification; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE notification (
@@ -847,10 +821,8 @@ CREATE TABLE notification (
 );
 
 
-ALTER TABLE notification OWNER TO mapasculturais;
-
 --
--- Name: occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE occurrence_id_seq
@@ -862,10 +834,8 @@ CREATE SEQUENCE occurrence_id_seq
     CYCLE;
 
 
-ALTER TABLE occurrence_id_seq OWNER TO mapasculturais;
-
 --
--- Name: project; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE project (
@@ -887,10 +857,8 @@ CREATE TABLE project (
 );
 
 
-ALTER TABLE project OWNER TO mapasculturais;
-
 --
--- Name: project_event; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project_event; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE project_event (
@@ -902,10 +870,8 @@ CREATE TABLE project_event (
 );
 
 
-ALTER TABLE project_event OWNER TO mapasculturais;
-
 --
--- Name: project_event_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: project_event_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE project_event_id_seq
@@ -916,17 +882,15 @@ CREATE SEQUENCE project_event_id_seq
     CACHE 1;
 
 
-ALTER TABLE project_event_id_seq OWNER TO mapasculturais;
-
 --
--- Name: project_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: project_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE project_event_id_seq OWNED BY project_event.id;
 
 
 --
--- Name: project_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: project_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE project_id_seq
@@ -937,17 +901,15 @@ CREATE SEQUENCE project_id_seq
     CACHE 1;
 
 
-ALTER TABLE project_id_seq OWNER TO mapasculturais;
-
 --
--- Name: project_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: project_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE project_id_seq OWNED BY project.id;
 
 
 --
--- Name: project_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project_meta; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE project_meta (
@@ -957,10 +919,8 @@ CREATE TABLE project_meta (
 );
 
 
-ALTER TABLE project_meta OWNER TO mapasculturais;
-
 --
--- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE registration_id_seq
@@ -971,10 +931,8 @@ CREATE SEQUENCE registration_id_seq
     CACHE 1;
 
 
-ALTER TABLE registration_id_seq OWNER TO mapasculturais;
-
 --
--- Name: registration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE registration (
@@ -989,10 +947,8 @@ CREATE TABLE registration (
 );
 
 
-ALTER TABLE registration OWNER TO mapasculturais;
-
 --
--- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE registration_file_configuration (
@@ -1004,10 +960,8 @@ CREATE TABLE registration_file_configuration (
 );
 
 
-ALTER TABLE registration_file_configuration OWNER TO mapasculturais;
-
 --
--- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE registration_file_configuration_id_seq
@@ -1018,17 +972,15 @@ CREATE SEQUENCE registration_file_configuration_id_seq
     CACHE 1;
 
 
-ALTER TABLE registration_file_configuration_id_seq OWNER TO mapasculturais;
-
 --
--- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE registration_file_configuration_id_seq OWNED BY registration_file_configuration.id;
 
 
 --
--- Name: registration_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_meta; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE registration_meta (
@@ -1038,10 +990,8 @@ CREATE TABLE registration_meta (
 );
 
 
-ALTER TABLE registration_meta OWNER TO mapasculturais;
-
 --
--- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE request_id_seq
@@ -1052,10 +1002,8 @@ CREATE SEQUENCE request_id_seq
     CACHE 1;
 
 
-ALTER TABLE request_id_seq OWNER TO mapasculturais;
-
 --
--- Name: request; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: request; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE request (
@@ -1074,10 +1022,8 @@ CREATE TABLE request (
 );
 
 
-ALTER TABLE request OWNER TO mapasculturais;
-
 --
--- Name: role; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: role; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE role (
@@ -1087,10 +1033,8 @@ CREATE TABLE role (
 );
 
 
-ALTER TABLE role OWNER TO mapasculturais;
-
 --
--- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE role_id_seq
@@ -1101,17 +1045,15 @@ CREATE SEQUENCE role_id_seq
     CACHE 1;
 
 
-ALTER TABLE role_id_seq OWNER TO mapasculturais;
-
 --
--- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE role_id_seq OWNED BY role.id;
 
 
 --
--- Name: space; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE space (
@@ -1131,17 +1073,15 @@ CREATE TABLE space (
 );
 
 
-ALTER TABLE space OWNER TO mapasculturais;
-
 --
--- Name: COLUMN space.location; Type: COMMENT; Schema: public; Owner: mapasculturais
+-- Name: COLUMN space.location; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN space.location IS 'type=POINT';
 
 
 --
--- Name: space_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: space_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE space_id_seq
@@ -1152,17 +1092,15 @@ CREATE SEQUENCE space_id_seq
     CACHE 1;
 
 
-ALTER TABLE space_id_seq OWNER TO mapasculturais;
-
 --
--- Name: space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE space_id_seq OWNED BY space.id;
 
 
 --
--- Name: space_meta; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space_meta; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE space_meta (
@@ -1172,10 +1110,8 @@ CREATE TABLE space_meta (
 );
 
 
-ALTER TABLE space_meta OWNER TO mapasculturais;
-
 --
--- Name: term; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: term; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE term (
@@ -1186,17 +1122,15 @@ CREATE TABLE term (
 );
 
 
-ALTER TABLE term OWNER TO mapasculturais;
-
 --
--- Name: COLUMN term.taxonomy; Type: COMMENT; Schema: public; Owner: mapasculturais
+-- Name: COLUMN term.taxonomy; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN term.taxonomy IS '1=tag';
 
 
 --
--- Name: term_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: term_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE term_id_seq
@@ -1207,17 +1141,15 @@ CREATE SEQUENCE term_id_seq
     CACHE 1;
 
 
-ALTER TABLE term_id_seq OWNER TO mapasculturais;
-
 --
--- Name: term_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapasculturais
+-- Name: term_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE term_id_seq OWNED BY term.id;
 
 
 --
--- Name: term_relation; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: term_relation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE term_relation (
@@ -1227,10 +1159,8 @@ CREATE TABLE term_relation (
 );
 
 
-ALTER TABLE term_relation OWNER TO mapasculturais;
-
 --
--- Name: usr_id_seq; Type: SEQUENCE; Schema: public; Owner: mapasculturais
+-- Name: usr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE usr_id_seq
@@ -1241,10 +1171,8 @@ CREATE SEQUENCE usr_id_seq
     CACHE 1;
 
 
-ALTER TABLE usr_id_seq OWNER TO mapasculturais;
-
 --
--- Name: usr; Type: TABLE; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: usr; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE usr (
@@ -1259,108 +1187,106 @@ CREATE TABLE usr (
 );
 
 
-ALTER TABLE usr OWNER TO mapasculturais;
-
 --
--- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: mapasculturais
+-- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN usr.auth_provider IS '1=openid';
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY agent_relation ALTER COLUMN id SET DEFAULT nextval('agent_relation_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY contract ALTER COLUMN id SET DEFAULT nextval('contract_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event ALTER COLUMN id SET DEFAULT nextval('event_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence ALTER COLUMN id SET DEFAULT nextval('event_occurrence_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence_cancellation ALTER COLUMN id SET DEFAULT nextval('event_occurrence_cancellation_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence_recurrence ALTER COLUMN id SET DEFAULT nextval('event_occurrence_recurrence_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY geo_division ALTER COLUMN id SET DEFAULT nextval('geo_division_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_event ALTER COLUMN id SET DEFAULT nextval('project_event_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY registration_file_configuration ALTER COLUMN id SET DEFAULT nextval('registration_file_configuration_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY role ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY space ALTER COLUMN id SET DEFAULT nextval('space_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: mapasculturais
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY term ALTER COLUMN id SET DEFAULT nextval('term_id_seq'::regclass);
 
 
 --
--- Name: agent_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY agent_meta
@@ -1368,7 +1294,7 @@ ALTER TABLE ONLY agent_meta
 
 
 --
--- Name: agent_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY agent
@@ -1376,7 +1302,7 @@ ALTER TABLE ONLY agent
 
 
 --
--- Name: agent_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY agent_relation
@@ -1384,7 +1310,7 @@ ALTER TABLE ONLY agent_relation
 
 
 --
--- Name: comment_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: comment_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY comment
@@ -1392,7 +1318,7 @@ ALTER TABLE ONLY comment
 
 
 --
--- Name: contract_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: contract_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY contract
@@ -1400,7 +1326,7 @@ ALTER TABLE ONLY contract
 
 
 --
--- Name: db_update_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: db_update_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY db_update
@@ -1408,7 +1334,7 @@ ALTER TABLE ONLY db_update
 
 
 --
--- Name: event_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event_meta
@@ -1416,7 +1342,7 @@ ALTER TABLE ONLY event_meta
 
 
 --
--- Name: event_occurrence_cancellation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_cancellation_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event_occurrence_cancellation
@@ -1424,7 +1350,7 @@ ALTER TABLE ONLY event_occurrence_cancellation
 
 
 --
--- Name: event_occurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event_occurrence
@@ -1432,7 +1358,7 @@ ALTER TABLE ONLY event_occurrence
 
 
 --
--- Name: event_occurrence_recurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_recurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event_occurrence_recurrence
@@ -1440,7 +1366,7 @@ ALTER TABLE ONLY event_occurrence_recurrence
 
 
 --
--- Name: event_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event
@@ -1448,7 +1374,7 @@ ALTER TABLE ONLY event
 
 
 --
--- Name: file_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: file_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY file
@@ -1456,7 +1382,7 @@ ALTER TABLE ONLY file
 
 
 --
--- Name: geo_division_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: geo_division_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY geo_division
@@ -1464,7 +1390,7 @@ ALTER TABLE ONLY geo_division
 
 
 --
--- Name: metadata_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: metadata_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY metadata
@@ -1472,7 +1398,7 @@ ALTER TABLE ONLY metadata
 
 
 --
--- Name: metalist_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: metalist_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY metalist
@@ -1480,7 +1406,7 @@ ALTER TABLE ONLY metalist
 
 
 --
--- Name: notification_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: notification_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY notification
@@ -1488,7 +1414,7 @@ ALTER TABLE ONLY notification
 
 
 --
--- Name: project_event_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project_event_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY project_event
@@ -1496,7 +1422,7 @@ ALTER TABLE ONLY project_event
 
 
 --
--- Name: project_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY project_meta
@@ -1504,7 +1430,7 @@ ALTER TABLE ONLY project_meta
 
 
 --
--- Name: project_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: project_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY project
@@ -1512,7 +1438,7 @@ ALTER TABLE ONLY project
 
 
 --
--- Name: registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY registration_file_configuration
@@ -1520,7 +1446,7 @@ ALTER TABLE ONLY registration_file_configuration
 
 
 --
--- Name: registration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY registration_meta
@@ -1528,7 +1454,7 @@ ALTER TABLE ONLY registration_meta
 
 
 --
--- Name: registration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY registration
@@ -1536,7 +1462,7 @@ ALTER TABLE ONLY registration
 
 
 --
--- Name: request_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: request_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY request
@@ -1544,7 +1470,7 @@ ALTER TABLE ONLY request
 
 
 --
--- Name: role_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: role_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY role
@@ -1552,7 +1478,7 @@ ALTER TABLE ONLY role
 
 
 --
--- Name: role_unique; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: role_unique; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY role
@@ -1560,7 +1486,7 @@ ALTER TABLE ONLY role
 
 
 --
--- Name: space_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY space_meta
@@ -1568,7 +1494,7 @@ ALTER TABLE ONLY space_meta
 
 
 --
--- Name: space_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY space
@@ -1576,7 +1502,7 @@ ALTER TABLE ONLY space
 
 
 --
--- Name: term_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: term_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY term
@@ -1584,7 +1510,7 @@ ALTER TABLE ONLY term
 
 
 --
--- Name: term_relation_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: term_relation_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY term_relation
@@ -1592,7 +1518,7 @@ ALTER TABLE ONLY term_relation
 
 
 --
--- Name: usr_pk; Type: CONSTRAINT; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: usr_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY usr
@@ -1600,77 +1526,77 @@ ALTER TABLE ONLY usr
 
 
 --
--- Name: agent_relation_all; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: agent_relation_all; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX agent_relation_all ON agent_relation USING btree (agent_id, object_type, object_id);
 
 
 --
--- Name: comment_idx; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: comment_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX comment_idx ON comment USING btree (object_type, object_id);
 
 
 --
--- Name: contract_idx; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: contract_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX contract_idx ON contract USING btree (object_id, object_type, agent_id);
 
 
 --
--- Name: event_occurrence_status_index; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: event_occurrence_status_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX event_occurrence_status_index ON event_occurrence USING btree (status);
 
 
 --
--- Name: geo_divisions_geom_idx; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: geo_divisions_geom_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX geo_divisions_geom_idx ON geo_division USING gist (geom);
 
 
 --
--- Name: registration_meta_key_value_index; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: registration_meta_key_value_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX registration_meta_key_value_index ON registration_meta USING btree (key, value);
 
 
 --
--- Name: request_uid; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: request_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX request_uid ON request USING btree (request_uid);
 
 
 --
--- Name: requester_user_index; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: requester_user_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX requester_user_index ON request USING btree (requester_user_id, origin_type, origin_id);
 
 
 --
--- Name: space_location; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX space_location ON space USING gist (_geo_location);
 
 
 --
--- Name: space_type; Type: INDEX; Schema: public; Owner: mapasculturais; Tablespace: 
+-- Name: space_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX space_type ON space USING btree (type);
 
 
 --
--- Name: agent_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: agent_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY agent
@@ -1678,7 +1604,7 @@ ALTER TABLE ONLY agent
 
 
 --
--- Name: agent_agent_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: agent_agent_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY agent_meta
@@ -1686,7 +1612,7 @@ ALTER TABLE ONLY agent_meta
 
 
 --
--- Name: agent_contract_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: agent_contract_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY contract
@@ -1694,7 +1620,7 @@ ALTER TABLE ONLY contract
 
 
 --
--- Name: agent_relation_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: agent_relation_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY agent_relation
@@ -1702,7 +1628,7 @@ ALTER TABLE ONLY agent_relation
 
 
 --
--- Name: comment_comment_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: comment_comment_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comment
@@ -1710,7 +1636,7 @@ ALTER TABLE ONLY comment
 
 
 --
--- Name: event_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event
@@ -1718,7 +1644,7 @@ ALTER TABLE ONLY event
 
 
 --
--- Name: event_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence
@@ -1726,7 +1652,7 @@ ALTER TABLE ONLY event_occurrence
 
 
 --
--- Name: event_occurrence_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence_cancellation
@@ -1734,7 +1660,7 @@ ALTER TABLE ONLY event_occurrence_cancellation
 
 
 --
--- Name: event_occurrence_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_occurrence_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence_recurrence
@@ -1742,7 +1668,7 @@ ALTER TABLE ONLY event_occurrence_recurrence
 
 
 --
--- Name: event_project_event_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_project_event_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_event
@@ -1750,7 +1676,7 @@ ALTER TABLE ONLY project_event
 
 
 --
--- Name: event_project_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: event_project_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_meta
@@ -1758,7 +1684,7 @@ ALTER TABLE ONLY event_meta
 
 
 --
--- Name: notification_request_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: notification_request_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY notification
@@ -1766,7 +1692,7 @@ ALTER TABLE ONLY notification
 
 
 --
--- Name: notification_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: notification_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY notification
@@ -1774,7 +1700,7 @@ ALTER TABLE ONLY notification
 
 
 --
--- Name: project_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: project_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project
@@ -1782,7 +1708,7 @@ ALTER TABLE ONLY project
 
 
 --
--- Name: project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event
@@ -1790,7 +1716,7 @@ ALTER TABLE ONLY event
 
 
 --
--- Name: project_project_event_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: project_project_event_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_event
@@ -1798,7 +1724,7 @@ ALTER TABLE ONLY project_event
 
 
 --
--- Name: project_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: project_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project
@@ -1806,7 +1732,7 @@ ALTER TABLE ONLY project
 
 
 --
--- Name: project_project_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: project_project_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_meta
@@ -1814,7 +1740,7 @@ ALTER TABLE ONLY project_meta
 
 
 --
--- Name: registration_agent_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: registration_agent_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY registration
@@ -1822,7 +1748,7 @@ ALTER TABLE ONLY registration
 
 
 --
--- Name: registration_meta_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: registration_meta_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY registration_file_configuration
@@ -1830,7 +1756,7 @@ ALTER TABLE ONLY registration_file_configuration
 
 
 --
--- Name: registration_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: registration_project_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY registration
@@ -1838,7 +1764,7 @@ ALTER TABLE ONLY registration
 
 
 --
--- Name: requester_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: requester_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY request
@@ -1846,7 +1772,7 @@ ALTER TABLE ONLY request
 
 
 --
--- Name: role_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: role_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY role
@@ -1854,7 +1780,7 @@ ALTER TABLE ONLY role
 
 
 --
--- Name: space_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: space_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY space
@@ -1862,7 +1788,7 @@ ALTER TABLE ONLY space
 
 
 --
--- Name: space_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: space_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_occurrence
@@ -1870,7 +1796,7 @@ ALTER TABLE ONLY event_occurrence
 
 
 --
--- Name: space_space_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: space_space_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY space
@@ -1878,7 +1804,7 @@ ALTER TABLE ONLY space
 
 
 --
--- Name: space_space_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: space_space_meta_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY space_meta
@@ -1886,7 +1812,7 @@ ALTER TABLE ONLY space_meta
 
 
 --
--- Name: term_term_relation_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: term_term_relation_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY term_relation
@@ -1894,7 +1820,7 @@ ALTER TABLE ONLY term_relation
 
 
 --
--- Name: user_profile_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: user_profile_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY usr
@@ -1902,7 +1828,7 @@ ALTER TABLE ONLY usr
 
 
 --
--- Name: usr_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: mapasculturais
+-- Name: usr_agent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY agent
@@ -1910,7 +1836,7 @@ ALTER TABLE ONLY agent
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
