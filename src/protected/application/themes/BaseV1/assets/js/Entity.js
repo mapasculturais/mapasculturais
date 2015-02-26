@@ -179,6 +179,10 @@
 
                     var s = $scope.searchText.trim().replace(' ', '*');
 
+                    if(parseInt(s) != s && s.length < 2) {
+                        return;
+                    }
+
                     var query = angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
 
                     query.name = 'ILIKE(*' + s + '*)';
@@ -188,7 +192,7 @@
                             $scope.processResult(data, status);
                             $scope.spinnerCondition = false;
                         });
-                    },500);
+                    },1000);
                 };
 
                 $scope.processResult = function(data, status){
