@@ -242,6 +242,8 @@ trait ControllerAPI{
                     continue;
                 }elseif(strtolower($key) == '@type'){
                     continue;
+                }elseif(strtolower($key) == '@debug'){
+                    continue;
 
                 }elseif(strtolower($key) == '@files' && preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $val, $imatch)){
 
@@ -386,6 +388,21 @@ trait ControllerAPI{
                 $app->log->debug("API DQL: ".$final_dql);
 
             $query = $app->em->createQuery($final_dql);
+
+            if($app->user->is('superAdmin') && isset($_GET['@debug'])){
+                if(isset($_GET['@type']) && $_GET['@type'] == 'html') {
+                    echo '<pre style="color:red">';
+                }
+
+                echo "\nDQL Query:\n";
+                echo "$final_dql\n\n";
+
+                echo "DQL params: ";
+                print_r($this->_apiFindParamList);
+
+                echo "\n\nSQL Query\n";
+                echo "\n{$query->getSQL()}\n\n";
+            }
 
             // cache
             if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
