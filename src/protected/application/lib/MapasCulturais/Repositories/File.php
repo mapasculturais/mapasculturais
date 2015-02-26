@@ -33,7 +33,7 @@ class File extends \MapasCulturais\Repository{
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $file->group);
-                if($registeredGroup && $registeredGroup->unique || $app->getRegisteredImageTransformation($file->group) || (!$registeredGroup && !$app->getRegisteredImageTransformation($file->group))){
+                if($registeredGroup && $registeredGroup->unique){
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))

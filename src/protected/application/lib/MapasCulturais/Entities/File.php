@@ -100,6 +100,23 @@ class File extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entity
      */
     protected $_owner;
+    
+    /**
+     * @var \MapasCulturais\Entities\File
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="LAZY")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $_parent;
+    
+    /**
+     * @var \MapasCulturais\Entities\File[] Chield projects
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\File", mappedBy="_parent", fetch="LAZY", cascade={"remove"})
+     */
+    protected $_children;
 
     /**
      * An array like an item of $_FILE
@@ -130,15 +147,20 @@ class File extends \MapasCulturais\Entity
         $this->md5 = md5_file($tmp_file['tmp_name']);
         $this->name = $tmp_file['name'];
         $this->mimeType = $tmp_file['type'];
+        
+        if(isset($tmp_file['parent'])){
+            $this->_parent = $tmp_file['parent'];
+        }
 
         parent::__construct();
     }
 
     protected function canUserCreate($user){
-        if($this->owner && $this->owner->className == $this->className)
+        if($this->_parent){
             return true;
-        else
+        }else{
             return $this->owner->canUser('modify');
+        }
     }
 
     protected function canUserRemove($user){
@@ -186,6 +208,10 @@ class File extends \MapasCulturais\Entity
 
     public function setGroup($val){
         $this->group = trim($val);
+    }
+    
+    function getParent(){
+        return $this->_parent;
     }
 
     /**
@@ -259,6 +285,8 @@ class File extends \MapasCulturais\Entity
     protected function _transform($transformation_name, $wideimage_operations){
         if(!trim($wideimage_operations))
             return $this;
+        
+        $owner = $this->getOwner();
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
@@ -267,9 +295,14 @@ class File extends \MapasCulturais\Entity
         // modify the filename adding the hash before the file extension. ex: file.png => file-5762a89ee8e05021006d6c35095903b5.png
         $image_name = preg_replace("#(\.[[:alnum:]]+)$#i", '-' . $hash . '$1', $this->name);
 
-        if(key_exists($transformation_name, $this->files))
-            return $this->files[$transformation_name];
-
+        if(isset($owner->files['img:transformations']) && is_array($owner->files['img:transformations'])){
+            foreach($owner->files['img:transformations'] as $transformed){
+                if($transformed->name === $image_name){
+                    return $transformed;
+                }
+            }
+        }
+        
         if(!file_exists($this->getPath()))
             return $this;
 
@@ -286,12 +319,13 @@ class File extends \MapasCulturais\Entity
             'name' => $image_name,
             'type' => $this->mimeType,
             'tmp_name' => $tmp_filename,
-            'size' => filesize($tmp_filename)
+            'size' => filesize($tmp_filename),
+            'parent' => $this
         ));
 
         $image->group = $transformation_name;
 
-        $image->setOwner($this);
+        $image->setOwner($owner);
 
         $image->save(true);
 
