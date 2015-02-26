@@ -34,6 +34,9 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read mixed $error Callable to be invoked if application error
  * @property-read mixed $notFound Callable to be invoked if no matching routes are found
  *
+ * @property-read string $siteName
+ * @property-read string $siteDescription
+ *
  * @property-read array $config
  *
  *
@@ -444,13 +447,13 @@ class App extends \Slim\Slim{
 
         $this->enableAccessControl();
     }
-    
+
     private $_registered = false;
 
     public function register(){
         if($this->_registered)
             return;
-        
+
         $this->_registered = true;
 
         // get types and metadata configurations
