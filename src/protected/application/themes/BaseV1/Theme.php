@@ -955,12 +955,14 @@ class Theme extends MapasCulturais\Theme {
                 return null;
         }
 
-
-
-        $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
+        $ids = $app->em->createQuery($dql)
+                ->useQueryCache(true)
+                ->setResultCacheLifetime(60 * 5)
+                ->getScalarResult();
 
         if ($ids) {
             $id = $ids[array_rand($ids)]['id'];
+            var_dump($entity_class);
             return $app->repo($entity_class)->find($id);
         } else {
             return null;

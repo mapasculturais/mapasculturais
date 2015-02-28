@@ -155,9 +155,7 @@ class Space extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      */
     protected $owner;
 
@@ -180,6 +178,14 @@ class Space extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+    
+    /**
+     * @var \MapasCulturais\Entities\SpaceFile[] Files 
+     * 
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files = array();
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

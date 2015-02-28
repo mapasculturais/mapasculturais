@@ -23,6 +23,17 @@ use \MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
+ * 
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectFile",
+        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventFile",
+        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentFile",
+        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationFile",
+        "MapasCulturais\Entities\File"          = "MapasCulturais\Entities\File"
+   })
  */
 class File extends \MapasCulturais\Entity
 {
@@ -75,31 +86,11 @@ class File extends \MapasCulturais\Entity
     protected $description;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="string", nullable=false)
-     */
-    protected $objectType;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
-    protected $objectId;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
-
-    /**
-     * The owner entity of this file
-     * @var \MapasCulturais\Entity
-     */
-    protected $_owner;
     
     /**
      * @var \MapasCulturais\Entities\File
@@ -215,27 +206,6 @@ class File extends \MapasCulturais\Entity
     }
 
     /**
-     * Returns the owner of this metadata
-     * @return \MapasCulturais\Entity
-     */
-    public function getOwner(){
-        if(!$this->_owner && ($this->objectType && $this->objectId))
-            $this->_owner = App::i()->repo($this->objectType)->find($this->objectId);
-
-        return $this->_owner;
-    }
-
-    /**
-     * Set the owner of this metadata
-     * @param \MapasCulturais\Entity $owner
-     */
-    public function setOwner(\MapasCulturais\Entity $owner){
-        $this->_owner = $owner;
-        $this->objectType = $owner->className;
-        $this->objectId = $owner->id;
-    }
-
-    /**
      * Returns the url to this file
      * @return string the url to this file
      */
@@ -261,6 +231,7 @@ class File extends \MapasCulturais\Entity
     }
 
     public function transform($transformation_name){
+        
         if(!preg_match('#^image/#i',$this->mimeType))
                 return null;
 

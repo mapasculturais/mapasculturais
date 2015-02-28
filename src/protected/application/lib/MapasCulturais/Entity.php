@@ -539,6 +539,9 @@ abstract class Entity implements \JsonSerializable{
         Entity::$_jsonSerializeNestedObjects[$_uid] = $this;
 
         foreach($this as $prop => $val){
+            if($prop[0] == '_')
+                continue;
+            
             if($prop[0] == '_' && method_exists($this, 'get' . substr($prop, 1)))
                 $prop = substr ($prop, 1);
 

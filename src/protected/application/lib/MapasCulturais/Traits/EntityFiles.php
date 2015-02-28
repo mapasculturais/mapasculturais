@@ -31,11 +31,35 @@ trait EntityFiles{
     function getFiles($group = null){
         $app = App::i();
 
-        if($group)
-            $result = $app->repo('File')->findByGroup($this, $group);
-        else
-            $result = $app->repo('File')->findByOwnerGroupedByGroup($this);
+        if($group){
 
+            $result = $this->myFiles;
+
+            $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
+
+            if($result && (($registeredGroup && $registeredGroup->unique) || $app->getRegisteredImageTransformation($group) || (!$registeredGroup && !$app->getRegisteredImageTransformation($group))))
+                $result = $result[0];
+            
+        }else{
+            $files = $this->__files;
+            $result = array();
+
+            if($files){
+                foreach($files as $file){
+                    $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $file->group);
+                    if($registeredGroup && $registeredGroup->unique){
+                        $result[trim($file->group)] = $file;
+                    }else{
+                        if(!key_exists($file->group, $result))
+                            $result[trim($file->group)] = array();
+
+                        $result[trim($file->group)][] = $file;
+                    }
+                }
+            }
+
+            ksort($result);
+        }
         return $result;
     }
 
@@ -45,11 +69,24 @@ trait EntityFiles{
      * @return \MapasCulturais\Entities\File A File.
      */
     function getFile($group){
-        $app = App::i();
-
-        $result = $app->repo('File')->findOneByGroup($this, $group);
-
-        return $result;
+        
+        if(!$this->myFiles->count()){
+            return null;
+        }
+        
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("group", $group))
+            ->orderBy(array("username" => Criteria::ASC))
+            ->setFirstResult(0)
+            ->setMaxResults(1);
+        
+        $file = $this->myFiles->matching($criteria);
+        
+        if($file){
+            return $file[0];
+        }else{
+            return null;
+        }
     }
 
     /**

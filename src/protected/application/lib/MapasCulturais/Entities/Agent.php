@@ -137,7 +137,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -201,6 +201,14 @@ class Agent extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
+    
+    /**
+     * @var \MapasCulturais\Entities\AgentFile[] Files
+     * 
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files = array();
 
 
     /**

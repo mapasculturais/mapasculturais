@@ -373,7 +373,8 @@ trait ControllerAPI{
                 SELECT
                     e
                 FROM
-                    $class e
+                    $class e LEFT JOIN e.__files files
+                        
                     $dql_joins
 
                 $dql_where
