@@ -33,13 +33,13 @@ trait EntityFiles{
 
         if($group){
 
-            $result = $this->myFiles;
+            $result = $this->__files;
 
             $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
 
             if($result && (($registeredGroup && $registeredGroup->unique) || $app->getRegisteredImageTransformation($group) || (!$registeredGroup && !$app->getRegisteredImageTransformation($group))))
                 $result = $result[0];
-            
+
         }else{
             $files = $this->__files;
             $result = array();
@@ -69,19 +69,19 @@ trait EntityFiles{
      * @return \MapasCulturais\Entities\File A File.
      */
     function getFile($group){
-        
-        if(!$this->myFiles->count()){
+
+        if(!$this->__files->count()){
             return null;
         }
-        
+
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq("group", $group))
             ->orderBy(array("username" => Criteria::ASC))
             ->setFirstResult(0)
             ->setMaxResults(1);
-        
-        $file = $this->myFiles->matching($criteria);
-        
+
+        $file = $this->__files->matching($criteria);
+
         if($file){
             return $file[0];
         }else{

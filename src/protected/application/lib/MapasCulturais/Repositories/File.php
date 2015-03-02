@@ -8,7 +8,12 @@ class File extends \MapasCulturais\Repository{
     function findByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 
-        $result = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
+        if(class_exists($owner->getClassName() . 'File')){
+            $repo = $app->repo($owner->getClassName() . 'File');
+            $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
+        }else{
+            $result = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
+        }
 
         $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $group);
 
@@ -27,7 +32,14 @@ class File extends \MapasCulturais\Repository{
 
     function findByOwnerGroupedByGroup(\MapasCulturais\Entity $owner){
         $app = App::i();
-        $files = $this->findBy(array('objectId' => $owner->id, 'objectType' =>  $owner->getClassName()));
+
+        if(class_exists($owner->getClassName() . 'File')){
+            $repo = $app->repo($owner->getClassName() . 'File');
+            $files = $repo->findBy(array('owner' => $owner));
+        }else{
+            $files = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id));
+        }
+
         $result = array();
 
         if($files){
@@ -42,9 +54,9 @@ class File extends \MapasCulturais\Repository{
                     $result[trim($file->group)][] = $file;
                 }
             }
+            ksort($result);
         }
 
-        ksort($result);
 
         return $result;
     }

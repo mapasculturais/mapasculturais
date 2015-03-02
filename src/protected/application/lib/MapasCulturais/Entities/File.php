@@ -23,7 +23,7 @@ use \MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
- * 
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -31,11 +31,10 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentFile",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceFile",
-        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationFile",
-        "MapasCulturais\Entities\File"          = "MapasCulturais\Entities\File"
+        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationFile"
    })
  */
-class File extends \MapasCulturais\Entity
+abstract class File extends \MapasCulturais\Entity
 {
     use \MapasCulturais\Traits\EntityFiles;
 
@@ -91,17 +90,17 @@ class File extends \MapasCulturais\Entity
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
-    
+
     /**
      * @var \MapasCulturais\Entities\File
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
      */
-    protected $_parent;
-    
+    protected $parent;
+
     /**
      * @var \MapasCulturais\Entities\File[] Chield projects
      *
@@ -138,9 +137,9 @@ class File extends \MapasCulturais\Entity
         $this->md5 = md5_file($tmp_file['tmp_name']);
         $this->name = $tmp_file['name'];
         $this->mimeType = $tmp_file['type'];
-        
+
         if(isset($tmp_file['parent'])){
-            $this->_parent = $tmp_file['parent'];
+            $this->parent = $tmp_file['parent'];
         }
 
         parent::__construct();
@@ -200,10 +199,6 @@ class File extends \MapasCulturais\Entity
     public function setGroup($val){
         $this->group = trim($val);
     }
-    
-    function getParent(){
-        return $this->_parent;
-    }
 
     /**
      * Returns the url to this file
@@ -231,17 +226,24 @@ class File extends \MapasCulturais\Entity
     }
 
     public function transform($transformation_name){
-        
+
         if(!preg_match('#^image/#i',$this->mimeType))
                 return null;
 
-        $wideimage_operations = App::i()->getRegisteredImageTransformation($transformation_name);
+        $app = App::i();
+
+        $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
+
+        $app->disableAccessControl();
 
         if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
-            return $this->_cropCenter($transformation_name, $match[1], $match[2]);
+            $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
         }else{
-            return $this->_transform($transformation_name, $wideimage_operations);
+            $transformed = $this->_transform($transformation_name, $wideimage_operations);
         }
+
+        $app->enableAccessControl();
+        return $transformed;
     }
 
     /**
@@ -256,8 +258,8 @@ class File extends \MapasCulturais\Entity
     protected function _transform($transformation_name, $wideimage_operations){
         if(!trim($wideimage_operations))
             return $this;
-        
-        $owner = $this->getOwner();
+
+        $owner = $this->owner;
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
@@ -273,7 +275,7 @@ class File extends \MapasCulturais\Entity
                 }
             }
         }
-        
+
         if(!file_exists($this->getPath()))
             return $this;
 
@@ -285,7 +287,9 @@ class File extends \MapasCulturais\Entity
 
         $new_image->saveToFile( $tmp_filename );
 
-        $image = new File(array(
+        $file_class = $this->getClassName();
+
+        $image = new $file_class(array(
             'error' => UPLOAD_ERR_OK,
             'name' => $image_name,
             'type' => $this->mimeType,
@@ -294,9 +298,9 @@ class File extends \MapasCulturais\Entity
             'parent' => $this
         ));
 
-        $image->group = $transformation_name;
+        $image->group = 'img:transformations';
 
-        $image->setOwner($owner);
+        $image->owner = $owner;
 
         $image->save(true);
 
