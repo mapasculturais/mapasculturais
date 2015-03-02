@@ -1,5 +1,5 @@
 <?php
-namespace Ceara;
+namespace Blumenau;
 use MapasCulturais\Themes\BaseV1;
 use MapasCulturais\App;
 
@@ -9,10 +9,10 @@ class Theme extends BaseV1\Theme{
         return array(
             'site: in the region' => 'na Cidade de Blumenau',
             'site: of the region' => 'da Cidade de Blumenau',
-            'site: owner' => 'Secretaria da Cultura da Cidade de Blumenau',
-            'site: by the site owner' => 'pela Secretaria da Cultura da Cidade de Blumenau',
+            'site: owner' => 'Fundação Cultural de Blumenau',
+            'site: by the site owner' => 'pela Fundação Cultural de Blumenau',
 
-            'home: abbreviation' => "Blumenau",
+            'home: abbreviation' => "FCBlu",
 //            'home: colabore' => "Colabore com o Mapas Culturais",
 //            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
 //            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
