@@ -82,14 +82,14 @@ class Space extends \MapasCulturais\Entity
      */
     protected $name;
 
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     protected $public = false;
-    
+
     /**
      * @var string
      *
@@ -124,7 +124,7 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
-    
+
     /**
      * @var \MapasCulturais\Entities\EventOccurrence[] Event Occurrences
      *
@@ -172,20 +172,20 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-    
-    
+
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
-    
+
     /**
-     * @var \MapasCulturais\Entities\SpaceFile[] Files 
-     * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @var \MapasCulturais\Entities\SpaceFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
-    protected $__files = array();
+    protected $__files;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

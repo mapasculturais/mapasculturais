@@ -962,7 +962,6 @@ class Theme extends MapasCulturais\Theme {
 
         if ($ids) {
             $id = $ids[array_rand($ids)]['id'];
-            var_dump($entity_class);
             return $app->repo($entity_class)->find($id);
         } else {
             return null;

@@ -201,11 +201,11 @@ class Agent extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $__metadata = array();
-    
+
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
-     * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;

@@ -142,14 +142,14 @@ class Event extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
     protected $__metadata = array();
-    
+
     /**
      * @var \MapasCulturais\Entities\ProjectFile[] Files
-     * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
-    protected $__files = array();
+    protected $__files;
 
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent

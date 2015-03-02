@@ -1,5 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Doctrine\Common\Collections\Criteria;
 use MapasCulturais\App;
 
 /**

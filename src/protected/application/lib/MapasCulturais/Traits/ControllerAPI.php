@@ -175,6 +175,7 @@ trait ControllerAPI{
             $meta_num = 0;
             $taxo_num = 0;
             $dql_joins = "";
+            $dql_select = "";
 
             if($class::usesMetadata()){
                 if(class_exists($class).'Meta'){
@@ -257,6 +258,20 @@ trait ControllerAPI{
                         'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : array('url')
                     );
 
+                    $_join_in = [];
+
+                    foreach($cfg['files'] as $_f){
+                        if(strpos($_f, '.') > 0){
+                            list($_f_group, $_f_transformation) = explode('.', $_f);
+                            $_join_in[] = $_f_group;
+                            $_join_in[] = 'img:' . $_f_transformation;
+                        }else{
+                            $_join_in[] = $_f;
+                        }
+                    }
+
+                    $dql_select .= " , files";
+                    $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') ";
 
                     $extract_data_cb = function($file, $ipath, $props){
                         $result = array();
@@ -373,16 +388,16 @@ trait ControllerAPI{
 
             $final_dql = "
                 SELECT
-                    e, files
+                    e $dql_select
                 FROM
-                    $class e LEFT JOIN e.__files files
+                    $class e
 
                     $dql_joins
 
                 $dql_where
 
                $order";
-
+            
             $result[] = "$final_dql";
 
 
