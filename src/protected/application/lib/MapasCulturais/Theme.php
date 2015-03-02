@@ -353,11 +353,7 @@ abstract class Theme extends \Slim\View {
         $app = App::i();
         $title = '';
         if($entity){
-            $controller = $app->getControllerByEntity($entity);
-
-            $title .= $app->getReadableName($controller->action) ? $app->getReadableName($controller->action) : '';
-            $title .= $app->getReadableName($controller->id) ? ' '.$app->getReadableName($controller->id) : '';
-            $title .= $entity->name ? ' '.$entity->name : '';
+            $title = $entity->name . ' - ' . $app->siteName;
         }elseif($this->controller->id == 'site' && $this->controller->action === 'index'){
             $title = $app->siteName;
         }elseif($this->controller->id == 'panel' && $this->controller->action === 'index'){

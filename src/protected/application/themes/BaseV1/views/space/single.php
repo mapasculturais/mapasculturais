@@ -148,7 +148,7 @@ $this->includeAngularEntityAssets($entity);
                             </div>
                         <?php endif; ?>
                         <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
-                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="[0,0]"/>
+                        <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php echo $lat && $lng ? "[$lng,$lat]" : '[0,0]'; ?>"/>
                     </div>
                     <!--.mapa-->
                     <div class="infos">

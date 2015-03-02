@@ -552,7 +552,7 @@ class Theme extends MapasCulturais\Theme {
 
     function addDocumentMetas() {
         $app = App::i();
-        $entity = $this->controller->requiredEntity;
+        $entity = $this->controller->requestedEntity;
 
         $site_name = $app->siteName;
         $title = $app->view->getTitle($entity);
