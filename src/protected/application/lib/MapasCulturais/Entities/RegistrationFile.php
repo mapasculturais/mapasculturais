@@ -18,4 +18,14 @@ class RegistrationFile extends File{
      * })
      */
     protected $owner;
+
+    /**
+     * @var \MapasCulturais\Entities\RegistrationFile
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationFile", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $parent;
 }

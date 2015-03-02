@@ -17,4 +17,14 @@ class ProjectFile extends File{
      * })
      */
     protected $owner;
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectFile
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\ProjectFile", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $parent;
 }

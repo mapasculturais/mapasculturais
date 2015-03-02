@@ -8,12 +8,8 @@ class File extends \MapasCulturais\Repository{
     function findByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 
-        if(class_exists($owner->getClassName() . 'File')){
-            $repo = $app->repo($owner->getClassName() . 'File');
-            $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
-        }else{
-            $result = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
-        }
+        $repo = $app->repo($owner->getClassName() . 'File');
+        $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
 
         $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $group);
 
@@ -25,7 +21,10 @@ class File extends \MapasCulturais\Repository{
     }
 
     function findOneByGroup(\MapasCulturais\Entity $owner, $group){
-        $result = $this->findOneBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
+        $app = App::i();
+
+        $repo = $app->repo($owner->getClassName() . 'File');
+        $result = $repo->findOneBy(array('owner' => $owner, 'group' => $group));
 
         return $result;
     }
@@ -33,12 +32,8 @@ class File extends \MapasCulturais\Repository{
     function findByOwnerGroupedByGroup(\MapasCulturais\Entity $owner){
         $app = App::i();
 
-        if(class_exists($owner->getClassName() . 'File')){
-            $repo = $app->repo($owner->getClassName() . 'File');
-            $files = $repo->findBy(array('owner' => $owner));
-        }else{
-            $files = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id));
-        }
+        $repo = $app->repo($owner->getClassName() . 'File');
+        $files = $repo->findBy(array('owner' => $owner));
 
         $result = array();
 

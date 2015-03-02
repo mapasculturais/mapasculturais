@@ -270,8 +270,8 @@ trait ControllerAPI{
                         }
                     }
 
-                    $dql_select .= " , files";
-                    $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') ";
+                    $dql_select .= " , files, fparent";
+                    $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
                     $extract_data_cb = function($file, $ipath, $props){
                         $result = array();
@@ -397,7 +397,6 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
-            
             $result[] = "$final_dql";
 
 
@@ -514,6 +513,7 @@ trait ControllerAPI{
             }else{
 
                 $rs = $query->getResult();
+
                 $result = array();
 
                 $rs = array_values(array_filter($rs, function($entity) use($permissions){

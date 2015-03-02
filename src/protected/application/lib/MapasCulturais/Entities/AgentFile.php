@@ -16,4 +16,14 @@ class AgentFile extends File{
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      */
     protected $owner;
+
+    /**
+     * @var \MapasCulturais\Entities\AgentFile
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\AgentFile", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
+     */
+    protected $parent;
 }

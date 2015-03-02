@@ -92,23 +92,6 @@ abstract class File extends \MapasCulturais\Entity
     protected $createTimestamp;
 
     /**
-     * @var \MapasCulturais\Entities\File
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * })
-     */
-    protected $parent;
-
-    /**
-     * @var \MapasCulturais\Entities\File[] Chield projects
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\File", mappedBy="_parent", fetch="LAZY", cascade={"remove"})
-     */
-    protected $_children;
-
-    /**
      * An array like an item of $_FILE
      * @example array(
      *              name => filename.jpg
@@ -277,6 +260,10 @@ abstract class File extends \MapasCulturais\Entity
                     return $transformed;
                 }
             }
+        }
+
+        if($transformed = $this->repo()->findBy(['parent' => $this, 'group' => $transformation_group_name])){
+            return $transformed;
         }
 
         if(!file_exists($this->getPath()))
