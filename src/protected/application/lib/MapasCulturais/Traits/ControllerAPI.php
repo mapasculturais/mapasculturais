@@ -371,7 +371,7 @@ trait ControllerAPI{
 
             $final_dql = "
                 SELECT
-                    e
+                    e, files
                 FROM
                     $class e LEFT JOIN e.__files files
                         
@@ -382,6 +382,7 @@ trait ControllerAPI{
                $order";
 
             $result[] = "$final_dql";
+            
 
             if($app->config['app.log.apiDql'])
                 $app->log->debug("API DQL: ".$final_dql);

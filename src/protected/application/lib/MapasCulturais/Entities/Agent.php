@@ -205,10 +205,10 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
-    protected $__files = array();
+    protected $__files;
 
 
     /**
