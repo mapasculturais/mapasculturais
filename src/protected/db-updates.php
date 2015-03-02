@@ -314,36 +314,36 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
         }
         return true;
     },
-            
+
     'alter table file add column parent_id' => function() use($conn) {
         echo "adicionando coluna parent_id a tabela file\n";
         $conn->executeQuery("ALTER TABLE file ADD COLUMN parent_id INTEGER DEFAULT NULL;");
-        
+
         echo "adicionando FK file_file_fk";
         $conn->executeQuery("
         ALTER TABLE ONLY file
             ADD CONSTRAINT file_file_fk FOREIGN KEY (parent_id) REFERENCES file(id);");
-        
+
         echo "deletando arquivos órfãos\n";
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\File' AND object_id NOT IN (SELECT id FROM file WHERE object_type != 'MapasCulturais\Entities\File')");
-        
+
         echo "atualizando o parent_id dos files que têm pai\n";
         $conn->executeQuery("UPDATE file SET parent_id = object_id WHERE object_type = 'MapasCulturais\Entities\File'");
-        
+
         echo "atualizando o owner dos files que têm pai\n";
         $conn->executeQuery("
-        UPDATE 
+        UPDATE
             file AS f
-        SET 
-            grp = 'img:transformations',
+        SET
+            grp = CONCAT('img:', f.grp),
             object_type   = f2.object_type,
             object_id     = f2.object_id
         FROM (
             SELECT * FROM file
         ) as f2
-        WHERE 
+        WHERE
             f.parent_id = f2.id");
-        
+
     }
 
 );

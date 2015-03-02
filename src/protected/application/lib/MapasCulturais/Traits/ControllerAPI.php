@@ -371,7 +371,7 @@ trait ControllerAPI{
 
             $final_dql = "
                 SELECT
-                    e
+                    e, files
                 FROM
                     $class e LEFT JOIN e.__files files
 

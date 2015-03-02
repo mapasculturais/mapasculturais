@@ -94,7 +94,7 @@ abstract class File extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\File
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\File", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -259,6 +259,9 @@ abstract class File extends \MapasCulturais\Entity
         if(!trim($wideimage_operations))
             return $this;
 
+
+        $transformation_group_name = 'img:' . $transformation_name;
+
         $owner = $this->owner;
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
@@ -268,9 +271,9 @@ abstract class File extends \MapasCulturais\Entity
         // modify the filename adding the hash before the file extension. ex: file.png => file-5762a89ee8e05021006d6c35095903b5.png
         $image_name = preg_replace("#(\.[[:alnum:]]+)$#i", '-' . $hash . '$1', $this->name);
 
-        if(isset($owner->files['img:transformations']) && is_array($owner->files['img:transformations'])){
-            foreach($owner->files['img:transformations'] as $transformed){
-                if($transformed->name === $image_name){
+        if(isset($owner->files[$transformation_group_name]) && is_array($owner->files[$transformation_group_name])){
+            foreach($owner->files[$transformation_group_name] as $transformed){
+                if($transformed->parent->equals($this) && $transformed->group == $transformation_group_name){
                     return $transformed;
                 }
             }
@@ -298,7 +301,7 @@ abstract class File extends \MapasCulturais\Entity
             'parent' => $this
         ));
 
-        $image->group = 'img:transformations';
+        $image->group = $transformation_group_name;
 
         $image->owner = $owner;
 
@@ -315,14 +318,14 @@ abstract class File extends \MapasCulturais\Entity
     public function _prePersist($args = null){
         $app = App::i();
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
 
         $app->storage->add($this);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
 
         $this->owner->clearFilesCache();
@@ -334,7 +337,7 @@ abstract class File extends \MapasCulturais\Entity
         foreach($files as $f)
             $f->delete(true);
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before', $args);
     }
     /** @ORM\PostRemove */
@@ -342,7 +345,7 @@ abstract class File extends \MapasCulturais\Entity
         $app = App::i();
         $app->storage->remove($this);
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
 
         $this->owner->clearFilesCache();
@@ -350,12 +353,12 @@ abstract class File extends \MapasCulturais\Entity
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before', $args);
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after', $args);
 
         $this->owner->clearFilesCache();
