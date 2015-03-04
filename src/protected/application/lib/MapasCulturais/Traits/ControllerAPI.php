@@ -215,6 +215,9 @@ trait ControllerAPI{
             $permissions = null;
 
             $dqls = array();
+            
+            $find_one_max_results = 1;
+            
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
@@ -269,6 +272,10 @@ trait ControllerAPI{
                             $_join_in[] = $_f;
                         }
                     }
+                    
+                    $_join_in = array_unique($_join_in);
+                    
+                    $find_one_max_results = count($_join_in) + 1;
 
                     $dql_select .= " , files, fparent";
                     $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
@@ -483,7 +490,7 @@ trait ControllerAPI{
             }
 
             if($findOne){
-                $query->setMaxResults(1);
+                $query->setMaxResults($find_one_max_results);
 
                 if($r = $query->getOneOrNullResult()){
 

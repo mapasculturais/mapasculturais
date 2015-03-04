@@ -785,7 +785,7 @@ class App extends \Slim\Slim{
      *
      * @return \MapasCulturais\Entities\File|\MapasCulturais\Entities\File[]
      */
-    public function handleUpload($key){
+    public function handleUpload($key, $file_class_name){
         if(is_array($_FILES) && key_exists($key, $_FILES)){
             if(is_array($_FILES[$key]['name'])){
                 $result = array();
@@ -795,7 +795,7 @@ class App extends \Slim\Slim{
                         $tmp_file[$k] = $k == 'name' ? $this->sanitizeFilename($_FILES[$key][$k][$i]) : $_FILES[$key][$k][$i];
                     }
 
-                    $result[] = new \MapasCulturais\Entities\File($tmp_file);
+                    $result[] = new $file_class_name($tmp_file);
                 }
             }else{
 
@@ -803,7 +803,7 @@ class App extends \Slim\Slim{
                     throw new \MapasCulturais\Exceptions\FileUploadError($key, $_FILES[$key]['error']);
                 }
                 $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name']);
-                $result = new \MapasCulturais\Entities\File($_FILES[$key]);
+                $result = new $file_class_name($_FILES[$key]);
             }
             return $result;
         }else{

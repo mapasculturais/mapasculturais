@@ -50,6 +50,13 @@ trait ControllerUploads{
          * @todo Melhores Mensagens de erro
          */
         $this->requireAuthentication();
+        
+        $owner = $this->requestedEntity;
+        
+        if(!$owner){
+            $this->errorJson(App::txt('the owner not exists'));
+            return;
+        }
 
         $app = App::i();
 
@@ -69,7 +76,7 @@ trait ControllerUploads{
             // if the group exists
             if($upload_group = $app->getRegisteredFileGroup($this->id, $group_name)){
                 try {
-                    $file = $app->handleUpload($group_name);
+                    $file = $app->handleUpload($group_name, $owner->getFileClassName());
                     // if multiple files was uploaded and this group is unique, don't save this group of files.
                     if(is_array($file) && $upload_group->unique){
                         continue;
@@ -129,41 +136,33 @@ trait ControllerUploads{
             }
         }
 
-        // if the owner exists
-        if($owner = $this->repo()->find($this->data['id'])){
-            foreach($files as $file){
-                $upload_group = $app->getRegisteredFileGroup($this->id, $file->group);
+        foreach($files as $file){
+            $upload_group = $app->getRegisteredFileGroup($this->id, $file->group);
 
-                $file->owner = $owner;
+            $file->owner = $owner;
 
-                // if this group is unique, deletes the existent file
-                if($upload_group->unique){
-                    $old_file = $app->repo('File')->findOneBy(array('objectType' => $owner->getClassName(), 'objectId' => $owner->id, 'group' => $file->group));
-                    if($old_file)
-                        $old_file->delete();
-                }
-
-                $file->save();
-                $file_group = $file->group;
-
-                if($upload_group->unique){
-                    $result[$file_group] = $file;
-                }else{
-                    if(!key_exists($file->group, $result))
-                            $result[$file->group] = array();
-                    $result[$file_group][] = $file;
-                }
+            // if this group is unique, deletes the existent file
+            if($upload_group->unique){
+                $old_file = $app->repo('File')->findOneBy(array('objectType' => $owner->getClassName(), 'objectId' => $owner->id, 'group' => $file->group));
+                if($old_file)
+                    $old_file->delete();
             }
 
-            $app->em->flush();
-            $this->json($result);
-            return;
+            $file->save();
+            $file_group = $file->group;
 
-        // else if the owner not exists, returns an error
-        }else{
-            $this->errorJson(App::txt('the owner not exists'));
-            return;
+            if($upload_group->unique){
+                $result[$file_group] = $file;
+            }else{
+                if(!key_exists($file->group, $result))
+                        $result[$file->group] = array();
+                $result[$file_group][] = $file;
+            }
         }
+
+        $app->em->flush();
+        $this->json($result);
+        return;
     }
 
     /**

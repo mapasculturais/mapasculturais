@@ -23,6 +23,10 @@ use MapasCulturais\App;
  * @see \MapasCulturais\App::registerFileGroup()
  */
 trait EntityFiles{
+    
+    function getFileClassName(){
+        return $this->getClassName() . 'File';
+    }
     /**
      * Returns the files of this entity.
      *

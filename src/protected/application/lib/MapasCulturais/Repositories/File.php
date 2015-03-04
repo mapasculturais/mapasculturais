@@ -8,7 +8,7 @@ class File extends \MapasCulturais\Repository{
     function findByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 
-        $repo = $app->repo($owner->getClassName() . 'File');
+        $repo = $app->repo($owner->getFileClassName());
         $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
 
         $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $group);
@@ -23,7 +23,7 @@ class File extends \MapasCulturais\Repository{
     function findOneByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 
-        $repo = $app->repo($owner->getClassName() . 'File');
+        $repo = $app->repo($owner->getFileClassName());
         $result = $repo->findOneBy(array('owner' => $owner, 'group' => $group));
 
         return $result;
@@ -32,7 +32,7 @@ class File extends \MapasCulturais\Repository{
     function findByOwnerGroupedByGroup(\MapasCulturais\Entity $owner){
         $app = App::i();
 
-        $repo = $app->repo($owner->getClassName() . 'File');
+        $repo = $app->repo($owner->getFileClassName());
         $files = $repo->findBy(array('owner' => $owner));
 
         $result = array();
