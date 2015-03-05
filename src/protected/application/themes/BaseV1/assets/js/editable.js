@@ -608,7 +608,7 @@ MapasCulturais.AjaxUploader = {
                             case 'image-src':
                                 try{
                                     if($form.data('transform'))
-                                        $target.attr('src', response[group].files[$form.data('transform')].url);
+                                        $target.attr('src', response[group].files['img:' + $form.data('transform')][0].url);
                                     else
                                         $target.attr('src', response[group].url);
                                 }catch (e){}
@@ -618,7 +618,7 @@ MapasCulturais.AjaxUploader = {
                                 $target.each(function(){
                                     try{
                                         if($form.data('transform'))
-                                            $(this).css('background-image', 'url(' + response[group].files[$form.data('transform')].url + ')');
+                                            $(this).css('background-image', 'url(' + response[group].files['img:' + $form.data('transform')][0].url + ')');
                                         else
                                             $(this).css('background-image', 'url(' + response[group].url + ')');
                                     }catch (e){}

@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 trait ControllerAPI{
 
@@ -216,8 +217,6 @@ trait ControllerAPI{
 
             $dqls = array();
             
-            $find_one_max_results = 1;
-            
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
@@ -275,8 +274,6 @@ trait ControllerAPI{
                     
                     $_join_in = array_unique($_join_in);
                     
-                    $find_one_max_results = count($_join_in) + 1;
-
                     $dql_select .= " , files, fparent";
                     $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
@@ -488,12 +485,18 @@ trait ControllerAPI{
             }else{
                 $permissions = array('view');
             }
+            
+            
 
             if($findOne){
-                $query->setMaxResults($find_one_max_results);
-
-                if($r = $query->getOneOrNullResult()){
-
+                $query->setFirstResult(0)
+                      ->setMaxResults(1);
+                
+                $paginator = new Paginator($query, $fetchJoinCollection = true);
+                
+                if(count($paginator)){
+                    $r = $paginator->getIterator()->current();
+                            
                     if($permissions){
                         foreach($permissions as $perm){
                             $perm = trim($perm);

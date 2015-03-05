@@ -47,24 +47,7 @@ trait EntityFiles{
                 $result = $result[0];
 
         }else{
-            $files = $this->__files;
-            $result = array();
-
-            if($files){
-                foreach($files as $file){
-                    $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $file->group);
-                    if($registeredGroup && $registeredGroup->unique){
-                        $result[trim($file->group)] = $file;
-                    }else{
-                        if(!key_exists($file->group, $result))
-                            $result[trim($file->group)] = array();
-
-                        $result[trim($file->group)][] = $file;
-                    }
-                }
-            }
-
-            ksort($result);
+            $result = \MapasCulturais\Entities\File::sortFilesByGroup($this->__files);
         }
         return $result;
     }
@@ -94,6 +77,7 @@ trait EntityFiles{
             return null;
         }
     }
+    
 
     /**
      * This entity uses files

@@ -13,8 +13,7 @@ use \MapasCulturais\App;
  * @property-read string $mimeType File Mime Type
  * @property-read string $name File name
  * @property-read string $group File Group (gallery|avatar|download|etc.)
- * @property-read string $objectType File Owner Class Name
- * @property-read id $objectId File Owner Id
+ * @property-read \MapasCulturais\Entity $owner File Owner
  * @property-read \DateTime $createTimestamp File Create Timestamp
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
@@ -154,13 +153,37 @@ abstract class File extends \MapasCulturais\Entity
 
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
-            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            throw new \MapasCulturais\Exfilesceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
         parent::save($flush);
     }
+    
+    static function sortFilesByGroup($files){
+        $app = App::i();
+        $result = array();
+
+        if($files){
+            foreach($files as $file){
+                $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
+                if($registeredGroup && $registeredGroup->unique){
+                    $result[trim($file->group)] = $file;
+                }else{
+                    if(!key_exists($file->group, $result))
+                        $result[trim($file->group)] = array();
+
+                    $result[trim($file->group)][] = $file;
+                }
+            }
+        }
+
+        ksort($result);
+        
+        return $result;
+    }
 
     public function jsonSerialize() {
-
+        App::i()->em->refresh($this->owner);
+        
         return array(
             'id' => $this->id,
             'md5' => $this->md5,
@@ -168,7 +191,7 @@ abstract class File extends \MapasCulturais\Entity
             'name' => $this->name,
             'description' => $this->description,
             'group' => $this->group,
-            'files' => $this->files,
+            'files' => File::sortFilesByGroup($this->getChildren()),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
         );
@@ -202,6 +225,23 @@ abstract class File extends \MapasCulturais\Entity
         }
 
         return $url;
+    }
+    
+    
+    public function getChildren(){
+        $result = [];
+        
+        foreach($this->owner->files as $group => $files){
+            if(substr($group, 0, 4) === 'img:'){
+                foreach($files as $file){
+                    if($file->parent->equals($this)){
+                        $result[] = $file;
+                    }
+                }
+            }
+        }
+        
+        return $result;
     }
 
     public function getPath(){
@@ -320,7 +360,7 @@ abstract class File extends \MapasCulturais\Entity
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        $files = $this->repo()->findBy(array('objectType' => __CLASS__, 'objectId' => $this->id));
+        $files = $this->repo()->findBy(array('parent' => $this));
         foreach($files as $f)
             $f->delete(true);
 

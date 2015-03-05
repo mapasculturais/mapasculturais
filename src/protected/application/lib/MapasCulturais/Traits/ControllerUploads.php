@@ -58,6 +58,8 @@ trait ControllerUploads{
             return;
         }
 
+        $file_class_name = $owner->getFileClassName();
+        
         $app = App::i();
 
         // if no files uploaded or no id in request data, return an error
@@ -76,7 +78,7 @@ trait ControllerUploads{
             // if the group exists
             if($upload_group = $app->getRegisteredFileGroup($this->id, $group_name)){
                 try {
-                    $file = $app->handleUpload($group_name, $owner->getFileClassName());
+                    $file = $app->handleUpload($group_name, $file_class_name);
                     // if multiple files was uploaded and this group is unique, don't save this group of files.
                     if(is_array($file) && $upload_group->unique){
                         continue;
@@ -143,7 +145,7 @@ trait ControllerUploads{
 
             // if this group is unique, deletes the existent file
             if($upload_group->unique){
-                $old_file = $app->repo('File')->findOneBy(array('objectType' => $owner->getClassName(), 'objectId' => $owner->id, 'group' => $file->group));
+                $old_file = $app->repo($file_class_name)->findOneBy(array('owner' => $owner, 'group' => $file->group));
                 if($old_file)
                     $old_file->delete();
             }
