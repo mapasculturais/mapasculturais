@@ -191,7 +191,7 @@ abstract class File extends \MapasCulturais\Entity
             'name' => $this->name,
             'description' => $this->description,
             'group' => $this->group,
-            'files' => File::sortFilesByGroup($this->getChildren()),
+            'files' => $this->getFiles(),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
         );

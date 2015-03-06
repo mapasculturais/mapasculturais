@@ -73,12 +73,20 @@ abstract class Entity implements \JsonSerializable{
      */
     public function __construct() {
         $app = App::i();
+        
+        foreach($app->em->getClassMetadata($this->getClassName())->associationMappings as $field => $conf){
+            if($conf['type'] === 4){
+                $this->$field = new \Doctrine\Common\Collections\ArrayCollection;
+            }
+        }   
 
         foreach($app->em->getClassMetadata($this->getClassName())->fieldMappings as $field => $conf){
+            
             if($conf['type'] == 'point'){
                 $this->$field = new Types\GeoPoint(0,0);
             }
         }
+        
         if(property_exists($this, 'createTimestamp'))
                 $this->createTimestamp = new \DateTime;
 
@@ -88,7 +96,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
-
     }
 
     function __toString() {

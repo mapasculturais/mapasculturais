@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use Doctrine\Common\Collections\Criteria;
 use MapasCulturais\App;
+use MapasCulturais\Entities\File;
 
 /**
  * Defines that the entity has files.
@@ -37,17 +38,25 @@ trait EntityFiles{
     function getFiles($group = null){
         $app = App::i();
 
-        if($group){
-
-            $result = $this->__files;
-
-            $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
-
-            if($result && (($registeredGroup && $registeredGroup->unique) || $app->getRegisteredImageTransformation($group) || (!$registeredGroup && !$app->getRegisteredImageTransformation($group))))
-                $result = $result[0];
-
+        if($this instanceof File){
+            $files = $this->getChildren();
+            $result = [];
+            foreach($files as $file){
+                $result[substr($file->group,4)] = $file;
+            }
         }else{
             $result = \MapasCulturais\Entities\File::sortFilesByGroup($this->__files);
+        }
+        
+        if($group){
+            $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
+            
+            if($registeredGroup && $registeredGroup->unique){
+                $result = isset($result[$group]) ? $result[$group] : null;
+            }else{
+                $result = isset($result[$group]) ? $result[$group] : [];
+            }
+
         }
         return $result;
     }
