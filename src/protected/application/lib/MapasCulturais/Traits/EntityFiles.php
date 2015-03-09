@@ -74,7 +74,6 @@ trait EntityFiles{
 
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq("group", $group))
-            ->orderBy(array("username" => Criteria::ASC))
             ->setFirstResult(0)
             ->setMaxResults(1);
 
