@@ -139,9 +139,9 @@ class Event extends \MapasCulturais\Entity
 
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
      */
-    protected $__metadata = array();
+    protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\ProjectFile[] Files
