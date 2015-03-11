@@ -248,15 +248,12 @@ trait EntityMetadata{
 
         $metas = $this->getRegisteredMetadata();
 
-        foreach($metas as $meta_key => $meta){
+        foreach($metas as $meta_key => $metadata_definition){
             $metadata_object = $this->getMetadata($meta_key, true);
             
-            if(!$meta->is_required && (is_null($metadata_object) || !$metadata_object->value))
+            if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value))
                 continue;
 
-
-            $metadata_definition = $this->getRegisteredMetadata($meta_key);
-            if($metadata_definition == $meta) die('igual');
             $val = is_object($metadata_object) ? $metadata_object->value : null;
 
             $metadata_value_errors = $metadata_definition->validate($this, $val);
