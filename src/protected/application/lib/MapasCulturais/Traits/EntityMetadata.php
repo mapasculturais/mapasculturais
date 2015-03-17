@@ -2,7 +2,6 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * Defines that the entity has metadata.
@@ -47,8 +46,9 @@ trait EntityMetadata{
      * 
      * @return string
      */
-    public function getMetadataClassName(){
-        return $this->getClassName() . 'Meta';
+    public static function getMetadataClassName(){
+        $class = get_called_class();
+        return $class::getClassName() . 'Meta';
     }
 
     /**
@@ -165,7 +165,6 @@ trait EntityMetadata{
     function getMetadata($meta_key = null, $return_metadata_object = false){
         
         // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
-
         if(!$this->id){
             return $meta_key ? null : array();
         }
@@ -174,12 +173,12 @@ trait EntityMetadata{
             if(isset($this->__createdMetadata[$meta_key])){
                 $metadata_object = $this->__createdMetadata[$meta_key];
             }else{
-                $criteria = Criteria::create()
-                    ->where(Criteria::expr()->eq("key", $meta_key))
-                    ->setFirstResult(0)
-                    ->setMaxResults(1);
-
-                $metadata_object = $this->__metadata->matching($criteria)->first();
+                $metadata_object = null;
+                foreach($this->__metadata as $_metadata_object){
+                    if($_metadata_object->key == $meta_key){
+                        $metadata_object = $_metadata_object;
+                    }
+                }
             }
             
             if($return_metadata_object){

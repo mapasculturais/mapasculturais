@@ -179,16 +179,14 @@ trait ControllerAPI{
             $dql_select = "";
 
             if($class::usesMetadata()){
-                if(class_exists($class).'Meta'){
-                    $metadata_class = $class.'Meta';
-                    $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.owner = e AND {ALIAS}.key = '{KEY}'\n";
-                }else{
-                    $metadata_class = '\MapasCulturais\Entities\Metadata';
-                    $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.objectType = '$class' AND {ALIAS}.objectId = e.id AND {ALIAS}.key = '{KEY}'\n";
-                }
+                $metadata_class = $class::getMetadataClassName();
+                
+                $metadata_class = $class.'Meta';
+                $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.owner = e AND {ALIAS}.key = '{KEY}'\n";
 
-                foreach($app->getRegisteredMetadata($this->entityClassName) as $meta)
+                foreach($app->getRegisteredMetadata($this->entityClassName) as $meta){
                     $entity_metadata[] = $meta->key;
+                }
             }
 
             if($class::usesTaxonomies()){
@@ -207,6 +205,7 @@ trait ControllerAPI{
             $append_files_cb = function(){};
 
             $select = array('id');
+            $select_metadata = array();
             $order = null;
             $op = ' AND ';
             $offset = null;
@@ -221,6 +220,13 @@ trait ControllerAPI{
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
+                    
+                    foreach($select as $prop){
+                        if(in_array($prop, $entity_metadata)){
+                            $select_metadata[] = $prop;
+                        }
+                    }
+                    
                     continue;
                 }elseif(strtolower($key) == '@keyword'){
                     $keyword = $val;
@@ -388,6 +394,12 @@ trait ControllerAPI{
                     $ids = implode(',',$repo->getIdsByKeyword($keyword));
                     $dql_where .= $ids ? "AND e.id IN($ids)" : 'AND e.id < 0';
                 }
+            }
+            
+            if($select_metadata){
+                $dql_select .= ', meta';
+                $meta_keys = implode("', '", $select_metadata);
+                $dql_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
             }
 
             $final_dql = "
