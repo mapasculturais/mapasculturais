@@ -491,15 +491,6 @@ trait ControllerAPI{
                 return $entity;
             };
 
-
-            if(is_array($permissions)){
-                $permissions[] = 'view';
-            }else{
-                $permissions = array('view');
-            }
-            
-            
-
             if($findOne){
                 $query->setFirstResult(0)
                       ->setMaxResults(1);
@@ -533,27 +524,52 @@ trait ControllerAPI{
                 }
                 return $entity;
             }else{
+                
+                if($permissions){
+                    $rs = $query->getResult();
+                    $result = array();
 
-                $rs = $query->getResult();
-
-                $result = array();
-
-                $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                    foreach($permissions as $perm){
-                        $perm = trim($perm);
-                        if($perm[0] === '!'){
-                            $not = true;
-                            $_perm = substr($perm,1);
-                        }else{
-                            $not = false;
-                            $_perm = $perm;
+                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                $not = true;
+                                $_perm = substr($perm,1);
+                            }else{
+                                $not = false;
+                                $_perm = $perm;
+                            }
+                            $can = $entity->canUser($_perm);
+                            return $not ? !$can : $can;
                         }
-                        $can = $entity->canUser($_perm);
-                        return $not ? !$can : $can;
+
+                        return true;
+                    }));
+                    
+                    if(!$page){
+                        $page = 1;
                     }
 
-                    return true;
-                }));
+                    if($page && $limit){
+                        $offset = (($page - 1) * $limit);
+                        $rs = array_slice($rs, $offset, $limit);
+                    }
+                }else if($limit){
+                    if(!$page){
+                        $page = 1;
+                    }
+
+                    $offset = ($page - 1) * $limit;
+                    
+                    $query->setFirstResult($offset)
+                          ->setMaxResults($limit);
+                
+                    $paginator = new Paginator($query, $fetchJoinCollection = true);
+                    
+                    $rs = $paginator->getIterator()->getArrayCopy();
+                }else{
+                    $rs = $query->getResult();
+                }
 
 
                 if($counting)
@@ -561,14 +577,6 @@ trait ControllerAPI{
 
                 $this->apiAddHeaderMetadata($rs);
 
-                if(!$page){
-                    $page = 1;
-                }
-
-                if($page && $limit){
-                    $offset = (($page - 1) * $limit);
-                    $rs = array_slice($rs, $offset, $limit);
-                }
 
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
