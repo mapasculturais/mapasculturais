@@ -197,7 +197,7 @@ trait ControllerAPI{
                     $taxonomies_ids['term:' . $obj->slug] = $obj->id;
                 }
 
-                $dql_join_term_template = "\n\tLEFT JOIN MapasCulturais\Entities\TermRelation {ALIAS_TR} WITH {ALIAS_TR}.objectType = '$class' AND {ALIAS_TR}.objectId = e.id LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
+                $dql_join_term_template = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
             }
 
             $keys = array();
@@ -400,6 +400,11 @@ trait ControllerAPI{
                 $dql_select .= ', meta';
                 $meta_keys = implode("', '", $select_metadata);
                 $dql_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
+            }
+            
+            if(in_array('terms', $select)){
+                $dql_select .= ', termRelations, term';
+                $dql_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
             }
 
             $final_dql = "

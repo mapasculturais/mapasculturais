@@ -10,60 +10,36 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="term_relation")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectTermRelation",
+        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventTermRelation",
+        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentTermRelation",
+        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceTermRelation"
+   })
  */
-class TermRelation extends \MapasCulturais\Entity
-{
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="string", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    protected $objectType;
+abstract class TermRelation extends \MapasCulturais\Entity {
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="term_relation_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $objectId;
-
+    protected $id;
+    
     /**
      * @var \MapasCulturais\Entities\Term
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Term")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Term", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="term_id", referencedColumnName="id")
      * })
      */
     protected $term;
-
-
-    /**
-     * The owner entity of this file
-     * @var \MapasCulturais\Entity
-     */
-    protected $_owner;
-
-
-
-    /**
-     * Returns the owner of this TermRelation
-     * @return \MapasCulturais\Entity
-     */
-    public function getOwner(){
-        if(!$this->_owner && ($this->objectType && $this->objectId))
-            $this->_owner = \MapasCulturais\App::i()->repo($this->objectType)->find($this->objectId);
-
-        return $this->_owner;
-    }
-
-
 
     protected function canUserCreate($user){
         return $this->owner->canUser('modify');

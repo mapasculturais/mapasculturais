@@ -205,10 +205,18 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+
+    /**
+     * @var \MapasCulturais\Entities\AgentTermRelation[] TermRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentTermRelation", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__termRelations;
 
 
     /**

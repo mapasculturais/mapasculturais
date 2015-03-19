@@ -187,6 +187,14 @@ class Space extends \MapasCulturais\Entity
     */
     protected $__files;
 
+    /**
+     * @var \MapasCulturais\Entities\SpaceTermRelation[] TermRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceTermRelation", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__termRelations;
+
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;

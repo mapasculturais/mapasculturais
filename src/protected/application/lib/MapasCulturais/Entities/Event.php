@@ -151,6 +151,14 @@ class Event extends \MapasCulturais\Entity
     */
     protected $__files;
 
+    /**
+     * @var \MapasCulturais\Entities\EventTermRelation[] TermRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventTermRelation", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__termRelations;
+
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
 

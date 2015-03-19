@@ -344,6 +344,24 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
         WHERE
             f.parent_id = f2.id");
 
+    },
+
+    'alter table term_relation add column id' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'term_relation' AND column_name = 'id'")){
+            return true;
+        }
+        
+        echo "\nremovendo PK antiga";
+        $conn->executeQuery("ALTER TABLE ONLY term_relation
+                                DROP CONSTRAINT term_relation_pk;");
+        
+        echo "\nadicionando coluna id";
+        $conn->executeQuery("ALTER TABLE term_relation ADD COLUMN id SERIAL;");
+        
+        echo "\ncriando nova PK";
+        $conn->executeQuery("ALTER TABLE ONLY term_relation
+                                ADD CONSTRAINT term_relation_pk PRIMARY KEY (id);");
+        
     }
 
 );
