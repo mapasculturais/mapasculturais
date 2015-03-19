@@ -6,8 +6,8 @@ Sobral Cultura é uma plataforma colaborativa que reúne informações sobre age
 
 O Instituto TIM, em parceria com uma série de Secretarias de Cultura, tem atuado pela implementação de Mapas Culturais na gestão pública das cidades e estados. A plataforma já está em uso, por exemplo, no município de São Paulo (<a href="http://spcultura.prefeitura.sp.gov.br/">http://spcultura.prefeitura.sp.gov.br/</a>). Sendo Sobral o segundo município do Brasil a implementar a ferramenta na gestão pública da cultura.
 
-Você encontra mais informações sobre a ferramenta Mapas Culturais no site do <a href="http://institutotim.org.br/project/mapas-culturais/">Instituto Tim</a>.
+Você encontra mais informações sobre a ferramenta Mapas Culturais no site do <a href="http://institutotim.org.br/project/mapas-culturais/">Instituto TIM</a>.
 
 <h2>Realização</h2>
-<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto Tim" />
+<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" />
 
