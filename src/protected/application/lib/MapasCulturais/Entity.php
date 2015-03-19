@@ -746,29 +746,6 @@ abstract class Entity implements \JsonSerializable{
 
         $app = App::i();
 
-        if($this->usesFiles()){
-            foreach($this->files as $files){
-                if(is_array($files)){
-                    foreach($files as $f){
-                        $f->delete();
-                    }
-                }elseif(is_object($files)){
-                    $files->delete();
-                }
-            }
-        }
-
-        if($this->usesMetadata()){
-            foreach($this->getMetadata(null,true) as $m)
-                $m->delete();
-        }
-
-        if($this->usesTaxonomies()){
-            $relations = $app->repo('TermRelation')->findBy(array('objectType' => $this->getClassName(), 'objectId' => $this->id));
-            foreach($relations as $tr)
-                $tr->delete();
-        }
-
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
     }
 

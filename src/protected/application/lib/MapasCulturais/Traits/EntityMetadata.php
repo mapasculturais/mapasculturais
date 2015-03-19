@@ -163,11 +163,7 @@ trait EntityMetadata{
      * @return array|mixed The value of the given metadata key or an array of values for all metadatas for this entity.
      */
     function getMetadata($meta_key = null, $return_metadata_object = false){
-        
         // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
-        if(!$this->id){
-            return $meta_key ? null : array();
-        }
         
         if($meta_key){
             if(isset($this->__createdMetadata[$meta_key])){
@@ -249,6 +245,7 @@ trait EntityMetadata{
 
         foreach($metas as $meta_key => $metadata_definition){
             $metadata_object = $this->getMetadata($meta_key, true);
+            
             
             if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value))
                 continue;
