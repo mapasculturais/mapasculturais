@@ -180,9 +180,9 @@ trait ControllerAPI{
 
             if($class::usesMetadata()){
                 $metadata_class = $class::getMetadataClassName();
-                
+
                 $metadata_class = $class.'Meta';
-                $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.owner = e AND {ALIAS}.key = '{KEY}'\n";
+                $dql_join_template = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'\n";
 
                 foreach($app->getRegisteredMetadata($this->entityClassName) as $meta){
                     $entity_metadata[] = $meta->key;
@@ -215,18 +215,18 @@ trait ControllerAPI{
             $permissions = null;
 
             $dqls = array();
-            
+
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
-                    
+
                     foreach($select as $prop){
                         if(in_array($prop, $entity_metadata)){
                             $select_metadata[] = $prop;
                         }
                     }
-                    
+
                     continue;
                 }elseif(strtolower($key) == '@keyword'){
                     $keyword = $val;
@@ -277,9 +277,9 @@ trait ControllerAPI{
                             $_join_in[] = $_f;
                         }
                     }
-                    
+
                     $_join_in = array_unique($_join_in);
-                    
+
                     $dql_select .= " , files, fparent";
                     $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
@@ -395,13 +395,13 @@ trait ControllerAPI{
                     $dql_where .= $ids ? "AND e.id IN($ids)" : 'AND e.id < 0';
                 }
             }
-            
+
             if($select_metadata){
                 $dql_select .= ', meta';
                 $meta_keys = implode("', '", $select_metadata);
                 $dql_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
             }
-            
+
             if(in_array('terms', $select)){
                 $dql_select .= ', termRelations, term';
                 $dql_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
@@ -419,7 +419,6 @@ trait ControllerAPI{
 
                $order";
             $result[] = "$final_dql";
-
 
             if($app->config['app.log.apiDql'])
                 $app->log->debug("API DQL: ".$final_dql);
@@ -499,12 +498,12 @@ trait ControllerAPI{
             if($findOne){
                 $query->setFirstResult(0)
                       ->setMaxResults(1);
-                
+
                 $paginator = new Paginator($query, $fetchJoinCollection = true);
-                
+
                 if(count($paginator)){
                     $r = $paginator->getIterator()->current();
-                            
+
                     if($permissions){
                         foreach($permissions as $perm){
                             $perm = trim($perm);
@@ -529,7 +528,7 @@ trait ControllerAPI{
                 }
                 return $entity;
             }else{
-                
+
                 if($permissions){
                     $rs = $query->getResult();
                     $result = array();
@@ -550,36 +549,36 @@ trait ControllerAPI{
 
                         return true;
                     }));
-                    
+
                     if(!$page){
                         $page = 1;
                     }
-                    
+
                     $rs_count = count($rs);
 
                     if($page && $limit){
                         $offset = (($page - 1) * $limit);
                         $rs = array_slice($rs, $offset, $limit);
                     }
-                    
+
                 }else if($limit){
                     if(!$page){
                         $page = 1;
                     }
 
                     $offset = ($page - 1) * $limit;
-                    
+
                     $query->setFirstResult($offset)
                           ->setMaxResults($limit);
-                
+
                     $paginator = new Paginator($query, $fetchJoinCollection = true);
-                    
+
                     $rs_count = $paginator->count();
-                    
+
                     $rs = $paginator->getIterator()->getArrayCopy();
                 }else{
                     $rs = $query->getResult();
-                    
+
                     $rs_count = count($rs);
                 }
 

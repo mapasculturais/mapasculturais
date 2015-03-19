@@ -14,15 +14,22 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class SpaceMeta extends \MapasCulturais\Entity
-{
+class SpaceMeta extends \MapasCulturais\Entity {
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="space_meta_id_seq", allocationSize=1, initialValue=1)
+     */
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="key", type="string", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     protected $key;
 
@@ -36,8 +43,6 @@ class SpaceMeta extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Space
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
