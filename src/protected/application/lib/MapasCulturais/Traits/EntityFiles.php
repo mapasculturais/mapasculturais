@@ -24,7 +24,7 @@ use MapasCulturais\Entities\File;
  * @see \MapasCulturais\App::registerFileGroup()
  */
 trait EntityFiles{
-    
+
     function getFileClassName(){
         return $this->getClassName() . 'File';
     }
@@ -47,10 +47,10 @@ trait EntityFiles{
         }else{
             $result = \MapasCulturais\Entities\File::sortFilesByGroup($this->__files);
         }
-        
+
         if($group){
             $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
-            
+
             if($registeredGroup && $registeredGroup->unique){
                 $result = isset($result[$group]) ? $result[$group] : null;
             }else{
@@ -85,7 +85,7 @@ trait EntityFiles{
             return null;
         }
     }
-    
+
 
     /**
      * This entity uses files

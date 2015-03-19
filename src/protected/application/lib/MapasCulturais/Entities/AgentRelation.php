@@ -29,9 +29,6 @@ use MapasCulturais\App;
  */
 abstract class AgentRelation extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityMetadata,
-        \MapasCulturais\Traits\EntityFiles;
-
     const STATUS_PENDING = -5;
 
     /**

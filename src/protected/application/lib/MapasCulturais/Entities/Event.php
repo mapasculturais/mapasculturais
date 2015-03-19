@@ -146,7 +146,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\ProjectFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;

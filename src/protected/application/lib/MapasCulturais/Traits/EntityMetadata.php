@@ -29,7 +29,7 @@ trait EntityMetadata{
      * @var array
      */
     private $__changedMetadata = array();
-    
+
     private $__createdMetadata = array();
 
 
@@ -40,10 +40,10 @@ trait EntityMetadata{
     public static function usesMetadata(){
         return true;
     }
-    
+
     /**
      * Return the metadata entity class name for this Entity
-     * 
+     *
      * @return string
      */
     public static function getMetadataClassName(){
@@ -93,7 +93,7 @@ trait EntityMetadata{
         }else{
             $metas = $app->getRegisteredMetadata($this);
         }
-        
+
         $can_view = $this->canUser('viewPrivateData');
 
         foreach($metas as $k => $v){
@@ -119,11 +119,11 @@ trait EntityMetadata{
         if($user->is('guest')){
             return false;
         }
-        
+
         if($user->is('admin') || $this->getOwnerUser()->equals($user)){
             return true;
         }
-        
+
         return false;
     }
 
@@ -136,7 +136,7 @@ trait EntityMetadata{
      */
     static function getMetadataMetadata(){
         $app = App::i();
-        
+
         $entity = isset($this) ? $this : self::getClassName();
 
         if(self::usesTypes() && is_object($entity)){
@@ -144,9 +144,9 @@ trait EntityMetadata{
         }else{
             $metas = $app->getRegisteredMetadata($entity);
         }
-        
+
         $result = array();
-        
+
         foreach($metas as $metadata){
             $result[$metadata->key] = $metadata->getMetadata();
             $result[$metadata->key]['isMetadata'] = true;
@@ -164,7 +164,7 @@ trait EntityMetadata{
      */
     function getMetadata($meta_key = null, $return_metadata_object = false){
         // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
-        
+
         if($meta_key){
             if(isset($this->__createdMetadata[$meta_key])){
                 $metadata_object = $this->__createdMetadata[$meta_key];
@@ -176,16 +176,21 @@ trait EntityMetadata{
                     }
                 }
             }
-            
+
             if($return_metadata_object){
                 $result = is_object($metadata_object) ? $metadata_object : null;
             }else{
                 $result = is_object($metadata_object) ? $metadata_object->value : null;
             }
-            
+
             return $result;
         }else{
             $result = array();
+            if(!method_exists($this->__metadata, 'toArray')){
+                var_dump($this->getClassName());
+                var_dump($this->__metadata);
+                die;
+            }
             foreach (array_merge($this->__metadata->toArray(), $this->__createdMetadata) as $metadata_object){
                 if($return_metadata_object){
                     $result[$metadata_object->key] = $metadata_object;
@@ -215,7 +220,7 @@ trait EntityMetadata{
 
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
-        
+
         $created = false;
 
         if(!$metadata_object){
@@ -223,10 +228,10 @@ trait EntityMetadata{
             $metadata_object = new $metadata_entity_class;
             $metadata_object->key = $meta_key;
             $metadata_object->owner = $this;
-            
+
             $this->__createdMetadata[$meta_key] = $metadata_object;
         }
-        
+
         if($metadata_object->value != $value){
             $this->__changedMetadata[$meta_key] = array('key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value);
             $metadata_object->value = $value;
@@ -245,8 +250,8 @@ trait EntityMetadata{
 
         foreach($metas as $meta_key => $metadata_definition){
             $metadata_object = $this->getMetadata($meta_key, true);
-            
-            
+
+
             if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value))
                 continue;
 
