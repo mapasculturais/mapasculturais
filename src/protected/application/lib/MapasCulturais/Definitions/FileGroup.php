@@ -5,6 +5,10 @@ use \MapasCulturais\App;
 
 /**
  * This class defines a File Group
+ * 
+ * @property-read string $name
+ * @property-read boolean $unique
+ * @property-read int $maxFiles
  */
 class FileGroup extends \MapasCulturais\Definition{
     use \MapasCulturais\Traits\MagicGetter;

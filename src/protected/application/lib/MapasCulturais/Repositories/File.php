@@ -8,7 +8,8 @@ class File extends \MapasCulturais\Repository{
     function findByGroup(\MapasCulturais\Entity $owner, $group){
         $app = App::i();
 
-        $result = $this->findBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
+        $repo = $app->repo($owner->getFileClassName());
+        $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
 
         $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $group);
 
@@ -20,20 +21,26 @@ class File extends \MapasCulturais\Repository{
     }
 
     function findOneByGroup(\MapasCulturais\Entity $owner, $group){
-        $result = $this->findOneBy(array('objectType' => $owner->className, 'objectId' => $owner->id, 'group' => $group));
+        $app = App::i();
+
+        $repo = $app->repo($owner->getFileClassName());
+        $result = $repo->findOneBy(array('owner' => $owner, 'group' => $group));
 
         return $result;
     }
 
     function findByOwnerGroupedByGroup(\MapasCulturais\Entity $owner){
         $app = App::i();
-        $files = $this->findBy(array('objectId' => $owner->id, 'objectType' =>  $owner->getClassName()));
+
+        $repo = $app->repo($owner->getFileClassName());
+        $files = $repo->findBy(array('owner' => $owner));
+
         $result = array();
 
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $file->group);
-                if($registeredGroup && $registeredGroup->unique || $app->getRegisteredImageTransformation($file->group) || (!$registeredGroup && !$app->getRegisteredImageTransformation($file->group))){
+                if($registeredGroup && $registeredGroup->unique){
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))
@@ -42,9 +49,9 @@ class File extends \MapasCulturais\Repository{
                     $result[trim($file->group)][] = $file;
                 }
             }
+            ksort($result);
         }
 
-        ksort($result);
 
         return $result;
     }

@@ -188,9 +188,25 @@ class Project extends \MapasCulturais\Entity
     protected $isVerified = false;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
-    protected $__metadata = array();
+    protected $__metadata;
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files;
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__termRelations;
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);

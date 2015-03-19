@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Term")
  * @ORM\HasLifecycleCallbacks
-
+ * 
+ * @property-read string $taxonomySlug
  */
 class Term extends \MapasCulturais\Entity
 {
@@ -59,6 +60,12 @@ class Term extends \MapasCulturais\Entity
 
     function getOwner(){
         return \MapasCulturais\App::i()->user;
+    }
+    
+    function getTaxonomySlug(){
+        $tax = \MapasCulturais\App::i()->getRegisteredTaxonomyById($this->taxonomy);
+        return $tax->slug;
+        
     }
 
     function __toString(){

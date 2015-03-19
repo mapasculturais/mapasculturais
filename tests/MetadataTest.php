@@ -85,7 +85,6 @@ class MetadataTests extends MapasCulturais_TestCase{
                 foreach($config['validValues'] as $val){
                     $agent->$meta_key = $val;
                     $errors = $agent->getValidationErrors();
-
                     $this->assertArrayNotHasKey($meta_key, $errors, print_r(array('type' => "assertArrayNotHasKey", 'KEY' => $meta_key, 'VALID VALUE' => $val, 'errors' => $errors), true));
                 }
 
