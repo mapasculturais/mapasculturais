@@ -65,12 +65,12 @@ trait ControllerAPI{
         App::i()->stop();
     }
 
-    protected function apiAddHeaderMetadata($data){
+    protected function apiAddHeaderMetadata($data, $count){
         if (headers_sent())
             return;
 
         $response_meta = array(
-            'count' => count($data)
+            'count' => $count
         );
 
         header('API-Metadata: ' . json_encode($response_meta));
@@ -554,11 +554,14 @@ trait ControllerAPI{
                     if(!$page){
                         $page = 1;
                     }
+                    
+                    $rs_count = count($rs);
 
                     if($page && $limit){
                         $offset = (($page - 1) * $limit);
                         $rs = array_slice($rs, $offset, $limit);
                     }
+                    
                 }else if($limit){
                     if(!$page){
                         $page = 1;
@@ -571,16 +574,20 @@ trait ControllerAPI{
                 
                     $paginator = new Paginator($query, $fetchJoinCollection = true);
                     
+                    $rs_count = $paginator->count();
+                    
                     $rs = $paginator->getIterator()->getArrayCopy();
                 }else{
                     $rs = $query->getResult();
+                    
+                    $rs_count = count($rs);
                 }
 
 
                 if($counting)
                     return count($rs);
 
-                $this->apiAddHeaderMetadata($rs);
+                $this->apiAddHeaderMetadata($rs, $rs_count);
 
 
                 $result = array_map(function($entity) use ($processEntity){
