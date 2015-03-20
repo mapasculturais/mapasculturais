@@ -186,11 +186,6 @@ trait EntityMetadata{
             return $result;
         }else{
             $result = array();
-            if(!method_exists($this->__metadata, 'toArray')){
-                var_dump($this->getClassName());
-                var_dump($this->__metadata);
-                die;
-            }
             foreach (array_merge($this->__metadata->toArray(), $this->__createdMetadata) as $metadata_object){
                 if($return_metadata_object){
                     $result[$metadata_object->key] = $metadata_object;

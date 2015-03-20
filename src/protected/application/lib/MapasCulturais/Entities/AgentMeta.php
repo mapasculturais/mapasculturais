@@ -42,6 +42,7 @@ class AgentMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Agent
      *
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Agent")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })
