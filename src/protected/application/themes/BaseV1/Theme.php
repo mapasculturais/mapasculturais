@@ -491,7 +491,8 @@ class Theme extends MapasCulturais\Theme {
         });
 
         $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
-            $joins .= " LEFT JOIN e.project p.__metadata m
+            $joins .= " LEFT JOIN e.project p
+                    LEFT JOIN e.__metadata m
                     WITH
                         m.key = 'subTitle'
                 ";
