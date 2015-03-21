@@ -129,7 +129,7 @@ trait EntityTaxonomies{
 
                 // if a term with an existent relation is not in the terms property, removes the relation.
                 }else{
-                    $tr = $app->repo('TermRelation')->findOneBy(array('term' => $term, 'objectType' => $this->getClassName(), 'objectId' => $this->id));
+                    $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $term, 'owner' => $this));
                     if($tr)
                         $tr->delete(true);
                 }
@@ -163,7 +163,7 @@ trait EntityTaxonomies{
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
             $t = $app->repo('Term')->findOneBy(array('taxonomy' => $definition->id, 'term' => $term));
-            $tr = $app->repo('TermRelation')->findOneBy(array('term' => $t, 'objectType' => $this->getClassName(), 'objectId' => $this->id));
+            $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $t, 'owner' => $this));
 
             // if the term is already associated to this entity return
             if($tr){
