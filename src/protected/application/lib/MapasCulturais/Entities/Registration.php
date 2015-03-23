@@ -152,7 +152,9 @@ class Registration extends \MapasCulturais\Entity
         }
 
         foreach($this->files as $group => $file){
-            $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+            if($file instanceof File){
+                $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+            }
         }
 
         return $json;

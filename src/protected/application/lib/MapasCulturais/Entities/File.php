@@ -26,11 +26,12 @@ use \MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectFile",
-        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventFile",
-        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentFile",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceFile",
-        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationFile"
+        "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
+        "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
+        "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
+        "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
+        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -157,7 +158,7 @@ abstract class File extends \MapasCulturais\Entity
 
         parent::save($flush);
     }
-    
+
     static function sortFilesByGroup($files){
         $app = App::i();
         $result = array();
@@ -177,13 +178,12 @@ abstract class File extends \MapasCulturais\Entity
         }
 
         ksort($result);
-        
+
         return $result;
     }
 
     public function jsonSerialize() {
-        App::i()->em->refresh($this->owner);
-        
+
         return array(
             'id' => $this->id,
             'md5' => $this->md5,
@@ -226,11 +226,11 @@ abstract class File extends \MapasCulturais\Entity
 
         return $url;
     }
-    
-    
+
+
     public function getChildren(){
         $result = [];
-        
+
         foreach($this->owner->files as $group => $files){
             if(substr($group, 0, 4) === 'img:'){
                 foreach($files as $file){
@@ -240,7 +240,7 @@ abstract class File extends \MapasCulturais\Entity
                 }
             }
         }
-        
+
         return $result;
     }
 
