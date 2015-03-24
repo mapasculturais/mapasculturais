@@ -166,7 +166,7 @@ abstract class File extends \MapasCulturais\Entity
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
-                if($registeredGroup && $registeredGroup->unique){
+                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive'){
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))
