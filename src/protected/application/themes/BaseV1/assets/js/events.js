@@ -34,7 +34,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
 
     $startsAt.mask('00:00', {
       onComplete: function(time) {
-        console.log('startsAt complete');
         var mtime = moment(time, 'HH:mm');
         var duration = $duration.val();
 
@@ -45,7 +44,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
 
     $duration.mask('99999999')
     $duration.change(function(event) {
-        console.log('duration change');
         var mtime = moment($startsAt.val(), 'HH:mm');
         var duration = $(this).val();
 
@@ -56,7 +54,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
 
     $endsAt.mask('00:00', {
       onComplete: function(time) {
-        console.log('endsAt complete');
         var mendtime = moment(time, 'HH:mm');
         var mtime = moment($startsAt.val(), 'HH:mm');
 

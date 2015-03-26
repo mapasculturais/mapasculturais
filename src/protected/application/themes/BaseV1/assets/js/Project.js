@@ -69,7 +69,7 @@
             },
             create: function(data){
                 var deferred = $q.defer();
-                $log.debug(data);
+                
                 $http.post(this.getUrl(), data)
                     .success(
                         function(response){
@@ -80,7 +80,7 @@
             },
             edit: function(data){
                 var deferred = $q.defer();
-                $log.debug(data);
+                
                 $http.post(url.create('single', data.id), data)
                     .success(
                         function(response){
@@ -103,7 +103,6 @@
 
     }]);
     module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
-
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.maxUploadSize = MapasCulturais.maxUploadSize;
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -125,12 +124,25 @@
             entity: $scope.$parent.data.entity
         };
 
+        function sortFiles(){
+            $scope.data.fileConfigurations.sort(function(a,b){
+                if(a.title > b.title){ 
+                    return 1;
+                } else if(a.title < b.title){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            });
+        }
+        
         $scope.fileConfigurationBackups = [];
 
         $scope.createFileConfiguration = function(){
             RegistrationFileConfigurationService.create($scope.data.newFileConfiguration).then(function(response){
                 if(!response.error){
                     $scope.data.fileConfigurations.push(response);
+                    sortFiles();
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
                     MapasCulturais.Messages.success('Anexo criado.');
@@ -160,6 +172,7 @@
                 };
             RegistrationFileConfigurationService.edit(data).then(function(response){
                 if(!response.error){
+                    sortFiles();
                     EditBox.close('editbox-registration-files-'+data.id);
                     MapasCulturais.Messages.success('Alterações Salvas.');
                 }
@@ -595,10 +608,8 @@
             $scope.publish = function(){
                 $http.post(url.create('publish', $scope.data.entity.id)).
                     success(function(r){
-                        console.log(r)
                         alert('publicado');
                     }).error(function(r){
-                        console.log(r);
                         alert('erro');
                     });
             };

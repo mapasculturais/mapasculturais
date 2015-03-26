@@ -886,6 +886,15 @@ class Theme extends MapasCulturais\Theme {
     function addProjectToJs(Entities\Project $entity){
         $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+        usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
+            if($a->title > $b->title){
+                return 1;
+            }else if($a->title < $b->title){
+                
+            }else{
+                return 0;
+            }
+        });
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
@@ -896,6 +905,15 @@ class Theme extends MapasCulturais\Theme {
 
     function addRegistrationToJs(Entities\Registration $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
+        usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
+            if($a->title > $b->title){
+                return 1;
+            }else if($a->title < $b->title){
+                
+            }else{
+                return 0;
+            }
+        });
         $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();

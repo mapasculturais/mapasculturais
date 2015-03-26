@@ -206,7 +206,6 @@
                     time = time || 1000;
 
                     FindService.cancel();
-                    console.log('quarenta?');
 
                     var s = $scope.searchText.trim().replace(' ', '*');
 
@@ -251,7 +250,6 @@
                     }else{
                         // final dos resultados
                         $scope.noMoreResults = true;
-                        console.log("ENTROU AQUI");
                     }
 
                 };
