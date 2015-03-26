@@ -1,5 +1,6 @@
 <?php
 namespace MapasCulturais\ApiOutputs;
+use MapasCulturais\App;
 
 class Json extends \MapasCulturais\ApiOutput{
     protected function getContentType() {
@@ -11,12 +12,14 @@ class Json extends \MapasCulturais\ApiOutput{
     }
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
-        header('Access-Control-Allow-Origin: '. \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
+        $app = App::i();
+        $app->response()->header('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
         echo json_encode($data);
     }
 
     protected function _outputItem($data, $object_name = 'Entity') {
-        header('Access-Control-Allow-Origin: '. \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
+        $app = App::i();
+        $app->response()->header('Access-Control-Allow-Origin', \MapasCulturais\App::i()->config['api.accessControlAllowOrigin']);
         echo json_encode($data);
     }
 }

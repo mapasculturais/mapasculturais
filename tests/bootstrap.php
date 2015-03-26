@@ -1,4 +1,6 @@
 <?php
+use Curl\Curl;
+
 //
 // Unit Test Bootstrap and Slim PHP Testing Framework
 // =============================================================================
@@ -14,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 date_default_timezone_set('America/Sao_Paulo');
+
 
 
 require_once __DIR__."/../src/protected/vendor/autoload.php";
@@ -183,26 +186,10 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     // slim environment
     public function request($method, $path, $options = array())
     {
-        // Capture STDOUT
-        ob_start();
-
-        // Prepare a mock environment
-        \Slim\Environment::mock(array_merge(array(
-            'REQUEST_METHOD' => $method,
-            'PATH_INFO'      => $path,
-            'SERVER_NAME'    => 'local.dev',
-        ), $options));
-
-
-        // Establish some useful references to the slim app properties
-        $this->request  = $this->app->request();
-        $this->response = $this->app->response();
-
-        // Execute our app
-        $this->app->run();
-
-        // Return the application output. Also available in `response->body()`
-        return ob_get_clean();
+        $c = new Curl;
+        $c->$method('http://localhost:8888' . $path, $options);
+        
+        return $c;
     }
 
     public function get($path, $options = array())
