@@ -177,6 +177,7 @@ trait ControllerAPI{
             $taxo_num = 0;
             $dql_joins = "";
             $dql_select = "";
+            $dql_select_joins = "";
 
             if($class::usesMetadata()){
                 $metadata_class = $class::getMetadataClassName();
@@ -281,7 +282,7 @@ trait ControllerAPI{
                     $_join_in = array_unique($_join_in);
 
                     $dql_select .= " , files, fparent";
-                    $dql_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
+                    $dql_select_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
                     $extract_data_cb = function($file, $ipath, $props){
                         $result = array();
@@ -399,12 +400,18 @@ trait ControllerAPI{
             if($select_metadata){
                 $dql_select .= ', meta';
                 $meta_keys = implode("', '", $select_metadata);
-                $dql_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
+                $dql_select_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
             }
 
             if(in_array('terms', $select)){
                 $dql_select .= ', termRelations, term';
-                $dql_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
+                $dql_select_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
+            }
+
+            // unset sql_select and dql_select_joins if using permissions filters to reduce memory usage
+            if(!$findOne && $permissions){
+                $dql_select = '';
+                $dql_select_joins = '';
             }
 
             $final_dql = "
@@ -414,6 +421,7 @@ trait ControllerAPI{
                     $class e
 
                     $dql_joins
+                    $dql_select_joins
 
                 $dql_where
 
