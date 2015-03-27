@@ -50,6 +50,13 @@ trait EntityTaxonomies{
     static function usesTaxonomies(){
         return true;
     }
+    
+    
+    
+    static function getTermRelationClassName(){
+        $class = get_called_class();
+        return $class::getClassName() . 'TermRelation';
+    }
 
     /**
      * Returns the terms of this entity grouped by taxonomy slugs
@@ -122,7 +129,7 @@ trait EntityTaxonomies{
 
                 // if a term with an existent relation is not in the terms property, removes the relation.
                 }else{
-                    $tr = $app->repo('TermRelation')->findOneBy(array('term' => $term, 'objectType' => $this->getClassName(), 'objectId' => $this->id));
+                    $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $term, 'owner' => $this));
                     if($tr)
                         $tr->delete(true);
                 }
@@ -151,10 +158,12 @@ trait EntityTaxonomies{
 
         $term = trim($term);
 
+        $term_relation_class = $this->getTermRelationClassName();
+        
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
             $t = $app->repo('Term')->findOneBy(array('taxonomy' => $definition->id, 'term' => $term));
-            $tr = $app->repo('TermRelation')->findOneBy(array('term' => $t, 'objectType' => $this->getClassName(), 'objectId' => $this->id));
+            $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $t, 'owner' => $this));
 
             // if the term is already associated to this entity return
             if($tr){
@@ -162,10 +171,9 @@ trait EntityTaxonomies{
 
             // else if the term exists, create de association
             }elseif($t){
-                $tr = new \MapasCulturais\Entities\TermRelation;
+                $tr = new $term_relation_class;
                 $tr->term = $t;
-                $tr->objectType = $this->getClassName();
-                $tr->objectId = $this->id;
+                $tr->owner = $this;
 
                 $tr->save();
                 return true;
@@ -184,10 +192,9 @@ trait EntityTaxonomies{
 
                 $t->save();
 
-                $tr = new \MapasCulturais\Entities\TermRelation;
+                $tr = new $term_relation_class;
                 $tr->term = $t;
-                $tr->objectType = $this->getClassName();
-                $tr->objectId = $this->id;
+                $tr->owner = $this;
 
                 $tr->save();
                 return true;
@@ -210,50 +217,29 @@ trait EntityTaxonomies{
      */
     function getTaxonomyTerms($taxonomy_slug = null){
         $app = App::i();
-        $class = $this->getClassName();
-
         $result = array();
 
         $taxonomies = $app->getRegisteredTaxonomies($this);
-        foreach($taxonomies as $tax)
+        foreach($taxonomies as $tax){
             $result[$tax->slug] = array();
-
-
-        if(!$this->id)
+        }
+        
+        if(!$this->id){
             return $result;
-
-
-        $query = $app->em->createQuery("
-            SELECT
-                t
-            FROM
-                \MapasCulturais\Entities\Term t
-                LEFT JOIN t.relations tr
-            WHERE
-                tr.objectType = :class AND
-                tr.objectId = :oid
-            ORDER BY
-                t.term ASC");
-
-        $query->setParameters(array(
-            'class' => $class,
-            'oid' => $this->id
-        ));
-
-        $terms = $query->getResult();
-
-        if($terms){
-
-            foreach($terms as $t){
-
-                $taxonomy = $app->getRegisteredTaxonomyById($t->taxonomy);
-                if(!key_exists($taxonomy->slug, $result))
-                        $result[$taxonomy->slug] = array();
-
-                $result[$taxonomy->slug][] = $t;
+        }
+        
+        foreach($this->__termRelations as $tr){
+            $term = $tr->term;
+            if(isset($result[$term->taxonomySlug])){
+                $result[$term->taxonomySlug][] = $term;
             }
         }
-
+        
+        foreach($result as $k => $r){
+            sort($r);
+            $result[$k] = $r;
+        }
+        
         if($taxonomy_slug){
             return key_exists($taxonomy_slug, $result) ? $result[$taxonomy_slug] : array();
         }else{

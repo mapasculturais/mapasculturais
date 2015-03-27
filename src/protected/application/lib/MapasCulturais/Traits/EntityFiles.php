@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Doctrine\Common\Collections\Criteria;
 use MapasCulturais\App;
+use MapasCulturais\Entities\File;
 
 /**
  * Defines that the entity has files.
@@ -21,6 +24,10 @@ use MapasCulturais\App;
  * @see \MapasCulturais\App::registerFileGroup()
  */
 trait EntityFiles{
+
+    function getFileClassName(){
+        return $this->getClassName() . 'File';
+    }
     /**
      * Returns the files of this entity.
      *
@@ -31,11 +38,26 @@ trait EntityFiles{
     function getFiles($group = null){
         $app = App::i();
 
-        if($group)
-            $result = $app->repo('File')->findByGroup($this, $group);
-        else
-            $result = $app->repo('File')->findByOwnerGroupedByGroup($this);
+        if($this instanceof File){
+            $files = $this->getChildren();
+            $result = [];
+            foreach($files as $file){
+                $result[substr($file->group,4)] = $file;
+            }
+        }else{
+            $result = \MapasCulturais\Entities\File::sortFilesByGroup($this->__files);
+        }
 
+        if($group){
+            $registeredGroup = $app->getRegisteredFileGroup($this->controllerId, $group);
+
+            if($registeredGroup && $registeredGroup->unique){
+                $result = isset($result[$group]) ? $result[$group] : null;
+            }else{
+                $result = isset($result[$group]) ? $result[$group] : [];
+            }
+
+        }
         return $result;
     }
 
@@ -45,12 +67,25 @@ trait EntityFiles{
      * @return \MapasCulturais\Entities\File A File.
      */
     function getFile($group){
-        $app = App::i();
+        App::i()->log->debug(__CLASS__);
+        if(!$this->__files->count()){
+            return null;
+        }
 
-        $result = $app->repo('File')->findOneByGroup($this, $group);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("group", $group))
+            ->setFirstResult(0)
+            ->setMaxResults(1);
 
-        return $result;
+        $file = $this->__files->matching($criteria);
+
+        if($file){
+            return $file[0];
+        }else{
+            return null;
+        }
     }
+
 
     /**
      * This entity uses files

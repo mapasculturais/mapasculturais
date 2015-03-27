@@ -313,6 +313,95 @@ http://id.spcultura.prefeitura.sp.gov.br/users/tonynevesneves/	tonyneves@yahoo.c
             }
         }
         return true;
+    },
+
+    'alter table file add column parent_id' => function() use($conn) {
+        echo "adicionando coluna parent_id a tabela file\n";
+        $conn->executeQuery("ALTER TABLE file ADD COLUMN parent_id INTEGER DEFAULT NULL;");
+
+        echo "adicionando FK file_file_fk";
+        $conn->executeQuery("
+        ALTER TABLE ONLY file
+            ADD CONSTRAINT file_file_fk FOREIGN KEY (parent_id) REFERENCES file(id);");
+
+        echo "deletando arquivos órfãos\n";
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\File' AND object_id NOT IN (SELECT id FROM file WHERE object_type != 'MapasCulturais\Entities\File')");
+
+        echo "atualizando o parent_id dos files que têm pai\n";
+        $conn->executeQuery("UPDATE file SET parent_id = object_id WHERE object_type = 'MapasCulturais\Entities\File'");
+
+        echo "atualizando o owner dos files que têm pai\n";
+        $conn->executeQuery("
+        UPDATE
+            file AS f
+        SET
+            grp = CONCAT('img:', f.grp),
+            object_type   = f2.object_type,
+            object_id     = f2.object_id
+        FROM (
+            SELECT * FROM file
+        ) as f2
+        WHERE
+            f.parent_id = f2.id");
+
+    },
+
+    'alter table term_relation add column id' => function() use($conn){
+        if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name = 'term_relation' AND column_name = 'id'")){
+            return true;
+        }
+
+        echo "\nremovendo PK antiga da tabela term_relation";
+        $conn->executeQuery("ALTER TABLE ONLY term_relation
+                                DROP CONSTRAINT term_relation_pk;");
+
+        echo "\nadicionando coluna id na tabela term_relation";
+        $conn->executeQuery("ALTER TABLE term_relation ADD COLUMN id SERIAL;");
+
+        echo "\ncriando nova PK na tabela term_relation";
+        $conn->executeQuery("ALTER TABLE ONLY term_relation
+                                ADD CONSTRAINT term_relation_pk PRIMARY KEY (id);");
+
+        echo "\ncriando indice owne_index na tabela term_relation";
+        $conn->executeQuery("CREATE INDEX owner_index ON term_relation USING btree (object_type, object_id)");
+
+    },
+
+    'create file and term indexes' => function () use($conn){
+        echo "\n'CREATE UNIQUE INDEX taxonomy_term_unique ON term USING btree (taxonomy, term)'";
+        $conn->executeQuery('CREATE UNIQUE INDEX taxonomy_term_unique ON term USING btree (taxonomy, term)');
+
+        echo "\nCREATE INDEX file_owner_grp_index ON file USING btree (object_type, object_id, grp)";
+        $conn->executeQuery('CREATE INDEX file_owner_grp_index ON file USING btree (object_type, object_id, grp)');
+    },
+
+    'alter metadata table add column id' => function() use($conn) {
+
+        foreach(['agent', 'event', 'space', 'project', 'registration'] as $entity){
+            $table = $entity . "_meta";
+
+            echo "\nremovendo PK antiga da tabela {$table}";
+            if($entity === 'registration'){
+                $conn->executeQuery("ALTER TABLE ONLY {$table}
+                                    DROP CONSTRAINT {$table}_pkey;");
+            }else{
+                $conn->executeQuery("ALTER TABLE ONLY {$table}
+                                    DROP CONSTRAINT {$table}_pk;");
+            }
+
+            echo "\nadicionando coluna id na tabela {$table}";
+            $conn->executeQuery("ALTER TABLE {$table} ADD COLUMN id SERIAL;");
+
+            echo "\ncriando nova PK na tabela {$table}";
+            $conn->executeQuery("ALTER TABLE ONLY {$table}
+                                    ADD CONSTRAINT {$table}_pk PRIMARY KEY (id);");
+
+            echo "\ncriando indice owner_key_index na tabela {$table}";
+            $conn->executeQuery("CREATE INDEX {$table}_owner_key_index ON {$table} USING btree (object_id, key)");
+
+            echo "\ncriando indice owner_key_value_index na tabela {$table}";
+            $conn->executeQuery("CREATE INDEX {$table}_owner_key_value_index ON {$table} USING btree (object_id, key, value)");
+        }
     }
 
 );

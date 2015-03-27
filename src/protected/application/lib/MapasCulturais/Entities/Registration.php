@@ -111,6 +111,14 @@ class Registration extends \MapasCulturais\Entity
     */
     protected $__metadata = array();
 
+    /**
+     * @var \MapasCulturais\Entities\RegistrationFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files;
+
 
     function __construct() {
         $this->owner = App::i()->user->profile;
@@ -144,7 +152,9 @@ class Registration extends \MapasCulturais\Entity
         }
 
         foreach($this->files as $group => $file){
-            $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+            if($file instanceof File){
+                $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+            }
         }
 
         return $json;

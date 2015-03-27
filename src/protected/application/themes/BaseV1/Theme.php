@@ -479,13 +479,8 @@ class Theme extends MapasCulturais\Theme {
 
             $class = $this->getClassName();
 
-            $joins .= "LEFT JOIN
-                MapasCulturais\Entities\TermRelation
-                    tr
-                WITH
-                    tr.objectType = '$class' AND
-                    tr.objectId = e.id
-                    LEFT JOIN
+            $joins .= "LEFT JOIN e.__termRelations tr
+                LEFT JOIN
                         tr.term
                             t
                         WITH
@@ -498,10 +493,9 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('repo(Event).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $joins .= " LEFT JOIN e.project p
-                LEFT JOIN MapasCulturais\Entities\EventMeta m
+                    LEFT JOIN e.__metadata m
                     WITH
-                        m.key = 'subTitle' AND
-                        m.owner = e
+                        m.key = 'subTitle'
                 ";
         });
 
@@ -974,9 +968,10 @@ class Theme extends MapasCulturais\Theme {
                 return null;
         }
 
-
-
-        $ids = $app->em->createQuery($dql)->useQueryCache(true)->setResultCacheLifetime(60 * 5)->getScalarResult();
+        $ids = $app->em->createQuery($dql)
+                ->useQueryCache(true)
+                ->setResultCacheLifetime(60 * 5)
+                ->getScalarResult();
 
         if ($ids) {
             $id = $ids[array_rand($ids)]['id'];
