@@ -12,4 +12,10 @@
 // --------------------------------------------------
 
 
-// _home.scss
+// _header.scss
+#organization-logo img {
+    @media screen and (min-width: $screen-tablet) {
+        width: 130px;
+        margin-top: 9px;
+    }
+}
