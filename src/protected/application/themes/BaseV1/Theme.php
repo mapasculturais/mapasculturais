@@ -32,6 +32,7 @@ class Theme extends MapasCulturais\Theme {
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
 
+            'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
             'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
@@ -890,7 +891,7 @@ class Theme extends MapasCulturais\Theme {
             if($a->title > $b->title){
                 return 1;
             }else if($a->title < $b->title){
-                
+
             }else{
                 return 0;
             }
@@ -909,7 +910,7 @@ class Theme extends MapasCulturais\Theme {
             if($a->title > $b->title){
                 return 1;
             }else if($a->title < $b->title){
-                
+
             }else{
                 return 0;
             }
