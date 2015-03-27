@@ -65,7 +65,7 @@ $url_search_projects = $this->searchProjectsUrl;
 </section>
 <section id="home-intro" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1>Bem-vind@!</h1>
+        <h1><?php $this->dict('home: title') ?></h1>
         <p><?php $this->dict('home: welcome') ?></p>
         <form id="home-search-form" class="clearfix" ng-non-bindable>
             <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="Digite uma palavra-chave"/>
