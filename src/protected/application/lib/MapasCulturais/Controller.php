@@ -240,7 +240,7 @@ abstract class Controller{
 
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
-
+        
         // hook like ALL(user.teste)
         $ALL_hook =  $method !== 'API' ? "ALL({$this->id}.{$action_name})" : null;
 

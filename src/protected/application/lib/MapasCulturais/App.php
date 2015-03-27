@@ -482,6 +482,8 @@ class App extends \Slim\Slim{
         $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
         $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
+        $this->registerController('user',   'MapasCulturais\Controllers\User');
+        
         $this->registerController('event',   'MapasCulturais\Controllers\Event');
         $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
