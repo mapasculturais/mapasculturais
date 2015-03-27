@@ -7,6 +7,7 @@ class Theme extends BaseV1\Theme{
 
     protected static function _getTexts(){
         return array(
+            'site: name' => 'Blumenau Mais Cultura',
             'site: in the region' => 'na Cidade de Blumenau',
             'site: of the region' => 'da Cidade de Blumenau',
             'site: owner' => 'Fundação Cultural de Blumenau',
