@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
-use \MapasCulturais\App;
+
+use MapasCulturais\App;
 
 /**
  * Defines that the entity has metadata.
@@ -24,18 +25,12 @@ trait EntityMetadata{
     use MagicGetter, MagicSetter;
 
     /**
-     * Array with the metadata entities.
-     * @var array
-     */
-    protected static $_metadata = array();
-
-    /**
      * Array of the changed metadata keys
      * @var array
      */
-    protected static $_changedMetadata = array();
+    private $__changedMetadata = array();
 
-    private $__metadata__tmpId = null;
+    private $__createdMetadata = array();
 
 
     /**
@@ -46,16 +41,14 @@ trait EntityMetadata{
         return true;
     }
 
-
-    protected function _initMetadataArrays(){
-        if(!$this->__metadata__tmpId)
-            $this->__metadata__tmpId = $this->getClassName() . ':' . uniqid ();
-
-        if(!key_exists($this->__metadata__tmpId, self::$_metadata)){
-
-            self::$_metadata[$this->__metadata__tmpId] = array();
-            self::$_changedMetadata[$this->__metadata__tmpId] = array();
-        }
+    /**
+     * Return the metadata entity class name for this Entity
+     *
+     * @return string
+     */
+    public static function getMetadataClassName(){
+        $class = get_called_class();
+        return $class::getClassName() . 'Meta';
     }
 
     /**
@@ -65,8 +58,6 @@ trait EntityMetadata{
      * @return mixed The metadata value.
      */
     function __metadata__get($name){
-        $this->_initMetadataArrays();
-
         if($this->getRegisteredMetadata($name)){
             return $this->getMetadata($name);
         }
@@ -79,7 +70,6 @@ trait EntityMetadata{
      * otherwise.
      */
     function __metadata__set($name, $value){
-        $this->_initMetadataArrays();
 
         if($this->getRegisteredMetadata($name)){
             $this->setMetadata($name, $value);
@@ -95,14 +85,14 @@ trait EntityMetadata{
      * @return \MapasCulturais\MetadataDefinition|\MapasCulturais\MetadataDefinition[]
      */
     function getRegisteredMetadata($meta_key = null){
-        $this->_initMetadataArrays();
 
         $app = App::i();
 
-        if($this->usesTypes())
-            $metas = App::i()->getRegisteredMetadata($this, $this->getType());
-        else
-            $metas = App::i()->getRegisteredMetadata($this);
+        if($this->usesTypes()){
+            $metas = $app->getRegisteredMetadata($this, $this->getType());
+        }else{
+            $metas = $app->getRegisteredMetadata($this);
+        }
 
         $can_view = $this->canUser('viewPrivateData');
 
@@ -118,21 +108,23 @@ trait EntityMetadata{
             }
         }
 
-        if($meta_key)
+        if($meta_key){
             return key_exists ($meta_key, $metas) ? $metas[$meta_key] : null;
-        else
+        }else{
             return $metas;
+        }
     }
 
     protected function canUserViewPrivateData($user){
-        # TODO: verify if superAdmin shouldn't be checked
-        if(
-                $user->is('admin') ||
-                $user->id ==
-                $this->getOwnerUser()->id)
-            return true;
-        else
+        if($user->is('guest')){
             return false;
+        }
+
+        if($user->is('admin') || $this->getOwnerUser()->equals($user)){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -143,15 +135,18 @@ trait EntityMetadata{
      * @return array The metadata for the registered metadata.
      */
     static function getMetadataMetadata(){
+        $app = App::i();
+
         $entity = isset($this) ? $this : self::getClassName();
 
-
-        if(self::usesTypes() && is_object($entity))
-            $metas = App::i()->getRegisteredMetadata($entity, $entity->getType());
-        else
-            $metas = App::i()->getRegisteredMetadata($entity);
+        if(self::usesTypes() && is_object($entity)){
+            $metas = $app->getRegisteredMetadata($entity, $entity->getType());
+        }else{
+            $metas = $app->getRegisteredMetadata($entity);
+        }
 
         $result = array();
+
         foreach($metas as $metadata){
             $result[$metadata->key] = $metadata->getMetadata();
             $result[$metadata->key]['isMetadata'] = true;
@@ -168,53 +163,42 @@ trait EntityMetadata{
      * @return array|mixed The value of the given metadata key or an array of values for all metadatas for this entity.
      */
     function getMetadata($meta_key = null, $return_metadata_object = false){
-        $this->_initMetadataArrays();
-
-        if(!$this->id)
-            return $meta_key ? null : array();
-
-
-        if(!self::$_metadata[$this->__metadata__tmpId]){
-            $app = App::i();
-
-            $class = $this->getClassName();
-
-            if(class_exists($class.'Meta')){
-                // @TODO replace this lines by "$result = $this->__metadata;"
-                $metadata_entity_class = $class.'Meta';
-                $repo = $app->repo($metadata_entity_class);
-                $result = $repo->findBy(array('owner' => $this));
-            }else{
-                $metadata_entity_class = '\MapasCulturais\Entities\Metadata';
-                $repo = $app->repo($metadata_entity_class);
-                $result = $repo->findBy(array('ownerId' => $this->id, 'ownerType' => $class));
-            }
-
-            foreach($result as $meta)
-                self::$_metadata[$this->__metadata__tmpId][trim($meta->key)] = $meta;
-
-
-        }
+        // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
 
         if($meta_key){
-            if($return_metadata_object)
-                $result = key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]) ? self::$_metadata[$this->__metadata__tmpId][$meta_key] : null;
-            else
-                $result = key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]) ? self::$_metadata[$this->__metadata__tmpId][$meta_key]->value : null;
+            if(isset($this->__createdMetadata[$meta_key])){
+                $metadata_object = $this->__createdMetadata[$meta_key];
+            }else{
+                $metadata_object = null;
+                foreach($this->__metadata as $_metadata_object){
+                    if($_metadata_object->key == $meta_key){
+                        $metadata_object = $_metadata_object;
+                    }
+                }
+            }
+
+            if($return_metadata_object){
+                $result = is_object($metadata_object) ? $metadata_object : null;
+            }else{
+                $result = is_object($metadata_object) ? $metadata_object->value : null;
+            }
+
             return $result;
         }else{
             $result = array();
-            foreach (self::$_metadata[$this->__metadata__tmpId] as $key => $obj)
-                if($return_metadata_object)
-                    $result[$key] = $obj;
-                else
-                    $result[$key] = $obj->value;
+            foreach (array_merge($this->__metadata->toArray(), $this->__createdMetadata) as $metadata_object){
+                if($return_metadata_object){
+                    $result[$metadata_object->key] = $metadata_object;
+                }else{
+                    $result[$metadata_object->key] = $metadata_object->value;
+                }
+            }
             return $result;
         }
     }
 
     function getChangedMetadata(){
-        return self::$_changedMetadata[$this->__metadata__tmpId];
+        return $this->__changedMetadata;
     }
 
     /**
@@ -228,43 +212,25 @@ trait EntityMetadata{
      * @param mixed the value of the metadata.
      */
     function setMetadata($meta_key, $value){
-        $this->_initMetadataArrays();
 
-        $app = App::i();
-        $meta = null;
+        $metadata_entity_class = $this->getMetadataClassName();
+        $metadata_object = $this->getMetadata($meta_key, true);
 
-        $class = $this->getClassName();
+        $created = false;
 
-        if(class_exists($class.'Meta')){
-            $metadata_entity_class = $class.'Meta';
-            $repo = $app->repo($metadata_entity_class);
-            if(key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]))
-                $meta = self::$_metadata[$this->__metadata__tmpId][$meta_key];
-            else if($this->id)
-                $meta = $repo->findOneBy(array('owner' => $this, 'key' => $meta_key));
+        if(!$metadata_object){
+            $created = true;
+            $metadata_object = new $metadata_entity_class;
+            $metadata_object->key = $meta_key;
+            $metadata_object->owner = $this;
 
-        }else{
-            $metadata_entity_class = '\MapasCulturais\Entities\Metadata';
-            $repo = $app->repo($metadata_entity_class);
-            if(key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]))
-                $meta = self::$_metadata[$this->__metadata__tmpId][$meta_key];
-            else if($this->id)
-                $meta = $repo->findOneBy(array('ownerId' => $this->id, 'ownerType' => $class, 'key' => $meta_key));
+            $this->__createdMetadata[$meta_key] = $metadata_object;
         }
 
-
-        if(!$meta){
-            $meta = new $metadata_entity_class;
-            $meta->key = $meta_key;
-            $meta->owner = $this;
+        if($metadata_object->value != $value){
+            $this->__changedMetadata[$meta_key] = array('key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value);
+            $metadata_object->value = $value;
         }
-        //var_dump(array($meta_key, $value, $meta->value));
-        if($meta->value != $value){
-            self::$_changedMetadata[$this->__metadata__tmpId][$meta_key] = array('key'=> $meta_key, 'oldValue'=> $meta->value, 'newValue'=> $value);
-           $meta->value = $value;
-        }
-
-        self::$_metadata[$this->__metadata__tmpId][$meta_key] = $meta;
     }
 
     /**
@@ -273,20 +239,18 @@ trait EntityMetadata{
      * @return array Errors
      */
     function getMetadataValidationErrors(){
-        $this->_initMetadataArrays();
-
-        $this->getMetadata();
         $errors = array();
 
         $metas = $this->getRegisteredMetadata();
 
-        foreach($metas as $meta_key => $meta){
-            if(!$meta->is_required && (!key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]) || !self::$_metadata[$this->__metadata__tmpId][$meta_key]->value))
+        foreach($metas as $meta_key => $metadata_definition){
+            $metadata_object = $this->getMetadata($meta_key, true);
+
+
+            if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value))
                 continue;
 
-
-            $metadata_definition = $this->getRegisteredMetadata($meta_key);
-            $val = key_exists($meta_key, self::$_metadata[$this->__metadata__tmpId]) ? self::$_metadata[$this->__metadata__tmpId][$meta_key]->value : null;
+            $val = is_object($metadata_object) ? $metadata_object->value : null;
 
             $metadata_value_errors = $metadata_definition->validate($this, $val);
 
@@ -301,17 +265,12 @@ trait EntityMetadata{
     /**
      * Saves the metadata values to the database.
      *
-     * This method calls the save method of the metadata object passing true to the flush param.
-     *
      * @see \MapasCulturais\Entity::save()
      */
     public function saveMetadata(){
-        $this->_initMetadataArrays();
-
-        $saved = false;
-        foreach(self::$_changedMetadata[$this->__metadata__tmpId] as $meta_key=>$meta_value){
-            $saved = true;
-            self::$_metadata[$this->__metadata__tmpId][$meta_key]->save();
+        foreach(array_keys($this->__changedMetadata) as $meta_key){
+            $metadata_object = $this->getMetadata($meta_key, true);
+            $metadata_object->save();
         }
     }
 }

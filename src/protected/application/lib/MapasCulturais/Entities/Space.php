@@ -82,14 +82,14 @@ class Space extends \MapasCulturais\Entity
      */
     protected $name;
 
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     protected $public = false;
-    
+
     /**
      * @var string
      *
@@ -124,7 +124,7 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
-    
+
     /**
      * @var \MapasCulturais\Entities\EventOccurrence[] Event Occurrences
      *
@@ -155,9 +155,7 @@ class Space extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      */
     protected $owner;
 
@@ -174,12 +172,28 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
      */
     protected $isVerified = false;
-    
-    
+
+
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
-    protected $__metadata = array();
+    protected $__metadata;
+
+    /**
+     * @var \MapasCulturais\Entities\SpaceFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files;
+
+    /**
+     * @var \MapasCulturais\Entities\SpaceTermRelation[] TermRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__termRelations;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

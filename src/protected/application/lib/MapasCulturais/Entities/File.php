@@ -13,8 +13,7 @@ use \MapasCulturais\App;
  * @property-read string $mimeType File Mime Type
  * @property-read string $name File name
  * @property-read string $group File Group (gallery|avatar|download|etc.)
- * @property-read string $objectType File Owner Class Name
- * @property-read id $objectId File Owner Id
+ * @property-read \MapasCulturais\Entity $owner File Owner
  * @property-read \DateTime $createTimestamp File Create Timestamp
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
@@ -23,8 +22,19 @@ use \MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
+        "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
+        "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
+        "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
+        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
+   })
  */
-class File extends \MapasCulturais\Entity
+abstract class File extends \MapasCulturais\Entity
 {
     use \MapasCulturais\Traits\EntityFiles;
 
@@ -75,31 +85,11 @@ class File extends \MapasCulturais\Entity
     protected $description;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="string", nullable=false)
-     */
-    protected $objectType;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
-    protected $objectId;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
-
-    /**
-     * The owner entity of this file
-     * @var \MapasCulturais\Entity
-     */
-    protected $_owner;
 
     /**
      * An array like an item of $_FILE
@@ -131,14 +121,37 @@ class File extends \MapasCulturais\Entity
         $this->name = $tmp_file['name'];
         $this->mimeType = $tmp_file['type'];
 
+        if(isset($tmp_file['parent'])){
+            $this->parent = $tmp_file['parent'];
+        }
+
         parent::__construct();
     }
 
+    /**
+     * Returns the controller with the same name in the parent namespace if it exists.
+     *
+     * @return \MapasCulturais\Controller The controller
+     */
+    public function getController(){
+        return App::i()->getControllerByEntity(__CLASS__);
+    }
+
+    /**
+     * Returns the controller with the same name in the parent namespace if it exists.
+     *
+     * @return \MapasCulturais\Controller The controller
+     */
+    public function getControllerId(){
+        return App::i()->getControllerIdByEntity(__CLASS__);
+    }
+
     protected function canUserCreate($user){
-        if($this->owner && $this->owner->className == $this->className)
+        if($this->_parent){
             return true;
-        else
+        }else{
             return $this->owner->canUser('modify');
+        }
     }
 
     protected function canUserRemove($user){
@@ -159,9 +172,32 @@ class File extends \MapasCulturais\Entity
 
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
-            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            throw new \MapasCulturais\Exfilesceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
         parent::save($flush);
+    }
+
+    static function sortFilesByGroup($files){
+        $app = App::i();
+        $result = array();
+
+        if($files){
+            foreach($files as $file){
+                $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
+                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive'){
+                    $result[trim($file->group)] = $file;
+                }else{
+                    if(!key_exists($file->group, $result))
+                        $result[trim($file->group)] = array();
+
+                    $result[trim($file->group)][] = $file;
+                }
+            }
+        }
+
+        ksort($result);
+
+        return $result;
     }
 
     public function jsonSerialize() {
@@ -173,7 +209,7 @@ class File extends \MapasCulturais\Entity
             'name' => $this->name,
             'description' => $this->description,
             'group' => $this->group,
-            'files' => $this->files,
+            'files' => $this->getFiles(),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
         );
@@ -186,27 +222,6 @@ class File extends \MapasCulturais\Entity
 
     public function setGroup($val){
         $this->group = trim($val);
-    }
-
-    /**
-     * Returns the owner of this metadata
-     * @return \MapasCulturais\Entity
-     */
-    public function getOwner(){
-        if(!$this->_owner && ($this->objectType && $this->objectId))
-            $this->_owner = App::i()->repo($this->objectType)->find($this->objectId);
-
-        return $this->_owner;
-    }
-
-    /**
-     * Set the owner of this metadata
-     * @param \MapasCulturais\Entity $owner
-     */
-    public function setOwner(\MapasCulturais\Entity $owner){
-        $this->_owner = $owner;
-        $this->objectType = $owner->className;
-        $this->objectId = $owner->id;
     }
 
     /**
@@ -230,21 +245,50 @@ class File extends \MapasCulturais\Entity
         return $url;
     }
 
+
+    public function getChildren(){
+        $result = [];
+        $app = App::i();
+        if($this->tmpFile){
+            $app->em->refresh($this->owner);
+        }
+
+        foreach($this->owner->files as $group => $files){
+            if(substr($group, 0, 4) === 'img:'){
+                foreach($files as $file){
+                    if($file->parent->equals($this)){
+                        $result[] = $file;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
     public function getPath(){
         return App::i()->storage->getPath($this);
     }
 
     public function transform($transformation_name){
+
         if(!preg_match('#^image/#i',$this->mimeType))
                 return null;
 
-        $wideimage_operations = App::i()->getRegisteredImageTransformation($transformation_name);
+        $app = App::i();
+
+        $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
+
+        $app->disableAccessControl();
 
         if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
-            return $this->_cropCenter($transformation_name, $match[1], $match[2]);
+            $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
         }else{
-            return $this->_transform($transformation_name, $wideimage_operations);
+            $transformed = $this->_transform($transformation_name, $wideimage_operations);
         }
+
+        $app->enableAccessControl();
+        return $transformed;
     }
 
     /**
@@ -260,6 +304,11 @@ class File extends \MapasCulturais\Entity
         if(!trim($wideimage_operations))
             return $this;
 
+
+        $transformation_group_name = 'img:' . $transformation_name;
+
+        $owner = $this->owner;
+
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
         $hash = md5($this->md5 . $this->name . $wideimage_operations);
@@ -267,8 +316,17 @@ class File extends \MapasCulturais\Entity
         // modify the filename adding the hash before the file extension. ex: file.png => file-5762a89ee8e05021006d6c35095903b5.png
         $image_name = preg_replace("#(\.[[:alnum:]]+)$#i", '-' . $hash . '$1', $this->name);
 
-        if(key_exists($transformation_name, $this->files))
-            return $this->files[$transformation_name];
+        if(isset($owner->files[$transformation_group_name]) && is_array($owner->files[$transformation_group_name])){
+            foreach($owner->files[$transformation_group_name] as $transformed){
+                if($transformed->parent->equals($this) && $transformed->group == $transformation_group_name){
+                    return $transformed;
+                }
+            }
+        }
+
+        if($transformed = $this->repo()->findBy(['parent' => $this, 'group' => $transformation_group_name])){
+            return $transformed;
+        }
 
         if(!file_exists($this->getPath()))
             return $this;
@@ -281,17 +339,20 @@ class File extends \MapasCulturais\Entity
 
         $new_image->saveToFile( $tmp_filename );
 
-        $image = new File(array(
+        $file_class = $this->getClassName();
+
+        $image = new $file_class(array(
             'error' => UPLOAD_ERR_OK,
             'name' => $image_name,
             'type' => $this->mimeType,
             'tmp_name' => $tmp_filename,
-            'size' => filesize($tmp_filename)
+            'size' => filesize($tmp_filename),
+            'parent' => $this
         ));
 
-        $image->group = $transformation_name;
+        $image->group = $transformation_group_name;
 
-        $image->setOwner($this);
+        $image->owner = $owner;
 
         $image->save(true);
 
@@ -306,14 +367,14 @@ class File extends \MapasCulturais\Entity
     public function _prePersist($args = null){
         $app = App::i();
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
 
         $app->storage->add($this);
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
 
         $this->owner->clearFilesCache();
@@ -321,11 +382,11 @@ class File extends \MapasCulturais\Entity
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        $files = $this->repo()->findBy(array('objectType' => __CLASS__, 'objectId' => $this->id));
+        $files = $this->repo()->findBy(array('parent' => $this));
         foreach($files as $f)
             $f->delete(true);
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before', $args);
     }
     /** @ORM\PostRemove */
@@ -333,7 +394,7 @@ class File extends \MapasCulturais\Entity
         $app = App::i();
         $app->storage->remove($this);
 
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after', $args);
 
         $this->owner->clearFilesCache();
@@ -341,12 +402,12 @@ class File extends \MapasCulturais\Entity
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before', $args);
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        $_hook_class = $this->getHookClassPath($this->objectType);
+        $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after', $args);
 
         $this->owner->clearFilesCache();

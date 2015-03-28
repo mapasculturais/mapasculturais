@@ -74,11 +74,19 @@ abstract class Entity implements \JsonSerializable{
     public function __construct() {
         $app = App::i();
 
+        foreach($app->em->getClassMetadata($this->getClassName())->associationMappings as $field => $conf){
+            if($conf['type'] === 4){
+                $this->$field = new \Doctrine\Common\Collections\ArrayCollection;
+            }
+        }
+
         foreach($app->em->getClassMetadata($this->getClassName())->fieldMappings as $field => $conf){
+
             if($conf['type'] == 'point'){
                 $this->$field = new Types\GeoPoint(0,0);
             }
         }
+
         if(property_exists($this, 'createTimestamp'))
                 $this->createTimestamp = new \DateTime;
 
@@ -88,7 +96,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
-
     }
 
     function __toString() {
@@ -218,10 +225,10 @@ abstract class Entity implements \JsonSerializable{
             return true;
 
         $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
-        
+
         $use_cache = false; //$app->config['app.usePermissionsCache'];
         $cache_id = "{$this}->{$user}->$action";
-        
+
         if($use_cache & $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
@@ -235,11 +242,11 @@ abstract class Entity implements \JsonSerializable{
         }elseif($action != '@control'){
             $result = $this->genericPermissionVerification($user);
         }
-        
+
         if($use_cache){
             $app->cache->save($cache_id, $result, $app->config['app.permissionsCache.lifetime']);
         }
-        
+
         return $result;
     }
 
@@ -539,6 +546,9 @@ abstract class Entity implements \JsonSerializable{
         Entity::$_jsonSerializeNestedObjects[$_uid] = $this;
 
         foreach($this as $prop => $val){
+            if($prop[0] == '_')
+                continue;
+
             if($prop[0] == '_' && method_exists($this, 'get' . substr($prop, 1)))
                 $prop = substr ($prop, 1);
 
@@ -735,29 +745,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
-
-        if($this->usesFiles()){
-            foreach($this->files as $files){
-                if(is_array($files)){
-                    foreach($files as $f){
-                        $f->delete();
-                    }
-                }elseif(is_object($files)){
-                    $files->delete();
-                }
-            }
-        }
-
-        if($this->usesMetadata()){
-            foreach($this->getMetadata(null,true) as $m)
-                $m->delete();
-        }
-
-        if($this->usesTaxonomies()){
-            $relations = $app->repo('TermRelation')->findBy(array('objectType' => $this->getClassName(), 'objectId' => $this->id));
-            foreach($relations as $tr)
-                $tr->delete();
-        }
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
     }

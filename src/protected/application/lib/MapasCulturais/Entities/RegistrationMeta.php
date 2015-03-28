@@ -13,15 +13,21 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class RegistrationMeta extends \MapasCulturais\Entity
-{
+class RegistrationMeta extends \MapasCulturais\Entity {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="registration_meta_id_seq", allocationSize=1, initialValue=1)
+     */
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="key", type="string", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     protected $key;
 
@@ -35,8 +41,6 @@ class RegistrationMeta extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Registration
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")

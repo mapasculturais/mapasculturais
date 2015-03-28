@@ -12,9 +12,14 @@ class Theme extends BaseV1\Theme{
             'site: owner' => 'Fundação Cultural de Blumenau',
             'site: by the site owner' => 'pela Fundação Cultural de Blumenau',
 
+            'home: title' => "Bem-vind@ plataforma " . App::i()->siteName,
             'home: abbreviation' => "FCBlu",
 //            'home: colabore' => "Colabore com o Mapas Culturais",
-//            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
+            'home: welcome' => "
+                <p>Esta plataforma é o elo entre os agentes culturais, espaços, projetos, eventos e as pessoas interessadas em Cultura. A cidade de Blumenau, em consonância com as diretrizes do Ministério da Cultura (MinC), disponibiliza a partir de agora, informações sobre a Cultura da cidade a toda a comunidade.</p>
+                <p>Blumenau Mais Cultura é uma plataforma livre, gratuita e colaborativa de mapeamento do cenário cultural blumenauense. Com ela a comunidade pode inteirar-se dos acontecimentos culturais sejam eles oficiais desenvolvidos pelo poder público ou desenvolvidos pela iniciativa privada. Para que toda a agenda cultural encontre-se no Blumenau Mais Cultura é necessário que os agentes culturais se cadastrem e mantenham atualizadas suas ações culturais.</p>
+                <p>Por fim, o Blumenau Mais Cultura torna-se um repositório de informações culturais da cidade, ou seja, ele permite que sejam contabilizadas as ações culturais realizadas na cidade servindo para monitoramento da evolução da Cultura no município.</p>
+            ",
 //            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
 //            'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural paulistana. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
 //            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",

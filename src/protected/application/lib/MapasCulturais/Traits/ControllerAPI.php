@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 trait ControllerAPI{
 
@@ -64,12 +65,12 @@ trait ControllerAPI{
         App::i()->stop();
     }
 
-    protected function apiAddHeaderMetadata($data){
+    protected function apiAddHeaderMetadata($data, $count){
         if (headers_sent())
             return;
 
         $response_meta = array(
-            'count' => count($data)
+            'count' => $count
         );
 
         header('API-Metadata: ' . json_encode($response_meta));
@@ -175,18 +176,18 @@ trait ControllerAPI{
             $meta_num = 0;
             $taxo_num = 0;
             $dql_joins = "";
+            $dql_select = "";
+            $dql_select_joins = "";
 
             if($class::usesMetadata()){
-                if(class_exists($class).'Meta'){
-                    $metadata_class = $class.'Meta';
-                    $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.owner = e AND {ALIAS}.key = '{KEY}'\n";
-                }else{
-                    $metadata_class = '\MapasCulturais\Entities\Metadata';
-                    $dql_join_template = "\n\tLEFT JOIN $metadata_class {ALIAS} WITH {ALIAS}.objectType = '$class' AND {ALIAS}.objectId = e.id AND {ALIAS}.key = '{KEY}'\n";
-                }
+                $metadata_class = $class::getMetadataClassName();
 
-                foreach($app->getRegisteredMetadata($this->entityClassName) as $meta)
+                $metadata_class = $class.'Meta';
+                $dql_join_template = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'\n";
+
+                foreach($app->getRegisteredMetadata($this->entityClassName) as $meta){
                     $entity_metadata[] = $meta->key;
+                }
             }
 
             if($class::usesTaxonomies()){
@@ -197,7 +198,7 @@ trait ControllerAPI{
                     $taxonomies_ids['term:' . $obj->slug] = $obj->id;
                 }
 
-                $dql_join_term_template = "\n\tLEFT JOIN MapasCulturais\Entities\TermRelation {ALIAS_TR} WITH {ALIAS_TR}.objectType = '$class' AND {ALIAS_TR}.objectId = e.id LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
+                $dql_join_term_template = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
             }
 
             $keys = array();
@@ -205,6 +206,7 @@ trait ControllerAPI{
             $append_files_cb = function(){};
 
             $select = array('id');
+            $select_metadata = array();
             $order = null;
             $op = ' AND ';
             $offset = null;
@@ -214,10 +216,18 @@ trait ControllerAPI{
             $permissions = null;
 
             $dqls = array();
+
             foreach($qdata as $key => $val){
                 $val = trim($val);
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
+
+                    foreach($select as $prop){
+                        if(in_array($prop, $entity_metadata)){
+                            $select_metadata[] = $prop;
+                        }
+                    }
+
                     continue;
                 }elseif(strtolower($key) == '@keyword'){
                     $keyword = $val;
@@ -257,6 +267,22 @@ trait ControllerAPI{
                         'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : array('url')
                     );
 
+                    $_join_in = [];
+
+                    foreach($cfg['files'] as $_f){
+                        if(strpos($_f, '.') > 0){
+                            list($_f_group, $_f_transformation) = explode('.', $_f);
+                            $_join_in[] = $_f_group;
+                            $_join_in[] = 'img:' . $_f_transformation;
+                        }else{
+                            $_join_in[] = $_f;
+                        }
+                    }
+
+                    $_join_in = array_unique($_join_in);
+
+                    $dql_select .= " , files, fparent";
+                    $dql_select_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
                     $extract_data_cb = function($file, $ipath, $props){
                         $result = array();
@@ -371,17 +397,35 @@ trait ControllerAPI{
                 }
             }
 
+            if($select_metadata){
+                $dql_select .= ', meta';
+                $meta_keys = implode("', '", $select_metadata);
+                $dql_select_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
+            }
+
+            if(in_array('terms', $select)){
+                $dql_select .= ', termRelations, term';
+                $dql_select_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
+            }
+
+            // unset sql_select and dql_select_joins if using permissions filters to reduce memory usage
+            if(!$findOne && $permissions){
+                $dql_select = '';
+                $dql_select_joins = '';
+            }
+
             $final_dql = "
                 SELECT
-                    e
+                    e $dql_select
                 FROM
                     $class e
+
                     $dql_joins
+                    $dql_select_joins
 
                 $dql_where
 
                $order";
-
             $result[] = "$final_dql";
 
             if($app->config['app.log.apiDql'])
@@ -459,17 +503,14 @@ trait ControllerAPI{
                 return $entity;
             };
 
-
-            if(is_array($permissions)){
-                $permissions[] = 'view';
-            }else{
-                $permissions = array('view');
-            }
-
             if($findOne){
-                $query->setMaxResults(1);
+                $query->setFirstResult(0)
+                      ->setMaxResults(1);
 
-                if($r = $query->getOneOrNullResult()){
+                $paginator = new Paginator($query, $fetchJoinCollection = true);
+
+                if(count($paginator)){
+                    $r = $paginator->getIterator()->current();
 
                     if($permissions){
                         foreach($permissions as $perm){
@@ -496,40 +537,65 @@ trait ControllerAPI{
                 return $entity;
             }else{
 
-                $rs = $query->getResult();
-                $result = array();
+                if($permissions){
+                    $rs = $query->getResult();
+                    $result = array();
 
-                $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                    foreach($permissions as $perm){
-                        $perm = trim($perm);
-                        if($perm[0] === '!'){
-                            $not = true;
-                            $_perm = substr($perm,1);
-                        }else{
-                            $not = false;
-                            $_perm = $perm;
+                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
+                        foreach($permissions as $perm){
+                            $perm = trim($perm);
+                            if($perm[0] === '!'){
+                                $not = true;
+                                $_perm = substr($perm,1);
+                            }else{
+                                $not = false;
+                                $_perm = $perm;
+                            }
+                            $can = $entity->canUser($_perm);
+                            return $not ? !$can : $can;
                         }
-                        $can = $entity->canUser($_perm);
-                        return $not ? !$can : $can;
+
+                        return true;
+                    }));
+
+                    if(!$page){
+                        $page = 1;
                     }
 
-                    return true;
-                }));
+                    $rs_count = count($rs);
+
+                    if($page && $limit){
+                        $offset = (($page - 1) * $limit);
+                        $rs = array_slice($rs, $offset, $limit);
+                    }
+
+                }else if($limit){
+                    if(!$page){
+                        $page = 1;
+                    }
+
+                    $offset = ($page - 1) * $limit;
+
+                    $query->setFirstResult($offset)
+                          ->setMaxResults($limit);
+
+                    $paginator = new Paginator($query, $fetchJoinCollection = true);
+
+                    $rs_count = $paginator->count();
+
+                    $rs = $paginator->getIterator()->getArrayCopy();
+                }else{
+                    $rs = $query->getResult();
+
+                    $rs_count = count($rs);
+                }
 
 
                 if($counting)
                     return count($rs);
 
-                $this->apiAddHeaderMetadata($rs);
+                $this->apiAddHeaderMetadata($rs, $rs_count);
 
-                if(!$page){
-                    $page = 1;
-                }
-
-                if($page && $limit){
-                    $offset = (($page - 1) * $limit);
-                    $rs = array_slice($rs, $offset, $limit);
-                }
 
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
