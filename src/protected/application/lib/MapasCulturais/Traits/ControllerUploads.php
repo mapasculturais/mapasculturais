@@ -68,8 +68,8 @@ trait ControllerUploads{
             return ;
         }
 
-        $result = array();
-        $files = array();
+        $result = [];
+        $files = [];
 
         // the group of the files is the key in $_FILES array
         foreach(array_keys($_FILES) as $group_name){
@@ -87,7 +87,7 @@ trait ControllerUploads{
                     }elseif(is_array($file) && !$upload_group->unique){
                         foreach($file as $f){
                             if($error = $upload_group->getError($f)){
-                                $files[] = array('error' => $error, 'group' => $upload_group);
+                                $files[] = ['error' => $error, 'group' => $upload_group];
                             }else{
                                 $f->group = $group_name;
                                 $files[] = $f;
@@ -100,7 +100,7 @@ trait ControllerUploads{
                             $file->description = $this->data['description'][$group_name];
 
                         if($error = $upload_group->getError($file)){
-                            $files[] = array('error' => $error, 'group' => $upload_group);
+                            $files[] = ['error' => $error, 'group' => $upload_group];
                         }else{
                             $file->group = $group_name;
                             $files[] = $file;
@@ -108,7 +108,10 @@ trait ControllerUploads{
                     }
 
                 }catch(\MapasCulturais\Exceptions\FileUploadError $e){
-                    $files[] = array('error' => App::txt($e->message), 'group' => $upload_group);
+                    $files[] = [
+                        'error' => App::txt($e->message), 
+                        'group' => $upload_group
+                    ];
                 }
             }
         }
@@ -127,7 +130,7 @@ trait ControllerUploads{
             }
 
             if($all_files_contains_error){
-                $result = array();
+                $result = [];
                 foreach($files as $error)
                     if(key_exists('group',$error) && $error['group']->unique)
                         $result[$error['group']->name] = $error['error'];
@@ -145,7 +148,7 @@ trait ControllerUploads{
 
             // if this group is unique, deletes the existent file
             if($upload_group->unique){
-                $old_file = $app->repo($file_class_name)->findOneBy(array('owner' => $owner, 'group' => $file->group));
+                $old_file = $app->repo($file_class_name)->findOneBy(['owner' => $owner, 'group' => $file->group]);
                 if($old_file)
                     $old_file->delete();
             }
@@ -157,7 +160,7 @@ trait ControllerUploads{
                 $result[$file_group] = $file;
             }else{
                 if(!key_exists($file->group, $result))
-                        $result[$file->group] = array();
+                        $result[$file->group] = [];
                 $result[$file_group][] = $file;
             }
         }

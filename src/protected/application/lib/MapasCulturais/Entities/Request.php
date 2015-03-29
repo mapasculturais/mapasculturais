@@ -122,7 +122,7 @@ abstract class Request extends \MapasCulturais\Entity{
      *
      * @ORM\Column(name="metadata", type="array", nullable=true)
      */
-    protected $metadata = array();
+    protected $metadata = [];
 
 
     private $_origin = null;
@@ -229,13 +229,13 @@ abstract class Request extends \MapasCulturais\Entity{
     abstract protected function _doApproveAction();
 
     static function generateRequestUid($originType, $originId, $destinationType, $destinationId, $metadata){
-        return md5(json_encode(array(
+        return md5(json_encode([
             $originType,
             $originId,
             $destinationType,
             $destinationId,
             $metadata
-        )));
+        ]));
     }
 
     function generateUid(){
@@ -245,7 +245,7 @@ abstract class Request extends \MapasCulturais\Entity{
     function save($flush = false) {
         $this->requestUid = $this->generateUid();
         
-        $request = $this->repo()->findOneBy(array('requestUid' => $this->requestUid));
+        $request = $this->repo()->findOneBy(['requestUid' => $this->requestUid]);
         
         if($request && !$request->equals($this)){
             $request->_applyPostPersistHooks();

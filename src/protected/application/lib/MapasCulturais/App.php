@@ -22,7 +22,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read String $projectRegistrationAgentRelationGroupName Project Registration Agent Relation Group Name
  *
  * From Slim Class Definition
- * @property-read array[\Slim] $apps = array()
+ * @property-read array[\Slim] $apps = []
  * @property-read string $name The Slim Application name
  * @property-read array $environment
  * @property-read \Slim\Http\Request $request
@@ -95,7 +95,7 @@ class App extends \Slim\Slim{
      * App Configuration.
      * @var array
      */
-    protected $_config = array();
+    protected $_config = [];
 
     /**
      * The Application Registry.
@@ -104,31 +104,31 @@ class App extends \Slim\Slim{
      *
      * @var type
      */
-    protected $_register = array(
-            'controllers' => array(),
-            'auth_providers' => array(),
-            'controllers-by-class' => array(),
-            'controllers_default_actions' => array(),
-            'controllers_view_dirs' => array(),
-            'entity_type_groups' => array(),
-            'entity_types' => array(),
-            'entity_metadata_definitions' => array(),
-            'file_groups' => array(),
-            'metalist_groups' => array(),
-            'taxonomies' => array(
-                'by-id' => array(),
-                'by-slug' => array(),
-                'by-entity' => array(),
-            ),
-            'api_outputs' => array(),
-            'image_transformations' => array(),
-            'registration_agent_relations' => array()
-        );
+    protected $_register = [
+            'controllers' => [],
+            'auth_providers' => [],
+            'controllers-by-class' => [],
+            'controllers_default_actions' => [],
+            'controllers_view_dirs' => [],
+            'entity_type_groups' => [],
+            'entity_types' => [],
+            'entity_metadata_definitions' => [],
+            'file_groups' => [],
+            'metalist_groups' => [],
+            'taxonomies' => [
+                'by-id' => [],
+                'by-slug' => [],
+                'by-entity' => [],
+            ],
+            'api_outputs' => [],
+            'image_transformations' => [],
+            'registration_agent_relations' => []
+        ];
 
     protected $_registerLocked = true;
 
-    protected $_hooks = array();
-    protected $_excludeHooks = array();
+    protected $_hooks = [];
+    protected $_excludeHooks = [];
 
 
     protected $_accessControlEnabled = true;
@@ -154,7 +154,7 @@ class App extends \Slim\Slim{
      *
      * @return \MapasCulturais\App
      */
-    public function init($config = array()){
+    public function init($config = []){
         if($this->_initiated)
             return $this;
 
@@ -220,14 +220,14 @@ class App extends \Slim\Slim{
 
         $theme_class = $config['themes.active'].'\Theme';
 
-        parent::__construct(array(
+        parent::__construct([
             'log.level' => $config['slim.log.level'],
             'log.enabled' => $config['slim.log.enabled'],
             'debug' => $config['slim.debug'],
             'templates.path' => $this->_config['path.templates'],
             'view' => new $theme_class($config['themes.assetManager']),
             'mode' => $this->_config['app.mode']
-        ));
+        ]);
 
         $config = $this->_config;
 
@@ -252,7 +252,7 @@ class App extends \Slim\Slim{
 
         $driver = new AnnotationDriver(new AnnotationReader());
 
-        $driver->addPaths(array(__DIR__ . '/Entities/'));
+        $driver->addPaths([__DIR__ . '/Entities/']);
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -342,7 +342,7 @@ class App extends \Slim\Slim{
                 $this->add($middleware);
 
         // instantiate the route manager
-        $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : array());
+        $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
 
@@ -406,7 +406,7 @@ class App extends \Slim\Slim{
     protected function _dbUpdates(){
         $this->disableAccessControl();
 
-        $executed_updates = array();
+        $executed_updates = [];
 
         foreach($this->repo('DbUpdate')->findAll() as $up)
             $executed_updates[] = $up->name;
@@ -458,16 +458,16 @@ class App extends \Slim\Slim{
 
         // get types and metadata configurations
         $space_types = include APPLICATION_PATH.'/conf/space-types.php';
-        $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : array();
+        $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
         $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
-        $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : array();
+        $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
 
         $event_types = include APPLICATION_PATH.'/conf/event-types.php';
-        $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : array();
+        $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : [];
 
         $project_types = include APPLICATION_PATH.'/conf/project-types.php';
-        $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : array();
+        $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
@@ -510,14 +510,14 @@ class App extends \Slim\Slim{
          */
 
         // all file groups
-        $file_groups = array(
+        $file_groups = [
             'downloads' => new Definitions\FileGroup('downloads'),
-            'avatar' => new Definitions\FileGroup('avatar', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
-            'header' => new Definitions\FileGroup('header', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', true),
-            'gallery' => new Definitions\FileGroup('gallery', array('^image/(jpeg|png)$'), 'The uploaded file is not a valid image.', false),
-            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', array('^application/.*'), 'The uploaded file is not a valid document.', true),
-            'rules' => new Definitions\FileGroup('rules', array('^application/.*'), 'The uploaded file is not a valid document.', true),
-        );
+            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
+            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
+            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], 'The uploaded file is not a valid document.', true),
+            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
+        ];
 
         // register file groups
         $this->registerFileGroup('agent', $file_groups['downloads']);
@@ -558,40 +558,40 @@ class App extends \Slim\Slim{
         }
 
         // all metalist groups
-        $metalist_groups = array(
+        $metalist_groups = [
             'links' => new Definitions\MetaListGroup('links',
-                array(
-                    'title' => array(
+                [
+                    'title' => [
                         'label' => 'Nome'
-                    ),
-                    'value' => array(
+                    ],
+                    'value' => [
                         'label' => 'Link',
-                        'validations' => array(
+                        'validations' => [
                             'required' => 'O link do vídeo é obrigatório',
                             "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
-                        )
-                    ),
-                ),
+                        ]
+                    ],
+                ],
                 'The uploaded file is not a valid image.',
                 true
             ),
             'videos' => new Definitions\MetaListGroup('videos',
-                array(
-                    'title' => array(
+                [
+                    'title' => [
                         'label' => 'Nome'
-                    ),
-                    'value' => array(
+                    ],
+                    'value' => [
                         'label' => 'Link',
-                        'validations' => array(
+                        'validations' => [
                             'required' => 'O link do vídeo é obrigatório',
                             "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
-                        )
-                    ),
-                ),
+                        ]
+                    ],
+                ],
                 'The uploaded file is not a valid image.',
                 true
             ),
-        );
+        ];
 
         // register metalist groups
         $this->registerMetaListGroup('agent', $metalist_groups['links']);
@@ -612,14 +612,14 @@ class App extends \Slim\Slim{
             $group = new Definitions\EntityTypeGroup($entity_class, $group_name, $group_config['range'][0], $group_config['range'][1]);
             $this->registerEntityTypeGroup($group);
 
-            $group_meta = key_exists('metadata', $group_config) ? $group_config['metadata'] : array();
+            $group_meta = key_exists('metadata', $group_config) ? $group_config['metadata'] : [];
 
             foreach ($group_config['items'] as $type_id => $type_config){
                 $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
                 $group->registerType($type);
                 $this->registerEntityType($type);
 
-                $type_meta = $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+                $type_meta = $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
 
                 // add group metadata to space type
                 if(key_exists('metadata', $group_config))
@@ -646,7 +646,7 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
 
             // add agents metadata definition to agent type
             foreach($agents_meta as $meta_key => $meta_config)
@@ -667,7 +667,7 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
 
             // add events metadata definition to event type
             foreach($event_meta as $meta_key => $meta_config)
@@ -687,7 +687,7 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : array();
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
 
             // add projects metadata definition to project type
             foreach($projects_meta as $meta_key => $meta_config)
@@ -726,7 +726,7 @@ class App extends \Slim\Slim{
 
 
     function getRegisteredGeoDivisions(){
-        $result = array();
+        $result = [];
         foreach($this->config['app.geoDivisionsHierarchy'] as $key => $name) {
             $d = new \stdClass();
             $d->key = $key;
@@ -765,7 +765,7 @@ class App extends \Slim\Slim{
      *
      * @return string the URL to action
      */
-    public function createUrl($controller_id, $action_name = '', $data = array()){
+    public function createUrl($controller_id, $action_name = '', $data = []){
         return $this->_routesManager->createUrl($controller_id, $action_name, $data);
     }
 
@@ -790,9 +790,9 @@ class App extends \Slim\Slim{
     public function handleUpload($key, $file_class_name){
         if(is_array($_FILES) && key_exists($key, $_FILES)){
             if(is_array($_FILES[$key]['name'])){
-                $result = array();
+                $result = [];
                 foreach(array_keys($_FILES[$key]['name']) as $i){
-                    $tmp_file = array();
+                    $tmp_file = [];
                     foreach(array_keys($_FILES[$key]) as $k){
                         $tmp_file[$k] = $k == 'name' ? $this->sanitizeFilename($_FILES[$key][$k][$i]) : $_FILES[$key][$k][$i];
                     }
@@ -847,8 +847,8 @@ class App extends \Slim\Slim{
      */
     public function clearHooks($name = null) {
         if (is_null($name)) {
-            $this->_hooks = array();
-            $this->_excludeHooks = array();
+            $this->_hooks = [];
+            $this->_excludeHooks = [];
         } else {
             $hooks = $this->_getHookCallables($name);
             foreach ($this->_excludeHooks as $hook => $cb) {
@@ -863,7 +863,7 @@ class App extends \Slim\Slim{
         }
     }
 
-    protected $_hookCache = array();
+    protected $_hookCache = [];
 
     /**
      * Get hook listeners
@@ -887,23 +887,23 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
     function hook($name, $callable, $priority = 10) {
-        $this->_hookCache = array();
+        $this->_hookCache = [];
         $_hooks = explode(',', $name);
         foreach ($_hooks as $hook) {
             if (trim($hook)[0] === '-') {
                 $hook = $this->_compileHook($hook);
                 if (!key_exists($hook, $this->_excludeHooks))
-                    $this->_excludeHooks[$hook] = array();
+                    $this->_excludeHooks[$hook] = [];
 
                 $this->_excludeHooks[$hook][] = $callable;
             }else {
                 $hook = $this->_compileHook($hook);
 
                 if (!key_exists($hook, $this->_hooks))
-                    $this->_hooks[$hook] = array();
+                    $this->_hooks[$hook] = [];
 
                 if (!key_exists($priority, $this->_hooks[$hook]))
-                    $this->_hooks[$hook][$priority] = array();
+                    $this->_hooks[$hook][$priority] = [];
 
                 $this->_hooks[$hook][$priority][] = $callable;
 
@@ -919,9 +919,9 @@ class App extends \Slim\Slim{
      */
     function applyHook($name, $hookArg = null) {
         if (is_null($hookArg))
-            $hookArg = array();
+            $hookArg = [];
         else if (!is_array($hookArg))
-            $hookArg = array($hookArg);
+            $hookArg = [$hookArg];
 
         if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
@@ -941,9 +941,9 @@ class App extends \Slim\Slim{
      */
     function applyHookBoundTo($target_object, $name, $hookArg = null) {
         if (is_null($hookArg))
-            $hookArg = array();
+            $hookArg = [];
         else if (!is_array($hookArg))
-            $hookArg = array($hookArg);
+            $hookArg = [$hookArg];
 
         if ($this->config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
@@ -957,8 +957,8 @@ class App extends \Slim\Slim{
 
 
     function _getHookCallables($name) {
-        $exclude_list = array();
-        $result = array();
+        $exclude_list = [];
+        $result = [];
 //
 //        if(isset($this->_hookCache[$name]))
 //            return $this->_hookCache[$name];
@@ -990,7 +990,7 @@ class App extends \Slim\Slim{
         if ($hook[0] === '-')
             $hook = substr($hook, 1);
 
-        $replaces = array();
+        $replaces = [];
 
         while (preg_match("#\<\<([^<>]+)\>\>#", $hook, $matches)) {
             $uid = uniqid('@');
@@ -1501,7 +1501,7 @@ class App extends \Slim\Slim{
      */
     function registerEntityTypeGroup(Definitions\EntityTypeGroup $group){
         if(!key_exists($group->entity_class, $this->_register['entity_type_groups']))
-                $this->_register['entity_type_groups'][$group->entity_class] = array();
+                $this->_register['entity_type_groups'][$group->entity_class] = [];
 
         $this->_register['entity_type_groups'][$group->entity_class][] = $group;
     }
@@ -1543,7 +1543,7 @@ class App extends \Slim\Slim{
         if(key_exists($entity, $this->_register['entity_type_groups'])){
             return $this->_register['entity_type_groups'][$entity];
         }else{
-            return array();
+            return [];
         }
     }
 
@@ -1554,7 +1554,7 @@ class App extends \Slim\Slim{
      */
     function registerEntityType(Definitions\EntityType $type){
         if(!key_exists($type->entity_class, $this->_register['entity_types']))
-                $this->_register['entity_types'][$type->entity_class] = array();
+                $this->_register['entity_types'][$type->entity_class] = [];
 
         $this->_register['entity_types'][$type->entity_class][$type->id] = $type;
     }
@@ -1626,13 +1626,13 @@ class App extends \Slim\Slim{
     function registerMetadata(Definitions\Metadata $metadata, $entity_class, $entity_type_id = null){
         $key = is_null($entity_type_id) ? $entity_class : $entity_class . ':' . $entity_type_id;
         if(!key_exists($key, $this->_register['entity_metadata_definitions']))
-            $this->_register['entity_metadata_definitions'][$key] = array();
+            $this->_register['entity_metadata_definitions'][$key] = [];
 
         $this->_register['entity_metadata_definitions'][$key][$metadata->key] = $metadata;
 
         if($entity_type_id){
             if(!key_exists($entity_class, $this->_register['entity_metadata_definitions']))
-                $this->_register['entity_metadata_definitions'][$entity_class] = array();
+                $this->_register['entity_metadata_definitions'][$entity_class] = [];
 
             $this->_register['entity_metadata_definitions'][$entity_class][$metadata->key] = $metadata;
         }
@@ -1641,7 +1641,7 @@ class App extends \Slim\Slim{
     function unregisterEntityMetadata($entity_class){
         foreach(array_keys($this->_register['entity_metadata_definitions']) as $k)
             if($k == $entity_class || strpos($k, $entity_class.':') === 0)
-                $this->_register['entity_metadata_definitions'][$k] = array();
+                $this->_register['entity_metadata_definitions'][$k] = [];
 
     }
 
@@ -1659,7 +1659,7 @@ class App extends \Slim\Slim{
             $entity = $entity->getClassName();
 
         $key = $entity::usesTypes() && $type ? "{$entity}:{$type}" : $entity;
-        return key_exists($key, $this->_register['entity_metadata_definitions']) ? $this->_register['entity_metadata_definitions'][$key] : array();
+        return key_exists($key, $this->_register['entity_metadata_definitions']) ? $this->_register['entity_metadata_definitions'][$key] : [];
     }
 
     /**
@@ -1686,7 +1686,7 @@ class App extends \Slim\Slim{
     function registerFileGroup($controller_id, Definitions\FileGroup $group){
         $controller_id = strtolower($controller_id);
         if(!key_exists($controller_id, $this->_register['file_groups']))
-            $this->_register['file_groups'][$controller_id] = array();
+            $this->_register['file_groups'][$controller_id] = [];
 
         $this->_register['file_groups'][$controller_id][$group->name] = $group;
     }
@@ -1714,7 +1714,7 @@ class App extends \Slim\Slim{
 
         $controller_id = $this->getControllerIdByEntity($entity);
 
-        return $controller_id && key_exists($controller_id, $this->_register['file_groups']) ? $this->_register['file_groups'][$controller_id] : array();
+        return $controller_id && key_exists($controller_id, $this->_register['file_groups']) ? $this->_register['file_groups'][$controller_id] : [];
 
     }
 
@@ -1751,7 +1751,7 @@ class App extends \Slim\Slim{
      */
     function registerMetaListGroup($controller_id, Definitions\MetaListGroup $group){
         if(!key_exists($controller_id, $this->_register['metalist_groups']))
-            $this->_register['metalist_groups'][$controller_id] = array();
+            $this->_register['metalist_groups'][$controller_id] = [];
 
         $this->_register['metalist_groups'][$controller_id][$group->name] = $group;
     }
@@ -1779,7 +1779,7 @@ class App extends \Slim\Slim{
 
         $controller_id = $this->getControllerIdByEntity($entity);
 
-        return key_exists($controller_id, $this->_register['metalist_groups']) ? $this->_register['metalist_groups'][$controller_id] : array();
+        return key_exists($controller_id, $this->_register['metalist_groups']) ? $this->_register['metalist_groups'][$controller_id] : [];
     }
 
     /**
@@ -1790,7 +1790,7 @@ class App extends \Slim\Slim{
      */
     function registerTaxonomy($entity_class, Definitions\Taxonomy $definition){
         if(!key_exists($entity_class, $this->_register['taxonomies']['by-entity']))
-                $this->_register['taxonomies']['by-entity'][$entity_class] = array();
+                $this->_register['taxonomies']['by-entity'][$entity_class] = [];
 
         $this->_register['taxonomies']['by-entity'][$entity_class][$definition->slug] = $definition;
 
@@ -1836,7 +1836,7 @@ class App extends \Slim\Slim{
         if(is_null($entity)){
             return $this->_register['taxonomies']['by-entity'];
         }else{
-            return key_exists($entity, $this->_register['taxonomies']['by-entity']) ? $this->_register['taxonomies']['by-entity'][$entity] : array();
+            return key_exists($entity, $this->_register['taxonomies']['by-entity']) ? $this->_register['taxonomies']['by-entity'][$entity] : [];
         }
     }
 
@@ -1881,7 +1881,7 @@ class App extends \Slim\Slim{
         }else{
             if($log)
                 $app->log->warn ("TXT > missing '$lcode' translation file for domain '$domain'");
-            $translations = array();
+            $translations = [];
         }
         if($use_cache)
             $app->cache->save ($cache_id, $translations);

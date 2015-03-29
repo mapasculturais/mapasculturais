@@ -5,9 +5,9 @@ use MapasCulturais\Traits;
 class Space extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
 
-    public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByEventsAndDateInterval($event_ids = [], $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
-            return array();
+            return [];
 
         if(is_null($date_from))
             $date_from = date('Y-m-d');
@@ -59,10 +59,10 @@ class Space extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to
-        ));
+        ]);
 
         return $query->getResult();
     }

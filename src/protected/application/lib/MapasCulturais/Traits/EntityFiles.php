@@ -13,8 +13,8 @@ use MapasCulturais\Entities\File;
  * <code>
  * // example of $entity->files
  * array(
- *      'avatar' => array( /* Files {@*} ),
- *      'downloads' => array( /* Files {@*} ),
+ *      'avatar' => [ /* Files {@*} ],
+ *      'downloads' => [ /* Files {@*} ],
  * )
  * </code>
  *

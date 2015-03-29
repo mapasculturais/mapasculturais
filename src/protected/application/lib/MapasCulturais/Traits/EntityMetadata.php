@@ -28,9 +28,9 @@ trait EntityMetadata{
      * Array of the changed metadata keys
      * @var array
      */
-    private $__changedMetadata = array();
+    private $__changedMetadata = [];
 
-    private $__createdMetadata = array();
+    private $__createdMetadata = [];
 
 
     /**
@@ -145,7 +145,7 @@ trait EntityMetadata{
             $metas = $app->getRegisteredMetadata($entity);
         }
 
-        $result = array();
+        $result = [];
 
         foreach($metas as $metadata){
             $result[$metadata->key] = $metadata->getMetadata();
@@ -156,7 +156,7 @@ trait EntityMetadata{
     }
 
     /**
-     * Returns the value of the given metadata key. If no key is passad, returns an array (key => value) with all values.
+     * Returns the value of the given metadata key. If no key is passad, returns an [key => value] with all values.
      *
      * @param string $meta_key the key of the metadata
      *
@@ -185,7 +185,7 @@ trait EntityMetadata{
 
             return $result;
         }else{
-            $result = array();
+            $result = [];
             foreach (array_merge($this->__metadata->toArray(), $this->__createdMetadata) as $metadata_object){
                 if($return_metadata_object){
                     $result[$metadata_object->key] = $metadata_object;
@@ -228,7 +228,7 @@ trait EntityMetadata{
         }
 
         if($metadata_object->value != $value){
-            $this->__changedMetadata[$meta_key] = array('key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value);
+            $this->__changedMetadata[$meta_key] = ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value];
             $metadata_object->value = $value;
         }
     }
@@ -239,7 +239,7 @@ trait EntityMetadata{
      * @return array Errors
      */
     function getMetadataValidationErrors(){
-        $errors = array();
+        $errors = [];
 
         $metas = $this->getRegisteredMetadata();
 

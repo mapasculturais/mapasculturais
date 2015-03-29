@@ -6,7 +6,7 @@ use CrEOF\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 class STMakePoint extends AbstractSpatialDQLFunction
 {
-    protected $platforms = array('postgresql');
+    protected $platforms = ['postgresql'];
 
     protected $functionName = 'ST_MakePoint';
 

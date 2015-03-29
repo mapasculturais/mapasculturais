@@ -37,21 +37,21 @@ class Agent extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
-    protected static $validations = array(
-        'name' => array(
+    protected static $validations = [
+        'name' => [
             'required' => 'O nome do agente é obrigatório'
-        ),
-        'shortDescription' => array(
+        ],
+        'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ),
-        'type' => array(
+        ],
+        'type' => [
             'required' => 'O tipo do agente é obrigatório',
-        ),
-        'location' => array(
+        ],
+        'location' => [
             '$this->validateLocation()' => 'A localização geográfica do agente é obrigatória',
-        )
-    );
+        ]
+    ];
 
     protected function validateLocation(){
         if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
@@ -182,19 +182,19 @@ class Agent extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_spaces = array();
+    protected $_spaces = [];
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_projects = array();
+    protected $_projects = [];
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_events = array();
+    protected $_events = [];
 
 
     /**

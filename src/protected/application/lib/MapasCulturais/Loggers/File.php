@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Loggers;
 
+use Slim\Log;
+
 class File{
     protected $uid;
     
@@ -8,16 +10,16 @@ class File{
 
     protected $filenameGenerator;
     
-    protected static $levels = array(
-        \Slim\Log::EMERGENCY => 'EMERGENCY: ',
-        \Slim\Log::ALERT     => 'ALERT:     ',
-        \Slim\Log::CRITICAL  => 'CRITICAL:  ',
-        \Slim\Log::ERROR     => 'ERROR:     ',
-        \Slim\Log::WARN      => 'WARNING:   ',
-        \Slim\Log::NOTICE    => 'NOTICE:    ',
-        \Slim\Log::INFO      => 'INFO:      ',
-        \Slim\Log::DEBUG     => 'DEBUG:     '
-    );
+    protected static $levels = [
+        Log::EMERGENCY => 'EMERGENCY: ',
+        Log::ALERT     => 'ALERT:     ',
+        Log::CRITICAL  => 'CRITICAL:  ',
+        Log::ERROR     => 'ERROR:     ',
+        Log::WARN      => 'WARNING:   ',
+        Log::NOTICE    => 'NOTICE:    ',
+        Log::INFO      => 'INFO:      ',
+        Log::DEBUG     => 'DEBUG:     '
+    ];
     
     function __construct($filename_generator = null) {
         $this->uid = uniqid();

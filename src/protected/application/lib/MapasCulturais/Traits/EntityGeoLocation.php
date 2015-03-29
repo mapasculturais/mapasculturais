@@ -16,9 +16,9 @@ use \MapasCulturais\Types\GeoPoint;
  * $entity->location = new GeoPoint(-45.123, -23.345);
  *
  * // example with arrays
- * $entity->location = array(-45.123, -23.345);
- * $entity->location = array('x' => -45.123, 'y' => -23.345);
- * $entity->location = array('longitude' => -45.123, 'latitude' => -23.345);
+ * $entity->location = [-45.123, -23.345];
+ * $entity->location = ['x' => -45.123, 'y' => -23.345];
+ * $entity->location = ['longitude' => -45.123, 'latitude' => -23.345];
  *
  * </code>
  *
@@ -44,9 +44,9 @@ trait EntityGeoLocation{
      * $entity->location = new GeoPoint(-45.123, -23.345);
      *
      * // example with arrays
-     * $entity->location = array(-45.123, -23.345);
-     * $entity->location = array('x' => -45.123, 'y' => -23.345);
-     * $entity->location = array('longitude' => -45.123, 'latitude' => -23.345);
+     * $entity->location = [-45.123, -23.345];
+     * $entity->location = ['x' => -45.123, 'y' => -23.345];
+     * $entity->location = ['longitude' => -45.123, 'latitude' => -23.345];
      *
      * </code>
      *

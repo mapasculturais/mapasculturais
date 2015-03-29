@@ -28,26 +28,26 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete;
 
-    protected static $validations = array(
-        'name' => array(
+    protected static $validations = [
+        'name' => [
             'required' => 'O nome do projeto é obrigatório'
-        ),
-        'shortDescription' => array(
+        ],
+        'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ),
-        'type' => array(
+        ],
+        'type' => [
             'required' => 'O tipo do projeto é obrigatório',
-        ),
-        'registrationFrom' => array(
+        ],
+        'registrationFrom' => [
             '$this->validateDate($value)' => 'O valor informado não é uma data válida',
             '!empty($this->registrationTo)' => 'Data final obrigatória caso data inicial preenchida'
-        ),
-        'registrationTo' => array(
+        ],
+        'registrationTo' => [
             '$this->validateDate($value)' => 'O valor informado não é uma data válida',
             '$this->validateRegistrationDates()' => 'A data final das inscrições deve ser maior ou igual a data inicial'
-        )
-    );
+        ]
+    ];
 
     /**
      * @var integer
@@ -128,7 +128,7 @@ class Project extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
      */
-    protected $registrationCategories = array();
+    protected $registrationCategories = [];
 
 
 
@@ -215,8 +215,8 @@ class Project extends \MapasCulturais\Entity
     function getSentRegistrations(){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(array('project' => $this));
-        $result = array();
+        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+        $result = [];
         foreach($registrations as $re){
             if($re->status > 0)
                 $result[] = $re;

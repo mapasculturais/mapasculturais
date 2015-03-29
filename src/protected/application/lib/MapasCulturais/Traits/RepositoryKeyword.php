@@ -13,7 +13,7 @@ trait RepositoryKeyword{
 
         $join = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', array(&$join, $keyword));
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', [&$join, $keyword]);
 
         return "$class e $join";
     }
@@ -23,7 +23,7 @@ trait RepositoryKeyword{
 
         $where = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', array(&$where, $keyword));
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword]);
 
         return "unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) $where";
     }
