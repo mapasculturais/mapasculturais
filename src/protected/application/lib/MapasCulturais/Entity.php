@@ -102,6 +102,10 @@ abstract class Entity implements \JsonSerializable{
         return $this->getClassName() . ':' . $this->id;
     }
 
+    function refresh(){
+        App::i()->em->refresh($this);
+    }
+
     function equals($entity){
         return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
     }
