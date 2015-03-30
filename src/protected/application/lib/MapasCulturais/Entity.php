@@ -679,7 +679,7 @@ abstract class Entity implements \JsonSerializable{
      * @return \Doctrine\ORM\EntityRepository
      */
     public function repo(){
-        return App::i()->repo(get_called_class());
+        return App::i()->repo($this->getClassName());
     }
 
     /**
