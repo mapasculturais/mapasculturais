@@ -128,6 +128,10 @@ abstract class File extends \MapasCulturais\Entity
         parent::__construct();
     }
 
+    public static function getHookClassPath($class = null){
+        return parent::getHookClassPath(__CLASS__);
+    }
+
     /**
      * Returns the controller with the same name in the parent namespace if it exists.
      *
