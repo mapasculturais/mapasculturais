@@ -128,6 +128,24 @@ abstract class File extends \MapasCulturais\Entity
         parent::__construct();
     }
 
+    /**
+     * Returns the controller with the same name in the parent namespace if it exists.
+     *
+     * @return \MapasCulturais\Controller The controller
+     */
+    public function getController(){
+        return App::i()->getControllerByEntity(__CLASS__);
+    }
+
+    /**
+     * Returns the controller with the same name in the parent namespace if it exists.
+     *
+     * @return \MapasCulturais\Controller The controller
+     */
+    public function getControllerId(){
+        return App::i()->getControllerIdByEntity(__CLASS__);
+    }
+
     protected function canUserCreate($user){
         if($this->_parent){
             return true;
@@ -230,6 +248,10 @@ abstract class File extends \MapasCulturais\Entity
 
     public function getChildren(){
         $result = [];
+        $app = App::i();
+        if($this->tmpFile){
+            $app->em->refresh($this->owner);
+        }
 
         foreach($this->owner->files as $group => $files){
             if(substr($group, 0, 4) === 'img:'){
