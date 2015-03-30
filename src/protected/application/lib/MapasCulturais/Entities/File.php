@@ -249,7 +249,7 @@ abstract class File extends \MapasCulturais\Entity
     public function getChildren(){
         $result = [];
         $app = App::i();
-        if($this->tmpFile){
+        if(isset($this->tmpFile['name']) && $this->tmpFile['name']){
             $app->em->refresh($this->owner);
         }
 

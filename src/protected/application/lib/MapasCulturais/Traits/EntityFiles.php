@@ -67,7 +67,7 @@ trait EntityFiles{
      * @return \MapasCulturais\Entities\File A File.
      */
     function getFile($group){
-        App::i()->log->debug(__CLASS__);
+
         if(!$this->__files->count()){
             return null;
         }
