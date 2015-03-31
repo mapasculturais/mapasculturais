@@ -184,10 +184,16 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
 
     // Abstract way to make a request to SlimPHP, this allows us to mock the
     // slim environment
-    public function request($method, $path, $options = array())
-    {
+    public function request($method, $path, $options = array()) {
+        $baseUrl = 'http://localhost:8888';
+        if(strpos($path, $baseUrl) !== 0){
+            $url = $baseUrl . $path;
+        }else{
+            $url = $path;
+        }
+        
         $c = new Curl;
-        $c->$method('http://localhost:8888' . $path, $options);
+        $c->$method($url, $options);
         
         return $c;
     }

@@ -5,8 +5,8 @@ $config = include 'conf-base.php';
 
 return array_merge($config,
     array(
-        'base.url' => 'http://teste.mapasculturais.local',
-        'site.url' => 'http://mapasculturais.local/',
+        'base.url' => 'http://localhost:8888/',
+        'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
         'slim.log.level' => Log::DEBUG,
         'slim.log.enabled' => true,

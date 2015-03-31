@@ -348,7 +348,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * </code>
      */
     function DELETE_single(){
-        $this->requireAuthentication();
+//        $this->requireAuthentication();
 
         $app = App::i();
         if(!key_exists('id', $this->urlData))
