@@ -184,7 +184,8 @@ abstract class File extends \MapasCulturais\Entity
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
-                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive'){
+                
+                if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive' || strpos($file->group, 'rfc_') === 0){
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))
@@ -201,7 +202,6 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     public function jsonSerialize() {
-
         return array(
             'id' => $this->id,
             'md5' => $this->md5,
@@ -249,7 +249,7 @@ abstract class File extends \MapasCulturais\Entity
     public function getChildren(){
         $result = [];
         $app = App::i();
-        if($this->tmpFile){
+        if(isset($this->tmpFile['name']) && $this->tmpFile['name']){
             $app->em->refresh($this->owner);
         }
 

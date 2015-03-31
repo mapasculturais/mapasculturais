@@ -10,7 +10,11 @@ class Fake extends \MapasCulturais\AuthProvider{
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
             $users = $app->repo('User')->findBy(array(), array('id' => 'ASC'));
-            $this->render('fake-authentication', array('users' => $users, 'form_action' => $app->createUrl('auth', 'fakeLogin')));
+            $this->render('fake-authentication', array(
+                'users' => $users, 
+                'form_action' => $app->createUrl('auth', 'fakeLogin'),
+                'new_user_form_action' => $app->createUrl('user')
+            ));
         });
 
         $app->hook('GET(auth.fakeLogin)', function () use($app){
@@ -21,6 +25,11 @@ class Fake extends \MapasCulturais\AuthProvider{
             }else{
                 $app->redirect ($this->createUrl(''));
             }
+        });
+        
+        $app->hook('POST(user.index)', function() use($app){
+            $new_user = $app->auth->_createUser($this->postData);
+            $app->redirect($app->createUrl('auth', 'fakeLogin') .'?fake_authentication_user_id='.$new_user->id);
         });
     }
 
@@ -68,6 +77,7 @@ class Fake extends \MapasCulturais\AuthProvider{
 
     protected function _createUser($data) {
         $app = App::i();
+        $app->disableAccessControl();
         $u = new \MapasCulturais\Entities\User;
 
         $u->authProvider = 'Fake';
@@ -77,8 +87,7 @@ class Fake extends \MapasCulturais\AuthProvider{
         $app->em->persist($u);
         $app->em->flush();
 
-        $a = new \MapasCulturais\Entities\Agent;
-        $a->user = $u;
+        $a = new \MapasCulturais\Entities\Agent($u);
         $a->name = $data['name'];
 
         $app->em->persist($a);
@@ -87,5 +96,8 @@ class Fake extends \MapasCulturais\AuthProvider{
         $u->profile = $a;
         $u->save(true);
 
+        $app->enableAccessControl();
+        
+        return $u;
     }
 }

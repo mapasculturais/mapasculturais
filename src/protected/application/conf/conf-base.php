@@ -59,7 +59,7 @@ return array(
 
 //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
-    'maps.maxClusterRadius' => 60,
+    'maps.maxClusterRadius' => 40,
     'maps.spiderfyDistanceMultiplier' => 1.3,
     'maps.maxClusterElements' => 6,
 

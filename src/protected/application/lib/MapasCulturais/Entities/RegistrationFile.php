@@ -12,7 +12,7 @@ class RegistrationFile extends File{
     /**
      * @var \MapasCulturais\Entities\Registration
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })
