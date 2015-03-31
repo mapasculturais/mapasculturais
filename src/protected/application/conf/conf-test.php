@@ -13,7 +13,10 @@ return array_merge($config,
 //        'app.log.query' => true,
         'slim.debug' => true,
         'auth.provider' => 'Test',
-        'auth.config' => array(),
+        
+        'auth.config' => array(
+            'filename' => '/tmp/mapasculturais-tests-authenticated-user.id'
+        ),
 
 //        'app.log.query' => true,
         'doctrine.isDev' => true,

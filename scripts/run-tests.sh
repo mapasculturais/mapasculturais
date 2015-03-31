@@ -1,7 +1,11 @@
 #!/bin/bash
-
 set -e
 set -o pipefail
+
+if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
+then
+	rm "/tmp/mapasculturais-tests-authenticated-user.id"
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}")"/../ && pwd )"
 
@@ -19,6 +23,11 @@ psql -f db/schema.sql -U mapasculturais_test -d mapasculturais_test
 
 echo "---- importing data ---"
 psql -f db/test-data.sql -U mapasculturais_test -d mapasculturais_test
+
+if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
+then
+	rm "/tmp/mapasculturais-tests-authenticated-user.id"
+fi
 
 cd src/
 echo "starting php -S on port 8081"
