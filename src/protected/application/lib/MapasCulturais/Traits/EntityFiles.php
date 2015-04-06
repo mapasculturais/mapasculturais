@@ -69,7 +69,10 @@ trait EntityFiles{
     function getFile($group){
 
         if(!$this->__files->count()){
-            return null;
+            return App::i()->repo($this->getFileClassName())->findOneBy([
+                'owner' => $this,
+                'group' => $group
+            ]);
         }
 
         $criteria = Criteria::create()
