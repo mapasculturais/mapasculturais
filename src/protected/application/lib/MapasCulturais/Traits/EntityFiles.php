@@ -67,26 +67,10 @@ trait EntityFiles{
      * @return \MapasCulturais\Entities\File A File.
      */
     function getFile($group){
-
-        if(!$this->__files->count()){
-            return App::i()->repo($this->getFileClassName())->findOneBy([
-                'owner' => $this,
-                'group' => $group
-            ]);
-        }
-
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("group", $group))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
-
-        $file = $this->__files->matching($criteria);
-
-        if($file){
-            return $file[0];
-        }else{
-            return null;
-        }
+        return App::i()->repo($this->getFileClassName())->findOneBy([
+            'owner' => $this,
+            'group' => $group
+        ]);
     }
 
 
