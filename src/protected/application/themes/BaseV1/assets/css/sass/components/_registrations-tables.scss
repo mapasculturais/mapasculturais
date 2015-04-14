@@ -225,6 +225,10 @@
 		display: table;
 	}
 }
+
+.published-registration-table{
+    display: table !important;
+}
 #btn-publish-results {
 	display: none;
 	@media screen and (min-width: 536px) {

@@ -125,19 +125,31 @@ abstract class Entity implements \JsonSerializable{
                         $e->files = array();
 
                         foreach ($this->files as $group => $files){
-                            if(!isset($e->files[$group]))
-                                $e->files[$group] = array();
+                            if(is_array($files)){
+                                if(!isset($e->files[$group])){
+                                    $e->files[$group] = array();
+                                }
 
-                            $e->files[$group][] = $f->simplify(array('id', 'url', 'files'));
+                                foreach($files as $f){
+                                    $e->files[$group][] = $f->simplify(array('id', 'url', 'files'));
+                                }
+                            }else if(is_object($files)){
+                                $e->files[$group] = $files->simplify(array('id', 'url', 'files'));
+                            }else{
+                                $e->files[$group] = null;
+                            }
                         }
                     break;
 
                     case 'avatar':
                         if($this->usesAvatar()){
                             $e->avatar = array();
-                            if($avatar = $this->avatar)
-                                foreach($avatar->files as $transformation => $f)
+                            if($avatar = $this->avatar){
+                                $e->avatar['url'] = $avatar->url;
+                                foreach($avatar->files as $transformation => $f){
                                     $e->avatar[$transformation] = $f->simplify(array('id', 'url'));
+                                }
+                            }
                         }
                     break;
 
