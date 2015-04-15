@@ -138,23 +138,29 @@ class Registration extends \MapasCulturais\Entity
             'editUrl' => $this->editUrl
         );
 
-        if($this->project->publishedRegistrations || $this->project->canUser('@control'))
+        if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
             $json['status'] = $this->status;
-
-        $related_agents = $this->getRelatedAgents();
-
-        foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-            $json['agentRelations'][] = array(
-                'label' => $def->label,
-                'description' => $def->description,
-                'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
-            );
         }
 
-        foreach($this->files as $group => $file){
-            if($file instanceof File){
-                $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+        if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
+            $related_agents = $this->getRelatedAgents();
+
+            foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
+                $json['agentRelations'][] = array(
+                    'label' => $def->label,
+                    'description' => $def->description,
+                    'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
+                );
             }
+
+
+            foreach($this->files as $group => $file){
+                if($file instanceof File){
+                    $json['files'][$group] = $file->simplify('id,url,name,deleteUrl');
+                }
+            }
+        }else{
+            $json['owner'] = null;
         }
 
         return $json;
