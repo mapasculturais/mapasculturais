@@ -20,8 +20,12 @@ psql -f db/schema.sql -U mapasculturais_test -d mapasculturais_test
 echo "---- importing data ---"
 psql -f db/test-data.sql -U mapasculturais_test -d mapasculturais_test
 
-cd src/
-echo "starting php -S on port 8081"
+cd scripts/
+./compile-sass.sh conf-test.php
+
+cd ../src/
+
+echo "starting php -S on port 8888"
 MAPASCULTURAIS_CONFIG_FILE="conf-test.php" php -d variables_order=EGPCS -S 0.0.0.0:8888 &
 PID_OF_PHP=$!
 cd ..
