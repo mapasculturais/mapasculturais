@@ -86,10 +86,16 @@ class Event extends EntityController {
         $event_ids = array_map(function($e) {
             return $e->id;
         }, $events);
-
-
+        
+        $_occurrences = $app->repo('EventOccurrence')->findByEventsAndSpaces($events, [$space], $date_from, $date_to);
+        
+        
         foreach($events as $e){
-            $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
+
+            $occurrences[$e->id] = array_filter($_occurrences, function($eo) use ($e){
+                return $e->id == $eo->eventId;
+            });
+            
             $occurrences_readable[$e->id] = [];
 
             $occurrences_readable[$e->id] = array_map(function($occ) use ($app) {
