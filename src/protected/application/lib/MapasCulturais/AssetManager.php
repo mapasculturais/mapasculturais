@@ -6,33 +6,33 @@ abstract class AssetManager{
      *
      * @var type
      */
-    protected $_enqueuedScripts = array();
+    protected $_enqueuedScripts = [];
 
     /**
      *
      * @var type
      */
-    protected $_enqueuedStyles = array();
+    protected $_enqueuedStyles = [];
 
-    protected $_config = array();
+    protected $_config = [];
 
-    function __construct(array $config = array()) {
+    function __construct(array $config = []) {
         $this->_config = $config;
     }
 
 
-    function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
+    function enqueueScript($group, $script_name, $script_filename, array $dependences = []){
         if(!key_exists($group, $this->_enqueuedScripts))
-                $this->_enqueuedScripts[$group] = array();
+                $this->_enqueuedScripts[$group] = [];
 
-        $this->_enqueuedScripts[$group][$script_name] = array($script_name, $script_filename, $dependences);
+        $this->_enqueuedScripts[$group][$script_name] = [$script_name, $script_filename, $dependences];
     }
 
-    function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
+    function enqueueStyle($group, $style_name, $style_filename, array $dependences = [], $media = 'all'){
         if(!key_exists($group, $this->_enqueuedStyles))
-                $this->_enqueuedStyles[$group] = array();
+                $this->_enqueuedStyles[$group] = [];
 
-        $this->_enqueuedStyles[$group][$style_name] = array($style_name, $style_filename, $dependences, $media);
+        $this->_enqueuedStyles[$group][$style_name] = [$style_name, $style_filename, $dependences, $media];
     }
 
     protected function _addAssetToArray($assets, $asset, array &$array){
@@ -52,7 +52,7 @@ abstract class AssetManager{
     }
 
     protected function _getOrderedScripts($group){
-        $result = array();
+        $result = [];
         if(isset($this->_enqueuedScripts[$group])){
             foreach($this->_enqueuedScripts[$group] as $asset)
                 $this->_addAssetToArray($this->_enqueuedScripts[$group], $asset, $result);
@@ -63,7 +63,7 @@ abstract class AssetManager{
     }
 
     protected function _getOrderedStyles($group){
-        $result = array();
+        $result = [];
         if(isset($this->_enqueuedStyles[$group])){
             foreach($this->_enqueuedStyles[$group] as $asset)
                 $this->_addAssetToArray($this->_enqueuedStyles[$group], $asset, $result);
@@ -212,7 +212,7 @@ abstract class AssetManager{
         if(!$destination){
             $destination_file = $this->_getPublishedAssetFilename($asset_filename);
 
-            if(in_array($extension, array('jpg', 'png', 'gif', 'ico'))){
+            if(in_array($extension, ['jpg', 'png', 'gif', 'ico'])){
                 $destination = "img/$destination_file";
             }else{
                 $destination = "$extension/$destination_file";

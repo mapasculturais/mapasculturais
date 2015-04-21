@@ -69,11 +69,11 @@ abstract class Controller{
     /**
      * URL based vars passed in URL after the action name (not by GET).
      *
-     * @example for de url **http://mapasculturais/controller/action/id:11/name:Fulanano** this property will be array('id' => 11, 'name' => 'Fulano')
+     * @example for de url **http://mapasculturais/controller/action/id:11/name:Fulanano** this property will be ['id' => 11, 'name' => 'Fulano']
      *
      * @var array The URL data
      */
-    protected $_urlData = array();
+    protected $_urlData = [];
 
     /**
      * Array with the request data.
@@ -83,7 +83,7 @@ abstract class Controller{
      * @example for the URL .../actionname/id:1/a-data/name:Fulano?age=33 the resultant array will be [id=>1, 0=>a-data, name=>Fulano, age=>33]
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
 
     protected $action = null;
@@ -249,10 +249,10 @@ abstract class Controller{
 
         // first try to call an action defined inside the controller
         if(method_exists($this, $method . '_' . $action_name)){
-            $call_method = array($this, $method . '_' . $action_name);
+            $call_method = [$this, $method . '_' . $action_name];
 
         }elseif($method !== 'API' && method_exists($this, 'ALL_' . $action_name)){
-            $call_method = array($this, 'ALL_' . $action_name);
+            $call_method = [$this, 'ALL_' . $action_name];
 
         // then try to call an action defined outside the controller
         }elseif($app->getHooks($hook)){
@@ -285,9 +285,9 @@ abstract class Controller{
      * @param string $template the template name
      * @param type $data array with data to pass to the template
      */
-    public function render($template, $data = array()){
+    public function render($template, $data = []){
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', array('template' => &$template, 'data' => &$data));
+        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
         $app->view->setController($this);
@@ -300,9 +300,9 @@ abstract class Controller{
      * @param string $template the template name
      * @param type $data array with data to pass to the template
      */
-    public function partial($template, $data = array()){
+    public function partial($template, $data = []){
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', array('template' => &$template, 'data' => &$data));
+        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
         $app->view->setController($this);
@@ -322,7 +322,7 @@ abstract class Controller{
     }
 
     /**
-     * Sets the response content type to application/json and prints a json of array('error' => true, 'data' => $data)
+     * Sets the response content type to application/json and prints a json of ['error' => true, 'data' => $data]
      *
      * @param mixed $data
      *
@@ -333,7 +333,7 @@ abstract class Controller{
 
         $app->contentType('application/json');
 
-        $app->halt($status, json_encode(array('error' => true, 'data' => $data)));
+        $app->halt($status, json_encode(['error' => true, 'data' => $data]));
     }
 
     /**
@@ -342,7 +342,7 @@ abstract class Controller{
      * @param array $data
      * @return string the generated URL
      */
-    public function createUrl($actionName, array $data = array()){
+    public function createUrl($actionName, array $data = []){
         return App::i()->routesManager->createUrl($this->id, $actionName, $data);
     }
 

@@ -11,7 +11,7 @@ matrix:
 install:
   - composer self-update && composer --version
   - echo "yes" | pecl install apcu-beta
-  - pushd src/protected; composer update --prefer-dist; popd
+  - pushd src/protected; composer install --prefer-dist; popd
 
 before_script:
   - echo "apc.cli_enabled=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini

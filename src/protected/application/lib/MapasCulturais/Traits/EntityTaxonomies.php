@@ -9,17 +9,17 @@ use MapasCulturais\App;
  *
  *  // Example of the $terms property
  *  array(
- *      'tag' => array('Music', 'Guitar'),
- *      'category' => array('Jazz', 'Rock')
+ *      'tag' => ['Music', 'Guitar'],
+ *      'category' => ['Jazz', 'Rock']
  *  )
  * </code>
  *
- * @example To remove all tags of the entity set $entity->terms['tag'] = array() and save the entity or $entity->saveTerms().
- * @example To set tags 'music', 'photo' and 'video' set $entity->terms['tag'] = array('music', 'photo', 'video') and save the entity or $entity->saveTerms()
+ * @example To remove all tags of the entity set $entity->terms['tag'] = [] and save the entity or $entity->saveTerms().
+ * @example To set tags 'music', 'photo' and 'video' set $entity->terms['tag'] = ['music', 'photo', 'video'] and save the entity or $entity->saveTerms()
  * @example To add the tag 'music' just do $entity->terms['tag'][] = 'music' and save the entity or $entity->saveTerms()
  *
  * @property \MapasCulturais\Entities\Term[] $taxonomyTerms Description.
- * @property array $terms array of terms string grouped by taxonomy slug. ex: array('tag' => array('Music', 'Dance'))
+ * @property array $terms array of terms string grouped by taxonomy slug. ex: array('tag' => ['Music', 'Dance'])
  */
 trait EntityTaxonomies{
     /**
@@ -29,13 +29,13 @@ trait EntityTaxonomies{
      * <code>
      *  // Example of the $terms property
      *  array(
-     *      'tag' => array('Music', 'Guitar'),
-     *      'category' => array('Jazz', 'Rock')
+     *      'tag' => ['Music', 'Guitar'],
+     *      'category' => ['Jazz', 'Rock']
      *  )
      * </code>
      *
-     * @example To remove all tags of the entity set $entity->terms['tag'] = array() and save the entity or $entity->saveTerms().
-     * @example To set tags 'music', 'photo' and 'video' set $entity->terms['tag'] = array('music', 'photo', 'video') and save the entity or $entity->saveTerms()
+     * @example To remove all tags of the entity set $entity->terms['tag'] = [] and save the entity or $entity->saveTerms().
+     * @example To set tags 'music', 'photo' and 'video' set $entity->terms['tag'] = ['music', 'photo', 'video'] and save the entity or $entity->saveTerms()
      * @example To add the tag 'music' just do $entity->terms['tag'][] = 'music' and save the entity or $entity->saveTerms()
      *
      * @var array the taxonomy terms
@@ -64,8 +64,8 @@ trait EntityTaxonomies{
      * <code>
      *  // Example of returned array
      *  array(
-     *      'tag' => array('Music', 'Guitar'),
-     *      'category' => array('Jazz', 'Rock')
+     *      'tag' => ['Music', 'Guitar'],
+     *      'category' => ['Jazz', 'Rock']
      *  )
      * </code>
      *
@@ -86,7 +86,7 @@ trait EntityTaxonomies{
             $this->terms = new \ArrayObject();
 
         foreach ($this->taxonomyTerms as $taxonomy_slug => $terms){
-            $this->terms[$taxonomy_slug] = array();
+            $this->terms[$taxonomy_slug] = [];
             foreach($terms as $term)
                 $this->terms[$taxonomy_slug][] = $term->term;
 
@@ -95,10 +95,10 @@ trait EntityTaxonomies{
 
     function getTaxonomiesValidationErrors(){
         $taxonomies = App::i()->getRegisteredTaxonomies($this);
-        $errors = array();
+        $errors = [];
         foreach($taxonomies as $definition){
             if($definition->required && empty($this->terms[$definition->slug])){
-                $errors['term-'.$definition->slug] = array($definition->required);
+                $errors['term-'.$definition->slug] = [$definition->required];
             }
         }
         return $errors;
@@ -129,7 +129,7 @@ trait EntityTaxonomies{
 
                 // if a term with an existent relation is not in the terms property, removes the relation.
                 }else{
-                    $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $term, 'owner' => $this));
+                    $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $term, 'owner' => $this]);
                     if($tr)
                         $tr->delete(true);
                 }
@@ -162,8 +162,8 @@ trait EntityTaxonomies{
         
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
-            $t = $app->repo('Term')->findOneBy(array('taxonomy' => $definition->id, 'term' => $term));
-            $tr = $app->repo($this->getTermRelationClassName())->findOneBy(array('term' => $t, 'owner' => $this));
+            $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->id, 'term' => $term]);
+            $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $t, 'owner' => $this]);
 
             // if the term is already associated to this entity return
             if($tr){
@@ -217,11 +217,11 @@ trait EntityTaxonomies{
      */
     function getTaxonomyTerms($taxonomy_slug = null){
         $app = App::i();
-        $result = array();
+        $result = [];
 
         $taxonomies = $app->getRegisteredTaxonomies($this);
         foreach($taxonomies as $tax){
-            $result[$tax->slug] = array();
+            $result[$tax->slug] = [];
         }
         
         if(!$this->id){
@@ -241,7 +241,7 @@ trait EntityTaxonomies{
         }
         
         if($taxonomy_slug){
-            return key_exists($taxonomy_slug, $result) ? $result[$taxonomy_slug] : array();
+            return key_exists($taxonomy_slug, $result) ? $result[$taxonomy_slug] : [];
         }else{
             return $result;
         }

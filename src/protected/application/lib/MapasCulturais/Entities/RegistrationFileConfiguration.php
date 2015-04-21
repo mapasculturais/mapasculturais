@@ -18,10 +18,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
 
     use \MapasCulturais\Traits\EntityFiles;
 
-    protected static $validations = array(
-        'owner' => array( 'required' => "O projeto é obrigatório."),
-        'title' => array( 'required' => "O título do anexo é obrigatório.")
-    );
+    protected static $validations = [
+        'owner' => [ 'required' => "O projeto é obrigatório."],
+        'title' => [ 'required' => "O título do anexo é obrigatório."]
+    ];
     /**
      * @var integer
      *
@@ -81,7 +81,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     }
 
     public function jsonSerialize() {
-        return array(
+        return [
             'id' => $this->id,
             'ownerId' => $this->owner->id,
             'title' => $this->title,
@@ -89,7 +89,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'required' => $this->required,
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName
-        );
+        ];
     }
 
     protected function _canUser($user){

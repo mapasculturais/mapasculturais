@@ -15,7 +15,7 @@ class MetaListGroup{
 
     //protected $errorMessage = '';
 
-    protected $_metadata = array();
+    protected $_metadata = [];
 
     /**
      *
@@ -25,7 +25,7 @@ class MetaListGroup{
      * @param type $unique If this group contains just one file. If this is set to true the uploaded file always replaces the existent file.
      * @param type $max_files Maximum files in this group.
      */
-    function __construct($name, array $metadata = array(), $max_items = null) {
+    function __construct($name, array $metadata = [], $max_items = null) {
         $this->name = $name;
         $this->_metadata = $metadata;
         //$this->errorMessage = $error_message;
@@ -63,7 +63,7 @@ class MetaListGroup{
      * @return bool|array true if the value is valid or an array of errors
      */
     function validate(\MapasCulturais\Entity $owner, $value){
-        $errors = array();
+        $errors = [];
         if($this->is_required && (is_string($value) && trim($value) === '' || is_array($value) && count($value) === 0 || is_null($value))){
             $errors[] = $this->is_required_error_message;
         }else{

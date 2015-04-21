@@ -12,7 +12,7 @@ class Event extends \MapasCulturais\Repository{
             $ids[] = $space->id;
 
         }elseif($space && is_array($space) && is_object($space[0]) ){
-            $ids = array(-1);
+            $ids = [-1];
             foreach($space as $s)
                 if(is_object($s) && $s instanceof \MapasCulturais\Entities\Space && $s->status > 0)
                     $ids[] = $s->id;
@@ -73,11 +73,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'space_ids' => $ids
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -92,7 +92,7 @@ class Event extends \MapasCulturais\Repository{
             $ids[] = $project->id;
 
         }elseif($project && is_array($project) && is_object($project[0]) ){
-            $ids = array(-1);
+            $ids = [-1];
             foreach($project as $s)
                 if(is_object($s) && $s instanceof \MapasCulturais\Entities\Project && $s->status > 0)
                     $ids[] = $s->id;
@@ -153,11 +153,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'project_ids' => $ids
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -230,11 +230,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'agent_id' => $agent->id
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -294,10 +294,10 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to
-        ));
+        ]);
 
         $result = $query->getResult();
 

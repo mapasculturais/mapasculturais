@@ -9,7 +9,7 @@ class File extends \MapasCulturais\Repository{
         $app = App::i();
 
         $repo = $app->repo($owner->getFileClassName());
-        $result = $repo->findBy(array('owner' => $owner, 'group' => $group));
+        $result = $repo->findBy(['owner' => $owner, 'group' => $group]);
 
         $registeredGroup = $app->getRegisteredFileGroup($owner->controllerId, $group);
 
@@ -24,7 +24,7 @@ class File extends \MapasCulturais\Repository{
         $app = App::i();
 
         $repo = $app->repo($owner->getFileClassName());
-        $result = $repo->findOneBy(array('owner' => $owner, 'group' => $group));
+        $result = $repo->findOneBy(['owner' => $owner, 'group' => $group]);
 
         return $result;
     }
@@ -33,9 +33,9 @@ class File extends \MapasCulturais\Repository{
         $app = App::i();
 
         $repo = $app->repo($owner->getFileClassName());
-        $files = $repo->findBy(array('owner' => $owner));
+        $files = $repo->findBy(['owner' => $owner]);
 
-        $result = array();
+        $result = [];
 
         if($files){
             foreach($files as $file){
@@ -44,7 +44,7 @@ class File extends \MapasCulturais\Repository{
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))
-                        $result[trim($file->group)] = array();
+                        $result[trim($file->group)] = [];
 
                     $result[trim($file->group)][] = $file;
                 }

@@ -30,19 +30,18 @@ class Event extends \MapasCulturais\Entity
 
 
 
-    protected static $validations = array(
-        'name' => array(
+    protected static $validations = [
+        'name' => [
             'required' => 'O nome do evento é obrigatório'
-        ),
-        'shortDescription' => array(
+        ],
+        'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ),
-        'project' => array(
+        ],
+        'project' => [
             '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
-        )
-
-    );
+        ]
+    ];
 
     /**
      * @var integer
@@ -106,7 +105,7 @@ class Event extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="event", cascade="remove", orphanRemoval=true)
     */
-    protected $occurrences = array();
+    protected $occurrences = [];
 
     /**
      * @var \MapasCulturais\Entities\Agent
@@ -257,16 +256,16 @@ class Event extends \MapasCulturais\Entity
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'space_id' => $space->id,
             'event_id' => $this->id
-        ));
+        ]);
 
         $result = $query->getResult();
 
-        return $result ? $result : array();
+        return $result ? $result : [];
     }
 
 
@@ -320,15 +319,15 @@ class Event extends \MapasCulturais\Entity
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'event_id' => $this->id
-        ));
+        ]);
 
         $result = $query->getResult();
 
-        return $result ? $result : array();
+        return $result ? $result : [];
     }
 
     //============================================================= //

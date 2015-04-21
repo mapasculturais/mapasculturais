@@ -30,7 +30,9 @@ then
 fi
 
 cd src/
+
 echo "starting php -S on port 8081"
+
 MAPASCULTURAIS_CONFIG_FILE="conf-test.php" php -d variables_order=EGPCS -S 0.0.0.0:8888 &
 PID_OF_PHP=$!
 cd ..

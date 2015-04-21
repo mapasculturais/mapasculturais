@@ -68,7 +68,7 @@ class Metadata extends \MapasCulturais\Definition{
      * @example to validate a positive integet the key must be 'v::int()->positive()'
      * @var array
      */
-    protected $_validations= array();
+    protected $_validations= [];
 
 
     protected $private = false;
@@ -76,7 +76,7 @@ class Metadata extends \MapasCulturais\Definition{
      * The metadata configuration
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * Creates a new Metadata Definition.
@@ -127,7 +127,7 @@ class Metadata extends \MapasCulturais\Definition{
             unset($config['validations']['required']);
         }
 
-        $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : array();
+        $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
 
         $this->config = $config;
     }
@@ -140,7 +140,7 @@ class Metadata extends \MapasCulturais\Definition{
      * @return bool|array true if the value is valid or an array of errors
      */
     function validate(\MapasCulturais\Entity $owner, $value){
-        $errors = array();
+        $errors = [];
 
         if($this->is_required && !$value){
             $errors[] = $this->is_required_error_message;
@@ -182,12 +182,12 @@ class Metadata extends \MapasCulturais\Definition{
         if(class_exists($owner_class . 'Meta')){
             $q = $app->em->createQuery("SELECT COUNT(m) FROM {$owner_class}Meta m WHERE m.key = :key AND m.value = :value AND m.owner != :owner");
 
-            $q->setParameters(array('key' => $this->key, 'value' => $value, 'owner' => $owner));
+            $q->setParameters(['key' => $this->key, 'value' => $value, 'owner' => $owner]);
 
         }else{
             $q = $app->em->createQuery("SELECT COUNT(m) FROM \MapasCulturais\Entities\Metadata m WHERE m.key = :key AND m.value = :value AND m.ownerType :ownerType AND m.ownerId != :ownerId");
 
-            $q->setParameters(array('key' => $this->key, 'value' => $value, 'ownerType' => $owner_class, 'ownerId' => $owner->id));
+            $q->setParameters(['key' => $this->key, 'value' => $value, 'ownerType' => $owner_class, 'ownerId' => $owner->id]);
         }
 
         return !$q->getSingleScalarResult();
@@ -222,12 +222,12 @@ class Metadata extends \MapasCulturais\Definition{
      * @return array array with keys 'required', 'type', 'length', 'options' (if exists) and 'label' (if exists')
      */
     function getMetadata(){
-        $result = array(
+        $result = [
             'required'  => $this->is_required,
             'type' => $this->type,
             'length' => key_exists('length', $this->config) ? $this->config['length'] : null,
             'private' => $this->private
-        );
+        ];
 
         if(key_exists('options', $this->config))
                 $result['options'] = $this->config['options'];

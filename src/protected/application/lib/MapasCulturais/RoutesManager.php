@@ -17,7 +17,7 @@ namespace MapasCulturais;
  *
  */
 class RoutesManager{
-    protected $config = array();
+    protected $config = [];
 
     /**
      * Creates the Routes Menager
@@ -37,7 +37,7 @@ class RoutesManager{
     }
 
     protected function addRoutes(){
-        App::i()->map('/(:args+)', function ($url_args = array()){
+        App::i()->map('/(:args+)', function ($url_args = []){
             $app = App::i();
 
             $api_call = false;
@@ -56,7 +56,7 @@ class RoutesManager{
 
                 // and the default action name
                 $action_name = $this->config['default_action_name'];
-                $args = array();
+                $args = [];
 
             // if url starts with one of the shortcuts
             }elseif(preg_match($shortcuts_preg, $app->request->getPathInfo(), $matches)){
@@ -68,7 +68,7 @@ class RoutesManager{
                 $action_name = $shortcut[1];
 
                 // shortcut arguments
-                $args = key_exists(2, $shortcut) ? $shortcut[2] : array();
+                $args = key_exists(2, $shortcut) ? $shortcut[2] : [];
 
                 $url_args = explode('/', preg_replace('#^/' . $matches[1] . '/?#', '', $app->request->getPathInfo()));
 
@@ -135,14 +135,14 @@ class RoutesManager{
      * for the URL:<br/>
      * <b>http://mapasculturais/controller/action/some%20value/name:Fulano/lastName:de%20Tal/age:31/</b><br/>
      * this method will return the array:<br/>
-     * <b>array(0 => 'a value', 'name' => 'Fulano', 'lastName' => 'de Tal', 'age' => '31')</b>
+     * <b>[0 => 'a value', 'name' => 'Fulano', 'lastName' => 'de Tal', 'age' => '31']</b>
      *
      * @param array $args
      *
      * @return array Extracted data
      */
     protected function extractArgs($url_args){
-        $data = array();
+        $data = [];
         $i = 0;
 
         foreach($url_args as $arg){
@@ -170,7 +170,7 @@ class RoutesManager{
         }
     }
 
-    public function createUrl($controller_id, $action_name = '', array $args = array()){
+    public function createUrl($controller_id, $action_name = '', array $args = []){
 
         if($action_name == '')
             $action_name = $this->config['default_action_name'];
@@ -179,11 +179,11 @@ class RoutesManager{
 
         $route = '';
 
-        if($args && in_array(array($controller_id, $action_name, $args), $this->config['shortcuts'])){
-            $route = array_search(array($controller_id, $action_name, $args), $this->config['shortcuts']) . '/';
-            $args = array();
-        }elseif(in_array(array($controller_id, $action_name), $this->config['shortcuts'])){
-            $route = array_search(array($controller_id, $action_name), $this->config['shortcuts']) . '/';
+        if($args && in_array([$controller_id, $action_name, $args], $this->config['shortcuts'])){
+            $route = array_search([$controller_id, $action_name, $args], $this->config['shortcuts']) . '/';
+            $args = [];
+        }elseif(in_array([$controller_id, $action_name], $this->config['shortcuts'])){
+            $route = array_search([$controller_id, $action_name], $this->config['shortcuts']) . '/';
         }else{
             if(in_array($controller_id, $this->config['controllers'])){
                 $route = array_search($controller_id, $this->config['controllers']) . '/';

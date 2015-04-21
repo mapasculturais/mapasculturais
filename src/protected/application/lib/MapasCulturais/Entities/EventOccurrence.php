@@ -18,44 +18,44 @@ class EventOccurrence extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
-    protected static $validations = array(
-        'startsOn' => array(
+    protected static $validations = [
+        'startsOn' => [
             'required' => 'Data de inicio é obrigatória',
             '$value instanceof \DateTime' => 'Data de inicio inválida'
-         ),
-        'endsOn' => array(
+        ],
+        'endsOn' => [
             '$value instanceof \DateTime' => 'Data final inválida',
-         ),
-        'startsAt' => array(
+        ],
+        'startsAt' => [
             'required' => 'Hora de inicio é obrigatória',
             '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio inválida',
-         ),
-        'duration' => array(
+        ],
+        'duration' => [
             //'required' => 'A duração é obrigatória',
             '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida'
-         ),
-        'frequency' => array(
+        ],
+        'frequency' => [
             'required' => 'Frequência é obrigatória',
             '$this->validateFrequency($value)' => 'Frequência inválida'
-        ),
-        'separation' => array(
+        ],
+        'separation' => [
             'v::positive()' => 'Erro interno'
-         ),
-        'until' => array(
+        ],
+        'until' => [
             '$value instanceof \DateTime' => 'Data final inválida',
             '$value >= $this->startsOn' => 'Data final antes da inicial'
-         ),
-        'event' => array(
+        ],
+        'event' => [
             'required' => 'Evento é obrigatório'
-         ),
-        'space' => array(
+        ],
+        'space' => [
             'required' => 'Espaço é obrigatório'
-         ),
-        'description' => array(
+        ],
+        'description' => [
             'required' => 'A descrição legível do horário é obrigatória'
-        )
+        ]
 
-    );
+    ];
 
     private $flag_day_on = true;
 
@@ -263,7 +263,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if ($this->id) {
             return App::i()->repo('EventOccurrenceRecurrence')->findBy(['eventOccurrence'=> $this]);
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -372,7 +372,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function jsonSerialize() {
-        return array(
+        return [
             'id' => $this->id,
             'rule'=> $this->rule,
             'startsOn' => $this->startsOn,
@@ -386,13 +386,12 @@ class EventOccurrence extends \MapasCulturais\Entity
             'count' =>  $this->count,
             'until' =>  $this->until,
             'spaceId' =>  $this->spaceId,
-
-            'space' => $this->space ? array('id' => $this->space->id, 'name' => $this->space->name, 'singleUrl' => $this->space->singleUrl, 'shortDescription' => $this->space->shortDescription, 'avatar' => $this->space->avatar, 'location'=>$this->space->location) : null,
-            'event' => $this->event ? array('id' => $this->event->id, 'name' => $this->event->name, 'shortDescription' => $this->event->shortDescription, 'avatar' => $this->space->avatar) : null,
+            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location') : null,
+            'event' => $this->event ? $this->event->simplify('id,name,singleUrl,shortDescription,avatar') : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
             'status' => $this->status
-        );
+        ];
     }
 
     protected function canUserCreate($user){
@@ -435,15 +434,15 @@ class EventOccurrence extends \MapasCulturais\Entity
             $request->eventOccurrence = $this;
             $request->save(true);
 
-            throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
+            throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
         }
     }
-    
+
     function delete($flush = false) {
         $this->checkPermission('remove');
         // ($originType, $originId, $destinationType, $destinationId, $metadata)
-        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, array('event_occurrence_id' => $this->id, 'rule' => $this->rule));
-        $requests = App::i()->repo('RequestEventOccurrence')->findBy(array('requestUid' => $ruid));
+        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->rule]);
+        $requests = App::i()->repo('RequestEventOccurrence')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
             $r->delete($flush);
 

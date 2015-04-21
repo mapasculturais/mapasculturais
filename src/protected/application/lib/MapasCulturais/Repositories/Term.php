@@ -25,7 +25,7 @@ class Term extends \MapasCulturais\Repository{
             $q = $this->_em->createQuery('SELECT t.term FROM \MapasCulturais\Entities\Term t WHERE t.taxonomy = :taxonomy_id ORDER BY t.term');
             $q->setParameter('taxonomy_id', $taxonomy_definition->id);
             $_terms = $q->getScalarResult();
-            $terms = array();
+            $terms = [];
             foreach($_terms as $term)
                 $terms[] = $term['term'];
 

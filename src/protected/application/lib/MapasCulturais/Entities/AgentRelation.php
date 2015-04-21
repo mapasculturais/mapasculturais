@@ -148,7 +148,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
            $request->agentRelation = $this;
            $request->save(true);
 
-           throw new \MapasCulturais\Exceptions\WorkflowRequest(array($request));
+           throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
 
         }
     }
@@ -156,8 +156,8 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     function delete($flush = false) {
         $this->checkPermission('remove');
         // ($originType, $originId, $destinationType, $destinationId, $metadata)
-        $ruid = RequestAgentRelation::generateRequestUid($this->owner->getClassName(), $this->owner->id, $this->agent->getClassName(), $this->agent->id, array('class' => $this->getClassName(), 'relationId' => $this->id));
-        $requests = App::i()->repo('RequestAgentRelation')->findBy(array('requestUid' => $ruid));
+        $ruid = RequestAgentRelation::generateRequestUid($this->owner->getClassName(), $this->owner->id, $this->agent->getClassName(), $this->agent->id, ['class' => $this->getClassName(), 'relationId' => $this->id]);
+        $requests = App::i()->repo('RequestAgentRelation')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
             $r->delete($flush);
 

@@ -86,11 +86,11 @@ class Notification extends \MapasCulturais\Entity{
     }
 
     function getApproveUrl(){
-        return $this->getController()->createUrl('approve', array($this->id));
+        return $this->getController()->createUrl('approve', [$this->id]);
     }
 
     function getRejectUrl(){
-        return $this->getController()->createUrl('reject', array($this->id));
+        return $this->getController()->createUrl('reject', [$this->id]);
     }
 
     function getIsRequest(){

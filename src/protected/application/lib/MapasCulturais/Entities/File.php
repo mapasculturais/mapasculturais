@@ -102,7 +102,7 @@ abstract class File extends \MapasCulturais\Entity
      *          )
      * @var array
      */
-    protected $tmpFile = array('name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0);
+    protected $tmpFile = ['name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
 
     /**
      * Creates a new file from upload
@@ -179,7 +179,7 @@ abstract class File extends \MapasCulturais\Entity
 
     static function sortFilesByGroup($files){
         $app = App::i();
-        $result = array();
+        $result = [];
 
         if($files){
             foreach($files as $file){
@@ -189,7 +189,7 @@ abstract class File extends \MapasCulturais\Entity
                     $result[trim($file->group)] = $file;
                 }else{
                     if(!key_exists($file->group, $result))
-                        $result[trim($file->group)] = array();
+                        $result[trim($file->group)] = [];
 
                     $result[trim($file->group)][] = $file;
                 }
@@ -202,7 +202,7 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     public function jsonSerialize() {
-        return array(
+        return [
             'id' => $this->id,
             'md5' => $this->md5,
             'mimeType' => $this->mimeType,
@@ -212,7 +212,7 @@ abstract class File extends \MapasCulturais\Entity
             'files' => $this->getFiles(),
             'url' => $this->url,
             'deleteUrl' => $this->deleteUrl,
-        );
+        ];
     }
 
 
@@ -341,14 +341,14 @@ abstract class File extends \MapasCulturais\Entity
 
         $file_class = $this->getClassName();
 
-        $image = new $file_class(array(
+        $image = new $file_class([
             'error' => UPLOAD_ERR_OK,
             'name' => $image_name,
             'type' => $this->mimeType,
             'tmp_name' => $tmp_filename,
             'size' => filesize($tmp_filename),
             'parent' => $this
-        ));
+        ]);
 
         $image->group = $transformation_group_name;
 
@@ -382,7 +382,7 @@ abstract class File extends \MapasCulturais\Entity
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        $files = $this->repo()->findBy(array('parent' => $this));
+        $files = $this->repo()->findBy(['parent' => $this]);
         foreach($files as $f)
             $f->delete(true);
 

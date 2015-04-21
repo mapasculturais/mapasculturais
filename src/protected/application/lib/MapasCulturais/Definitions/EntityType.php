@@ -53,6 +53,6 @@ class EntityType extends \MapasCulturais\Definition{
     }
 
     function jsonSerialize() {
-        return array('id' => $this->id, 'name' => $this->name);
+        return ['id' => $this->id, 'name' => $this->name];
     }
 }

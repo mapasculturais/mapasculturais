@@ -21,7 +21,7 @@ class FileGroup extends \MapasCulturais\Definition{
 
     protected $errorMessage = '';
 
-    protected $_validations = array();
+    protected $_validations = [];
 
     /**
      *
@@ -31,7 +31,7 @@ class FileGroup extends \MapasCulturais\Definition{
      * @param type $unique If this group contains just one file. If this is set to true the uploaded file always replaces the existent file.
      * @param type $max_files Maximum files in this group.
      */
-    function __construct($name, array $validations = array(), $error_message = '', $unique = false, $max_files = null) {
+    function __construct($name, array $validations = [], $error_message = '', $unique = false, $max_files = null) {
         $this->name = $name;
         $this->_validations = $validations;
         $this->errorMessage = $error_message;

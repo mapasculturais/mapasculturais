@@ -60,10 +60,10 @@ class GeoPoint implements \JsonSerializable{
 
 
     public function jsonSerialize(){
-        return array(
+        return [
             'latitude' => $this->latitude,
             'longitude' => $this->longitude
-        );
+        ];
     }
 
 

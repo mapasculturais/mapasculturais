@@ -80,7 +80,7 @@ abstract class Theme extends \Slim\View {
      */
     protected $path = null;
 
-    protected $_dict = array();
+    protected $_dict = [];
 
     abstract protected function _init();
 
@@ -104,7 +104,7 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
 
-        $folders = array();
+        $folders = [];
 
         $class = get_called_class();
         while($class !== __CLASS__){
@@ -126,7 +126,7 @@ abstract class Theme extends \Slim\View {
         $app->applyHookBoundTo($this, 'theme.init:after');
     }
 
-    protected function _addTexts(array $dict = array()){
+    protected function _addTexts(array $dict = []){
         $this->_dict = array_merge($dict, $this->_dict);
     }
 
@@ -250,7 +250,7 @@ abstract class Theme extends \Slim\View {
 
         $template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $templatePath);
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', array('template' => $template_name));
+        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', ['template' => $template_name]);
 
         $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
 
@@ -270,7 +270,7 @@ abstract class Theme extends \Slim\View {
 
         $html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):after', array('template' => $template_name, 'html' => &$html));
+        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
 
         return $html;
     }
@@ -292,7 +292,7 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function partialRender($template, $data = array(), $_is_part = false){
+    public function partialRender($template, $data = [], $_is_part = false){
         $app = App::i();
 
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
@@ -317,7 +317,7 @@ abstract class Theme extends \Slim\View {
 
         $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):before', array('template' => $template_name));
+        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):before', ['template' => $template_name]);
 
         ob_start(function($output){
             return $output;
@@ -327,7 +327,7 @@ abstract class Theme extends \Slim\View {
 
         $html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):after', array('template' => $template_name, 'html' => &$html));
+        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
 
         return $html;
     }
@@ -345,7 +345,7 @@ abstract class Theme extends \Slim\View {
      * @param string $template
      * @param array $data Data to be passed to template part.
      */
-    public function part($template, $data = array()){
+    public function part($template, $data = []){
         echo $this->partialRender($template, $data, true);
     }
 
@@ -379,7 +379,7 @@ abstract class Theme extends \Slim\View {
         return $this->_assetManager;
     }
 
-    function enqueueScript($group, $script_name, $script_filename, array $dependences = array()){
+    function enqueueScript($group, $script_name, $script_filename, array $dependences = []){
         $app = App::i();
         if($app->config['app.log.assets']){
             $dep = implode(', ', $dependences);
@@ -388,7 +388,7 @@ abstract class Theme extends \Slim\View {
         $this->_assetManager->enqueueScript($group, $script_name, $script_filename, $dependences);
     }
 
-    function enqueueStyle($group, $style_name, $style_filename, array $dependences = array(), $media = 'all'){
+    function enqueueStyle($group, $style_name, $style_filename, array $dependences = [], $media = 'all'){
         $app = App::i();
         if($app->config['app.log.assets']){
             $dep = implode(', ', $dependences);
@@ -448,7 +448,7 @@ abstract class Theme extends \Slim\View {
 
     function renderMarkdown($markdown){
         $app = App::i();
-        $matches = array();
+        $matches = [];
         if(preg_match_all('#\{\{asset:([^\}]+)\}\}#', $markdown, $matches)){
             foreach($matches[0] as $i => $tag){
                 $markdown = str_replace($tag, $this->asset($matches[1][$i], false), $markdown);
@@ -483,7 +483,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function bodyProperties(){
-        $body_properties = array();
+        $body_properties = [];
 
         foreach ($this->bodyProperties as $key => $val)
             $body_properties[] = "{$key}=\"$val\"";

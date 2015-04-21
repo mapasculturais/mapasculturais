@@ -69,7 +69,7 @@
             },
             create: function(data){
                 var deferred = $q.defer();
-                
+
                 $http.post(this.getUrl(), data)
                     .success(
                         function(response){
@@ -80,7 +80,7 @@
             },
             edit: function(data){
                 var deferred = $q.defer();
-                
+
                 $http.post(url.create('single', data.id), data)
                     .success(
                         function(response){
@@ -126,7 +126,7 @@
 
         function sortFiles(){
             $scope.data.fileConfigurations.sort(function(a,b){
-                if(a.title > b.title){ 
+                if(a.title > b.title){
                     return 1;
                 } else if(a.title < b.title){
                     return -1;
@@ -135,7 +135,7 @@
                 }
             });
         }
-        
+
         $scope.fileConfigurationBackups = [];
 
         $scope.createFileConfiguration = function(){
@@ -331,6 +331,19 @@
                     {value: 10, label: 'Selecionada'},
                     {value: 0, label: 'Rascunho'}
                 ],
+
+                publishedRegistrationStatuses:[
+                    {value: null, label: 'Todas'},
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Selecionada'}
+                ],
+
+                publishedRegistrationStatusesNames: [
+                    {value: 8, label: 'Suplente'},
+                    {value: 10, label: 'Selecionada'}
+                ],
+
+                publishedRegistrationStatus: 10,
 
                 propLabels : [],
 

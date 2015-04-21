@@ -6,13 +6,13 @@ abstract class AuthProvider {
         Traits\MagicGetter,
         Traits\MagicSetter;
 
-    protected $_config = array();
+    protected $_config = [];
 
     private $_authenticatedUser = null;
 
     private $_guestUser = null;
 
-    final function __construct(array $config = array()) {
+    final function __construct(array $config = []) {
         $this->_config = $config;
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();
@@ -35,7 +35,7 @@ abstract class AuthProvider {
     abstract protected function _createUser($data);
 
     final function logout(){
-        App::i()->applyHookBoundTo($this, 'auth.logout:before', array($this->_authenticatedUser));
+        App::i()->applyHookBoundTo($this, 'auth.logout:before', [$this->_authenticatedUser]);
 
         $this->_authenticatedUser = null;
         $this->_cleanUserSession();
@@ -70,7 +70,7 @@ abstract class AuthProvider {
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){
-        App::i()->applyHookBoundTo($this, 'auth.login', array($user));
+        App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
         $this->_authenticatedUser = $user;
     }
 

@@ -9,12 +9,12 @@ class RequestEventOccurrence extends \MapasCulturais\Repository{
                 $occ->event->id,
                 $occ->space->className,
                 $occ->space->id,
-                array(
+                [
                     'event_occurrence_id' => $occ->id,
                     'rule' => $occ->rule
-                )
+                ]
             );
 
-        return $this->findBy(array('requestUid' => $request_uid));
+        return $this->findBy(['requestUid' => $request_uid]);
     }
 }

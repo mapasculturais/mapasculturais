@@ -20,7 +20,7 @@ class Registration extends EntityController {
     function __construct() {
         $app = App::i();
         $app->hook('POST(registration.upload):before', function() use($app) {
-            $mime_types = array(
+            $mime_types = [
                 'application/pdf',
                 'audio/.+',
                 'video/.+',
@@ -66,7 +66,7 @@ class Registration extends EntityController {
                 'application/vnd\.oasis\.opendocument\.text-template',
                 'application/vnd\.oasis\.opendocument\.text-web',
 
-            );
+            ];
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
 
@@ -121,7 +121,7 @@ class Registration extends EntityController {
 
         $registration->project = $project;
 
-        $this->render('create', array('entity' => $registration));
+        $this->render('create', ['entity' => $registration]);
     }
 
     function GET_view(){
