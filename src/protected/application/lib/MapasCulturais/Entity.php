@@ -102,6 +102,10 @@ abstract class Entity implements \JsonSerializable{
         return $this->getClassName() . ':' . $this->id;
     }
 
+    function refresh(){
+        App::i()->em->refresh($this);
+    }
+
     function equals($entity){
         return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
     }
@@ -121,19 +125,31 @@ abstract class Entity implements \JsonSerializable{
                         $e->files = [];
 
                         foreach ($this->files as $group => $files){
-                            if(!isset($e->files[$group]))
-                                $e->files[$group] = [];
 
-                            $e->files[$group][] = $f->simplify(['id', 'url', 'files']);
+                            if(is_array($files)){
+                                if(!isset($e->files[$group])){
+                                    $e->files[$group] = [];
+                                }
+
+                                foreach($files as $f){
+                                    $e->files[$group][] = $f->simplify('id,url,files');
+                                }
+                            }else if(is_object($files)){
+                                $e->files[$group] = $files->simplify('id,url,files');
+                            }else{
+                                $e->files[$group] = null;
+                            }
                         }
                     break;
 
                     case 'avatar':
                         if($this->usesAvatar()){
                             $e->avatar = [];
-                            if($avatar = $this->avatar)
-                                foreach($avatar->files as $transformation => $f)
-                                    $e->avatar[$transformation] = $f->simplify(['id', 'url']);
+                            if($avatar = $this->avatar){
+                                foreach($avatar->files as $transformation => $f){
+                                    $e->avatar[$transformation] = $f->simplify('id,url');
+                                }
+                            }
                         }
                     break;
 
@@ -679,7 +695,7 @@ abstract class Entity implements \JsonSerializable{
      * @return \Doctrine\ORM\EntityRepository
      */
     public function repo(){
-        return App::i()->repo(get_called_class());
+        return App::i()->repo($this->getClassName());
     }
 
     /**

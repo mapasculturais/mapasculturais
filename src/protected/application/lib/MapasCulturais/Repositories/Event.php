@@ -82,8 +82,6 @@ class Event extends \MapasCulturais\Repository{
 
         $result = $query->getResult();
 
-        $this->_em->clear();
-
         return $result;
     }
 
@@ -164,8 +162,6 @@ class Event extends \MapasCulturais\Repository{
 
         $result = $query->getResult();
 
-        $this->_em->clear();
-
         return $result;
     }
 
@@ -242,8 +238,6 @@ class Event extends \MapasCulturais\Repository{
 
 
         $result = $query->getResult();
-
-        $this->_em->clear();
 
         return $result;
     }

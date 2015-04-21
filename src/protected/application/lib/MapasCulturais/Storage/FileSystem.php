@@ -35,7 +35,7 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function __construct(array $config = []) {
         $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
-            'baseUrl' => '/files/'
+            'baseUrl' => 'files/'
         ];
     }
 
@@ -145,7 +145,8 @@ class FileSystem extends \MapasCulturais\Storage{
         }
 
         if(exec('zip -j ' . $tmpName . ' ' . $strFiles)){
-            $newFile = new \MapasCulturais\Entities\File ([
+            $file_class = $entity->getFileClassName();
+            $newFile = new $file_class ([
                 'name' => $fileName,
                 'type' => 'application/zip',
                 'tmp_name' => $tmpName,
