@@ -125,7 +125,7 @@ return array(
             'required' => false,
             'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'Agente coletivo com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
+            'description' => 'Agente coletivo ou empresa proponente com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
             'type' => 2,
             'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
