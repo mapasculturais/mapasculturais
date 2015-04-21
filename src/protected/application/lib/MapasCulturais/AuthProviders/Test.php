@@ -7,8 +7,9 @@ class Test extends \MapasCulturais\AuthProvider{
     protected $filename = '';
 
     protected function _init() {
+        $tmp_dir = sys_get_temp_dir();
         $this->filename = isset($this->_config['filename']) ? 
-                $this->_config['filename'] : '/tmp/mapasculturais-tests-authenticated-user.id';
+                $this->_config['filename'] : $tmp_dir . '/mapasculturais-tests-authenticated-user.id';
     }
 
     public function _cleanUserSession() {
