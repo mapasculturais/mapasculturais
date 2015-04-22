@@ -22,8 +22,18 @@
     }
 }
 #about-nav {
-    img {
-        margin-top: 10px;
+    #organization-logo {
+        img {
+            margin-top: 8px;
+            @media screen and (min-width: $screen-tablet) {
+                    margin-top: 2px;
+                    width: 132px;
+            }
+
+            @media screen and (min-width: $screen-md-min) {
+                width: 145px;
+            }
+        }
     }
 }
 #secondary-menu {
