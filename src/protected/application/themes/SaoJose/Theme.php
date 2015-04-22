@@ -27,6 +27,22 @@ class Theme extends BaseV1\Theme{
         );
     }
 
+    protected function _init() {
+        parent::_init();
+        $app = App::i();
+        $app->hook("controller(site).render(page)", function() use ($app) {
+            $page = $this->data[0];
+            $app->view->bodyClasses[] = "page-" . $page;
+        });
+
+        $app->hook('view.render(<<*>>):before', function() use($app) {
+            $this->assetManager->publishAsset('img/tour01.png', 'img/tour01.png');
+            $this->assetManager->publishAsset('img/tour02.png', 'img/tour02.png');
+            $this->assetManager->publishAsset('img/tour03.png', 'img/tour03.png');
+            $this->assetManager->publishAsset('img/tour04.png', 'img/tour04.png');
+        });
+    }
+
     static function getThemeFolder() {
         return __DIR__;
     }

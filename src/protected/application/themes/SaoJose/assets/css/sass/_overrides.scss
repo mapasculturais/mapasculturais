@@ -21,16 +21,45 @@
         }
     }
 }
+#about-nav {
+    #organization-logo {
+        img {
+            margin-top: 6px;
+            width: 73px;
+            @media screen and (min-width: $screen-tablet) {
+                    margin-top: 2px;
+                    width: 132px;
+            }
+
+            @media screen and (min-width: $screen-md-min) {
+                width: 145px;
+            }
+        }
+    }
+}
 #secondary-menu {
-	margin-top: 14px;
+    margin-top: 14px;
 }
 
 //_home.scss
 #home-watermark {
-	background-position: 80% center;
+    background-position: 80% center;
 }
 
 //_pages.scss
 .como-usar-content {
-	width: 100%;
+    width: 100%;
+}
+
+//_panel.scss
+.page-sobre {
+    .panel-main-content {
+        .realizacao, .apoio {
+            a {
+                display: inline-block;
+                margin-right: 1.5%;
+                width: 30%;
+            }
+        }
+    }
 }
