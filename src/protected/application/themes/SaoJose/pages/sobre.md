@@ -10,14 +10,14 @@ Você encontra mais informações sobre a ferramenta Mapas Culturais no site do 
 
 <h2>Realização</h2>
 <div class="realizacao clearfix">
-    <a href="http://institutotim.org.br/"><img class="img-responsive" src="{{asset:img/instituto-tim-novo.png}}" alt="Insituto TIM" /></a>
-    <a href="http://www.sjc.sp.gov.br/"><img class="img-responsive" src="{{asset:img/logo-pmsjc.png}}" /></a>
-    <a href="http://www.fccr.org.br/"><img class="img-responsive" src="{{asset:img/logo-fundacao-cassio-ricardo.png}}" /></a>
+    <a href="http://institutotim.org.br/" target="_blank"><img class="img-responsive" src="{{asset:img/instituto-tim-novo.png}}" alt="Insituto TIM" /></a>
+    <a href="http://www.sjc.sp.gov.br/" target="_blank"><img class="img-responsive" src="{{asset:img/logo-pmsjc.png}}" /></a>
+    <a href="http://www.fccr.org.br/" target="_blank"><img class="img-responsive" src="{{asset:img/logo-fundacao-cassio-ricardo.png}}" /></a>
 </div>
 
 <h2>Apoio</h2>
 <div class="apoio clearfix">
-    <a href="http://www.sesisp.org.br/"><img class="img-responsive" src="{{asset:img/logo-sesi.png}}" /></a>
-    <a href="http://www.sescsp.org.br/unidades/23_SAO+JOSE+DOS+CAMPOS/#/content=programacao"><img class="img-responsive" src="{{asset:img/logo-sesc.jpg}}" /></a>
-    <a href="http://www.ovale.com.br"><img class="img-responsive" src="{{asset:img/logo-o-vale.jpg}}" /></a>
+    <a href="http://www.sesisp.org.br/" target="_blank"><img class="img-responsive" src="{{asset:img/logo-sesi.png}}" /></a>
+    <a href="http://www.sescsp.org.br/unidades/23_SAO+JOSE+DOS+CAMPOS/#/content=programacao" target="_blank"><img class="img-responsive" src="{{asset:img/logo-sesc.jpg}}" /></a>
+    <a href="http://www.ovale.com.br" target="_blank"><img class="img-responsive" src="{{asset:img/logo-o-vale.jpg}}" /></a>
 </div>
