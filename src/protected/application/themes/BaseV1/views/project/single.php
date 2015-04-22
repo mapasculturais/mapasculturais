@@ -290,7 +290,7 @@ $this->includeAngularEntityAssets($entity);
             <!-- #registration-categories -->
             <div id="registration-agent-relations" class="registration-fieldset">
                 <h4>4. Agentes</h4>
-                <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um Agente Coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
+                <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um agente coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.</p>
                 <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
 
                 <?php foreach($app->getRegisteredRegistrationAgentRelations() as $def):
@@ -390,9 +390,9 @@ $this->includeAngularEntityAssets($entity);
                     <p class="registration-help">Não é possível realizar as inscrições online através desse dispositivo. Tente se inscrever a partir de um dispositivo com a tela maior.</p>
                 </div>
                 <form id="project-registration" class="registration-form clearfix">
-                    <p class="registration-help">Para iniciar sua inscrição, selecione o Agente responsável. Ele deve ser um agente individual, com um CPF válido preenchido.</p>
+                    <p class="registration-help">Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um agente individual (pessoa física), com um CPF válido preenchido.</p>
                     <div>
-                        <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsável'}}</div>
+                        <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsável pela inscrição'}}</div>
                         <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione o agente responsável pela inscrição." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
                             <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationOwner" api-query='data.relationApiQuery.owner' spinner-condition="data.registrationSpinner"></find-entity>
                         </edit-box>
