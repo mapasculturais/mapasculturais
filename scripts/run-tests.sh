@@ -29,9 +29,12 @@ then
 	rm "/tmp/mapasculturais-tests-authenticated-user.id"
 fi
 
-cd src/
+cd scripts/
+./compile-sass.sh conf-test.php
 
-echo "starting php -S on port 8081"
+cd ../src/
+
+echo "starting php -S on port 8888"
 
 MAPASCULTURAIS_CONFIG_FILE="conf-test.php" php -d variables_order=EGPCS -S 0.0.0.0:8888 &
 PID_OF_PHP=$!
