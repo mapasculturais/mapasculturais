@@ -27,6 +27,15 @@ class Theme extends BaseV1\Theme{
         );
     }
 
+    protected function _init() {
+        parent::_init();
+        $app = App::i();
+        $app->hook("controller(site).render(page)", function() use ($app) {
+            $page = $this->data[0];
+            $app->view->bodyClasses[] = "page-" . $page;
+        });
+    }
+
     static function getThemeFolder() {
         return __DIR__;
     }

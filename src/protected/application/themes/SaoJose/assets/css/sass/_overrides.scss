@@ -22,15 +22,28 @@
     }
 }
 #secondary-menu {
-	margin-top: 14px;
+    margin-top: 14px;
 }
 
 //_home.scss
 #home-watermark {
-	background-position: 80% center;
+    background-position: 80% center;
 }
 
 //_pages.scss
 .como-usar-content {
-	width: 100%;
+    width: 100%;
+}
+
+//_panel.scss
+.page-sobre {
+    .panel-main-content {
+        .realizacao, .apoio {
+            a {
+                display: inline-block;
+                margin-right: 1.5%;
+                width: 30%;
+            }
+        }
+    }
 }
