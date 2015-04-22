@@ -114,9 +114,9 @@ return array(
     ),
     'registration.ownerDefinition' => array(
         'required' => true,
-        'label' => 'Agente Responsável',
+        'label' => 'Agente responsável pela inscrição',
         'agentRelationGroupName' => 'owner',
-        'description' => 'Agente individual com os campos CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos',
+        'description' => 'Agente individual (pessoa física) com os campos CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos',
         'type' => 1,
         'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
@@ -125,7 +125,7 @@ return array(
             'required' => false,
             'label' => 'Instituição responsável',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'Agente coletivo ou empresa proponente com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
+            'description' => 'Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
             'type' => 2,
             'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),

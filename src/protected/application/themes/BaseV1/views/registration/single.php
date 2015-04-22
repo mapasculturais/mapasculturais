@@ -75,7 +75,7 @@ $this->includeAngularEntityAssets($entity);
         </div>
     <?php endif; ?>
     <div class="registration-fieldset">
-        <h4>Agentes</h4>
+        <h4>Agentes (proponentes)</h4>
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
@@ -106,7 +106,7 @@ $this->includeAngularEntityAssets($entity);
     </div>
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
-        <h4>Anexos</h4>
+        <h4>Anexos (documentos necessários)</h4>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
