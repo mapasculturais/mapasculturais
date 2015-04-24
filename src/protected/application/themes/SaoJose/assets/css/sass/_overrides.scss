@@ -75,6 +75,10 @@
 //_home.scss
 #home-watermark {
     background-position: 80% center;
+
+    @media screen and (max-width: $screen-sm-max) {
+        background: none;
+    }
 }
 
 //_panel.scss
