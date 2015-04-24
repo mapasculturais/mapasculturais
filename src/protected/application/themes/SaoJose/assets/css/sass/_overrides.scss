@@ -14,10 +14,41 @@
 
 // _header.scss
 #brand-logo {
-    img {
-        width: 68px;
-        @media screen and (min-width: $screen-tablet) {
-            width: 137px;
+    a:nth-child(1) {
+        img {
+            float: left;
+            width: 68px;
+            @media screen and (min-width: $screen-sm-min) {
+                margin-top: 0;
+                width: 137px;
+            }
+            @media screen and (min-width: $screen-md-min) {
+                margin-right: 6px;
+                margin-top: 4px;
+                width: 106px;
+            }
+            @media screen and (min-width: $screen-lg-min) {
+                margin-top: 0;
+                width: 137px;
+            }
+        }
+    }
+    a:nth-child(2) {
+        img {
+            float: left;
+            margin-top: 0;
+            @media screen and (max-width: $screen-sm-max) {
+                display: none;
+            }
+            @media screen and (min-width: $screen-md-min) {
+                width: 90px;
+                margin-top: 11px;
+            }
+            @media screen and (min-width: $screen-lg-min) {
+                width: 110px;
+                margin-top: 0;
+                margin-top: 7px;
+            }
         }
     }
 }
