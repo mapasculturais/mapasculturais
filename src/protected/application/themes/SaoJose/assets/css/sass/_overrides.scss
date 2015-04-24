@@ -83,8 +83,19 @@
         .realizacao, .apoio {
             a {
                 display: inline-block;
-                margin-right: 1.5%;
-                width: 30%;
+                margin-right: 22px;
+                img {
+                    height: 53px;
+                    margin-bottom: 12px;
+                    min-height: 40px;
+                    width: auto;
+                    @media screen and (min-width: $screen-sm-min) {
+                        min-height: 56px;
+                    }
+                    @media screen and (min-width: $screen-lg-min) {
+                        height: 83px;
+                    }
+                }
             }
         }
     }
