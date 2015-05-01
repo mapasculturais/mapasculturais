@@ -92,9 +92,11 @@ class Event extends EntityController {
         
         foreach($events as $e){
 
-            $occurrences[$e->id] = array_filter($_occurrences, function($eo) use ($e){
-                return $e->id == $eo->eventId;
-            });
+            if(is_array($_occurrences)){
+                $occurrences[$e->id] = array_filter($_occurrences, function($eo) use ($e){
+                    return $e->id == $eo->eventId;
+                });
+            }
             
             $occurrences_readable[$e->id] = [];
 
