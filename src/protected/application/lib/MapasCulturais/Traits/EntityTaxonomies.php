@@ -4,9 +4,12 @@ use MapasCulturais\App;
 
 /**
  * Defines that the entity has taxonomies.
+ * 
+ * Use this trait only in subclasses of **\MapasCulturais\Entity**.
  *
  * Use the property $terms to set terms to the entity.
  *
+ * <code>
  *  // Example of the $terms property
  *  array(
  *      'tag' => ['Music', 'Guitar'],
@@ -20,6 +23,8 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\Entities\Term[] $taxonomyTerms Description.
  * @property array $terms array of terms string grouped by taxonomy slug. ex: array('tag' => ['Music', 'Dance'])
+ * 
+ * @property-read string $termRelationClassName the name of the term relation class for this entity
  */
 trait EntityTaxonomies{
     /**
@@ -45,14 +50,18 @@ trait EntityTaxonomies{
     /**
      * This entity has taxonomies
      *
-     * @return bool true
+     * @return true
      */
     static function usesTaxonomies(){
         return true;
     }
     
     
-    
+    /**
+     * Returns the name of the term relation class for this entity
+     * 
+     * @return string
+     */
     static function getTermRelationClassName(){
         $class = get_called_class();
         return $class::getClassName() . 'TermRelation';

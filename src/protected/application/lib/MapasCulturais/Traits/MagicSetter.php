@@ -4,15 +4,13 @@ namespace MapasCulturais\Traits;
 /**
  * Defines the magic setter method the be used when trying to set a protected or private property.
  *
- * If a setter method with the same name of the property exists, for example setPropertyName, use it,
- * Else if the property name not starts with an undercore set the value of the property directly.
- * Otherwise throw an Exception.
+ * If a setter method with the same name of the property exists, for example **set*PropertyName***, use it,
+ * else if the property name doesn't starts with an undercore set the value of the property directly.
  */
 trait MagicSetter{
     /**
-     * If a setter method with the same name of the property exists, for example setPropertyName, use it,
-     * else if the property name not starts with an undercore set the value of the property directly.
-     * @throws \Exception
+     * If a setter method with the same name of the property exists, for example **set*PropertyName***, use it,
+     * else if the property name doesn't starts with an undercore set the value of the property directly.
      */
     public function __set($name, $value){
         if(method_exists($this, 'set' . $name)){
@@ -27,7 +25,7 @@ trait MagicSetter{
         }else if($this->usesMetadata() && $this->getRegisteredMetadata($name)){
             return $this->__metadata__set($name, $value);
 
-        }else{
+        }elseif($name[0] !== '_'){
             $this->$name = $value;
             return true;
         }
@@ -35,7 +33,7 @@ trait MagicSetter{
 
     /**
      * This class uses MagicSetter
-     * @return bool true
+     * @return true
      */
     public static function usesMagicSetter (){
         return true;
