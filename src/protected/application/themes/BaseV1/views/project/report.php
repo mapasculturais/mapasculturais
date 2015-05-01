@@ -87,7 +87,7 @@ $_properties = $app->config['registration.propertiesToExport'];
                         <?php endforeach; ?>
 
                     <?php else: ?>
-                        <?php echo str_repeat('<td></td>', count($_protperties)) ?>
+                        <?php echo str_repeat('<td></td>', count($_properties)) ?>
                     <?php endif; ?>
 
                 <?php endforeach ?>
