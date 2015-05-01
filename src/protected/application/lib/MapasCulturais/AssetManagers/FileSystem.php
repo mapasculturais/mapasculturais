@@ -5,9 +5,9 @@ use MapasCulturais\App;
 
 class FileSystem extends \MapasCulturais\AssetManager{
 
-    public function __construct(array $config = array()) {
+    public function __construct(array $config = []) {
 
-        parent::__construct(array_merge(array(
+        parent::__construct(array_merge([
             'publishPath' => BASE_PATH . 'public/',
 
             'mergeScripts' => false,
@@ -17,7 +17,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
             'process.css' => '',
 
             'publishFolderCommand' => 'ln -s -f {IN} {PUBLISH_PATH}'
-        ), $config));
+        ], $config));
 
     }
 
@@ -36,17 +36,17 @@ class FileSystem extends \MapasCulturais\AssetManager{
         $this->_mkAssetDir($output_file);
         
 
-        $command = str_replace(array(
+        $command = str_replace([
                 '{IN}',
                 '{OUT}',
                 '{FILENAME}',
                 '{PUBLISH_PATH}'
-            ), array(
+            ], [
                 $input_files,
                 $this->_config['publishPath'] . $output_file,
                 $output_file,
                 $this->_config['publishPath']
-            ), $command_pattern);
+            ], $command_pattern);
 
         
         if($command_pattern === 'cp -Rf {IN} {PUBLISH_PATH}')
@@ -100,11 +100,11 @@ class FileSystem extends \MapasCulturais\AssetManager{
         }
 
         if(!$enqueuedAssets)
-            return array();
+            return [];
 
         $app = App::i();
 
-        $result = array();
+        $result = [];
 
         if($merge){
             $theme = $app->view;

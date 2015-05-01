@@ -26,8 +26,8 @@ trait EntityMetaLists{
      * <code>
      *  // Example of return when no group is informed
      *  array(
-     *      'links' => array($link1, $link2),
-     *      'videos' => array($video1, $video2, $video3)
+     *      'links' => [$link1, $link2],
+     *      'videos' => [$video1, $video2, $video3]
      *  )
      * </code>
      *

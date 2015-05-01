@@ -27,12 +27,12 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-    protected static $validations = array(
-        'owner' => array(
+    protected static $validations = [
+        'owner' => [
             'required' => "O agente responsável é obrigatório.",
             '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsável.',
-        )
-    );
+        ]
+    ];
 
     /**
      * @var integer
@@ -95,7 +95,7 @@ class Registration extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="agents_data", type="json_array", nullable=true)
      */
-    protected $_agentsData = array();
+    protected $_agentsData = [];
 
 
     /**
@@ -109,7 +109,7 @@ class Registration extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $__metadata = array();
+    protected $__metadata = [];
 
     /**
      * @var \MapasCulturais\Entities\RegistrationFile[] Files
@@ -126,17 +126,17 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function jsonSerialize() {
-        $json = array(
+        $json = [
             'id' => $this->id,
             'project' => $this->project->simplify('id,name,singleUrl'),
             'number' => $this->number,
             'category' => $this->category,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
-            'agentRelations' => array(),
-            'files' => array(),
+            'agentRelations' => [],
+            'files' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
-        );
+        ];
 
         if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
             $json['status'] = $this->status;
@@ -145,14 +145,14 @@ class Registration extends \MapasCulturais\Entity
         if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
             $related_agents = $this->getRelatedAgents();
 
+
             foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-                $json['agentRelations'][] = array(
+                $json['agentRelations'][] = [
                     'label' => $def->label,
                     'description' => $def->description,
                     'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
-                );
+                ];
             }
-
 
             foreach($this->files as $group => $file){
                 if($file instanceof File){
@@ -198,11 +198,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getSingleUrl(){
-        return App::i()->createUrl('registration', 'view', array($this->id));
+        return App::i()->createUrl('registration', 'view', [$this->id]);
     }
 
     function getEditUrl(){
-        return App::i()->createUrl('registration', 'view', array($this->id));
+        return App::i()->createUrl('registration', 'view', [$this->id]);
     }
 
     /**
@@ -210,7 +210,7 @@ class Registration extends \MapasCulturais\Entity
      * @return
      */
     protected function _getRegistrationOwnerRequest(){
-        return  App::i()->repo('RequestChangeOwnership')->findOneBy(array('originType' => $this->getClassName(), 'originId' => $this->id));
+        return  App::i()->repo('RequestChangeOwnership')->findOneBy(['originType' => $this->getClassName(), 'originId' => $this->id]);
     }
 
     function getRegistrationOwnerStatus(){

@@ -44,7 +44,7 @@ class Taxonomy extends \MapasCulturais\Definition{
      * List of terms allowed to this taxonomy. If this list is empty any term is allowed.
      * @var array
      */
-    protected $restrictedTerms = array();
+    protected $restrictedTerms = [];
 
 
     protected $required = false;

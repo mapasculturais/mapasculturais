@@ -12,7 +12,7 @@ class Event extends \MapasCulturais\Repository{
             $ids[] = $space->id;
 
         }elseif($space && is_array($space) && is_object($space[0]) ){
-            $ids = array(-1);
+            $ids = [-1];
             foreach($space as $s)
                 if(is_object($s) && $s instanceof \MapasCulturais\Entities\Space && $s->status > 0)
                     $ids[] = $s->id;
@@ -55,12 +55,22 @@ class Event extends \MapasCulturais\Repository{
                 e.*
             FROM
                 event e
-            JOIN
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.event_id = e.id AND eo.space_id IN (:space_ids)
+            JOIN 
+                event_occurrence eo 
+                    ON eo.event_id = e.id 
+                        AND eo.space_id IN (:space_ids)
+                        AND eo.status > 0
 
             WHERE
-                e.status > 0
+                e.status > 0 AND
+                e.id IN (
+                    SELECT 
+                        event_id 
+                    FROM 
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+                    WHERE 
+                        space_id IN (:space_ids)
+                )
 
             $dql_limit $dql_offset
 
@@ -73,11 +83,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'space_ids' => $ids
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -92,7 +102,7 @@ class Event extends \MapasCulturais\Repository{
             $ids[] = $project->id;
 
         }elseif($project && is_array($project) && is_object($project[0]) ){
-            $ids = array(-1);
+            $ids = [-1];
             foreach($project as $s)
                 if(is_object($s) && $s instanceof \MapasCulturais\Entities\Project && $s->status > 0)
                     $ids[] = $s->id;
@@ -135,12 +145,22 @@ class Event extends \MapasCulturais\Repository{
                 e.*
             FROM
                 event e
-            JOIN
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.event_id = e.id
+            JOIN 
+                event_occurrence eo 
+                    ON eo.event_id = e.id 
+                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.status > 0
             WHERE
-                e.status > 0
-                AND e.project_id IN (:project_ids)
+                e.status > 0 AND 
+                e.project_id IN (:project_ids) AND
+                e.id IN (
+                    SELECT 
+                        event_id 
+                    FROM 
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+                    WHERE 
+                        space_id IN (SELECT id FROM space WHERE status > 0)
+                )
 
             $dql_limit $dql_offset
 
@@ -153,11 +173,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'project_ids' => $ids
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -198,13 +218,14 @@ class Event extends \MapasCulturais\Repository{
                 e.*
             FROM
                 event e
-            JOIN
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.event_id = e.id AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+            JOIN 
+                event_occurrence eo 
+                    ON eo.event_id = e.id 
+                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.status > 0
 
             WHERE
                 e.status > 0 AND (
-
                     e.id IN(
                         SELECT
                             object_id
@@ -216,7 +237,16 @@ class Event extends \MapasCulturais\Repository{
                     ) OR
 
                     e.agent_id = :agent_id
+                ) AND
+                e.id IN (
+                    SELECT 
+                        event_id 
+                    FROM 
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+                    WHERE 
+                        space_id IN (SELECT id FROM space WHERE status > 0)
                 )
+                
 
 
             $dql_limit $dql_offset
@@ -230,11 +260,11 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to,
             'agent_id' => $agent->id
-        ));
+        ]);
 
 
         $result = $query->getResult();
@@ -243,7 +273,7 @@ class Event extends \MapasCulturais\Repository{
     }
 
 
-    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $where = null, $orderBy = null){
+    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
 
         if(is_null($date_from))
             $date_from = date('Y-m-d');
@@ -258,11 +288,18 @@ class Event extends \MapasCulturais\Repository{
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addEntityResult('MapasCulturais\Entities\Event','e');
 
-        $metadata = $this->getClassMetadata();
+        if($only_ids){
+            $select = 'id';
+            $rsm->addFieldResult('e', 'id', 'id');
+        }else{
+            $select = '*';
+            $metadata = $this->getClassMetadata();
 
-        foreach($metadata->fieldMappings as $map)
-            $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
-
+            foreach($metadata->fieldMappings as $map)
+                $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
+        }
+        
+        
         $dql_limit = $dql_offset = '';
 
         if($limit)
@@ -273,15 +310,25 @@ class Event extends \MapasCulturais\Repository{
 
         $strNativeQuery = "
             SELECT
-                e.*
+                e.{$select}
             FROM
                 event e
-            JOIN
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.event_id = e.id AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+            JOIN 
+                event_occurrence eo 
+                    ON eo.event_id = e.id 
+                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.status > 0
 
             WHERE
-                e.status > 0
+                e.status > 0 AND
+                e.id IN (
+                    SELECT 
+                        event_id 
+                    FROM 
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+                    WHERE 
+                        space_id IN (SELECT id FROM space WHERE status > 0)
+                )
 
             $dql_limit $dql_offset
 
@@ -294,12 +341,16 @@ class Event extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to
-        ));
+        ]);
 
-        $result = $query->getResult();
+        if($only_ids){
+            $result = array_map(function($e){ return $e['e_id']; }, $query->getScalarResult());
+        }else{
+            $result = $query->getResult();
+        }
 
         $this->_em->clear();
 

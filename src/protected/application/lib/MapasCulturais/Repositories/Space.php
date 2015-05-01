@@ -5,9 +5,9 @@ use MapasCulturais\Traits;
 class Space extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
 
-    public function findByEventsAndDateInterval($event_ids = array(), $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByEventsAndDateInterval($event_ids = [], $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
-            return array();
+            return [];
 
         if(is_null($date_from))
             $date_from = date('Y-m-d');
@@ -35,23 +35,25 @@ class Space extends \MapasCulturais\Repository{
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
 
-        $dql_event_ids = $event_ids ? 'AND eo.event_id IN (' . implode(',', $event_ids) . ')' : '';
-
         $strNativeQuery = "
             SELECT
                 e.*
             FROM
                 space e
-            JOIN
-                recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) eo
-                ON eo.space_id = e.id $dql_event_ids
 
-            WHERE e.status > 0
+            WHERE 
+                e.status > 0 AND
+                e.id IN (
+                    SELECT 
+                        space_id 
+                    FROM 
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+                    WHERE 
+                        event_id IN (:event_ids)
+                )
+            
 
-            $dql_limit $dql_offset
-
-            ORDER BY
-                eo.starts_on, eo.starts_at";
+            $dql_limit $dql_offset";
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
 
@@ -59,10 +61,11 @@ class Space extends \MapasCulturais\Repository{
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
-        $query->setParameters(array(
+        $query->setParameters([
             'date_from' => $date_from,
-            'date_to' => $date_to
-        ));
+            'date_to' => $date_to,
+            'event_ids' => $event_ids
+        ]);
 
         return $query->getResult();
     }

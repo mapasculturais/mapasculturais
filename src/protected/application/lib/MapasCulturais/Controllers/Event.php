@@ -78,19 +78,25 @@ class Event extends EntityController {
             return;
         }
 
-        $occurrences = array();
-        $occurrences_readable = array();
+        $occurrences = [];
+        $occurrences_readable = [];
 
         $events = $app->repo('Event')->findBySpace($space, $date_from, $date_to);
 
         $event_ids = array_map(function($e) {
             return $e->id;
         }, $events);
-
-
+        
+        $_occurrences = $app->repo('EventOccurrence')->findByEventsAndSpaces($events, [$space], $date_from, $date_to);
+        
+        
         foreach($events as $e){
-            $occurrences[$e->id] = $e->findOccurrencesBySpace($space, $date_from, $date_to);
-            $occurrences_readable[$e->id] = array();
+
+            $occurrences[$e->id] = array_filter($_occurrences, function($eo) use ($e){
+                return $e->id == $eo->eventId;
+            });
+            
+            $occurrences_readable[$e->id] = [];
 
             $occurrences_readable[$e->id] = array_map(function($occ) use ($app) {
                 if(!empty($occ->rule->description)) {
@@ -111,14 +117,14 @@ class Event extends EntityController {
             if(is_array($result)){
                 foreach($result as $k => $e){
                     //@TODO: verify if occurrences and readable occurrences were selected in query data
-                    $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : array();
-                    $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : array();
+                    $result[$k]['occurrences'] = key_exists($e['id'], $occurrences) ? $occurrences[$e['id']] : [];
+                    $result[$k]['readableOccurrences'] = key_exists($e['id'], $occurrences_readable) ? $occurrences_readable[$e['id']] : [];
                 }
             }
 
             $this->apiResponse($result);
         }else{
-            $this->apiResponse(key_exists('@count', $query_data) ? 0 : array());
+            $this->apiResponse(key_exists('@count', $query_data) ? 0 : []);
         }
     }
 
@@ -138,9 +144,9 @@ class Event extends EntityController {
         if(key_exists('_geoLocation', $query_data) || $spaces){
             $space_controller = App::i()->controller('space');
 
-            $space_data = array(
+            $space_data = [
                 '@select' => 'id'
-            );
+            ];
 
             if(key_exists('_geoLocation', $query_data)){
                 $space_data['_geoLocation'] = $this->data['_geoLocation'];
@@ -168,14 +174,14 @@ class Event extends EntityController {
             return $e->id;
         }, $events);
 
-        $result_occurrences = array();
+        $result_occurrences = [];
 
         foreach($events as $evt){
-            $e = array();
+            $e = [];
 
-            $e['spaces'] = array();
-            $e['occurrences'] = array();
-            $e['occurrencesReadable'] = array();
+            $e['spaces'] = [];
+            $e['occurrences'] = [];
+            $e['occurrencesReadable'] = [];
 
 //            $occurrences = $evt->findOccurrences($date_from, $date_to);
 //
@@ -187,10 +193,10 @@ class Event extends EntityController {
 //
 //
 //                if(!key_exists($space_id, $e['occurrences']))
-//                    $e['occurrences'][$space_id] = array();
+//                    $e['occurrences'][$space_id] = [];
 //
 //                if(!key_exists($space_id, $e['occurrencesReadable']))
-//                    $e['occurrencesReadable'][$space_id] = array();
+//                    $e['occurrencesReadable'][$space_id] = [];
 //
 //                $e['occurrences'][$space_id][] = $occ;
 //
@@ -217,7 +223,7 @@ class Event extends EntityController {
                 }
             }
         }else{
-            $result = key_exists('@count', $query_data) ? 0 : array();
+            $result = key_exists('@count', $query_data) ? 0 : [];
         }
 
         return $result;

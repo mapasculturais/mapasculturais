@@ -11,7 +11,7 @@ trait ControllerAPI{
      *
      * @var array
      */
-    private $_apiFindParamList = array();
+    private $_apiFindParamList = [];
 
     function usesAPI(){
         return true;
@@ -69,9 +69,7 @@ trait ControllerAPI{
         if (headers_sent())
             return;
 
-        $response_meta = array(
-            'count' => $count
-        );
+        $response_meta = ['count' => $count];
 
         header('API-Metadata: ' . json_encode($response_meta));
     }
@@ -97,7 +95,7 @@ trait ControllerAPI{
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
     public function API_findOne(){
-        $entity = $this->apiQuery($this->getData, array('findOne' => true));
+        $entity = $this->apiQuery($this->getData, ['findOne' => true]);
         $this->apiItemResponse($entity);
     }
 
@@ -111,8 +109,8 @@ trait ControllerAPI{
         $this->apiResponse($class::getPropertiesMetadata());
     }
 
-    public function getApiCacheId($qdata, $options = array()){
-        return $this->id . '::' . md5(serialize($qdata + array('__OPTIONS__' => $options)));
+    public function getApiCacheId($qdata, $options = []){
+        return $this->id . '::' . md5(serialize($qdata + ['__OPTIONS__' => $options]));
     }
 
     public function apiCacheExists($cache_id){
@@ -150,8 +148,8 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
 
-    public function apiQuery($qdata, $options = array()){
-        $this->_apiFindParamList = array();
+    public function apiQuery($qdata, $options = []){
+        $this->_apiFindParamList = [];
         $app = App::i();
 
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
@@ -170,7 +168,7 @@ trait ControllerAPI{
             $entity_properties = array_keys($app->em->getClassMetadata($this->entityClassName)->fieldMappings);
             $entity_associations = $app->em->getClassMetadata($this->entityClassName)->associationMappings;
 
-            $entity_metadata = array();
+            $entity_metadata = [];
             $metadata_class = "";
 
             $meta_num = 0;
@@ -191,8 +189,8 @@ trait ControllerAPI{
             }
 
             if($class::usesTaxonomies()){
-                $taxonomies = array();
-                $taxonomies_ids = array();
+                $taxonomies = [];
+                $taxonomies_ids = [];
                 foreach($app->getRegisteredTaxonomies($class) as $obj){
                     $taxonomies[] = 'term:' . $obj->slug;
                     $taxonomies_ids['term:' . $obj->slug] = $obj->id;
@@ -201,12 +199,12 @@ trait ControllerAPI{
                 $dql_join_term_template = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
             }
 
-            $keys = array();
+            $keys = [];
 
             $append_files_cb = function(){};
 
-            $select = array('id');
-            $select_metadata = array();
+            $select = ['id'];
+            $select_metadata = [];
             $order = null;
             $op = ' AND ';
             $offset = null;
@@ -215,7 +213,7 @@ trait ControllerAPI{
             $keyword = null;
             $permissions = null;
 
-            $dqls = array();
+            $dqls = [];
 
             foreach($qdata as $key => $val){
                 $val = trim($val);
@@ -262,10 +260,10 @@ trait ControllerAPI{
                     // example:
                     // @files=(avatar.smallAvatar,header.header):name,url
 
-                    $cfg = array(
+                    $cfg = [
                         'files' => explode(',', $imatch[1]),
-                        'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : array('url')
-                    );
+                        'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : ['url']
+                    ];
 
                     $_join_in = [];
 
@@ -285,7 +283,7 @@ trait ControllerAPI{
                     $dql_select_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
 
                     $extract_data_cb = function($file, $ipath, $props){
-                        $result = array();
+                        $result = [];
                         if($ipath){
                             $path = explode('.', $ipath);
                             foreach($path as $transformation){
@@ -306,13 +304,13 @@ trait ControllerAPI{
                         foreach($cfg['files'] as $im){
                             $im = trim($im);
 
-                            list($igroup, $ipath) = explode('.',$im, 2) + array(null,null);
+                            list($igroup, $ipath) = explode('.',$im, 2) + [null,null];
 
                             if(!key_exists($igroup, $files))
                                 continue;
 
                             if(is_array($files[$igroup])){
-                                $result["@files:$im"] = array();
+                                $result["@files:$im"] = [];
                                 foreach($files[$igroup] as $file)
                                     $result["@files:$im"][] = $extract_data_cb($file,$ipath,$cfg['props']);
                             }else{
@@ -357,7 +355,7 @@ trait ControllerAPI{
             }
 
             if($order){
-                $new_order = array();
+                $new_order = [];
                 foreach(explode(',',$order) as $prop){
                     $key = trim(preg_replace('#asc|desc#i', '', $prop));
                     if(key_exists($key, $keys)){
@@ -457,7 +455,7 @@ trait ControllerAPI{
 
             $processEntity = function($r) use($append_files_cb, $select){
 
-                $entity = array();
+                $entity = [];
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
@@ -491,7 +489,7 @@ trait ControllerAPI{
                             for($i = 0; $i < count($props) -1; $i++){
                                 $p = $props[$i];
                                 if(!isset($carray[$p]))
-                                    $carray[$p] = array();
+                                    $carray[$p] = [];
                                 $carray =& $carray[$p];
                             }
                             $carray[array_pop($props)] = $prop_value;
@@ -539,7 +537,7 @@ trait ControllerAPI{
 
                 if($permissions){
                     $rs = $query->getResult();
-                    $result = array();
+                    $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
                         foreach($permissions as $perm){
@@ -725,7 +723,7 @@ trait ControllerAPI{
 
     private function _API_find_addValueToParamList($value){
         if(is_array($value)){
-            $result = array();
+            $result = [];
             foreach($value as $val)
                 $result[] = $this->_API_find_addSigleValueToParamList($val);
         }else{
@@ -746,7 +744,7 @@ trait ControllerAPI{
                 $v = str_replace('@me.', '', $value);
                 $value = $app->user->$v;
                 //foreach($value as $p)
-                    //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r(array($p->id, $p->name),true) . "<<<<<<<<< <<<<<<<<<<<<<");
+                    //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r([$p->id, $p->name],true) . "<<<<<<<<< <<<<<<<<<<<<<");
             }elseif(trim($value) === '@profile'){
                 $value = $app->user->profile ? $app->user->profile : null;
 
@@ -771,9 +769,9 @@ trait ControllerAPI{
         $result = explode("\n",str_replace('\\,', ',', preg_replace('#(^[ ]*|([^\\\]))\,#',"$1\n", $val)));
 
         if(count($result) === 1 && !$result[0]){
-            return array();
+            return [];
         }else{
-            $_result = array();
+            $_result = [];
             foreach($result as $r)
                 if($r)
                     $_result[] = $r;
@@ -787,7 +785,7 @@ trait ControllerAPI{
         $nopen = 0;
         $counter = 0;
 
-        $results = array();
+        $results = [];
         $last_char = '';
 
         foreach(str_split($val) as $index => $char){

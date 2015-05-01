@@ -59,11 +59,11 @@ abstract class Entity implements \JsonSerializable{
      * array of validation definition
      * @var array
      */
-    protected static $validations = array();
+    protected static $validations = [];
 
-    protected $_validationErrors = array();
+    protected $_validationErrors = [];
 
-    private static $_jsonSerializeNestedObjects = array();
+    private static $_jsonSerializeNestedObjects = [];
 
     /**
      * Creates the new empty entity object adding an empty point to properties of type 'point' and,
@@ -122,19 +122,20 @@ abstract class Entity implements \JsonSerializable{
                     break;
 
                     case 'files':
-                        $e->files = array();
+                        $e->files = [];
 
                         foreach ($this->files as $group => $files){
+
                             if(is_array($files)){
                                 if(!isset($e->files[$group])){
-                                    $e->files[$group] = array();
+                                    $e->files[$group] = [];
                                 }
 
                                 foreach($files as $f){
-                                    $e->files[$group][] = $f->simplify(array('id', 'url', 'files'));
+                                    $e->files[$group][] = $f->simplify('id,url,files');
                                 }
                             }else if(is_object($files)){
-                                $e->files[$group] = $files->simplify(array('id', 'url', 'files'));
+                                $e->files[$group] = $files->simplify('id,url,files');
                             }else{
                                 $e->files[$group] = null;
                             }
@@ -143,11 +144,10 @@ abstract class Entity implements \JsonSerializable{
 
                     case 'avatar':
                         if($this->usesAvatar()){
-                            $e->avatar = array();
+                            $e->avatar = [];
                             if($avatar = $this->avatar){
-                                $e->avatar['url'] = $avatar->url;
                                 foreach($avatar->files as $transformation => $f){
-                                    $e->avatar[$transformation] = $f->simplify(array('id', 'url'));
+                                    $e->avatar[$transformation] = $f->simplify('id,url');
                                 }
                             }
                         }
@@ -199,7 +199,7 @@ abstract class Entity implements \JsonSerializable{
 
     protected function fetchByStatus($collection, $status){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
-                return array();
+                return [];
 
         $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
         return $collection->matching($criteria);
@@ -335,10 +335,10 @@ abstract class Entity implements \JsonSerializable{
         $class_metadata = App::i()->em->getClassMetadata($class)->fieldMappings;
         $class_relations = App::i()->em->getClassMetadata($class)->getAssociationMappings();
 
-        $data_array = array();
+        $data_array = [];
 
         foreach ($class_metadata as $key => $value){
-            $metadata = array(
+            $metadata = [
                 'isMetadata' => false,
                 'isEntityRelation' => false,
 
@@ -346,7 +346,7 @@ abstract class Entity implements \JsonSerializable{
                 'type' => $value['type'],
                 'length' => $value['length'],
                 'label' => $class::_getConfiguredPropertyLabel($key)
-            );
+            ];
 
             if($key[0] == '_'){
                 $prop = substr($key, 1);
@@ -360,14 +360,14 @@ abstract class Entity implements \JsonSerializable{
         }
 
         foreach ($class_relations as $key => $value){
-            $data_array[$key] = array(
+            $data_array[$key] = [
                 'isMetadata' => false,
                 'isEntityRelation' => true,
 
                 'targetEntity' => str_replace('MapasCulturais\Entities\\','',$value['targetEntity']),
                 'isOwningSide' => $value['isOwningSide'],
                 'label' => $class::_getConfiguredPropertyLabel($key)
-            );
+            ];
         }
 
         if($class::usesMetadata()){
@@ -384,7 +384,7 @@ abstract class Entity implements \JsonSerializable{
      * @return \MapasCulturais\Entity
      */
     public function getEntity(){
-        $data = array();
+        $data = [];
         foreach ($this as $key => $value){
             if($key[0] == '_')
                 continue;
@@ -394,15 +394,15 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getSingleUrl(){
-        return App::i()->createUrl($this->controllerId, 'single', array($this->id));
+        return App::i()->createUrl($this->controllerId, 'single', [$this->id]);
     }
 
     public function getEditUrl(){
-        return App::i()->createUrl($this->controllerId, 'edit', array($this->id));
+        return App::i()->createUrl($this->controllerId, 'edit', [$this->id]);
     }
 
     public function getDeleteUrl(){
-        return App::i()->createUrl($this->controllerId, 'delete', array($this->id));
+        return App::i()->createUrl($this->controllerId, 'delete', [$this->id]);
     }
 
     /**
@@ -455,7 +455,7 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
 
-        $requests = array();
+        $requests = [];
         if(method_exists($this, '_saveNested')){
             try{
                 $this->_saveNested();
@@ -529,7 +529,7 @@ abstract class Entity implements \JsonSerializable{
 
     private function _isPropertySerializable($val, array $allowed_classes){
         if(is_array($val)){
-            $nval = array();
+            $nval = [];
             foreach($val as $k => $v){
                 try{
                     $nval[$k] = $this->_isPropertySerializable($v, $allowed_classes);
@@ -551,12 +551,12 @@ abstract class Entity implements \JsonSerializable{
      * @return type
      */
     public function jsonSerialize() {
-        $result = array();
-        $allowed_classes = array(
+        $result = [];
+        $allowed_classes = [
             'DateTime',
             'MapasCulturais\Types\GeoPoint',
             'stdClass'
-        );
+        ];
         $_uid = uniqid();
 
         Entity::$_jsonSerializeNestedObjects[$_uid] = $this;
@@ -604,7 +604,7 @@ abstract class Entity implements \JsonSerializable{
     protected function validateUniquePropertyValue($property_name){
         $class = get_called_class();
         $dql = "SELECT COUNT(e.$property_name) FROM $class e WHERE e.$property_name = :val";
-        $params = array('val' => $this->$property_name);
+        $params = ['val' => $this->$property_name];
         if($this->id){
             $dql .= ' AND e.id != :id';
             $params['id'] = $this->id;
@@ -626,8 +626,8 @@ abstract class Entity implements \JsonSerializable{
      *  * Example of the array of errors:
      *  {@*}
      * array(
-     *     'name' => array( 'The name is required' ),
-     *     'email' => array( 'The first error message', 'The second error message' )
+     *     'name' => [ 'The name is required' ],
+     *     'email' => [ 'The first error message', 'The second error message' ]
      * )
      * </code>
      *
@@ -666,7 +666,7 @@ abstract class Entity implements \JsonSerializable{
                 }
                 if(!$ok){
                     if (!key_exists($property, $errors))
-                        $errors[$property] = array();
+                        $errors[$property] = [];
 
                     $errors[$property][] = App::txt($error_message);
 
@@ -675,9 +675,9 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($this->usesTypes() && !$this->_type)
-            $errors['type'] = array(App::txt('The type is required'));
+            $errors['type'] = [App::txt('The type is required')];
         elseif($this->usesTypes() && !$this->validateType())
-            $errors['type'] = array(App::txt('Invalid type'));
+            $errors['type'] = [App::txt('Invalid type')];
 
         if($this->usesMetadata())
             $errors = $errors + $this->getMetadataValidationErrors();

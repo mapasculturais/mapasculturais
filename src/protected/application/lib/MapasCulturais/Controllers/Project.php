@@ -76,7 +76,7 @@ class Project extends EntityController {
         $app->contentType('application/vnd.ms-excel; charset=UTF-8');
 
         ob_start();
-        $this->partial('report', array('entity' => $entity));
+        $this->partial('report', ['entity' => $entity]);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }
@@ -92,7 +92,7 @@ class Project extends EntityController {
                 JOIN r.owner a
                 WHERE a.user = :user
                 AND r.status > 0";
-        $query = $app->em->createQuery($dql)->setParameters(array('user' => $app->user));
+        $query = $app->em->createQuery($dql)->setParameters(['user' => $app->user]);
 
         $registrations = $query->getResult();
 

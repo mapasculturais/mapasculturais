@@ -34,7 +34,7 @@ trait ControllerSoftDelete{
             $app->pass();
 
         $entity = $this->requestedEntity;
-        $urls = array($entity->singleUrl, $entity->editUrl);
+        $urls = [$entity->singleUrl, $entity->editUrl];
 
         if(!$entity)
             $app->pass();

@@ -129,7 +129,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $entity->save(true);
         }  catch (WorkflowRequest $e){
             $status = 202;
-            $reqs = array();
+            $reqs = [];
             foreach($e->requests as $request){
                 $reqs[] = $request->getRequestType();
             }
@@ -205,7 +205,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $entity = $this->newEntity;
 
 
-        $this->render('create', array('entity' => $entity));
+        $this->render('create', ['entity' => $entity]);
     }
 
     /**
@@ -217,10 +217,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * <code>
      * // creates the url with explicit id
-     * $url = $app->createUrl('agent', 'single', array('id' => $agent_id))
+     * $url = $app->createUrl('agent', 'single', ['id' => $agent_id])
      *
      * // creates the url with implicit id
-     * $url = $app->createUrl('agent', 'single', array($agent_id))
+     * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      *
      */
@@ -236,7 +236,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $app->pass();
 
         if($entity->status > 0 || $app->user->is('admin') || $app->user->id === $entity->ownerUser->id)
-            $this->render('single', array('entity' => $entity));
+            $this->render('single', ['entity' => $entity]);
         else
             $app->pass();
     }
@@ -250,10 +250,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * <code>
      * // creates the url with explicit id
-     * $url = $app->createUrl('agent', 'edit', array('id' => $agent_id))
+     * $url = $app->createUrl('agent', 'edit', ['id' => $agent_id])
      *
      * // creates the url with implicit id
-     * $url = $app->createUrl('agent', 'edit', array($agent_id))
+     * $url = $app->createUrl('agent', 'edit', [$agent_id])
      * </code>
      */
     function GET_edit(){
@@ -270,7 +270,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity->checkPermission('modify');
 
-        $this->render('edit', array('entity' => $entity));
+        $this->render('edit', ['entity' => $entity]);
     }
 
     /**
@@ -284,10 +284,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * <code>
      * // creates the url with explicit id
-     * $url = $app->createUrl('agent', 'single', array('id' => $agent_id))
+     * $url = $app->createUrl('agent', 'single', ['id' => $agent_id])
      *
      * // creates the url with implicit id
-     * $url = $app->createUrl('agent', 'single', array($agent_id))
+     * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
     function POST_single(){
@@ -320,10 +320,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * <code>
      * // creates the url with explicit id
-     * $url = $app->createUrl('agent', 'delete', array('id' => $agent_id))
+     * $url = $app->createUrl('agent', 'delete', ['id' => $agent_id])
      *
      * // creates the url with implicit id
-     * $url = $app->createUrl('agent', 'delete', array($agent_id))
+     * $url = $app->createUrl('agent', 'delete', [$agent_id])
      * </code>
      */
     function GET_delete(){
@@ -341,14 +341,14 @@ abstract class EntityController extends \MapasCulturais\Controller{
      *
      * <code>
      * // creates the url with explicit id
-     * $url = $app->createUrl('agent', 'single', array('id' => $agent_id))
+     * $url = $app->createUrl('agent', 'single', ['id' => $agent_id])
      *
      * // creates the url with implicit id
-     * $url = $app->createUrl('agent', 'single', array($agent_id))
+     * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
     function DELETE_single(){
-        $this->requireAuthentication();
+//        $this->requireAuthentication();
 
         $app = App::i();
         if(!key_exists('id', $this->urlData))

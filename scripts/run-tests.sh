@@ -1,7 +1,11 @@
 #!/bin/bash
-
 set -e
 set -o pipefail
+
+if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
+then
+	rm "/tmp/mapasculturais-tests-authenticated-user.id"
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}")"/../ && pwd )"
 
@@ -20,8 +24,18 @@ psql -f db/schema.sql -U mapasculturais_test -d mapasculturais_test
 echo "---- importing data ---"
 psql -f db/test-data.sql -U mapasculturais_test -d mapasculturais_test
 
-cd src/
-echo "starting php -S on port 8081"
+if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
+then
+	rm "/tmp/mapasculturais-tests-authenticated-user.id"
+fi
+
+cd scripts/
+./compile-sass.sh conf-test.php
+
+cd ../src/
+
+echo "starting php -S on port 8888"
+
 MAPASCULTURAIS_CONFIG_FILE="conf-test.php" php -d variables_order=EGPCS -S 0.0.0.0:8888 &
 PID_OF_PHP=$!
 cd ..

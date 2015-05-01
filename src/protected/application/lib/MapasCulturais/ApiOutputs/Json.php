@@ -8,7 +8,7 @@ class Json extends \MapasCulturais\ApiOutput{
     }
 
     protected function _outputError($data) {
-        echo json_encode(array('error' => true, 'data' => $data));
+        echo json_encode(['error' => true, 'data' => $data]);
     }
 
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {

@@ -81,7 +81,7 @@ class Site extends \MapasCulturais\Controller {
             
             $content = $view->renderMarkdown($file_content);
 
-            $attrs = array('content' => $content, 'left' => $left, 'right' => $right);
+            $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             
             $this->render('page', $attrs);
         }else{

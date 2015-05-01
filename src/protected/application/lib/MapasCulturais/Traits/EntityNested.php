@@ -47,7 +47,7 @@ trait EntityNested{
         $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
 
         if(!key_exists('parent', $this->_validationErrors))
-            $this->_validationErrors['parent'] = array();
+            $this->_validationErrors['parent'] = [];
 
         if($parent && $parent->id === $this->id){
             $this->_validationErrors['parent'][] = $error1;
@@ -73,7 +73,7 @@ trait EntityNested{
      * @return array of ids
      */
     public function getChildrenIds(){
-        $result = array();
+        $result = [];
         foreach($this->getChildren() as $child){
             $result[] = $child->id;
             $result = array_merge($result, $child->getChildrenIds());

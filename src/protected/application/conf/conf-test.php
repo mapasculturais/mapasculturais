@@ -5,15 +5,18 @@ $config = include 'conf-base.php';
 
 return array_merge($config,
     array(
-        'base.url' => 'http://teste.mapasculturais.local',
-        'site.url' => 'http://mapasculturais.local/',
+        'base.url' => 'http://localhost:8888/',
+        'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
         'slim.log.level' => Log::DEBUG,
         'slim.log.enabled' => true,
 //        'app.log.query' => true,
         'slim.debug' => true,
         'auth.provider' => 'Test',
-        'auth.config' => array(),
+        
+        'auth.config' => array(
+            'filename' => '/tmp/mapasculturais-tests-authenticated-user.id'
+        ),
 
 //        'app.log.query' => true,
         'doctrine.isDev' => true,

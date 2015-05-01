@@ -23,17 +23,17 @@ trait EntityAgentRelation {
 
     function getAgentRelations($has_control = null, $include_pending_relations = false){
         if(!$this->id)
-            return array();
+            return [];
 
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
-            return array();
+            return [];
 
-        $params = array(
+        $params = [
             'owner' => $this,
-            'statuses' => $include_pending_relations ? array($relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING) : array($relation_class::STATUS_ENABLED),
-            'in' => array(Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED)
-        );
+            'statuses' => $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED],
+            'in' => [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED]
+        ];
 
         $dql_has_control = '';
 
@@ -77,13 +77,13 @@ trait EntityAgentRelation {
      */
     function getRelatedAgents($group = null, $return_relations = false, $include_pending_relations = false){
         if(!$this->id)
-            return array();
+            return [];
 
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
-            return array();
+            return [];
 
-        $result = array();
+        $result = [];
 
         foreach ($this->getAgentRelations(null, $include_pending_relations) as $agentRelation)
             $result[$agentRelation->group][] = $return_relations ? $agentRelation : $agentRelation->agent;
@@ -98,7 +98,7 @@ trait EntityAgentRelation {
         elseif(key_exists($group, $result))
             return $result[$group];
         else
-            return array();
+            return [];
 
     }
 
@@ -140,8 +140,8 @@ trait EntityAgentRelation {
             return $q->getResult();
         }
 
-        $result = array($this->getOwnerUser());
-        $ids = array($result[0]->id);
+        $result = [$this->getOwnerUser()];
+        $ids = [$result[0]->id];
         if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
         
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
@@ -216,7 +216,7 @@ trait EntityAgentRelation {
     function removeAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $flush = true){
         $relation_class = $this->getAgentRelationEntityClassName();
         $repo = App::i()->repo($relation_class);
-        $relation = $repo->findOneBy(array('group' => $group, 'agent' => $agent, 'owner' => $this));
+        $relation = $repo->findOneBy(['group' => $group, 'agent' => $agent, 'owner' => $this]);
         if($relation){
             $relation->delete($flush);
        }
@@ -241,7 +241,7 @@ trait EntityAgentRelation {
                 r.agent = :agent AND
                 r.owner = :owner");
 
-        $q->setParameters(array('agent' => $agent, 'owner' => $this, 'control' => $control ? 'true' : 'false'));
+        $q->setParameters(['agent' => $agent, 'owner' => $this, 'control' => $control ? 'true' : 'false']);
 
         $q->execute();
 

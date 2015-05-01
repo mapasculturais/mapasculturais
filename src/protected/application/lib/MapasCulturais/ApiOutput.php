@@ -24,7 +24,7 @@ abstract class ApiOutput{
     public function outputError($data){
         $app = App::i();
 
-        $hook_data = array('data' => $data);
+        $hook_data = ['data' => $data];
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).error:before", $hook_data);
 
@@ -47,11 +47,11 @@ abstract class ApiOutput{
     public function outputItem($data, $singular_object_name = 'entity', $plural_object_name = 'entities'){
         $app = App::i();
 
-        $hook_data = array(
+        $hook_data = [
             'data' => $data,
             'singular_object_name' => $singular_object_name,
             'plural_object_name' => $plural_object_name
-        );
+        ];
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).item({$singular_object_name}):before", $hook_data);
 
@@ -73,11 +73,11 @@ abstract class ApiOutput{
     public function outputArray(array $data, $singular_object_name = 'entity', $plural_object_name = 'entities'){
         $app = App::i();
 
-        $hook_data = array(
+        $hook_data = [
             'data' => $data,
             'singular_object_name' => $singular_object_name,
             'plural_object_name' => $plural_object_name
-        );
+        ];
 
         $app->applyHookBoundTo($this, "api.response({$this->hookClassName}).array({$plural_object_name}):before", $hook_data);
 

@@ -191,7 +191,7 @@ Para uma página cujo nome de arquivo é **nome-da-pagina.md**, a url de acesso 
 
 
 #### Título da página
-O texto do **primeiro h1** do conteúdo da página será utilizado como título da página (tag <title>). Isto é feito via javascript.
+O texto do **primeiro h1** do conteúdo da página será utilizado como título da página (tag **title**). Isto é feito via javascript.
 
 
 No exemplo a seguir o título da página será **Título da Págna**

@@ -23,7 +23,7 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
 
     protected $type = null;
 
-    protected $requiredProperties = array();
+    protected $requiredProperties = [];
 
     function __construct($config) {
         $this->required               = $config['required'];
@@ -40,11 +40,11 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
 
     function getMetadataConfiguration(){
         $app = \MapasCulturais\App::i();
-        return array(
+        return [
             'label' => $this->label,
             'type' => 'select',
             'options' => $app->config['registration.agentRelationsOptions']
-        );
+        ];
     }
 
     function getOptionLabel($key){

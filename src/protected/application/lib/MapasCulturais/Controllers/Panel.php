@@ -36,7 +36,7 @@ class Panel extends \MapasCulturais\Controller {
         foreach($count as $entity=>$c)
             $count->$entity = str_pad(count($app->user->$entity),2,'0', STR_PAD_LEFT);
 
-        $this->render('index', array('count'=>$count));
+        $this->render('index', ['count'=>$count]);
     }
 
     protected function _getUser(){
@@ -76,7 +76,7 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $user = $this->_getUser();
 
-        $this->render('agents', array('user' => $user));
+        $this->render('agents', ['user' => $user]);
     }
 
 
@@ -95,7 +95,7 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $user = $this->_getUser();
 
-        $this->render('spaces', array('user' => $user));
+        $this->render('spaces', ['user' => $user]);
     }
 
     /**
@@ -113,7 +113,7 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $user = $this->_getUser();
 
-        $this->render('events', array('user' => $user));
+        $this->render('events', ['user' => $user]);
     }
 
     /**
@@ -131,7 +131,7 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $user = $this->_getUser();
 
-        $this->render('projects', array('user' => $user));
+        $this->render('projects', ['user' => $user]);
     }
 
     /**
@@ -149,6 +149,6 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $user = $this->_getUser();
 
-        $this->render('registrations', array('user' => $user));
+        $this->render('registrations', ['user' => $user]);
     }
 }

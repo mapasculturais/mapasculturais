@@ -85,7 +85,7 @@ class User extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] User Roles
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
-    protected $roles = array();
+    protected $roles = [];
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
@@ -231,7 +231,7 @@ class User extends \MapasCulturais\Entity
     }
 
     private function _getAgentsByStatus($status){
-        return App::i()->repo('Agent')->findBy(array('user' => $this, 'status' => $status));
+        return App::i()->repo('Agent')->findBy(['user' => $this, 'status' => $status]);
     }
 
     function getEnabledAgents(){

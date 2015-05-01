@@ -61,11 +61,11 @@ trait EntitySoftDelete{
     }
 
     function getUndeleteUrl(){
-        return App::i()->createUrl($this->controllerId, 'undelete', array($this->id));
+        return App::i()->createUrl($this->controllerId, 'undelete', [$this->id]);
     }
     
     function getDestroyUrl(){
-        return App::i()->createUrl($this->controllerId, 'destroy', array($this->id));
+        return App::i()->createUrl($this->controllerId, 'destroy', [$this->id]);
     }
     
     protected function canUserDestroy($user){

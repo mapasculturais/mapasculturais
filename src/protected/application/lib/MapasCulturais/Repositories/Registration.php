@@ -11,7 +11,7 @@ class Registration extends \MapasCulturais\Repository{
      */
     function findByProjectAndUser(\MapasCulturais\Entities\Project $project, $user){
         if($user->is('guest') || !$project->id){
-            return array();
+            return [];
         }
 
         $dql = "
@@ -29,10 +29,10 @@ class Registration extends \MapasCulturais\Repository{
 
         $q = $this->_em->createQuery($dql);
 
-        $q->setParameters(array(
+        $q->setParameters([
             'project' => $project,
-            'agents' => $user->agents ? $user->agents->toArray() : array(-1)
-        ));
+            'agents' => $user->agents ? $user->agents->toArray() : [-1]
+        ]);
 
         return $q->getResult();
     }
@@ -40,12 +40,12 @@ class Registration extends \MapasCulturais\Repository{
     /**
      *
      * @param \MapasCulturais\Entities\User $user
-     * @param mixed $status = all all|sent|Entities\Registration::STATUS_*|array(Entities\Registration::STATUS_*, Entities\Registration::STATUS_*)
+     * @param mixed $status = all all|sent|Entities\Registration::STATUS_*|[Entities\Registration::STATUS_*, Entities\Registration::STATUS_*]
      * @return \MapasCulturais\Entities\Registration[]
      */
     function findByUser($user, $status = 'all'){
         if($user->is('guest')){
-            return array();
+            return [];
         }
 
         $status_where = "";
@@ -74,7 +74,7 @@ class Registration extends \MapasCulturais\Repository{
                 )";
 
         $q = $this->_em->createQuery($dql);
-        $q->setParameter('agents', $user->agents ? $user->agents->toArray() : array(-1));
+        $q->setParameter('agents', $user->agents ? $user->agents->toArray() : [-1]);
 
         if( $status !== false ){
             $q->setParameter('status', $status);

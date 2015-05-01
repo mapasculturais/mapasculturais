@@ -14,7 +14,7 @@ class FileSystem extends \MapasCulturais\Storage{
      * The FileSystem Sotarage configuration.
      * @var array
      */
-    private $_config = array();
+    private $_config = [];
 
     /**
      * Creates the FileSystem Storage component.
@@ -32,11 +32,11 @@ class FileSystem extends \MapasCulturais\Storage{
      *
      * @param array $config
      */
-    protected function __construct(array $config = array()) {
-        $this->config = $config + array(
+    protected function __construct(array $config = []) {
+        $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
             'baseUrl' => 'files/'
-        );
+        ];
     }
 
     /**

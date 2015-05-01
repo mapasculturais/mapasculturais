@@ -12,7 +12,7 @@ trait Singleton{
      * Array of instances of this class and all subclasses.
      * @var type
      */
-    protected static $_singletonInstances = array();
+    protected static $_singletonInstances = [];
 
     /**
      * Returns the singleton instance. This method creates the instance when called for the first time.

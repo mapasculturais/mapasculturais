@@ -54,7 +54,7 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
      *
      * @var \MapasCulturais\Definitions\EntityType[]
      */
-    protected $registered_types = array();
+    protected $registered_types = [];
 
     /**
      * Create a new Entity Type Group.
@@ -87,11 +87,11 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
     }
 
     function jsonSerialize() {
-        return array(
+        return [
             'name' => $this->name,
             'minId' => $this->min_id,
             'maxId' => $this->max_id,
             'types' => $this->registered_types
-        );
+        ];
     }
 }
