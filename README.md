@@ -17,6 +17,7 @@ Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturai
 - [Entidades dos Mapas Culturais](doc/entidades.md)
 - [API](doc/api.md)
 - [Guia do desenvolvedor](doc/developer-guide.md)
+- [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
 
 ### Requisitos para Instalação
 - PHP >= 5.4
