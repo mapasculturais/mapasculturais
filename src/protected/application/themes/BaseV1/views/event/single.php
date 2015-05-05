@@ -492,7 +492,7 @@ $this->includeMapAssets();
                     <p id="descricao-automatica" class="alert automatic">Descrição gerada pelo sistema automaticamente.</p>
                     <a class="btn btn-default insert"></a>
                 </div>
-                <input type="text" name="description" value="{{rule.description}}">
+                <input type="text" name="description" value="{{rule.description}}" placeholder="Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.">
             </div>
         </div>
         <div class="clearfix">
