@@ -101,7 +101,6 @@ class Event extends EntityController {
                 return $e->id == $eo->eventId;
             });
 
-
             $occurrences_readable[$e->id] = array_map(function($occ) use ($app) {
                 if(!empty($occ->rule->description)) {
                     return $occ->rule->description;
