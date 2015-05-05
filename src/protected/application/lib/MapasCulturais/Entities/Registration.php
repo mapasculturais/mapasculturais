@@ -486,9 +486,11 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        foreach($this->relatedAgents as $agent){
-            if($agent->canUser('@control', $user)){
-                return true;
+        foreach($this->getRelatedAgents() as $agents){
+            foreach($agents as $agent){
+                if($agent->canUser('@control', $user)){
+                    return true;
+                }
             }
         }
 
