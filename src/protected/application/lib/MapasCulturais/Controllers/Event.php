@@ -132,38 +132,36 @@ class Event extends EntityController {
     }
 
     function apiQueryByLocation($query_data){
-        $app = App::i();
-
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
         $spaces     = key_exists('space',   $query_data) ? $query_data['space'] : null;
-
+        
         unset(
             $query_data['@from'],
             $query_data['@to'],
             $query_data['space']
         );
 
-        if(key_exists('_geoLocation', $query_data) || $spaces){
+        $space_data = [];
+
+        if($spaces){
+            $space_data['id'] = $spaces;
+        }
+        
+        foreach($query_data as $key => $val){
+            if(substr($key, 0, 6) === 'space:'){
+                $space_data[substr($key, 6)] = $val;
+                unset($query_data[$key]);
+            }
+        }
+
+        if(key_exists('_geoLocation', $query_data) || $space_data){
             $space_controller = App::i()->controller('space');
 
-            $space_data = [
-                '@select' => 'id'
-            ];
-
-            foreach($query_data as $key => $val){
-                if(substr($key, 0, 6) === 'space:'){
-                    $space_data[substr($key, 6)] = $val;
-                    unset($query_data[$key]);
-                }
-            }
+            $space_data['@select'] = 'id';
 
             if(key_exists('_geoLocation', $query_data)){
                 $space_data['_geoLocation'] = $this->data['_geoLocation'];
-            }
-
-            if($spaces){
-                $space_data['id'] = $spaces;
             }
 
             $space_ids = array_map(
@@ -221,6 +219,7 @@ class Event extends EntityController {
         }
 
         if($event_ids){
+            
             $query_data['id'] = 'IN(' . implode(',', $event_ids) .')';
             // @TODO: verificar se o @select tem o id
             $result = $this->apiQuery($query_data);
