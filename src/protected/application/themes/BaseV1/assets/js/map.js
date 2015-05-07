@@ -248,7 +248,7 @@
                 showAll: true,
                 mouseoverEvent: function(feature, event) {
                     var labelText = feature.properties.name;
-                    var vector = feature.vectors instanceof Array ? feature.vectors[0] : feature.vector;
+                    var vector = event.target;
                     vector.bindLabel('<b style="text-transform: capitalize;">' + labelText.toLowerCase() + '</b>');
                     map.showLabel(vector.label.setLatLng(vector.getCenter()));
                 },
