@@ -1,11 +1,12 @@
 <?php
+
 usort($users, function($a, $b){
-    $prof1 = $a->profile;
-    $prof2 = $b->profile;
+    $prof1 = $a['profile'];
+    $prof2 = $b['profile'];
     
-    if(!$prof1 || !$prof2 || strtolower($prof1->name) == strtolower($prof2->name))
+    if(!$prof1 || !$prof2 || strtolower($prof1['name']) == strtolower($prof2['name']))
         return 0;
-    if(strtolower($prof1->name) > strtolower($prof2->name))
+    if(strtolower($prof1['name']) > strtolower($prof2['name']))
         return 1;
     else return -1;
 });
@@ -14,9 +15,9 @@ usort($users, function($a, $b){
 <form method="GET" action="<?php echo $form_action ?>">
     <?php echo $app->txt('Login with user') ?>:
     <select name="fake_authentication_user_id">
-        <?php foreach($users as $u): if(!$u->profile) continue;
-            $role =  $u->roles && $u->roles->toArray() ? implode(', ',array_map(function($e){ return $e->name; }, $u->roles->toArray())) : 'Normal'; ?>
-        <option value="<?php echo $u->id ?>"><?php echo "{$u->profile->name} ({$u->id}) = {$role}"; ?></option>
+        <?php foreach($users as $u): if(!$u['profile']) continue;
+            $role =  $u['roles'] ? implode(', ',array_map(function($e){ return $e['name']; }, $u['roles'])) : 'Normal'; ?>
+        <option value="<?php echo $u['id'] ?>"><?php echo "{$u['profile']['name']} ({$u['id']}) = {$role}"; ?></option>
         <?php endforeach; ?>
     </select>
     <br/>
