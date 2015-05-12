@@ -85,7 +85,7 @@ class User extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] User Roles
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
-    protected $roles = [];
+    protected $roles;
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
@@ -166,6 +166,10 @@ class User extends \MapasCulturais\Entity
         }
 
         return false;
+    }
+    
+    function can($action, \MapasCulturais\Entity $entity){
+        return $entity->canUser($action, $this);
     }
 
     protected function canUserAddRole($user){

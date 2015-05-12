@@ -405,6 +405,11 @@ trait ControllerAPI{
                 $dql_select .= ', termRelations, term';
                 $dql_select_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
             }
+            
+            if(in_array('owner', $select) || array_filter($select, function($prop){ return substr($prop, 0, 6) == 'owner.'; })){
+                $dql_select .= ', _owner';
+                $dql_select_joins .= " LEFT JOIN e.owner _owner";
+            }
 
             // unset sql_select and dql_select_joins if using permissions filters to reduce memory usage
             if(!$findOne && $permissions){

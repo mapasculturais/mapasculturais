@@ -349,7 +349,7 @@ class App extends \Slim\Slim{
         $this->register();
 
                 // =============== AUTH ============== //
-        $auth_class_name = $config['auth.provider'][0] === '\\' ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
+        $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
 
         $this->_auth = new $auth_class_name($config['auth.config']);
 
