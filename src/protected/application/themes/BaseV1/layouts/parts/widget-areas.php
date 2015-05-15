@@ -1,5 +1,5 @@
 <?php
-$entityClass = get_class($entity);
+$entityClass = $entity->getClassName();
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $areas = array_values($app->getRegisteredTaxonomy($entityClass, 'area')->restrictedTerms);
 sort($areas);
