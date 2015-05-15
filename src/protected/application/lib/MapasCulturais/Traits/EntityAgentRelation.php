@@ -157,7 +157,7 @@ trait EntityAgentRelation {
         if($this->usesNested()) {
             $parent = $this->getParent();
         
-            if(is_object($parent) && !in_array($parent->id, $ids) && !$parent->equals($this)){
+            if(is_object($parent) && !in_array($parent->getOwnerUser()->id, $ids) && !$parent->equals($this)){
                 foreach($parent->getUsersWithControl() as $u){
                     if(!in_array($u->id, $ids)){
                         $ids[] = $u->id;
