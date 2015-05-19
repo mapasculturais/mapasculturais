@@ -3,6 +3,8 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
 if($this->isEditable()){
+    $this->addParentIdsToJs($entity);
+
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('area');
 

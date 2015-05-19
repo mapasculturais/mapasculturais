@@ -106,10 +106,10 @@ trait EntityAgentRelation {
         return $this->getRelatedAgents($group, true, $include_pending_relations);
 
     }
-    
+
     function getIdsOfUsersWithControl(){
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = "$this::usersWithControl";
 
         if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
@@ -118,9 +118,9 @@ trait EntityAgentRelation {
             $users = $this->getUsersWithControl();
             $ids = array_map(function($u){
                 return $u->id;
-                
+
             }, $users);
-            
+
             return $ids;
         }
     }
@@ -143,7 +143,7 @@ trait EntityAgentRelation {
         $result = [$this->getOwnerUser()];
         $ids = [$result[0]->id];
         if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
-        
+
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
             foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
@@ -156,8 +156,8 @@ trait EntityAgentRelation {
 
         if($this->usesNested()) {
             $parent = $this->getParent();
-        
-            if(is_object($parent) && !in_array($parent->getOwnerUser()->id, $ids) && !$parent->equals($this)){
+
+            if(is_object($parent) && !$parent->equals($this)){
                 foreach($parent->getUsersWithControl() as $u){
                     if(!in_array($u->id, $ids)){
                         $ids[] = $u->id;
@@ -182,18 +182,18 @@ trait EntityAgentRelation {
         if($app->config['app.usePermissionsCache']){
             $app->cache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
-        
-        
+
+
         return $result;
-        
+
     }
 
     function userHasControl($user){
         if($user->is('admin'))
             return true;
-        
+
         $ids = $this->getIdsOfUsersWithControl();
-        
+
         return in_array($user->id, $ids);
     }
 

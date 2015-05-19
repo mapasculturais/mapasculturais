@@ -14,7 +14,7 @@ trait EntityNested{
     }
 
     function getChildren(){
-        $class = get_called_class();
+        $class = $this->getClassName();
         return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED);
     }
 
@@ -38,32 +38,38 @@ trait EntityNested{
 
     }
 
-    function setParent(\MapasCulturais\Entity $parent = null){
-        if(is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
+    function setParent(\MapasCulturais\Entity $parent = null) {
+        if (is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
 
+        $error_diff_type = App::txt('The parent entity must be of the same type');
+        $error_same_obj = App::txt('The parent and the child are the same object');
+        $error_circ_ref = App::txt('Circular reference');
 
-        $error1 = App::txt('O pai não pode ser o filho.');
-        $error2 = App::txt('O pai deve ser do mesmo tipo que o filho.');
+        $is_object = $parent && is_object($parent);
 
-        if(!key_exists('parent', $this->_validationErrors))
+        if (!key_exists('parent', $this->_validationErrors)) {
             $this->_validationErrors['parent'] = [];
-
-        if($parent && $parent->id === $this->id){
-            $this->_validationErrors['parent'][] = $error1;
-        }elseif(key_exists('parent', $this->_validationErrors) && in_array($error1, $this->_validationErrors['parent'])){
-            $key = array_search($error, $this->_validationErrors['parent']);
-            unset($this->_validationErrors['parent'][$key]);
         }
 
-        if($parent && $parent->className !== $this->className){
-            $this->_validationErrors['parent'][] = $error2;
-        }elseif(key_exists('parent', $this->_validationErrors) && in_array($error2, $this->_validationErrors['parent'])){
-            $key = array_search($error, $this->_validationErrors['parent']);
-            unset($this->_validationErrors['parent'][$key]);
+        if ($is_object) {
+
+            if ($parent->equals($this)) {
+                $this->_validationErrors['parent'][] = $error_same_obj;
+            } else if ($parent->getClassName() !== $this->getClassName()) {
+                $this->_validationErrors['parent'][] = $error_diff_type;
+            } else {
+                $_parent = $parent;
+                while ($_parent = $_parent->getParent()) {
+                    if ($_parent->equals($this)) {
+                        $this->_validationErrors['parent'][] = $error_circ_ref;
+                        continue;
+                    }
+                }
+            }
         }
 
-        if(!$this->_validationErrors['parent'])
+        if (!$this->_validationErrors['parent'])
             unset($this->_validationErrors['parent']);
 
         $this->_newParent = $parent;
