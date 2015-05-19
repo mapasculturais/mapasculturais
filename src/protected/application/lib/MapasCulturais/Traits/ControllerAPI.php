@@ -290,9 +290,11 @@ trait ControllerAPI{
                                 $file = $file->transform($transformation);
                             }
                         }
-                        if($file)
-                            foreach($props as $prop)
+                        if(is_object($file)) {
+                            foreach ($props as $prop) {
                                 $result[$prop] = $file->$prop;
+                            }
+                        }
 
                         return $result;
                     };
@@ -405,7 +407,7 @@ trait ControllerAPI{
                 $dql_select .= ', termRelations, term';
                 $dql_select_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
             }
-            
+
             if(in_array('owner', $select) || array_filter($select, function($prop){ return substr($prop, 0, 6) == 'owner.'; })){
                 $dql_select .= ', _owner';
                 $dql_select_joins .= " LEFT JOIN e.owner _owner";

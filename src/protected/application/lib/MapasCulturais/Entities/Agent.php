@@ -237,6 +237,12 @@ class Agent extends \MapasCulturais\Entity
         $this->user->save(true);
     }
 
+    function setParentAsNull($flush = true){
+        $this->parent = null;
+
+        $this->save($flush);
+    }
+
     function getIsUserProfile(){
         return $this->equals($this->user->profile);
     }
@@ -375,6 +381,14 @@ class Agent extends \MapasCulturais\Entity
             return true;
 
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');
+    }
+
+
+    /** @ORM\PrePersist */
+    public function __setParent($args = null){
+        if($this->equals($this->ownerUser->profile)){
+            $this->parent = null;
+        }
     }
 
     //============================================================= //

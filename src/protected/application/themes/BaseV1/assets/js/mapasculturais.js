@@ -1060,7 +1060,13 @@ MapasCulturais.Search = {
             },
 
             ajaxData: function(searchParams, $selector){
-//                searchParams['@permissions'] = '@control';
+                if(MapasCulturais.entity.id){
+                    var excludeIds = [MapasCulturais.entity.id].concat(MapasCulturais.entity.childrenIds);
+                    if(excludeIds){
+                        searchParams['id'] = '!IN(' + excludeIds + ')';
+                    }
+
+                }
                 return searchParams;
             }
         },
@@ -1078,7 +1084,14 @@ MapasCulturais.Search = {
             },
 
             ajaxData: function(searchParams, $selector){
-//                searchParams['@permissions'] = '@control';
+                if(MapasCulturais.entity.id){
+                    var excludeIds = [MapasCulturais.entity.id].concat(MapasCulturais.entity.childrenIds);
+                    if(excludeIds){
+                        searchParams['id'] = '!IN(' + excludeIds + ')';
+                    }
+
+                }
+
                 return searchParams;
             }
         },
@@ -1158,8 +1171,13 @@ MapasCulturais.Search = {
 
             ajaxData: function(searchParams, $selector){
                 var excludedIds = [$selector.editable('getValue').ownerId];
-                if(MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id)
+
+                if(MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id){
                     excludedIds.push(MapasCulturais.entity.id);
+                    if(MapasCulturais.entity.childrenIds){
+                        excludedIds = excludedIds.concat(MapasCulturais.entity.childrenIds);
+                    }
+                }
 
                 if ( excludedIds.length > 0)
                     searchParams.id = '!in('+excludedIds.toString()+')';

@@ -842,6 +842,15 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    function addParentIdsToJs(MapasCulturais\Entity $entity){
+        if($entity->usesNested() && $entity->id){
+            if(!isset($this->jsObject['entity'])){
+                $this->jsObject['entity'] = [];
+            }
+            $this->jsObject['entity']['childrenIds'] = $entity->getChildrenIds();
+        }
+    }
+
     function addOccurrenceFrequenciesToJs() {
         $this->jsObject['frequencies'] = $this->getOccurrenceFrequencies();
     }

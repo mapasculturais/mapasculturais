@@ -126,6 +126,8 @@ class User extends \MapasCulturais\Entity
             throw new \Exception ('error');
 
         $this->profile = $agent;
+
+        $agent->setParentAsNull(true);
     }
 
     function jsonSerialize() {
@@ -167,7 +169,7 @@ class User extends \MapasCulturais\Entity
 
         return false;
     }
-    
+
     function can($action, \MapasCulturais\Entity $entity){
         return $entity->canUser($action, $this);
     }
