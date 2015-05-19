@@ -8,6 +8,8 @@ $this->bodyProperties['ng-app'] = "Entity";
 $this->addProjectToJs($entity);
 
 if($this->isEditable()){
+    $this->addParentIdsToJs($entity);
+
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
 }

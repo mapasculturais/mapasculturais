@@ -1,5 +1,5 @@
 <?php
-$entityClass = get_class($entity);
+$entityClass = $entity->getClassName();
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $viewModeString = $entityName !== 'project' ? '' : ',viewMode:list';
 $tags = $entity->terms['tag'];

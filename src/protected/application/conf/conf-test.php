@@ -13,7 +13,7 @@ return array_merge($config,
 //        'app.log.query' => true,
         'slim.debug' => true,
         'auth.provider' => 'Test',
-        
+
         'auth.config' => array(
             'filename' => '/tmp/mapasculturais-tests-authenticated-user.id'
         ),
@@ -37,6 +37,10 @@ return array_merge($config,
             'admin' => array(3,4),
             'staff' => array(5,6),
             'normal' => array(7,8),
-        )
+        ),
+
+        // disable cache
+
+        'app.usePermissionsCache' => false
     )
 );
