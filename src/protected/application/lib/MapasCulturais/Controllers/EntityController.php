@@ -274,7 +274,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     /**
-     * Updates the entity with the id specified in the URL with the values sent by POST.
+     * Alias to PUT_single
+     * @see self::PUT_single
+     */
+    function POST_single(){
+        $this->PUT_single();
+    }
+
+    /**
+     * Updates the entity with the id specified in the URL with the values sent by PUT.
      *
      * If the entity with the given id not exists, call $app->pass()
      *
@@ -290,7 +298,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
-    function POST_single(){
+    function PUT_single(){
         $this->requireAuthentication();
 
         $app = App::i();

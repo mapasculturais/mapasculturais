@@ -30,6 +30,8 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
+        Traits\EntityDraft,
+
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }

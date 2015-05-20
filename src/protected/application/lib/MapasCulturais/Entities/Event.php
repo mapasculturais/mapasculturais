@@ -26,7 +26,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityDraft;
 
 
 

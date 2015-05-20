@@ -26,7 +26,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityDraft;
 
     protected static $validations = [
         'name' => [
