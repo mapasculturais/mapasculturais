@@ -19,6 +19,7 @@ class Space extends EntityController {
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
+        Traits\ControllerDraft,
         Traits\ControllerAPI;
 
 
@@ -48,12 +49,12 @@ class Space extends EntityController {
         $event_data = ['@select' => 'id'] + $query_data;
         unset($event_data['@count']);
         $events_repo = App::i()->repo('Event');
-        
+
         $_event_ids = $events_repo->findByDateInterval($date_from, $date_to, null, null, true);
         $event_data['id'] = 'IN(' . implode(',', $_event_ids) . ')';
         $events = $eventController->apiQuery($event_data);
         $event_ids = array_map(function ($e){ return $e['id']; }, $events);
-        
+
         $spaces = $this->repository->findByEventsAndDateInterval($event_ids, $date_from, $date_to);
         $space_ids = array_map(function($e){ return $e->id; }, $spaces);
 

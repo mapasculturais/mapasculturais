@@ -243,16 +243,29 @@ class User extends \MapasCulturais\Entity
     function getEnabledAgents(){
         return $this->_getAgentsByStatus(Agent::STATUS_ENABLED);
     }
+    function getDraftAgents(){
+        $this->checkPermission('modify');
+
+        return $this->_getAgentsByStatus(Agent::STATUS_DRAFT);
+    }
     function getTrashedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_TRASH);
     }
     function getDisabledAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_DISABLED);
     }
     function getInvitedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_INVITED);
     }
     function getRelatedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
@@ -262,10 +275,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ENABLED, '=');
     }
+    function getDraftSpaces(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DRAFT, '=');
+    }
     function getTrashedSpaces(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_TRASH, '=');
     }
     function getDisabledSpaces(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
     }
 
@@ -276,10 +298,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledEvents(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ENABLED, '=');
     }
+    function getDraftEvents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DRAFT, '=');
+    }
     function getTrashedEvents(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_TRASH, '=');
     }
     function getDisabledEvents(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
 
@@ -290,10 +321,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ENABLED, '=');
     }
+    function getDraftProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DRAFT, '=');
+    }
     function getTrashedProjects(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_TRASH, '=');
     }
     function getDisabledProjects(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 

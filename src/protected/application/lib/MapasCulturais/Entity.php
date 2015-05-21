@@ -253,8 +253,11 @@ abstract class Entity implements \JsonSerializable{
             return $app->cache->fetch($cache_id);
         }
 
-        if(strtolower($action) === '@control' && $this->usesAgentRelation())
+        $result = false;
+
+        if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
             $result = $this->userHasControl($user) || $user->is('admin');
+        }
 
         if(method_exists($this, 'canUser' . $action)){
             $method = 'canUser' . $action;

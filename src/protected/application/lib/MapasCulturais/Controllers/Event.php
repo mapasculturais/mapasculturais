@@ -18,6 +18,7 @@ class Event extends EntityController {
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
+        Traits\ControllerDraft,
         Traits\ControllerAPI;
 
     /**
@@ -135,7 +136,7 @@ class Event extends EntityController {
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
         $spaces     = key_exists('space',   $query_data) ? $query_data['space'] : null;
-        
+
         unset(
             $query_data['@from'],
             $query_data['@to'],
@@ -147,7 +148,7 @@ class Event extends EntityController {
         if($spaces){
             $space_data['id'] = $spaces;
         }
-        
+
         foreach($query_data as $key => $val){
             if(substr($key, 0, 6) === 'space:'){
                 $space_data[substr($key, 6)] = $val;
@@ -219,7 +220,7 @@ class Event extends EntityController {
         }
 
         if($event_ids){
-            
+
             $query_data['id'] = 'IN(' . implode(',', $event_ids) .')';
             // @TODO: verificar se o @select tem o id
             $result = $this->apiQuery($query_data);

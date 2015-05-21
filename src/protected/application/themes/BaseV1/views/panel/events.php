@@ -8,6 +8,7 @@ $this->layout = 'panel'
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
+        <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
@@ -19,6 +20,15 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #ativos-->
+    <div id="rascunhos">
+        <?php foreach($user->draftEvents as $entity): ?>
+            <?php $this->part('panel-event', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->draftEvents): ?>
+            <div class="alert info">Você não possui nenhum rascunho de evento.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #lixeira-->
     <div id="lixeira">
         <?php foreach($user->trashedEvents as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
@@ -27,4 +37,5 @@ $this->layout = 'panel'
             <div class="alert info">Você não possui nenhum evento na lixeira.</div>
         <?php endif; ?>
     </div>
+    <!-- #lixeira-->
 </div>
