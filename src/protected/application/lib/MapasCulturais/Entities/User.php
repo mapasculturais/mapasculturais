@@ -221,8 +221,8 @@ class User extends \MapasCulturais\Entity
                 e, m, tr
             FROM
                 $entityClassName e
-                JOIN e.__metadata m
-                JOIN e.__termRelations tr
+                LEFT JOIN e.__metadata m
+                LEFT JOIN e.__termRelations tr
                 JOIN e.owner a
             WHERE
                 e.status $status_operator :status AND
