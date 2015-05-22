@@ -215,16 +215,20 @@ class User extends \MapasCulturais\Entity
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
+        
         $dql = "
             SELECT
-                e
+                e, m, tr
             FROM
                 $entityClassName e
+                JOIN e.__metadata m
+                JOIN e.__termRelations tr
                 JOIN e.owner a
             WHERE
                 e.status $status_operator :status AND
                 a.user = :user
             ORDER BY
+                e.name,
                 e.createTimestamp ASC
         ";
         $query = App::i()->em->createQuery($dql);
@@ -237,7 +241,7 @@ class User extends \MapasCulturais\Entity
     }
 
     private function _getAgentsByStatus($status){
-        return App::i()->repo('Agent')->findBy(['user' => $this, 'status' => $status]);
+        return App::i()->repo('Agent')->findBy(['user' => $this, 'status' => $status], ['name' => "ASC"]);
     }
 
     function getEnabledAgents(){
@@ -354,7 +358,7 @@ class User extends \MapasCulturais\Entity
                 e.status $status_operator :status AND
                 e.user = :user
             ORDER BY
-                e.createTimestamp ASC
+                e.createTimestamp DESC
         ";
         $query = App::i()->em->createQuery($dql);
 

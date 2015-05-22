@@ -12,7 +12,8 @@ $this->layout = 'panel'
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
-        <?php foreach($user->enabledAgents as $entity): ?>
+        <?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
+        <?php foreach($user->enabledAgents as $entity): if($app->user->profile->equals($entity)) continue;?>
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->enabledAgents): ?>
