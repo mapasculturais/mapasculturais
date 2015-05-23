@@ -2,8 +2,9 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
-$this->addEntityToJs($entity);
+$requestedProject = null;
 
+$this->addEntityToJs($entity);
 if ($this->isEditable()) {
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
@@ -11,6 +12,15 @@ if ($this->isEditable()) {
 
     $this->addOccurrenceFrequenciesToJs();
 
+//    if(!$entity->isNew()){
+//        var_dump(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+//        $project_request = $app->repo('RequestEventProject')->findBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+//        echo '<pre>';
+//        foreach($project_request as $r){
+//            $r->dump();
+//        }
+//        die;
+//    }
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));

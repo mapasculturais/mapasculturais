@@ -111,7 +111,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     function isNew(){
-        return ! (bool) $this->id;
+        return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
     }
 
     function simplify($properties = 'id,name'){
@@ -463,27 +463,31 @@ abstract class Entity implements \JsonSerializable{
 
 
         $requests = [];
-        if(method_exists($this, '_saveNested')){
-            try{
+
+        try {
+            $app->applyHookBoundTo($this, "entity($this).save:requests", [&$requests]);
+        } catch (Exceptions\WorkflowRequestTransport $e) {
+            $requests[] = $e->request;
+        }
+
+        if (method_exists($this, '_saveNested')) {
+            try {
                 $this->_saveNested();
-            }  catch (Exceptions\WorkflowRequestTransport $e){
+            } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
 
-        if(method_exists($this, '_saveOwnerAgent')){
-            try{
+        if (method_exists($this, '_saveOwnerAgent')) {
+            try {
                 $this->_saveOwnerAgent();
-            }  catch (Exceptions\WorkflowRequestTransport $e){
+            } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
-
-        $IS_NEW = $app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
 
         try{
-
-            if($IS_NEW)
+            if($this->isNew())
                 $this->checkPermission('create');
             else
                 $this->checkPermission('modify');

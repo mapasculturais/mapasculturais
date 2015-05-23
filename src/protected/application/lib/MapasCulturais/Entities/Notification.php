@@ -73,7 +73,7 @@ class Notification extends \MapasCulturais\Entity{
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Request")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Request", cascade="all")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="request_id", referencedColumnName="id")
      * })

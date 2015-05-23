@@ -441,10 +441,16 @@ MapasCulturais.Editables = {
                         202: function(response, statusText, r) {
                             var createdRequests = JSON.parse(r.getResponseHeader('CreatedRequests')),
                                 typeName = MapasCulturais.entity.getTypeName(),
-                                parentName = '';
+                                name = '';
+
                             if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
-                                parentName = $('[data-field-name="parentId"]').text();
-                                MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+parentName+'</strong> foi enviada.');
+                                name = $('[data-field-name="parentId"]').text();
+                                MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+name+'</strong> foi enviada.');
+                            }
+
+                            if(createdRequests && createdRequests.indexOf('EventProject') >= 0){
+                                name = $('[data-field-name="projectId"]').text();
+                                MapasCulturais.Messages.alert('Sua requisição para associar este evento ao projeto <strong>'+name+'</strong> foi enviada.');
                             }
                         }
                     }
