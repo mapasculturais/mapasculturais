@@ -418,11 +418,6 @@ trait ControllerAPI{
                 $dql_select = '';
                 $dql_select_joins = '';
             }
-            
-            if($permissions){
-                $dql_select .= ', _rel, _rel_agent';
-                $dql_joins .= "JOIN e.__agentRelations _rel JOIN _rel.agent _rel_agent";
-            }
 
             $final_dql = "
                 SELECT
@@ -436,6 +431,7 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
+            
             $result[] = "$final_dql";
 
             if($app->config['app.log.apiDql'])
