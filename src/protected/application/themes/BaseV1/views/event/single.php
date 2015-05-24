@@ -12,15 +12,9 @@ if ($this->isEditable()) {
 
     $this->addOccurrenceFrequenciesToJs();
 
-//    if(!$entity->isNew()){
-//        var_dump(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
-//        $project_request = $app->repo('RequestEventProject')->findBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
-//        echo '<pre>';
-//        foreach($project_request as $r){
-//            $r->dump();
-//        }
-//        die;
-//    }
+    if(!$entity->isNew()){
+        $request_project = $app->repo('RequestEventProject')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+    }
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
@@ -350,24 +344,29 @@ $this->includeMapAssets();
     <?php if($this->isEditable()): ?>
         <div class="widget">
             <h3>Projeto</h3>
-            <a class="js-search js-include-editable"
-                data-field-name='projectId'
-                data-emptytext="Selecione um projeto"
-                data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um projeto"
-                data-entity-controller="project"
-                data-search-result-template="#agent-search-result-template"
-                data-selection-template="#agent-response-template"
-                data-no-result-template="#agent-response-no-results-template"
-                data-selection-format="chooseProject"
-                data-multiple="true"
-                data-allow-clear="1"
-                data-auto-open="true"
-                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
-                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
-                title="Selecionar um Projeto">
-                <?php echo $entity->project ? $entity->project->name : ''; ?>
-            </a>
+            <?php if($request_project): $proj = $request_project->destination; ?>
+                <a href="<?php echo $proj->singleUrl ?>"><?php echo $proj->name ?></a>
+            <?php else: ?>
+                <a class="js-search js-include-editable"
+                    data-field-name='projectId'
+                    data-emptytext="Selecione um projeto"
+                    data-search-box-width="400px"
+                    data-search-box-placeholder="Selecione um projeto"
+                    data-entity-controller="project"
+                    data-search-result-template="#agent-search-result-template"
+                    data-selection-template="#agent-response-template"
+                    data-no-result-template="#agent-response-no-results-template"
+                    data-selection-format="chooseProject"
+                    data-multiple="true"
+                    data-allow-clear="1"
+                    data-auto-open="true"
+                    data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                    data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
+                    title="Selecionar um Projeto">
+                    <?php echo $entity->project ? $entity->project->name : ''; ?>
+                </a>
+            <?php endif; ?>
+            <span class="warning pending js-pending-project hltip" hltitle="Aguardando confirmação" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
         </div>
     <?php elseif($entity->project): ?>
         <div class="widget">

@@ -445,17 +445,20 @@ MapasCulturais.Editables = {
 
                             if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
                                 name = $('[data-field-name="parentId"]').text();
+                                $('.js-pending-parent').show();
                                 MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+name+'</strong> foi enviada.');
                             }
 
                             if(createdRequests && createdRequests.indexOf('EventProject') >= 0){
                                 name = $('[data-field-name="projectId"]').text();
+                                $('.js-pending-project').show();
                                 MapasCulturais.Messages.alert('Sua requisição para associar este evento ao projeto <strong>'+name+'</strong> foi enviada.');
                             }
                         }
                     }
                 },
                 success: function(response){
+                    $('.js-pending-project, .js-pending-parent').hide();
                     $('.js-response-error').remove();
                     if(response.error){
                         var $field = null;
