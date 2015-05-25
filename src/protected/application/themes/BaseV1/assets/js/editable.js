@@ -424,7 +424,7 @@ MapasCulturais.Editables = {
                     var message = MapasCulturais.request.controller === 'event' ?
                         'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? ' :
                         'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? Isto não poderá ser desfeito.';
-                    
+
                     if(!confirm(message)){
                         return;
                     }
@@ -537,7 +537,8 @@ MapasCulturais.Editables = {
                                 parent().
                                 removeClass('danger');
 
-                        if(action === 'create' || response.status != MapasCulturais.entity.status){
+
+                        if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
                             document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
                         }
                     }

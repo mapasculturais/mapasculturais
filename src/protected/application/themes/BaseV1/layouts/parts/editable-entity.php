@@ -78,6 +78,8 @@ if($this->isEditable()){
                 <?php else: ?>
                     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
                 <?php endif; ?>
+            <?php elseif($this->controller->id === 'registration'): ?>
+                <a class="btn btn-primary js-submit-button">Salvar</a>
             <?php else: ?>
                 <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
             <?php endif; ?>
