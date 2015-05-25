@@ -407,10 +407,6 @@ MapasCulturais.Editables = {
         });
 
         $submitButton.click(function(){
-            if($submitButton.data('clicked'))
-                return false;
-
-            $submitButton.data('clicked', 'sim');
 
             var target;
             var $button = $(this);
@@ -423,7 +419,23 @@ MapasCulturais.Editables = {
 
             }else{
                 target = MapasCulturais.createUrl(controller, 'single', [$(editableEntitySelector).data('id')]);
+
+                if(MapasCulturais.entity.status == 0 && $button.data('status') == 1){
+                    var message = MapasCulturais.request.controller === 'event' ?
+                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? ' :
+                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? Isto não poderá ser desfeito.';
+                    
+                    if(!confirm(message)){
+                        return;
+                    }
+                }
             }
+
+            if($submitButton.data('clicked'))
+                return false;
+
+            $submitButton.data('clicked', 'sim');
+
 
 
             if($editables.length === 1){
