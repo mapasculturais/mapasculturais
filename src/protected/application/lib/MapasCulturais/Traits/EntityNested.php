@@ -15,7 +15,7 @@ trait EntityNested{
 
     function getChildren(){
         $class = $this->getClassName();
-        return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function setParentId($parent_id){

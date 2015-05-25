@@ -231,7 +231,7 @@ $this->includeAngularEntityAssets($entity);
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
-            <?php if($entity->children): ?>
+            <?php if($entity->children && $entity->children->count()): ?>
             <h3>Sub-espaços</h3>
             <ul class="js-slimScroll widget-list">
                 <?php foreach($entity->children as $space): ?>
@@ -240,7 +240,7 @@ $this->includeAngularEntityAssets($entity);
             </ul>
             <?php endif; ?>
 
-            <?php if($entity->id && $entity->canUser('createChield')): ?>
+            <?php if($entity->id && $entity->canUser('createChild')): ?>
             <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Adicionar sub-espaço</a>
             <?php endif; ?>
         </div>

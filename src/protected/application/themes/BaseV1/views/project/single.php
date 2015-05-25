@@ -581,7 +581,7 @@ $this->includeAngularEntityAssets($entity);
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
-            <?php if($entity->children): ?>
+            <?php if($entity->children && $entity->children->count()): ?>
             <h3>Sub-projetos</h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
@@ -590,8 +590,8 @@ $this->includeAngularEntityAssets($entity);
             </ul>
             <?php endif; ?>
 
-            <?php if($entity->id && $entity->canUser('createChield')): ?>
-            <a class="btn btn-default add staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
+            <?php if($entity->id && $entity->canUser('createChild')): ?>
+            <a class="btn btn-default add" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

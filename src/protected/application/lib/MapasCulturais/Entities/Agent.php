@@ -139,7 +139,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -250,15 +250,15 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getProjects(){
-        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getEvents(){
-        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getSpaces(){
-        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
 

@@ -33,8 +33,15 @@ class Panel extends \MapasCulturais\Controller {
         $count->events = 0;
         $count->projects = 0;
 
-        foreach($count as $entity=>$c)
-            $count->$entity = str_pad(count($app->user->$entity),2,'0', STR_PAD_LEFT);
+        foreach($count as $entity=>$c){
+            $n = 0;
+            foreach($app->user->$entity as $e) {
+                if($e->status >= 0){
+                    $n++;
+                }
+            }
+            $count->$entity = str_pad($n,2,'0', STR_PAD_LEFT);
+        }
 
         $this->render('index', ['count'=>$count]);
     }

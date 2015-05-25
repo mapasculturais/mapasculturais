@@ -168,6 +168,19 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
+    
+    function publish($flush = false){
+        $this->checkPermission('publish');
+        
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        
+        $this->status = self::STATUS_ENABLED;
+        $this->save($flush);
+        
+        $app->enableAccessControl();
+    }
 
     protected function canUserModify($user){
         $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
@@ -329,6 +342,55 @@ class Event extends \MapasCulturais\Entity
         $result = $query->getResult();
 
         return $result ? $result : [];
+    }
+
+    protected function canUserCreate($user){
+        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
+
+        if($can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
+        }
+    }
+
+    protected function canUserModify($user){
+        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
+        if($this->_projectChanged && $can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
+        }
+    }
+    
+    protected function canUserPublish($user){
+        if($user->is('guest')){
+            return false;
+        }
+        
+        if($user->is('admin')){
+            return true;
+        }
+        
+        if($this->canUser('@control', $user)){
+            return true;
+        }
+        
+        if($this->project && $this->project->canUser('@control', $user)){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    protected function canUserView($user){
+        if($this->status === self::STATUS_ENABLED){
+            return true;
+        }else if($this->status === self::STATUS_DRAFT){
+            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
+        }
+        
+        return false;
     }
 
     //============================================================= //
