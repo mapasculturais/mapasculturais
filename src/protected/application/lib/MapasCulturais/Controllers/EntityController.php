@@ -57,7 +57,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @return \MapasCulturais\entityClassName An empty new entity object.
      */
     public function getNewEntity(){
-        return new $this->entityClassName();
+        $class = $this->entityClassName;
+        return new $class;
     }
 
 
@@ -204,6 +205,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->newEntity;
 
+        $class = $this->entityClassName;
+
+        $entity->status = $class::STATUS_DRAFT;
 
         $this->render('create', ['entity' => $entity]);
     }
