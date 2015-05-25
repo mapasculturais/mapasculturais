@@ -226,7 +226,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function canUserView($user){
-        return true;
+        if($this->status > 0){
+            return true;
+        }else{
+            return $this->canUser('@control', $user);
+        }
     }
 
     protected function canUserRemove($user){
