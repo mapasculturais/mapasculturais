@@ -220,10 +220,35 @@ trait ControllerAPI{
                 if(strtolower($key) == '@select'){
                     $select = explode(',', $val);
 
+                    $_joins = [];
+
                     foreach($select as $prop){
                         if(in_array($prop, $entity_metadata)){
                             $select_metadata[] = $prop;
+
+                        }elseif(strpos($prop, '.') > 0){
+                            $relation = substr($prop, 0, strpos($prop, '.'));
+                            $relation_property = substr($prop, strpos($prop, '.') + 1);
+
+                            if(strpos($relation_property, '.') > 0){
+                                $relation_property = substr($relation_property, 0, strpos($relation_property, '.'));
+                            }
+
+                            if(isset($entity_associations[$relation])){
+                                if(!isset($_joins[$relation])){
+                                    $_joins[$relation] = [];
+                                }
+
+                                $_joins[$relation][] = $relation_property;
+                            }
                         }
+                    }
+
+                    foreach($_joins as $j => $props){
+                        $join_id = uniqid($j);
+                        $dql_select_joins = " LEFT JOIN e.{$j} {$join_id}";
+                        $dql_select .= ", {$join_id}";
+
                     }
 
                     continue;
@@ -432,7 +457,7 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
-            
+
             $result[] = "$final_dql";
 
             if($app->config['app.log.apiDql'])
