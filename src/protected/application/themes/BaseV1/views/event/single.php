@@ -2,7 +2,7 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
-$requestedProject = null;
+$request_project = null;
 
 $this->addEntityToJs($entity);
 if ($this->isEditable()) {
