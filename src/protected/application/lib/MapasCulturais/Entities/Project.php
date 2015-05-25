@@ -26,7 +26,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityDraft;
 
     protected static $validations = [
         'name' => [
@@ -199,6 +200,15 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
+    
 
     /**
      * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
@@ -212,6 +222,11 @@ class Project extends \MapasCulturais\Entity
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
+    /**
+     * Returns sent registrations
+     *
+     * @return \MapasCulturais\Entities\Registration[]
+     */
     function getSentRegistrations(){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByProject no repositório de inscrições
@@ -321,6 +336,54 @@ class Project extends \MapasCulturais\Entity
             $app->rcache->save($cache_id, $locked);
             return $locked;
         }
+    }
+
+    protected function canUserCreateEvents($user) {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        if ($user->is('admin')) {
+            return true;
+        }
+
+        if ($this->canUser('@control')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function canUserRequestEventRelation($user) {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        if ($user->is('admin')) {
+            return true;
+        }
+
+        if ($this->canUser('createEvents')) {
+            return true;
+        }
+
+        foreach ($this->getAgentRelations() as $relation) {
+            if ($relation->agent->userId == $user->id) {
+                return true;
+            }
+        }
+
+        if ($this->publishedRegistrations) {
+            foreach ($this->getSentRegistrations() as $resgistration) {
+                if ($resgistration->status === Registration::STATUS_APPROVED) {
+                    if ($resgistration->canUser('@control', $user)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     protected function canUserModifyRegistrationFields($user){

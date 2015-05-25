@@ -20,6 +20,7 @@ class Project extends EntityController {
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
+        Traits\ControllerDraft,
         Traits\ControllerAPI;
 
     function GET_create() {

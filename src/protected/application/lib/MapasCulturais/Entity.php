@@ -110,6 +110,10 @@ abstract class Entity implements \JsonSerializable{
         return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
     }
 
+    function isNew(){
+        return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
+    }
+
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
 
@@ -197,11 +201,14 @@ abstract class Entity implements \JsonSerializable{
         return $user;
     }
 
-    protected function fetchByStatus($collection, $status){
+    protected function fetchByStatus($collection, $status, $order = null){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
                 return [];
 
         $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
+        if(is_array($order)){
+            $criteria = $criteria->orderBy($order);
+        }
         return $collection->matching($criteria);
     }
 
@@ -222,7 +229,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function canUserView($user){
-        return true;
+        if($this->status > 0){
+            return true;
+        }else{
+            return $this->canUser('@control', $user);
+        }
     }
 
     protected function canUserRemove($user){
@@ -249,8 +260,11 @@ abstract class Entity implements \JsonSerializable{
             return $app->cache->fetch($cache_id);
         }
 
-        if(strtolower($action) === '@control' && $this->usesAgentRelation())
+        $result = false;
+
+        if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
             $result = $this->userHasControl($user) || $user->is('admin');
+        }
 
         if(method_exists($this, 'canUser' . $action)){
             $method = 'canUser' . $action;
@@ -456,27 +470,31 @@ abstract class Entity implements \JsonSerializable{
 
 
         $requests = [];
-        if(method_exists($this, '_saveNested')){
-            try{
+
+        try {
+            $app->applyHookBoundTo($this, "entity($this).save:requests", [&$requests]);
+        } catch (Exceptions\WorkflowRequestTransport $e) {
+            $requests[] = $e->request;
+        }
+
+        if (method_exists($this, '_saveNested')) {
+            try {
                 $this->_saveNested();
-            }  catch (Exceptions\WorkflowRequestTransport $e){
+            } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
 
-        if(method_exists($this, '_saveOwnerAgent')){
-            try{
+        if (method_exists($this, '_saveOwnerAgent')) {
+            try {
                 $this->_saveOwnerAgent();
-            }  catch (Exceptions\WorkflowRequestTransport $e){
+            } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
-
-        $IS_NEW = $app->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
 
         try{
-
-            if($IS_NEW)
+            if($this->isNew())
                 $this->checkPermission('create');
             else
                 $this->checkPermission('modify');

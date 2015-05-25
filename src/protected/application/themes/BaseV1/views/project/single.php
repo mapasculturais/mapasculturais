@@ -5,15 +5,18 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 
 $this->bodyProperties['ng-app'] = "Entity";
 
+$this->addEntityToJs($entity);
+
 $this->addProjectToJs($entity);
 
 if($this->isEditable()){
-    $this->addParentIdsToJs($entity);
-
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
 }
+
 $this->includeAngularEntityAssets($entity);
+
+$child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
@@ -60,26 +63,7 @@ $this->includeAngularEntityAssets($entity);
                     <?php echo $entity->type? $entity->type->name : ''; ?>
                 </a>
             </div>
-            <?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
-            <span  class="js-search js-include-editable"
-                   data-field-name='parentId'
-                   data-emptytext="Selecionar projeto pai"
-                   data-search-box-width="400px"
-                   data-search-box-placeholder="Selecionar projeto pai"
-                   data-entity-controller="project"
-                   data-search-result-template="#agent-search-result-template"
-                   data-selection-template="#agent-response-template"
-                   data-no-result-template="#agent-response-no-results-template"
-                   data-selection-format="parentProject"
-                   data-allow-clear="1"
-                   title="Selecionar projeto pai"
-                   data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
-                   data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
-             ><?php if($entity->parent) echo $entity->parent->name; ?></span>
-
-            <?php elseif($entity->parent): ?>
-                <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
-            <?php endif; ?>
+            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
             <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
         </div>
     </header>
@@ -581,7 +565,7 @@ $this->includeAngularEntityAssets($entity);
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
-            <?php if($entity->children): ?>
+            <?php if($entity->children && $entity->children->count()): ?>
             <h3>Sub-projetos</h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entity->children as $space): ?>
@@ -590,8 +574,8 @@ $this->includeAngularEntityAssets($entity);
             </ul>
             <?php endif; ?>
 
-            <?php if($entity->id && $entity->canUser('createChield')): ?>
-            <a class="btn btn-default add staging-hidden" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
+            <?php if($entity->id && $entity->canUser('createChild')): ?>
+            <a class="btn btn-default add" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

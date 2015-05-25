@@ -19,6 +19,7 @@ class Agent extends EntityController {
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
+        Traits\ControllerDraft,
         Traits\ControllerAPI;
 
     function ALL_setAsUserProfile(){

@@ -2,9 +2,9 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
-if($this->isEditable()){
-    $this->addParentIdsToJs($entity);
+$this->addEntityToJs($entity);
 
+if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('area');
 
@@ -14,6 +14,8 @@ if($this->isEditable()){
 $this->includeMapAssets();
 
 $this->includeAngularEntityAssets($entity);
+
+$child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
@@ -59,26 +61,7 @@ $this->includeAngularEntityAssets($entity);
                 <div class="icon icon-space"></div>
                 <a href="#" class='js-editable-type' data-original-title="Tipo" data-emptytext="Selecione um tipo" data-entity='space' data-value='<?php echo $entity->type ?>'><?php echo $entity->type? $entity->type->name : ''; ?></a>
             </div>
-            <?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
-            <span  class="js-search js-include-editable"
-                   data-field-name='parentId'
-                   data-emptytext="Selecionar espaço pai"
-                   data-search-box-width="400px"
-                   data-search-box-placeholder="Selecionar espaço pai"
-                   data-entity-controller="space"
-                   data-search-result-template="#agent-search-result-template"
-                   data-selection-template="#agent-response-template"
-                   data-no-result-template="#agent-response-no-results-template"
-                   data-selection-format="parentSpace"
-                   data-allow-clear="1"
-                   title="Selecionar espaço pai"
-                   data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
-                   data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
-             ><?php if($entity->parent) echo $entity->parent->name; ?></span>
-
-            <?php elseif($entity->parent): ?>
-                <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
-            <?php endif; ?>
+            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
             <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
         </div>
@@ -231,7 +214,7 @@ $this->includeAngularEntityAssets($entity);
     <!-- Related Agents END -->
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
-            <?php if($entity->children): ?>
+            <?php if($entity->children && $entity->children->count()): ?>
             <h3>Sub-espaços</h3>
             <ul class="js-slimScroll widget-list">
                 <?php foreach($entity->children as $space): ?>
@@ -240,7 +223,7 @@ $this->includeAngularEntityAssets($entity);
             </ul>
             <?php endif; ?>
 
-            <?php if($entity->id && $entity->canUser('createChield')): ?>
+            <?php if($entity->id && $entity->canUser('createChild')): ?>
             <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Adicionar sub-espaço</a>
             <?php endif; ?>
         </div>

@@ -30,6 +30,8 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
+        Traits\EntityDraft,
+
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -137,7 +139,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -209,6 +211,14 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @var \MapasCulturais\Entities\AgentAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
 
     /**
      * @var \MapasCulturais\Entities\AgentTermRelation[] TermRelation
@@ -248,15 +258,15 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getProjects(){
-        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getEvents(){
-        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_events, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getSpaces(){
-        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED);
+        return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
 

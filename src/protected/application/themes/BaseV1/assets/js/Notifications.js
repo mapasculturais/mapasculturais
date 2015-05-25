@@ -12,7 +12,7 @@
         service.get = function (){
             var deferred = $q.defer();
             $http.get(
-                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id&user=eq(@me)'
+                MapasCulturais.baseURL+'api/notification/find/?&@select=id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id&user=eq(@me)&@ORDER=createTimestamp%20DESC'
             ).success(function(data){
                 deferred.resolve(data);
             }).error(function(){

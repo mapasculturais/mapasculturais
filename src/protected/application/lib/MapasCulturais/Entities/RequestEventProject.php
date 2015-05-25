@@ -13,6 +13,7 @@ use MapasCulturais\App;
 class RequestEventProject extends Request{
 
     function _doApproveAction() {
-
+        $this->origin->project = $this->destination;
+        $this->origin->save(true);
     }
 }

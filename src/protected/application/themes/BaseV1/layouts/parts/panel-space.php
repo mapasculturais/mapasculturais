@@ -9,13 +9,18 @@
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
 		<div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms['area'])?></div>
 		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
-		<div><span class="label">Acessibilidade:</span> Sim</div>
+		<div><span class="label">Acessibilidade:</span> <?php echo $entity->acessibilidade ? $entity->acessibilidade : 'Não informado' ?></div>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Space::STATUS_ENABLED): ?>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Space::STATUS_DRAFT): ?>
+            <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
+            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+
         <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
             <?php if($entity->canUser('destroy')): ?>

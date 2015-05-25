@@ -765,11 +765,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
         $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
         $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
-        if(!isset($this->jsObject['entity'])){
-            $this->jsObject['entity'] = array();
-        }
-
-        $this->jsObject['entity']['id'] = $entity->id;
 
         $roles = [];
         if(!\MapasCulturais\App::i()->user->is('guest')){
@@ -780,14 +775,6 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
-
-        $this->jsObject['entity'] = array_merge($this->jsObject['entity'], array(
-            'ownerId' => $entity->owner->id, // ? $entity->owner->id : null,
-            'ownerUserId' => $entity->ownerUser->id,
-            'definition' => $entity->getPropertiesMetadata(),
-            'userHasControl' => $entity->canUser('@control'),
-            'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
-        ));
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
@@ -828,25 +815,33 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
+
         $this->jsObject['request'] = array(
             'controller' => $this->controller->id,
             'action' => $this->controller->action
         );
 
-
         if (!$app->user->is('guest')) {
             $this->jsObject['notifications'] = $app->controller('notification')->apiQuery(array(
                 '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
-                'user' => 'EQ(@me)'
+                'user' => 'EQ(@me)',
+                '@ORDER' => 'createTimestamp DESC'
             ));
         }
     }
 
-    function addParentIdsToJs(MapasCulturais\Entity $entity){
+    function addEntityToJs(MapasCulturais\Entity $entity){
+        $this->jsObject['entity'] = [
+            'id' => $entity->id,
+            'ownerId' => $entity->owner->id, // ? $entity->owner->id : null,
+            'ownerUserId' => $entity->ownerUser->id,
+            'definition' => $entity->getPropertiesMetadata(),
+            'userHasControl' => $entity->canUser('@control'),
+            'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
+            'status' => $entity->status
+        ];
+
         if($entity->usesNested() && $entity->id){
-            if(!isset($this->jsObject['entity'])){
-                $this->jsObject['entity'] = [];
-            }
             $this->jsObject['entity']['childrenIds'] = $entity->getChildrenIds();
         }
     }
