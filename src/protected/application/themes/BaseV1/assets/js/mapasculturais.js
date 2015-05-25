@@ -943,7 +943,7 @@ MapasCulturais.Search = {
             },
 
             ajaxData: function(searchParams){
-                searchParams['@permissions'] = '@control';
+                searchParams['@permissions'] = 'requestEventRelation';
                 return searchParams;
             }
         },

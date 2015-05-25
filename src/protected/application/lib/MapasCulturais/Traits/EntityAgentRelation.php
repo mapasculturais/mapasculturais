@@ -17,8 +17,8 @@ trait EntityAgentRelation {
         return true;
     }
 
-    function getAgentRelationEntityClassName(){
-        return $this->getClassName() . 'AgentRelation';
+    static function getAgentRelationEntityClassName(){
+        return self::getClassName() . 'AgentRelation';
     }
 
     function getAgentRelations($has_control = null, $include_pending_relations = false){
@@ -198,7 +198,7 @@ trait EntityAgentRelation {
         $relation = $repo->findOneBy(['group' => $group, 'agent' => $agent, 'owner' => $this]);
         if($relation){
             $relation->delete($flush);
-       }
+        }
         
         $this->refresh();
     }

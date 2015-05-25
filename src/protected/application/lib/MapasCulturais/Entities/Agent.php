@@ -211,6 +211,14 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @var \MapasCulturais\Entities\AgentAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
 
     /**
      * @var \MapasCulturais\Entities\AgentTermRelation[] TermRelation

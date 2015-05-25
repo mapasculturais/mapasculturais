@@ -386,7 +386,8 @@ trait ControllerAPI{
             $dql_where = $dql_where ? "WHERE $dql_where" : "";
 
             if(in_array('status', $entity_properties)){
-                $dql_where = $dql_where ? $dql_where . ' AND e.status > 0' : 'WHERE e.status > 0';
+                $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
+                $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
             }
 
             if($keyword){
@@ -431,6 +432,7 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
+            
             $result[] = "$final_dql";
 
             if($app->config['app.log.apiDql'])

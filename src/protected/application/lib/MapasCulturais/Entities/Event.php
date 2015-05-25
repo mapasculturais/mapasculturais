@@ -128,8 +128,6 @@ class Event extends \MapasCulturais\Entity
      */
     protected $project = null;
 
-    private $_projectChanged = false;
-
     /**
      * @var bool
      *
@@ -150,6 +148,14 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
 
     /**
      * @var \MapasCulturais\Entities\EventTermRelation[] TermRelation
@@ -159,16 +165,8 @@ class Event extends \MapasCulturais\Entity
     */
     protected $__termRelations;
 
-    protected function canUserCreate($user){
-        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
+    private $_newProject = false;
 
-        if($can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
-    }
-    
     function publish($flush = false){
         $this->checkPermission('publish');
         
@@ -182,40 +180,61 @@ class Event extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    protected function canUserModify($user){
-        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
-        if($this->_projectChanged && $can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
+    public function save($flush = false) {
+        App::i()->hook("entity($this).save:requests", function(){
+            if($this->_newProject !== false){
+                try{
+                    if($this->_newProject){
+                        $this->_newProject->checkPermission('createEvents');
+                    }
+
+                    $this->project = $this->_newProject;
+
+                }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+                    if(!App::i()->isWorkflowEnabled())
+                        throw $e;
+
+                    $request = new RequestEventProject;
+                    $request->origin = $this;
+                    $request->destination = $this->_newProject;
+                    $this->_newProject = false;
+
+                    throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
+                }
+            }
+        });
+        parent::save($flush);
     }
 
     protected function validateProject(){
-        if($this->project && $this->_projectChanged){
-            return $this->project->canUser('modify');
+        if($this->_newProject){
+            return $this->_newProject->canUser('requestEventRelation');
         }else{
             return true;
         }
     }
 
-    function setProject($project){
-        if($project)
-            $this->setProjectId($project->id);
-        else
-            $this->setProjectId(null);
+    function setProjectId($projectId){
+        if($projectId){
+            $project = App::i()->repo('Project')->find((int)$projectId);
+            $this->setProject($project);
+        }else{
+            $this->setProject(null);
+        }
     }
 
-    function setProjectId($projectId){
-        if(!$projectId){
-            $this->project = null;
-
-        }elseif(!$this->project || $this->project->id != $projectId){
-            $this->_projectChanged = true;
-            $project = App::i()->repo('Project')->find($projectId);
-
-            $this->project = $project;
+    function setProject($project) {
+        if (is_object($this->project)) {
+            if (!$this->project->equals($project)) {
+                $this->_newProject = $project;
+            }
+        } else {
+            $this->_newProject = $project;
         }
+    }
+
+    function getProject(){
+        return $this->_newProject !== false ? $this->_newProject : $this->project;
     }
 
     public function findOccurrencesBySpace(\MapasCulturais\Entities\Space $space, $date_from = null, $date_to = null, $limit = null, $offset = null){
