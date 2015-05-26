@@ -366,7 +366,7 @@ $this->includeMapAssets();
                     <?php echo $entity->project ? $entity->project->name : ''; ?>
                 </a>
             <?php endif; ?>
-            <span class="warning pending js-pending-project hltip" hltitle="Aguardando confirmação" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
+            <span class="warning pending js-pending-project hltip" data-hltip-classes="hltip-warning" hltitle="Aguardando confirmação" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
         </div>
     <?php elseif($entity->project): ?>
         <div class="widget">

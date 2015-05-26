@@ -18,7 +18,7 @@
                    data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                    data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
              ><?php if($entity->parent) echo $entity->parent->name; ?></span>
-        
+
         <?php elseif($entity instanceof MapasCulturais\Entities\Space): ?>
             <span  class="js-search js-include-editable"
                     data-field-name='parentId'
@@ -38,7 +38,7 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <span class="warning pending js-pending-parent hltip" hltitle="Aguardando confirmação" <?php if(!$child_entity_request) echo 'style="display:none"'?> ></span>
+    <span class="warning pending js-pending-parent hltip" data-hltip-classes="hltip-warning" hltitle="Aguardando confirmação" <?php if(!$child_entity_request) echo 'style="display:none"'?> ></span>
 
 <?php elseif($entity->parent): ?>
     <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>
