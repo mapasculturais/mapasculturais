@@ -882,6 +882,16 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addProjectEventsToJs(Entities\Project $entity){
+        $app = App::i();
+        $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
+            '@select' => 'id,name,shortDescription,singleUrl,occurrences,status,owner.id,owner.name,owne.singleUrl',
+            'project' => 'EQ(@Project:' . $entity->id . ')',
+            '@permissions' => 'view',
+            '@files' => '(avatar.avatarSmall):url'
+        ]);
+    }
+
     function addProjectToJs(Entities\Project $entity){
         $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();

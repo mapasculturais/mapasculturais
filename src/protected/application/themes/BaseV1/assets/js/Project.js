@@ -13,6 +13,18 @@
             };
         }]);
 
+    module.factory('ProjectEventsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+            var url = new UrlService('project');
+
+            return {
+                getUrl: function(action, registrationId){
+                    return url.create(action, registrationId);
+                }
+            };
+        }]);
+
+
+
     module.factory('RegistrationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
             var url = new UrlService('registration');
 
@@ -232,6 +244,10 @@
         };
 
     }]);
+
+    module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
+    }]);
+
 
     module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
         var registrationsUrl = new UrlService('registration');

@@ -9,6 +9,10 @@ $this->addEntityToJs($entity);
 
 $this->addProjectToJs($entity);
 
+if($entity->canUser('@control')){
+    $this->addProjectEventsToJs($entity);
+}
+
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
@@ -94,11 +98,15 @@ $this->includeAngularEntityAssets($entity);
         <?php elseif($entity->canUser('@control')): ?>
             <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
+
+        <li ng-if="data.entity.userHasControl"><a href="#rascunhos">Eventos rascunhos</a></li>
     </ul>
 
+    <div id="rascunhos" ng-if="data.entity.userHasControl">
+
+    </div>
+
     <div id="sobre" class="aba-content">
-
-
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
             <div class="highlighted-message clearfix">
                 <?php if($this->isEditable() || $entity->registrationFrom): ?>
