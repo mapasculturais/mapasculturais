@@ -407,10 +407,6 @@ MapasCulturais.Editables = {
         });
 
         $submitButton.click(function(){
-            if($submitButton.data('clicked'))
-                return false;
-
-            $submitButton.data('clicked', 'sim');
 
             var target;
             var $button = $(this);
@@ -423,7 +419,23 @@ MapasCulturais.Editables = {
 
             }else{
                 target = MapasCulturais.createUrl(controller, 'single', [$(editableEntitySelector).data('id')]);
+
+                if(MapasCulturais.entity.status == 0 && $button.data('status') == 1){
+                    var message = MapasCulturais.request.controller === 'event' ?
+                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? ' :
+                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? Isto não poderá ser desfeito.';
+
+                    if(!confirm(message)){
+                        return;
+                    }
+                }
             }
+
+            if($submitButton.data('clicked'))
+                return false;
+
+            $submitButton.data('clicked', 'sim');
+
 
 
             if($editables.length === 1){
@@ -445,17 +457,20 @@ MapasCulturais.Editables = {
 
                             if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
                                 name = $('[data-field-name="parentId"]').text();
+                                $('.js-pending-parent').show();
                                 MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+name+'</strong> foi enviada.');
                             }
 
                             if(createdRequests && createdRequests.indexOf('EventProject') >= 0){
                                 name = $('[data-field-name="projectId"]').text();
+                                $('.js-pending-project').show();
                                 MapasCulturais.Messages.alert('Sua requisição para associar este evento ao projeto <strong>'+name+'</strong> foi enviada.');
                             }
                         }
                     }
                 },
                 success: function(response){
+                    $('.js-pending-project, .js-pending-parent').hide();
                     $('.js-response-error').remove();
                     if(response.error){
                         var $field = null;
@@ -522,7 +537,8 @@ MapasCulturais.Editables = {
                                 parent().
                                 removeClass('danger');
 
-                        if(action === 'create' || response.status != MapasCulturais.entity.status){
+
+                        if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
                             document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
                         }
                     }

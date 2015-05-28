@@ -201,11 +201,14 @@ abstract class Entity implements \JsonSerializable{
         return $user;
     }
 
-    protected function fetchByStatus($collection, $status){
+    protected function fetchByStatus($collection, $status, $order = null){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
                 return [];
 
         $criteria = Criteria::create()->where(Criteria::expr()->eq("status", $status));
+        if(is_array($order)){
+            $criteria = $criteria->orderBy($order);
+        }
         return $collection->matching($criteria);
     }
 
@@ -226,7 +229,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function canUserView($user){
-        return true;
+        if($this->status > 0){
+            return true;
+        }else{
+            return $this->canUser('@control', $user);
+        }
     }
 
     protected function canUserRemove($user){

@@ -148,6 +148,14 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
 
     /**
      * @var \MapasCulturais\Entities\EventTermRelation[] TermRelation
@@ -158,6 +166,19 @@ class Event extends \MapasCulturais\Entity
     protected $__termRelations;
 
     private $_newProject = false;
+
+    function publish($flush = false){
+        $this->checkPermission('publish');
+        
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        
+        $this->status = self::STATUS_ENABLED;
+        $this->save($flush);
+        
+        $app->enableAccessControl();
+    }
 
     public function save($flush = false) {
         App::i()->hook("entity($this).save:requests", function(){
@@ -359,6 +380,36 @@ class Event extends \MapasCulturais\Entity
         }else{
             return $can;
         }
+    }
+    
+    protected function canUserPublish($user){
+        if($user->is('guest')){
+            return false;
+        }
+        
+        if($user->is('admin')){
+            return true;
+        }
+        
+        if($this->canUser('@control', $user)){
+            return true;
+        }
+        
+        if($this->project && $this->project->canUser('@control', $user)){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    protected function canUserView($user){
+        if($this->status === self::STATUS_ENABLED){
+            return true;
+        }else if($this->status === self::STATUS_DRAFT){
+            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
+        }
+        
+        return false;
     }
 
     //============================================================= //

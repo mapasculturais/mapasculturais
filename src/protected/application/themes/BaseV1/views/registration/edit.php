@@ -5,6 +5,8 @@ $this->bodyProperties['ng-app'] = "Entity";
 
 $project = $entity->project;
 
+$this->addEntityToJs($entity);
+
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
@@ -138,6 +140,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <div class="registration-fieldset">
+                
         <?php if($entity->project->isRegistrationOpen()): ?>
             <p class="registration-help">Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição. <strong>Depois de enviada, não será mais possível editá-la.</strong></p>
             <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscrição</a>
@@ -154,6 +157,10 @@ $this->includeAngularEntityAssets($entity);
                 </strong>
             </p>
         <?php endif; ?>
+            
+        <?php if(!$entity->project->isRegistrationOpen() && $app->user->is('superAdmin')): ?>
+            <a ng-click="sendRegistration()" class="btn btn-danger hltip" data-hltip-classes="hltip-danger" hltitle="Somente super admins podem usar este botão e somente deve ser usado para enviar inscrições que não foram enviadas por problema do sistema." data-status="<?php echo MapasCulturais\Entities\Registration::STATUS_SENT ?>">enviar esta inscrição</a>
+        <?php endif ?>
     </div>
 </article>
 <div class="sidebar-left sidebar registration">

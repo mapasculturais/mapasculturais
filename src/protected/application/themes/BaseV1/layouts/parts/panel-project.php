@@ -27,7 +27,6 @@
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Project::STATUS_ENABLED): ?>
-            <a class="btn btn-small btn-warning" href="<?php echo $entity->unpublishUrl; ?>">tornar rascunho</a>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_DRAFT): ?>

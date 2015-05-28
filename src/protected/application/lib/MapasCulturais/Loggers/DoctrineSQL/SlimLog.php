@@ -21,8 +21,6 @@ class SlimLog implements \Doctrine\DBAL\Logging\SQLLogger{
 
         $app->log->debug("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>> SQL Nº " . $this->counter);
 
-//        if($sql == 'SELECT t0.id AS id1, t0.type AS type2, t0.name AS name3, t0.location AS location4, t0._geo_location AS _geo_location5, t0.short_description AS short_description6, t0.long_description AS long_description7, t0.create_timestamp AS create_timestamp8, t0.status AS status9, t0.is_user_profile AS is_user_profile10, t0.is_verified AS is_verified11, t0.user_id AS user_id12, t0.user_id AS user_id13 FROM agent t0 WHERE t0.id = ?')
-//            die(var_dump(xdebug_get_function_stack()));
         $app->log->debug($sql);
 
         if($params){

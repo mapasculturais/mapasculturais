@@ -509,6 +509,10 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
+        
+        if($user->is('superAdmin')){
+            return true;
+        }
 
         if(!$this->project->isRegistrationOpen()){
             return false;

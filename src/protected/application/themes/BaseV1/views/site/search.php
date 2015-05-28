@@ -108,7 +108,7 @@ $this->includeMapAssets();
                         </li>
                     </ul>
                     <div class="objeto-meta">
-                        <div>
+                        <div ng-if="event.project.name">
                             <span class="label">Projeto:</span>
                             <a href="{{event.project.singleUrl}}">{{event.project.name}}</a>
                         </div>
@@ -237,7 +237,7 @@ $this->includeMapAssets();
                         </ul>
                     </div>
                     <div class="objeto-meta">
-                        <div>
+                        <div ng-if="event.project.name">
                             <span class="label">Projeto:</span>
                             <a href="{{event.project.singleUrl}}">{{event.project.name}}</a>
                         </div>

@@ -4,8 +4,6 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
-use Doctrine\Common\Collections\Criteria;
-
 
 /**
  * User

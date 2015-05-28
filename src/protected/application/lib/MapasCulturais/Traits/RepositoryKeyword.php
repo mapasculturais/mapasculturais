@@ -3,11 +3,32 @@ namespace MapasCulturais\Traits;
 
 use \MapasCulturais\App;
 
+/**
+ * Implements methods to find entities by a keyword.
+ * 
+ * Use this trait only in subclasses of **\MapasCulturais\Repository**.
+ * 
+ * @hook repo({ENTITY}).getIdsByKeywordDQL.join
+ * @hook repo({ENTITY}).getIdsByKeywordDQL.where
+ */
 trait RepositoryKeyword{
+    
+    /**
+     * This repository uses Keyword
+     * @return true
+     */
     function usesKeyword(){
         return true;
     }
 
+    /**
+     * Returns the **FROM** part of DQL used to find the entities by keyword
+     * 
+     * @param string $keyword
+     * @return string
+     * 
+     * @hook **repo({ENTITY}).getIdsByKeywordDQL.join**
+     */
     protected function _getKeywordDQLFrom($keyword){
         $class = $this->getClassName();
 
@@ -18,6 +39,16 @@ trait RepositoryKeyword{
         return "$class e $join";
     }
 
+    
+
+    /**
+     * Returns the **WHERE** part of DQL used to find the entities by keyword
+     * 
+     * @param string $keyword
+     * @return string
+     * 
+     * @hook **repo({ENTITY}).getIdsByKeywordDQL.where**
+     */
     protected function _getKeywordDQLWhere($keyword){
         $class = $this->getClassName();
 
@@ -28,6 +59,12 @@ trait RepositoryKeyword{
         return "unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) $where";
     }
 
+    /**
+     * Returns the found entities ids
+     * 
+     * @param string $keyword
+     * @return array
+     */
     function getIdsByKeyword($keyword){
         $keyword = "%{$keyword}%";
 
@@ -46,6 +83,15 @@ trait RepositoryKeyword{
         return $ids;
     }
 
+    /**
+     * Returns the found entities
+     * 
+     * @param string $keyword
+     * @param string $orderBy
+     * @param int $limit
+     * @param int $offset
+     * @return \MapasCulturais\Entity[]
+     */
     function findByKeyword($keyword, $orderBy = null, $limit = null, $offset = null) {
         $keyword = "%{$keyword}%";
 

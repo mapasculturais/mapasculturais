@@ -1,7 +1,16 @@
 <?php
 namespace MapasCulturais\Traits;
 
+/**
+ * Defines the magic callers that returns false if a method starts with **uses**
+ */
 trait MagicCallers{
+    
+    /**
+     * This class uses magic callers
+     * 
+     * @return true
+     */
     function usesMagicCallers(){
         return true;
     }
@@ -9,7 +18,7 @@ trait MagicCallers{
     /**
      * Magic Call
      *
-     * Returns false to all methods that starts with uses (traits must define a method like usesTraitName() that returns true)
+     * Returns false to all methods that starts with **uses** (traits must define a method like usesTraitName() that returns true)
      *
      * @param string $name the name of the method that was called.
      * @param array $arguments the params passed to the method
@@ -25,7 +34,7 @@ trait MagicCallers{
     /**
      * Magic Static Call
      *
-     * Returns false to all methods that starts with uses (traits must define a method like usesTraitName() that returns true)
+     * Returns false to all methods that starts with **uses** (traits must define a method like usesTraitName() that returns true)
      *
      * @param string $name the name of the method that was called.
      * @param array $arguments the params passed to the method
