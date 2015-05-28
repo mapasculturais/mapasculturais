@@ -3,8 +3,8 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 
-trait ControllerSoftDelete{
-    function GET_undelete(){
+trait ControllerDraft{
+    function GET_publish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -16,7 +16,11 @@ trait ControllerSoftDelete{
         if(!$entity)
             $app->pass();
 
-        $entity->undelete(true);
+        $entity_class = $entity->getClassName();
+
+        $entity->status = $entity_class::STATUS_ENABLED;
+
+        $entity->save(true);
 
         if($this->isAjax()){
             $this->json($entity);
@@ -26,7 +30,7 @@ trait ControllerSoftDelete{
         }
     }
 
-    function GET_destroy(){
+    function GET_unpublish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -39,7 +43,11 @@ trait ControllerSoftDelete{
         if(!$entity)
             $app->pass();
 
-        $entity->destroy(true);
+        $entity_class = $entity->getClassName();
+
+        $entity->status = $entity_class::STATUS_DRAFT;
+
+        $entity->save(true);
 
         if($this->isAjax()){
             $this->json($entity);

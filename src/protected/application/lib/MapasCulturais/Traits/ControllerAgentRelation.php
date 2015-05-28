@@ -2,17 +2,39 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
-use MapasCulturais\Entities\Agent;
 
+/**
+ * Implements actions to work with entities that uses agent relations.
+ * 
+ * Use this trait only in subclasses of **\MapasCulturais\EntityController**
+ * 
+ * @see \MapasCulturais\Traits\EntityAgentRelation
+ */
 trait ControllerAgentRelation{
 
+    /**
+     * This controller uses agent relations
+     * 
+     * @return true
+     */
     public function usesAgentRelation(){
         return true;
     }
 
+    /**
+     * Creates a new agent relation with the entity with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @see \MapasCulturais\Controllers\EntityController::_finishRequest()
+     * 
+     * @WriteAPI POST createAgentRelation
+     */
     public function POST_createAgentRelation(){
         $this->requireAuthentication();
+       
         $app = App::i();
+        
         if(!$this->urlData['id'])
             $app->pass();
 
@@ -32,6 +54,13 @@ trait ControllerAgentRelation{
 
     }
 
+    /**
+     * Removes the agent relation with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @WriteAPI POST removeAgentRelation
+     */
     public function POST_removeAgentRelation(){
         $this->requireAuthentication();
         $app = App::i();

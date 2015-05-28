@@ -3,6 +3,12 @@ if (!$this->isEditable() && !$entity->canUser('modify')){
     ?><div id="editable-entity" class="clearfix sombra js-not-editable" style='display:none; min-height:0; height:42px;'></div><?php
     return;
 }
+
+$class = $entity->getClassName();
+
+$status_draft = $class::STATUS_DRAFT;
+$status_enabled = $class::STATUS_ENABLED;
+
 $can_edit_roles = $this->controller->id == 'agent' && $entity->user->id != $app->user->id && $entity->id == $entity->user->profile->id && $entity->user->canUser('addRole');
 if($this->isEditable()){
     $classes = 'editable-entity-edit';
@@ -13,7 +19,7 @@ if($this->isEditable()){
 }
 ?>
 
-<div id="editable-entity" class="clearfix sombra <?php echo $classes ?>" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>" data-submit-button-selector="#submitButton">
+<div id="editable-entity" class="clearfix sombra <?php echo $classes ?>" data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>">
     <?php $this->part('editable-entity-logo') ?>
     <?php if ($this->isEditable()): ?>
         <script type="text/javascript">
@@ -59,11 +65,24 @@ if($this->isEditable()){
                     </div>
                 </div>
             <?php endif; ?>
+
             <!-- se estiver na página de edição e logado mostrar:-->
             <?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
                 <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit">Sair do modo de edição</a>
             <?php endif; ?>
-            <a id="submitButton" class="btn btn-primary" data-legend="Salvar" data-legend-submitted="salvo">Salvar</a>
+
+            <?php if($entity->usesDraft()): ?>
+                <?php if($entity->isNew() || $entity->status <= 0):  ?>
+                    <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_draft ?>" hltitle="Salvar este <?php echo strtolower($entity->getEntityType()) ?> como rascunho.">Salvar</a>
+                    <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="Salvar e publicar este <?php echo strtolower($entity->getEntityType()) ?>.">Publicar</a>
+                <?php else: ?>
+                    <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
+                <?php endif; ?>
+            <?php elseif($this->controller->id === 'registration'): ?>
+                <a class="btn btn-primary js-submit-button">Salvar</a>
+            <?php else: ?>
+                <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
+            <?php endif; ?>
         </div>
     <?php elseif ($entity->canUser('modify')): ?>
         <script type="text/javascript">

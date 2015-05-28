@@ -17,8 +17,8 @@ trait EntityAgentRelation {
         return true;
     }
 
-    function getAgentRelationEntityClassName(){
-        return $this->getClassName() . 'AgentRelation';
+    static function getAgentRelationEntityClassName(){
+        return self::getClassName() . 'AgentRelation';
     }
 
     function getAgentRelations($has_control = null, $include_pending_relations = false){
@@ -28,43 +28,24 @@ trait EntityAgentRelation {
         $relation_class = $this->getAgentRelationEntityClassName();
         if(!class_exists($relation_class))
             return [];
-
-        $params = [
-            'owner' => $this,
-            'statuses' => $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED],
-            'in' => [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED]
-        ];
-
-        $dql_has_control = '';
-
-        if(is_bool($has_control)){
-            $params['has_control'] = $has_control;
-            $dql_has_control = "ar.hasControl = :has_control AND";
+        
+        $statuses = $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED];
+        $agent_statuses = [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED];
+        $relations = [];
+        
+        $__relations = $this->__agentRelations;
+        
+        if(is_null($__relations)){
+            $__relations = App::i()->repo($this->getAgentRelationEntityClassName())->findBy(['owner' => $this]);
+        }
+        
+        foreach($__relations as $ar){
+            if(in_array($ar->status, $statuses) && (is_null($has_control) || $ar->hasControl === $has_control) && in_array($ar->agent->status, $agent_statuses)){
+                $relations[] = $ar;
+            }
         }
 
-
-        $dql = "
-            SELECT
-                ar,
-                a,
-                u
-            FROM
-                $relation_class ar
-                JOIN ar.agent a
-                JOIN a.user u
-            WHERE
-                ar.owner = :owner AND
-                ar.status IN (:statuses) AND
-                $dql_has_control
-                a.status IN (:in)
-            ORDER BY a.name";
-
-        $query = App::i()->em->createQuery($dql);
-
-        $query->setParameters($params);
-
-        $result = $query->getResult();
-        return $result;
+        return $relations;
     }
 
     /**
@@ -88,9 +69,6 @@ trait EntityAgentRelation {
         foreach ($this->getAgentRelations(null, $include_pending_relations) as $agentRelation)
             $result[$agentRelation->group][] = $return_relations ? $agentRelation : $agentRelation->agent;
 
-
-//        die(var_dump($result));
-
         ksort($result);
 
         if(is_null($group))
@@ -106,10 +84,10 @@ trait EntityAgentRelation {
         return $this->getRelatedAgents($group, true, $include_pending_relations);
 
     }
-    
+
     function getIdsOfUsersWithControl(){
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = "$this::usersWithControl";
 
         if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
@@ -118,9 +96,9 @@ trait EntityAgentRelation {
             $users = $this->getUsersWithControl();
             $ids = array_map(function($u){
                 return $u->id;
-                
+
             }, $users);
-            
+
             return $ids;
         }
     }
@@ -143,7 +121,7 @@ trait EntityAgentRelation {
         $result = [$this->getOwnerUser()];
         $ids = [$result[0]->id];
         if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
-        
+
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
             foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
@@ -156,7 +134,7 @@ trait EntityAgentRelation {
 
         if($this->usesNested()) {
             $parent = $this->getParent();
-        
+
             if(is_object($parent) && !$parent->equals($this)){
                 foreach($parent->getUsersWithControl() as $u){
                     if(!in_array($u->id, $ids)){
@@ -182,18 +160,18 @@ trait EntityAgentRelation {
         if($app->config['app.usePermissionsCache']){
             $app->cache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
-        
-        
+
+
         return $result;
-        
+
     }
 
     function userHasControl($user){
         if($user->is('admin'))
             return true;
-        
+
         $ids = $this->getIdsOfUsersWithControl();
-        
+
         return in_array($user->id, $ids);
     }
 
@@ -210,6 +188,7 @@ trait EntityAgentRelation {
         if($save)
             $relation->save($flush);
 
+        $this->refresh();
         return $relation;
     }
 
@@ -219,7 +198,9 @@ trait EntityAgentRelation {
         $relation = $repo->findOneBy(['group' => $group, 'agent' => $agent, 'owner' => $this]);
         if($relation){
             $relation->delete($flush);
-       }
+        }
+        
+        $this->refresh();
     }
 
     function setRelatedAgentControl($agent, $control){

@@ -57,7 +57,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @return \MapasCulturais\entityClassName An empty new entity object.
      */
     public function getNewEntity(){
-        return new $this->entityClassName();
+        $class = $this->entityClassName;
+        return new $class;
     }
 
 
@@ -204,6 +205,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->newEntity;
 
+        $class = $this->entityClassName;
+
+        $entity->status = $class::STATUS_DRAFT;
 
         $this->render('create', ['entity' => $entity]);
     }
@@ -224,21 +228,24 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * </code>
      *
      */
-    function GET_single(){
+    function GET_single() {
         $app = App::i();
 
-        if(!key_exists('id', $this->urlData))
+        if (!key_exists('id', $this->urlData)) {
             $app->pass();
+        }
 
         $entity = $this->repo()->find($this->urlData['id']);
 
-        if(!$entity)
+        if (!$entity) {
             $app->pass();
+        }
 
-        if($entity->status > 0 || $app->user->is('admin') || $app->user->id === $entity->ownerUser->id)
+        if ($entity->status > 0 || $entity->canUser('@control')) {
             $this->render('single', ['entity' => $entity]);
-        else
+        } else {
             $app->pass();
+        }
     }
 
     /**
@@ -256,25 +263,37 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('agent', 'edit', [$agent_id])
      * </code>
      */
-    function GET_edit(){
+    function GET_edit() {
         $this->requireAuthentication();
         $app = App::i();
 
-        if(!key_exists('id', $this->urlData))
+        if (!key_exists('id', $this->urlData)) {
             $app->pass();
+        }
 
         $entity = $this->repo()->find($this->urlData['id']);
 
-        if(!$entity)
+        if (!$entity) {
             $app->pass();
+        }
 
         $entity->checkPermission('modify');
 
-        $this->render('edit', ['entity' => $entity]);
+        $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+
+        $this->render('edit', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
     }
 
     /**
-     * Updates the entity with the id specified in the URL with the values sent by POST.
+     * Alias to PUT_single
+     * @see self::PUT_single
+     */
+    function POST_single(){
+        $this->PUT_single();
+    }
+
+    /**
+     * Updates the entity with the id specified in the URL with the values sent by PUT.
      *
      * If the entity with the given id not exists, call $app->pass()
      *
@@ -290,7 +309,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
-    function POST_single(){
+    function PUT_single(){
         $this->requireAuthentication();
 
         $app = App::i();

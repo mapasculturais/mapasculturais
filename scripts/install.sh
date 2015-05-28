@@ -16,6 +16,7 @@ sudo -u ${PGUSER} psql -d ${DBNAME} -c 'CREATE EXTENSION postgis;'
 sudo -u ${PGUSER} psql -d ${DBNAME} -c 'CREATE EXTENSION unaccent;'
 
 sudo PGPASSWORD=${DBPASS} -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -f ../db/schema.sql
-sudo PGPASSWORD=${DBPASS} -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -f ../db/initial-data.sql
 
 ./db-update.sh
+sudo PGPASSWORD=${DBPASS} -u ${PGUSER} psql -d ${DBNAME} -U ${DBUSER} -f ../db/initial-data.sql
+

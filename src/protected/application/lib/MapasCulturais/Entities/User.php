@@ -4,8 +4,6 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
-use Doctrine\Common\Collections\Criteria;
-
 
 /**
  * User
@@ -85,7 +83,7 @@ class User extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] User Roles
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
      */
-    protected $roles = [];
+    protected $roles;
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
@@ -126,6 +124,8 @@ class User extends \MapasCulturais\Entity
             throw new \Exception ('error');
 
         $this->profile = $agent;
+
+        $agent->setParentAsNull(true);
     }
 
     function jsonSerialize() {
@@ -166,6 +166,10 @@ class User extends \MapasCulturais\Entity
         }
 
         return false;
+    }
+
+    function can($action, \MapasCulturais\Entity $entity){
+        return $entity->canUser($action, $this);
     }
 
     protected function canUserAddRole($user){
@@ -209,16 +213,20 @@ class User extends \MapasCulturais\Entity
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
+        
         $dql = "
             SELECT
-                e
+                e, m, tr
             FROM
                 $entityClassName e
+                LEFT JOIN e.__metadata m
+                LEFT JOIN e.__termRelations tr
                 JOIN e.owner a
             WHERE
                 e.status $status_operator :status AND
                 a.user = :user
             ORDER BY
+                e.name,
                 e.createTimestamp ASC
         ";
         $query = App::i()->em->createQuery($dql);
@@ -231,22 +239,35 @@ class User extends \MapasCulturais\Entity
     }
 
     private function _getAgentsByStatus($status){
-        return App::i()->repo('Agent')->findBy(['user' => $this, 'status' => $status]);
+        return App::i()->repo('Agent')->findBy(['user' => $this, 'status' => $status], ['name' => "ASC"]);
     }
 
     function getEnabledAgents(){
         return $this->_getAgentsByStatus(Agent::STATUS_ENABLED);
     }
+    function getDraftAgents(){
+        $this->checkPermission('modify');
+
+        return $this->_getAgentsByStatus(Agent::STATUS_DRAFT);
+    }
     function getTrashedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_TRASH);
     }
     function getDisabledAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_DISABLED);
     }
     function getInvitedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_INVITED);
     }
     function getRelatedAgents(){
+        $this->checkPermission('modify');
+
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
@@ -256,10 +277,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ENABLED, '=');
     }
+    function getDraftSpaces(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DRAFT, '=');
+    }
     function getTrashedSpaces(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_TRASH, '=');
     }
     function getDisabledSpaces(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
     }
 
@@ -270,10 +300,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledEvents(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ENABLED, '=');
     }
+    function getDraftEvents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DRAFT, '=');
+    }
     function getTrashedEvents(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_TRASH, '=');
     }
     function getDisabledEvents(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
 
@@ -284,10 +323,19 @@ class User extends \MapasCulturais\Entity
     function getEnabledProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ENABLED, '=');
     }
+    function getDraftProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DRAFT, '=');
+    }
     function getTrashedProjects(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_TRASH, '=');
     }
     function getDisabledProjects(){
+        $this->checkPermission('modify');
+
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 
@@ -308,7 +356,7 @@ class User extends \MapasCulturais\Entity
                 e.status $status_operator :status AND
                 e.user = :user
             ORDER BY
-                e.createTimestamp ASC
+                e.createTimestamp DESC
         ";
         $query = App::i()->em->createQuery($dql);
 

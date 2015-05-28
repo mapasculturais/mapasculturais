@@ -2,6 +2,9 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "Entity";
 
+$request_project = null;
+
+$this->addEntityToJs($entity);
 if ($this->isEditable()) {
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');
@@ -9,6 +12,9 @@ if ($this->isEditable()) {
 
     $this->addOccurrenceFrequenciesToJs();
 
+    if(!$entity->isNew()){
+        $request_project = $app->repo('RequestEventProject')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+    }
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
@@ -338,24 +344,29 @@ $this->includeMapAssets();
     <?php if($this->isEditable()): ?>
         <div class="widget">
             <h3>Projeto</h3>
-            <a class="js-search js-include-editable"
-                data-field-name='projectId'
-                data-emptytext="Selecione um projeto"
-                data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um projeto"
-                data-entity-controller="project"
-                data-search-result-template="#agent-search-result-template"
-                data-selection-template="#agent-response-template"
-                data-no-result-template="#agent-response-no-results-template"
-                data-selection-format="chooseProject"
-                data-multiple="true"
-                data-allow-clear="1"
-                data-auto-open="true"
-                data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
-                data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
-                title="Selecionar um Projeto">
-                <?php echo $entity->project ? $entity->project->name : ''; ?>
-            </a>
+            <?php if($request_project): $proj = $request_project->destination; ?>
+                <a href="<?php echo $proj->singleUrl ?>"><?php echo $proj->name ?></a>
+            <?php else: ?>
+                <a class="js-search js-include-editable"
+                    data-field-name='projectId'
+                    data-emptytext="Selecione um projeto"
+                    data-search-box-width="400px"
+                    data-search-box-placeholder="Selecione um projeto"
+                    data-entity-controller="project"
+                    data-search-result-template="#agent-search-result-template"
+                    data-selection-template="#agent-response-template"
+                    data-no-result-template="#agent-response-no-results-template"
+                    data-selection-format="chooseProject"
+                    data-multiple="true"
+                    data-allow-clear="1"
+                    data-auto-open="true"
+                    data-value="<?php echo $entity->project ? $entity->project->id : ''; ?>"
+                    data-value-name="<?php echo $entity->project ? $entity->project->name : ''; ?>"
+                    title="Selecionar um Projeto">
+                    <?php echo $entity->project ? $entity->project->name : ''; ?>
+                </a>
+            <?php endif; ?>
+            <span class="warning pending js-pending-project hltip" hltitle="Aguardando confirmação" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
         </div>
     <?php elseif($entity->project): ?>
         <div class="widget">
@@ -368,7 +379,7 @@ $this->includeMapAssets();
         <?php if ($this->isEditable()): ?>
             <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
-            <?php $linguagens = array_values($app->getRegisteredTaxonomy(get_class($entity), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+            <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
             <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
                 <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
             <?php endif; endforeach; ?>
@@ -492,7 +503,7 @@ $this->includeMapAssets();
                     <p id="descricao-automatica" class="alert automatic">Descrição gerada pelo sistema automaticamente.</p>
                     <a class="btn btn-default insert"></a>
                 </div>
-                <input type="text" name="description" value="{{rule.description}}">
+                <input type="text" name="description" value="{{rule.description}}" placeholder="Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.">
             </div>
         </div>
         <div class="clearfix">

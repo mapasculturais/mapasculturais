@@ -5,6 +5,8 @@ $this->bodyProperties['ng-app'] = "Entity";
 
 $project = $entity->project;
 
+$this->addEntityToJs($entity);
+
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);

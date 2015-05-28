@@ -9,7 +9,13 @@ class Fake extends \MapasCulturais\AuthProvider{
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
-            $users = $app->repo('User')->findBy([], ['id' => 'ASC']);
+            $user_class = "MapasCulturais\Entities\User";
+            $dql = "SELECT u, r, p, a FROM {$user_class} u LEFT JOIN u.roles r LEFT JOIN u.profile p LEFT JOIN u.agents a";
+            
+            $q = $app->em->createQuery($dql);
+            
+            $users = $q->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            
             $this->render('fake-authentication', [
                 'users' => $users, 
                 'form_action' => $app->createUrl('auth', 'fakeLogin'),

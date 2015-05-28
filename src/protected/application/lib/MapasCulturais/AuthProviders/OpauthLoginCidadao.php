@@ -19,10 +19,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         $opauth_config = [
             'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
             'Strategy' => [
-                'logincidadao' => [
-                    'client_id' => $config['client_id'],
-                    'client_secret' => $config['client_secret']
-                ]
+                'logincidadao' => $config
             ],
             'security_salt' => $config['salt'],
             'security_timeout' => $config['timeout'],

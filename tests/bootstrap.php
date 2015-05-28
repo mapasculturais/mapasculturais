@@ -74,7 +74,12 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         }
     }
 
-
+    /**
+     * 
+     * @param string $class
+     * @param mixed $user
+     * @return \MapasCulturais\Entity
+     */
     function getNewEntity($class, $user = null){
         if(!is_null($user)){
             $_user = $this->app->user->is('guest') ? null : $this->app->user;
@@ -135,7 +140,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         if(is_object($exception) && substr(get_class($exception),0,9) === 'Doctrine\\'){
             throw $exception;
         }
-            
+
         $this->assertInstanceOf('MapasCulturais\Exceptions\WorkflowRequest', $exception, $msg);
     }
 
@@ -191,10 +196,10 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         }else{
             $url = $path;
         }
-        
+
         $c = new Curl;
         $c->$method($url, $options);
-        
+
         return $c;
     }
 
