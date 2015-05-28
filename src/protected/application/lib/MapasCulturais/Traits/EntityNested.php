@@ -2,6 +2,11 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
+/**
+ * Defines that the entity is nested.
+ * 
+ * Use this trait only in subclasses of **\MapasCulturais\Entity** with a *many to one* relation **parent** and a *one to many* relation **_children**.
+ */
 trait EntityNested{
 
     /**
@@ -13,11 +18,21 @@ trait EntityNested{
         return true;
     }
 
+    /**
+     * Returns the children entities.
+     * 
+     * @return \MapasCulturais\Entities[]
+     */
     function getChildren(){
         $class = $this->getClassName();
         return $this->fetchByStatus($this->_children, $class::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
+    /**
+     * Set the parent entity by providing the parent id.
+     * 
+     * @param \MapasCulturais\Entity $parent_id
+     */
     function setParentId($parent_id){
         if($parent_id)
             $parent = $this->repo()->find($parent_id);
@@ -27,8 +42,18 @@ trait EntityNested{
         $this->setParent($parent);
     }
 
+    /**
+     * Temporary parent entity.
+     * 
+     * @var \MapasCulturais\Entity 
+     */
     protected $_newParent = false;
 
+    /**
+     * Returns the parent entity.
+     * 
+     * @return \MapasCulturais\Entity
+     */
     function getParent(){
         if($this->_newParent !== false){
             return $this->_newParent;
@@ -38,6 +63,12 @@ trait EntityNested{
 
     }
 
+
+    /**
+     * Set the parent entity.
+     * 
+     * @param \MapasCulturais\Entity $parent
+     */
     function setParent(\MapasCulturais\Entity $parent = null) {
         if (is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
@@ -76,7 +107,9 @@ trait EntityNested{
     }
 
     /**
-     * @return array of ids
+     * Returns the children ids.
+     * 
+     * @return array
      */
     public function getChildrenIds(){
         $result = [];
@@ -89,6 +122,16 @@ trait EntityNested{
     }
 
 
+    /**
+     * Tries to replace the parent by the new parent.
+     * 
+     * If the logged in user can not perform the operation a new RequestChildEntity object is created.
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied
+     * @throws \MapasCulturais\Exceptions\WorkflowRequestTransport
+     * 
+     * @workflow RequestChildEntity
+     */
     protected function _saveNested(){
         if($this->_newParent !== false){
             try{

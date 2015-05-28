@@ -6,9 +6,7 @@ use \MapasCulturais\App;
 /**
  * Defines that the entity has types.
  *
- * Use this trait in entities that has the type column and have types (\MapasCulturais\Definitions\EntityType) registered in App.
- *
- * The name of the type property must be _type.
+ * Use this trait only in subclasses of **\MapasCulturais\Entity** with property **_type** and have types (\MapasCulturais\Definitions\EntityType) registered in App.
  *
  * @property \MapasCulturais\Definitions\EntityType $type The Entity Type.
  * @property-read \MapasCulturais\Definitions\EntityType|null $typeGroup The Entity Type Group if exists.
@@ -18,7 +16,8 @@ trait EntityTypes{
 
     /**
      * This class uses Types
-     * @return bool true
+     * 
+     * @return true
      */
     public static function usesTypes(){
         return true;
@@ -50,8 +49,6 @@ trait EntityTypes{
      * Sets the type of the entity.
      *
      * This methods accepts an interger or an \MapasCulturais\Definitions\EntityType object.
-     *
-     * @throws \Exception if the given object is not an Entity Type Definition or if the id is not a valid id.
      *
      * @param \MapasCulturais\Definitions\EntityType|int $type Entity Type Definition object or the id of the Entity Type Definiton.
      *

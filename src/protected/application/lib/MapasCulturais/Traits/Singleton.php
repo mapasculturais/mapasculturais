@@ -2,7 +2,7 @@
 namespace MapasCulturais\Traits;
 
 /**
- * Defines that the class that uses this trait uses the Singleton Patern.
+ * Defines that the class uses the Singleton Patern.
  *
  * Use this trait in classes that needs just one instance.
  *
@@ -10,7 +10,7 @@ namespace MapasCulturais\Traits;
 trait Singleton{
     /**
      * Array of instances of this class and all subclasses.
-     * @var type
+     * @var array
      */
     protected static $_singletonInstances = [];
 
@@ -29,7 +29,7 @@ trait Singleton{
 
     /**
      * This class use Singleton
-     * @return bool true
+     * @return true
      */
     public static function usesSingleton(){
         return true;

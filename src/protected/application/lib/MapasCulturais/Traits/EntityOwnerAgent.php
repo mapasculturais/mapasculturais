@@ -2,14 +2,31 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
+/**
+ * Defines that the owner of the entity is an Agent.
+ * 
+ * Use this trait only in subclasses of **\MapasCulturais\Entity** with property **owner** that is a *many to one* relation with **\MapasCulturais\Entities\Agent**.
+ */
 trait EntityOwnerAgent{
+    
+    /**
+     * Temporary owner.
+     * 
+     * @var \MapasCulturais\Entities\Agent 
+     */
+    private $_newOwner = false;
 
+    /**
+     * This entity uses Owner Agent.
+     *
+     * @return boolean true
+     */
     function usesOwnerAgent(){
         return true;
     }
 
     /**
-     * Returns the owner of this entity
+     * Returns the owner of this entity.
      *
      * @return \MapasCulturais\Entities\Agent
      */
@@ -22,11 +39,9 @@ trait EntityOwnerAgent{
     }
 
     /**
-     * Set the owner by providing the agent id
+     * Set the owner by providing the agent id.
      *
      * @param int $owner_id the agent id
-     *
-     *
      */
     function setOwnerId($owner_id){
         $owner = App::i()->repo('Agent')->find($owner_id);
@@ -34,10 +49,9 @@ trait EntityOwnerAgent{
         $this->setOwner($owner);
     }
 
-    private $_newOwner = false;
 
     /**
-     * Set the owner by providing the agent
+     * Set the owner by providing the agent.
      *
      * @param \MapasCulturais\Entities\Agent $owner
      */
@@ -45,6 +59,17 @@ trait EntityOwnerAgent{
         $this->_newOwner = $owner;
     }
 
+    /**
+     * Tries to replace the owner by the new owner.
+     * 
+     * If the logged in user can not perform the operation a new RequestChangeOwnership object is created.
+     * 
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied
+     * @throws \MapasCulturais\Exceptions\WorkflowRequestTransport
+     * 
+     * @workflow RequestChangeOwnership
+     */
     protected function _saveOwnerAgent(){
         if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
@@ -68,7 +93,7 @@ trait EntityOwnerAgent{
     }
 
     /**
-     * Verify if the user can change the entity owner
+     * Verify if user can change the entity owner.
      *
      * @param type $user
      *
@@ -87,6 +112,13 @@ trait EntityOwnerAgent{
         return false;
     }
 
+    /**
+     * Generic permission verification for entities that has owner agent.
+     * 
+     * @param \MapasCulturais\Entities\User $user
+     * @param string $action
+     * @return boolean
+     */
     protected function _canUser($user, $action = ''){
         if($user->is('guest'))
             return false;
@@ -107,10 +139,22 @@ trait EntityOwnerAgent{
         return false;
     }
 
+    /**
+     * Verify if user can create this entity.
+     * 
+     * @param \MapasCulturais\Entities\User $user
+     * @return boolean
+     */
     protected function canUserCreate($user){
         return $this->_canUser($user, 'create');
     }
 
+    /**
+     * Verify if user can remove this entity.
+     * 
+     * @param \MapasCulturais\Entities\User $user
+     * @return boolean
+     */
     protected function canUserRemove($user){
         return $this->_canUser($user, 'remove');
     }
