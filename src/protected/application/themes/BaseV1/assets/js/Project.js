@@ -245,7 +245,33 @@
 
     }]);
 
-    module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
+    module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
+        $scope.events = $scope.data.entity.events.slice();
+
+        $scope.toggleSelection = function(){
+            $scope.data.entity.events.forEach(function(e){
+
+                e.selected = !e.selected;
+            });
+        };
+
+        $scope.filterEvents = function(){
+            $scope.events = $scope.data.entity.events.slice().filter(function(e,i){
+                if(e.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                    return true;
+                }
+
+                if(e.owner.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                    return true;
+                }
+
+                return false;
+            });
+
+        };
+
+
+        $scope.toggle = false;
     }]);
 
 

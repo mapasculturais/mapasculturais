@@ -101,6 +101,7 @@ $this->includeMapAssets();
                 </div>
             <?php endif; ?>
         </div>
+        <?php $this->part('entity-status', array('entity' => $entity));  ?>
         <!--.header-image-->
         <div class="header-content">
             <?php if ($avatar = $entity->avatar): ?>

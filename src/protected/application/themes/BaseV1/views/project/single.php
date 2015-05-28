@@ -86,8 +86,35 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <li ng-if="data.entity.userHasControl"><a href="#rascunhos">Eventos rascunhos</a></li>
     </ul>
 
-    <div id="rascunhos" ng-if="data.entity.userHasControl">
-
+    <div id="rascunhos" ng-if="data.entity.userHasControl" ng-controller="ProjectEventsController">
+        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="filtrar eventos">
+        <label><input type='checkbox' ng-model="toggle" ng-click="toggleSelection()"> {{toggle ? 'desselecionar todos' : 'selecionar todos' }}</label>
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Publicado por</th>
+                    <th>Nome do evento</th>
+                    <th>Ocorrências do evento</th>
+                    <th>Status do evento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="event in events">
+                    <td><input type='checkbox' ng-checked="event.selected"></td>
+                    <td><a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></td>
+                    <td><a href='{{event.singleUrl}}'>{{event.name}}</a></td>
+                    <td>
+                        <ul>
+                            <li ng-repeat='occ in event.occurrences'>
+                                {{occ.rule.description}} <span ng-if='occ.rule.price'>({{occ.rule.price}})</span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{event.status === 0 ? 'rascunho' : 'publicado'}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div id="sobre" class="aba-content">

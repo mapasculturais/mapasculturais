@@ -241,7 +241,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $app->pass();
         }
 
-        if ($entity->status > 0 || $entity->canUser('@control')) {
+        if ($entity->canUser('view')) {
             $this->render('single', ['entity' => $entity]);
         } else {
             $app->pass();
