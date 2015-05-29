@@ -36,6 +36,9 @@ class Theme extends BaseV1\Theme{
     }
     public function addDocumentMetas() {
         parent::addDocumentMetas();
+        if(in_array($this->controller->action, ['single', 'edit'])){
+            return;
+        }
         $app = App::i();
         foreach ($this->documentMeta as $key => $meta){
             if(isset($meta['property']) && ($meta['property'] === 'og:image' || $meta['property'] === 'og:image:url')){
