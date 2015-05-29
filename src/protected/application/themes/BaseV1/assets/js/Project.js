@@ -17,8 +17,34 @@
             var url = new UrlService('project');
 
             return {
-                getUrl: function(action, registrationId){
-                    return url.create(action, registrationId);
+                getUrl: function(action){
+                    return url.create(action, MapasCulturais.entity.id);
+                },
+                
+                publish: function(ids){
+                   var url = this.getUrl('publishEvents');
+                    
+                    return $http.post(url, {ids: ids}).
+                            success(function (data, status) {
+                                $rootScope.$emit('project.publishEvents', {message: "Project events was published", data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot publish project events", data: data, status: status});
+                            });
+                    
+                    
+                },
+                
+                unpublish: function(ids){
+                    var url = this.getUrl('unpublishEvents');
+                    
+                    return $http.post(url, {ids: ids}).
+                            success(function (data, status) {
+                                $rootScope.$emit('project.unpublishEvents', {message: "Project events was unpublished", data: data, status: status});
+                            }).
+                            error(function (data, status) {
+                                $rootScope.$emit('error', {message: "Cannot unpublish project events", data: data, status: status});
+                            });
                 }
             };
         }]);
@@ -248,26 +274,84 @@
     module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
         $scope.events = $scope.data.entity.events.slice();
 
-        $scope.toggleSelection = function(){
+        $scope.selectAll = function(){
             $scope.data.entity.events.forEach(function(e){
-
-                e.selected = !e.selected;
+                if(!e.hidden){
+                    e.selected = true;
+                }
             });
         };
+        
+        $scope.deselectAll = function(){
+            $scope.data.entity.events.forEach(function(e){
+                if(!e.hidden){
+                    e.selected = false;
+                }
+            });
+        };
+        
+        $scope.eventFilterTimeout = null;
 
         $scope.filterEvents = function(){
-            $scope.events = $scope.data.entity.events.slice().filter(function(e,i){
-                if(e.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
-                    return true;
-                }
+            $timeout.cancel($scope.eventFilterTimeout);
+            $scope.eventFilterTimeout = $timeout(function() {
+                $scope.events.forEach(function(e,i){
 
-                if(e.owner.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
-                    return true;
-                }
+                    if(e.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                        e.hidden = false;
+                    }else if(e.owner.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                        e.hidden = false;
+                    }else{
+                        var show = false;
+                        e.occurrences.forEach(function(o){
+                            if(o.space.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                                show = true;
+                            }
+                        });
+                        
+                        e.hidden = !show;
+                    }
+                });
+            },150);
 
-                return false;
+        };
+        
+        $scope.publishSelectedEvents = function(){
+            var ids = [],
+                events = [];
+            
+            $scope.events.forEach(function(e,i){
+                if(e.selected){
+                    ids.push(e.id);
+                    events.push(e);
+                }   
             });
-
+            
+            ProjectEventsService.publish(ids).success(function(){
+                MapasCulturais.Messages.success('Eventos publicados');
+                events.forEach(function(e){
+                    e.status = 1;
+                });
+            });
+        };
+        
+        $scope.unpublishSelectedEvents = function(){
+            var ids = [],
+                events = [];
+            
+            $scope.events.forEach(function(e,i){
+                if(e.selected){
+                    ids.push(e.id);
+                    events.push(e);
+                }   
+            });
+            
+            ProjectEventsService.unpublish(ids).success(function(){
+                MapasCulturais.Messages.success('Eventos publicados');
+                events.forEach(function(e){
+                    e.status = 0;
+                });
+            });
         };
 
 

@@ -9,8 +9,10 @@ $this->addEntityToJs($entity);
 
 $this->addProjectToJs($entity);
 
-if($entity->canUser('@control')){
-    $this->addProjectEventsToJs($entity);
+if(!$entity->isNew() && $entity->canUser('@control')){
+    if($app->user->is('admin') || $app->user->is('staff')){ //@TODO: remover este if quando o layout estiver pronto
+        $this->addProjectEventsToJs($entity);
+    }
 }
 
 if($this->isEditable()){
@@ -41,6 +43,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 </div>
             <?php endif; ?>
         </div>
+        <?php $this->part('entity-status', array('entity' => $entity)); ?>
         <!--.header-image-->
         <div class="header-content">
             <div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
@@ -83,31 +86,39 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
 
-        <li ng-if="data.entity.userHasControl"><a href="#rascunhos">Eventos rascunhos</a></li>
+        <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
+        <?php if(!$entity->isNew()): ?>    
+            <li ng-if="data.entity.userHasControl"><a href="#eventos">Eventos</a></li>
+        <?php endif; ?>
+        <?php endif; ?>
     </ul>
-
-    <div id="rascunhos" ng-if="data.entity.userHasControl" ng-controller="ProjectEventsController">
+    <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
+    <?php if(!$entity->isNew()): ?>
+    <div id="eventos" ng-if="data.entity.userHasControl" ng-controller="ProjectEventsController">
         <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="filtrar eventos">
-        <label><input type='checkbox' ng-model="toggle" ng-click="toggleSelection()"> {{toggle ? 'desselecionar todos' : 'selecionar todos' }}</label>
+        <span class="btn btn-small btn-default" ng-click="selectAll()">selecionar</span>
+        <span class="btn btn-small btn-default" ng-click="deselectAll()">desselecionar</span><br>
+        <span class="btn btn-small btn-warning" ng-click="unpublishSelectedEvents()">tornar os eventos selecionados rascunhos</span>
+        <span class="btn btn-small btn-primary" ng-click="publishSelectedEvents()">publicar os eventos selecionados</span>
         <table style="width:100%">
             <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th>Publicado por</th>
-                    <th>Nome do evento</th>
-                    <th>Ocorrências do evento</th>
-                    <th>Status do evento</th>
+                    <th>Autor</th>
+                    <th>Evento</th>
+                    <th>Ocorrências</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="event in events">
+                <tr ng-repeat="event in events" ng-show="!event.hidden">
                     <td><input type='checkbox' ng-checked="event.selected"></td>
                     <td><a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></td>
                     <td><a href='{{event.singleUrl}}'>{{event.name}}</a></td>
                     <td>
                         <ul>
                             <li ng-repeat='occ in event.occurrences'>
-                                {{occ.rule.description}} <span ng-if='occ.rule.price'>({{occ.rule.price}})</span>
+                                <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a> - {{occ.rule.description}} <span ng-if='occ.rule.price'>({{occ.rule.price}})</span>
                             </li>
                         </ul>
                     </td>
@@ -116,6 +127,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             </tbody>
         </table>
     </div>
+    <?php endif; ?>
+    <?php endif; ?>
 
     <div id="sobre" class="aba-content">
         <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>

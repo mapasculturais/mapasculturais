@@ -20,4 +20,32 @@ trait EntityDraft{
     function getUnpublishUrl(){
         return App::i()->createUrl($this->controllerId, 'unpublish', [$this->id]);
     }
+    
+    function publish($flush = false){
+        $this->checkPermission('publish');
+        
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        
+        $this->status = self::STATUS_ENABLED;
+        
+        $this->save($flush);
+                
+        $app->enableAccessControl();
+    }
+    
+    function unpublish($flush = false){
+        $this->checkPermission('publish');
+        
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        
+        $this->status = self::STATUS_DRAFT;
+        
+        $this->save($flush);
+                
+        $app->enableAccessControl();
+    }
 }
