@@ -81,27 +81,31 @@ class Project extends EntityController {
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }
-    
+
     protected function _setEventStatus($status){
         $this->requireAuthentication();
-        
+
         $app = App::i();
-        
+
         if(!key_exists('id', $this->urlData)){
             $app->pass();
         }
-        
-        
+
+
         $entity = $this->getRequestedEntity();
-        
+
         if(!$entity){
             $app->pass();
         }
-        
+
         $entity->checkPermission('@control');
-        
-        $events = $app->repo('Event')->findBy(['id' => $this->data['ids']]);
-        
+
+        if(isset($this->data['ids']) && $this->data['ids']){
+            $ids = is_array($this->data['ids']) ? $this->data['ids'] : explode(',', $this->data['ids']);
+
+            $events = $app->repo('Event')->findBy(['id' => $ids]);
+        }
+
         foreach($events as $event){
             if(\MapasCulturais\Entities\Event::STATUS_ENABLED === $status){
                 $event->publish();
@@ -109,16 +113,16 @@ class Project extends EntityController {
                 $event->unpublish();
             }
         }
-        
+
         $app->em->flush();
-        
+
         $this->json(true);
     }
-    
+
     function POST_publishEvents(){
         $this->_setEventStatus(Entities\Event::STATUS_ENABLED);
     }
-    
+
     function POST_unpublishEvents(){
         $this->_setEventStatus(Entities\Event::STATUS_DRAFT);
     }

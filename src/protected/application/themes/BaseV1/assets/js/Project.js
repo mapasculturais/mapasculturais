@@ -20,10 +20,10 @@
                 getUrl: function(action){
                     return url.create(action, MapasCulturais.entity.id);
                 },
-                
+
                 publish: function(ids){
                    var url = this.getUrl('publishEvents');
-                    
+
                     return $http.post(url, {ids: ids}).
                             success(function (data, status) {
                                 $rootScope.$emit('project.publishEvents', {message: "Project events was published", data: data, status: status});
@@ -31,13 +31,13 @@
                             error(function (data, status) {
                                 $rootScope.$emit('error', {message: "Cannot publish project events", data: data, status: status});
                             });
-                    
-                    
+
+
                 },
-                
+
                 unpublish: function(ids){
                     var url = this.getUrl('unpublishEvents');
-                    
+
                     return $http.post(url, {ids: ids}).
                             success(function (data, status) {
                                 $rootScope.$emit('project.unpublishEvents', {message: "Project events was unpublished", data: data, status: status});
@@ -273,83 +273,118 @@
 
     module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
         $scope.events = $scope.data.entity.events.slice();
+        $scope.numSelectedEvents = 0;
+
+        $scope.events.forEach(function(evt){
+            evt.statusText = '';
+
+            if(evt.status == 1){
+                evt.statusText = 'publicado';
+            } else if(evt.status == 0){
+                evt.statusText = 'rascunho';
+            }
+        });
+
+        $scope.$watch('events', function(){
+            var num = 0;
+            $scope.events.forEach(function(e){
+                if(e.selected){
+                    num++;
+                }
+            });
+
+            $scope.numSelectedEvents = num;
+        }, true);
 
         $scope.selectAll = function(){
-            $scope.data.entity.events.forEach(function(e){
+            $scope.events.forEach(function(e){
                 if(!e.hidden){
                     e.selected = true;
                 }
             });
         };
-        
+
         $scope.deselectAll = function(){
-            $scope.data.entity.events.forEach(function(e){
+            $scope.events.forEach(function(e){
                 if(!e.hidden){
                     e.selected = false;
                 }
             });
         };
-        
+
+
+
         $scope.eventFilterTimeout = null;
 
         $scope.filterEvents = function(){
             $timeout.cancel($scope.eventFilterTimeout);
             $scope.eventFilterTimeout = $timeout(function() {
-                $scope.events.forEach(function(e,i){
+                var keywords = $scope.data.eventFilter.toLowerCase().split(' ');
 
-                    if(e.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
-                        e.hidden = false;
-                    }else if(e.owner.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
-                        e.hidden = false;
-                    }else{
-                        var show = false;
-                        e.occurrences.forEach(function(o){
-                            if(o.space.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
-                                show = true;
-                            }
-                        });
-                        
-                        e.hidden = !show;
-                    }
+                $scope.events.forEach(function(evt,i){
+                    var show = true;
+                    keywords.forEach(function(keyword){
+                        var match = false;
+                        if(evt.name.toLowerCase().indexOf(keyword) >= 0){
+                            match = true;
+                        }else if(evt.owner.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                            match = true;
+                        }else if(evt.statusText.indexOf(keyword) >= 0){
+                            match = true;
+                        }else{
+                            evt.occurrences.forEach(function(o){
+                                if(o.space.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                                    match = true;
+                                }
+                            });
+                        }
+
+                        show = show && match;
+
+                    });
+                    evt.hidden = !show;
+
                 });
             },150);
 
         };
-        
+
         $scope.publishSelectedEvents = function(){
             var ids = [],
                 events = [];
-            
+
             $scope.events.forEach(function(e,i){
                 if(e.selected){
                     ids.push(e.id);
                     events.push(e);
-                }   
+                }
             });
-            
-            ProjectEventsService.publish(ids).success(function(){
-                MapasCulturais.Messages.success('Eventos publicados');
+
+            ProjectEventsService.publish(ids.toString()).success(function(){
+                MapasCulturais.Messages.success('Eventos publicados.');
                 events.forEach(function(e){
                     e.status = 1;
+                    e.statusText = 'publicado';
                 });
             });
         };
-        
+
         $scope.unpublishSelectedEvents = function(){
             var ids = [],
                 events = [];
-            
+
             $scope.events.forEach(function(e,i){
                 if(e.selected){
                     ids.push(e.id);
                     events.push(e);
-                }   
+                }
             });
-            
-            ProjectEventsService.unpublish(ids).success(function(){
-                MapasCulturais.Messages.success('Eventos publicados');
+
+            ProjectEventsService.unpublish(ids.toString()).success(function(){
+                MapasCulturais.Messages.success('Eventos transformados em rascunho.');
                 events.forEach(function(e){
                     e.status = 0;
+                    e.statusText = 'rascunho';
                 });
             });
         };
