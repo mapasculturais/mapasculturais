@@ -7,3 +7,5 @@ Os SHAPEFILEs devem, preferencialmente:
 - Consistir de um SHAPEFILE bidimensional por grupo de dados (bairros, distritos, regiões, municípios...), não múltiplos arquivos. É possível combinar múltiplos SHAPEFILEs em um usando o plugin MMQGIS do Quantum GIS e é possível converter de polyline e outros formatos vetoriais para o padrão de polígonos de duas dimensões usando o Quantum GIS;
 
 - Conter legendas codificadas em UTF-8. Uma legenda por polígono;
+- 
+Referência: http://suite.opengeo.org/opengeo-docs/dataadmin/pgGettingStarted/shp2pgsql.html
