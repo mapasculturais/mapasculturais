@@ -34,7 +34,7 @@ Ex:
   
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
   
-  2. Como camadas na visualização do mapa
-  ---------------------------------------
+2. Como camadas na visualização do mapa
+---------------------------------------
 
 Incluir documentação
