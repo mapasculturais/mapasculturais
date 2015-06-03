@@ -1,8 +1,11 @@
+<?php
+use MapasCulturais\Entities\Agent;
+?>
 <article class="objeto clearfix">
     <h1>
         <?php if($entity->isUserProfile): ?>
             <a class="icon icon-agent hltip active js-disable" title="Este é seu agente padrão."></a>
-        <?php else: ?>
+        <?php elseif($entity->status === Agent::STATUS_ENABLED): ?>
             <a class="icon icon-agent hltip" title="Definir este agente como meu agente padrão." href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
@@ -15,10 +18,10 @@
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
         <?php if(!$entity->isUserProfile): ?>
 
-            <?php if($entity->status === \MapasCulturais\Entities\Agent::STATUS_ENABLED): ?>
+            <?php if($entity->status === Agent::STATUS_ENABLED): ?>
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
 
-            <?php elseif ($entity->status === \MapasCulturais\Entities\Agent::STATUS_DRAFT): ?>
+            <?php elseif ($entity->status === Agent::STATUS_DRAFT): ?>
                 <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
 
