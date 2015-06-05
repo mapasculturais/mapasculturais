@@ -884,9 +884,17 @@ class Theme extends MapasCulturais\Theme {
 
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
+        
+        $ids = $entity->getChildrenIds();
+        
+        $ids[] = $entity->id;
+        
+        
+        $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
+        
         $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
             '@select' => 'id,name,shortDescription,singleUrl,occurrences,status,owner.id,owner.name,owne.singleUrl',
-            'project' => 'EQ(@Project:' . $entity->id . ')',
+            'project' => 'IN(' . $in . ')',
             '@permissions' => 'view',
             '@files' => '(avatar.avatarSmall):url'
         ]);
