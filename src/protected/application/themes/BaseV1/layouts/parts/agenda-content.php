@@ -17,9 +17,13 @@
                     usort($occurrences, function($a, $b) {
                         return $a->space->id - $b->space->id;
                     });
-                    foreach($occurrences as $occ): ?>
+                    foreach($occurrences as $occ):
+                        if($entity->getClassName() === 'MapasCulturais\Entities\Space' && !$entity->equals($occ->space)){
+                            continue;
+                        }
+                        ?>
                         <li>
-                            <?php if($entity->className != 'MapasCulturais\Entities\Space' && (!isset($lastSpaceId) || $occ->space->id !== $lastSpaceId)): ?>
+                            <?php if($entity->className !== 'MapasCulturais\Entities\Space' && (!isset($lastSpaceId) || $occ->space->id !== $lastSpaceId)): ?>
                                 <div><a href="<?php echo $app->createUrl('space', 'single', array($occ->space->id))?>"><?php echo $occ->space->name; ?></a></div>
                             <?php endif; ?>
                             <?php if(isset($occ->rule->description)): ?>
@@ -40,7 +44,7 @@
                     <div><span class="label">Classificação:</span> <?php echo $event->classificacaoEtaria; ?></div>
                 <?php endif; ?>
             </div>
-            
+
         </div>
     </article>
     <!--.objeto-->
