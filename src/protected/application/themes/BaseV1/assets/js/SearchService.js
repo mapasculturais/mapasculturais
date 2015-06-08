@@ -193,7 +193,8 @@
                 var searchData = {};
 
                 if(entityData.keyword){
-                    searchData['@keyword'] = entityData.keyword;
+
+                    searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
 
                 if(entityData.areas && entityData.areas.length){
