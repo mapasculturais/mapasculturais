@@ -100,8 +100,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <span class="btn btn-small btn-default" ng-click="selectAll()">marcar eventos listados</span>
         <span class="btn btn-small btn-default" ng-click="deselectAll()">desmarcar eventos listados</span>
         <div class="alignright" >
-            <span class="btn btn-small btn-warning" ng-click="unpublishSelectedEvents()">tornar os eventos selecionados rascunhos</span>
-            <span class="btn btn-small btn-primary" ng-click="publishSelectedEvents()">publicar os eventos selecionados</span>
+            <span class="btn btn-small btn-warning" ng-click="unpublishSelectedEvents()">tornar marcados rascunho</span>
+            <span class="btn btn-small btn-primary" ng-click="publishSelectedEvents()">publicar marcados</span>
         </div>
 
 
