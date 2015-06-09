@@ -104,34 +104,29 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <span class="btn btn-small btn-primary" ng-click="publishSelectedEvents()">publicar marcados</span>
         </div>
 
+        <div class="eventos-selecionados">{{numSelectedEvents}} {{numSelectedEvents == 1 ? 'evento selecionado' : 'eventos selecionados' }}</div>
 
-        <table style="width:100%; margin-top:5px;">
-            <caption>{{numSelectedEvents}} {{numSelectedEvents == 1 ? 'evento selecionado' : 'eventos selecionados' }}</caption>
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>Autor</th>
-                    <th>Evento</th>
-                    <th>Ocorrências</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="event in events" ng-show="!event.hidden" ng-class="{'selected': event.selected, 'evt-publish': event.status == 1, 'evt-draft': event.status == 0}">
-                    <td><input type='checkbox' ng-model="event.selected" ng-checked="event.selected"></td>
-                    <td><a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></td>
-                    <td><a href='{{event.singleUrl}}'>{{event.name}}</a></td>
-                    <td>
-                        <ul>
-                            <li ng-repeat='occ in event.occurrences'>
-                                <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a> - {{occ.rule.description}} <span ng-if='occ.rule.price'>({{occ.rule.price}})</span>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>{{event.status === 0 ? 'rascunho' : 'publicado'}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <article class="objeto clearfix" ng-repeat="event in events" ng-show="!event.hidden" ng-class="{'selected': event.selected, 'evt-publish': event.status == 1, 'evt-draft': event.status == 0}">
+            <h1><input type='checkbox' ng-model="event.selected" ng-checked="event.selected">
+            <a href='{{event.singleUrl}}'>{{event.name}}</a></h1>
+            <div class="objeto-content clearfix">
+                <div class="objeto-thumb"><img src="http://placehold.it/64x64"></div>
+                <div class="objeto-resumo">
+                    <ul class="event-ocurrences">
+                        <li ng-repeat='occ in event.occurrences'>
+                            <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a> - {{occ.rule.description}} <span ng-if='occ.rule.price'>({{occ.rule.price}})</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="objeto-meta">
+                    <div><span class="label">Status:</span> {{event.status === 0 ? 'rascunho' : 'publicado'}}</div>
+                    <div><span class="label">Autor:</span> <a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></div>
+                    <div><span class="label">Linguagem:</span> Teatro</div>
+                    <div><span class="label">Classificação:</span> 10 anos</div>
+                </div>
+            </div>
+        </article>
     </div>
     <?php endif; ?>
     <?php endif; ?>
