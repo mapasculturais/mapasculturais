@@ -324,6 +324,7 @@
                 $scope.events.forEach(function(evt,i){
                     var show = true;
                     keywords.forEach(function(keyword){
+                        keyword = keyword.trim();
                         var match = false;
                         if(evt.name.toLowerCase().indexOf(keyword) >= 0){
                             match = true;
@@ -331,9 +332,17 @@
                             match = true;
                         }else if(evt.statusText.indexOf(keyword) >= 0){
                             match = true;
+                        }else if(evt.classificacaoEtaria.toLowerCase().indexOf(keyword) >= 0){
+                            match = true;
                         }else{
                             evt.occurrences.forEach(function(o){
                                 if(o.space.name.toLowerCase().indexOf($scope.data.eventFilter.toLowerCase()) >= 0){
+                                    match = true;
+                                }
+                            });
+
+                            evt.terms.linguagem.forEach(function(term){
+                                if(term.toLowerCase().indexOf(keyword) >= 0){
                                     match = true;
                                 }
                             });
@@ -345,13 +354,19 @@
                     evt.hidden = !show;
 
                 });
-            },150);
+            },500);
 
         };
+
+        $scope.processing = false;
 
         $scope.publishSelectedEvents = function(){
             var ids = [],
                 events = [];
+
+            if($scope.data.processing){
+                return;
+            }
 
             $scope.events.forEach(function(e,i){
                 if(e.selected){
@@ -359,6 +374,14 @@
                     events.push(e);
                 }
             });
+
+            if(!ids.length){
+                return;
+            }
+
+            $scope.data.processingText = 'Publicando...';
+
+            $scope.data.processing = true;
 
             ProjectEventsService.publish(ids.toString()).success(function(){
                 MapasCulturais.Messages.success('Eventos publicados.');
@@ -366,12 +389,18 @@
                     e.status = 1;
                     e.statusText = 'publicado';
                 });
+
+                $scope.data.processing = false;
             });
         };
 
         $scope.unpublishSelectedEvents = function(){
             var ids = [],
                 events = [];
+
+            if($scope.data.processing){
+                return;
+            }
 
             $scope.events.forEach(function(e,i){
                 if(e.selected){
@@ -380,12 +409,22 @@
                 }
             });
 
+            if(!ids.length){
+                return;
+            }
+
+            $scope.data.processingText = 'Tornando rascunho...';
+
+            $scope.data.processing = true;
+
             ProjectEventsService.unpublish(ids.toString()).success(function(){
                 MapasCulturais.Messages.success('Eventos transformados em rascunho.');
                 events.forEach(function(e){
                     e.status = 0;
                     e.statusText = 'rascunho';
                 });
+
+                $scope.data.processing = false;
             });
         };
 

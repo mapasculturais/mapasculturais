@@ -88,29 +88,35 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
         <?php if(!$entity->isNew()): ?>
-            <li ng-if="data.entity.userHasControl" ><a href="#eventos">Status dos eventos</a></li>
+            <li ng-if="data.entity.userHasControl && data.entity.events.length" ><a href="#eventos">Status dos eventos</a></li>
         <?php endif; ?>
         <?php endif; ?>
     </ul>
     <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
     <?php if(!$entity->isNew()): ?>
-    <div id="eventos" ng-if="data.entity.userHasControl" ng-controller="ProjectEventsController">
+    <div id="eventos" ng-if="data.entity.userHasControl && data.entity.events.length" ng-controller="ProjectEventsController">
 
-        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="filtrar eventos" style="width:300px;"><br>
-        <span class="btn btn-small btn-default" ng-click="selectAll()">marcar eventos listados</span>
-        <span class="btn btn-small btn-default" ng-click="deselectAll()">desmarcar eventos listados</span>
         <div class="alignright" >
-            <span class="btn btn-small btn-warning" ng-click="unpublishSelectedEvents()">tornar marcados rascunho</span>
-            <span class="btn btn-small btn-primary" ng-click="publishSelectedEvents()">publicar marcados</span>
+            <span class="btn btn-small btn-default" ng-click="selectAll()">marcar eventos listados</span>
+            <span class="btn btn-small btn-default" ng-click="deselectAll()">desmarcar eventos listados</span>
+        </div>
+        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="filtrar eventos" style="width:300px;"><br>
+
+        <div class="eventos-selecionados">
+            <div class="alignright" ng-show="!data.processing">
+                <span class="btn btn-small btn-default" ng-click="unpublishSelectedEvents()">tornar rascunho</span>
+                <span class="btn btn-small btn-success" ng-click="publishSelectedEvents()">publicar</span>
+            </div>
+            <div ng-show="data.processing" class="mc-spinner alignright" ><img ng-src="{{data.spinnerUrl}}" /> {{data.processingText}}</div>
+            {{numSelectedEvents}} {{numSelectedEvents == 1 ? 'evento selecionado' : 'eventos selecionados' }}
         </div>
 
-        <div class="eventos-selecionados">{{numSelectedEvents}} {{numSelectedEvents == 1 ? 'evento selecionado' : 'eventos selecionados' }}</div>
 
         <article class="objeto clearfix" ng-repeat="event in events" ng-show="!event.hidden" ng-class="{'selected': event.selected, 'evt-publish': event.status == 1, 'evt-draft': event.status == 0}">
             <h1><input type='checkbox' ng-model="event.selected" ng-checked="event.selected">
             <a href='{{event.singleUrl}}'>{{event.name}}</a></h1>
             <div class="objeto-content clearfix">
-                <div class="objeto-thumb"><img src="http://placehold.it/64x64"></div>
+                <div class="objeto-thumb"><img src="" ng-src="{{event['@files:avatar.avatarSmall'] ? event['@files:avatar.avatarSmall'].url : data.assets.avatarEvent }}"></div>
                 <div class="objeto-resumo">
                     <ul class="event-ocurrences">
                         <li ng-repeat='occ in event.occurrences'>
@@ -122,8 +128,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <div class="objeto-meta">
                     <div><span class="label">Status:</span> {{event.status === 0 ? 'rascunho' : 'publicado'}}</div>
                     <div><span class="label">Autor:</span> <a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></div>
-                    <div><span class="label">Linguagem:</span> Teatro</div>
-                    <div><span class="label">Classificação:</span> 10 anos</div>
+                    <div><span class="label">Linguagem:</span> {{event.terms.linguagem.join(', ')}}</div>
+                    <div><span class="label">Classificação:</span> {{event.classificacaoEtaria}}</div>
                 </div>
             </div>
         </article>
