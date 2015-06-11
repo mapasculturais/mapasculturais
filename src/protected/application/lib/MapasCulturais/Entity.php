@@ -501,23 +501,29 @@ abstract class Entity implements \JsonSerializable{
 
             $app->em->persist($this);
 
-            if($flush)
+            if($flush){
                 $app->em->flush();
+            }
 
             if($this->usesMetadata()){
                 $this->saveMetadata();
-                $app->em->flush();
+                if($flush){
+                    $app->em->flush();
+                }
             }
 
             if($this->usesTaxonomies()){
                 $this->saveTerms();
-                $app->em->flush();
+                if($flush){
+                    $app->em->flush();
+                }
             }
 
             // delete the entity cache
             $repo = $this->repo();
-            if($repo->usesCache())
+            if($repo->usesCache()){
                 $repo->deleteEntityCache($this->id);
+            }
 
         }catch(Exceptions\PermissionDenied $e){
             if(!$requests)

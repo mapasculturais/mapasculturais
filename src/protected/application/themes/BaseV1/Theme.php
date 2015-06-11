@@ -884,16 +884,16 @@ class Theme extends MapasCulturais\Theme {
 
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
-        
+
         $ids = $entity->getChildrenIds();
-        
+
         $ids[] = $entity->id;
-        
-        
+
+
         $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
-        
+
         $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
-            '@select' => 'id,name,shortDescription,singleUrl,occurrences,status,owner.id,owner.name,owne.singleUrl',
+            '@select' => 'id,name,shortDescription,classificacaoEtaria,singleUrl,occurrences,terms,status,owner.id,owner.name,owner.singleUrl',
             'project' => 'IN(' . $in . ')',
             '@permissions' => 'view',
             '@files' => '(avatar.avatarSmall):url'
@@ -962,13 +962,13 @@ class Theme extends MapasCulturais\Theme {
     */
     function getOneVerifiedEntity($entity_class) {
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = __METHOD__ . ':' . $entity_class;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         $dql = "
         SELECT
            e.id
@@ -1007,21 +1007,21 @@ class Theme extends MapasCulturais\Theme {
         } else {
             $result = null;
         }
-        
+
         $app->cache->save($cache_id, $result, 120);
-        
+
         return $result;
     }
 
     function getEntityFeaturedImageUrl($entity) {
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = __METHOD__ . ':' . $entity;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         if (key_exists('gallery', $entity->files)) {
             $result = $entity->files['gallery'][array_rand($entity->files['gallery'])]->transform('galleryFull')->url;
         } elseif (key_exists('avatar', $entity->files)) {
@@ -1029,21 +1029,21 @@ class Theme extends MapasCulturais\Theme {
         } else {
             $result = null;
         }
-        
+
         $app->cache->save($cache_id, $result, 1800);
-        
+
         return $result;
     }
 
     function getNumEntities($class, $verified = 'all', $use_cache = true, $cache_lifetime = 300){
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = __METHOD__ . ':' . $class . ':' . $verified;
-        
+
         if($use_cache && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         $em = App::i()->em;
         $dql = "SELECT COUNT(e) FROM $class e WHERE e.status > 0";
 
@@ -1058,52 +1058,52 @@ class Theme extends MapasCulturais\Theme {
         $q = $em->createQuery($dql);
 
         $result = $q->getSingleScalarResult();
-        
+
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);
         }
-        
+
         return $result;
     }
 
     function getNumEvents($from = null, $to = null){
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = __METHOD__ . ':' . $to . ':' . $from;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         $result = $app->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
             '@from' => date('Y-m-d'),
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
         ));
-        
+
         $app->cache->save($cache_id, $result, 120);
-        
+
         return $result;
     }
 
     function getNumVerifiedEvents($from = null, $to = null){
         $app = \MapasCulturais\App::i();
-        
+
         $cache_id = __METHOD__ . ':' . $to . ':' . $from;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-        
+
         $result = $app->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
             '@from' => date('Y-m-d'),
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
             'isVerified' => 'EQ(true)'
         ));
-        
+
         $app->cache->save($cache_id, $result, 120);
-        
+
         return $result;
     }
 

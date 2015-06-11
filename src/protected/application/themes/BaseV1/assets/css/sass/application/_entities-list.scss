@@ -169,8 +169,28 @@
 //== Entity Calendar of Events
 //
 //## Styles for calendar of events that shows up on entities' single pages.
+#eventos {
+    .eventos-selecionados {
+        background-color: $gray-light;
+        border-radius: $border-radius-base;;
+        color: #000;
+        font-size: $font-size-smaller;
+        margin: $line-height-half 0;
+        padding: $padding-small;
+        text-align: left;
+    }
+    .objeto h1 a {
+        margin-left: 5px;
+    }
+    .evt-publish {
+        background-color: #cfc;
+        &:hover {
+            background-color: lighten(#cfc, 5%);
+        }
+    }
+}
 @media screen and (min-width: $screen-desktop) {
-#agenda {
+#agenda, #eventos {
          box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: 3rem;
