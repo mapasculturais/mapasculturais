@@ -97,7 +97,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
         $spaceText = '';
         foreach ($spaces as $space) {
-            $spaceText .= trim($space['space']->name) . ', ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
+            $spaceText .= trim($space['space']->name) . '<span> (<a href="' . $space['space']->singleUrl . '">link</a>)</span>, ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
             $spaceText = str_replace('..', '.', $spaceText);
             foreach ($space['occurrences_texts'] as $occTxt) {
                 $spaceText .= $occTxt;
@@ -116,7 +116,10 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
     $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle, $getEventTextBlock) {
         $textRunObj = $section->createTextRun();
-        $textRunObj->addLink($event['singleUrl'], $event['name'], $eventTitle, $eventTitle);
+        $textRunObj->addText($event['name'] . ' ', $eventTitle);
+        $textRunObj->addText('(');
+        $textRunObj->addLink($event['singleUrl'], 'link', $eventTitle, $eventTitle);
+        $textRunObj->addText(')');
         $textRunObj->addTextBreak();
         $textRunObj->addText($getEventTextBlock($event), $defaultFont);
     };
@@ -169,7 +172,10 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){
-                $textRunObj->addText('PROJETO '.$project['project']->name, $eventTitle);
+                $textRunObj->addText('PROJETO ' . $project['project']->name . ' ', $eventTitle);
+                $textRunObj->addText('(');
+                $textRunObj->addLink($project['project']->singleUrl, 'link', $eventTitle, $eventTitle);
+                $textRunObj->addText(')');
             }else{
                 $section->addText('PROJETO '.$project['project']->name, $eventTitle);
             }
