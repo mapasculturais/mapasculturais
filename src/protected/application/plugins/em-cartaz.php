@@ -93,7 +93,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             $spaceText .= trim($space['space']->name) . ', ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
             $spaceText = str_replace('..', '.', $spaceText);
             foreach ($space['occurrences_texts'] as $occTxt) {
-                $spaceText .= trim($occTxt);
+                $spaceText .= $occTxt;
             }
         }
         return $spaceText ? $spaceText : '';
