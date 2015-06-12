@@ -63,77 +63,72 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
     $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
-    $addEventBlockHtml = function($event) use ($app, $section, $defaultFont, $eventTitle){
+    // Text Block Functions
+    $getOccurrencesBySpaceBlock = function($event) {
+        $spaces = array();
+        foreach ($event['occurrences'] as $occurrence) {
+            if (!array_key_exists($occurrence->space->id, $spaces)) {
+                $spaces[$occurrence->space->id] = [
+                    'space' => $occurrence->space,
+                    'occurrences' => [],
+                    'occurrences_texts' => [],
+                ];
+            }
+
+            $occurenceDescription = '';
+            if (!empty($occurrence->rule->description)) {
+                $occurenceDescription .= trim($occurrence->rule->description) . '. ';
+            } else {
+                //$occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
+            }
+            if (!empty($occurrence->rule->price)) {
+                $occurenceDescription .= trim($occurrence->rule->price) . '. ';
+            }
+
+            $spaces[$occurrence->space->id]['occurrences_texts'][] = $occurenceDescription;
+        }
+
+        $spaceText = '';
+        foreach ($spaces as $space) {
+            $spaceText .= trim($space['space']->name) . ', ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
+            $spaceText = str_replace('..', '.', $spaceText);
+            foreach ($space['occurrences_texts'] as $occTxt) {
+                $spaceText .= $occTxt;
+            }
+        }
+        return $spaceText ? $spaceText : '';
+    };
+
+    $getAgentsBlock = function($event) {
+        $agentText = '';
+        foreach ($event['relatedAgents'] as $group => $relatedAgent) {
+            $agentText .= trim($group) . ': ';
+            foreach ($relatedAgent as $agent) {
+                $agentText .= trim($agent->name) . ', ';
+            }
+        }
+        return $agentText ? $agentText . ' ' : '';
+    };
+
+    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle, $getOccurrencesBySpaceBlock, $getAgentsBlock) {
         $textRunObj = $section->createTextRun();
         $textRunObj->addLink($event['singleUrl'], $event['name'], $eventTitle, $eventTitle);
         $textRunObj->addTextBreak();
         $eventText = $event['shortDescription'];
-        if(!empty($event['classificacaoEtaria'])){
-            $eventText .= '+'.$event['classificacaoEtaria'].'. ';
+        if (!empty($event['classificacaoEtaria'])) {
+            $eventText .= $event['classificacaoEtaria'] . '. ';
         }
 
-        $spaces = array();
-        $occurenceDescription = '';
-        foreach($event['occurrences'] as $occurrence){
-            if(!empty($occurrence->rule->description)){
-                $occurenceDescription .= $occurrence->rule->description.'. ';
-            }else{
-                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
-            }
-            if(!empty($occurrence->rule->price)){
-                $occurenceDescription .= $occurrence->rule->price.'. ';
-            }
-            if (!array_key_exists($occurrence->space->id, $spaces)){
-                $spaces[$occurrence->space->id] = $occurrence->space;
-            }
-        }
-        $spaceText = '';
-        foreach($spaces as $space){
-            $spaceText .= $space->name . ', '. $space->endereco.'. ';
-        }
-        $agentText = '';
-        foreach($event['relatedAgents'] as $group=>$relatedAgent){
-            $agentText .= $group.': ';
-            foreach($relatedAgent as $agent){
-                $agentText .= $agent->name.', ';
-            }
-        }
-
-        $textRunObj->addText($eventText.' '.$agentText.' '.$spaceText.$occurenceDescription, $defaultFont);
+        $textRunObj->addText($eventText . ' ' . $getAgentsBlock($event) . $getOccurrencesBySpaceBlock($event), $defaultFont);
     };
 
-    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle){
+    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle, $getOccurrencesBySpaceBlock, $getAgentsBlock) {
         $section->addText('');
         $section->addText($event['name'], $eventTitle);
         //$section->addText($event['shortDescription'], $defaultFont);
-        $spaces = array();
-        $occurenceDescription = '';
-        foreach($event['occurrences'] as $occurrence){
-            if(isset($occurrence->rule->description)){
-                $occurenceDescription .= trim($occurrence->rule->description).'. ';
-            }
-            if(isset($occurrence->rule->price)){
-                $occurenceDescription .= trim($occurrence->rule->price).'. ';
-            }
-            if (!array_key_exists($occurrence->space->id, $spaces)){
-                $spaces[$occurrence->space->id] = $occurrence->space;
-            }
-        }
-        $spaceText = '';
-        foreach($spaces as $space){
-            $spaceText .= trim($space->name) . ', '. trim($space->endereco).'. ';
-        }
-        $agentText = '';
-        foreach($event['relatedAgents'] as $group=>$relatedAgent){
-            $agentText .= trim($group).': ';
-            foreach($relatedAgent as $agent){
-                $agentText .= ($agent->name).', ';
-            }
-        }
 
-        $section->addText(trim($event['shortDescription']).'. '.trim($agentText).' '.trim($spaceText).' '.trim($occurenceDescription), $defaultFont);
+        $section->addText(trim($event['shortDescription']) . '. ' . $getAgentsBlock($event) . $getOccurrencesBySpaceBlock($event), $defaultFont);
     };
-
 
     foreach($linguagens as $linguagem){
 
