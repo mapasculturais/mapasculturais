@@ -63,8 +63,15 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
     $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
-    // Text Block Functions
-    $getOccurrencesBySpaceBlock = function($event) {
+    $getEventTextBlock = function($event) {
+
+        $eventText = trim($event['shortDescription']);
+        if (!empty($event['classificacaoEtaria'])) {
+            $eventText .= $event['classificacaoEtaria'];
+        }
+        $eventText .= '. ';
+
+        // Group occurrences by space
         $spaces = array();
         foreach ($event['occurrences'] as $occurrence) {
             if (!array_key_exists($occurrence->space->id, $spaces)) {
@@ -79,7 +86,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             if (!empty($occurrence->rule->description)) {
                 $occurenceDescription .= trim($occurrence->rule->description) . '. ';
             } else {
-                //$occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
+                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
             }
             if (!empty($occurrence->rule->price)) {
                 $occurenceDescription .= trim($occurrence->rule->price) . '. ';
@@ -90,16 +97,13 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
         $spaceText = '';
         foreach ($spaces as $space) {
-            $spaceText .= trim($space['space']->name) . ', ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
+            $spaceText .= trim($space['space']->name) . '<span> (<a href="' . $space['space']->singleUrl . '">link</a>)</span>, ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
             $spaceText = str_replace('..', '.', $spaceText);
             foreach ($space['occurrences_texts'] as $occTxt) {
                 $spaceText .= $occTxt;
             }
         }
-        return $spaceText ? $spaceText : '';
-    };
 
-    $getAgentsBlock = function($event) {
         $agentText = '';
         foreach ($event['relatedAgents'] as $group => $relatedAgent) {
             $agentText .= trim($group) . ': ';
@@ -107,27 +111,23 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
                 $agentText .= trim($agent->name) . ', ';
             }
         }
-        return $agentText ? $agentText . ' ' : '';
+        return $eventText . $agentText . $spaceText;
     };
 
-    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle, $getOccurrencesBySpaceBlock, $getAgentsBlock) {
+    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle, $getEventTextBlock) {
         $textRunObj = $section->createTextRun();
-        $textRunObj->addLink($event['singleUrl'], $event['name'], $eventTitle, $eventTitle);
+        $textRunObj->addText($event['name'] . ' ', $eventTitle);
+        $textRunObj->addText('(');
+        $textRunObj->addLink($event['singleUrl'], 'link', $eventTitle, $eventTitle);
+        $textRunObj->addText(')');
         $textRunObj->addTextBreak();
-        $eventText = $event['shortDescription'];
-        if (!empty($event['classificacaoEtaria'])) {
-            $eventText .= $event['classificacaoEtaria'] . '. ';
-        }
-
-        $textRunObj->addText($eventText . ' ' . $getAgentsBlock($event) . $getOccurrencesBySpaceBlock($event), $defaultFont);
+        $textRunObj->addText($getEventTextBlock($event), $defaultFont);
     };
 
-    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle, $getOccurrencesBySpaceBlock, $getAgentsBlock) {
+    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle, $getEventTextBlock) {
         $section->addText('');
         $section->addText($event['name'], $eventTitle);
-        //$section->addText($event['shortDescription'], $defaultFont);
-
-        $section->addText(trim($event['shortDescription']) . '. ' . $getAgentsBlock($event) . $getOccurrencesBySpaceBlock($event), $defaultFont);
+        $section->addText($getEventTextBlock($event), $defaultFont);
     };
 
     foreach($linguagens as $linguagem){
@@ -172,7 +172,10 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){
-                $textRunObj->addText('PROJETO '.$project['project']->name, $eventTitle);
+                $textRunObj->addText('PROJETO ' . $project['project']->name . ' ', $eventTitle);
+                $textRunObj->addText('(');
+                $textRunObj->addLink($project['project']->singleUrl, 'link', $eventTitle, $eventTitle);
+                $textRunObj->addText(')');
             }else{
                 $section->addText('PROJETO '.$project['project']->name, $eventTitle);
             }
