@@ -51,7 +51,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
     $documentHead = $phpWord->addFontStyle('documentHead',
         array('name'=>'Arial', 'size'=>18, 'color'=>'44AA88', 'bold'=>true));
 
-    $eventTitle = $phpWord->addFontStyle('eventTitle',
+    $eventTitleFont = $phpWord->addFontStyle('eventTitle',
         array('name'=>'Arial', 'size'=>12, 'color'=>'880000', 'bold'=>true));
 
     $linguagemStyle = $phpWord->addFontStyle('linguagemStyle',
@@ -63,17 +63,18 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
     $section->addText('ROTEIRO GERAL (SITE) REVISTA', $documentHead);
 
-    $getEventTextBlock = function($event) {
+    $getEventTextBlock = function($event) use($app){
+//        return "TEXT {$event->name}";
 
-        $eventText = trim($event['shortDescription']);
-        if (!empty($event['classificacaoEtaria'])) {
-            $eventText .= $event['classificacaoEtaria'];
+        $eventText = trim($event->shortDescription);
+        if (!empty($event->classificacaoEtaria)) {
+            $eventText .= $event->classificacaoEtaria;
         }
         $eventText .= '. ';
 
         // Group occurrences by space
         $spaces = array();
-        foreach ($event['occurrences'] as $occurrence) {
+        foreach ($event->occurrences as $occurrence) {
             if (!array_key_exists($occurrence->space->id, $spaces)) {
                 $spaces[$occurrence->space->id] = [
                     'space' => $occurrence->space,
@@ -97,7 +98,12 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
         $spaceText = '';
         foreach ($spaces as $space) {
-            $spaceText .= trim($space['space']->name) . '<span> (<a href="' . $space['space']->singleUrl . '">link</a>)</span>, ' . trim(str_replace("\n", ' ', $space['space']->endereco)) . '. ';
+            $spaceText .= trim($space['space']->name) . ' ';
+
+            if($this->action === 'em-cartaz-preview'){
+                '<span> (<a href="' . $space['space']->singleUrl . '">link</a>)</span>. ';
+            }
+
             $spaceText = str_replace('..', '.', $spaceText);
             foreach ($space['occurrences_texts'] as $occTxt) {
                 $spaceText .= $occTxt;
@@ -105,7 +111,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         }
 
         $agentText = '';
-        foreach ($event['relatedAgents'] as $group => $relatedAgent) {
+        foreach ($event->relatedAgents as $group => $relatedAgent) {
             $agentText .= trim($group) . ': ';
             foreach ($relatedAgent as $agent) {
                 $agentText .= trim($agent->name) . ', ';
@@ -114,20 +120,20 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         return $eventText . $agentText . $spaceText;
     };
 
-    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitle, $getEventTextBlock) {
+    $addEventBlockHtml = function($event) use ($section, $defaultFont, $eventTitleFont, $getEventTextBlock) {
         $textRunObj = $section->createTextRun();
-        $textRunObj->addText($event['name'] . ' ', $eventTitle);
+        $textRunObj->addText($event->name . ' ', $eventTitleFont);
         $textRunObj->addText('(');
-        $textRunObj->addLink($event['singleUrl'], 'link', $eventTitle, $eventTitle);
+        $textRunObj->addLink($event->singleUrl, 'link', $eventTitleFont, $eventTitleFont);
         $textRunObj->addText(')');
         $textRunObj->addTextBreak();
         $textRunObj->addText($getEventTextBlock($event), $defaultFont);
     };
 
-    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitle, $getEventTextBlock) {
+    $addEventBlockDoc = function($event) use ($section, $defaultFont, $eventTitleFont, $getEventTextBlock) {
         $section->addText('');
-        $section->addText($event['name'], $eventTitle);
-        $section->addText($getEventTextBlock($event), $defaultFont);
+        $section->addText(htmlspecialchars($event->name), $eventTitleFont);
+        $section->addText(htmlspecialchars($getEventTextBlock($event)), $defaultFont);
     };
 
     foreach($linguagens as $linguagem){
@@ -141,7 +147,13 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             'term:linguagem'=>'EQ('.$linguagem.')'
         );
 
+
         $events = $app->controller('event')->apiQueryByLocation($query);
+
+        foreach($events as $i => $e){
+            $events[$i] = (object) $e;
+        }
+
 
         $section->addText('');
         $section->addText('');
@@ -149,35 +161,35 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
 
         $projects = array();
 
-        foreach($events as $event){
-            if($event['project']){
-                if(!isset($projects[$event['project']->id])){
-                    $projects[$event['project']->id] = array(
-                        'project' => $event['project'],
+        foreach($events as $i => $event){
+            if(false && $event->project){
+                if(!isset($projects[$event->project->id])){
+                    $projects[$event->project->id] = array(
+                        'project' => $event->project,
                         'events' => array()
                     );
                 }
-                $projects[$event['project']->id]['events'][] = $event;
-                continue;
+                $projects[$event->project->id]['events'][] = $event;
+            }else{
+                if($this->action === 'em-cartaz-preview'){
+                    $addEventBlockHtml($event);
+                }else{
+                    $addEventBlockDoc($event);
+                }
             }
 
-            if($this->action === 'em-cartaz-preview'){
-                $addEventBlockHtml($event);
-            }else{
-                $addEventBlockDoc($event);
-            }
         }
 
         foreach($projects as $project){
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){
-                $textRunObj->addText('PROJETO ' . $project['project']->name . ' ', $eventTitle);
+                $textRunObj->addText('PROJETO ' . $project['project']->name . ' ', $eventTitleFont);
                 $textRunObj->addText('(');
-                $textRunObj->addLink($project['project']->singleUrl, 'link', $eventTitle, $eventTitle);
+                $textRunObj->addLink($project['project']->singleUrl, 'link', $eventTitleFont, $eventTitleFont);
                 $textRunObj->addText(')');
             }else{
-                $section->addText('PROJETO '.$project['project']->name, $eventTitle);
+                $section->addText('PROJETO '.$project['project']->name, $eventTitleFont);
             }
             foreach($project['events'] as $event){
                 if($this->action === 'em-cartaz-preview'){
