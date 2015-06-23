@@ -23,6 +23,8 @@ use MapasCulturais\App;
 class User extends \MapasCulturais\Entity
 {
     const STATUS_ENABLED = 1;
+    
+    use \MapasCulturais\Traits\EntityMetadata;
 
 
     /**
@@ -100,6 +102,11 @@ class User extends \MapasCulturais\Entity
      * })
      */
     protected $profile;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    */
+    protected $__metadata;
 
 
     public function __construct() {
