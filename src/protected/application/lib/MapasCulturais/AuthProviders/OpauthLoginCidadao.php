@@ -160,7 +160,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $user = $this->_getAuthenticatedUser();
             if(!$user){
                 $response = $this->_getResponse();
-                $user = $this->_createUser($response);
+                $user = $this->createUser($response);
                 
                 $profile = $user->profile;
                 $this->_setRedirectPath($profile->editUrl);

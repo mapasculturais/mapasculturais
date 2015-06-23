@@ -33,6 +33,14 @@ abstract class AuthProvider {
      * @return \MapasCulturais\Entities\User
      */
     abstract protected function _createUser($data);
+    
+    final protected function createUser($data){
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
+        $user = $this->_createUser($data);
+        $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
+        return $user;
+    }
 
     final function logout(){
         App::i()->applyHookBoundTo($this, 'auth.logout:before', [$this->_authenticatedUser]);

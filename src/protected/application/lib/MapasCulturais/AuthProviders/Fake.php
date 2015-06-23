@@ -34,7 +34,7 @@ class Fake extends \MapasCulturais\AuthProvider{
         });
         
         $app->hook('POST(user.index)', function() use($app){
-            $new_user = $app->auth->_createUser($this->postData);
+            $new_user = $app->auth->createUser($this->postData);
             $app->redirect($app->createUrl('auth', 'fakeLogin') .'?fake_authentication_user_id='.$new_user->id);
         });
     }
