@@ -34,6 +34,15 @@ class Theme extends BaseV1\Theme{
             $page = $this->data[0];
             $app->view->bodyClasses[] = "page-" . $page;
         });
+        
+        $app->hook('view.partial(<<*>>widget-areas):after', function($part, &$html) use($app){
+            $html = '
+                <div class="widget">
+                    <h3>Código do Agente</h3>
+                    <div class="agent-code">' . $this->controller->requestedEntity->id . '</div>
+                </div>' . $html;
+        });
+
     }
 
     static function getThemeFolder() {
