@@ -10,9 +10,7 @@ $this->addEntityToJs($entity);
 $this->addProjectToJs($entity);
 
 if(!$entity->isNew() && $entity->canUser('@control')){
-    if($app->user->is('admin') || $app->user->is('staff')){ //@TODO: remover este if quando o layout estiver pronto
-        $this->addProjectEventsToJs($entity);
-    }
+    $this->addProjectEventsToJs($entity);
 }
 
 if($this->isEditable()){
@@ -86,10 +84,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
         <?php endif; ?>
 
-        <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
         <?php if(!$entity->isNew()): ?>
             <li ng-if="data.entity.userHasControl && data.entity.events.length" ><a href="#eventos">Status dos eventos</a></li>
-        <?php endif; ?>
         <?php endif; ?>
     </ul>
     <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
