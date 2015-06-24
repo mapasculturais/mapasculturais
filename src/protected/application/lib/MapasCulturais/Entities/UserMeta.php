@@ -50,17 +50,7 @@ class UserMeta extends \MapasCulturais\Entity {
     protected $owner;
 
     public function canUser($action, $userOrAgent = null){
-        $user = $userOrAgent->getOwnerUser();
-        
-        if($user->is('guest')){
-            return false;
-        }
-        
-        if($user->is('admin')){
-            return true;
-        }
-        
-        return $this->owner->canUser($action, $user);
+        return $this->owner->canUser($action, $userOrAgent);
     }
 
     /** @ORM\PrePersist */
