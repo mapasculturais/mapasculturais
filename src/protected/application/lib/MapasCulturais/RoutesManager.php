@@ -126,7 +126,7 @@ class RoutesManager{
                 $app->pass();
             }
 
-        })->via('GET', 'POST', 'PUT', 'DELETE');
+        })->via('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
     }
 
     /**

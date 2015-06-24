@@ -333,6 +333,41 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $this->_finishRequest($entity);
         }
     }
+    
+    
+    function PATCH_single(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->repo()->find($this->urlData['id']);
+
+        if(!$entity)
+            $app->pass();
+
+        //Atribui a propriedade editada
+        foreach($this->postData as $field=>$value){
+            $entity->$field = $value;
+        }
+
+        if($_errors = $entity->validationErrors){
+            $errors = [];
+            foreach($this->postData as $field=>$value){
+                if(key_exists($field, $_errors)){
+                    $errors[$field] = $_errors[$field];
+                }
+            }
+            
+            if($errors){
+                $this->errorJson($errors);
+            }
+        }
+        
+        $this->_finishRequest($entity);
+    }
 
     /**
      * Alias to DELETE_single
