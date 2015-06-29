@@ -181,7 +181,8 @@ trait ControllerAPI{
                 $metadata_class = $class::getMetadataClassName();
 
                 $metadata_class = $class.'Meta';
-                $dql_join_template = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'\n";
+                $dql_join_template = "
+                        LEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}' ";
 
                 foreach($app->getRegisteredMetadata($this->entityClassName) as $meta){
                     $entity_metadata[] = $meta->key;
@@ -196,7 +197,8 @@ trait ControllerAPI{
                     $taxonomies_ids['term:' . $obj->slug] = $obj->id;
                 }
 
-                $dql_join_term_template = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}\n";
+                $dql_join_term_template = "
+                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
             }
 
             $keys = [];
@@ -246,7 +248,9 @@ trait ControllerAPI{
 
                     foreach($_joins as $j => $props){
                         $join_id = uniqid($j);
-                        $dql_select_joins .= " LEFT JOIN e.{$j} {$join_id}";
+                        $dql_select_joins .= "
+                        LEFT JOIN e.{$j} {$join_id}";
+
                         $dql_select .= ", {$join_id}";
 
                     }
@@ -304,8 +308,10 @@ trait ControllerAPI{
 
                     $_join_in = array_unique($_join_in);
 
-                    $dql_select .= " , files, fparent";
-                    $dql_select_joins .= " LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "') LEFT JOIN files.parent fparent";
+                    $dql_select .= ", files, fparent";
+                    $dql_select_joins .= "
+                        LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "')
+                        LEFT JOIN files.parent fparent";
 
                     $extract_data_cb = function($file, $ipath, $props){
                         $result = [];
@@ -408,7 +414,8 @@ trait ControllerAPI{
             if($metadata_class)
                 $metadata_class = ", $metadata_class m";
 
-            $dql_where = $dql_where ? "WHERE $dql_where" : "";
+            $dql_where = $dql_where ? "WHERE
+                    $dql_where" : "";
 
             if(in_array('status', $entity_properties)){
                 $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
@@ -426,17 +433,21 @@ trait ControllerAPI{
             if($select_metadata){
                 $dql_select .= ', meta';
                 $meta_keys = implode("', '", $select_metadata);
-                $dql_select_joins .= " LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
+                $dql_select_joins .= "
+                        LEFT JOIN e.__metadata meta WITH meta.key IN ('$meta_keys')";
             }
 
             if(in_array('terms', $select)){
                 $dql_select .= ', termRelations, term';
-                $dql_select_joins .= " LEFT JOIN e.__termRelations termRelations LEFT JOIN termRelations.term term";
+                $dql_select_joins .= "
+                        LEFT JOIN e.__termRelations termRelations
+                        LEFT JOIN termRelations.term term";
             }
 
             if(in_array('owner', $select) || array_filter($select, function($prop){ return substr($prop, 0, 6) == 'owner.'; })){
                 $dql_select .= ', _owner';
-                $dql_select_joins .= " LEFT JOIN e.owner _owner";
+                $dql_select_joins .= "
+                        LEFT JOIN e.owner _owner";
             }
 
             // unset sql_select and dql_select_joins if using permissions filters to reduce memory usage
@@ -447,18 +458,14 @@ trait ControllerAPI{
 
             $final_dql = "
                 SELECT
-                    e $dql_select
+                    e$dql_select
                 FROM
                     $class e
-
-                    $dql_joins
-                    $dql_select_joins
+                $dql_joins $dql_select_joins
 
                 $dql_where
 
                $order";
-
-            echo "<pre>$final_dql</pre>";
 
             $result[] = "$final_dql";
 
