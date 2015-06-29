@@ -246,7 +246,7 @@ trait ControllerAPI{
 
                     foreach($_joins as $j => $props){
                         $join_id = uniqid($j);
-                        $dql_select_joins = " LEFT JOIN e.{$j} {$join_id}";
+                        $dql_select_joins .= " LEFT JOIN e.{$j} {$join_id}";
                         $dql_select .= ", {$join_id}";
 
                     }
@@ -457,6 +457,8 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
+
+            echo "<pre>$final_dql</pre>";
 
             $result[] = "$final_dql";
 
