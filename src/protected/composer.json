@@ -15,7 +15,8 @@
         "phpoffice/phpword": "dev-master",
         "michelf/php-markdown": "1.4.1",
         "opauth/logincidadao" : "*",
-        "curl/curl": "1.2.0"
+        "curl/curl": "1.2.0",
+        "firebase/php-jwt": "^2.2"
     },
 
     "repositories": [{
