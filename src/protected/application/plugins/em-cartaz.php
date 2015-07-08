@@ -162,7 +162,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         $projects = array();
 
         foreach($events as $i => $event){
-            if(false && $event->project){
+            if($event->project){
                 if(!isset($projects[$event->project->id])){
                     $projects[$event->project->id] = array(
                         'project' => $event->project,
@@ -181,6 +181,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         }
 
         foreach($projects as $project){
+            
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){
