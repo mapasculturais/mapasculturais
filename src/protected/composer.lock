@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "b53606a1f7f4c8e73fd1dfdc1bd102d8",
@@ -816,11 +816,11 @@
         },
         {
             "name": "opauth/logincidadao",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hacklabr/opauth-logincidadao.git",
-                "reference": "8e7545ad02610e3c2d13184810cdc55d6b2c2f42"
+                "reference": "82245f6ea4b56bdb595fefe0d631748d9a0ba7b4"
             },
             "require": {
                 "opauth/opauth": ">=0.2.0",
@@ -848,7 +848,7 @@
                 "authentication",
                 "logincidadao"
             ],
-            "time": "2014-12-12 13:30:51"
+            "time": "2015-05-14 15:14:17"
         },
         {
             "name": "opauth/opauth",
@@ -2009,7 +2009,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smottt/WideImage/zipball/ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
+                "url": "https://api.github.com/repos/smottt/WideImage/zipball/669f63f1452c7fc70120fff4bc457727714a0834",
                 "reference": "ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
                 "shasum": ""
             },
