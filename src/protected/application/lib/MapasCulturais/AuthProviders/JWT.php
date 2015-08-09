@@ -19,6 +19,11 @@ class JWT extends \MapasCulturais\AuthProvider {
 
                 $userapp = $app->repo('UserApp')->find($pk); // pegar da tabela de apps
 
+                if(!$userapp){
+                    http_response_code(401);
+                    die;
+                }
+
                 \JWT::decode($token, $userapp->privateKey, ['HS512', 'HS256', 'HS1']);
                 $user = $userapp->user;
                 $this->__user = $user;
