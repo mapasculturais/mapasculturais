@@ -180,8 +180,8 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    'app.cache.namespace' => $base_url,
-
+    'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
+    
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
 
