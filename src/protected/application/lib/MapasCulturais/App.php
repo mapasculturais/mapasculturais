@@ -483,7 +483,7 @@ class App extends \Slim\Slim{
         $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
-        
+
         $this->registerController('event',   'MapasCulturais\Controllers\Event');
         $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
@@ -1862,8 +1862,12 @@ class App extends \Slim\Slim{
      * GetText
      **************/
 
+    static function getCurrentLCode(){
+        return App::i()->_config['app.lcode'];
+    }
 
-    static function getTranslations($lcode, $domain = null){
+
+    static function getTranslations($lcode, $domain = null) {
         $app = App::i();
         $log = key_exists('app.log.translations', $app->_config) && $app->_config['app.log.translations'];
 
@@ -1871,29 +1875,35 @@ class App extends \Slim\Slim{
 
         $use_cache = key_exists('app.useTranslationsCache', $app->_config) && $app->_config['app.useTranslationsCache'];
 
-        if($use_cache && $app->cache->contains($cache_id))
-                return $app->cache->fetch($cache_id);
+        if ($use_cache && $app->cache->contains($cache_id)) {
+            return $app->cache->fetch($cache_id);
+        }
 
-        $translations_filename = APPLICATION_PATH .( $domain ? "translations/{$domain}.{$lcode}.php" : "translations/{$lcode}.php" );
+        $translations_filename = APPLICATION_PATH . ( $domain ? "translations/{$domain}/{$lcode}.php" : "translations/{$lcode}.php" );
 
-        if(file_exists($translations_filename)){
+        if (file_exists($translations_filename)) {
             $translations = include $translations_filename;
-        }else{
-            if($log)
-                $app->log->warn ("TXT > missing '$lcode' translation file for domain '$domain'");
+        } else {
+            if ($log) {
+                $this->applyHook("txt({$domain}.{$lcode}).missingFile");
+                $app->log->warn("TXT > missing '$lcode' translation file for domain '$domain'");
+            }
             $translations = [];
         }
-        if($use_cache)
-            $app->cache->save ($cache_id, $translations);
+        if ($use_cache) {
+            $app->cache->save($cache_id, $translations);
+        }
 
         return $translations;
-
     }
 
     static function txt($message, $domain = null, $lcode = null){
         $app = App::i();
         $message = trim($message);
-        $lcode = key_exists('app.lcode', $app->_config) ? $app->_config['app.lcode'] : 'en';
+
+        if(is_null($lcode)){
+            $lcode = $this->getCurrentLCode();
+        }
 
         $translations = self::getTranslations($lcode, $domain);
         $backtrace = debug_backtrace(3,1)[0];
@@ -1906,6 +1916,7 @@ class App extends \Slim\Slim{
         }elseif(key_exists($message, $translations)){
             $message = $translations[$message];
         }elseif($log){
+            $this->applyHook("txt({$domain}.{$lcode}).missingTranslation");
             $app->log->warn ("TXT > missing '$lcode' translation for message '$message' in domain '$domain'");
         }
 
@@ -1914,17 +1925,19 @@ class App extends \Slim\Slim{
 
     }
 
-    static function txts($singular_message, $plural_message, $n, $domain = null){
-        if($n === 1)
+    static function txts($singular_message, $plural_message, $n, $domain = null) {
+        if ($n === 1) {
             return self::txt($singular_message, $domain);
-        else
+        } else {
             return self::txt($plural_message, $domain);
+        }
     }
 
-
-    function getReadableName($id){
-        if (array_key_exists($id, $this->_config['routes']['readableNames']))
+    function getReadableName($id) {
+        if (array_key_exists($id, $this->_config['routes']['readableNames'])) {
             return $this->_config['routes']['readableNames'][$id];
+        }
         return null;
     }
+
 }
