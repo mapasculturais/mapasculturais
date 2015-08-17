@@ -302,7 +302,7 @@ return array(
         'Bens culturais de natureza material' => array(
             'range' => array(200, 299),
             'items' => array(
-                200 => array( 'name' => 'Bens culturais de natureza material' )
+                200 => array( 'name' => 'Bens culturais de natureza material' ),
                 201 => array( 'name' => 'Bem Imóvel' ),
                 202 => array( 'name' => 'Bem Arqueológico' ),
                 203 => array( 'name' => 'Bem Paisagístico' ),
