@@ -109,6 +109,11 @@ return array(
             )
         )
     ),
+    
+/**
+ * Equipamentos Culturais
+ */       
+    
     'items' => array(
         'Espaços de Exibição de Filmes' => array(
             'range' => array(10,19),
@@ -136,6 +141,17 @@ return array(
                 31 => array('name' => 'Teatro Privado')
             )
         ),
+        
+        'Circos' => array(
+            'range' => array(90,99),
+            'items' => array(
+                90 => array( 'name' => 'Circo Itinerante' ),
+                91 => array( 'name' => 'Circo Fixo' ),
+                92 => array( 'name' => 'Terreno para Circo' ),
+                93 => array( 'name' => 'Circo Tradicional' ),
+                94 => array( 'name' => 'Circo Moderno' ),
+            )
+        ),        
 
        'Centros Culturais' => array(
             'range' => array(40,49),
@@ -160,36 +176,7 @@ return array(
                 61 => array( 'name' => 'Museu Privado' ),
             )
         ),
-
-       'Centros de Documentação' => array(
-            'range' => array(70,79),
-            'items' => array(
-                70 => array( 'name' => 'Centro de Documentação Público' ),
-                71 => array( 'name' => 'Centro de Documentação Privado' ),
-            )
-        ),
-
-       'Espaços Religiosos' => array(
-            'range' => array(80,89),
-            'items' => array(
-                80 => array( 'name' => 'Templo' ),
-                81 => array( 'name' => 'Terreiro' ),
-                82 => array( 'name' => 'Mesquitas' ),
-                83 => array( 'name' => 'Sinagoga' ),
-                84 => array( 'name' => 'Igreja' ),
-              )
-        ),
-
-        'Circos' => array(
-            'range' => array(90,99),
-            'items' => array(
-                90 => array( 'name' => 'Circo Itinerante' ),
-                91 => array( 'name' => 'Circo Fixo' ),
-                92 => array( 'name' => 'Terreno para Circo' ),
-            )
-        ),
-
-
+        
         'Demais Equipamentos Culturais' => array(
             'range' => array(100,199),
             'items' => array(
@@ -211,20 +198,117 @@ return array(
                 115 => array( 'name' => 'Ponto de Leitura Afro' ),
                 116 => array( 'name' => 'Centro Comunitário' ),
                 117 => array( 'name' => 'Casa do Patrimônio' ),
+                125 => array( 'name' => 'Ponto de Cultura' ),
                 118 => array( 'name' => 'Usina Cultural' ),
                 119 => array( 'name' => 'Praça dos esportes e da cultura' ),
                 120 => array( 'name' => 'Espaço Mais Cultura' ),
                 121 => array( 'name' => 'Sala de dança' ),
                 122 => array( 'name' => 'Gafieira' ),
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
+                126=> array( 'name' => 'Centro cultural itinerante' ),
+                127 => array( 'name' => 'Trio elétrico' ),
+                128 => array( 'name' => 'Clube social' ),
+                129 => array( 'name' => 'Centro de tradições' ),
+                130 => array( 'name' => 'Sala Multiuso' ),
                 124 => array( 'name' => 'Rádio Comunitária' )
             )
+        ),        
+
+       'Centros de Documentação' => array(
+            'range' => array(70,79),
+            'items' => array(
+                70 => array( 'name' => 'Centro de Documentação Público' ),
+                71 => array( 'name' => 'Centro de Documentação Privado' ),
+            )
         ),
+
+       'Espaços Religiosos' => array(
+            'range' => array(80,89),
+            'items' => array(
+                80 => array( 'name' => 'Templo' ),
+                81 => array( 'name' => 'Terreiro' ),
+                82 => array( 'name' => 'Mesquitas' ),
+                83 => array( 'name' => 'Sinagoga' ),
+                84 => array( 'name' => 'Igreja' ),
+                85 => array( 'name' => 'Centro Espírita' ),
+              )
+        ),
+
+/**
+ * Espaços de Formação Cultural
+ */ 
+
+       'Instituições Públicas de Ensino Regular' => array(
+            'range' => array(300,399),
+            'items' => array(
+                300 => array( 'name' => 'Instituição Pública de Ensino Regular Federal' ),
+                301 => array( 'name' => 'Instituição Pública de Ensino Regular Estadual' ),
+                302 => array( 'name' => 'Instituição Pública de Ensino Regular Municipal' ),
+                303 => array( 'name' => 'Instituição Pública de Ensino Regular Distrital' ),
+              )
+        ),
+        
+       ' Instituições Privadas de Ensino Regular' => array(
+            'range' => array(400,499),
+            'items' => array(
+                400 => array( 'name' => 'Instituição Privada Particular' ),
+                401 => array( 'name' => 'Instituição Privada Comunitária' ),
+                402 => array( 'name' => 'Instituição Privada Confessional' ),
+                403 => array( 'name' => 'Instituição Privada Filantrópica' ),
+              )
+        ),
+        
+       'Instituições Públicas exclusivamente voltada para formação artistica e cultural' => array(
+            'range' => array(601,699),
+            'items' => array(
+                601 => array( 'name' => 'Instituição Pública Federal exclusivamente voltada para formação artistica e cultural' ),
+                602 => array( 'name' => 'Instituição Pública Estadual exclusivamente voltada para formação artistica e cultural' ),
+                603 => array( 'name' => 'Instituição Pública Municipal exclusivamente voltada para formação artistica e cultural' ),
+                604 => array( 'name' => 'Instituição Pública Distrital exclusivamente voltada para formação artistica e cultural' ),
+              )
+        ),
+        
+       'Instituições Privadas exclusivamente voltada para formação artistica e cultural' => array(
+            'range' => array(700,799),
+            'items' => array(
+                700 => array( 'name' => 'Instituição Privada Particular exclusivamente voltada para formação artistica e cultural' ),
+                701 => array( 'name' => 'Instituição Privada Comunitária exclusivamente voltada para formação artistica e cultural' ),
+                702 => array( 'name' => 'Instituição Privada Confessional exclusivamente voltada para formação artistica e cultural' ),
+                703 => array( 'name' => 'Instituição Privada Filantrópica exclusivamente voltada para formação artistica e cultural' ),
+              )
+        ),
+        
+       'Escolas livres' => array(
+            'range' => array(800,899),
+            'items' => array(
+                800 => array( 'name' => 'Escola livre de Artes Cênicas' ),
+                801 => array( 'name' => 'Escola livre de Artes Visuais' ),
+                802 => array( 'name' => 'Escola livre de Audiovisual' ),
+                803 => array( 'name' => 'Escola livre de Hip Hop' ),
+                804 => array( 'name' => 'Escola livre de Cultura Digital' ),
+                805 => array( 'name' => 'Escola livre de Música' ),
+                806 => array( 'name' => 'Escola livre de Cultura Popular' ),
+                807 => array( 'name' => 'Escola livre de Gestão Cultural' ),
+                808 => array( 'name' => 'Escola livre de Pontinhos de cultura' ),
+                809 => array( 'name' => 'Escola livre de Patrimônio' ),
+                810 => array( 'name' => 'Escola livre de Design' ),
+              )
+        ),        
+
+/**
+ * Patrimônios Culturais
+ */   
         
         'Bens culturais de natureza material' => array(
             'range' => array(200, 299),
             'items' => array(
-                200 => array( 'name' => 'Bens culturais de natureza material' )
+                200 => array( 'name' => 'Bens culturais de natureza material' ),
+                201 => array( 'name' => 'Bem Imóvel' ),
+                202 => array( 'name' => 'Bem Arqueológico' ),
+                203 => array( 'name' => 'Bem Paisagístico' ),
+                204 => array( 'name' => 'Bem Móvel ou Integrado' ),
+                205 => array( 'name' => 'Sitio Histórico' ),
+                206 => array( 'name' => 'Documentação' ),                
             )
         ),
 
