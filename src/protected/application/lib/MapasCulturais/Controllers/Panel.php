@@ -158,4 +158,23 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('registrations', ['user' => $user]);
     }
+
+    /**
+     * Render the project list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/projects'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'registrations');
+     * </code>
+     *
+     */
+    function GET_apps(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+        $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
+        $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
+        $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
+    }
 }

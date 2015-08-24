@@ -8,8 +8,6 @@ trait ControllerSoftDelete{
         $this->requireAuthentication();
 
         $app = App::i();
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
 
         $entity = $this->requestedEntity;
 
@@ -30,10 +28,9 @@ trait ControllerSoftDelete{
         $this->requireAuthentication();
 
         $app = App::i();
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
 
         $entity = $this->requestedEntity;
+
         $urls = [$entity->singleUrl, $entity->editUrl];
 
         if(!$entity)
