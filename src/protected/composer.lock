@@ -2050,7 +2050,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/smottt/WideImage/zipball/669f63f1452c7fc70120fff4bc457727714a0834",
-                "reference": "669f63f1452c7fc70120fff4bc457727714a0834",
+                "reference": "ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
                 "shasum": ""
             },
             "type": "library",
