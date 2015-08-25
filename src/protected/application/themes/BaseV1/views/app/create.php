@@ -8,7 +8,7 @@ $this->layout = 'panel';
         <h2>Novo App</h2>
         <br><br>
         <form method="post" action="<?php echo $app->createUrl('app', 'index'); ?>?redirectTo=<?php echo $app->createUrl('panel', 'apps'); ?>">
-            <input name="name" placeholder="Nome">
+            <input name="name" placeholder="Nome do Aplicativo">
             <input type="submit" value="Criar">
         </form>
     </header>
