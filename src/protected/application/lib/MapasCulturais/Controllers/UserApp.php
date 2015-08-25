@@ -26,7 +26,13 @@ class UserApp extends EntityController {
         if(!key_exists(0, $this->urlData))
             return null;
 
-        return $this->repository->find($this->urlData[0]);
+        $entity = $this->repository->find($this->urlData[0]);
+        
+        if($entity){
+            $entity->checkPermission('view');
+        }
+        
+        return $entity;
     }
 }
 
