@@ -151,10 +151,6 @@ server {
     client_max_body_size 0;
   }
 
-  include h5bp/directive-only/x-ua-compatible.conf;
-  include h5bp/location/cross-domain-fonts.conf;
-  include h5bp/location/protect-system-files.conf;
-
   charset utf-8;
 }
 
