@@ -1,6 +1,7 @@
 <?php
-
-if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRIPT_NAME'],-4)) !== '.php') {
+if (preg_match('/\.(?:png|jpg|jpeg|gif|svg|eot|ttf|woff)$/', $_SERVER["REQUEST_URI"])) {
+    return false;    // serve the requested resource as-is.
+} else if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRIPT_NAME'],-4)) !== '.php') {
     $filename = $_SERVER['SCRIPT_FILENAME'];
 
     $expires = 60 * 5;
