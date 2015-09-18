@@ -1890,7 +1890,7 @@ class App extends \Slim\Slim{
             $translations = include $translations_filename;
         } else {
             if ($log) {
-                $this->applyHook("txt({$domain}.{$lcode}).missingFile");
+                $app->applyHook("txt({$domain}.{$lcode}).missingFile");
                 $app->log->warn("TXT > missing '$lcode' translation file for domain '$domain'");
             }
             $translations = [];
@@ -1907,7 +1907,7 @@ class App extends \Slim\Slim{
         $message = trim($message);
 
         if(is_null($lcode)){
-            $lcode = $this->getCurrentLCode();
+            $lcode = $app->getCurrentLCode();
         }
 
         $translations = self::getTranslations($lcode, $domain);
