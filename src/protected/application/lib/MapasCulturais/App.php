@@ -348,13 +348,16 @@ class App extends \Slim\Slim{
 
         $this->register();
 
-                // =============== AUTH ============== //
-        $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
 
-        $this->_auth = new $auth_class_name($config['auth.config']);
+        // =============== AUTH ============== //
 
-
-        $this->_auth->setCookies();
+        if($token = $this->request()->headers->get('authorization')){
+            $this->_auth = new AuthProviders\JWT(['token' => $token]);
+        }else{
+            $auth_class_name = strpos($config['auth.provider'], '\\') !== false ? $config['auth.provider'] : 'MapasCulturais\AuthProviders\\' . $config['auth.provider'];
+            $this->_auth = new $auth_class_name($config['auth.config']);
+            $this->_auth->setCookies();
+        }
 
         // initialize theme
         $this->view->init();
@@ -488,6 +491,8 @@ class App extends \Slim\Slim{
         $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
+
+        $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
 
         $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
         $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
