@@ -100,3 +100,14 @@
         padding: $padding-large;
     }
 }
+
+.panel-app-form {
+    input.txt {
+        width: 88%;
+        
+        &.small {
+            font-size: 11px;
+            font-family: monospace;
+        }
+    }
+}
