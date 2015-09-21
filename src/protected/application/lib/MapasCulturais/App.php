@@ -1921,7 +1921,7 @@ class App extends \Slim\Slim{
         }elseif(key_exists($message, $translations)){
             $message = $translations[$message];
         }elseif($log){
-            $this->applyHook("txt({$domain}.{$lcode}).missingTranslation");
+            $app->applyHook("txt({$domain}.{$lcode}).missingTranslation");
             $app->log->warn ("TXT > missing '$lcode' translation for message '$message' in domain '$domain'");
         }
 
