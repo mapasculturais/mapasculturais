@@ -73,15 +73,15 @@ return array(
     'maps.includeGoogleLayers' => false,
 
     'app.geoDivisionsHierarchy' => [
-        'pais' => 'País',
-        'regiao' => 'Região',
-        'estado' => 'Estado',
-        'mesorregiao' => 'Mesorregião',
-        'microrregiao' => 'Microrregião',
-        'municipio' => 'Município',
-        'zona' => 'Zona',
-        'subprefeitura' => 'Subprefeitura',
-        'distrito' => 'Distrito'
+        'pais'          => 'País',          // metadata: geoPais
+        'regiao'        => 'Região',        // metadata: geoRegiao
+        'estado'        => 'Estado',        // metadata: geoEstado
+        'mesorregiao'   => 'Mesorregião',   // metadata: geoMesorregiao
+        'microrregiao'  => 'Microrregião',  // metadata: geoMicrorregiao
+        'municipio'     => 'Município',     // metadata: geoMunicipio
+        'zona'          => 'Zona',          // metadata: geoZona
+        'subprefeitura' => 'Subprefeitura', // metadata: geoSubprefeitura
+        'distrito'      => 'Distrito'       // metadata: geoDistrito
     ],
 
     'registration.agentRelationsOptions' => array(
