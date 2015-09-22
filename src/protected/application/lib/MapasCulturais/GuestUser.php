@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais;
 
-class GuestUser{
+class GuestUser implements UserInterface{
     use Traits\Singleton;
 
     public $id = 0;

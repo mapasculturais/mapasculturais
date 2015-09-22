@@ -20,8 +20,7 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\User")
  * @ORM\HasLifecycleCallbacks
  */
-class User extends \MapasCulturais\Entity
-{
+class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     const STATUS_ENABLED = 1;
     
     use \MapasCulturais\Traits\EntityMetadata;
