@@ -72,17 +72,17 @@ return array(
     'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
 
-    'app.geoDivisionsHierarchy' => array(
-        'país',
-        'região',
-        'estado',
-        'mesorregião',
-        'microrregião',
-        'município',
-        'zona',
-        'subprefeitura',
-        'distrito'
-    ),
+    'app.geoDivisionsHierarchy' => [
+        'pais' => 'País',
+        'regiao' => 'Região',
+        'estado' => 'Estado',
+        'mesorregiao' => 'Mesorregião',
+        'microrregiao' => 'Microrregião',
+        'municipio' => 'Município',
+        'zona' => 'Zona',
+        'subprefeitura' => 'Subprefeitura',
+        'distrito' => 'Distrito'
+    ],
 
     'registration.agentRelationsOptions' => array(
         'dontUse' => 'Não utilizar',
