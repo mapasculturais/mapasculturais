@@ -1629,6 +1629,15 @@ class App extends \Slim\Slim{
      * @param int $entity_type_id The Entity Type id
      */
     function registerMetadata(Definitions\Metadata $metadata, $entity_class, $entity_type_id = null){
+//        if($entity_class::usesTypes() && is_null($entity_type_id)){
+//            foreach($this->getRegisteredEntityTypes($entity_class) as $type){
+//                if($type){
+//                   $this->registerMetadata($metadata, $entity_class, $type->id);
+//                }
+//            }
+//            return;
+//        }
+        
         $key = is_null($entity_type_id) ? $entity_class : $entity_class . ':' . $entity_type_id;
         if(!key_exists($key, $this->_register['entity_metadata_definitions']))
             $this->_register['entity_metadata_definitions'][$key] = [];
