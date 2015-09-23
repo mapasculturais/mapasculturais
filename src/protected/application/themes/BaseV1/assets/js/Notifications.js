@@ -99,9 +99,15 @@
                 }catch(e){}
             }
         });
-        //if not found, bootstraps notification modules
-        if(!app)
-            angular.bootstrap(document, ['Notifications']);
+        //can't find expected app
+        if(!app) {
+            var ctrl = document.querySelector('[ng-controller=NotificationController]');
+
+            // let's search again
+            if(ctrl && !angular.element(ctrl.parentElement).scope()) {
+                angular.bootstrap(ctrl.parentElement, ['Notifications']);
+            }
+        }
         app = angular.module('Notifications');
     });
 
