@@ -18,7 +18,7 @@ $install = <<SCRIPT
     sudo apt-get update
 
     # dependencias diversas
-    sudo apt-get install -y git curl nodejs npm ruby ruby-sass #TODO validar o ruby-sass com rafa!
+    sudo apt-get install -y git curl nodejs npm ruby
 
     # postgresql e postgis
     sudo apt-get install -y postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
@@ -29,6 +29,8 @@ $install = <<SCRIPT
     sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
     sudo npm install -g uglify-js uglifycss postcss-cli autoprefixer
+
+    sudo gem install sass
 
     # Instalando o gerenciador de dependencias do PHP Composer
     echo "MAPAS CULTURAIS: Checking Composer Dependency Manager for PHP"
