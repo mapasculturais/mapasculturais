@@ -17,20 +17,22 @@ $install = <<SCRIPT
 
     sudo apt-get update
 
-    # dependências diversas
-    sudo apt-get install -y git curl nodejs npm ruby ruby-sass #TODO validar o ruby-sass com rafa!
+    # dependencias diversas
+    sudo apt-get install -y git curl nodejs npm ruby
 
     # postgresql e postgis
     sudo apt-get install -y postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 
-    # php, php-fpm e extensões do php utiliazdas no sistema
+    # php, php-fpm e extensoes do php utiliazdas no sistema
     sudo apt-get install -y php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm
 
     sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
     sudo npm install -g uglify-js uglifycss postcss-cli autoprefixer
 
-    # Instalando o gerenciador de dependências do PHP Composer
+    sudo gem install sass
+
+    # Instalando o gerenciador de dependencias do PHP Composer
     echo "MAPAS CULTURAIS: Checking Composer Dependency Manager for PHP"
     if ! type composer.phar 2>/dev/null; then
         echo "MAPAS CULTURAIS: Installing Composer"
@@ -42,17 +44,17 @@ SCRIPT
 
 $configure = <<SCRIPT
 
-    echo "MAPAS CULTURAIS: Getting Dependencies using Composer"
-    cd /vagrant/src/protected
-    composer.phar install
     cd /vagrant
+
+    echo "MAPAS CULTURAIS: Getting Dependencies using Composer"
+    composer.phar --working-dir=src/protected install --prefer-dist
     echo ""
 
     echo "MAPAS CULTURAIS: Setting up mapasculturais PostgreSQL Database"
 
     sudo -u postgres createuser -d vagrant
 
-    # Agora vamos criar a base de dados para a aplicação com o mesmo nome do usuário
+    # Agora vamos criar a base de dados para a aplicacao com o mesmo nome do usuario
 
     echo "MAPAS CULTURAIS: Creating Database..."
     createdb mapas
