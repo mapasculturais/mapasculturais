@@ -549,7 +549,8 @@ trait ControllerAPI{
                       ->setMaxResults(1);
 
                 $paginator = new Paginator($query, $fetchJoinCollection = true);
-
+                $entity = null;
+                
                 if(count($paginator)){
                     $r = $paginator->getIterator()->current();
 
@@ -572,8 +573,6 @@ trait ControllerAPI{
 
                     if($r)
                         $entity = $processEntity($r);
-                }else{
-                    $entity = null;
                 }
                 return $entity;
             }else{
