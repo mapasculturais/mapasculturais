@@ -357,7 +357,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
 
             if($errors){
-                $this->errorJson($errors);
+                $this->errorJson($errors, 400);
             }
         }
 
