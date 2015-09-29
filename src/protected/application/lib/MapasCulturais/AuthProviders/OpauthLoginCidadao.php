@@ -8,13 +8,15 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     protected $opauth;
     protected function _init() {
         $app = App::i();
+        
+        $url = $app->createUrl('auth');
         $config = array_merge([
             'timeout' => '24 hours',
             'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
 
             'client_secret' => '',
             'cliente_id' => '',
-            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $app->createUrl('auth'))
+            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
         ], $this->_config);
         $opauth_config = [
             'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
@@ -23,9 +25,11 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             ],
             'security_salt' => $config['salt'],
             'security_timeout' => $config['timeout'],
+            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
             'path' => $config['path'],
             'callback_url' => $app->createUrl('auth','response')
         ];
+
         $opauth = new \Opauth($opauth_config, false );
         $this->opauth = $opauth;
 
