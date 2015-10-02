@@ -157,6 +157,17 @@ class App extends \Slim\Slim{
     public function init($config = []){
         if($this->_initiated)
             return $this;
+        
+        $themepath = $config['namespaces'][$config['themes.active']] . '/';
+        
+        if(file_exists($themepath . 'config.php')) {
+            $theme_config = require $themepath . 'config.php';
+            $config = array_merge($config, $theme_config);
+            
+        } else if (file_exists($themepath . 'conf-base.php')){
+            $theme_config = require $themepath . 'conf-base.php';
+            $config = array_merge($config, $theme_config);
+        }
 
         $this->_initiated = true;
 
