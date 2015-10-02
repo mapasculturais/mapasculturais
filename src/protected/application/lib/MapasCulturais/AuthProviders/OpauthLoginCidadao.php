@@ -6,9 +6,12 @@ use MapasCulturais\Entities;
 
 class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     protected $opauth;
+
+    protected $onCreateRedirectUrl = null;
+
     protected function _init() {
         $app = App::i();
-        
+
         $url = $app->createUrl('auth');
         $config = array_merge([
             'timeout' => '24 hours',
@@ -29,6 +32,10 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             'path' => $config['path'],
             'callback_url' => $app->createUrl('auth','response')
         ];
+
+        if(isset($config['onCreateRedirectUrl'])){
+            $this->onCreateRedirectUrl = $config['onCreateRedirectUrl'];
+        }
 
         $opauth = new \Opauth($opauth_config, false );
         $this->opauth = $opauth;
@@ -146,7 +153,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $response = $this->_getResponse();
             $auth_uid = $response['auth']['uid'];
             $auth_provider = $app->getRegisteredAuthProviderId('logincidadao');
-            
+
             $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
             return $user;
         }else{
@@ -165,7 +172,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             if(!$user){
                 $response = $this->_getResponse();
                 $user = $this->createUser($response);
-                
+
                 $profile = $user->profile;
                 $this->_setRedirectPath($profile->editUrl);
             }
@@ -201,7 +208,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }else{
             $agent->name = 'Sem Nome';
         }
-        
+
         $agent->emailPrivado = $user->email;
 
         $app->em->persist($agent);
@@ -212,8 +219,8 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
 
         $app->enableAccessControl();
 
-        $this->_setRedirectPath($agent->editUrl);
-        
+        $this->_setRedirectPath($this->onCreateRedirectUrl ? $this->onCreateRedirectUrl : $agent->editUrl);
+
         return $user;
     }
 }
