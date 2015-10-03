@@ -7,7 +7,7 @@ use MapasCulturais\Entities;
 class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     protected $opauth;
 
-    protected $onCreateRedirectUrl = null;
+    protected $_firstLloginUrl = null;
 
     protected function _init() {
         $app = App::i();
@@ -174,7 +174,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
                 $user = $this->createUser($response);
 
                 $profile = $user->profile;
-                $this->_setRedirectPath($profile->editUrl);
+                $this->_setRedirectPath($this->onCreateRedirectUrl ? $this->onCreateRedirectUrl : $profile->editUrl);
             }
             $this->_setAuthenticatedUser($user);
             App::i()->applyHook('auth.successful');
