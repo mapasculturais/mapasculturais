@@ -68,8 +68,12 @@ $configure = <<SCRIPT
     echo "MAPAS CULTURAIS: Database schema, db-update and initial data."
     # TODO: try pg_dump --no-owner --no-acl to generate schema.sql
     psql -d mapas -f db/schema.sql
-    ./scripts/db-update.sh
-    psql -d mapas -f db/initial-data.sql
+    cd scripts/
+    ./db-update.sh
+    psql -d mapas -f ../db/initial-data.sql
+    ./db-update.sh
+    psql -d mapas -f ../db/initial-data.sql
+
     echo ""
 
     echo "MAPAS CULTURAIS: Please edit src/protected/application/conf/config.php"
