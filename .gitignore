@@ -18,3 +18,4 @@ main.css
 main.css.map
 _apigen.phar
 .vagrant
+.DS_Store
