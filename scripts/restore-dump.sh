@@ -11,6 +11,7 @@ read confirm
 
 if [[ $confirm == 'sim' ]]; then
 	sudo -u postgres dropdb mapasculturais
-	sudo -u postgres psql < ../db/dump.sql
+	sudo -u postgres createdb mapasculturais --owner mapasculturais
+	sudo -u postgres psql -d mapasculturais < ../db/dump.sql
 fi;
 
