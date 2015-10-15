@@ -2,6 +2,14 @@
 set -e
 set -o pipefail
 
+
+if [ $1 ]; then
+	DOMAIN=$1
+else
+	DOMAIN=localhost
+fi
+
+
 if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
 then
 	rm "/tmp/mapasculturais-tests-authenticated-user.id"
@@ -30,7 +38,7 @@ then
 fi
 
 cd scripts/
-./compile-sass.sh conf-test.php
+./compile-sass.sh localhost conf-test.php
 
 cd ../src/
 

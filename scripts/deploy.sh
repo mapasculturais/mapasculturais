@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $1 ]; then
+	DOMAIN=$1
+else
+	DOMAIN=localhost
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
@@ -22,11 +27,11 @@ $composer dump-autoload --optimize
 
 cd tools
 
-HTTP_HOST="localhost" REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies
+HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies
 
 
 cd $DIR
-./db-update.sh
-./compile-sass.sh
+./db-update.sh $DOMAIN
+./compile-sass.sh $DOMAIN
 
 cd $CDIR
