@@ -157,17 +157,6 @@ class App extends \Slim\Slim{
     public function init($config = []){
         if($this->_initiated)
             return $this;
-        
-        $themepath = $config['namespaces'][$config['themes.active']] . '/';
-        
-        if(file_exists($themepath . 'config.php')) {
-            $theme_config = require $themepath . 'config.php';
-            $config = array_merge($config, $theme_config);
-            
-        } else if (file_exists($themepath . 'conf-base.php')){
-            $theme_config = require $themepath . 'conf-base.php';
-            $config = array_merge($config, $theme_config);
-        }
 
         $this->_initiated = true;
 
@@ -217,6 +206,22 @@ class App extends \Slim\Slim{
             }
 
         });
+
+        // extende a config with theme config files
+
+        $theme_class = "\\" . $config['themes.active'] . '\Theme';
+        $theme_path = $theme_class::getThemeFolder() . '/';
+
+        if (file_exists($theme_path . 'conf-base.php')) {
+            $theme_config = require $theme_path . 'conf-base.php';
+            $config = array_merge($config, $theme_config);
+        }
+
+        if (file_exists($theme_path . 'config.php')) {
+            $theme_config = require $theme_path . 'config.php';
+            $config = array_merge($config, $theme_config);
+        }
+
 
         $config['app.mode'] = key_exists('app.mode', $config) ? $config['app.mode'] : 'production';
 
@@ -1648,7 +1653,7 @@ class App extends \Slim\Slim{
             }
             return;
         }
-        
+
         $key = is_null($entity_type_id) ? $entity_class : $entity_class . ':' . $entity_type_id;
         if(!key_exists($key, $this->_register['entity_metadata_definitions']))
             $this->_register['entity_metadata_definitions'][$key] = [];
