@@ -1,4 +1,4 @@
 <?php
 include('parts/header.php');
-include('parts/busca-avancada.php');
+$this->part('busca-avancada');
 echo $TEMPLATE_CONTENT;
