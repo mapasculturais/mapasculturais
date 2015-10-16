@@ -195,7 +195,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }else if(isset($response['auth']['raw']['first_name'])){
             $agent->name = $response['auth']['raw']['first_name'];
         }else{
-            $agent->name = 'Sem Nome';
+            $agent->name = '';
         }
         
         $agent->emailPrivado = $user->email;
