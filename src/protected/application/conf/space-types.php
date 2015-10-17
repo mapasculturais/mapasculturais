@@ -130,7 +130,9 @@ return array(
             'range' => array(20,29),
             'items' => array(
                 20 => array( 'name' => 'Biblioteca Pública' ),
-                21 => array( 'name' => 'Biblioteca Privada' )
+                21 => array( 'name' => 'Biblioteca Privada' ),
+                22 => array( 'name' => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)'),
+                23 => array( 'name' => ' Biblioteca Escolar')
             )
         ),
 
@@ -205,12 +207,17 @@ return array(
                 121 => array( 'name' => 'Sala de dança' ),
                 122 => array( 'name' => 'Gafieira' ),
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
-                126=> array( 'name' => 'Centro cultural itinerante' ),
+                126 => array( 'name' => 'Centro cultural itinerante' ),
                 127 => array( 'name' => 'Trio elétrico' ),
                 128 => array( 'name' => 'Clube social' ),
                 129 => array( 'name' => 'Centro de tradições' ),
                 130 => array( 'name' => 'Sala Multiuso' ),
-                124 => array( 'name' => 'Rádio Comunitária' )
+                124 => array( 'name' => 'Rádio Comunitária' ),
+                131 => array( 'name' => 'Audioteca' ),
+                132 => array( 'name' => 'Centro de Artes e Esportes Unificados - CEUs' ),
+                133 => array( 'name' => 'Coreto' ),
+                134 => array( 'name' => 'Ginásio Poliesportivo' ),
+                135 => array( 'name' => 'Sala de Leitura' ),
             )
         ),        
 
@@ -308,7 +315,8 @@ return array(
                 203 => array( 'name' => 'Bem Paisagístico' ),
                 204 => array( 'name' => 'Bem Móvel ou Integrado' ),
                 205 => array( 'name' => 'Sitio Histórico' ),
-                206 => array( 'name' => 'Documentação' ),                
+                206 => array( 'name' => 'Documentação' ),        
+                207 => array( 'name' => 'Coleções' ),
             )
         ),
 
