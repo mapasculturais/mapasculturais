@@ -102,7 +102,7 @@
                     }
 
                 }
-
+                
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
 
@@ -261,6 +261,13 @@
             }
 
             function apiFind(entity, searchData, page, action) {
+                
+                
+                if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
+                    angular.extend(searchData, MapasCulturais.searchFilters[entity]);
+                    console.log(entity , searchData, MapasCulturais.searchFilters);
+                }
+                
                 var selectData = 'id,singleUrl,name,type,shortDescription,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
 
