@@ -523,6 +523,8 @@ MapasCulturais.Editables = {
 
                     }else{
 
+                        $('body').trigger('entity-saved', response);
+
                         $('.js-geo-division-address').each(function(){
                             var r = response[$(this).data('metakey')];
                             $(this).html(r ? r : '');
