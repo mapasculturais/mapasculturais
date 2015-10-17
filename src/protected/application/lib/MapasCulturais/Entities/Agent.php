@@ -49,9 +49,6 @@ class Agent extends \MapasCulturais\Entity
         ],
         'type' => [
             'required' => 'O tipo do agente é obrigatório',
-        ],
-        'location' => [
-            '$this->validateLocation()' => 'A localização geográfica do agente é obrigatória',
         ]
     ];
 
