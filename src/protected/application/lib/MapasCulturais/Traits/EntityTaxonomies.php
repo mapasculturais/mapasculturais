@@ -239,7 +239,7 @@ trait EntityTaxonomies{
         
         foreach($this->__termRelations as $tr){
             $term = $tr->term;
-            if(isset($result[$term->taxonomySlug])){
+            if($term->taxonomySlug && isset($result[$term->taxonomySlug])){
                 $result[$term->taxonomySlug][] = $term;
             }
         }
