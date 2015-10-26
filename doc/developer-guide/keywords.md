@@ -28,7 +28,7 @@ WHERE
 
 ## Exemplos práticos:
 ### Utilizando um metadado na busca por palavra-chave
-Vamos usar como exemplo um metadado chamado __num_entidade__, que seria um código que representa a entidade no sistema e que, quando alguém fizesse uma busca por palavra-chave informando tal código, o sistema deveria retornar este objeto. Vamos supor ainda que este código só é aplicado a agentes e espaços, porém para aplicar a todas as entidades que _usam_ busca por palavra-chave (repositórios que usam o _trait_ **MapasCulturais\Traits\RepositoryKeyword**) basta substituir a parte do hook _<<Agent|Space>>_ por _<<*>>_
+Vamos usar como exemplo um metadado chamado __num_entidade__, que seria um código que representa a entidade no sistema e que, quando alguém fizesse uma busca por palavra-chave informando tal código, o sistema deveria retornar este objeto. Vamos supor ainda que este código só é aplicado a agentes e espaços, porém para aplicar a todas as entidades que _usam_ busca por palavra-chave (repositórios que usam o _trait_ **MapasCulturais\Traits\RepositoryKeyword**) basta substituir a parte do hook _<\<Agent|Space\>>_ por _<<*>>_
 ```PHP
 $app = \MapasCulturais\App::i(); // instância da aplicação
 
