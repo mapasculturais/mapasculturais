@@ -19,7 +19,8 @@ O Mapas Culturais oferece dois _hooks_ para modificar a query acima: o primeiro 
 SELECT 
     DISTINCT e.id 
 FROM 
-    {$entity_class} e $HOOK_JOINS
+    {$entity_class} e 
+    $HOOK_JOINS
 WHERE 
     unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) 
     $HOOK_WHERE
