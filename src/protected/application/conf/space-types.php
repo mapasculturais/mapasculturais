@@ -109,11 +109,11 @@ return array(
             )
         )
     ),
-    
+
 /**
  * Equipamentos Culturais
- */       
-    
+ */
+
     'items' => array(
         'Espaços de Exibição de Filmes' => array(
             'range' => array(10,19),
@@ -143,7 +143,7 @@ return array(
                 31 => array('name' => 'Teatro Privado')
             )
         ),
-        
+
         'Circos' => array(
             'range' => array(90,99),
             'items' => array(
@@ -153,7 +153,7 @@ return array(
                 93 => array( 'name' => 'Circo Tradicional' ),
                 94 => array( 'name' => 'Circo Moderno' ),
             )
-        ),        
+        ),
 
        'Centros Culturais' => array(
             'range' => array(40,49),
@@ -178,7 +178,7 @@ return array(
                 61 => array( 'name' => 'Museu Privado' ),
             )
         ),
-        
+
         'Demais Equipamentos Culturais' => array(
             'range' => array(100,199),
             'items' => array(
@@ -207,7 +207,7 @@ return array(
                 121 => array( 'name' => 'Sala de dança' ),
                 122 => array( 'name' => 'Gafieira' ),
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
-                126 => array( 'name' => 'Centro cultural itinerante' ),
+                126=> array( 'name' => 'Centro cultural itinerante' ),
                 127 => array( 'name' => 'Trio elétrico' ),
                 128 => array( 'name' => 'Clube social' ),
                 129 => array( 'name' => 'Centro de tradições' ),
@@ -219,7 +219,7 @@ return array(
                 134 => array( 'name' => 'Ginásio Poliesportivo' ),
                 135 => array( 'name' => 'Sala de Leitura' ),
             )
-        ),        
+        ),
 
        'Centros de Documentação' => array(
             'range' => array(70,79),
@@ -243,7 +243,7 @@ return array(
 
 /**
  * Espaços de Formação Cultural
- */ 
+ */
 
        'Instituições Públicas de Ensino Regular' => array(
             'range' => array(300,399),
@@ -254,7 +254,7 @@ return array(
                 303 => array( 'name' => 'Instituição Pública de Ensino Regular Distrital' ),
               )
         ),
-        
+
        ' Instituições Privadas de Ensino Regular' => array(
             'range' => array(400,499),
             'items' => array(
@@ -264,7 +264,7 @@ return array(
                 403 => array( 'name' => 'Instituição Privada Filantrópica' ),
               )
         ),
-        
+
        'Instituições Públicas exclusivamente voltada para formação artistica e cultural' => array(
             'range' => array(601,699),
             'items' => array(
@@ -274,7 +274,7 @@ return array(
                 604 => array( 'name' => 'Instituição Pública Distrital exclusivamente voltada para formação artistica e cultural' ),
               )
         ),
-        
+
        'Instituições Privadas exclusivamente voltada para formação artistica e cultural' => array(
             'range' => array(700,799),
             'items' => array(
@@ -284,7 +284,7 @@ return array(
                 703 => array( 'name' => 'Instituição Privada Filantrópica exclusivamente voltada para formação artistica e cultural' ),
               )
         ),
-        
+
        'Escolas livres' => array(
             'range' => array(800,899),
             'items' => array(
@@ -300,12 +300,12 @@ return array(
                 809 => array( 'name' => 'Escola livre de Patrimônio' ),
                 810 => array( 'name' => 'Escola livre de Design' ),
               )
-        ),        
+        ),
 
 /**
  * Patrimônios Culturais
- */   
-        
+ */
+
         'Bens culturais de natureza material' => array(
             'range' => array(200, 299),
             'items' => array(
@@ -315,7 +315,7 @@ return array(
                 203 => array( 'name' => 'Bem Paisagístico' ),
                 204 => array( 'name' => 'Bem Móvel ou Integrado' ),
                 205 => array( 'name' => 'Sitio Histórico' ),
-                206 => array( 'name' => 'Documentação' ),        
+                206 => array( 'name' => 'Documentação' ),
                 207 => array( 'name' => 'Coleções' ),
             )
         ),

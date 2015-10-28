@@ -11,18 +11,29 @@
 // application/
 // --------------------------------------------------
 
-
-// _header.scss
 #brand-logo {
-    img {
-        width: 38px;
-        @media screen and (min-width: $screen-tablet) {
-            width: 77px;
-        }
+    @media screen and (min-width: $screen-tablet) {
+        padding-top: 0.775rem;
     }
 }
 
-.verified-seal {
-    height: 123px;
-    width: 99px;
+#about-nav {
+    @media screen and (min-width: $screen-tablet) {
+        padding-top: 1rem;
+    }
+}
+
+#secondary-menu {
+    padding-top: 0.625rem;
+}
+
+// Main Nav
+// ----------------------------------------------------
+
+.menu {
+    @media (max-width: $screen-xs-max) {
+        > li {
+            padding: 0.1rem 0.25rem;
+        }
+    }
 }

@@ -534,7 +534,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <?php else: ?>
                 <div class="clearfix">
                     <?php if($entity->canUser('publishRegistrations')): ?>
-                        <a id="btn-publish-results" class="btn btn-primary" href="<?php echo $app->createUrl('project', 'publish', [$entity->id]) ?>">Publicar resultados</a>
+                        <a id="btn-publish-results" class="btn btn-primary" href="<?php echo $app->createUrl('project', 'publishRegistrations', [$entity->id]) ?>">Publicar resultados</a>
                     <?php else: ?>
                         <a id="btn-publish-results" class="btn btn-primary disabled hltip" title="Você só pode publicar a lista de aprovados após o término do período de inscrições.">Publicar resultados</a>
                     <?php endif; ?>
