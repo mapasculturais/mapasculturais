@@ -50,9 +50,9 @@ class ExecutionTime extends \Slim\Middleware{
         $time_end = microtime(true);
 
         $execution_time = number_format($time_end - $this->time_start, 4);
-
-        $log_string = '(' . $app->request->getMethod() . ') ' . $app->request->getResourceUri() . ' - executed in ' . $execution_time . ' seconds.';
-
+        $mem = memory_get_usage(true) / 1024 / 1024;
+        $log_string = '(' . $app->request->getMethod() . ') ' . $app->request->getResourceUri() . ' - executed in ' . $execution_time . ' seconds. (MEM: ' . $mem . 'MB)';
+        
         if($this->print){
             $append = $this->html_comment ?
                     "<!-- $log_string -->":
