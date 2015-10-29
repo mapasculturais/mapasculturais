@@ -166,7 +166,7 @@ trait ControllerAPI{
             $class = $this->entityClassName;
 
             $entity_properties = array_keys($app->em->getClassMetadata($this->entityClassName)->fieldMappings);
-            
+
             $entity_associations = $app->em->getClassMetadata($this->entityClassName)->associationMappings;
 
             $entity_metadata = [];
@@ -206,8 +206,13 @@ trait ControllerAPI{
 
             $append_files_cb = function(){};
 
+            if(in_array('publicLocation', $entity_properties)){
+                $select_properties = ['id','status','publicLocation'];
+            }else{
+                $select_properties = ['id','status'];
+            }
+
             $select = ['id'];
-            $select_properties = ['id','status'];
             $select_metadata = [];
             $order = null;
             $op = ' AND ';
@@ -451,15 +456,15 @@ trait ControllerAPI{
                 $dql_select[] = ', _owner';
                 $dql_select_joins[] = "LEFT JOIN e.owner _owner";
             }
-            
+
             $select_properties = implode(',',array_unique($select_properties));
-            
+
             $final_dql = "
                 SELECT PARTIAL
                     e.{{$select_properties}}
                 FROM
                     $class e
-                $dql_joins 
+                $dql_joins
 
                 $dql_where
 
@@ -471,9 +476,9 @@ trait ControllerAPI{
                 $app->log->debug("API DQL: ".$final_dql);
 
             $query = $app->em->createQuery($final_dql);
-            
+
 //            die(var_dump($dql_select,$dql_select_joins));
-            
+
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
                     return;
@@ -483,26 +488,26 @@ trait ControllerAPI{
                     $e = (object) $e;
                     $ids[] = $e->id;
                 }
-                
+
                 foreach($dql_select as $i => $_select){
                     $_join = $dql_select_joins[$i];
-                    
+
                     $dql = "
-                        SELECT PARTIAL 
+                        SELECT PARTIAL
                             e.{id} $_select
-                        FROM 
+                        FROM
                             $class e $_join
-                        WHERE 
+                        WHERE
                             e.id IN(:entity_ids)
                     ";
 
                     $q = $app->em->createQuery($dql);
-                    
+
                     if($app->config['app.log.apiDql'])
                         $app->log->debug("====================================== SUB ====================================================\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n: ".$dql);
-                    
+
                     $q->setParameter('entity_ids', $ids);
-                    
+
                     $q->getResult();
                 }
             };
@@ -583,7 +588,7 @@ trait ControllerAPI{
 
                 $paginator = new Paginator($query, $fetchJoinCollection = true);
                 $entity = null;
-                
+
                 if(count($paginator)){
                     $r = $paginator->getIterator()->current();
 
@@ -658,7 +663,7 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
-                    
+
                     $sub_queries($rs);
                 }else{
                     if($counting){
@@ -666,7 +671,7 @@ trait ControllerAPI{
                     } else {
                         $rs = $query->getResult();
                     }
-                    
+
                     $sub_queries($rs);
 
                     $rs_count = count($rs);
