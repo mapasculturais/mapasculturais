@@ -294,7 +294,7 @@ abstract class Theme extends \Slim\View {
      */
     public function partialRender($template, $data = [], $_is_part = false){
         $app = App::i();
-
+        
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
 
         if(is_array($data))
@@ -322,8 +322,17 @@ abstract class Theme extends \Slim\View {
         ob_start(function($output){
             return $output;
         });
+        
+        if($app->config['themes.active.debugParts']){
+            $template_debug = str_replace(THEMES_PATH, '', $template_name);
+            echo '<!-- ' . $template_debug . ".php # BEGIN -->";
+        }
 
         include $templatePath;
+        
+        if($app->config['themes.active.debugParts']){
+            echo '<!-- ' . $template_debug . ".php # END -->";
+        }
 
         $html = ob_get_clean();
 

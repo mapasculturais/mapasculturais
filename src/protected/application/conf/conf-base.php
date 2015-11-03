@@ -46,6 +46,7 @@ return array(
     'app.offlineBypassFunction' => null,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
+    'themes.active.debugParts' => false,
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . $asset_dir,
 
