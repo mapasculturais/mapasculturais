@@ -292,7 +292,7 @@ MapasCulturais.App = {
     }
 };
 
-MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
+MapasCulturais.defaultAvatarURL = MapasCulturais.assets.avatarAgent;
 
 function editableEntityAddHash(){
     $('#editable-entity').find('.js-toggle-edit').each(function(){
