@@ -229,9 +229,12 @@ abstract class Theme extends \Slim\View {
         $app = App::i();
 
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        $render_data = [];
 
-        foreach($this->data->keys() as $k)
+        foreach($this->data->keys() as $k){
+            $render_data[$k] = $this->data->get($k);
             $$k = $this->data->get($k);
+        }
 
         if ($this->controller){
             $this->bodyClasses[] = "controller-{$this->controller->id}";
