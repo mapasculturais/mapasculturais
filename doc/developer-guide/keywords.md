@@ -45,7 +45,7 @@ $app->hook('repo(<<Agent|Space>>).getIdsByKeywordDQL.join', function(&$joins, $k
 $app->hook('repo(<<Agent|Space>>).getIdsByKeywordDQL.where', function(&$where, $keyword){
     // a variável $keyword está disponível aqui porém não é recomendado que esta seja utilizada diretamente na consulta
     // pois ela já estará disponível dentro da consulta pelo parâmetro :keyword.
-    $where .= "lower(num_entidade.value) LIKE lower(:keyword)";
+    $where .= " OR lower(num_entidade.value) LIKE lower(:keyword)";
 });
 ```
 ### Utilizando uma taxonomia na busca por palavra-chave
