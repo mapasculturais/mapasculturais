@@ -184,7 +184,7 @@ abstract class File extends \MapasCulturais\Entity
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
-                
+
                 if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive' || strpos($file->group, 'rfc_') === 0){
                     $result[trim($file->group)] = $file;
                 }else{
@@ -271,24 +271,25 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     public function transform($transformation_name){
+        $result = null;
+        if(preg_match('#^image/#i',$this->mimeType)){
+            $app = App::i();
 
-        if(!preg_match('#^image/#i',$this->mimeType))
-                return null;
+            $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
 
-        $app = App::i();
+            $app->disableAccessControl();
 
-        $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
+            if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
+                $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
+            }else{
+                $transformed = $this->_transform($transformation_name, $wideimage_operations);
+            }
 
-        $app->disableAccessControl();
-
-        if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
-            $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
-        }else{
-            $transformed = $this->_transform($transformation_name, $wideimage_operations);
+            $app->enableAccessControl();
+            $result = $transformed;
         }
-
-        $app->enableAccessControl();
-        return $transformed;
+        
+        return $result;
     }
 
     /**
@@ -324,7 +325,7 @@ abstract class File extends \MapasCulturais\Entity
             }
         }
 
-        if($transformed = $this->repo()->findBy(['parent' => $this, 'group' => $transformation_group_name])){
+        if($transformed = $this->repo()->findOneBy(['parent' => $this, 'group' => $transformation_group_name])){
             return $transformed;
         }
 
