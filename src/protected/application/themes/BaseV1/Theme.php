@@ -549,7 +549,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $entity = $this->controller->requestedEntity;
 
-        $site_name = $app->siteName;
+        $site_name = $this->dict('site: name', false);
         $title = $app->view->getTitle($entity);
         $image_url = $app->view->asset('img/share.png', false);
         if ($entity) {
@@ -557,7 +557,7 @@ class Theme extends MapasCulturais\Theme {
             if ($entity->avatar)
                 $image_url = $entity->avatar->transform('avatarBig')->url;
         }else {
-            $description = $app->siteDescription;
+            $description = $this->dict('site: description', false);
         }
         // for responsive
         $this->documentMeta[] = array("name" => 'viewport', 'content' => 'width=device-width, initial-scale=1, maximum-scale=1.0');

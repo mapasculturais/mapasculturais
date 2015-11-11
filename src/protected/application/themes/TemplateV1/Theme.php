@@ -14,8 +14,8 @@ class Theme extends BaseV1\Theme{
         $url_search_projects = $self->searchProjectsUrl;
 
         return [
-//            'site: name' => $app->config['app.siteName'], // @see ./conf-base.php
-//            'site: description' => $app->config['app.siteDescription'], // @see ./conf-base.php
+//            'site: name' => App::i()->config['app.siteName'],
+//            'site: description' => App::i()->config['app.siteDescription'],
 //            'site: in the region' => 'na região',
 //            'site: of the region' => 'da região',
 //            'site: owner' => 'Secretaria',
@@ -44,8 +44,12 @@ class Theme extends BaseV1\Theme{
         parent::_init();
         $app = App::i();
         $app->hook('view.render(<<*>>):before', function() use($app) {
-            $this->jsObject['assets']['logo-prefeitura'] = $this->asset('img/logo-prefeitura.png', false);
+            $this->_publishAssets();
         });
+    }
+
+    protected function _publishAssets() {
+        $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
     }
 
 }
