@@ -48,6 +48,11 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
     }
 
     function getOptionLabel($key){
-        return \MapasCulturais\App::i()->config['registration.agentRelationsOptions'][$key];
+        $cfg = \MapasCulturais\App::i()->config['registration.agentRelationsOptions'];
+        if(!$key || !isset($cfg[$key])){
+            return '';
+        }else{
+            return $cfg[$key];
+        }
     }
 }
