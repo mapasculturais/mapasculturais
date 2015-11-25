@@ -132,7 +132,10 @@ return array(
                 20 => array( 'name' => 'Biblioteca Pública' ),
                 21 => array( 'name' => 'Biblioteca Privada' ),
                 22 => array( 'name' => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)'),
-                23 => array( 'name' => ' Biblioteca Escolar')
+                23 => array( 'name' => 'Biblioteca Escolar'),
+                24 => array( 'name' => 'Biblioteca Nacional'),
+                25 => array( 'name' => 'Biblioteca Universitária'),
+                26 => array( 'name' => 'Biblioteca Especializada')
             )
         ),
 
