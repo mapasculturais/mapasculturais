@@ -155,7 +155,9 @@ trait ControllerAPI{
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
 
         $counting = key_exists('@count', $qdata);
-
+        
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$qdata]);
+        
         if($counting)
             unset($qdata['@count']);
 
@@ -458,6 +460,13 @@ trait ControllerAPI{
             }
 
             $select_properties = implode(',',array_unique($select_properties));
+            
+            
+            if(in_array('type', $select)){
+                $select_properties .= ',_type';
+            }
+            
+            $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
 
             $final_dql = "
                 SELECT PARTIAL
@@ -504,7 +513,7 @@ trait ControllerAPI{
                     $q = $app->em->createQuery($dql);
 
                     if($app->config['app.log.apiDql'])
-                        $app->log->debug("====================================== SUB ====================================================\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n: ".$dql);
+                        $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
                     $q->setParameter('entity_ids', $ids);
 
@@ -688,6 +697,8 @@ trait ControllerAPI{
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);
+                
+                $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result", [&$qdata, &$result]);
 
                 return $result;
             }
