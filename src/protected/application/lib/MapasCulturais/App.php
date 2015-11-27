@@ -740,8 +740,8 @@ class App extends \Slim\Slim{
         }
 
         $this->view->register();
-
-        $this->applyHook('app.register');
+        
+        $this->applyHookBoundTo($this, 'app.register',[&$this->_register]);
     }
 
 
