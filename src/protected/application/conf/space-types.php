@@ -62,6 +62,16 @@ return array(
                 'Não' => 'Não'
             )
         ),
+        'acessibilidade_fisica' => array(
+            'label' => 'Acessibilidade física',
+            'type' => 'multiselect',
+            'options' => array(
+                'Banheiros adaptados',
+                'Rampa de acesso',
+                'Elevador',
+                'Sinalização tátil',
+            )
+        ),
         'capacidade' => array(
             'label' => 'Capacidade',
             'validations' => array(
