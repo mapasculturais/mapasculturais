@@ -129,6 +129,19 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
 
+        if (isset($config['options'])) {
+            $new_array = [];
+            foreach ($config['options'] as $key => $value) {
+                if (!is_string($key)) {
+                    $key = $value;
+                }
+
+                $new_array[$key] = $value;
+            }
+
+            $config['options'] = $new_array;
+        }
+
         $this->config = $config;
     }
 
