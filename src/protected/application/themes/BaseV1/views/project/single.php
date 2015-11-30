@@ -3,7 +3,10 @@ use MapasCulturais\Entities\Registration;
 
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
-$this->bodyProperties['ng-app'] = "Entity";
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
+
+$this->jsObject['angularAppDependencies'][] = 'entity.module.project';
 
 $this->addEntityToJs($entity);
 

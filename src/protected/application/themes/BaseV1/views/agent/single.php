@@ -1,6 +1,7 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
-$this->bodyProperties['ng-app'] = "Entity";
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->addEntityToJs($entity);
 
@@ -10,6 +11,7 @@ if($this->isEditable()){
 
     $this->addTaxonoyTermsToJs('tag');
 }
+
 $this->includeMapAssets();
 
 $this->includeAngularEntityAssets($entity);

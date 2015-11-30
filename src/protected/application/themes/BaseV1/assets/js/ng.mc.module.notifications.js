@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
 
-    var module = angular.module('Notifications', []);
+    var module = angular.module('mc.module.notifications', []);
 
     module.factory('NotificationService', ['$log','$http', '$q', '$rootScope', function($log, $http, $q, $rootScope){
 
@@ -92,7 +92,7 @@
     angular.element(document).ready(function(){
         var app = null;
         //checks existence of default search and Entity (singles') angular modules
-        ['search', 'Entity'].forEach(function(moduleName){
+        ['search.app', 'entity.app'].forEach(function(moduleName){
             if(!app){
                 try{
                     app = angular.module(moduleName);
@@ -105,10 +105,10 @@
 
             // let's search again
             if(ctrl && !angular.element(ctrl.parentElement).scope()) {
-                angular.bootstrap(ctrl.parentElement, ['Notifications']);
+                angular.bootstrap(ctrl.parentElement, ['mc.module.notifications']);
             }
         }
-        app = angular.module('Notifications');
+        app = angular.module('mc.module.notifications');
     });
 
 })(angular);

@@ -1,6 +1,7 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
-$this->bodyProperties['ng-app'] = "Entity";
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->addEntityToJs($entity);
 
@@ -81,6 +82,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
             </p>
             <div class="servico">
+                <multiselect label="Teste" allow-other="true" allow-other-text="Testando"></multiselect>
+                
                 <?php if($this->isEditable()): ?>
                     <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
                 <?php endif; ?>

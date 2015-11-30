@@ -1,7 +1,7 @@
 (function(angular) {
     "use strict";
 
-    var app = angular.module('FindOneService', []);
+    var app = angular.module('search.service.findOne', []);
     app.factory('FindOneService', ['$http', '$rootScope', function($http, $rootScope){
         return function(data){
 

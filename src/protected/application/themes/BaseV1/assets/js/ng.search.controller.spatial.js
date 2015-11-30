@@ -1,5 +1,5 @@
 (function(angular) {
-    var app = angular.module('SearchSpatial', ['ng-mapasculturais']);
+    var app = angular.module('search.controller.spatial', ['ng-mapasculturais']);
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
         var map = null;

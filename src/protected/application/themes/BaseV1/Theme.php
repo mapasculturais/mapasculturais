@@ -388,6 +388,19 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
+            
+            $this->jsObject['angularAppDependencies'] = [
+                'entity.module.relatedAgents', 
+                'entity.module.changeOwner',
+
+                'mc.directive.multiselect',
+                'mc.directive.editBox',
+                'mc.directive.mcSelect',
+                'mc.module.notifications', 
+                'mc.module.findEntity',
+
+                'ngSanitize',
+            ];
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -679,8 +692,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'tim', 'js/tim.js');
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
 
-        $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
-        $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
+        $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
 
 
 
@@ -708,12 +721,12 @@ class Theme extends MapasCulturais\Theme {
 
     function includeSearchAssets() {
 
-        $this->enqueueScript('app', 'SearchService', 'js/SearchService.js', array('ng-mapasculturais', 'SearchSpatial'));
-        $this->enqueueScript('app', 'FindOneService', 'js/FindOneService.js', array('ng-mapasculturais', 'SearchSpatial'));
-        $this->enqueueScript('app', 'SearchMapController', 'js/SearchMap.js', array('ng-mapasculturais', 'map'));
-        $this->enqueueScript('app', 'SearchSpatial', 'js/SearchSpatial.js', array('ng-mapasculturais', 'map'));
+        $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
+        $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
+        $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
+        $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
 
-        $this->enqueueScript('app', 'Search', 'js/Search.js', array('ng-mapasculturais', 'SearchSpatial', 'SearchMapController', 'FindOneService', 'SearchService'));
+        $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
     }
 
     function includeMapAssets() {
@@ -760,11 +773,26 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
+        $this->jsObject['templateUrl']['multiselect'] = $this->asset('js/directives/multiselect.html', false);
 
-        $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
-        $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
-        $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
+            'mapasculturais', 
+            'ng-mapasculturais', 
+            'mc.directive.multiselect', 
+            'mc.directive.editBox', 
+            'mc.directive.mcSelect', 
+            'mc.module.findEntity',
+            'entity.module.relatedAgents',
+            'entity.module.changeOwner', 
+        ));
+        
+        $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
 
         $roles = [];
         if(!\MapasCulturais\App::i()->user->is('guest')){

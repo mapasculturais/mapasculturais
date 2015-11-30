@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
 
-    var module = angular.module('Project', ['ngSanitize']);
+    var module = angular.module('entity.module.project', ['ngSanitize']);
 
     module.config(['$httpProvider', function ($httpProvider) {
             $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';

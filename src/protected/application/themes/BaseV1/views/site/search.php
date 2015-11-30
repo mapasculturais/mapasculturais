@@ -1,7 +1,7 @@
 <?php
 $this->layout = 'search';
 
-$this->bodyProperties['ng-app'] = "search";
+$this->bodyProperties['ng-app'] = "search.app";
 $this->bodyProperties['ng-controller'] = "SearchController";
 $this->bodyProperties['ng-class'] = "{'infobox-open': showInfobox()}";
 

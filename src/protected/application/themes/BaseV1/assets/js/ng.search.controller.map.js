@@ -1,6 +1,6 @@
 
 (function(angular) {
-    var app = angular.module('SearchMap', ['ng-mapasculturais', 'FindOneService']);
+    var app = angular.module('search.controller.map', ['ng-mapasculturais', 'search.service.findOne']);
     app.controller('SearchMapController', ['$window', '$scope', '$rootScope', 'FindOneService', function($window, $scope, $rootScope, FindOneService) {
         $scope.init = function (){
 
