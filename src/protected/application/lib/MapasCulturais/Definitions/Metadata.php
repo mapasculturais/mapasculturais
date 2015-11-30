@@ -242,11 +242,25 @@ class Metadata extends \MapasCulturais\Definition{
             'private' => $this->private
         ];
 
-        if(key_exists('options', $this->config))
-                $result['options'] = $this->config['options'];
+        if(key_exists('options', $this->config)){
+            $result['options'] = $this->config['options'];
+        }
 
-        if(key_exists('label', $this->config))
-                $result['label'] = $this->config['label'];
+        if(key_exists('label', $this->config)){
+            $result['label'] = $this->config['label'];
+        }
+
+
+        if(key_exists('allowOther', $this->config)){
+            $result['allowOther'] = $this->config['allowOther'];
+        }
+
+
+        if(key_exists('allowOtherText', $this->config)){
+            $result['allowOtherText'] = $this->config['allowOtherText'];
+        }
+
+
 
         return $result;
     }

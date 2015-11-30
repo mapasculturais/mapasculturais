@@ -1,20 +1,31 @@
 (function (angular) {
     "use strict";
     angular.module('entity.directive.editableMultiselect', [])
-        .directive('editableMultiselect', function () {
+        .directive('editableMultiselect', ['EditBox', '$log', function (EditBox, $log) {
             return {
                 restrict: 'E',
                 templateUrl: MapasCulturais.templateUrl.editableMultiselect,
                 scope: {
                     entityProperty: '@',
-                    emptyLabel: '@'
+                    emptyLabel: '@',
+                    boxTitle: '@',
                 },
                 link: function ($scope, el, attrs) {
-                    $scope.terms = Object.keys(MapasCulturais.entity.definition[attrs.entityProperty].options);
+                    var def = MapasCulturais.entity.definition[attrs.entityProperty];
+
+                    $scope.editBox = EditBox;
+                    
+                    $scope.terms = Object.keys(def.options);
                     $scope.values = ['Quilombolas','Outro'];
-                    $scope.allowOther = MapasCulturais.entity.definition[attrs.entityProperty].allowOther;
-                    $scope.allowOtherText = MapasCulturais.entity.definition[attrs.entityProperty].allowOtherText;
+                    $scope.allowOther = def.allowOther;
+                    $scope.allowOtherText = def.allowOtherText;
+
+//                    $scope.boxTitle = ;
+
+                    $log.log($scope.title);
+
+                    $scope.editBoxId = 'editable-multiselect-' + $scope.entityProperty;
                 }
             };
-        });
+        }]);
 })(angular);

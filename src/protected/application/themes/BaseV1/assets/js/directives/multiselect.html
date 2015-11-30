@@ -9,5 +9,6 @@
     <label ng-if="allowOther" ng-show="cfg.show" class="colunm-full">
         <span>Quais?*</span>
         <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
+        <small>Separe os valores com ponto e vírgula (;)</small>
     </label>
 </div>

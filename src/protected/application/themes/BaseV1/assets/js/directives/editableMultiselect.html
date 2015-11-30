@@ -1,5 +1,5 @@
-<a>{{emptyLabel}}</a>
-
-<multiselect values="values" terms="terms" allow-other="allowOther" allow-other-text="{{allowOtherText}}"></multiselect>
-
+<a ng-click="editBox.open(editBoxId, $event)">{{emptyLabel}}</a>
+<edit-box id="{{editBoxId}}" title="{{boxTitle}}" submit-label="ok" cancel-label="cancelar" close-on-cancel="true">
+    <multiselect values="values" terms="terms" allow-other="allowOther" allow-other-text="{{allowOtherText}}"></multiselect>
+</edit-box>
 {{values}}
