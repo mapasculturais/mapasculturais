@@ -135,6 +135,80 @@ return array(
             'label' => 'Endereço',
             'type' => 'text'
         ),
+                    
+        'En_CEP' => [
+            'label' => 'CEP',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Nome_Logradouro' => [
+            'label' => 'Logradouro',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Num' => [
+            'label' => 'Número',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Complemento' => [
+            'label' => 'Complemento',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Bairro' => [
+            'label' => 'Bairro',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Municipio' => [
+            'label' => 'Município',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Estado' => [
+            'label' => 'Estado',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+            'type' => 'select',
+
+            'options' => array(
+                'AC'=>'Acre',
+                'AL'=>'Alagoas',
+                'AP'=>'Amapá',
+                'AM'=>'Amazonas',
+                'BA'=>'Bahia',
+                'CE'=>'Ceará',
+                'DF'=>'Distrito Federal',
+                'ES'=>'Espírito Santo',
+                'GO'=>'Goiás',
+                'MA'=>'Maranhão',
+                'MT'=>'Mato Grosso',
+                'MS'=>'Mato Grosso do Sul',
+                'MG'=>'Minas Gerais',
+                'PA'=>'Pará',
+                'PB'=>'Paraíba',
+                'PR'=>'Paraná',
+                'PE'=>'Pernambuco',
+                'PI'=>'Piauí',
+                'RJ'=>'Rio de Janeiro',
+                'RN'=>'Rio Grande do Norte',
+                'RS'=>'Rio Grande do Sul',
+                'RO'=>'Rondônia',
+                'RR'=>'Roraima',
+                'SC'=>'Santa Catarina',
+                'SP'=>'São Paulo',
+                'SE'=>'Sergipe',
+                'TO'=>'Tocantins',
+            )
+        ],
 
         'site' => array(
             'label' => 'Site',
