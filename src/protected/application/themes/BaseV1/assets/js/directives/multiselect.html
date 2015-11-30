@@ -1,3 +1,13 @@
-<div>{{label}}</div>
-<div>{{allowOther}}</div>
-<div>{{allowOtherText}}</div>
+<label ng-repeat="term in terms" class="colunm{{$index % 3 + 1}}"> 
+    <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" >
+    {{ term }}
+</label>
+
+<label ng-if="allowOther" class="colunm{{terms.length % 3 + 1}}"> <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show">{{cfg.allowOtherText}} </label>
+
+<div class="row">
+    <label ng-if="allowOther" ng-show="cfg.show" class="colunm-full">
+        <span>Quais?*</span>
+        <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
+    </label>
+</div>

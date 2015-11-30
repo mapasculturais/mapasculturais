@@ -392,6 +392,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents', 
                 'entity.module.changeOwner',
+                'entity.directive.editableMultiselect',
 
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
@@ -774,6 +775,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
         $this->jsObject['templateUrl']['multiselect'] = $this->asset('js/directives/multiselect.html', false);
+        $this->jsObject['templateUrl']['editableMultiselect'] = $this->asset('js/directives/editableMultiselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
             'mapasculturais', 
@@ -784,6 +786,7 @@ class Theme extends MapasCulturais\Theme {
             'mc.module.findEntity',
             'entity.module.relatedAgents',
             'entity.module.changeOwner', 
+            'entity.directive.editableMultiselect', 
         ));
         
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
@@ -793,6 +796,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
 
         $roles = [];
         if(!\MapasCulturais\App::i()->user->is('guest')){
