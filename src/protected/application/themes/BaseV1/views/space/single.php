@@ -76,6 +76,14 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <p><span class="label">Acessibilidade: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Acessibilidade"><?php echo $entity->acessibilidade; ?></span></p>
                     <?php endif; ?>
 
+                    <?php if($this->isEditable() || $entity->acessibilidade_fisica): ?>
+                    <p>
+                        <span class="label">Acessibilidade física: </span>
+                        <editable-multiselect entity-property="acessibilidade_fisica" empty-label="Selecione" allow-other="true" box-title="Acessibilidade física:"></editable-multiselect>
+                    </p>
+                    <?php endif; ?>
+                    <?php $this->applyTemplateHook('acessibilidade','after'); ?>
+
                     <?php if($this->isEditable() || $entity->capacidade): ?>
                     <p><span class="label">Capacidade: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade do espaço"><?php echo $entity->capacidade; ?></span></p>
                     <?php endif; ?>

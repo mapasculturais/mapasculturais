@@ -65,6 +65,8 @@ return array(
         'acessibilidade_fisica' => array(
             'label' => 'Acessibilidade física',
             'type' => 'multiselect',
+            'allowOther' => true,
+            'allowOtherText' => 'Outros',
             'options' => array(
                 'Banheiros adaptados',
                 'Rampa de acesso',
