@@ -32,16 +32,27 @@ jQuery(function(){
     });
 
     //Máscaras de telefone
-    var masks = ['(00) 00000-0000', '(00) 0000-00009'];
 
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-mask-phone')) {
+            var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:
                function(val, e, field, options) {
                    field.mask(val.length > 14 ? masks[0] : masks[1], options) ;
                }
             });
         }
+
+        if ($(this).hasClass('js-mask-cep')) {
+            var masks = ['00000-000'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
@@ -887,6 +898,7 @@ $(function(){
 
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
+        cep = cep.replace('-','');
         $.getJSON('http://cep.correiocontrol.com.br/'+cep+'.json',function(r){
             $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
             $('#En_Bairro').editable('setValue', r.bairro);
