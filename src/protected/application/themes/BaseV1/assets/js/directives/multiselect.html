@@ -2,11 +2,12 @@
     <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
 </label>
 <div class="clear"></div>
-<label ng-if="allowOther" > <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show">{{cfg.allowOtherText}} </label>
+<label ng-if="allowOther" >
+    <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show"> {{cfg.allowOtherText}}
+</label>
 
 <div ng-if="allowOther" class="row">
     <label ng-show="cfg.show" class="colunm-full">
-        <span>Quais?*</span>
         <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
         <small>Separe os valores com ponto e vírgula (;)</small>
     </label>
