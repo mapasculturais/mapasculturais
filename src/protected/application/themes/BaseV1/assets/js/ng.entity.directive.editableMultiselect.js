@@ -27,7 +27,8 @@
                     $scope.inputVal = entity[$scope.entityProperty];
                     
                     $scope.editBox = EditBox;
-                    
+
+
                     $scope.terms = Object.keys(def.options);
                     $scope.allowOther = def.allowOther;
                     $scope.allowOtherText = def.allowOtherText;
@@ -37,6 +38,16 @@
                     $log.log($scope.title);
 
                     $scope.editBoxId = 'editable-multiselect-' + $scope.entityProperty;
+
+                    $scope.cfg = {
+                        isEditable: MapasCulturais.isEditable
+                    };
+
+                    $scope.openEditBox = function($event){
+                        if(MapasCulturais.isEditable){
+                            EditBox.open($scope.editBoxId, $event);
+                        }
+                    };
                     
                     resetValues();
                     
