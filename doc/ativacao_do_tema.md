@@ -46,4 +46,18 @@ Busque e altere as linhas abaixo.
   'maps.zoom.default' => 12,
 ```
 
-Rode o script de deploy com o usuario da aplicacao. 
+Rode o script de deploy com o usuario da aplicação. 
+
+## Colocando em modo homologação, produção ou desenvolvimento
+
+Após a instalação da ferramenta, no arquivo mapasculturais/src/protected/application/conf/config.php, encontrei essas linhas: 
+
+```
+    // development, staging, production
+    'app.mode' => 'production',
+
+    'doctrine.isDev' => false,
+    'slim.debug' => false,
+    'maps.includeGoogleLayers' => true,
+```
+Alterando a chave app.mode para development você terá saídas para o modo de desenvolvimento da aplicação. Alterando também a chave slim.debug para true, você poderá ver as saídas de debug da aplicação. Essas duas modificações são extremamente uteis para identificar erros desconhecidos ou ainda para testar saídas e vericar resultados. 
