@@ -303,7 +303,7 @@ $this->includeMapAssets();
                 <?php endif; ?>
                 <div id="dialog-event-occurrence" class="js-dialog">
                     <?php if($this->controller->action == 'create'): ?>
-                        <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
+                        <span class="js-dialog-disabled" data-message="Para adicionar ocorrências, primeiro é preciso salvar o evento"></span>
                     <?php else: ?>
                         <div class="js-dialog-content"></div>
                     <?php endif; ?>
