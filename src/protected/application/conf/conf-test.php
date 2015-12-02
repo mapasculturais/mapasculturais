@@ -41,6 +41,8 @@ return array_merge($config,
 
         // disable cache
 
-        'app.usePermissionsCache' => false
+        'app.usePermissionsCache' => false,
+
+        'app.cache' => new \Doctrine\Common\Cache\ArrayCache(),
     )
 );
