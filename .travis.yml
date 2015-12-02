@@ -11,7 +11,9 @@ matrix:
 
 install:
   - composer self-update && composer --version
-  - if [[ $TRAVIS_PHP_VERSION = "7.0" ]]; then echo "yes" | pecl install apcu-beta; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ 5.4 ]] ; then echo 'extension="apc.so"' >> ./tests/travis/php.ini; fi;
+  - if [[ $TRAVIS_PHP_VERSION =~ 5.[56] ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu; fi;
+  - if [[ $TRAVIS_PHP_VERSION =~ 7.0 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu; fi;
   - pushd src/protected; composer install --prefer-dist; popd
 
 before_script:
