@@ -415,7 +415,9 @@ class Theme extends MapasCulturais\Theme {
                 'entity.module.relatedAgents', 
                 'entity.module.changeOwner',
                 'entity.directive.editableMultiselect',
+                'entity.directive.editableSingleselect',
 
+                'mc.directive.singleselect',
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
                 'mc.directive.mcSelect',
@@ -797,21 +799,26 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
         $this->jsObject['templateUrl']['multiselect'] = $this->asset('js/directives/multiselect.html', false);
+        $this->jsObject['templateUrl']['singleselect'] = $this->asset('js/directives/singleselect.html', false);
         $this->jsObject['templateUrl']['editableMultiselect'] = $this->asset('js/directives/editableMultiselect.html', false);
+        $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
             'mapasculturais', 
             'ng-mapasculturais', 
             'mc.directive.multiselect', 
+            'mc.directive.singleselect',
             'mc.directive.editBox', 
             'mc.directive.mcSelect', 
             'mc.module.findEntity',
             'entity.module.relatedAgents',
             'entity.module.changeOwner', 
             'entity.directive.editableMultiselect', 
+            'entity.directive.editableSingleselect',
         ));
         
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
@@ -819,6 +826,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
         $roles = [];
         if(!\MapasCulturais\App::i()->user->is('guest')){

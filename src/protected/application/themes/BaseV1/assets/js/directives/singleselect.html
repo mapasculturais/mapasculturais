@@ -1,0 +1,14 @@
+<h1>AQUI</h1>
+<label ng-repeat="term in terms" style="float:left; width:50%; display:inline-block; white-space: nowrap"> 
+    <input name="cfg.name" ng-checked="checked(term)" ng-click="toggleTerm(term)" type="radio" > {{ term }}
+</label>
+<div class="clear"></div>
+<label ng-if="allowOther" >
+    <input name="cfg.name" ng-model="cfg.show" type="radio" ng-checked="cfg.show"> {{cfg.allowOtherText}}
+</label>
+
+<div ng-if="allowOther" class="row">
+    <label ng-show="cfg.show" class="colunm-full">
+        <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
+    </label>
+</div>
