@@ -27,7 +27,7 @@ $em = $app->em;
                         <?php endif; ?>
                         
                         <?php if($app->isEnabled('spaces')): ?>
-                            <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon icon-space"></span> Espaços</li>
+                            <li tabindex="4" id="spaces-filter"  data-entity="space"><span class="icon icon-space"></span> <?php $this->dict('entities: Spaces') ?></li>
                         <?php endif; ?>
                         
                         <?php if($app->isEnabled('projects')): ?>

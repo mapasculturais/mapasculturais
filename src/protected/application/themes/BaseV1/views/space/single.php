@@ -85,7 +85,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <?php $this->applyTemplateHook('acessibilidade','after'); ?>
 
                     <?php if($this->isEditable() || $entity->capacidade): ?>
-                    <p><span class="label">Capacidade: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade do espaço"><?php echo $entity->capacidade; ?></span></p>
+                    <p><span class="label">Capacidade: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->horario): ?>
@@ -124,12 +124,12 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
                 <h3>Descrição</h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Espaço" data-emptytext="Insira uma descrição do espaço" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição <?php $this->dict('entities: of the Space') ?>" data-emptytext="Insira uma descrição <?php $this->dict('entities: of the space') ?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
 
             <?php if ( $this->isEditable() || $entity->criterios ): ?>
-                <h3>Critérios de uso do espaço</h3>
-                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso do espaço" data-emptytext="Insira os critérios de uso do espaço" data-placeholder="Insira os critérios de uso do espaço" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
+                <h3>Critérios de uso <?php $this->dict('entities: of the space') ?></h3>
+                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
             <?php endif; ?>
 
             <!-- Video Gallery BEGIN -->

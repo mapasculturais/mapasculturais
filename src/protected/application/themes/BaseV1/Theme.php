@@ -31,7 +31,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
-
+            
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
@@ -43,7 +43,29 @@ class Theme extends MapasCulturais\Theme {
             'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
 
             'search: verified results' => 'Resultados Verificados',
-            'search: verified' => "Verificados"
+            'search: verified' => "Verificados",
+            
+            
+            'entities: Spaces of the agent'=> 'Espaços do agente',
+            'entities: Space Description'=> 'Descrição do Espaço',
+            'entities: My Spaces'=> 'Meus Espaços',
+            'entities: My spaces'=> 'Meus espaços',
+            
+            'entities: no registered spaces'=> 'nenhum espaço cadastrado',
+            'entities: no spaces'=> 'nenhum espaço',
+            
+            'entities: Space' => 'Espaço',
+            'entities: Spaces' => 'Espaços',
+            'entities: space' => 'espaço',
+            'entities: spaces' => 'espaços',
+            'entities: parent space' => 'espaço pai',
+            'entities: a space' => 'um espaço',
+            'entities: the space' => 'o espaço',
+            'entities: of the space' => 'do espaço',            
+            'entities: In this space' => 'Neste espaço',
+            'entities: in this space' => 'neste espaço',
+            'entities: registered spaces' => 'espaços cadastrados',
+            'entities: new space' => 'novo espaço',
         );
     }
 

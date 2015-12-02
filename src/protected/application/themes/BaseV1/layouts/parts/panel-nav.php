@@ -17,7 +17,7 @@
             
         <?php if($app->isEnabled('spaces')): ?>
             <?php $this->applyTemplateHook('nav.panel.spaces','before'); ?>
-            <li><a <?php if($this->template == 'panel/spaces') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icon icon-space"></span> Meus Espaços</a></li>
+            <li><a <?php if($this->template == 'panel/spaces') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'spaces') ?>"><span class="icon icon-space"></span> <?php $this->dict('entities: My Spaces') ?></a></li>
             <?php $this->applyTemplateHook('nav.panel.spaces','after'); ?>
         <?php endif; ?>
             

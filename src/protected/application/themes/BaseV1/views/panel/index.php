@@ -41,12 +41,12 @@ $this->layout = 'panel'
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Espaços</span>
+                        <span class="alignleft"><?php $this->dict('entities: Spaces') ?></span>
                         <div class="icon icon-space alignright"></div>
                     </div>
                     <div class="clearfix">
-                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver meus espaços"><?php echo $count->spaces; ?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar espaços"></a>
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver <?php $this->dict('entities: my spaces') ?>"><?php echo $count->spaces; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar <?php $this->dict('entities: spaces') ?>"></a>
                     </div>
                 </div>
             </div>

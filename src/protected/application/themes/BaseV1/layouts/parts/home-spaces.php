@@ -23,19 +23,19 @@ $url_search_spaces = $this->searchSpacesUrl;
 ?>
 <article id="home-spaces" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon icon-space"></span> Espaços</h1>
+        <h1><span class="icon icon-space"></span> <?php $this->dict('entities: Spaces') ?></h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_spaces ?></div>
-                <div class="statistic-label">espaços cadastrados</div>
+                <div class="statistic-label"><?php $this->dict('entities: registered spaces') ?></div>
             </div>
             <div class="statistics">
                 <div class="statistic"><?php echo $num_verified_spaces; ?></div>
-                <div class="statistic-label">espaços da <?php $this->dict('home: abbreviation'); ?></div>
+                <div class="statistic-label"><?php $this->dict('entities: spaces') ?> da <?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
         <p><?php $this->dict('home: spaces'); ?></p>
-        <h4>Encontre espaços por</h4>
+        <h4>Encontre <?php $this->dict('entities: spaces') ?> por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#space-terms">Área de atuação</a></li>
             <li><a href="#space-types">Tipo</a></li>
@@ -68,7 +68,7 @@ $url_search_spaces = $this->searchSpacesUrl;
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar espaço</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar <?php $this->dict('entities: space') ?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>">Ver tudo</a>
     </div>
 </article>

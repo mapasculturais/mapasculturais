@@ -412,12 +412,12 @@ $this->includeMapAssets();
         <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
         <div class="clearfix js-space">
-            <label>Espaço:</label><br>
+            <label><?php $this->dict('entities: Space') ?>:</label><br>
             <span class="js-search-occurrence-space"
                 data-field-name='spaceId'
-                data-emptytext="Selecione um espaço"
+                data-emptytext="Selecione <?php $this->dict('entities: a space') ?>"
                 data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um espaço"
+                data-search-box-placeholder="Selecione <?php $this->dict('entities: a space') ?>"
                 data-entity-controller="space"
                 data-search-result-template="#agent-search-result-template"
                 data-selection-template="#agent-response-template"
@@ -425,15 +425,15 @@ $this->includeMapAssets();
                 data-selection-format="chooseSpace"
                 data-auto-open="true"
                 data-value="{{space.id}}"
-                title="Selecione um espaço"
+                title="Selecione <?php $this->dict('entities: a space') ?>"
                 >{{space.name}}</span>
         </div>
 
-        <!--mostrar se não encontrar o espaço cadastrado
+        <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
         <div class="alert warning">
-            Aparentemente o espaço procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um novo espaço clicando no botão abaixo.
+            Aparentemente o <?php $this->dict('entities: space') ?> procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um <?php $this->dict('entities: new space') ?> clicando no botão abaixo.
         </div>
-        <a class="btn btn-default add" href="#">Adicionar espaço</a>-->
+        <a class="btn btn-default add" href="#">Adicionar <?php $this->dict('entities: space') ?></a>-->
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="horario-de-inicio">Horário inicial:</label><br>

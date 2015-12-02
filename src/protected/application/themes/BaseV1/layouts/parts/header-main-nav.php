@@ -41,7 +41,7 @@
             <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
                 <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
                     <div class="icon icon-space"></div>
-                    <div class="menu-item-label">Espaços</div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Spaces') ?></div>
                 </a>
             </li>
             <?php $this->applyTemplateHook('nav.main.spaces','after'); ?>
@@ -155,7 +155,7 @@
                     <?php if($app->isEnabled('spaces')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.spaces','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
+                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><?php $this->dict('entities: My Spaces') ?></a>
                             <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>

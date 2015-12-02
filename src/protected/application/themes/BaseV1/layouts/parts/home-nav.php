@@ -23,7 +23,7 @@
         <?php if($app->isEnabled('spaces')): ?>
             <li id="nav-spaces">
                 <a class="icon icon-space" href="#home-spaces"></a>
-                <span class="nav-title">Espaços</span>
+                <span class="nav-title"><?php $this->dict('entities: Spaces') ?></span>
             </li>
         <?php endif; ?>
             

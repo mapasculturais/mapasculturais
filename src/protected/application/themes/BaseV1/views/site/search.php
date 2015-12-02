@@ -36,7 +36,7 @@ $this->includeMapAssets();
         <div>
             <a class="hltip hltip-auto-update btn-map btn-map-event" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
             <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
-            <a class="hltip hltip-auto-update btn-map btn-map-space" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} espaços"></a>
+            <a class="hltip hltip-auto-update btn-map btn-map-space" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} <?php $this->dict('entities: spaces') ?>"></a>
         </div>
     </div>
 
@@ -184,8 +184,8 @@ $this->includeMapAssets();
             </article>
         </div>
         <header id="space-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'space'">
-            <h1><span class="icon icon-space"></span> Espaços</h1>
-            <a class="btn btn-accent add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar espaço</a>
+            <h1><span class="icon icon-space"></span> <?php $this->dict('entities: Spaces') ?></h1>
+            <a class="btn btn-accent add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar <?php $this->dict('entities: space') ?></a>
         </header>
         <div id="lista-dos-espacos" class="lista space" infinite-scroll="data.global.filterEntity === 'space' && addMore('space')" ng-show="data.global.filterEntity === 'space'">
             <article class="objeto clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
