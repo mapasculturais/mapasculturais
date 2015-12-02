@@ -25,34 +25,54 @@
 
 <nav id="main-nav" class="clearfix">
     <ul class="menu entities-menu clearfix">
-        <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
-            <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
-                <div class="icon icon-event"></div>
-                <div class="menu-item-label">Eventos</div>
-            </a>
-        </li>
-        <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
-            <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
-                <div class="icon icon-space"></div>
-                <div class="menu-item-label">Espaços</div>
-            </a>
-        </li>
-        <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
-            <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
-                <div class="icon icon-agent"></div>
-                <div class="menu-item-label">Agentes</div>
-            </a>
-        </li>
-        <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
-            <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
-                <div class="icon icon-project"></div>
-                <div class="menu-item-label">Projetos</div>
-            </a>
-        </li>
+        <?php if($app->isEnabled('events')): ?>
+            <?php $this->applyTemplateHook('nav.main.events','before'); ?>
+            <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
+                    <div class="icon icon-event"></div>
+                    <div class="menu-item-label">Eventos</div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.events','after'); ?>
+        <?php endif; ?>
+            
+        <?php if($app->isEnabled('spaces')): ?>
+            <?php $this->applyTemplateHook('nav.main.spaces','before'); ?>
+            <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
+                    <div class="icon icon-space"></div>
+                    <div class="menu-item-label">Espaços</div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.spaces','after'); ?>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('agents')): ?>
+            <?php $this->applyTemplateHook('nav.main.agents','before'); ?>
+            <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
+                    <div class="icon icon-agent"></div>
+                    <div class="menu-item-label">Agentes</div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.agents','after'); ?>
+        <?php endif; ?>
+            
+        <?php if($app->isEnabled('projects')): ?>
+            <?php $this->applyTemplateHook('nav.main.projects','before'); ?>
+            <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
+                    <div class="icon icon-project"></div>
+                    <div class="menu-item-label">Projetos</div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
+        <?php endif; ?>
     </ul>
     <!--.menu.entities-menu-->
     <ul class="menu session-menu clearfix">
         <?php if ($app->auth->isUserAuthenticated()): ?>
+            <?php $this->applyTemplateHook('nav.main.notifications','before'); ?>
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="icon icon-notifications"></div>
@@ -97,6 +117,9 @@
                 <!--.submenu-->
             </li>
             <!--.notifications-->
+            <?php $this->applyTemplateHook('nav.main.notifications','after'); ?>
+            
+            <?php $this->applyTemplateHook('nav.main.user','before'); ?>
             <li class="user">
                 <a href="#" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="avatar">
@@ -111,25 +134,48 @@
                     <li>
                         <a href="<?php echo $app->createUrl('panel'); ?>">Painel</a>
                     </li>
-                    <li>
-                        <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
-                        <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
-                        <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
-                        <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
-                        <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
-                    </li>
+                    <?php if($app->isEnabled('events')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
+                            <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
+                    <?php endif; ?>
+                        
+                    <?php if($app->isEnabled('agents')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
+                            <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
+                    <?php endif; ?>
+                        
+                    <?php if($app->isEnabled('spaces')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.spaces','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'spaces') ?>">Meus Espaços</a>
+                            <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
+                    <?php endif; ?>
+                        
+                    <?php if($app->isEnabled('projects')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
+                            <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
+                        
+                        <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
+                    <?php endif; ?>
+                        
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->
                     <li>
@@ -142,7 +188,9 @@
                 </ul>
             </li>
             <!--.user-->
+            <?php $this->applyTemplateHook('nav.main.user','after'); ?>
         <?php else: ?>
+            <?php $this->applyTemplateHook('nav.main.login','before'); ?>
             <li class="login">
                 <a href="<?php echo $app->createUrl('panel') ?>">
                     <div class="icon icon-login"></div>
@@ -153,6 +201,7 @@
                 <?php endif; ?>
             </li>
             <!--.login-->
+            <?php $this->applyTemplateHook('nav.main.login','after'); ?>
         <?php endif; ?>
     </ul>
     <!--.menu.session-menu-->

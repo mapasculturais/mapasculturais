@@ -44,6 +44,12 @@ return array(
     'app.offline' => false,
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
+    
+    'app.enabled.agents'   => true,
+    'app.enabled.spaces'   => true,
+    'app.enabled.projects' => true,
+    'app.enabled.events'   => true,
+    'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.active.debugParts' => false,

@@ -397,6 +397,10 @@ class App extends \Slim\Slim{
         parent::run();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
+    
+    function isEnabled($entity){
+        return $this->config['app.enabled.' . $entity];
+    }
 
     function enableAccessControl(){
         $this->_accessControlEnabled = true;

@@ -7,54 +7,65 @@ $this->layout = 'panel'
         Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php $this->dict('site: name'); ?>!
     </p>
     <section id="user-stats" class="clearfix">
-        <div>
+        <?php if($app->isEnabled('events')): ?>
             <div>
-                <div class="clearfix">
-                    <span class="alignleft">Eventos</span>
-                    <div class="icon icon-event alignright"></div>
-                </div>
-                <div class="clearfix">
-                    <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events; ?></a>
-                    <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="Adicionar eventos"></a>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Eventos</span>
+                        <div class="icon icon-event alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="Ver meus eventos"><?php echo $count->events; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="Adicionar eventos"></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('agents')): ?>
             <div>
-                <div class="clearfix">
-                    <span class="alignleft">Agentes</span>
-                    <div class="icon icon-agent alignright"></div>
-                </div>
-                <div class="clearfix">
-                    <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="Ver meus agentes"><?php echo $count->agents; ?></a>
-                    <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="Adicionar agentes"></a>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Agentes</span>
+                        <div class="icon icon-agent alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="Ver meus agentes"><?php echo $count->agents; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="Adicionar agentes"></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('spaces')): ?>
             <div>
-                <div class="clearfix">
-                    <span class="alignleft">Espaços</span>
-                    <div class="icon icon-space alignright"></div>
-                </div>
-                <div class="clearfix">
-                    <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver meus espaços"><?php echo $count->spaces; ?></a>
-                    <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar espaços"></a>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Espaços</span>
+                        <div class="icon icon-space alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="Ver meus espaços"><?php echo $count->spaces; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="Adicionar espaços"></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('projects')): ?>
             <div>
-                <div class="clearfix">
-                    <span class="alignleft">Projetos</span>
-                    <div class="icon icon-project alignright"></div>
-                </div>
-                <div class="clearfix">
-                    <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects; ?></a>
-                    <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Projetos</span>
+                        <div class="icon icon-project alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     </section>
     <?php if($app->user->notifications): ?>
     <section id="activities">

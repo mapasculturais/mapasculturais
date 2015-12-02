@@ -3,6 +3,7 @@ $lat = $entity->location->latitude; $lng = $entity->location->longitude;
 $has_private_location = isset($has_private_location) && $has_private_location
 ?>
 <?php if ( $this->isEditable() || (($has_private_location && $entity->publicLocation && $lat && $lng) || (!$has_private_location && $lat && $lng)) ): ?>
+    <?php $this->applyTemplateHook('location','before'); ?>
     <div class="servico clearfix">
         <div class="mapa js-map-container">
             <?php if($this->isEditable()): ?>
@@ -43,4 +44,5 @@ $has_private_location = isset($has_private_location) && $has_private_location
         <!--.infos-->
     </div>
     <!--.servico-->
+    <?php $this->applyTemplateHook('location','after'); ?>
 <?php endif; ?>
