@@ -1426,7 +1426,7 @@ class App extends \Slim\Slim{
      *
      * @see \MapasCulturais\App::getControllerByClass()
      *
-     * @return \MapasCulturais\Controller|null The controller
+     * @return \MapasCulturais\Controllers\EntityController|null The controller
      */
     public function getControllerByEntity($entity){
         if(is_object($entity))
