@@ -1107,20 +1107,9 @@ class Theme extends MapasCulturais\Theme {
             return $app->cache->fetch($cache_id);
         }
 
-        $em = App::i()->em;
-        $dql = "SELECT COUNT(e) FROM $class e WHERE e.status > 0";
+        $controller = $app->getControllerByEntity($class);
 
-        if(is_bool($verified)){
-            if($verified){
-                $dql .= ' AND e.isVerified = TRUE';
-            }else{
-                $dql .= ' AND e.isVerified = FALSE';
-            }
-        }
-
-        $q = $em->createQuery($dql);
-
-        $result = $q->getSingleScalarResult();
+        $result = $controller->apiQuery(['@count'=>1]);
 
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);
