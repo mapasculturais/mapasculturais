@@ -13,63 +13,65 @@
                 link: function ($scope, el, attrs) {
                     var def = MapasCulturais.entity.definition[attrs.entityProperty];
                     var entity = MapasCulturais.entity.object;
-                    var originalValue = MapasCulturais.entity.object;
-                    
-                    function resetValues(){
+
+                    $scope.editBox = EditBox;
+                    $scope.terms = def.options;
+
+                    $scope.data = {
+                        inputVal: entity[$scope.entityProperty],
+                        isEditable: MapasCulturais.isEditable,
+                        allowOther: def.allowOther,
+                        allowOtherText: def.allowOtherText,
+                        editBoxId: 'editable-singleselect-' + $scope.entityProperty,
+                        value: entity[$scope.entityProperty]
+                    };
+
+                    function resetValue(){
                         if(entity[$scope.entityProperty]){
-                            $scope.values = entity[$scope.entityProperty].split(';');
+                            $scope.data.value = entity[$scope.entityProperty];
+                            $scope.data.displayValue = entity[$scope.entityProperty];
+                            $scope.data.inputValue = entity[$scope.entityProperty];
                         }else{
                             entity[$scope.entityProperty] = '';
-                            $scope.values = [];
+                            $scope.data.value = '';
+                            $scope.data.displayValue = $scope.emptyLabel;
                         }
                     }
-                    
-                    $scope.inputVal = entity[$scope.entityProperty];
-                    
-                    $scope.editBox = EditBox;
 
+                    resetValue();
 
-                    $scope.terms = Object.keys(def.options);
-                    $scope.allowOther = def.allowOther;
-                    $scope.allowOtherText = def.allowOtherText;
-
-//                    $scope.boxTitle = ;
-
-                    $log.log($scope.title);
-
-                    $scope.editBoxId = 'editable-singleselect-' + $scope.entityProperty;
-
-                    $scope.cfg = {
-                        isEditable: MapasCulturais.isEditable
+                    $scope.displayValue = function(){
+                        if($scope.terms[$scope.data.inputVal]){
+                           return $scope.terms[$scope.data.inputVal];
+                        } else {
+                            return $scope.data.inputVal || $scope.emptyLabel;
+                        }
                     };
+
 
                     $scope.openEditBox = function($event){
                         if(MapasCulturais.isEditable){
-                            EditBox.open($scope.editBoxId, $event);
+                            EditBox.open($scope.data.editBoxId, $event);
                         }
                     };
                     
-                    resetValues();
-                    
                     $scope.submit = function(){
-                        entity[$scope.entityProperty] = $scope.values.join(';');
-                        $scope.inputVal = entity[$scope.entityProperty];
                         var $input = jQuery('#' + $scope.entityProperty);
-                        $input.editable('setValue', $scope.inputVal);
-                        EditBox.close($scope.editBoxId);
+                        
+                        entity[$scope.entityProperty] = $scope.data.value;
+
+                        $scope.data.inputVal = entity[$scope.entityProperty];
+
+                        $scope.data.displayValue = $scope.inputVal ? $scope.inputVal : $scope.emptyLabel;
+
+                        $input.editable('setValue', $scope.data.inputVal);
+
+                        EditBox.close($scope.data.editBoxId);
                     };
                     
                     $scope.cancel = function(){
-                        resetValues();
+                        resetValue();
                     };
-                    
-                    $scope.valuesText = function(){
-                        if(entity[$scope.entityProperty]){
-                            return entity[$scope.entityProperty].split(';').join('; ');
-                        }else{
-                            return $scope.emptyLabel;
-                        }
-                    }
                 }
             };
         }]);

@@ -33,3 +33,15 @@ input.data {
     width: 72px;
     padding: 3px;
 }
+
+/* Select Directives */
+
+.mc-select-directive--option {
+    display:inline-block;
+    width:50%;
+    white-space: nowrap;
+}
+
+.mc-select-directive--other {
+    padding:10px 0
+}

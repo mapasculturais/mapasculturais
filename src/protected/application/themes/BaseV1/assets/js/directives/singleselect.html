@@ -1,13 +1,15 @@
-<label ng-repeat="term in terms" style="float:left; width:50%; display:inline-block; white-space: nowrap"> 
-    <input name="cfg.name" ng-checked="checked(term)" ng-click="toggleTerm(term)" type="radio" > {{ term }}
-</label>
-<div class="clear"></div>
-<label ng-if="allowOther" >
-    <input name="cfg.name" ng-model="cfg.show" type="radio" ng-checked="cfg.show"> {{cfg.allowOtherText}}
-</label>
-
-<div ng-if="allowOther" class="row">
-    <label ng-show="cfg.show" class="colunm-full">
-        <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
+<div class="mc-directive mc-singleselect">
+    <label ng-repeat="(k, term) in data.terms" class="mc-select-directive--option">
+        <input name="{{data.name}}" value="{{k}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-change="notOther()"> {{ term }}
     </label>
+
+    <div ng-if="allowOther" class="mc-select-directive--other">
+        <label>
+            <input name="{{data.name}}" value="" type="radio" class="mc-input-radio" ng-click="clickOther()" ng-checked="data.showOther"> {{data.allowOtherText}}
+        </label><br>
+
+        <label ng-show="data.showOther" class="colunm-full">
+            <input type="text" class="mc-input-text" ng-disabled="!data.showOther" ng-model="data.value">
+        </label>
+    </div>
 </div>
