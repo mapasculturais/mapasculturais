@@ -23,7 +23,8 @@
                         allowOther: def.allowOther,
                         allowOtherText: def.allowOtherText,
                         editBoxId: 'editable-singleselect-' + $scope.entityProperty,
-                        value: entity[$scope.entityProperty]
+                        value: entity[$scope.entityProperty],
+                        boxTitle: $scope.boxTitle
                     };
 
                     function resetValue(){
