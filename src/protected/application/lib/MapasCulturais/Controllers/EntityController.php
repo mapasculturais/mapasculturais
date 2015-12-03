@@ -125,6 +125,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     protected function _finishRequest($entity, $isAjax = false){
         $app = App::i();
+        
         $status = 200;
         try{
             $entity->save(true);
@@ -137,8 +138,11 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             header('CreatedRequests: ' . json_encode($reqs));
         }
-        if($app->request->isAjax() || $isAjax){
+        
+        if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($entity, $status);
+        }elseif(isset($this->getData['redirectTo'])){
+            $app->redirect($this->getData['redirectTo'], $status);
         }else{
             $app->redirect($app->request()->getReferer(), $status);
         }
@@ -177,11 +181,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->newEntity;
 
-
         foreach($this->data as $field=>$value){
             $entity->$field = $value;
         }
-
+        
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
@@ -231,11 +234,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
     function GET_single() {
         $app = App::i();
 
-        if (!key_exists('id', $this->urlData)) {
-            $app->pass();
-        }
-
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;;
 
         if (!$entity) {
             $app->pass();
@@ -267,11 +266,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $this->requireAuthentication();
         $app = App::i();
 
-        if (!key_exists('id', $this->urlData)) {
-            $app->pass();
-        }
-
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
 
         if (!$entity) {
             $app->pass();
@@ -279,9 +274,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity->checkPermission('modify');
 
-        $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+        if($entity->usesNested()){
 
-        $this->render('edit', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+            $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+
+            $this->render('edit', ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+
+        }else{
+            $this->render('edit', ['entity' => $entity]);
+        }
     }
 
     /**
@@ -314,10 +315,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $app = App::i();
 
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
-
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
 
         if(!$entity)
             $app->pass();
@@ -333,17 +331,14 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $this->_finishRequest($entity);
         }
     }
-    
-    
+
+
     function PATCH_single(){
         $this->requireAuthentication();
 
         $app = App::i();
 
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
-
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
 
         if(!$entity)
             $app->pass();
@@ -360,12 +355,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $errors[$field] = $_errors[$field];
                 }
             }
-            
+
             if($errors){
-                $this->errorJson($errors);
+                $this->errorJson($errors, 400);
             }
         }
-        
+
         $this->_finishRequest($entity);
     }
 
@@ -405,10 +400,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
 //        $this->requireAuthentication();
 
         $app = App::i();
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
 
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
 
         if(!$entity)
             $app->pass();

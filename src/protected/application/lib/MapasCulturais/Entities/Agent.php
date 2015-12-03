@@ -49,9 +49,6 @@ class Agent extends \MapasCulturais\Entity
         ],
         'type' => [
             'required' => 'O tipo do agente é obrigatório',
-        ],
-        'location' => [
-            '$this->validateLocation()' => 'A localização geográfica do agente é obrigatória',
         ]
     ];
 
@@ -139,7 +136,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })

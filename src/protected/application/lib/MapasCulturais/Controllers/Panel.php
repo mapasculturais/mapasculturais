@@ -28,22 +28,26 @@ class Panel extends \MapasCulturais\Controller {
         $app = App::i();
 
         $count = new \stdClass();
-        $count->agents = 0;
-        $count->spaces = 0;
-        $count->events = 0;
-        $count->projects = 0;
+        $count->spaces = $this->countEntity('Space');
+        $count->events = $this->countEntity('Event');
+        $count->projects = $this->countEntity('Project');
 
-        foreach($count as $entity=>$c){
-            $n = 0;
-            foreach($app->user->$entity as $e) {
-                if($e->status >= 0){
-                    $n++;
-                }
-            }
-            $count->$entity = str_pad($n,2,'0', STR_PAD_LEFT);
-        }
+        $count->agents = $app->em->createQuery("SELECT COUNT(a.id) FROM \MapasCulturais\Entities\Agent a JOIN a.user u
+            WHERE u = :user AND a.status >= 0")->setParameter('user', $app->user)->getSingleScalarResult();
+        $count->agents = str_pad($count->agents, 2, '0', STR_PAD_LEFT);
 
         $this->render('index', ['count'=>$count]);
+    }
+
+    protected function countEntity($entityName){
+        $app = App::i();
+        $entityClass = '\\MapasCulturais\\Entities\\' . $entityName;
+        $dql = "SELECT COUNT(e.id) FROM $entityClass e JOIN e.owner o WHERE o.user = :user AND e.status >= 0";
+        $query = $app->em->createQuery($dql);
+        $query->setParameter('user', $app->user);
+        $count = $query->getSingleScalarResult();
+        $padded = str_pad($count, 2, '0', STR_PAD_LEFT);
+        return $padded;
     }
 
     protected function _getUser(){
@@ -157,5 +161,24 @@ class Panel extends \MapasCulturais\Controller {
         $user = $this->_getUser();
 
         $this->render('registrations', ['user' => $user]);
+    }
+
+    /**
+     * Render the project list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/projects'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'registrations');
+     * </code>
+     *
+     */
+    function GET_apps(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+        $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
+        $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
+        $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
     }
 }

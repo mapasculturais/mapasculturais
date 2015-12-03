@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ..
+
 PWD=$(pwd)
 WEBGROUP="www-data"
 

@@ -35,7 +35,7 @@ class Project extends EntityController {
         parent::GET_create();
     }
 
-    function ALL_publish(){
+    function ALL_publishRegistrations(){
         $this->requireAuthentication();
 
         $app = App::i();

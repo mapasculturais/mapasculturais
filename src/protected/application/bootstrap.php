@@ -9,6 +9,11 @@ define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
 
 define('AUTOLOAD_TTL', 60 * 5);
 
+define('APPMODE_DEVELOPMENT', 'development');
+define('APPMODE_PRODUCTION', 'production');
+define('APPMODE_STAGING', 'staging');
+
+
 require_once __DIR__."/../vendor/autoload.php";
 
 if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){

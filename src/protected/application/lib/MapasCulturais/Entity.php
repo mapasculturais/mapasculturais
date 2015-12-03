@@ -248,10 +248,17 @@ abstract class Entity implements \JsonSerializable{
 
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
-        if(!$app->isAccessControlEnabled())
+        if(!$app->isAccessControlEnabled()){
             return true;
-
-        $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
+        }
+        
+        if(is_null($userOrAgent)){
+            $user = $app->user;
+        } else if($userOrAgent instanceof UserInterface) {
+            $user = $userOrAgent;
+        } else { 
+            $user = $userOrAgent->getOwnerUser();
+        }
 
         $use_cache = false; //$app->config['app.usePermissionsCache'];
         $cache_id = "{$this}->{$user}->$action";

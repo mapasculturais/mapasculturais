@@ -31,7 +31,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
-
+            
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
@@ -43,7 +43,29 @@ class Theme extends MapasCulturais\Theme {
             'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
 
             'search: verified results' => 'Resultados Verificados',
-            'search: verified' => "Verificados"
+            'search: verified' => "Verificados",
+            
+            
+            'entities: Spaces of the agent'=> 'Espaços do agente',
+            'entities: Space Description'=> 'Descrição do Espaço',
+            'entities: My Spaces'=> 'Meus Espaços',
+            'entities: My spaces'=> 'Meus espaços',
+            
+            'entities: no registered spaces'=> 'nenhum espaço cadastrado',
+            'entities: no spaces'=> 'nenhum espaço',
+            
+            'entities: Space' => 'Espaço',
+            'entities: Spaces' => 'Espaços',
+            'entities: space' => 'espaço',
+            'entities: spaces' => 'espaços',
+            'entities: parent space' => 'espaço pai',
+            'entities: a space' => 'um espaço',
+            'entities: the space' => 'o espaço',
+            'entities: of the space' => 'do espaço',            
+            'entities: In this space' => 'Neste espaço',
+            'entities: in this space' => 'neste espaço',
+            'entities: registered spaces' => 'espaços cadastrados',
+            'entities: new space' => 'novo espaço',
         );
     }
 
@@ -388,6 +410,22 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
+            
+            $this->jsObject['angularAppDependencies'] = [
+                'entity.module.relatedAgents', 
+                'entity.module.changeOwner',
+                'entity.directive.editableMultiselect',
+                'entity.directive.editableSingleselect',
+
+                'mc.directive.singleselect',
+                'mc.directive.multiselect',
+                'mc.directive.editBox',
+                'mc.directive.mcSelect',
+                'mc.module.notifications', 
+                'mc.module.findEntity',
+
+                'ngSanitize',
+            ];
 
             $this->jsObject['mapsDefaults'] = array(
                 'zoomMax' => $app->config['maps.zoom.max'],
@@ -549,7 +587,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $entity = $this->controller->requestedEntity;
 
-        $site_name = $app->siteName;
+        $site_name = $this->dict('site: name', false);
         $title = $app->view->getTitle($entity);
         $image_url = $app->view->asset('img/share.png', false);
         if ($entity) {
@@ -557,7 +595,7 @@ class Theme extends MapasCulturais\Theme {
             if ($entity->avatar)
                 $image_url = $entity->avatar->transform('avatarBig')->url;
         }else {
-            $description = $app->siteDescription;
+            $description = $this->dict('site: description', false);
         }
         // for responsive
         $this->documentMeta[] = array("name" => 'viewport', 'content' => 'width=device-width, initial-scale=1, maximum-scale=1.0');
@@ -679,8 +717,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'tim', 'js/tim.js');
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
 
-        $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js');
-        $this->enqueueScript('app', 'notifications', 'js/Notifications.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
+        $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
 
 
 
@@ -708,12 +746,12 @@ class Theme extends MapasCulturais\Theme {
 
     function includeSearchAssets() {
 
-        $this->enqueueScript('app', 'SearchService', 'js/SearchService.js', array('ng-mapasculturais', 'SearchSpatial'));
-        $this->enqueueScript('app', 'FindOneService', 'js/FindOneService.js', array('ng-mapasculturais', 'SearchSpatial'));
-        $this->enqueueScript('app', 'SearchMapController', 'js/SearchMap.js', array('ng-mapasculturais', 'map'));
-        $this->enqueueScript('app', 'SearchSpatial', 'js/SearchSpatial.js', array('ng-mapasculturais', 'map'));
+        $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
+        $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
+        $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
+        $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
 
-        $this->enqueueScript('app', 'Search', 'js/Search.js', array('ng-mapasculturais', 'SearchSpatial', 'SearchMapController', 'FindOneService', 'SearchService'));
+        $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
     }
 
     function includeMapAssets() {
@@ -760,11 +798,35 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
+        $this->jsObject['templateUrl']['multiselect'] = $this->asset('js/directives/multiselect.html', false);
+        $this->jsObject['templateUrl']['singleselect'] = $this->asset('js/directives/singleselect.html', false);
+        $this->jsObject['templateUrl']['editableMultiselect'] = $this->asset('js/directives/editableMultiselect.html', false);
+        $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
-        $this->enqueueScript('app', 'change-owner', 'js/ChangeOwner.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity', 'js/Entity.js', array('mapasculturais', 'ng-mapasculturais', 'change-owner'));
-        $this->enqueueScript('app', 'ng-project', 'js/Project.js', array('entity'));
-        $this->enqueueScript('app', 'related-agents', 'js/RelatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
+            'mapasculturais', 
+            'ng-mapasculturais', 
+            'mc.directive.multiselect', 
+            'mc.directive.singleselect',
+            'mc.directive.editBox', 
+            'mc.directive.mcSelect', 
+            'mc.module.findEntity',
+            'entity.module.relatedAgents',
+            'entity.module.changeOwner', 
+            'entity.directive.editableMultiselect', 
+            'entity.directive.editableSingleselect',
+        ));
+        
+        $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
         $roles = [];
         if(!\MapasCulturais\App::i()->user->is('guest')){
@@ -838,7 +900,8 @@ class Theme extends MapasCulturais\Theme {
             'definition' => $entity->getPropertiesMetadata(),
             'userHasControl' => $entity->canUser('@control'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
-            'status' => $entity->status
+            'status' => $entity->status,
+            'object' => $entity
         ];
 
         if($entity->usesNested() && $entity->id){
@@ -1044,20 +1107,9 @@ class Theme extends MapasCulturais\Theme {
             return $app->cache->fetch($cache_id);
         }
 
-        $em = App::i()->em;
-        $dql = "SELECT COUNT(e) FROM $class e WHERE e.status > 0";
+        $controller = $app->getControllerByEntity($class);
 
-        if(is_bool($verified)){
-            if($verified){
-                $dql .= ' AND e.isVerified = TRUE';
-            }else{
-                $dql .= ' AND e.isVerified = FALSE';
-            }
-        }
-
-        $q = $em->createQuery($dql);
-
-        $result = $q->getSingleScalarResult();
+        $result = $controller->apiQuery(['@count'=>1]);
 
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);

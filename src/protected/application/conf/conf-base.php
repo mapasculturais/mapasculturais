@@ -44,8 +44,15 @@ return array(
     'app.offline' => false,
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
+    
+    'app.enabled.agents'   => true,
+    'app.enabled.spaces'   => true,
+    'app.enabled.projects' => true,
+    'app.enabled.events'   => true,
+    'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
+    'themes.active.debugParts' => false,
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . $asset_dir,
 
@@ -72,17 +79,17 @@ return array(
     'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
 
-    'app.geoDivisionsHierarchy' => array(
-        'país',
-        'região',
-        'estado',
-        'mesorregião',
-        'microrregião',
-        'município',
-        'zona',
-        'subprefeitura',
-        'distrito'
-    ),
+    'app.geoDivisionsHierarchy' => [
+        'pais'          => 'País',          // metadata: geoPais
+        'regiao'        => 'Região',        // metadata: geoRegiao
+        'estado'        => 'Estado',        // metadata: geoEstado
+        'mesorregiao'   => 'Mesorregião',   // metadata: geoMesorregiao
+        'microrregiao'  => 'Microrregião',  // metadata: geoMicrorregiao
+        'municipio'     => 'Município',     // metadata: geoMunicipio
+        'zona'          => 'Zona',          // metadata: geoZona
+        'subprefeitura' => 'Subprefeitura', // metadata: geoSubprefeitura
+        'distrito'      => 'Distrito'       // metadata: geoDistrito
+    ],
 
     'registration.agentRelationsOptions' => array(
         'dontUse' => 'Não utilizar',
@@ -180,8 +187,8 @@ return array(
 
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
-    'app.cache.namespace' => $base_url,
-
+    'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
+    
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
 

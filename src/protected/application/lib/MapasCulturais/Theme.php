@@ -229,9 +229,12 @@ abstract class Theme extends \Slim\View {
         $app = App::i();
 
         $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        $render_data = [];
 
-        foreach($this->data->keys() as $k)
+        foreach($this->data->keys() as $k){
+            $render_data[$k] = $this->data->get($k);
             $$k = $this->data->get($k);
+        }
 
         if ($this->controller){
             $this->bodyClasses[] = "controller-{$this->controller->id}";
@@ -294,8 +297,12 @@ abstract class Theme extends \Slim\View {
      */
     public function partialRender($template, $data = [], $_is_part = false){
         $app = App::i();
-
-        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        if(strtolower(substr($template, -4)) === '.php'){
+            $template_filename = $template;
+            $template = substr($template, 0, -4);
+        } else {
+            $template_filename = $template . '.php';
+        }
 
         if(is_array($data))
             extract($data);
@@ -317,17 +324,26 @@ abstract class Theme extends \Slim\View {
 
         $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):before', ['template' => $template_name]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $template . '):before', ['template' => $template]);
 
         ob_start(function($output){
             return $output;
         });
+        
+        if($app->config['themes.active.debugParts']){
+            $template_debug = str_replace(THEMES_PATH, '', $template_name);
+            echo '<!-- ' . $template_debug . ".php # BEGIN -->";
+        }
 
         include $templatePath;
+        
+        if($app->config['themes.active.debugParts']){
+            echo '<!-- ' . $template_debug . ".php # END -->";
+        }
 
         $html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $template . '):after', ['template' => $template, 'html' => &$html]);
 
         return $html;
     }
@@ -500,5 +516,13 @@ abstract class Theme extends \Slim\View {
 
         $this->printDocumentMeta();
 
+    }
+    
+    function applyTemplateHook($name, $sufix = ''){
+        $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
+        if($sufix){
+            $hook .= ':' . $sufix;
+        }
+        App::i()->applyHookBoundTo($this, $hook);
     }
 }

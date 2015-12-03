@@ -19,6 +19,10 @@ $(function(){
     $('.alert .close').click(function(){
         $(this).parent().slideUp('fast');
     }).css('cursor', 'pointer');
+    
+    if(MapasCulturais.request.controller === 'app'){
+        MapasCulturais.App.init();
+    }
 
     // dropdown
 
@@ -267,7 +271,28 @@ MapasCulturais.TemplateManager = {
     }
 };
 
-MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
+MapasCulturais.App = {
+    init: function(){
+        $('.js-select-on-click').on('click', function(){
+            var selector = $(this).data('selectTarget');
+            $(selector).trigger('doubleClick');
+        });
+        
+        if($('.js-input--app-key').length && $('.js-input--app-key--toggle').length){
+            $('.js-input--app-key--toggle').on('click', function(){
+                if($('.js-input--app-key').attr('type') === 'password'){
+                    $('.js-input--app-key').attr('type', 'text');
+                }else{
+                    $('.js-input--app-key').attr('type', 'password');
+                }
+                
+                return false;
+            });
+        }
+    }
+};
+
+MapasCulturais.defaultAvatarURL = MapasCulturais.assets.avatarAgent;
 
 function editableEntityAddHash(){
     $('#editable-entity').find('.js-toggle-edit').each(function(){

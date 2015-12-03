@@ -9,12 +9,27 @@ class Fake extends \MapasCulturais\AuthProvider{
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
-            $user_class = "MapasCulturais\Entities\User";
-            $dql = "SELECT u, r, p, a FROM {$user_class} u LEFT JOIN u.roles r LEFT JOIN u.profile p LEFT JOIN u.agents a";
+            $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+            // build rsm here
+
+            $query = $app->em->createNativeQuery('
+                SELECT 
+                    u.id, 
+                    u.email, 
+                    a.name AS profile,
+                    r.name AS roles
+                FROM 
+                    usr u
+                    LEFT JOIN agent a ON a.id = u.profile_id
+                    LEFT JOIN role r ON r.usr_id = u.id
+                    
+                ORDER BY profile', $rsm);
             
-            $q = $app->em->createQuery($dql);
-            
-            $users = $q->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            $rsm->addScalarResult('id', 'id', 'string');
+            $rsm->addScalarResult('email', 'email', 'string');
+            $rsm->addScalarResult('profile', 'profile', 'string');
+            $rsm->addScalarResult('roles', 'roles', 'string');
+            $users = $query->getScalarResult();
             
             $this->render('fake-authentication', [
                 'users' => $users, 

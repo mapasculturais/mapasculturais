@@ -1,6 +1,7 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
-$this->bodyProperties['ng-app'] = "Entity";
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
 
 $request_project = null;
 
@@ -87,256 +88,250 @@ $this->includeMapAssets();
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <article class="main-content event">
     <header class="main-content-header">
-        <div
-            <?php if ($header = $entity->getFile('header')): ?>
-                style="background-image: url(<?php echo $header->transform('header')->url; ?>);" class="header-image js-imagem-do-header"
-            <?php elseif($this->isEditable()): ?>
-                class="header-image js-imagem-do-header"
-            <?php endif; ?>
-            >
-            <?php if ($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#">Editar</a>
-                <div id="editbox-change-header" class="js-editbox mc-bottom" title="Editar Imagem da Capa">
-                    <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
-                </div>
-            <?php endif; ?>
-        </div>
-        <?php $this->part('entity-status', array('entity' => $entity)); ?>
+        <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
+        
+        <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
+        
+        <?php $this->applyTemplateHook('header.status','after'); ?>
+        
         <!--.header-image-->
         <div class="header-content">
-            <?php if ($avatar = $entity->avatar): ?>
-                <div class="avatar com-imagem">
-                    <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-                    <?php else: ?>
-                    <div class="avatar">
-                        <img class="js-avatar-img" src="<?php $this->asset('img/avatar--event.png'); ?>" />
-                    <?php endif; ?>
-                    <?php if ($this->isEditable()): ?>
-                        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
-                        <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
-                            <?php $this->ajaxUploader($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-                        </div>
-                    <?php endif; ?>
-                    <!-- pro responsivo!!! -->
-                    <?php if($entity->isVerified): ?>
-                        <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
-                    <?php endif; ?>
-                </div>
-                <!--.avatar-->
-                <div class="entity-type event-type">
-                    <div class="icon icon-event"></div>
-                    <a href="#">Evento</a>
-                </div>
-                <!--.entity-type-->
-                <h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><?php echo $entity->name; ?></span></h2>
-                <?php if ($this->isEditable() || $entity->subTitle): ?>
+            <?php $this->applyTemplateHook('header-content','begin'); ?>
+            
+            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--event.png']); ?>
+            <!--.avatar-->
+            <div class="entity-type event-type">
+                <div class="icon icon-event"></div>
+                <a href="#">Evento</a>
+            </div>
+            <!--.entity-type-->
+            
+            <?php $this->part('singles/name', ['entity' => $entity]) ?>
+            
+            <?php if ($this->isEditable() || $entity->subTitle): ?>
+                <?php $this->applyTemplateHook('subtitle','before'); ?>
                 <h4 class="event-subtitle">
                     <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
                 </h4>
+                <?php $this->applyTemplateHook('subtitle','after'); ?>
             <?php endif; ?>
+            
+            <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
+        <?php $this->applyTemplateHook('header-content','after'); ?>
     </header>
     <!--.main-content-header-->
-    <div id="sobre" class="aba-content">
-        <div class="ficha-spcultura">
-            <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
-            <?php endif; ?>
-            <p>
-                <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                    <span class="label">Descrição Curta:</span><br>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+    <?php $this->applyTemplateHook('header','after'); ?>
+    
+    <div class="tabs-content">
+        <?php $this->applyTemplateHook('tabs-content','begin'); ?>
+        
+        <div id="sobre" class="aba-content">
+            <div class="ficha-spcultura">
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                    <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
                 <?php endif; ?>
-            </p>
-            <div class="servico">
-
-                <?php if ($this->isEditable() || $entity->registrationInfo): ?>
-                    <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
-                <?php endif; ?>
-
-                <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
-                    <?php
-                    /*Agente padrão da Giovanna editando atrações da Virada*/
-                    if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                        $entity->classificacaoEtaria = 'Livre';
-                    }
-                    ?>
-                    <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
-                <?php endif; ?>
-
-                <?php if ($this->isEditable() || $entity->site): ?>
-                    <p><span class="label">Site:</span>
-                        <?php if ($this->isEditable()): ?>
-                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe o endereço do site do evento"><?php echo $entity->site; ?></span></p>
-                    <?php else: ?>
-                        <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                <p>
+                    <?php if ($this->isEditable() || $entity->shortDescription): ?>
+                        <span class="label">Descrição Curta:</span><br>
+                        <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
-                <?php endif; ?>
+                </p>
+                <div class="servico">
 
-                <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                    <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
-                <?php endif; ?>
+                    <?php if ($this->isEditable() || $entity->registrationInfo): ?>
+                        <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
+                    <?php endif; ?>
 
-                <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
-                    <br>
-                    <p>
-                        <span>Acessibilidade:</span>
-
-                        <?php if($this->isEditable() || $entity->traducaoLibras): ?>
-                            <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
-                        <?php endif; ?>
-
-                        <?php if($this->isEditable() || $entity->descricaoSonora): ?>
-                            <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
-                        <?php endif; ?>
-                    </p>
-                <?php endif; ?>
-            </div>
-            <!--.servico-->
-            <div class="servico ocorrencia clearfix">
-                <?php
-
-                //Event->getOccurrencesGroupedBySpace()
-                function getOccurrencesBySpace($occurrences){
-                    $spaces = array();
-                    usort($occurrences, function($a, $b) {
-                        return $a->space->id - $b->space->id;
-                    });
-                    foreach ($occurrences as $occurrence) {
-                        if (!array_key_exists($occurrence->space->id, $spaces)){
-                            $spaces[$occurrence->space->id] = array(
-                                'space' => $occurrence->space,
-                                'location' => $occurrence->space->location,
-                                'occurrences' => array()
-                            );
-                        }
-                        $spaces[$occurrence->space->id]['occurrences'][] = $occurrence;
-                    }
-                    return $spaces;
-                }
-
-                function compareArrayElements($array){
-                    $compareBase = null;
-                    foreach($array as $element){
-                        if($compareBase === null) $compareBase = $element;
-                        if($compareBase !== $element)
-                            return false;
-                    }
-                    return true;
-                }
-
-                $occurrences = $entity->occurrences ? $entity->occurrences->toArray() :  array();
-                ?>
-                <?php if ($this->isEditable() || $occurrences): ?>
-                    <div class="js-event-occurrence">
-
+                    <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
                         <?php
+                        /*Agente padrão da Giovanna editando atrações da Virada*/
+                        if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
+                            $entity->classificacaoEtaria = 'Livre';
+                        }
+                        ?>
+                        <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
+                    <?php endif; ?>
 
-                        $screenFrequencies = $this->getOccurrenceFrequencies();
-                        $mustache = new Mustache_Engine();
+                    <?php if ($this->isEditable() || $entity->site): ?>
+                        <p><span class="label">Site:</span>
+                            <?php if ($this->isEditable()): ?>
+                                <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe o endereço do site do evento"><?php echo $entity->site; ?></span></p>
+                        <?php else: ?>
+                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
-                        if ($occurrences) {
+                    <?php if($this->isEditable() || $entity->telefonePublico): ?>
+                        <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
+                    <?php endif; ?>
 
-                            if ($this->isEditable()) {
+                    <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
+                        <br>
+                        <p>
+                            <span>Acessibilidade:</span>
 
-                                foreach ($occurrences as $occurrence) {
-                                    $templateData = json_decode(json_encode($occurrence));
-                                    $templateData->pending = $occurrence->status === MapasCulturais\Entities\EventOccurrence::STATUS_PENDING;
-                                    if(!is_object($templateData->rule))
-                                        $templateData->rule = new stdclass;
-                                    $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
-                                    $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
-                                    $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
+                            <?php if($this->isEditable() || $entity->traducaoLibras): ?>
+                                <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
+                            <?php endif; ?>
 
-                                    $templateData->rule->screen_spaceAddress = $occurrence->space->endereco;
+                            <?php if($this->isEditable() || $entity->descricaoSonora): ?>
+                                <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                            <?php endif; ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+                <!--.servico-->
+                <div class="servico ocorrencia clearfix">
+                    <?php
 
-                                    $templateData->serialized = json_encode($templateData);
-                                    $templateData->formAction = $occurrence->editUrl;
-                                    echo $mustache->render($eventOccurrenceItemTemplate, $templateData);
-                                }
+                    //Event->getOccurrencesGroupedBySpace()
+                    function getOccurrencesBySpace($occurrences){
+                        $spaces = array();
+                        usort($occurrences, function($a, $b) {
+                            return $a->space->id - $b->space->id;
+                        });
+                        foreach ($occurrences as $occurrence) {
+                            if (!array_key_exists($occurrence->space->id, $spaces)){
+                                $spaces[$occurrence->space->id] = array(
+                                    'space' => $occurrence->space,
+                                    'location' => $occurrence->space->location,
+                                    'occurrences' => array()
+                                );
+                            }
+                            $spaces[$occurrence->space->id]['occurrences'][] = $occurrence;
+                        }
+                        return $spaces;
+                    }
 
-                            }else{
-                                $occurrences = array_filter($occurrences, function($e){
-                                    return $e->status > 0;
-                                });
+                    function compareArrayElements($array){
+                        $compareBase = null;
+                        foreach($array as $element){
+                            if($compareBase === null) $compareBase = $element;
+                            if($compareBase !== $element)
+                                return false;
+                        }
+                        return true;
+                    }
 
-                                $spaces = getOccurrencesBySpace($occurrences);
+                    $occurrences = $entity->occurrences ? $entity->occurrences->toArray() :  array();
+                    ?>
+                    <?php if ($this->isEditable() || $occurrences): ?>
+                        <div class="js-event-occurrence">
 
-                                $templateData = array();
-                                $templatesData = array();
-                                foreach($spaces as $space){
-                                    $templateData = json_decode(json_encode($space));
-                                    $templateData->occurrencesDescription = '';
-                                    $templateData->occurrencesPrice = '';
-                                    $prices = array();
-                                    foreach ($space['occurrences'] as $occurrence) {
-                                        $prices[] = !empty($occurrence->rule->price) ? strtolower(trim($occurrence->rule->price)) : '';
+                            <?php
+
+                            $screenFrequencies = $this->getOccurrenceFrequencies();
+                            $mustache = new Mustache_Engine();
+
+                            if ($occurrences) {
+
+                                if ($this->isEditable()) {
+
+                                    foreach ($occurrences as $occurrence) {
+                                        $templateData = json_decode(json_encode($occurrence));
+                                        $templateData->pending = $occurrence->status === MapasCulturais\Entities\EventOccurrence::STATUS_PENDING;
+                                        if(!is_object($templateData->rule))
+                                            $templateData->rule = new stdclass;
+                                        $templateData->rule->screen_startsOn = $occurrence->rule->startsOn ? (new DateTime($occurrence->rule->startsOn))->format('d/m/Y') : '';
+                                        $templateData->rule->screen_until = $occurrence->rule->until ? (new DateTime($occurrence->rule->until))->format('d/m/Y') : '';
+                                        $templateData->rule->screen_frequency = $occurrence->rule->frequency ? $screenFrequencies[$templateData->rule->frequency] : '';
+
+                                        $templateData->rule->screen_spaceAddress = $occurrence->space->endereco;
+
+                                        $templateData->serialized = json_encode($templateData);
+                                        $templateData->formAction = $occurrence->editUrl;
+                                        echo $mustache->render($eventOccurrenceItemTemplate, $templateData);
                                     }
-                                    $arePricesTheSame = compareArrayElements($prices);
-                                    if($arePricesTheSame && !empty($space['occurrences'][0]->rule->price)){
-                                        $templateData->occurrencesPrice = $space['occurrences'][0]->rule->price;
-                                    }
-                                    foreach ($space['occurrences'] as $occurrence) {
-                                        if(!empty($occurrence->rule->description))
-                                            $templateData->occurrencesDescription .= trim($occurrence->rule->description);
-                                        if(!$arePricesTheSame)
-                                            $templateData->occurrencesDescription .= '. '.$occurrence->rule->price;
-                                        if(!empty($occurrence->rule->description))
-                                            $templateData->occurrencesDescription .= '; ';
-                                    }
-                                    $templateData->occurrencesDescription = substr($templateData->occurrencesDescription,0,-2);
-                                    $templatesData[] = $templateData;
-                                }
 
-                                foreach($templatesData as $templateData){
-                                    echo $mustache->render($eventOccurrenceItemTemplate_VIEW, $templateData);
+                                }else{
+                                    $occurrences = array_filter($occurrences, function($e){
+                                        return $e->status > 0;
+                                    });
+
+                                    $spaces = getOccurrencesBySpace($occurrences);
+
+                                    $templateData = array();
+                                    $templatesData = array();
+                                    foreach($spaces as $space){
+                                        $templateData = json_decode(json_encode($space));
+                                        $templateData->occurrencesDescription = '';
+                                        $templateData->occurrencesPrice = '';
+                                        $prices = array();
+                                        foreach ($space['occurrences'] as $occurrence) {
+                                            $prices[] = !empty($occurrence->rule->price) ? strtolower(trim($occurrence->rule->price)) : '';
+                                        }
+                                        $arePricesTheSame = compareArrayElements($prices);
+                                        if($arePricesTheSame && !empty($space['occurrences'][0]->rule->price)){
+                                            $templateData->occurrencesPrice = $space['occurrences'][0]->rule->price;
+                                        }
+                                        foreach ($space['occurrences'] as $occurrence) {
+                                            if(!empty($occurrence->rule->description))
+                                                $templateData->occurrencesDescription .= trim($occurrence->rule->description);
+                                            if(!$arePricesTheSame)
+                                                $templateData->occurrencesDescription .= '. '.$occurrence->rule->price;
+                                            if(!empty($occurrence->rule->description))
+                                                $templateData->occurrencesDescription .= '; ';
+                                        }
+                                        $templateData->occurrencesDescription = substr($templateData->occurrencesDescription,0,-2);
+                                        $templatesData[] = $templateData;
+                                    }
+
+                                    foreach($templatesData as $templateData){
+                                        echo $mustache->render($eventOccurrenceItemTemplate_VIEW, $templateData);
+                                    }
+
                                 }
 
                             }
-
-                        }
-                        ?>
+                            ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!--.servico.ocorrencia-->
+                <?php if($this->isEditable()): ?>
+                    <div class="textright">
+                        <a class="btn btn-default add js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
+                           data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
+                           data-dialog-title="Adicionar Ocorrência"
+                           data-form-action='insert'
+                           title="Clique para adicionar ocorrências">
+                            Adicionar ocorrência
+                        </a>
                     </div>
                 <?php endif; ?>
-            </div>
-            <!--.servico.ocorrencia-->
-            <?php if($this->isEditable()): ?>
-                <div class="textright">
-                    <a class="btn btn-default add js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
-                       data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                       data-dialog-title="Adicionar Ocorrência"
-                       data-form-action='insert'
-                       title="Clique para adicionar ocorrências">
-                        Adicionar ocorrência
-                    </a>
+                <div id="dialog-event-occurrence" class="js-dialog">
+                    <?php if($this->controller->action == 'create'): ?>
+                        <span class="js-dialog-disabled" data-message="Para adicionar ocorrências, primeiro é preciso salvar o evento"></span>
+                    <?php else: ?>
+                        <div class="js-dialog-content"></div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
-            <div id="dialog-event-occurrence" class="js-dialog">
-                <?php if($this->controller->action == 'create'): ?>
-                    <span class="js-dialog-disabled" data-message="Primeiro Salve"></span>
-                <?php else: ?>
-                    <div class="js-dialog-content"></div>
-                <?php endif; ?>
             </div>
+
+
+            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+                <h3>Descrição</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <?php endif; ?>
+
+
+            <!-- Video Gallery BEGIN -->
+            <?php $this->part('video-gallery.php', array('entity' => $entity)); ?>
+            <!-- Video Gallery END -->
+
+            <!-- Image Gallery BEGIN -->
+            <?php $this->part('gallery.php', array('entity' => $entity)); ?>
+            <!-- Image Gallery END -->
         </div>
-        <!--.ficha-spcultura-->
-
-        <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-            <h3>Descrição</h3>
-            <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
-        <?php endif; ?>
-
-
-        <!-- Video Gallery BEGIN -->
-        <?php $this->part('video-gallery.php', array('entity' => $entity)); ?>
-        <!-- Video Gallery END -->
-
-        <!-- Image Gallery BEGIN -->
-        <?php $this->part('gallery.php', array('entity' => $entity)); ?>
-        <!-- Image Gallery END -->
+        <!-- #sobre.aba-content -->
+    
+        <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
-    <!-- #sobre.aba-content -->
+    <!-- .tabs-content -->
+    <?php $this->applyTemplateHook('tabs-content','after'); ?>
+    
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
@@ -417,12 +412,12 @@ $this->includeMapAssets();
         <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
         <div class="clearfix js-space">
-            <label>Espaço:</label><br>
+            <label><?php $this->dict('entities: Space') ?>:</label><br>
             <span class="js-search-occurrence-space"
                 data-field-name='spaceId'
-                data-emptytext="Selecione um espaço"
+                data-emptytext="Selecione <?php $this->dict('entities: a space') ?>"
                 data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um espaço"
+                data-search-box-placeholder="Selecione <?php $this->dict('entities: a space') ?>"
                 data-entity-controller="space"
                 data-search-result-template="#agent-search-result-template"
                 data-selection-template="#agent-response-template"
@@ -430,15 +425,15 @@ $this->includeMapAssets();
                 data-selection-format="chooseSpace"
                 data-auto-open="true"
                 data-value="{{space.id}}"
-                title="Selecione um espaço"
+                title="Selecione <?php $this->dict('entities: a space') ?>"
                 >{{space.name}}</span>
         </div>
 
-        <!--mostrar se não encontrar o espaço cadastrado
+        <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
         <div class="alert warning">
-            Aparentemente o espaço procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um novo espaço clicando no botão abaixo.
+            Aparentemente o <?php $this->dict('entities: space') ?> procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um <?php $this->dict('entities: new space') ?> clicando no botão abaixo.
         </div>
-        <a class="btn btn-default add" href="#">Adicionar espaço</a>-->
+        <a class="btn btn-default add" href="#">Adicionar <?php $this->dict('entities: space') ?></a>-->
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="horario-de-inicio">Horário inicial:</label><br>

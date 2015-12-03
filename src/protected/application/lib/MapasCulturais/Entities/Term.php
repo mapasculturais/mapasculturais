@@ -64,7 +64,7 @@ class Term extends \MapasCulturais\Entity
     
     function getTaxonomySlug(){
         $tax = \MapasCulturais\App::i()->getRegisteredTaxonomyById($this->taxonomy);
-        return $tax->slug;
+        return is_object($tax) ? $tax->slug : null;
         
     }
 

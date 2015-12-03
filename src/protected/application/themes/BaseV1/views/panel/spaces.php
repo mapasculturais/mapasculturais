@@ -3,8 +3,8 @@ $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2>Meus espaços</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar novo espaço</a>
+		<h2><?php $this->dict('entities: My spaces') ?></h2>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar <?php $this->dict('entities: new space') ?></a>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
@@ -16,7 +16,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->enabledSpaces): ?>
-            <div class="alert info">Você não possui nenhum espaço cadastrado.</div>
+            <div class="alert info">Você não possui <?php $this->dict('entities: no registered spaces') ?>.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -25,7 +25,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->draftSpaces): ?>
-            <div class="alert info">Você não possui nenhum rascunho de espaço.</div>
+            <div class="alert info">Você não possui nenhum rascunho de <?php $this->dict('entities: space') ?>.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -34,7 +34,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->trashedSpaces): ?>
-            <div class="alert info">Você não possui nenhum espaço na lixeira.</div>
+            <div class="alert info">Você não possui <?php $this->dict('entities: no spaces') ?> na lixeira.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
