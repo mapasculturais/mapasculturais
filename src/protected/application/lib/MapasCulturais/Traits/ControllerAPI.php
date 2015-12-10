@@ -233,7 +233,9 @@ trait ControllerAPI{
 
                     $_joins = [];
 
-                    foreach($select as $prop){
+                    foreach($select as $i => $prop){
+                        $prop = trim($prop);
+                        $select[$i] = $prop;
                         if(in_array($prop, $entity_properties)){
                             $select_properties[] = $prop;
                         }elseif(in_array($prop, $entity_metadata)){

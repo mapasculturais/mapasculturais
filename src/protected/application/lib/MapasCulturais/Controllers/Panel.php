@@ -1,7 +1,12 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use \MapasCulturais\App;
+use MapasCulturais\App;
+
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\Project;
 
 /**
  * User Panel Controller
@@ -26,15 +31,13 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
 
         $app = App::i();
-
+        
         $count = new \stdClass();
-        $count->spaces = $this->countEntity('Space');
-        $count->events = $this->countEntity('Event');
-        $count->projects = $this->countEntity('Project');
 
-        $count->agents = $app->em->createQuery("SELECT COUNT(a.id) FROM \MapasCulturais\Entities\Agent a JOIN a.user u
-            WHERE u = :user AND a.status >= 0")->setParameter('user', $app->user)->getSingleScalarResult();
-        $count->agents = str_pad($count->agents, 2, '0', STR_PAD_LEFT);
+        $count->spaces = $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->agents = $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->events = $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->projects = $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
     }
@@ -104,9 +107,20 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_spaces(){
         $this->requireAuthentication();
-        $user = $this->_getUser();
 
-        $this->render('spaces', ['user' => $user]);
+        $app = App::i();
+
+        $user_filter = 'EQ(' . $app->user->id . ')';
+
+        $enabled = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_ENABLED . ')', '@permissions' => 'view']);
+        $draft   = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
+        $trashed = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
+
+        $enabled = json_decode(json_encode($enabled));
+        $draft   = json_decode(json_encode($draft));
+        $trashed = json_decode(json_encode($trashed));
+
+        $this->render('spaces', ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed]);
     }
 
     /**

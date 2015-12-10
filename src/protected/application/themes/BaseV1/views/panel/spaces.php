@@ -1,5 +1,5 @@
 <?php
-$this->layout = 'panel'
+$this->layout = 'panel';
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
@@ -12,28 +12,28 @@ $this->layout = 'panel'
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
-        <?php foreach($user->enabledSpaces as $entity): ?>
+        <?php foreach($enabled as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->enabledSpaces): ?>
+        <?php if(!$enabled): ?>
             <div class="alert info">Você não possui <?php $this->dict('entities: no registered spaces') ?>.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="rascunhos">
-        <?php foreach($user->draftSpaces as $entity): ?>
+        <?php foreach($draft as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->draftSpaces): ?>
+        <?php if(!$draft): ?>
             <div class="alert info">Você não possui nenhum rascunho de <?php $this->dict('entities: space') ?>.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
     <div id="lixeira">
-        <?php foreach($user->trashedSpaces as $entity): ?>
+        <?php foreach($trashed as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->trashedSpaces): ?>
+        <?php if(!$trashed): ?>
             <div class="alert info">Você não possui <?php $this->dict('entities: no spaces') ?> na lixeira.</div>
         <?php endif; ?>
     </div>
