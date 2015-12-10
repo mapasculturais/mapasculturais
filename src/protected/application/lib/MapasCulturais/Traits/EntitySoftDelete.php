@@ -24,7 +24,7 @@ trait EntitySoftDelete{
      *
      * @return bool true
      */
-    static function usesSoftDelete(){
+    public static function usesSoftDelete(){
         return true;
     }
 

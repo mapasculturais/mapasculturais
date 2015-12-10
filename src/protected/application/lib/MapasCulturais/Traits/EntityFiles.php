@@ -87,7 +87,7 @@ trait EntityFiles{
      * This entity uses files
      * @return bool true
      */
-    public function usesFiles(){
+    public static function usesFiles(){
         return true;
     }
 }

@@ -13,7 +13,7 @@ trait ControllerAPI{
      */
     private $_apiFindParamList = [];
 
-    function usesAPI(){
+    public static function usesAPI(){
         return true;
     }
 
@@ -366,7 +366,11 @@ trait ControllerAPI{
                     continue;
                 }
 
-                if(key_exists($key, $entity_associations) && $entity_associations[$key]['isOwningSide']){
+                if($key === 'user' && $class::usesOwnerAgent()){
+                    $dql_joins .= ' LEFT JOIN e.owner __user_agent__';
+                    $keys[$key] = '__user_agent__.user';   
+
+                }elseif(key_exists($key, $entity_associations) && $entity_associations[$key]['isOwningSide']){
                     $keys[$key] = 'e.'.$key;
 
                 }elseif(in_array($key, $entity_properties)){
@@ -392,6 +396,7 @@ trait ControllerAPI{
 
                 }elseif($key[0] != '_' && $key != 'callback'){
                     $this->apiErrorResponse ("property $key does not exists");
+
                 }else{
                     continue;
                 }
@@ -465,7 +470,7 @@ trait ControllerAPI{
             if(in_array('type', $select)){
                 $select_properties .= ',_type';
             }
-            
+
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
 
             $final_dql = "

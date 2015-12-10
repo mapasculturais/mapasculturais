@@ -13,7 +13,7 @@ use MapasCulturais\App,
  */
 trait EntityAgentRelation {
 
-    function usesAgentRelation(){
+    public static function usesAgentRelation(){
         return true;
     }
 

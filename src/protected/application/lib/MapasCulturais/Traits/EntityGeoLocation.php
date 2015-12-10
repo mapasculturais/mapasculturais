@@ -30,7 +30,7 @@ trait EntityGeoLocation{
      * This entity has geoLocation
      * @return bool true
      */
-    static function usesGeoLocation(){
+    public static function usesGeoLocation(){
         return true;
     }
 

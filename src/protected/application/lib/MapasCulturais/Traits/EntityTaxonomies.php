@@ -52,7 +52,7 @@ trait EntityTaxonomies{
      *
      * @return true
      */
-    static function usesTaxonomies(){
+    public static function usesTaxonomies(){
         return true;
     }
     

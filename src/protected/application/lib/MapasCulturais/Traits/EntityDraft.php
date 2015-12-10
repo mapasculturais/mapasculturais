@@ -9,7 +9,7 @@ trait EntityDraft{
      *
      * @return bool true
      */
-    static function usesDraft(){
+    public static function usesDraft(){
         return true;
     }
 

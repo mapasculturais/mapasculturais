@@ -21,7 +21,7 @@ trait EntityOwnerAgent{
      *
      * @return boolean true
      */
-    function usesOwnerAgent(){
+    public static function usesOwnerAgent(){
         return true;
     }
 

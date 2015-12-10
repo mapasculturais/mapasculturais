@@ -11,7 +11,7 @@ trait MagicCallers{
      * 
      * @return true
      */
-    function usesMagicCallers(){
+    public static function usesMagicCallers(){
         return true;
     }
 
