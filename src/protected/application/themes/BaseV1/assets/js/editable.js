@@ -31,7 +31,7 @@ jQuery(function(){
         return false;
     });
 
-    //Máscaras de telefone
+    //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-mask-phone')) {
@@ -52,7 +52,27 @@ jQuery(function(){
             });
         }
 
+        if ($(this).hasClass('js-mask-time')) {
+            //Mask
+            var masks = ['00:00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
 
+        // Fixes editable input size based on placeholder length
+        var placeholder = editable.input.$input.attr('placeholder'),
+            placeholderLength = placeholder && placeholder.length > 20 ? placeholder.length : 0,
+            possibleSize = Math.max(editable.value.length + 5, placeholderLength);
+
+        if (possibleSize > 20) {
+            editable.input.$input.attr('size', possibleSize);
+        }
+
+        // Fixes padding right hardcoded on 24px, now 0;
+        //editable.input.$input.css('padding-right', 10);
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
