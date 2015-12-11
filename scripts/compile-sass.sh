@@ -24,15 +24,15 @@ ASSETS_FOLDER=$(MAPASCULTURAIS_CONFIG_FILE=$CONFIG HTTP_HOST=$DOMAIN REQUEST_MET
 echo "compilando main.css do tema BaseV1"
 sass $BaseV1/css/sass/main.scss:$BaseV1/css/main.css
 
-echo "aplicando o autoprefixer no main.css do tema BaseV1"
-autoprefixer-cli $BaseV1/css/main.css
+#echo "aplicando o autoprefixer no main.css do tema BaseV1"
+#autoprefixer-cli $BaseV1/css/main.css
 
 if [ -f $ASSETS_FOLDER/css/sass/main.scss ]; then
   echo "compilando main.css do tema ativo $ASSETS_FOLDER/"
   sass $ASSETS_FOLDER/css/sass/main.scss:$ASSETS_FOLDER/css/main.css
 
-  echo "aplicando o autoprefixer no main.css do tema ativo $ASSETS_FOLDER/"
-  autoprefixer-cli $ASSETS_FOLDER/css/main.css
+#  echo "aplicando o autoprefixer no main.css do tema ativo $ASSETS_FOLDER/"
+#  autoprefixer-cli $ASSETS_FOLDER/css/main.css
 fi
 
 cd $CDIR;
