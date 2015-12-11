@@ -64,12 +64,11 @@ jQuery(function(){
 
         // Fixes editable input size based on placeholder length
         var placeholder = editable.input.$input.attr('placeholder'),
-            placeholderLength = placeholder && placeholder.length > 20 ? placeholder.length : 0,
-            possibleSize = Math.max(editable.value.length + 5, placeholderLength);
-
+            possibleSize = placeholder ? Math.max(placeholder.length, editable.value.length + 5) : 0;
         if (possibleSize > 20) {
             editable.input.$input.attr('size', possibleSize);
         }
+            
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
