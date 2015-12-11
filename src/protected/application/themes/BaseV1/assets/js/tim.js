@@ -338,7 +338,7 @@
         });
 
         if ($('.js-page-menu-item').length) {
-            $items = $('.js-page-menu-item');
+            var $items = $('.js-page-menu-item');
 
             // encontra o próximo item para o scroll para baixo
             var find_next_page_menu_item = function() {
@@ -376,9 +376,12 @@
                         $('nav#home-nav a.up').animate({opacity: 1}, speed) :
                         $('nav#home-nav a.up').animate({opacity: 0}, speed);
 
-                find_next_page_menu_item() ?
-                        $('nav#home-nav a.down').animate(speed) :
-                        $('nav#home-nav a.down').fadeOut(speed);
+                if(find_next_page_menu_item()){
+                    $('nav#home-nav a.down').animate(speed);
+                    $('nav#home-nav a.down').fadeIn(speed);
+                } else {
+                    $('nav#home-nav a.down').fadeOut(speed);
+                }
             };
 
             var scroll_timeout = null;
