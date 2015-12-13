@@ -1,14 +1,24 @@
-<label ng-repeat="term in terms" style="float:left; width:50%; display:inline-block; white-space: nowrap"> 
-    <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
-</label>
+<table class="select-table">
+    <tr>
+        <td>
+            <label ng-repeat="term in terms" ng-if="$even"> 
+                <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
+            </label>
+        </td>
+        <td>
+            <label ng-repeat="term in terms" ng-if="$odd"> 
+                <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
+            </label>
+        </td>
+    </tr>
+</table>
 <div class="clear"></div>
 <label ng-if="allowOther" >
-    <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show"> {{cfg.allowOtherText}}
+    <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show"> {{cfg.allowOtherText}}<span ng-if="cfg.show">: <small style="float:right">Separe os valores com ponto e vírgula (;)</small></span>
 </label>
 
 <div ng-if="allowOther" class="row">
     <label ng-show="cfg.show" class="colunm-full">
         <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
-        <small>Separe os valores com ponto e vírgula (;)</small>
     </label>
 </div>

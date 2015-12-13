@@ -1,11 +1,22 @@
 <div class="mc-directive mc-singleselect">
-    <label ng-repeat="(k, term) in data.terms" class="mc-select-directive--option">
-        <input name="{{data.name}}" value="{{k}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-change="notOther()"> {{ term }}
-    </label>
+    <table class="select-table">
+        <tr>
+            <td>
+                <label ng-repeat="(k, term) in data.terms" ng-if="$even" class="mc-select-directive--option">
+                    <input name="{{data.name}}" value="{{k}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-change="notOther()"> {{ term }}
+                </label>
+            </td>
+            <td>
+                <label ng-repeat="(k, term) in data.terms" ng-if="$odd" class="mc-select-directive--option">
+                    <input name="{{data.name}}" value="{{k}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-change="notOther()"> {{ term }}
+                </label>
+            </td>
+        </tr>
+    </table>
 
     <div ng-if="allowOther" class="mc-select-directive--other">
         <label>
-            <input name="{{data.name}}" value="" type="radio" class="mc-input-radio" ng-click="clickOther()" ng-checked="data.showOther"> {{data.allowOtherText}}
+            <input name="{{data.name}}" value="" type="radio" class="mc-input-radio" ng-click="clickOther()" ng-checked="data.showOther"> {{data.allowOtherText}}<span ng-show="data.showOther">:</span>
         </label><br>
 
         <label ng-show="data.showOther" class="colunm-full">

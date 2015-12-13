@@ -1,0 +1,21 @@
+editable-multiselect .edit-box, editable-singleselect .edit-box {
+    width:auto;
+    
+    .select-table {
+        margin-bottom: 5px;
+        
+        td {
+            text-align: left;
+            padding:0;
+            margin:0;
+            border:none;
+            width:50%;
+
+            label {
+                display:block;
+                padding-right:5px;
+                white-space: nowrap;
+            }
+        }
+    }
+}
