@@ -120,7 +120,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         </div>
         <?php endif; ?>
         <?php endif; ?>
-
+        
         <div id="sobre" class="aba-content">
             <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
                 <div class="highlighted-message clearfix">
@@ -152,8 +152,9 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <p>
                     <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
-
+                <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
+                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p>
                             <span class="label">Site:</span>
@@ -161,7 +162,9 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         </p>
                     <?php endif; ?>
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
+                <?php $this->applyTemplateHook('tab-about-service','after'); ?>
             </div>
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>

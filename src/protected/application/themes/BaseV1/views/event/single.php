@@ -138,8 +138,9 @@ $this->includeMapAssets();
                         <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
+                <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
-
+                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if ($this->isEditable() || $entity->registrationInfo): ?>
                         <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
                     <?php endif; ?>
@@ -181,7 +182,9 @@ $this->includeMapAssets();
                             <?php endif; ?>
                         </p>
                     <?php endif; ?>
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
+                <?php $this->applyTemplateHook('tab-about-service','after'); ?>
                 <!--.servico-->
                 <div class="servico ocorrencia clearfix">
                     <?php

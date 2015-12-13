@@ -62,7 +62,9 @@ $this->includeAngularEntityAssets($entity);
                 <p>
                     <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
+                <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
+                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p><span class="label">Site:</span>
@@ -99,7 +101,9 @@ $this->includeAngularEntityAssets($entity);
                     <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
                     <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
+                <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
                 <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?>
 

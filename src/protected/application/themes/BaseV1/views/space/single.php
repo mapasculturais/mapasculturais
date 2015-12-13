@@ -69,6 +69,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
+                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     
                     <?php if($this->isEditable()): ?>
                         <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
@@ -119,6 +120,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
