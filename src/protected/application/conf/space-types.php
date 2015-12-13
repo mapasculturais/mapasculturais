@@ -72,6 +72,18 @@ return array(
                 'Rampa de acesso',
                 'Elevador',
                 'Sinalização tátil',
+                
+                // vindos do sistema de museus.cultura.gov.br
+                'Bebedouro adaptado',
+                'Cadeira de rodas para uso do visitante',
+                'Circuito de visitação adaptado',
+                'Corrimão nas escadas e rampas',
+                'Elevador adaptado',
+                'Rampa de acesso',
+                'Sanitário adaptado',
+                'Telefone público adaptado',
+                'Vaga de estacionamento exclusiva para deficientes',
+                'Vaga de estacionamento exclusiva para idosos'
             )
         ),
         'capacidade' => array(
