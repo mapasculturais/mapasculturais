@@ -840,34 +840,31 @@ trait ControllerAPI{
     }
 
     private function _API_find_addSigleValueToParamList($value){
-        if(is_numeric($value)){
-            $result = $value;
-        }else{
-            $app = App::i();
-            if(trim($value) === '@me'){
-                $value = $app->user->is('guest') ? null : $app->user;
-            }elseif(strpos($value,'@me.') === 0){
-                $v = str_replace('@me.', '', $value);
-                $value = $app->user->$v;
-                //foreach($value as $p)
-                    //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r([$p->id, $p->name],true) . "<<<<<<<<< <<<<<<<<<<<<<");
-            }elseif(trim($value) === '@profile'){
-                $value = $app->user->profile ? $app->user->profile : null;
+        $app = App::i();
+        if(trim($value) === '@me'){
+            $value = $app->user->is('guest') ? null : $app->user;
+        }elseif(strpos($value,'@me.') === 0){
+            $v = str_replace('@me.', '', $value);
+            $value = $app->user->$v;
+            //foreach($value as $p)
+                //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r([$p->id, $p->name],true) . "<<<<<<<<< <<<<<<<<<<<<<");
+        }elseif(trim($value) === '@profile'){
+            $value = $app->user->profile ? $app->user->profile : null;
 
-            }elseif(preg_match('#@(\w+)[ ]*:[ ]*(\d+)#i', trim($value), $matches)){
-                $_repo = $app->repo($matches[1]);
-                $_id = $matches[2];
+        }elseif(preg_match('#@(\w+)[ ]*:[ ]*(\d+)#i', trim($value), $matches)){
+            $_repo = $app->repo($matches[1]);
+            $_id = $matches[2];
 
-                $value = ($_repo && $_id) ? $_repo->find($_id) : null;
+            $value = ($_repo && $_id) ? $_repo->find($_id) : null;
 
-            }elseif(strlen($value) && $value[0] == '@'){
-                $value = null;
-            }
-
-            $uid = uniqid('v');
-            $this->_apiFindParamList[$uid] = $value;
-            $result = ':' . $uid;
+        }elseif(strlen($value) && $value[0] == '@'){
+            $value = null;
         }
+
+        $uid = uniqid('v');
+        $this->_apiFindParamList[$uid] = $value;
+        $result = ':' . $uid;
+
         return $result;
     }
 
