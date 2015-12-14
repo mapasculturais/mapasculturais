@@ -610,6 +610,7 @@ MapasCulturais.AjaxUploader = {
             if($(this).data('initialized'))
                 return;
 
+            $(this).show();
             $(this).data('initialized', true);
 
             var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
