@@ -1,7 +1,7 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
 jQuery(function(){
-    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">Cancelar</button> <button type="submit" class="editable-submit">Enviar</button>';
+    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">cancelar</button> <button type="submit" class="editable-submit">ok</button>';
     $.fn.select2.defaults.separator = '; ';
     $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.Editables.init('#editable-entity');
