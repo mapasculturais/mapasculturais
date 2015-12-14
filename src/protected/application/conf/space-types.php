@@ -443,7 +443,7 @@ return array(
         ),
         'default_value' => array(),
         'validations' => array(
-            'v::arr()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
+            'v::arrayType()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
         )
     ),
     'checkbox' => array(
@@ -503,7 +503,7 @@ return array(
         ),
 
         'validations' => array(
-            "v::string()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
+            "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
         )
     )
      */
