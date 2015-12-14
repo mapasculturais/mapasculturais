@@ -21,7 +21,7 @@
 </form>
 
 <div class="js-ajax-upload-progress">
-    <div class="progress">
+    <div class="progress inactive">
         <div class="bar"></div >
         <div class="percent">0%</div >
     </div>
