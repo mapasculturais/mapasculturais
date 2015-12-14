@@ -43,6 +43,6 @@ return array_merge($config,
 
         'app.usePermissionsCache' => false,
 
-        'app.cache' => new \Doctrine\Common\Cache\ArrayCache(),
+        'app.cache' => function_exists('apc_store') ? new \Doctrine\Common\Cache\ApcCache() : new \Doctrine\Common\Cache\ArrayCache(),
     )
 );
