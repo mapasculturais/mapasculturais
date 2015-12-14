@@ -9,6 +9,7 @@
                     entityProperty: '@',
                     emptyLabel: '@',
                     boxTitle: '@',
+                    helpText: '@'
                 },
                 link: function ($scope, el, attrs) {
                     var def = MapasCulturais.entity.definition[attrs.entityProperty];
