@@ -8,7 +8,7 @@
         "doctrine/dbal": "2.*",
         "opauth/openid": "*",
         "respect/validation": "*",
-        "smottt/wideimage": "dev-master",
+        "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "v2.5.1",

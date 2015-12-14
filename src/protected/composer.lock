@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a24416f1ab04f530c124a461e059783",
-    "content-hash": "6b481da97e627e2312eb5cc7ea3e5500",
+    "hash": "52b3aae0341b4d6bb33929f00dfa7bd9",
+    "content-hash": "d60829a526c9fdea62720e64805cde2f",
     "packages": [
         {
             "name": "creof/doctrine2-spatial",
@@ -2205,28 +2205,25 @@
         },
         {
             "name": "smottt/wideimage",
-            "version": "dev-master",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smottt/WideImage.git",
-                "reference": "56803f947bfdbe147fd5eb3607fd3450d4a224fc"
+                "reference": "6cbdaa6eb186c4a618b2ef5a7f38fcb50f0f2b1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smottt/WideImage/zipball/56803f947bfdbe147fd5eb3607fd3450d4a224fc",
-                "reference": "56803f947bfdbe147fd5eb3607fd3450d4a224fc",
+                "url": "https://api.github.com/repos/smottt/WideImage/zipball/6cbdaa6eb186c4a618b2ef5a7f38fcb50f0f2b1b",
+                "reference": "6cbdaa6eb186c4a618b2ef5a7f38fcb50f0f2b1b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.0"
+                "php": ">=5.3"
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "WideImage\\": "lib/"
+                "psr-0": {
+                    "WideImage": "lib/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2234,9 +2231,9 @@
                 "GPL-2.0",
                 "LGPL-2.1"
             ],
-            "description": "An open-source PHP library for image manipulation",
+            "description": "An open-source PHP library for image manipulation. (With namespaces, PHP 5.3+)",
             "homepage": "http://wideimage.sourceforge.net",
-            "time": "2015-10-04 11:07:35"
+            "time": "2015-10-05 20:32:34"
         },
         {
             "name": "symfony/console",
@@ -2408,7 +2405,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "smottt/wideimage": 20,
         "creof/doctrine2-spatial": 20,
         "phpoffice/phpword": 20
     },
