@@ -1032,41 +1032,34 @@ class Theme extends MapasCulturais\Theme {
             return $app->cache->fetch($cache_id);
         }
 
-        $dql = "
-        SELECT
-           e.id
-        FROM
-           $entity_class e
-        WHERE
-           e.status > 0 AND
-           e.isVerified = TRUE
-       ";
+
+
+        $controller = $app->getControllerByEntity($entity_class);
 
         if ($entity_class === 'MapasCulturais\Entities\Event') {
-            $events = $app->controller('Event')->apiQueryByLocation(array(
+            $entities = $controller->apiQueryByLocation(array(
                 '@from' => date('Y-m-d'),
                 '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
                 'isVerified' => 'EQ(true)',
                 '@select' => 'id'
             ));
-            $event_ids = array_map(function($item) {
-                return $item['id'];
-            }, $events);
+            
+        }else{
 
-            if ($event_ids)
-                $dql .= ' AND e.id IN (' . implode(',', $event_ids) . ')';
-            else
-                return null;
+            $entities = $controller->apiQuery([
+                '@select' => 'id',
+                'isVerified' => 'EQ(true)'
+            ]);
         }
 
-        $ids = $app->em->createQuery($dql)
-                ->useQueryCache(true)
-                ->setResultCacheLifetime(60 * 5)
-                ->getScalarResult();
+        $ids = array_map(function($item) {
+            return $item['id'];
+        }, $entities);
 
         if ($ids) {
-            $id = $ids[array_rand($ids)]['id'];
+            $id = $ids[array_rand($ids)];
             $result = $app->repo($entity_class)->find($id);
+            $result->refresh();
         } else {
             $result = null;
         }
