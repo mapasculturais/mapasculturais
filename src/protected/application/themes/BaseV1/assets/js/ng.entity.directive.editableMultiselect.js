@@ -29,8 +29,15 @@
                     
                     $scope.editBox = EditBox;
 
-
-                    $scope.terms = Object.keys(def.options);
+                    $scope.terms = [];
+                    
+                    def.optionsOrder.forEach(function(e){
+                        $scope.terms.push({
+                            label: def.options[e],
+                            value: e
+                        });
+                    });
+                    
                     $scope.allowOther = def.allowOther;
                     $scope.allowOtherText = def.allowOtherText;
 

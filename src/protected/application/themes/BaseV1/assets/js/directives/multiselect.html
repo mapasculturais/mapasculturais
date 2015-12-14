@@ -2,12 +2,12 @@
     <tr>
         <td class="left">
             <label ng-repeat="term in terms" ng-if="$even"> 
-                <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
+                <input ng-checked="checked(term.value)" ng-click="toggleTerm(term.value)" type="checkbox" > {{ term.label }}
             </label>
         </td>
         <td class="right">
             <label ng-repeat="term in terms" ng-if="$odd"> 
-                <input ng-checked="checked(term)" ng-click="toggleTerm(term)" type="checkbox" > {{ term }}
+                <input ng-checked="checked(term.value)" ng-click="toggleTerm(term.value)" type="checkbox" > {{ term.label }}
             </label>
         </td>
     </tr>

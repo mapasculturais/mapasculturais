@@ -244,6 +244,7 @@ class Metadata extends \MapasCulturais\Definition{
 
         if(key_exists('options', $this->config)){
             $result['options'] = $this->config['options'];
+            $result['optionsOrder'] = array_keys($this->config['options']);
         }
 
         if(key_exists('label', $this->config)){

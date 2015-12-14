@@ -16,7 +16,15 @@
                     var entity = MapasCulturais.entity.object;
 
                     $scope.editBox = EditBox;
-                    $scope.terms = def.options;
+                    
+                    $scope.terms = [];
+                    
+                    def.optionsOrder.forEach(function(e){
+                        $scope.terms.push({
+                            label: def.options[e],
+                            value: e
+                        });
+                    });
 
                     $scope.data = {
                         inputVal: entity[$scope.entityProperty],

@@ -32,7 +32,13 @@
                     function setOutros(virgula) {
                         var _outros = [];
                         $scope.values.forEach(function (term) {
-                            if (terms.indexOf(term) === -1) {
+                            var has = true;
+                            terms.forEach(function(t){
+                                if(t.value === term){
+                                    has = false;
+                                }
+                            });
+                            if (has) {
                                 _outros.push(term);
                             }
                         });
