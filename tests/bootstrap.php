@@ -89,7 +89,8 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
-        $type = array_shift($app->getRegisteredEntityTypes($classname));
+        $_types = $app->getRegisteredEntityTypes($classname);
+        $type = array_shift($_types);
 
         $entity = new $classname;
         $entity->name = "Test $class "  . uniqid();
