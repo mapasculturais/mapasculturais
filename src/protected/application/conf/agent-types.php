@@ -27,7 +27,7 @@ return array(
             'private' => true,
             'label' => 'Idade',
             'validations' => array(
-                "v::int()->positive()" => "A idade/tempo deve ser um número positivo."
+                "v::intVal()->positive()" => "A idade/tempo deve ser um número positivo."
             )
         ),
 

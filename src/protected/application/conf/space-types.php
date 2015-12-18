@@ -89,7 +89,7 @@ return array(
         'capacidade' => array(
             'label' => 'Capacidade',
             'validations' => array(
-                "v::int()->positive()" => "A capacidade deve ser um número positivo."
+                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
             )
         ),
 

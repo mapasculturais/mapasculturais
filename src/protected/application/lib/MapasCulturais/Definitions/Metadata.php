@@ -65,7 +65,7 @@ class Metadata extends \MapasCulturais\Definition{
 
     /**
      * Array of validations where the key is a Respect/Validation call and the value is a error message.
-     * @example to validate a positive integet the key must be 'v::int()->positive()'
+     * @example to validate a positive integet the key must be 'v::intVal()->positive()'
      * @var array
      */
     protected $_validations= [];
@@ -92,7 +92,7 @@ class Metadata extends \MapasCulturais\Definition{
      *      'type' => 'text',
      *      'validations' => array(
      *          'required' => 'You must inform your age',
-     *          'v::int()->min(18)' => 'You must be older than 18'
+     *          'v::intVal()->min(18)' => 'You must be older than 18'
      *      )
      * ));
      * </code>
