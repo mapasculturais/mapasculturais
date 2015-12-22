@@ -13,6 +13,8 @@ trait ControllerAPI{
      */
     private $_apiFindParamList = [];
 
+    public $_lastQueryMetadata;
+
     public static function usesAPI(){
         return true;
     }
@@ -65,13 +67,26 @@ trait ControllerAPI{
         App::i()->stop();
     }
 
-    protected function apiAddHeaderMetadata($data, $count){
+    protected function apiAddHeaderMetadata($qdata, $data, $count){
         if (headers_sent())
             return;
 
-        $response_meta = ['count' => $count];
+        $response_meta = [
+            'count' => $count,
+            'page' => isset($qdata['@page']) ? $qdata['@page'] : 1,
+            'limit' => isset($qdata['@limit']) ? $qdata['@limit'] : null,
+            'numPages' => isset($qdata['@limit']) ? intval($count / $qdata['@limit']) + 1 : 1,
+            'keyword' => isset($qdata['@keyword']) ? $qdata['@keyword'] : '',
+            'order' => isset($qdata['@order']) ? $qdata['@order'] : ''
+        ];
+
+        $this->_lastQueryMetadata = (object) $response_meta;
 
         header('API-Metadata: ' . json_encode($response_meta));
+    }
+
+    function getLastQueryMetadata(){
+        return $this->_lastQueryMetadata;
     }
 
     /**
@@ -233,7 +248,9 @@ trait ControllerAPI{
 
                     $_joins = [];
 
-                    foreach($select as $prop){
+                    foreach($select as $i => $prop){
+                        $prop = trim($prop);
+                        $select[$i] = $prop;
                         if(in_array($prop, $entity_properties)){
                             $select_properties[] = $prop;
                         }elseif(in_array($prop, $entity_metadata)){
@@ -696,7 +713,7 @@ trait ControllerAPI{
                     return $rs_count;
                 }
 
-                $this->apiAddHeaderMetadata($rs, $rs_count);
+                $this->apiAddHeaderMetadata($qdata, $rs, $rs_count);
 
 
                 $result = array_map(function($entity) use ($processEntity){

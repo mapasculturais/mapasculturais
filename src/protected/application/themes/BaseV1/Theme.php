@@ -66,6 +66,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
+
+            'entities: space found' => 'espaço encontrado',
+            'entities: spaces found' => 'espaços encontrados',
+            'entities: event found' => 'evento encontrado',
+            'entities: events found' => 'eventos encontrados',
+            'entities: agent found' => 'agente encontrado',
+            'entities: agents found' => 'agentes encontrados',
+            'entities: project found' => 'projeto encontrado',
+            'entities: project found' => 'projetos encontrados'
         );
     }
 
