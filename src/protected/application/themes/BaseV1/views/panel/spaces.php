@@ -12,6 +12,9 @@ $this->layout = 'panel';
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
+
+        <?php $this->part('panel-search', ['meta' => $meta, 'search_entity' => 'space']); ?>
+
         <?php foreach($enabled as $entity): ?>
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>

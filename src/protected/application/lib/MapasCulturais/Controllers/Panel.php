@@ -93,6 +93,55 @@ class Panel extends \MapasCulturais\Controller {
         $this->render('agents', ['user' => $user]);
     }
 
+    protected function renderList($viewName, $entityName, $entityFields){
+        $this->requireAuthentication();
+        
+        $user = $this->_getUser();
+
+        $app = App::i();
+
+        $user_filter = 'EQ(' . $app->user->id . ')';
+
+        $query = [
+            '@select' => $entityFields,
+            '@files' => '(avatar.avatarSmall):url',
+            'user' => $user_filter,
+            'status' => 'EQ(' . Space::STATUS_ENABLED . ')',
+            '@limit' => 50,
+            '@order' => ''
+        ];
+
+        if(isset($this->data['keyword'])){
+            $query['@keyword'] = $this->data['keyword'];
+        }
+
+        if(isset($this->data['order'])){
+            $query['@order'] = $this->data['order'];
+        } else {
+            $query['@order'] = 'name ASC';
+        }
+
+        if(isset($this->data['page'])){
+            $query['@page'] = intval($this->data['page']);
+        } else{
+            $query['@page'] = 1;
+        }
+
+        $controller = $app->controller($entityName);
+
+        $enabled = $controller->apiQuery($query);
+        $meta = $controller->lastQueryMetadata;
+//        var_dump($meta);
+//        die();
+        $draft   = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
+        $trashed = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
+
+        $enabled = json_decode(json_encode($enabled));
+        $draft   = json_decode(json_encode($draft));
+        $trashed = json_decode(json_encode($trashed));
+
+        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta]);
+    }
 
     /**
      * Render the space list of the user panel.
@@ -106,21 +155,7 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_spaces(){
-        $this->requireAuthentication();
-
-        $app = App::i();
-
-        $user_filter = 'EQ(' . $app->user->id . ')';
-
-        $enabled = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_ENABLED . ')', '@permissions' => 'view']);
-        $draft   = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
-        $trashed = $app->controller('space')->apiQuery(['@select' => 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,acessibilidade', '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
-
-        $enabled = json_decode(json_encode($enabled));
-        $draft   = json_decode(json_encode($draft));
-        $trashed = json_decode(json_encode($trashed));
-
-        $this->render('spaces', ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed]);
+        $this->renderList('spaces', 'space', 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,publishUrl,unpublishUrl,acessibilidade,createTimestamp');
     }
 
     /**
@@ -135,10 +170,7 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_events(){
-        $this->requireAuthentication();
-        $user = $this->_getUser();
-
-        $this->render('events', ['user' => $user]);
+        $this->renderList('events', 'event', 'name,type,status,terms,classificacaoEtaria,singleUrl,editUrl,deleteUrl,publishUrl,unpublishUrl,createTimestamp');
     }
 
     /**

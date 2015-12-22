@@ -1,5 +1,5 @@
 <article class="objeto clearfix">
-    <?php if($avatar = $entity->{'@files:avatar.avatarSmall'}): ?>
+    <?php if(isset($entity->{'@files:avatar.avatarSmall'}) && $avatar = $entity->{'@files:avatar.avatarSmall'}): ?>
         <div class="thumb" style="background-image: url(<?php echo $avatar->url; ?>)"></div>
     <?php else: ?>
         <div class="thumb"></div>
@@ -10,6 +10,7 @@
 		<div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms->area)?></div>
 		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
 		<div><span class="label">Acessibilidade:</span> <?php echo $entity->acessibilidade ? $entity->acessibilidade : 'Não informado' ?></div>
+		<div><span class="label">Data de Criação:</span> <?php echo (new DateTime($entity->createTimestamp->date))->format('d/m/Y H:i:s'); ?></div>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
