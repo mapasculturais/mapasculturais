@@ -64,7 +64,7 @@ jQuery(function(){
 
         // Fixes editable input size based on placeholder length
         var placeholder = editable.input.$input.attr('placeholder'),
-            possibleSize = placeholder ? Math.max(placeholder.length, editable.value.length + 5) : 0;
+        possibleSize = placeholder ? Math.max(placeholder.length, editable.value.length + 5) : 0;
         if (possibleSize > 20) {
             editable.input.$input.attr('size', possibleSize);
         }
