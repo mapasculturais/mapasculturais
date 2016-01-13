@@ -7,7 +7,7 @@
 # Quickstart:
 #     $ docker build -t hacklab/mapasculturais .
 #     $ docker run --name postgis -p 5432:5432 -e POSTGRES_PASSWORD=postgis -d mdillon/postgis
-#     $ docker run --rm --name mapas --link postgis:postgis -i -p 80:8000  -t hacklab/mapasculturais
+#     $ docker run --name mapas --link postgis:postgis -i -p 80:8000  -t hacklab/mapasculturais
 #
 # É possível montar o código fonte do desenvolvimento sobre a que está
 # clonada no container, assim é possível visualizar suas alterações no browser.
