@@ -1,51 +1,26 @@
 #!/bin/bash
 
-#
-# Credenciais do superuser no postgre
-#
-if [ -z "$PG_SUPER_PASS" ];
-then
-    export PG_SUPER_PASS="postgis";
-fi;
-
-if [ -z "$PG_SUPER_USER" ];
-then
-    export PG_SUPER_USER="postgres";
-fi;
+export PG_SUPER_PASS="${PG_SUPER_PASS:-postgis}";
+export PG_SUPER_USER="${PG_SUPER_USER:-postgres}";
+export PG_DB="${PG_DB:-mapasculturais}";
+export PG_PASS="${PG_PASS:-mapasculturais}";
+export PG_USER="${PG_USER:-mapasculturais}";
+export PG_HOST="${PG_HOST:-postgis}";
+export DOMAIN="${DOMAIN:-localhost}";
 
 #
-# Dados do mapasculturais no postgre
+# Configura postgre na aplicação
 #
-if [ -z "$PG_DB" ];
-then
-    export PG_DB="mapasculturais";
-fi;
+cp src/protected/application/conf/config.template.php src/protected/application/conf/config.php
 
-if [ -z "$PG_PASS" ];
-then
-    export PG_PASS="mapasculturais";
-fi;
+doctrine_conf="'doctrine.database'=>[";
+doctrine_conf="$doctrine_conf 'dbname'=>'$PG_DB',";
+doctrine_conf="$doctrine_conf 'password'=>'$PG_PASS',";
+doctrine_conf="$doctrine_conf 'user'=>'$PG_USER',";
+doctrine_conf="$doctrine_conf 'host'=>'$PG_HOST',";
+doctrine_conf="$doctrine_conf ]";
 
-if [ -z "$PG_USER" ];
-then
-    export PG_USER="mapasculturais";
-fi;
-
-#
-# Host (container) em que roda postgres (--link postgis:postgis)
-#
-if [ -z "$PG_HOST" ];
-then
-    export PG_HOST="postgis";
-fi;
-
-#
-# Domínio da aplicação
-#
-if [ -z "$DOMAIN" ];
-then
-    export DOMAIN="localhost";
-fi;
+sed -i -z -e "s/'doctrine.database'[^]]*\]/$doctrine_conf/" src/protected/application/conf/config.php
 
 #
 # Popula banco no primeiro acesso
@@ -67,7 +42,11 @@ then
     )
 
     ASSETS_FOLDER=$(HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/get-theme-assets-path.php)
-    sass $ASSETS_FOLDER/css/sass/main.scss:$ASSETS_FOLDER/css/main.css -E "UTF-8"
+    
+    (
+     cd scripts/;
+     ./compile-sass.sh;
+    )
 fi;
 
 #

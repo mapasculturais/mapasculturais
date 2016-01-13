@@ -9,6 +9,11 @@
 #     $ docker run --name postgis -p 5432:5432 -e POSTGRES_PASSWORD=postgis -d mdillon/postgis
 #     $ docker run --rm --name mapas --link postgis:postgis -i -p 80:8000  -t hacklab/mapasculturais
 #
+# É possível montar o código fonte do desenvolvimento sobre a que está
+# clonada no container, assim é possível visualizar suas alterações no browser.
+#
+#     $ docker run --rm --name mapas --link postgis:postgis -v $PWD:/srv/mapasculturais -i -p 80:8000  -t hacklab/mapasculturais
+#
 FROM debian:jessie
 
 RUN apt-get update
@@ -37,12 +42,6 @@ WORKDIR /srv/mapasculturais
 RUN (cd src/protected \
         && composer -n install --prefer-dist \
         && composer -n dump-autoload --optimize)
-
-RUN cp src/protected/application/conf/config.template.php src/protected/application/conf/config.php
-RUN sed -i -z -e "s/'doctrine.database'[^]]*\]/'doctrine.database'=>['dbname'=>'mapasculturais','password'=>'mapasculturais','user'=>'mapasculturais','host'=>'postgis',]/" \
-        src/protected/application/conf/config.php
-
-ADD scripts/docker_entrypoint.sh scripts/docker_entrypoint.sh
 
 ENTRYPOINT ["scripts/docker_entrypoint.sh"]
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "src/"]
