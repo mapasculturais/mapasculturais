@@ -12,7 +12,7 @@
 # É possível montar o código fonte do desenvolvimento sobre a que está
 # clonada no container, assim é possível visualizar suas alterações no browser.
 #
-#     $ docker run --rm --name mapas --link postgis:postgis -v $PWD:/srv/mapasculturais -i -p 80:8000  -t hacklab/mapasculturais
+#     $ docker run --rm --name mapas --link postgis:postgis -v $PWD:/srv/mapas/mapasculturais -i -p 80:8000  -t hacklab/mapasculturais
 #
 FROM debian:jessie
 
@@ -29,15 +29,16 @@ RUN update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 RUN npm install -g uglify-js uglifycss autoprefixer
 RUN gem install sass
 
-RUN git -C /srv clone https://github.com/hacklabr/mapasculturais.git
+RUN mkdir -p /srv/mapas \
+    && git -C /srv/mapas clone https://github.com/hacklabr/mapasculturais.git
 
-RUN useradd -G www-data -d /srv/mapasculturais -s /bin/bash mapasculturais; \
-    mkdir -p /srv/mapasculturais/src/assets; \
-    mkdir -p /srv/mapasculturais/src/files; \
-    chown -R mapasculturais:www-data /srv/mapasculturais
+RUN useradd -G www-data -d /srv/mapas -s /bin/bash mapas; \
+    mkdir -p /srv/mapas/mapasculturais/src/assets; \
+    mkdir -p /srv/mapas/mapasculturais/src/files; \
+    chown -R mapas:www-data /srv/mapas
 
-USER mapasculturais
-WORKDIR /srv/mapasculturais
+USER mapas
+WORKDIR /srv/mapas/mapasculturais
 
 RUN (cd src/protected \
         && composer -n install --prefer-dist \

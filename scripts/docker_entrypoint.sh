@@ -34,20 +34,31 @@ then
 
     PGPASSWORD="$PG_PASS" psql -U "$PG_USER" -h "$PG_HOST" -w -f db/schema.sql
     PGPASSWORD="$PG_PASS" psql -U "$PG_USER" -h "$PG_HOST" -w -f db/initial-data.sql
-
-    (
-     cd src/protected/tools;
-     HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies;
-     HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php apply-updates.php 0;
-    )
-
-    ASSETS_FOLDER=$(HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/get-theme-assets-path.php)
-    
-    (
-     cd scripts/;
-     ./compile-sass.sh;
-    )
 fi;
+
+
+if mount | grep '/srv/mapas/mapasculturais';
+then
+(   # Reinstall deps if needed
+    cd src/protected;
+    composer -n install --prefer-dist;
+    composer -n dump-autoload --optimize;
+)
+fi
+
+(   # Apply database modifications
+    cd src/protected/tools;
+    HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies;
+    HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php apply-updates.php 0;
+)
+
+ASSETS_FOLDER=$(HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/get-theme-assets-path.php)
+
+(
+    # compile assets
+    cd scripts/;
+    ./compile-sass.sh;
+)
 
 #
 # Executa o que está em CMD no Dockerfile
