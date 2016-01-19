@@ -530,7 +530,6 @@ trait ControllerAPI{
 
             $query->setParameters($this->_apiFindParamList);
             $rs = $query->getResult();
-            print_r([$final_dql, $this->_apiFindParamList]); die;
 
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
