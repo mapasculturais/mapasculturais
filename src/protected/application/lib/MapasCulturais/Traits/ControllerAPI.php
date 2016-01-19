@@ -508,7 +508,29 @@ trait ControllerAPI{
 
             $query = $app->em->createQuery($final_dql);
 
-//            die(var_dump($dql_select,$dql_select_joins));
+            if($app->user->is('superAdmin') && isset($_GET['@debug'])){
+                if(isset($_GET['@type']) && $_GET['@type'] == 'html') {
+                    echo '<pre style="color:red">';
+                }
+
+                echo "\nDQL Query:\n";
+                echo "$final_dql\n\n";
+
+                echo "DQL params: ";
+                print_r($this->_apiFindParamList);
+
+                echo "\n\nSQL Query\n";
+                echo "\n{$query->getSQL()}\n\n";
+            }
+
+            // cache
+            if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
+                $query->useResultCache(true, $this->getApiCacheLifetime());
+            }
+
+            $query->setParameters($this->_apiFindParamList);
+            $rs = $query->getResult();
+            print_r([$final_dql, $this->_apiFindParamList]); die;
 
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
@@ -542,28 +564,6 @@ trait ControllerAPI{
                     $q->getResult();
                 }
             };
-
-            if($app->user->is('superAdmin') && isset($_GET['@debug'])){
-                if(isset($_GET['@type']) && $_GET['@type'] == 'html') {
-                    echo '<pre style="color:red">';
-                }
-
-                echo "\nDQL Query:\n";
-                echo "$final_dql\n\n";
-
-                echo "DQL params: ";
-                print_r($this->_apiFindParamList);
-
-                echo "\n\nSQL Query\n";
-                echo "\n{$query->getSQL()}\n\n";
-            }
-
-            // cache
-            if($app->config['app.useApiCache'] && $this->getApiCacheLifetime()){
-                $query->useResultCache(true, $this->getApiCacheLifetime());
-            }
-
-            $query->setParameters($this->_apiFindParamList);
 
             $processEntity = function($r) use($append_files_cb, $select){
 
@@ -833,8 +833,8 @@ trait ControllerAPI{
 
 
                 $dql = $not ?
-                        "ST_DWithin($key, ST_MakePoint('$longitude','$latitude'), $radius) <> TRUE" :
-                        "ST_DWithin($key, ST_MakePoint('$longitude','$latitude'), $radius) = TRUE";
+                        "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) <> TRUE" :
+                        "ST_DWithin($key, ST_MakePoint($longitude,$latitude), $radius) = TRUE";
             }
 
             /*
