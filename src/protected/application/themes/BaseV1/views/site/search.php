@@ -200,7 +200,7 @@ $this->includeMapAssets();
             <article class="objeto clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
                 <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
-                    <a href="{{agent.singleUrl}}" class="js-single-url">
+                    <a href="{{space.singleUrl}}" class="js-single-url">
                         <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--space')}}">
                     </a>
                     <p class="objeto-resumo">{{space.shortDescription}}</p>
