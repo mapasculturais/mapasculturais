@@ -34,7 +34,7 @@ Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturai
 - Composer
 ```shell
     curl -sS https://getcomposer.org/installer | php
-    sudo mv composer.phar /usr/local/bin/composer
+    sudo mv composer.phar /usr/local/bin/composer.phar
 ```
 - PostgreSQL >= 9.3
 - Postgis Contrib (for Unaccent extension)
