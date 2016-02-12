@@ -1000,7 +1000,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum espaço encontrado.';
+                return 'ningún espacio encontrado.';
             },
 
             onClear: function($selector){ },
@@ -1078,7 +1078,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum espaço encontrado.';
+                return 'ningún espacio encontrado.';
             },
 
             onClear: function($selector){
@@ -1141,7 +1141,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum agente encontrado.';
+                return 'Ningún agente encontrado.';
             },
 
             onClear: function($selector){ },
@@ -1189,7 +1189,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum agente encontrado.';
+                return 'Ningún agente encontrado.';
             },
 
             onClear: function($selector){ },

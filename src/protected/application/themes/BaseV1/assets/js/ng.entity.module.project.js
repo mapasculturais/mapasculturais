@@ -507,7 +507,7 @@
                 spinner: false,
 
                 registrationCategories: categories,
-                registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
+                registrationCategoriesToFilter: [{value: null, label: 'Tode las opciones'}].concat(categories),
 
                 registration: {
                     owner: null,
@@ -728,7 +728,7 @@
                         document.location = rs.editUrl;
                     });
                 }else{
-                    MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
+                    MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsable.');
                 }
             };
 

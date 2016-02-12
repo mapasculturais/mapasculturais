@@ -6,14 +6,14 @@
     </header>
     <div ng-show="!collapsedFilters && !showInfobox()">
         <form class="form-palavra-chave filter search-filter--keyword">
-            <label>Palavra-chave</label>
+            <label>Palabra clave</label>
             <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="Buscar agentes" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--area">
-            <span class="label">Área de Atuação</span>
+            <span class="label">Área de actuación</span>
             <div class="dropdown">
-                <div class="placeholder">Selecione as áreas</div>
+                <div class="placeholder">Seleccione las áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list">
                         <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.agent.areas, area.id)}" ng-click="toggleSelection(data.agent.areas, area.id)">

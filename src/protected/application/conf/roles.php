@@ -7,6 +7,6 @@ return array(
         'name' => 'Admin'
     ),
     'staff' => array(
-        'name' => 'Equipe'
+        'name' => 'Equipo'
     )
 );

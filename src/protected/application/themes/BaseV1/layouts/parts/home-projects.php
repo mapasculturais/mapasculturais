@@ -22,19 +22,19 @@ $project_img_attributes = 'class="random-feature no-image"';
 ?>
 <article id="home-projects" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon icon-project"></span> Projetos</h1>
+        <h1><span class="icon icon-project"></span> Proyectos</h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_projects; ?></div>
-                <div class="statistic-label">projetos cadastrados</div>
+                <div class="statistic-label">Proyectos registrados</div>
             </div>
             <div class="statistics">
                 <div class="statistic"><?php echo $num_verified_projects; ?></div>
-                <div class="statistic-label">projetos da <?php $this->dict('home: abbreviation'); ?></div>
+                <div class="statistic-label">proyectos <?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
         <p><?php $this->dict('home: projects') ?></p>
-        <h4>Encontre projetos por</h4>
+        <h4>Busque proyectos por</h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#project-types">Tipo</a></li>
         </ul>
@@ -59,7 +59,7 @@ $project_img_attributes = 'class="random-feature no-image"';
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar projeto</a>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>">Ver tudo</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar proyecto</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>">Ver todo</a>
     </div>
 </article>

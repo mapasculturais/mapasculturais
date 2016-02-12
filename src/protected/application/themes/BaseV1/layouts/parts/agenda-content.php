@@ -38,10 +38,10 @@
             </div>
             <div class="objeto-meta">
                 <?php if (!empty($event->terms['linguagem'])): ?>
-                    <div><span class="label">Linguagem:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
+                    <div><span class="label">Tipo de evento:</span> <?php echo implode(', ', $event->terms['linguagem'])?></div>
                 <?php endif; ?>
                 <?php if (!empty($event->terms['linguagem'])): ?>
-                    <div><span class="label">Classificação:</span> <?php echo $event->classificacaoEtaria; ?></div>
+                    <div><span class="label">Clasificación:</span> <?php echo $event->classificacaoEtaria; ?></div>
                 <?php endif; ?>
             </div>
 

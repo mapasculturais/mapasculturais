@@ -20,39 +20,39 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     protected static $validations = [
         'startsOn' => [
-            'required' => 'Data de inicio é obrigatória',
-            '$value instanceof \DateTime' => 'Data de inicio inválida'
+            'required' => 'La fecha de inicio es obligatoria',
+            '$value instanceof \DateTime' => 'Fecha de inicio no válida'
         ],
         'endsOn' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
+            '$value instanceof \DateTime' => 'Fecha final no válida',
         ],
         'startsAt' => [
-            'required' => 'Hora de inicio é obrigatória',
-            '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio inválida',
+            'required' => 'La hora de inicio obligatoria',
+            '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio no válida',
         ],
         'duration' => [
             //'required' => 'A duração é obrigatória',
-            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida'
+            '$value instanceof \DateInterval' => 'Duración no válida',//'Hora final inválida'
         ],
         'frequency' => [
-            'required' => 'Frequência é obrigatória',
-            '$this->validateFrequency($value)' => 'Frequência inválida'
+            'required' => 'La Frecuencia es obligatoria',
+            '$this->validateFrequency($value)' => 'Frecuencia no válida'
         ],
         'separation' => [
-            'v::positive()' => 'Erro interno'
+            'v::positive()' => 'Error interno'
         ],
         'until' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
-            '$value >= $this->startsOn' => 'Data final antes da inicial'
+            '$value instanceof \DateTime' => 'Fecha final no válida',
+            '$value >= $this->startsOn' => 'Fecha final antes de la inicial'
         ],
         'event' => [
-            'required' => 'Evento é obrigatório'
+            'required' => 'Evento es obligatorio'
         ],
         'space' => [
-            'required' => 'Espaço é obrigatório'
+            'required' => 'Espacio es obligatorio'
         ],
         'description' => [
-            'required' => 'A descrição legível do horário é obrigatória'
+            'required' => 'Una descripción legible del horario es obligatoria'
         ]
 
     ];

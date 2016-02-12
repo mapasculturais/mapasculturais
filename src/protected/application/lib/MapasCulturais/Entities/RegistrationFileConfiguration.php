@@ -19,8 +19,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     use \MapasCulturais\Traits\EntityFiles;
 
     protected static $validations = [
-        'owner' => [ 'required' => "O projeto é obrigatório."],
-        'title' => [ 'required' => "O título do anexo é obrigatório."]
+        'owner' => [ 'required' => "O projeto es obligatorio."],
+        'title' => [ 'required' => "O título do anexo es obligatorio."]
     ];
     /**
      * @var integer

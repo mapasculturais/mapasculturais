@@ -27,11 +27,11 @@
             }
 
 
-            L.drawLocal.draw.handlers.circle.tooltip.start = 'Clique e arraste para desenhar o círculo';
-            L.drawLocal.draw.handlers.circle.tooltip.end = 'Solte o mouse para finalizar o desenho';
-            L.drawLocal.draw.toolbar.actions.title = 'Cancelar desenho';
+            L.drawLocal.draw.handlers.circle.tooltip.start = 'Cliquee y arrastre para diseñar el círculo';
+            L.drawLocal.draw.handlers.circle.tooltip.end = 'Suelte el mouse para finalizar el diseño';
+            L.drawLocal.draw.toolbar.actions.title = 'Cancelar diseño';
             L.drawLocal.draw.toolbar.actions.text = 'Cancelar';
-            L.drawLocal.draw.toolbar.buttons.circle = 'Desenhar um círculo';
+            L.drawLocal.draw.toolbar.buttons.circle = 'Diseñar un círculo';
 
             L.Draw.Circle = L.Draw.Circle.extend({
                 _onMouseMove: function(e) {
@@ -49,7 +49,7 @@
 
                         this._tooltip.updateContent({
                             text: L.drawLocal.draw.handlers.circle.tooltip.end,
-                            subtext: showRadius ? 'Raio: ' + L.GeometryUtil.readableDistance(radius, useMetric).replace('.',',') : ''
+                            subtext: showRadius ? 'Radio: ' + L.GeometryUtil.readableDistance(radius, useMetric).replace('.',',') : ''
                         });
                     }
                 }
@@ -114,7 +114,7 @@
                     neighborhoodRadius = $scope.defaultLocationRadius;
 
                 var marker = L.marker(e.latlng, $window.leaflet.iconOptions['location']).addTo(map)
-                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
+                    .bindPopup("Según su navegador, usted está aproximadamente en este punto con un margen de error de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de un radio de " + neighborhoodRadius/1000 + "KM de este punto. <a onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
                     .openPopup();
 
                 var circle = L.circle(e.latlng, $scope.defaultLocationRadius, {className : 'vetorial-padrao'}).addTo(map.drawnItems);

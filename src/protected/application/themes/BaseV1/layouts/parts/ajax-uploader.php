@@ -1,5 +1,5 @@
 <?php if($this->controller->action === 'create'): ?>
-    <span class='js-dialog-disabled' data-message='Para subir arquivos você primeiro deve salvar.'></span>
+    <span class='js-dialog-disabled' data-message='Para subir archivos primero debe salvar.'></span>
 <?php else: ?>
 
 <form class="js-ajax-upload" style="display:none"
@@ -14,8 +14,8 @@
     <?php if($response_template): ?><script type="js-template"><?php echo $response_template; ?></script><?php endif; ?>
     <?php if($add_description): ?> <input type="text" name="description[<?php echo $file_group ?>]" placeholder="Título" /><br /><?php endif; ?>
 
-    <?php if($file_types): ?><p class="form-help">Tipos de arquivos suportados: <?php echo $file_types; ?></p><?php endif; ?>
-    <p class="form-help">Tamanho máximo do arquivo: <?php echo $app->maxUploadSize; ?></p>
+    <?php if($file_types): ?><p class="form-help">Tipos de archivos soportados: <?php echo $file_types; ?></p><?php endif; ?>
+    <p class="form-help">Tamaño máximo de archivo: <?php echo $app->maxUploadSize; ?></p>
     <input type="file" name="<?php echo $file_group ?>" />
 
 </form>

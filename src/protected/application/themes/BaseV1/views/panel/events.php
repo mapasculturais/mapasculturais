@@ -3,13 +3,13 @@ $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2>Meus eventos</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar novo evento</a>
+		<h2>Mis eventos</h2>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>">Agregar nuevo evento</a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
+        <li class="active"><a href="#ativos">Activos</a></li>
+        <li><a href="#rascunhos">Borradores</a></li>
+        <li><a href="#lixeira">Papelera</a></li>
     </ul>
     <div id="ativos">
 
@@ -19,7 +19,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$enabled): ?>
-            <div class="alert info">Você não possui nenhum evento cadastrado.</div>
+            <div class="alert info">Usted no posee ningún evento registrado.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -28,7 +28,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$draft): ?>
-            <div class="alert info">Você não possui nenhum rascunho de evento.</div>
+            <div class="alert info">Usted no posee ningún borrador de evento.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -37,7 +37,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$trashed): ?>
-            <div class="alert info">Você não possui nenhum evento na lixeira.</div>
+            <div class="alert info">Usted no posee ningún evento en la papelera.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

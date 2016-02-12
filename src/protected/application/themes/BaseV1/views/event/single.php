@@ -32,23 +32,23 @@ $this->includeMapAssets();
             <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
             <a class="toggle-mapa" href="#"><span class="ver-mapa">ver mapa</span><span class="ocultar-mapa">ocultar mapa</span> <span class="icon icon-show-map"></span></a>
         </header>
-        {{#pending}}<div class="alert warning pending">Aguardando confirmação</div>{{/pending}}
+        {{#pending}}<div class="alert warning pending">Esperando confirmación</div>{{/pending}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
         <!-- .mapa -->
         <div class="infos">
-            <p><span class="label">Descrição Legível: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}Não Informado.{{/rule.description}}</p>
-            <p><span class="label">Preço:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}Não Informado.{{/rule.price}}</p>
-            <p><span class="label">Horário inicial:</span> {{rule.startsAt}}</p>
+            <p><span class="label">Descripción legible: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}No Informado.{{/rule.description}}</p>
+            <p><span class="label">Precio:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}No Informado.{{/rule.price}}</p>
+            <p><span class="label">Horario inicial:</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
-                <p><span class="label">Duração:</span> {{rule.duration}} min</p>
+                <p><span class="label">Duración:</span> {{rule.duration}} min</p>
             {{/rule.duration}}
-            <p><span class="label">Horário final:</span> {{rule.endsAt }}</p>
+            <p><span class="label">Horario final:</span> {{rule.endsAt }}</p>
             <?php if($this->isEditable()): ?>
-                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Frequência:</span> {{rule.screen_frequency}}</p>
+                <p class="privado"><span class="icon icon-private-info"></span><span class="label">Frecuencia:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
-            <p><span class="label">Data inicial:</span> {{rule.screen_startsOn}}</p>
+            <p><span class="label">Fecha inicial:</span> {{rule.screen_startsOn}}</p>
             {{#rule.screen_until}}
-                <p><span class="label">Data final:</span> {{rule.screen_until}}</p>
+                <p><span class="label">Fecha final:</span> {{rule.screen_until}}</p>
             {{/rule.screen_until}}
         </div>
         <!-- .infos -->
@@ -57,11 +57,11 @@ $this->includeMapAssets();
                 <a class="btn btn-default edit js-open-dialog hltip"
                    data-dialog="#dialog-event-occurrence"
                    data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                   data-dialog-title="Modificar Ocorrência"
+                   data-dialog-title="Modificar Fecha"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='Editar Ocorrência'>Editar</a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>Excluir</a>
+                   href="#" title='Editar Fecha'>Editar</a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Eliminar esta Fecha?" title='Eliminar Fecha'>eliminar</a>
             </div>
         <?php endif; ?>
     </div>
@@ -77,9 +77,9 @@ $this->includeMapAssets();
         <div class="infos">
             <p class="descricao-legivel">{{occurrencesDescription}}</p>
             {{#occurrencesPrice}}
-                <p><span class="label">Preço:</span> {{occurrencesPrice}}</p>
+                <p><span class="label">Precio:</span> {{occurrencesPrice}}</p>
             {{/occurrencesPrice}}
-            <p><span class="label">Endereço:</span> {{space.endereco}}</p>
+            <p><span class="label">Dirección:</span> {{space.endereco}}</p>
         </div>
         <!-- .infos -->
     </div>
@@ -111,7 +111,7 @@ $this->includeMapAssets();
             <?php if ($this->isEditable() || $entity->subTitle): ?>
                 <?php $this->applyTemplateHook('subtitle','before'); ?>
                 <h4 class="event-subtitle">
-                    <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                    <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Ingrese un subtítulo para el evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
                 </h4>
                 <?php $this->applyTemplateHook('subtitle','after'); ?>
             <?php endif; ?>
@@ -130,55 +130,55 @@ $this->includeMapAssets();
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                    <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                    <div class="alert warning">El límite de caracteres de la descripción corta se disminuyó a 400, pero su texto actual posee  <?php echo strlen($entity->shortDescription) ?> caracteres. Debe cambiar su texto o este será recortado al salvar.</div>
                 <?php endif; ?>
                 <p>
                     <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                        <span class="label">Descrição Curta:</span><br>
-                        <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                        <span class="label">Descripción Corta:</span><br>
+                        <span class="js-editable" data-edit="shortDescription" data-original-title="Descripción Corta" data-emptytext="Agregue una Descripción Corta para el evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if ($this->isEditable() || $entity->registrationInfo): ?>
-                        <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
+                        <p><span class="label">Inscripciones:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscripciones" data-emptytext="Informes sobre las inscripciones"><?php echo $entity->registrationInfo; ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
                         <?php
                         /*Agente padrão da Giovanna editando atrações da Virada*/
                         if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                            $entity->classificacaoEtaria = 'Livre';
+                            $entity->classificacaoEtaria = 'Libre';
                         }
                         ?>
-                        <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
+                        <p><span class="label">Clasificación Etaria: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Clasificación Etaria" data-emptytext="Informe la Clasificación Etaria del evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->site): ?>
-                        <p><span class="label">Site:</span>
+                        <p><span class="label">Sitio web:</span>
                             <?php if ($this->isEditable()): ?>
-                                <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe o endereço do site do evento"><?php echo $entity->site; ?></span></p>
+                                <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe la dirección del sitio web del evento"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                        <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
+                        <p><span class="label">Más información:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Más información" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
                         <p>
-                            <span>Acessibilidade:</span>
+                            <span>Accesibilidad:</span>
 
                             <?php if($this->isEditable() || $entity->traducaoLibras): ?>
-                                <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
+                                <p><span class="label">Traducción para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Traducción para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
                             <?php endif; ?>
 
                             <?php if($this->isEditable() || $entity->descricaoSonora): ?>
-                                <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                                <p><span class="label">Audio Descripción: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descripción Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                             <?php endif; ?>
                         </p>
                     <?php endif; ?>
@@ -297,16 +297,16 @@ $this->includeMapAssets();
                     <div class="textright">
                         <a class="btn btn-default add js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
                            data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                           data-dialog-title="Adicionar Ocorrência"
+                           data-dialog-title="Agregar Fecha"
                            data-form-action='insert'
-                           title="Clique para adicionar ocorrências">
-                            Adicionar ocorrência
+                           title="Cliquee para agregar Fechas">
+                            Agregar Fecha
                         </a>
                     </div>
                 <?php endif; ?>
                 <div id="dialog-event-occurrence" class="js-dialog">
                     <?php if($this->controller->action == 'create'): ?>
-                        <span class="js-dialog-disabled" data-message="Para adicionar ocorrências, primeiro é preciso salvar o evento"></span>
+                        <span class="js-dialog-disabled" data-message="Para agregar Fechas, primero es preciso salvar el evento"></span>
                     <?php else: ?>
                         <div class="js-dialog-content"></div>
                     <?php endif; ?>
@@ -315,8 +315,8 @@ $this->includeMapAssets();
 
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-                <h3>Descrição</h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Evento" data-emptytext="Insira uma descrição do evento" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+                <h3>Descripción</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descripción del Evento" data-emptytext="Agregue una Descripción del Evento" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
 
 
@@ -342,15 +342,15 @@ $this->includeMapAssets();
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <?php if($this->isEditable()): ?>
         <div class="widget">
-            <h3>Projeto</h3>
+            <h3>proyecto</h3>
             <?php if($request_project): $proj = $request_project->destination; ?>
                 <a href="<?php echo $proj->singleUrl ?>"><?php echo $proj->name ?></a>
             <?php else: ?>
                 <a class="js-search js-include-editable"
                     data-field-name='projectId'
-                    data-emptytext="Selecione um projeto"
+                    data-emptytext="Seleccione un proyecto"
                     data-search-box-width="400px"
-                    data-search-box-placeholder="Selecione um projeto"
+                    data-search-box-placeholder="Seleccione un proyecto"
                     data-entity-controller="project"
                     data-search-result-template="#agent-search-result-template"
                     data-selection-template="#agent-response-template"
@@ -365,18 +365,18 @@ $this->includeMapAssets();
                     <?php echo $entity->project ? $entity->project->name : ''; ?>
                 </a>
             <?php endif; ?>
-            <span class="warning pending js-pending-project hltip" data-hltip-classes="hltip-warning" hltitle="Aguardando confirmação" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
+            <span class="warning pending js-pending-project hltip" data-hltip-classes="hltip-warning" hltitle="Esperando confirmación" <?php if(!$request_project) echo 'style="display:none"'; ?>></span>
         </div>
     <?php elseif($entity->project): ?>
         <div class="widget">
-            <h3>Projeto</h3>
+            <h3>Proyecto</h3>
             <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
         </div>
     <?php endif; ?>
     <div class="widget">
-        <h3>Linguagens</h3>
+        <h3>Tipos de Eventos</h3>
         <?php if ($this->isEditable()): ?>
-            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Linguagens" data-emptytext="Selecione pelo menos uma linguagem" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="Tipos de Eventos" data-emptytext="Seleccione por lo menos un tipo de evento" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
         <?php else: ?>
             <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
             <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
@@ -390,7 +390,7 @@ $this->includeMapAssets();
 <div class="sidebar event sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.<span class="close"></span></p>
+            <p class="alert info">Para agregar archivos para descargar o links, primero es preciso salvar el evento.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
@@ -418,9 +418,9 @@ $this->includeMapAssets();
             <label><?php $this->dict('entities: Space') ?>:</label><br>
             <span class="js-search-occurrence-space"
                 data-field-name='spaceId'
-                data-emptytext="Selecione <?php $this->dict('entities: a space') ?>"
+                data-emptytext="Seleccione <?php $this->dict('entities: a space') ?>"
                 data-search-box-width="400px"
-                data-search-box-placeholder="Selecione <?php $this->dict('entities: a space') ?>"
+                data-search-box-placeholder="Seleccione <?php $this->dict('entities: a space') ?>"
                 data-entity-controller="space"
                 data-search-result-template="#agent-search-result-template"
                 data-selection-template="#agent-response-template"
@@ -432,32 +432,32 @@ $this->includeMapAssets();
                 >{{space.name}}</span>
         </div>
 
-        <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
+        <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> registrado
         <div class="alert warning">
-            Aparentemente o <?php $this->dict('entities: space') ?> procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um <?php $this->dict('entities: new space') ?> clicando no botão abaixo.
+            Aparentemente el <?php $this->dict('entities: space') ?> buscado ya no se encuentra registrado en nuestro sistema. Intente una nueva busqueda o antes de continuar, agregue un <?php $this->dict('entities: new space') ?> cliqueando en botón abajo.
         </div>
-        <a class="btn btn-default add" href="#">Adicionar <?php $this->dict('entities: space') ?></a>-->
+        <a class="btn btn-default add" href="#">Agregar <?php $this->dict('entities: space') ?></a>-->
         <div class="clearfix">
             <div class="grupo-de-campos">
-                <label for="horario-de-inicio">Horário inicial:</label><br>
+                <label for="horario-de-inicio">Horario inicial:</label><br>
                 <input id="horario-de-inicio" class="horario-da-ocorrencia js-event-time" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <label for="duracao">Duração:</label><br>
+                <label for="duracao">Duración:</label><br>
                 <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="minutos"  value="{{rule.duration}}">
             </div>
             <div class="grupo-de-campos">
-                <label for="horario-de-fim">Horário final:</label><br>
+                <label for="horario-de-fim">Horario final:</label><br>
                 <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <span class="label">Frequência:</span><br>
+                <span class="label">Frecuencia:</span><br>
                     <select name="frequency" class="js-select-frequency">
-                        <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}>uma vez</option>
-                        <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}>todos os dias</option>
+                        <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}>una vez</option>
+                        <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}>todos los días</option>
                         <option value="weekly" {{#rule.freq_weekly}}selected="selected"{{/rule.freq_weekly}}>semanal</option>
                         <!-- for now we will not support monthly recurrences.
-                        <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensal</option>
+                        <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensual</option>
                         -->
                     </select>
                 </div>
@@ -465,49 +465,49 @@ $this->includeMapAssets();
         </div>
         <div class="clearfix">
             <div class="grupo-de-campos">
-                <label for="data-de-inicio">Data inicial:</label><br>
+                <label for="data-de-inicio">Fecha inicial:</label><br>
                 <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates js-start-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
                 <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
             </div>
             <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
-                <label for="data-de-fim">Data final:</label><br>
+                <label for="data-de-fim">Fecha final:</label><br>
                 <input id="until-{{id}}-visible" type="text" class="js-event-dates js-end-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
                 <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
                 <!--(Se repetir mostra o campo de data final)-->
             </div>
             <div class="alignleft js-freq-hide js-weekly">
-                <span class="label">Repete:</span><br>
+                <span class="label">Repite:</span><br>
                 <div>
                     <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> D </label>
-                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> S </label>
-                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> T </label>
-                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> Q </label>
-                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> Q </label>
-                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> S </label>
+                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> L </label>
+                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> M </label>
+                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> M </label>
+                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> J </label>
+                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> V </label>
                     <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> S </label>
                 </div>
                 <!-- for now we will not support monthly recurrences.
                 <div>
-                    <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> dia do mês </label>
-                    <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> dia da semana </label>
+                    <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> día deL mes </label>
+                    <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> día de la semana </label>
                 </div>
                 -->
             </div>
         </div>
         <div class="clearfix">
             <div class="grupo-de-campos descricao-horario-legivel">
-                <label for="description">Descrição legível do horário:</label>
-                <p class="form-help">Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado.</p>
+                <label for="description">Descripción legible del horaio:</label>
+                <p class="form-help">Puede agregar una descripción propia o una automática cliqueando en el botón.</p>
                 <div class="grupo-descricao-automatica clearfix">
-                    <p id="descricao-automatica" class="alert automatic">Descrição gerada pelo sistema automaticamente.</p>
+                    <p id="descricao-automatica" class="alert automatic">Descripción generada por el sistema automáticamente.</p>
                     <a class="btn btn-default insert"></a>
                 </div>
-                <input type="text" name="description" value="{{rule.description}}" placeholder="Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.">
+                <input type="text" name="description" value="{{rule.description}}" placeholder="Coloque en este campo solamente información sobre la fecha y hora de este evento.">
             </div>
         </div>
         <div class="clearfix">
             <div class="grupo-de-campos" >
-                <label for="price">Preço:</label><br>
+                <label for="price">Precio:</label><br>
                 <input type="text" name="price" value="{{rule.price}}">
             </div>
         </div>

@@ -33,7 +33,7 @@
                 return $http.post(this.getUrl('createAgentRelation'), {group: group, agentId: agentId}).
                         success(function(data, status){
                             if(status === 202){
-                                MapasCulturais.Messages.alert('Sua requisição para relacionar o agente <strong>' + data.agent.name + '</strong> foi enviada.');
+                                MapasCulturais.Messages.alert('Su solicitud para relacionar el agente <strong>' + data.agent.name + '</strong> fue enviada.');
                             }
                             $rootScope.$emit('relatedAgent.created', data);
                         }).

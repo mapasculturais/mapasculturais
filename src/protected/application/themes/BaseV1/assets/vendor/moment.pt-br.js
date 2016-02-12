@@ -49,7 +49,7 @@
             M : "um mês",
             MM : "%d meses",
             y : "um ano",
-            yy : "%d anos"
+            yy : "%d años"
         },
         ordinal : '%dº'
     });

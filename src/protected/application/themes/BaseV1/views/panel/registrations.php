@@ -7,10 +7,10 @@ $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
 ?>
 <div class="panel-list panel-main-content">
     <header class="panel-header clearfix">
-            <h2>Minhas inscrições</h2>
+            <h2>Mis inscripciones</h2>
     </header>
     <ul class="abas clearfix clear">
-            <li class="active"><a href="#ativos">Rascunhos</a></li>
+            <li class="active"><a href="#ativos">Borradores</a></li>
             <li><a href="#enviadas">Enviadas</a></li>
     </ul>
     <div id="ativos">
@@ -18,7 +18,7 @@ $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
             <?php $this->part('panel-registration', array('registration' => $registration)); ?>
         <?php endforeach; ?>
         <?php if(!$drafts): ?>
-            <div class="alert info">Você não possui nenhum rascunho de inscrição.</div>
+            <div class="alert info">Usted no posee ningún borrador de inscripción.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -27,7 +27,7 @@ $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
             <?php $this->part('panel-registration', array('registration' => $registration)); ?>
         <?php endforeach; ?>
         <?php if(!$sent): ?>
-            <div class="alert info">Você não enviou nenhuma inscrição.</div>
+            <div class="alert info">Usted no envió ninguna inscripción.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

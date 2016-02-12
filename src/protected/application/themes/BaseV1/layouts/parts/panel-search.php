@@ -6,15 +6,15 @@ if ($meta->count < 7 && empty($meta->keyword)){
 <div>
     <form>
         <div style="float:left">
-            <input placeholder="Buscar por palavra-chave" name="keyword" value="<?php echo isset($meta->keyword) ? $meta->keyword : '';?>" autofocus size="50">
+            <input placeholder="Buscar por palabra clave" name="keyword" value="<?php echo isset($meta->keyword) ? $meta->keyword : '';?>" autofocus size="50">
             <input type="submit" value="Ok">
         </div>
         <div style="float:right">
             Ordenar por: <select name="order" onchange="this.form.submit()">
-                <option value="name ASC" selected>Nome</option>
-                <option value="name DESC" <?php if($meta->order === 'name DESC') echo 'selected';?>>Nome (Z-A)</option>
-                <option value="createTimestamp DESC" <?php if($meta->order === 'createTimestamp DESC') echo 'selected';?>>Data mais recente</option>
-                <option value="createTimestamp ASC" <?php if($meta->order === 'createTimestamp ASC') echo 'selected';?>>Data mais antiga</option>
+                <option value="name ASC" selected>Nombre</option>
+                <option value="name DESC" <?php if($meta->order === 'name DESC') echo 'selected';?>>Nombre (Z-A)</option>
+                <option value="createTimestamp DESC" <?php if($meta->order === 'createTimestamp DESC') echo 'selected';?>>Dato más reciente</option>
+                <option value="createTimestamp ASC" <?php if($meta->order === 'createTimestamp ASC') echo 'selected';?>>Dato más antiguo</option>
             </select>
         </div>
     </form>

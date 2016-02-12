@@ -3,13 +3,13 @@ $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2>Meus agentes</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar novo agente</a>
+		<h2>Mis agentes</h2>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Agregar nuevo agente</a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
+        <li class="active"><a href="#ativos">Activos</a></li>
+        <li><a href="#rascunhos">Borradores</a></li>
+        <li><a href="#lixeira">Papelera</a></li>
     </ul>
     <div id="ativos">
         <?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
@@ -17,7 +17,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->enabledAgents): ?>
-            <div class="alert info">Você não possui nenhum agente cadastrado.</div>
+            <div class="alert info">Usted no posee ningún agente registrado.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -26,7 +26,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->draftAgents): ?>
-            <div class="alert info">Você não possui nenhum rascunho agente.</div>
+            <div class="alert info">Usted no posee ningún borrador agente.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -35,7 +35,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->trashedAgents): ?>
-            <div class="alert info">Você não possui nenhum agente na lixeira.</div>
+            <div class="alert info">Usted no posee ningún agente en la papelera.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

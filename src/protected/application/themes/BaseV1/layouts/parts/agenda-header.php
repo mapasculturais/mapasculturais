@@ -14,6 +14,6 @@
 
     <img src="<?php $this->asset('img/spinner-black.gif') ?>" class="spinner" />
     <!-- OCULTADO POR ENQUANTO BOTÃO DE CADSTRAR EVENTO
-    <a class="btn btn-default add" href="#">adicionar evento</a>
+    <a class="btn btn-default add" href="#">Agregar evento</a>
     -->
 </header>

@@ -96,7 +96,7 @@ MapasCulturais.EventOccurrenceManager = {
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
-                    $form.find('div.alert.danger').html('Corrija os erros indicados abaixo.')
+                    $form.find('div.alert.danger').html('Corrija los errores indicados abajo.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -132,7 +132,7 @@ MapasCulturais.EventOccurrenceManager = {
 
 
                 if(xhr.status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição para criar a ocorrência do evento no espaço <strong>' + response.space.name + '</strong> foi enviada.');
+                    MapasCulturais.Messages.alert('Su solicitud para crear la fecha del evento en el espacio <strong>' + response.space.name + '</strong> fue enviada.');
                 }
 
             },
@@ -140,12 +140,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parent().scrollTop(0);
 
                 if(xhr.status === 403){
-                    $form.find('div.alert.danger').html('Você não tem permissão para criar eventos nesse espaço.')
+                    $form.find('div.alert.danger').html('Usted no tiene permisos para crear eventos en este espacio.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }else{
-                    $form.find('div.alert.danger').html('Erro inesperado.')
+                    $form.find('div.alert.danger').html('Error inesperado.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -155,7 +155,7 @@ MapasCulturais.EventOccurrenceManager = {
             beforeSubmit: function(arr, $form, options) {
 
                 if ($form.find('input[name="description"]').data('synced') != 1)
-                    return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
+                    return confirm('Las fechas fueron modificadas pero la descripción no. Está seguro de querer salvar?');
 
                 return true;
 

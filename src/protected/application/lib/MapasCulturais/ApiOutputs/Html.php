@@ -8,24 +8,24 @@ class Html extends \MapasCulturais\ApiOutput{
 
     protected $translate = [
         'id'=>'Id',
-        'name'=>'Nome',
+        'name'=>'Nombre',
         'singleUrl'=>'Link',
         'type'=>'Tipo',
-        'shortDescription'=>'Descrição Curta',
-        'name'=>'Nome',
-        'terms'=>'Termos',
-        'endereco'=>'Endereço',
-        'classificacaoEtaria'=>'Classificação Etária',
-        'project'=>'Projeto',
+        'shortDescription'=>'Descripción corta',
+        'name'=>'Nombre',
+        'terms'=>'Términos',
+        'endereco'=>'Dirección',
+        'classificacaoEtaria'=>'Clasificación Etaria',
+        'project'=>'Proyecto',
 
         'tag'=>'Tags',
         'area'=>'Áreas',
-        'linguagem' => 'Linguagens',
+        'linguagem' => 'Tipos de eventos',
 
         'agent'=>'Agente',
-        'space'=>'Espaço',
+        'space'=>'Espacio',
         'event'=>'Evento',
-        'project'=>'Projeto'
+        'project'=>'Proyecto'
     ];
 
     protected function getContentType() {
@@ -66,7 +66,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             continue;
                         }elseif($k==='occurrences'){ ?>
                             <th>
-                                <table><thead><tr> <th>Quando</th> <th>Onde</th> <th>Quanto</th> </tr></thead></table>
+                                <table><thead><tr> <th>Cuándo</th> <th>Dónde</th> <th>Cuánto</th> </tr></thead></table>
                             </th>
                             <?php
                         }else{

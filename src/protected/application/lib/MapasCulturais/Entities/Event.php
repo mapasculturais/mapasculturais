@@ -33,14 +33,14 @@ class Event extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do evento é obrigatório'
+            'required' => 'El nombre del evento es obligatorio'
         ],
         'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'required' => 'La Descripción corta es obligatoria',
+            'v::stringType()->length(0,400)' => 'La Descripción corta debe tener un máximo de 400 caracteres'
         ],
         'project' => [
-            '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
+            '$this->validateProject()' => 'No puede crear eventos en este proyecto.'
         ]
     ];
 

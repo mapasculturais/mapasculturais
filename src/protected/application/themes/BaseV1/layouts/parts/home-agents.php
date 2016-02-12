@@ -29,17 +29,17 @@ $url_search_agents = $this->searchAgentsUrl;
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_agents ?></div>
-                <div class="statistic-label">agentes cadastrados</div>
+                <div class="statistic-label">agentes registrados</div>
             </div>
             <div class="statistics">
                 <div class="statistic"><?php echo $num_verified_agents ?></div>
-                <div class="statistic-label">agentes da <?php $this->dict('home: abbreviation'); ?></div>
+                <div class="statistic-label">agentes de la <?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
         <p><?php $this->dict('home: agents') ?></p>
-        <h4>Encontre agentes por</h4>
+        <h4>Encuentre agentes por</h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#agent-terms">Área de atuação</a></li>
+            <li class="active"><a href="#agent-terms">Área de actuación</a></li>
             <li><a href="#agent-types">Tipo</a></li>
         </ul>
         <div id="agent-terms" class="tag-box">
@@ -62,14 +62,14 @@ $url_search_agents = $this->searchAgentsUrl;
         <a href="<?php echo $agent->singleUrl ?>">
             <div <?php echo $agent_img_attributes;?>>
                 <div class="feature-content">
-                    <h3>destaque</h3>
+                    <h3>destacado</h3>
                     <h2><?php echo $agent->name ?></h2>
                     <p><?php echo $agent->shortDescription ?></p>
                 </div>
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>">Adicionar agente</a>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>">Ver tudo</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('agent', 'create') ?>">Agregar agente</a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_agents ?>">Ver todo</a>
     </div>
 </article>

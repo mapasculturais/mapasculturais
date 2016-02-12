@@ -25,7 +25,7 @@ if($this->isEditable()){
     <?php $this->part('editable-entity-logo') ?>
     <?php if ($this->isEditable()): ?>
         <script type="text/javascript">
-            MapasCulturais.Messages.help('Os ícones de lápis indicam conteúdos editáveis.');
+            MapasCulturais.Messages.help('Los íconos con forma de lápiz indican contenidos editables.');
         </script>
         <div class="controles">
             <?php if ($can_edit_roles): ?>
@@ -71,13 +71,13 @@ if($this->isEditable()){
 
             <!-- se estiver na página de edição e logado mostrar:-->
             <?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
-                <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit">Sair do modo de edição</a>
+                <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit">Salir del modo de edición</a>
             <?php endif; ?>
 
             <?php if($entity->usesDraft()): ?>
                 <?php if($entity->isNew() || $entity->status <= 0):  ?>
-                    <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="Salvar este <?php echo strtolower($entity->getEntityType()) ?> como rascunho.">Salvar rascunho</a>
-                    <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="Salvar e publicar este <?php echo strtolower($entity->getEntityType()) ?>.">Publicar</a>
+                    <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="Salvar este <?php echo strtolower($entity->getEntityType()) ?> como borrador.">Salvar borrador</a>
+                    <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="Salvar y publicar este <?php echo strtolower($entity->getEntityType()) ?>.">Publicar</a>
 
                 <?php else: ?>
                     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
@@ -92,7 +92,7 @@ if($this->isEditable()){
         </div>
     <?php else: ?>
         <script type="text/javascript">
-            MapasCulturais.Messages.alert('Você possui permissão para editar este <?php echo strtolower($entity->entityType) ?>. Use os botões à direita para editar ou excluir.');
+            MapasCulturais.Messages.alert('Usted posee permiso para editar este <?php echo strtolower($entity->entityType) ?>. Use los botones de la derecha para editar o eliminar.');
         </script>
         <div class="controles">
             <?php if ($entity->canUser('modify')): ?>
@@ -101,13 +101,13 @@ if($this->isEditable()){
             <?php endif; ?>
 
             <?php if ($entity->canUser('remove') && $entity->status !== $status_trash): ?>
-                <a href="<?php echo $entity->deleteUrl ?>" class="btn btn-danger">Excluir</a>
+                <a href="<?php echo $entity->deleteUrl ?>" class="btn btn-danger">Eliminar</a>
 
             <?php elseif ($entity->canUser('undelete') && $entity->status === $status_trash): ?>
                 <a href="<?php echo $entity->undeleteUrl ?>" class="btn btn-success">Recuperar</a>
 
                 <?php if($entity->canUser('destroy')): ?>
-                    <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>">Excluir Definitivamente</a>
+                    <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>">Eliminar Definitivamente</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

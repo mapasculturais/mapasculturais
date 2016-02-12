@@ -17,12 +17,12 @@ $template = "<li id='video-{{id}}'>
                         data-response-target='#video-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='Editar'></a>
-                    <a class='icon icon-close_alt js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#video-{{id}}' data-confirm-message='Excluir este vídeo?' title='Excluir'></a>
+                    <a class='icon icon-close_alt js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#video-{{id}}' data-confirm-message='Excluir este video?' title='Excluir'></a>
                 </div>
             </li>";
 ?>
 <?php if ($this->isEditable() || $videos): ?>
-    <h3>Vídeos</h3>
+    <h3>videos</h3>
     <a name="video"></a>
     <div id="video-player" class="video" ng-non-bindable>
         <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -37,14 +37,14 @@ $template = "<li id='video-{{id}}'>
                 <?php if($this->isEditable()): ?>
                     <div class="btn btn-default">
                         <a class="js-open-editbox edit hltip"
-                           data-dialog-title="Editar Vídeo"
+                           data-dialog-title="Editar video"
                            data-target="#editbox-videogallery"
                            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                            data-response-target="#video-<?php echo $video->id ?>"
                            data-metalist-action="edit"
                            data-item="<?php echo htmlentities(json_encode($video));?>"
                            href="#" title='Editar'></a>
-                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Excluir este vídeo?" title='Excluir'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Eliminar este video?" title='Excluir'></a>
                     </div>
                 <?php endif; ?>
             </li>
@@ -52,13 +52,13 @@ $template = "<li id='video-{{id}}'>
     </ul>
 <?php endif; ?>
 
-<div id="editbox-videogallery" ng-non-bindable class="js-editbox mc-bottom" title="Editar Vídeo"
+<div id="editbox-videogallery" ng-non-bindable class="js-editbox mc-bottom" title="Editar video"
      data-action-url="<?php echo $this->controller->createUrl('metalist', array('id' => $entity->id)) ?>"
      data-response-template="<?php echo $template; ?>"
      data-metalist-group="videos"
-     data-metalist-title-label="Título" data-metalist-value-label="Endereço do vídeo (Youtube ou Vimeo)" data-metalist-description-label="Descrição">
+     data-metalist-title-label="Título" data-metalist-value-label="Dirección del video (Youtube o Vimeo)" data-metalist-description-label="Descripción">
     <?php if($this->controller->action == 'create'): ?>
-        <span class="js-dialog-disabled" data-message="Para adicionar vídeos você primeiro deve salvar."></span>
+        <span class="js-dialog-disabled" data-message="Para agregar videos primero debe salvar."></span>
     <?php else: ?>
         <?php $this->part('metalist-form-template'); ?>
     <?php endif; ?>
@@ -66,12 +66,12 @@ $template = "<li id='video-{{id}}'>
 <?php if($this->isEditable()): ?>
     <p class="gallery-footer" ng-non-bindable>
         <a class="btn btn-default add js-open-editbox" href="#"
-           data-dialog-title="Adicionar Vídeo"
+           data-dialog-title="Agregar video"
            data-target="#editbox-videogallery"
            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
            data-response-target="ul.js-videogallery"
            data-metalist-action="insert"
            data-response-template="<?php echo $template; ?>"
-                        >Adicionar vídeo</a>
+                        >Agregar video</a>
     </p>
 <?php endif; ?>

@@ -5,87 +5,99 @@
 return array(
     'metadata' => array(
         'introInscricoes' => array(
-            'label' => 'Texto introdutório das inscrições',
+            'label' => 'Texto introductorio de las inscripciones',
             'type' => 'text'
         ),
 
         'registrationCategTitle' => array(
-            'label' => 'Título das opções (ex: Categorias)',
+            'label' => 'Título de las opciones (ej: Categorías)',
         ),
 
         'registrationCategDescription' => array(
-            'label' => 'Descrição das opções (ex: Selecione uma categoria)',
+            'label' => 'Descripción de las opciones (ej: Seleccione una categoría)',
         ),
 
         'registrationLimitPerOwner' => array(
-            'label' => 'Número máximo de inscrições por agente responsável',
+            'label' => 'Número máximo de inscripciones por agente responsable',
             'validations' => array(
-                "v::intVal()" => "O número máximo de inscrições por agente responsável deve ser um número inteiro"
+                "v::int()" => "El número máximo de inscripciones por agente responsable debe ser un número entero"
             )
         ),
 
         'site' => array(
             'label' => 'Site',
             'validations' => array(
-                "v::url()" => "A url informada é inválida."
+                "v::url()" => "La url informada no es válida."
             )
         ),
 
         'facebook' => array(
             'label' => 'Facebook',
             'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
+                "v::url('facebook.com')" => "La url informada no es válida."
             )
         ),
         'twitter' => array(
             'label' => 'Twitter',
             'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
+                "v::url('twitter.com')" => "La url informada no es válida."
             )
         ),
         'googleplus' => array(
             'label' => 'Google+',
             'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
+                "v::url('plus.google.com')" => "La url informada no es válida."
             )
         ),
 
     ),
     'items' => array(
-        1 =>  array( 'name' => "Festival"),
-        2 =>  array( 'name' => "Encontro"),
-        3 =>  array( 'name' => "Sarau"),
-        4 =>  array( 'name' => "Reunião"),
-        5 =>  array( 'name' => "Mostra"),
-        6 =>  array( 'name' => "Convenção"),
+        /*1 =>  array( 'name' => "Festival"),
+        2 =>  array( 'name' => "Encuentro"),
+        3 =>  array( 'name' => "Sala"),
+        4 =>  array( 'name' => "Reunión"),
+        5 =>  array( 'name' => "Muestra"),
+        6 =>  array( 'name' => "Convención"),
         7 =>  array( 'name' => "Ciclo"),
         8 =>  array( 'name' => "Programa"),
         9 =>  array( 'name' => "Edital"),
         10 => array( 'name' => "Concurso"),
-        11 => array( 'name' => "Exposição"),
+        11 => array( 'name' => "Exposición"),
         12 => array( 'name' => "Jornada"),
-        13 => array( 'name' => "Exibição"),
-        14 => array( 'name' => "Feira"),
-        15 => array( 'name' => "Intercâmbio Cultural"),
+        13 => array( 'name' => "Exhibición"),
+        14 => array( 'name' => "Feria"),
+        15 => array( 'name' => "Intercambio Cultural"),
         16 => array( 'name' => "Festa Popular"),
-        17 => array( 'name' => "Festa Religiosa"),
-        18 => array( 'name' => "Seminário"),
-        19 => array( 'name' => "Congresso"),
-        20 => array( 'name' => "Palestra"),
-        21 => array( 'name' => "Simpósio"),
-        22 => array( 'name' => "Fórum"),
+        17 => array( 'name' => "Fiesta Religiosa"),
+        18 => array( 'name' => "Seminario"),
+        19 => array( 'name' => "Congreso"),
+        20 => array( 'name' => "Charla"),
+        21 => array( 'name' => "Simposio"),
+        22 => array( 'name' => "Foro"),
         23 => array( 'name' => "Curso"),
         24 => array( 'name' => "Oficina"),
         25 => array( 'name' => "Jornada"),
-        26 => array( 'name' => "Conferência Pública Setorial"),
-        27 => array( 'name' => "Conferência Pública Nacional"),
-        28 => array( 'name' => "Conferência Pública Estadual"),
-        29 => array( 'name' => "Conferência Pública Municipal"),
-        30 => array( 'name' => "Parada e Desfile Militar"),
-        31 => array( 'name' => "Parada e Desfile Cívico"),
-        32 => array( 'name' => "Parada e Desfile Festivo"),
-        33 => array( 'name' => "Parada e Desfile Político"),
-        34 => array( 'name' => "Parada e Desfile de Ações Afirmativas"),
+        26 => array( 'name' => "Conferencia Pública Sectorial"),
+        27 => array( 'name' => "Conferencia Pública Nacional"),
+        28 => array( 'name' => "Conferencia Pública Departamental"),
+        29 => array( 'name' => "Conferencia Pública Municipal"),
+        30 => array( 'name' => "Desfile Militar"),
+        31 => array( 'name' => "Desfile Cívico"),
+        32 => array( 'name' => "Desfile Festivo"),
+        33 => array( 'name' => "Desfile Político"),
+        34 => array( 'name' => "Desfile de Acciones Afirmativas"),*/
+    		1 =>  array( 'name' => "Ciclo"),
+    		2 =>  array( 'name' => "Concurso"),
+    		3 =>  array( 'name' => "Convención"),
+    		4 =>  array( 'name' => "Convocatoria"),
+    		5 =>  array( 'name' => "Encuentro"),
+    		6 =>  array( 'name' => "Festival"),
+    		7 =>  array( 'name' => "Jornada"),
+    		8 =>  array( 'name' => "Llamado"),
+    		9 =>  array( 'name' => "Muestra"),
+    		10 => array( 'name' => "Programa"),
+    		11 => array( 'name' => "Reunión"),
+    		11 => array( 'name' => "Velada"),
         
     )
     /* EXEMPLOS DE METADADOS:
@@ -144,7 +156,7 @@ return array(
         'label' => 'Site',
         'type' => 'text',
         'validations'=> array(
-            'v::url()' => 'A URL informada é inválida.'
+            'v::url()' => 'La url informada no es válida.'
         )
     ),
     'estado' => array(

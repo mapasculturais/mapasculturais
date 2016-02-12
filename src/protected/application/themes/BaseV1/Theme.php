@@ -27,54 +27,53 @@ class Theme extends MapasCulturais\Theme {
         return array(
             'site: name' => App::i()->config['app.siteName'],
             'site: description' => App::i()->config['app.siteDescription'],
-            'site: in the region' => 'na região',
-            'site: of the region' => 'da região',
-            'site: owner' => 'Secretaria',
-            'site: by the site owner' => 'pela Secretaria',
+            'site: in the region' => 'en la región',
+            'site: of the region' => 'de la región',
+            'site: owner' => 'Secretaría',
+            'site: by the site owner' => 'por la Secretaría',
             
-            'home: title' => "Bem-vind@!",
+            'home: title' => "¡Bienvenidos!",
             'home: abbreviation' => "MC",
-            'home: colabore' => "Colabore com o Mapas Culturais",
-            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
-            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
-            'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
-            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
-            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
-            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
+            'home: colabore' => "Colabore con Mapas Culturales",
+            'home: welcome' => "Mapas Culturales es una plataforma de software libre, de cartografía cultural libre y colaborativa.",
+            'home: events' => "Puede buscar eventos culturales en los campos de búsqueda combinados. Como usuario registrado, puede incluir su evento en la plataforma y darlo a conocer de forma gratuita.",
+            'home: agents' => "Puede colaborar en la gestión de la cultura con su propia información completando su perfil de agente cultural. En este espacio, son artistas registrados, gestores y productores; una red de actores involucrados en la escena cultural de la región. Usted puede registrar uno o más agentes (grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con sus eventos de perfil y espacios culturales con libre difusión.",
+            'home: spaces' => "Busque espacios culturales incluidos en la plataforma, con el acceso a los campos de búsqueda combinados que ayudan a la exactitud de su búsqueda. Firmar los espacios donde se desarrollan sus actividades artísticas y culturales.",
+            'home: projects' => "Reúne a proyectos culturales o eventos grupales de todo tipo. En este espacio, se encuentran las formas de financiación, espectáculos, reuniones y edictos creados, y varias iniciativas registradas por los usuarios de la plataforma. Regístrese ahora y publicar sus proyectos.",
+            'home: home_devs' => 'Hay varias formas en las que los desarrolladores interactúan con los mapas culturales. La primera es a través de nuestra <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Con ella usted puede acceder a los datos públicos de nuestra base de datos y utilizarlos para desarrollar aplicaciones externas. Además, los Mapas Culturales está realizado a partir de sofware libre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturales</a>, creado en asociación con el <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>,  y puede contribuir con su desarrollo a través de <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
 
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
             
             
-            'entities: Spaces of the agent'=> 'Espaços do agente',
-            'entities: Space Description'=> 'Descrição do Espaço',
-            'entities: My Spaces'=> 'Meus Espaços',
-            'entities: My spaces'=> 'Meus espaços',
+            'entities: Spaces of the agent'=> 'Espacios del agente',
+            'entities: Space Description'=> 'Descripción del Espacio',
+            'entities: My Spaces'=> 'Mis Espacios',
+            'entities: My spaces'=> 'Mis Espacios',
             
-            'entities: no registered spaces'=> 'nenhum espaço cadastrado',
-            'entities: no spaces'=> 'nenhum espaço',
+            'entities: no registered spaces'=> 'ningún espacio registrado',
+            'entities: no spaces'=> 'ningún espacio',
             
-            'entities: Space' => 'Espaço',
-            'entities: Spaces' => 'Espaços',
-            'entities: space' => 'espaço',
-            'entities: spaces' => 'espaços',
-            'entities: parent space' => 'espaço pai',
-            'entities: a space' => 'um espaço',
-            'entities: the space' => 'o espaço',
-            'entities: of the space' => 'do espaço',            
-            'entities: In this space' => 'Neste espaço',
-            'entities: in this space' => 'neste espaço',
-            'entities: registered spaces' => 'espaços cadastrados',
-            'entities: new space' => 'novo espaço',
-
-            'entities: space found' => 'espaço encontrado',
-            'entities: spaces found' => 'espaços encontrados',
+            'entities: Space' => 'Espacio',
+            'entities: Spaces' => 'Espacios',
+            'entities: space' => 'espacio',
+            'entities: spaces' => 'espacios',
+            'entities: parent space' => 'espacio padre',
+            'entities: a space' => 'un espacio',
+            'entities: the space' => 'el espacio',
+            'entities: of the space' => 'del espacio',            
+            'entities: In this space' => 'En este espacio',
+            'entities: in this space' => 'en este espacio',
+            'entities: registered spaces' => 'espacios registrados',
+            'entities: new space' => 'nuevo espacio',
+			'entities: space found' => 'espacio encontrado',
+            'entities: spaces found' => 'espacios encontrados',
             'entities: event found' => 'evento encontrado',
             'entities: events found' => 'eventos encontrados',
             'entities: agent found' => 'agente encontrado',
             'entities: agents found' => 'agentes encontrados',
-            'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados'
+            'entities: project found' => 'proyecto encontrado',
+            'entities: project found' => 'proyectos encontrados'
         );
     }
 
@@ -130,32 +129,32 @@ class Theme extends MapasCulturais\Theme {
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} à inscrição {$origin->number} no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
+                        $message = "{$profile_link} quiere relacionar el agente {$destination_link} a la inscripción {$origin->number} del proyecto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                        $message_to_requester = "Su solicitud para relacionar el agente {$destination_link} a la inscripción <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> del proyecto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> fue enviada.";
                     }else{
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+                        $message = "{$profile_link} quiere relacionar el agente {$destination_link} al {$origin_type} {$origin_link}.";
+                        $message_to_requester = "Su solicitud para relacionar el agente {$destination_link} ao {$origin_type} {$origin_link} fue enviada.";
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} {$origin_link} para o agente {$destination_link} foi enviada.";
+                    $message = "{$profile_link} está solicitando el cambio de propiedad de {$origin_type} {$origin_link} para el agente {$destination_link}.";
+                    $message_to_requester = "Su solicitud para cambiar la propiedad del {$origin_type} {$origin_link} para el agente {$destination_link} fue enviada.";
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+                    $message = "{$profile_link} quiere que {$origin_type} {$origin_link} sea un {$origin_type} hijo de {$destination_link}.";
                     ;
-                    $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
+                    $message_to_requester = "Su solicitud para hacer de {$origin_type} {$origin_link} un {$origin_type} hijo de {$destination_link} fue enviada.";
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    $message_to_requester = "Sua requisição para criar a ocorrência do evento {$origin_link} no espaço {$destination_link} foi enviada.";
+                    $message = "{$profile_link} quiere agregar el evento {$origin_link} que ocorre <em>{$this->rule->description}</em> en el espacio {$destination_link}.";
+                    $message_to_requester = "Su solicitud para crear la ocurrencia del evento {$origin_link} en el espacio {$destination_link} fue enviada.";
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} quer relacionar o evento {$origin_link} ao projeto {$destination_link}.";
-                    $message_to_requester = "Sua requisição para associar o evento {$origin_link} ao projeto {$destination_link} foi enviada.";
+                    $message = "{$profile_link} quiere relacionar el evento {$origin_link} al proyecto {$destination_link}.";
+                    $message_to_requester = "Su solicitud para asociar el evento {$origin_link} al proyecto {$destination_link} fue enviada.";
                     break;
                 default:
-                    $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
+                    $message = $message_to_requester = "SOLICITUD - NO DEBE ENTRAR AQUÍ";
                     break;
             }
 
@@ -170,7 +169,7 @@ class Theme extends MapasCulturais\Theme {
 
 
             foreach ($destination->usersWithControl as $user) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
+                // impede que a notificação seja entregue mais de una vez ao mesmo usuário se as regras acima se somarem
                 if (in_array($user->id, $notified_user_ids))
                     continue;
 
@@ -213,25 +212,25 @@ class Theme extends MapasCulturais\Theme {
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                        $message = "{$profile_link} relación aceptada del agente {$destination_link} a la inscripción <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> en el proyecto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
                     }else{
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+                        $message = "{$profile_link} relación aceptada del agente {$destination_link} con el {$origin_type} {$origin_link}.";
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} aceitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+                    $message = "{$profile_link} aceptado el cambio de propiedad de {$origin_type} {$origin_link} para el agente {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} aceitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+                    $message = "{$profile_link} aceptado que el {$origin_type} {$origin_link} sea un {$origin_type} hijo de {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
+                    $message = "{$profile_link} aceptado agregar el evento {$origin_link} que ocorre <em>{$this->rule->description}</em> en el espacio {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} aceitou relacionar o evento {$origin_link} ao projeto {$destination_link}.";
+                    $message = "{$profile_link} aceptado relacionar el evento {$origin_link} al proyecto {$destination_link}.";
                     break;
                 default:
-                    $message = "A requisição foi aprovada.";
+                    $message = "La solicitud fue aprobada.";
                     break;
             }
 
@@ -261,7 +260,7 @@ class Theme extends MapasCulturais\Theme {
             $notified_user_ids = array();
 
             foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
+                // impede que a notificação seja entregue mais de una vez ao mesmo usuário se as regras acima se somarem
                 if (in_array($u->id, $notified_user_ids))
                     continue;
 
@@ -297,48 +296,48 @@ class Theme extends MapasCulturais\Theme {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->canUser('@control')){
                         if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} cancelou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                            $message = "{$profile_link} ralación cancelada del agente {$destination_link} a la inscripción <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> en el proyecto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
                         }else{
-                            $message = "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+                            $message = "{$profile_link} cancelado el pedido de relacionar el agente {$destination_link} con el {$origin_type} {$origin_link}.";
                         }
                     }else{
                         if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
+                            $message = "{$profile_link} rechazada la relación del agente {$destination_link} a la inscripción <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> en el proyecto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
                         }else{
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
+                            $message = "{$profile_link} rechazada la relación del agente {$destination_link} con el {$origin_type} {$origin_link}.";
                         }
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     if ($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
                         $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+                                "{$profile_link} cancelado el pedido de propiedad del {$origin_type} {$origin_link} para el agente {$destination_link}." :
+                                "{$profile_link} rechazado el cambio de propiedad del {$origin_type} {$origin_link} para el agente {$destination_link}.";
                     } else {
                         $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
+                                "{$profile_link} cancelado el pedido de propiedad del {$origin_type} {$origin_link} para el agente {$destination_link}." :
+                                "{$profile_link} rechazado el cambio de propiedad del {$origin_type} {$origin_link} para el agente {$destination_link}.";
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
                     $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
-                            "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
+                            "{$profile_link} cancelado el pedido para que el {$origin_type} {$origin_link} sea un {$origin_type} hijo de {$destination_link}." :
+                            "{$profile_link} rechazado que el {$origin_type} {$origin_link} sea un {$origin_type} hijo de {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
                     $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
+                            "{$profile_link} cancelado el pedido de autorización del evento {$origin_link} que ocorre <em>{$this->rule->description}</em> en el espacio {$destination_link}." :
+                            "{$profile_link} rechazado el evento {$origin_link} que ocorre <em>{$this->rule->description}</em> en el espacio {$destination_link}.";
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
                     $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
-                            "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
+                            "{$profile_link} cancelado el pedido de relacionar el evento {$origin_link} al proyecto {$destination_link}." :
+                            "{$profile_link} rechazada la relación del evento {$origin_link} al proyecto {$destination_link}.";
                     break;
                 default:
                     $message = $origin->canUser('@control') ?
-                            "A requisição foi cancelada." :
-                            "A requisição foi rejeitada.";
+                            "La solicitud fue cancelada." :
+                            "La solicitud fue rechazada.";
                     break;
             }
 
@@ -370,7 +369,7 @@ class Theme extends MapasCulturais\Theme {
             $notified_user_ids = array();
 
             foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
+                // impede que a notificação seja entregue mais de una vez ao mesmo usuário se as regras acima se somarem
                 if (in_array($u->id, $notified_user_ids))
                     continue;
 
@@ -692,7 +691,7 @@ class Theme extends MapasCulturais\Theme {
 
         // Google Maps API only needed in site/search and space, agent and event singles
         if(preg_match('#site|space|agent|event#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
-            $this->enqueueScript('vendor', 'google-maps-api', '//maps.google.com/maps/api/js?v=3.2&sensor=false');
+            $this->enqueueScript('vendor', 'google-maps-api', 'http://maps.google.com/maps/api/js?v=3.2&sensor=false');
         }
 
         //Leaflet Plugins
@@ -877,10 +876,10 @@ class Theme extends MapasCulturais\Theme {
 
     function getOccurrenceFrequencies() {
         return array(
-            'once' => 'uma vez',
-            'daily' => 'todos os dias',
+            'once' => 'una vez',
+            'daily' => 'todos los días',
             'weekly' => 'semanal',
-            'monthly' => 'mensal',
+            'monthly' => 'mensual',
         );
     }
 

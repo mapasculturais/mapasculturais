@@ -37,7 +37,7 @@ $this->includeAngularEntityAssets($entity);
         <?php endif; ?>
             <!-- pro responsivo!!! -->
             <?php if($project->isVerified): ?>
-                <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
+                <a class="verified-seal hltip active" title="Este proyecto está verificado." href="#"></a>
             <?php endif; ?>
             </div>
             <!--.avatar-->
@@ -50,14 +50,14 @@ $this->includeAngularEntityAssets($entity);
         </div>
     </header>
     <div class="alert success">
-        Inscrição enviada no dia
+        Inscripción enviada el día
         <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i:s'); ?>
     </div>
 
-    <h3 class="registration-header">Formulário de Inscrição</h3>
+    <h3 class="registration-header">Formulario de Inscripción</h3>
 
     <div class="registration-fieldset clearfix">
-        <h4>Número da Inscrição</h4>
+        <h4>Número de Inscripción</h4>
         <div class="registration-id alignleft">
             <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
         </div>
@@ -80,7 +80,7 @@ $this->includeAngularEntityAssets($entity);
         </div>
     <?php endif; ?>
     <div class="registration-fieldset">
-        <h4>Agentes (proponentes)</h4>
+        <h4>Agentes (solicitantes)</h4>
         <!-- agentes relacionados a inscricao -->
         <ul class="registration-list">
             <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
@@ -89,12 +89,12 @@ $this->includeAngularEntityAssets($entity);
                 <div class="registration-description">{{def.description}}</div>
 
                 <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
-                    <p ng-if="def.relationStatus < 0" class="alert warning">Aguardando confirmação</p>
+                    <p ng-if="def.relationStatus < 0" class="alert warning">Esperando confirmación</p>
                     <div class="clearfix">
                         <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
                         <div>
                             <a ng-if="def.agent" href="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
-                            <span ng-if="!def.agent">Não informado</span>
+                            <span ng-if="!def.agent">No informado</span>
                         </div>
                     </div>
                     <div class="registration-agent-details">
@@ -102,21 +102,21 @@ $this->includeAngularEntityAssets($entity);
                     </div>
                 </div>
 
-                <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Selecionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
-                    <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
-                    <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
+                <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="Seleccionar {{def.label}}" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                    <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscripción.</label></p> -->
+                    <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Ningún agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
                 </edit-box>
             </li>
         </ul>
     </div>
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
-        <h4>Anexos (documentos necessários)</h4>
+        <h4>Adjuntos (documentos necesarios)</h4>
         <ul class="attachment-list" ng-controller="RegistrationFilesController">
             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                 <div class="label"> {{fileConfiguration.title}} {{fileConfiguration.required ? '*' : ''}}</div>
                 <a ng-if="fileConfiguration.file" class="attachment-title" href="{{fileConfiguration.file.url}}" target="_blank">{{fileConfiguration.file.name}}</a>
-                <span ng-if="!fileConfiguration.file">Arquivo não enviado.</span>
+                <span ng-if="!fileConfiguration.file">Archivo no enviado.</span>
             </li>
         </ul>
     </div>

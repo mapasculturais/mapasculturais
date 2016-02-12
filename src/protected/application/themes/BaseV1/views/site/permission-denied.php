@@ -1,2 +1,2 @@
-<h2>Você não tem permissão para executar esta operação.</h2>
+<h2>Usted no tiene permiso para ejecutar esta operación.</h2>
 <?php echo  $exception->getMessage() ?>

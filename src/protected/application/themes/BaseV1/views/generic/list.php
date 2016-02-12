@@ -14,8 +14,8 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>Nome</th>
-        <th>Descrição</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
     </tr>
     </thead>
     <tbody>
@@ -29,15 +29,15 @@
             <td>
                 <a href="#" data-name="name" data-type="text"
                    data-pk="<?php echo $object->id?>"
-                   data-original-title="Nome"
+                   data-original-title="Nombre"
                    data-mode="inline"
                    class="editable editable-click" style="display: inline;">
                     <?php echo $object->name ?></a>
             </td>
             <td>
                 <a href="#" data-name="short_description" data-type="textarea"
-                   data-pk="1" data-placeholder="Your comments here..."
-                   data-original-title="Enter comments"
+                   data-pk="1" data-placeholder="Sus comentarios aquí..."
+                   data-original-title="Ingrese comentarios"
                    data-showButtons="bottom"
                    data-placement="left"
                    data-mode="inline"

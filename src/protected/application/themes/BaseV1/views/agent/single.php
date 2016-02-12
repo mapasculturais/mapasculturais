@@ -56,50 +56,50 @@ $this->includeAngularEntityAssets($entity);
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                    <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                    <div class="alert warning">El límite de caracteres de la Descripción corta se disminuyó a 400, pero su texto actual posee <?php echo strlen($entity->shortDescription) ?> caracteres. Debe cambiar su texto o este será recortado al salvar.</div>
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descripción corta" data-emptytext="Agregue una Descripción corta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
                     <?php if($this->isEditable() || $entity->site): ?>
-                        <p><span class="label">Site:</span>
+                        <p><span class="label">Sitio web:</span>
                         <?php if($this->isEditable()): ?>
-                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span></p>
+                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Agregue a url de seu site"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if($this->isEditable()): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Completo ou Razão Social" data-emptytext="Insira seu nome completo ou razão social"><?php echo $entity->nomeCompleto; ?></span></p>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">CPF/CNPJ:</span> <span class="js-editable" data-edit="documento" data-original-title="CPF/CNPJ" data-emptytext="Insira o CPF ou CNPJ com pontos, hífens e barras"><?php echo $entity->documento; ?></span></p>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Data de Nascimento/Fundação:</span>
-                            <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="Data de Nascimento/Fundação" data-emptytext="Insira a data de nascimento ou fundação do agente">
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nombre:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nombre Completo o Razón Social" data-emptytext="Agregue seu Nombre Completo o Razón Social"><?php echo $entity->nomeCompleto; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">CI/RUT:</span> <span class="js-editable" data-edit="documento" data-original-title="CI/RUT" data-emptytext="Agregue CI ou RUT con puntos, guiones y barras"><?php echo $entity->documento; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Fecha de nacimiento/fundación:</span>
+                            <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="Fecha de nacimiento/fundación" data-emptytext="Agregue la feche de nacimento o fundación del agente">
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                             </span>
                         </p>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Raça/Cor:</span> <span class="js-editable" data-edit="raca" data-original-title="Raça/cor" data-emptytext="Selecione a raça/cor se for pessoa física"><?php echo $entity->raca; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Género:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Seleccione el género si fuera persona física"><?php echo $entity->genero; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Raza/Color:</span> <span class="js-editable" data-edit="raca" data-original-title="Raza/Color" data-emptytext="Seleccione Raza/Color si fuera persona física"><?php echo $entity->raca; ?></span></p>
 
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Agregue un email que no será exhibido públicamente"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->emailPublico): ?>
-                    <p><span class="label">Email:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Insira um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
+                    <p><span class="label">Email:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Agregue um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                    <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>
+                    <p><span class="label">Teléfono Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Teléfono Público" data-emptytext="Agregue un teléfono que será exhibido públicamente"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable()): ?>
-                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
-                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Teléfono 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Teléfono Privado" data-emptytext="Agregue un teléfono que no será exhibido públicamente"><?php echo $entity->telefone1; ?></span></p>
+                    <p class="privado"><span class="icon icon-private-info"></span><span class="label">Teléfono 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Teléfono Privado" data-emptytext="Agregue un teléfono que no será exhibido públicamente"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
@@ -111,8 +111,8 @@ $this->includeAngularEntityAssets($entity);
             <!--.ficha-spcultura-->
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-                <h3>Descrição</h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Agente" data-emptytext="Insira uma descrição do agente" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+                <h3>Descripción</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descripción del Agente" data-emptytext="Agregue una descripción del agente" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
             <!--.descricao-->
             <!-- Video Gallery BEGIN -->
@@ -144,7 +144,7 @@ $this->includeAngularEntityAssets($entity);
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.<span class="close"></span></p>
+            <p class="alert info">Para Agregar archivos para descargar o links, primero es preciso salvar el agente.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
@@ -164,11 +164,11 @@ $this->includeAngularEntityAssets($entity);
     <?php endif; ?>
     <!--
     <div class="widget">
-        <h3>Projetos do agente</h3>
+        <h3>Proyectos del agente</h3>
         <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
+            <li><a href="#">Proyecto 1</a></li>
+            <li><a href="#">Proyecto 2</a></li>
+            <li><a href="#">Proyecto 3</a></li>
         </ul>
     </div>
     -->

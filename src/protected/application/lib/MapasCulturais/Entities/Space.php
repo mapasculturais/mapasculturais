@@ -33,15 +33,15 @@ class Space extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do espaço é obrigatório',
-            'unique' => 'Já existe um espaço com este nome'
+            'required' => 'El nombre del espacio es obligatorio',
+            'unique' => 'Ya existe un espacio con este nombre'
         ],
         'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'required' => 'La Descripción corta es obligatoria',
+            'v::stringType()->length(0,400)' => 'La Descripción corta debe tener un máximo de 400 caracteres'
         ],
         'type' => [
-            'required' => 'O tipo do espaço é obrigatório',
+            'required' => 'El tipo de espacio es obligatorio',
         ]
     ];
 

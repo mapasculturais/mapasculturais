@@ -43,7 +43,7 @@ $(function(){
 
 </script>
 <div class="panel-main-content">
-    <h1>Revista Em Cartaz</h1>
+    <h1>Revista Een Cartelera</h1>
     <div class="clearfix">
             Filtrar Eventos
             <label for="data-de-inicio">de</label>
@@ -64,7 +64,7 @@ $(function(){
 
     <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-preview'); ?>')"> Visualizar  </a>
     |
-    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-download'); ?>')"> Baixar  </a>
+    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-download'); ?>')"> Bajar  </a>
     <br><br>
     <div>
         <?php echo $content; ?>

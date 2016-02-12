@@ -31,22 +31,22 @@ class Project extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do projeto é obrigatório'
+            'required' => 'El nombre del proyecto es obligatorio'
         ],
         'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'required' => 'La Descripción corta es obligatoria',
+            'v::stringType()->length(0,400)' => 'La Descripción corta debe tener un máximo de 400 caracteres'
         ],
         'type' => [
-            'required' => 'O tipo do projeto é obrigatório',
+            'required' => 'El tipo de proyecto es obligatorio',
         ],
         'registrationFrom' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '!empty($this->registrationTo)' => 'Data final obrigatória caso data inicial preenchida'
+            '$this->validateDate($value)' => 'El valor informado no es un dato válido',
+            '!empty($this->registrationTo)' => 'Dato final obligatorio en caso que el dato inicial esté lleno'
         ],
         'registrationTo' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '$this->validateRegistrationDates()' => 'A data final das inscrições deve ser maior ou igual a data inicial'
+            '$this->validateDate($value)' => 'El valor informado no es un dato válido',
+            '$this->validateRegistrationDates()' => 'La fecha final de las inscripciones debe ser mayor o igual a la fecha inicial'
         ]
     ];
 

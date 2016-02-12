@@ -10,6 +10,6 @@
 </div>
 <?php elseif($entity->isVerified): ?>
 <div class="widget widget-verified">
-    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+    <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> está verificado." href="#"></a>
 </div>
 <?php endif; ?>

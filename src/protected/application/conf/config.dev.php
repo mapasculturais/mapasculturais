@@ -3,8 +3,8 @@ $config = include 'conf-base.php';
 
 return array_merge($config,
     [
-        'app.siteName' => 'Nome do site',
-        'app.siteDescription' => 'Descrição do site',
+        'app.siteName' => 'Nombre del sitio',
+        'app.siteDescription' => 'Descripción del sitio',
 
         /* configure e descomente as linhas abaixo para habilitar um tema personalizado */
         // 'namespaces' => array_merge( $config['namespaces'], ['Name\Space\Do\Tema' => '/caminho/absoluto/para/o/tema']),
@@ -30,13 +30,13 @@ return array_merge($config,
 
         'app.geoDivisionsHierarchy' => [
             'pais' => 'País',
-            'regiao' => 'Região',
+            'regiao' => 'Región',
             'estado' => 'Estado',
-            'mesorregiao' => 'Mesorregião',
-            'microrregiao' => 'Microrregião',
-            'municipio' => 'Município',
+            'mesorregiao' => 'Mesorregión',
+            'microrregiao' => 'Microrregión',
+            'municipio' => 'Municipio',
             'zona' => 'Zona',
-            'subprefeitura' => 'Subprefeitura',
+            'subprefeitura' => 'Alcaldía',
             'distrito' => 'Distrito'
         ],
         // latitude, longitude

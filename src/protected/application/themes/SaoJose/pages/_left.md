@@ -1,2 +1,0 @@
-- [Sobre o Lugares da Cultura](/sobre/)
-- [Como usar](/como-usar/)

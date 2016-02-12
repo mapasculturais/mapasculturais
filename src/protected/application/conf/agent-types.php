@@ -6,7 +6,7 @@ return array(
     'metadata' => array(
         'nomeCompleto' => array(
             'private' => true,
-            'label' => 'Nome completo ou Razão Social',
+            'label' => 'Nombre completo o Razón Social',
             'validations' => array(
                 //'required' => 'Seu nome completo ou jurídico deve ser informado.'
             )
@@ -14,7 +14,7 @@ return array(
 
         'documento' => array(
             'private' => true,
-            'label' => 'CPF ou CNPJ',
+            'label' => 'CI o RUT',
 //            'validations' => array(
 //                'required' => 'Seu CPF ou CNPJ deve ser informado.',
 //                'unique' => 'Este documento já está registrado em nosso sistema.',
@@ -25,21 +25,21 @@ return array(
 
         'idade' => array(
             'private' => true,
-            'label' => 'Idade',
+            'label' => 'Edad',
             'validations' => array(
-                "v::intVal()->positive()" => "A idade/tempo deve ser um número positivo."
+                "v::int()->positive()" => "La edad/fecha debe ser um número positivo."
             )
         ),
 
         'raca' => array(
             'private' => true,
-            'label' => 'Raça/cor',
+            'label' => 'Raza/color',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Branca' => 'Branca',
-                'Preta' => 'Preta',
-                'Amarela' => 'Amarela',
+                '' => 'No informar',
+                'Branca' => 'Blanca',
+                'Preta' => 'Negra',
+                'Amarela' => 'Amarilla',
                 'Parda' => 'Parda',
                 'Indígena' => 'Indígena'
             )
@@ -47,28 +47,28 @@ return array(
 
         'dataDeNascimento' => array(
             'private' => true,
-            'label' => 'Data de Nascimento/Fundação',
+            'label' => 'Fecha de nacimiento/fundación',
             'type' => 'date',
             'validations' => array(
-                'v::date("Y-m-d")' => 'Data inválida {{format}}',
+                'v::date("Y-m-d")' => 'Fecha no válida {{format}}',
             )
         ),
 
         'precisao' => array(
-            'label' => 'Localização',
+            'label' => 'Localización',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
+                '' => 'No informar',
                 'Precisa' => 'Precisa',
                 'Aproximada' => 'Aproximada'
             )
         ),
 
         'localizacao' => array(
-            'label' => 'Localização',
+            'label' => 'Localización',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
+                '' => 'No informar',
                 'Pública' => 'Pública',
                 'Privada' => 'Privada'
             )
@@ -76,11 +76,11 @@ return array(
 
         'genero' => array(
             'private' => true,
-            'label' => 'Gênero',
+            'label' => 'Género',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Feminino' => 'Feminino',
+                '' => 'No informar',
+                'Femenino' => 'Femenino',
                 'Masculino' => 'Masculino'
             )
         ),
@@ -88,7 +88,7 @@ return array(
         'emailPublico' => array(
             'label' => 'Email Público',
             'validations' => array(
-                'v::email()' => 'O email público não é um email válido.'
+                'v::email()' => 'El email público no es un email válido.'
             )
         ),
 
@@ -96,35 +96,35 @@ return array(
             'private' => true,
             'label' => 'Email Privado',
             'validations' => array(
-                //'required' => 'O email privado é obrigatório.',
-                'v::email()' => 'O email privado não é um email válido.'
+                //'required' => 'O email privado es obligatorio.',
+                'v::email()' => 'El email privado no es un email válido.'
             )
         ),
 
         'telefonePublico' => array(
-            'label' => 'Telefone Público',
+            'label' => 'Teléfono Público',
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el Teléfono Público en el formato (xx) xxxx-xxxx.'
             )
         ),
 
         'telefone1' => array(
             'private' => true,
-            'label' => 'Telefone 1',
+            'label' => 'Teléfono 1',
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el teléfono 1 en el formato (xx) xxxx-xxxx.'
             )
         ),
 
 
         'telefone2' => array(
             'private' => true,
-            'label' => 'Telefone 2',
+            'label' => 'Teléfono 2',
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el teléfono 2 en el formato (xx) xxxx-xxxx.'
             )
         ),
 
@@ -132,18 +132,18 @@ return array(
             'private' => function(){
                 return !$this->publicLocation;
             },
-            'label' => 'Endereço',
+            'label' => 'Dirección',
             'type' => 'text'
         ),
                     
         'En_CEP' => [
-            'label' => 'CEP',
+            'label' => 'CP',
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Nome_Logradouro' => [
-            'label' => 'Logradouro',
+            'label' => 'Dirección',
             'private' => function(){
                 return !$this->publicLocation;
             },
@@ -161,83 +161,75 @@ return array(
             },
         ],
         'En_Bairro' => [
-            'label' => 'Bairro',
+            'label' => 'Barrio',
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Municipio' => [
-            'label' => 'Município',
+            'label' => 'Municipio',
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Estado' => [
-            'label' => 'Estado',
+            'label' => 'Departamento',
             'private' => function(){
                 return !$this->publicLocation;
             },
             'type' => 'select',
 
             'options' => array(
-                'AC'=>'Acre',
-                'AL'=>'Alagoas',
-                'AP'=>'Amapá',
-                'AM'=>'Amazonas',
-                'BA'=>'Bahia',
-                'CE'=>'Ceará',
-                'DF'=>'Distrito Federal',
-                'ES'=>'Espírito Santo',
-                'GO'=>'Goiás',
-                'MA'=>'Maranhão',
-                'MT'=>'Mato Grosso',
-                'MS'=>'Mato Grosso do Sul',
-                'MG'=>'Minas Gerais',
-                'PA'=>'Pará',
-                'PB'=>'Paraíba',
-                'PR'=>'Paraná',
-                'PE'=>'Pernambuco',
-                'PI'=>'Piauí',
-                'RJ'=>'Rio de Janeiro',
-                'RN'=>'Rio Grande do Norte',
-                'RS'=>'Rio Grande do Sul',
-                'RO'=>'Rondônia',
-                'RR'=>'Roraima',
-                'SC'=>'Santa Catarina',
-                'SP'=>'São Paulo',
-                'SE'=>'Sergipe',
-                'TO'=>'Tocantins',
+                'AR'=>'Artigas',
+                'CA'=>'Canelones',
+                'CL'=>'Cerro Largo',
+                'CO'=>'Colonia',
+                'DU'=>'Durazno',
+                'FS'=>'Flores',
+                'FD'=>'Florida',
+                'LA'=>'Lavalleja',
+                'MA'=>'Maldonado',
+                'MO'=>'Montevideo',
+                'PA'=>'Paysandú',
+                'RN'=>'Río Negro',
+                'RV'=>'Rivera',
+                'RO'=>'Rocha',
+                'SA'=>'Salto',
+                'SJ'=>'San José',
+                'SO'=>'Soriano',
+                'TA'=>'Tacuarembó',
+                'TT'=>'Treinta y Tres',                
             )
         ],
 
         'site' => array(
-            'label' => 'Site',
+            'label' => 'Sitio web',
             'validations' => array(
-                "v::url()" => "A url informada é inválida."
+                "v::url()" => "La url informada no es válida."
             )
         ),
         'facebook' => array(
             'label' => 'Facebook',
             'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
+                "v::url('facebook.com')" => "La url informada no es válida."
             )
         ),
         'twitter' => array(
             'label' => 'Twitter',
             'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
+                "v::url('twitter.com')" => "La url informada no es válida."
             )
         ),
         'googleplus' => array(
             'label' => 'Google+',
             'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
+                "v::url('plus.google.com')" => "La url informada no es válida."
             )
         ),
 
     ),
     'items' => array(
         1 => array( 'name' => 'Individual' ),
-        2 => array( 'name' => 'Coletivo' ),
+        2 => array( 'name' => 'Colectivo' ),
     )
 );
