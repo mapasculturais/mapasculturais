@@ -20,7 +20,9 @@ doctrine_conf="$doctrine_conf 'user'=>'$PG_USER',";
 doctrine_conf="$doctrine_conf 'host'=>'$PG_HOST',";
 doctrine_conf="$doctrine_conf ]";
 
+su mapas -c sh << SUBSCRIPT
 sed -i -z -e "s/'doctrine.database'[^]]*\]/$doctrine_conf/" src/protected/application/conf/config.php
+SUBSCRIPT
 
 #
 # Popula banco no primeiro acesso
@@ -39,26 +41,29 @@ fi;
 
 if mount | grep '/srv/mapas/mapasculturais';
 then
-(   # Reinstall deps if needed
+su mapas -c sh << SUBSCRIPT
+    # Reinstall deps if needed
     cd src/protected;
     composer -n install --prefer-dist;
     composer -n dump-autoload --optimize;
-)
+SUBSCRIPT
 fi
 
-(   # Apply database modifications
+su mapas -c sh << SUBSCRIPT
+    # Apply database modifications
     cd src/protected/tools;
     HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" ./doctrine orm:generate-proxies;
     HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php apply-updates.php 0;
-)
+SUBSCRIPT
 
 ASSETS_FOLDER=$(HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/get-theme-assets-path.php)
 
-(
+su mapas -c sh << SUBSCRIPT
     # compile assets
     cd scripts/;
     ./compile-sass.sh;
-)
+    touch /tmp/test
+SUBSCRIPT
 
 #
 # Executa o que está em CMD no Dockerfile
