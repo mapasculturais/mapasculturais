@@ -1,12 +1,48 @@
 #!/bin/bash
 
-export PG_SUPER_PASS="${PG_SUPER_PASS:-postgis}";
+export PG_SUPER_PASS="${PG_SUPER_PASS:-${POSTGIS_ENV_POSTGRES_PASSWORD:-postgis}}";
 export PG_SUPER_USER="${PG_SUPER_USER:-postgres}";
 export PG_DB="${PG_DB:-mapasculturais}";
 export PG_PASS="${PG_PASS:-mapasculturais}";
 export PG_USER="${PG_USER:-mapasculturais}";
 export PG_HOST="${PG_HOST:-postgis}";
 export DOMAIN="${DOMAIN:-localhost}";
+
+tries=5
+error=0
+
+while [[ $tries > 0 ]];
+do
+    php << EOF
+    <?php
+        \$conn = pg_connect("host=$PG_HOST port=5432 dbname=postgres password=$PG_SUPER_PASS user=$PG_SUPER_USER");
+
+        if(\$conn) {
+            pg_close(\$conn);
+            exit(0);
+        } else {
+            exit(3);
+        }
+EOF
+
+    if [ "$?" = 0 ];
+    then
+        echo "Nice, database is reachable!"
+        tries=0
+        error=0
+    else
+        tries=$(( $tries - 1 ))
+        error=1
+        echo "Cannot connect to database. $tries trie(s) remaining."
+        sleep 5
+    fi
+done
+
+if [[ $error > 0 ]];
+then
+    echo 'Impossible to connect to postgis'
+    exit 1
+fi
 
 #
 # Configura postgre na aplicação
