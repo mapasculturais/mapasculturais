@@ -1892,6 +1892,53 @@ class App extends \Slim\Slim{
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
     }
 
+    /**
+     * returns Swift_Mailer instance
+     * 
+     * @return \Swift_Mailer Mailer object
+     */
+    function getMailer(){
+        $instance = \Swift_Mailer::newInstance($this->_config['mailer.transport']);
+
+        return $instance;
+    }
+
+    /**
+     *
+     * @param array $args
+     * @return \Swift_Message
+     */
+    function createMailMessage(array $args = []){
+        $message = \Swift_Message::newInstance();
+
+        if($this->_config['mailer.from']){
+            $message->setFrom($this->_config['mailer.from']);
+        }
+
+        foreach($args as $key => $value){
+            $key = ucfirst($key);
+            $method_name = 'set' . $key;
+
+            if(method_exists($message, $method_name)){
+                $message->$method_name($value);
+            }
+        }
+        
+        return $message;
+    }
+
+    function sendMailMessage(\Swift_Message $message){
+        $mailer = $this->getMailer();
+
+        $mailer->send($message);
+    }
+
+    function createAndSendMailMessage(array $args = []){
+        $message = $this->createMailMessage($args);
+        $this->sendMailMessage($message);
+    }
+
+
     /**************
      * GetText
      **************/

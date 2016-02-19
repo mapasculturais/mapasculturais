@@ -5,7 +5,6 @@ if(!isset($asset_dir)){
     $asset_dir = 'assets/';
 }
 
-
 // creating base url
 $prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
 //added @ for HTTP_HOST undefined in Tests
@@ -20,6 +19,9 @@ return array(
     'namespaces' => array(
         'MapasCulturais\Themes' => THEMES_PATH
     ),
+
+    'mailer.transport' => Swift_MailTransport::newInstance(),
+    'mailer.from' => null,
 
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
