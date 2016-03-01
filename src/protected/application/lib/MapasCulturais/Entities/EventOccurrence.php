@@ -386,7 +386,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'count' =>  $this->count,
             'until' =>  $this->until,
             'spaceId' =>  $this->spaceId,
-            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location') : null,
+            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location,terms') : null,
             'event' => $this->event ? $this->event->simplify('id,name,singleUrl,shortDescription,avatar') : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
