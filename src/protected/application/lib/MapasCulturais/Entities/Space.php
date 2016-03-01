@@ -33,8 +33,7 @@ class Space extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do espaço é obrigatório',
-            'unique' => 'Já existe um espaço com este nome'
+            'required' => 'O nome do espaço é obrigatório'
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
