@@ -183,17 +183,17 @@
                     sortFiles();
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
-                    MapasCulturais.Messages.success('Anexo criado.');
+                    MapasCulturais.Messages.success('Anexo creado.');
                 }
             });
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
-            if(confirm('Deseja remover este anexo?')){
+            if(confirm('Desea eliminar este anexo?')){
                 RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fileConfigurations.splice($index, 1);
-                        MapasCulturais.Messages.alert('Anexo removido.');
+                        MapasCulturais.Messages.alert('Anexo eliminado.');
                     }
                 });
             }
@@ -212,7 +212,7 @@
                 if(!response.error){
                     sortFiles();
                     EditBox.close('editbox-registration-files-'+data.id);
-                    MapasCulturais.Messages.success('Alterações Salvas.');
+                    MapasCulturais.Messages.success('Cambios guardados.');
                 }
             });
         };
@@ -238,10 +238,10 @@
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
-            if(confirm('Deseja remover este modelo?')){
+            if(confirm('Desea eliminar este modelo?')){
                 $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
                     delete $scope.data.fileConfigurations[$index].template;
-                    MapasCulturais.Messages.alert('Modelo removido.');
+                    MapasCulturais.Messages.alert('Modelo eliminado.');
                 });
             }
         };
@@ -413,12 +413,12 @@
                 return;
             }
 
-            $scope.data.processingText = 'Tornando rascunho...';
+            $scope.data.processingText = 'Cambiando...';
 
             $scope.data.processing = true;
 
             ProjectEventsService.unpublish(ids.toString()).success(function(){
-                MapasCulturais.Messages.success('Eventos transformados em rascunho.');
+                MapasCulturais.Messages.success('Eventos transformados en borrador.');
                 events.forEach(function(e){
                     e.status = 0;
                     e.statusText = 'rascunho';
@@ -454,7 +454,7 @@
             if(!$form.data('onSuccess')){
                 $form.data('onSuccess', true);
                 $form.on('ajaxForm.success', function(){
-                    MapasCulturais.Messages.success('Alterações salvas.');
+                    MapasCulturais.Messages.success('Cambios guardados.');
                 });
             }
         };
@@ -465,7 +465,7 @@
         };
 
         $scope.removeFile = function (id, $index) {
-            if(confirm('Deseja remover este anexo?')){
+            if(confirm('Desea eliminar este anexo?')){
                 $http.get($scope.data.fileConfigurations[$index].file.deleteUrl).success(function(response){
                     delete $scope.data.fileConfigurations[$index].file;
                 });
@@ -507,7 +507,7 @@
                 spinner: false,
 
                 registrationCategories: categories,
-                registrationCategoriesToFilter: [{value: null, label: 'Tode las opciones'}].concat(categories),
+                registrationCategoriesToFilter: [{value: null, label: 'Todas las opciones'}].concat(categories),
 
                 registration: {
                     owner: null,
@@ -516,31 +516,31 @@
 
                 registrationStatuses:[
                     {value: null, label: 'Todas'},
-                    {value: 1, label: 'Pendente'},
+                    {value: 1, label: 'Pendiente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Não selecionada'},
+                    {value: 3, label: 'No seleccionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Selecionada'}
+                    {value: 10, label: 'Seleccionada'}
                 ],
 
                 registrationStatusesNames: [
-                    {value: 1, label: 'Pendente'},
+                    {value: 1, label: 'Pendiente'},
                     {value: 2, label: 'Inválida'},
-                    {value: 3, label: 'Não selecionada'},
+                    {value: 3, label: 'No seleccionada'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Selecionada'},
-                    {value: 0, label: 'Rascunho'}
+                    {value: 10, label: 'Seleccionada'},
+                    {value: 0, label: 'Borrador'}
                 ],
 
                 publishedRegistrationStatuses:[
                     {value: null, label: 'Todas'},
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Selecionada'}
+                    {value: 10, label: 'Seleccionada'}
                 ],
 
                 publishedRegistrationStatusesNames: [
                     {value: 8, label: 'Suplente'},
-                    {value: 10, label: 'Selecionada'}
+                    {value: 10, label: 'Seleccionada'}
                 ],
 
                 publishedRegistrationStatus: 10,
@@ -605,7 +605,7 @@
             };
 
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('¿Está seguro que desea abrir este formulario para edición? Al hacerlo, va a salir de esta lista.'))){
                     RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                         if(registration.status === 0){
                             $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
@@ -696,7 +696,7 @@
                     replaceRegistrationAgentBy(attrs.name, response.agent, response.status);
                     EditBox.close(editBoxId);
                     if(response.status > 0)
-                        MapasCulturais.Messages.success('Alterações salvas.');
+                        MapasCulturais.Messages.success('Cambios guardados.');
                 });
             };
 
@@ -728,7 +728,7 @@
                         document.location = rs.editUrl;
                     });
                 }else{
-                    MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsable.');
+                    MapasCulturais.Messages.error('Para inscribirse en este proyecto debe seleccionar un agente responsable.');
                 }
             };
 
@@ -743,7 +743,7 @@
 
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
-                if(confirm('Deseja remover este anexo?')){
+                if(confirm('¿Desea eliminar este anexo?')){
                     $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;
                     });
@@ -808,9 +808,9 @@
                                 focused = true;
                             }
                         });
-                        MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                        MapasCulturais.Messages.error('Corrija los errores indicados abajo.');
                     }else{
-                        MapasCulturais.Messages.success('Inscrição enviada. Aguarde tela de sumário.');
+                        MapasCulturais.Messages.success('Inscripción enviada. Espere pantalla de resumen.');
                         document.location = response.singleUrl;
                     }
                 });

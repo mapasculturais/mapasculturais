@@ -255,7 +255,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 </div>
                 <!-- #intro-das-inscricoes -->
             <?php endif; ?>
-            <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Baixar o regulamento</a></p>
+            <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Descargar el reglamento</a></p>
             <div ng-if="data.isEditable" class="registration-fieldset">
                 <h4>2. Reglamento</h4>
 
@@ -312,7 +312,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     </p>
                     <p>
                         <span class="label">Opciones</span><br>
-                        <span class="<?php echo $ditable_class ?>" data-edit="registrationCategories" data-type="textarea" data-original-title="Opciones de inscripción (coloque una opción por liña)" data-emptytext="Ingrese las opciones de inscripción"><?php echo $registration_categories; ?></span>
+                        <span class="<?php echo $ditable_class ?>" data-edit="registrationCategories" data-type="textarea" data-original-title="Opciones de inscripción (coloque una opción por línea)" data-emptytext="Ingrese las opciones de inscripción"><?php echo $registration_categories; ?></span>
                     </p>
                 </div>
                 <!-- #registration-categories -->
@@ -367,7 +367,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             <li ng-repeat="fileConfiguration in data.fileConfigurations" on-repeat-done="init-ajax-uploaders" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item">
                                 <div class="js-open-editbox" ng-class="{'mc-editable': data.entity.canUserModifyRegistrationFields}" ng-click="openFileConfigurationEditBox(fileConfiguration.id, $index, $event);">
                                     <div class="label">{{fileConfiguration.title}}</div>
-                                    <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</span>
+                                    <span class="attachment-description">{{fileConfiguration.description}} ({{fileConfiguration.required.toString() === 'true' ? 'Obligatorio' : 'Opcional'}})</span>
                                 </div>
                                 <!-- edit-box to edit attachment -->
                                 <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-{{fileConfiguration.id}}" position="right" title="Editar Adjunto" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
@@ -418,7 +418,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <p class="registration-help">No es posible realizar las inscripciones online a través de este dispositivo. Intente hacerlo en un dispositivo con una pantalla más grande.</p>
                     </div>
                     <form id="project-registration" class="registration-form clearfix">
-                        <p class="registration-help">Para iniciar su inscripción, seleccione el agente responsable. Él debe ser un agente individual (persona física), con un CP válido ingresado.</p>
+                        <p class="registration-help">Para iniciar su inscripción, seleccione el agente responsable. Él debe ser un agente individual (persona física).</p>
                         <div>
                             <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsable por la inscripción'}}</div>
                             <edit-box id="editbox-select-registration-owner" position="bottom" title="Selecione el Agente responsable por la inscripción." cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.registrationSpinner">

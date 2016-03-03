@@ -66,7 +66,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: in this space' => 'en este espacio',
             'entities: registered spaces' => 'espacios registrados',
             'entities: new space' => 'nuevo espacio',
-			'entities: space found' => 'espacio encontrado',
+            'entities: space found' => 'espacio encontrado',
             'entities: spaces found' => 'espacios encontrados',
             'entities: event found' => 'evento encontrado',
             'entities: events found' => 'eventos encontrados',
@@ -861,7 +861,7 @@ class Theme extends MapasCulturais\Theme {
             echo "\n</script>\n";
     }
 
-    function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
+    function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg o .png') {
         $this->part('ajax-uploader', array(
             'file_owner' => $file_owner,
             'file_group' => $group_name,

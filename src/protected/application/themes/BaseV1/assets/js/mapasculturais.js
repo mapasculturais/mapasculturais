@@ -135,9 +135,9 @@ $(function(){
         MapasCulturais.entity.getTypeName = function(){
             switch(MapasCulturais.request.controller){
                 case 'agent' : return 'agente'; break;
-                case 'space' : return 'espaço'; break;
+                case 'space' : return 'espacio'; break;
                 case 'event' : return 'evento'; break;
-                case 'project' : return 'projeto'; break;
+                case 'project' : return 'proyecto'; break;
             }
         };
     }

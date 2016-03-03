@@ -92,7 +92,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->horario): ?>
-                    <p><span class="label">Horario de funcionamento: </span><span class="js-editable" data-edit="horario" data-original-title="Horario de Funcionamento" data-emptytext="Ingrese el horario de apertura y cierre"><?php echo $entity->horario; ?></span></p>
+                    <p><span class="label">Horario de funcionamiento: </span><span class="js-editable" data-edit="horario" data-original-title="Horario de Funcionamiento" data-emptytext="Ingrese el horario de apertura y cierre"><?php echo $entity->horario; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->site): ?>
