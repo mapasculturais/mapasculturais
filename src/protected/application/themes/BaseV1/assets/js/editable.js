@@ -35,10 +35,10 @@ jQuery(function(){
 
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-mask-phone')) {
-            var masks = ['(00) 00000-0000', '(00) 0000-00009'];
+            var masks = ['000 000000', '0000 0000'];
             editable.input.$input.mask(masks[1], {onKeyPress:
                function(val, e, field, options) {
-                   field.mask(val.length > 14 ? masks[0] : masks[1], options) ;
+                   field.mask(val.length > 9 ? masks[0] : masks[1], options) ;
                }
             });
         }
