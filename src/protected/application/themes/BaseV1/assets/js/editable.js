@@ -38,7 +38,7 @@ jQuery(function(){
             var masks = ['000 000000', '0000 0000'];
             editable.input.$input.mask(masks[1], {onKeyPress:
                function(val, e, field, options) {
-                   field.mask(val.length > 9 ? masks[0] : masks[1], options) ;
+                   field.mask(val.length > 8 ? masks[0] : masks[1], options) ;
                }
             });
         }
