@@ -17,7 +17,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
         <!--.mapa-->
         <div class="infos">
             <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="Dirección" data-emptytext="Agregue la dirección" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
-            <p class="endereco"><span class="label">Dirección:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
+            <p class="endereco"><span class="label"><strong>DIRECCIÓN</strong></span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
             <p><span class="label">CP:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="CP" data-emptytext="Agregue el CP" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
             <p><span class="label">Domicilio:</span> <span class="js-editable" id="En_Nome_Logradouro" data-edit="En_Nome_Logradouro" data-original-title="Domicilio" data-emptytext="Agregue el domicilio" data-showButtons="bottom"><?php echo $entity->En_Nome_Logradouro ?></span></p>
             <p><span class="label">Número:</span> <span class="js-editable" id="En_Num" data-edit="En_Num" data-original-title="Número" data-emptytext="Agregue el Número" data-showButtons="bottom"><?php echo $entity->En_Num ?></span></p>
