@@ -37,17 +37,17 @@ _2. O deploy e customização do tema do Id da Cultura não será abordado neste
 
 O [Login Cidadão] (https://github.com/redelivre/login-cidadao) possui uma feature chamada [Remote Logout] (https://github.com/PROCERGS/login-cidadao/blob/9bc9ff8220b968726682767f8c934d5562fe6a35/app/Resources/doc/en/remoteLogout.md) que permite com que usuários de uma aplicação externa (no caso o Mapas Culturais) possa fazer logout no sistema de autenticação (Login Cidadão) sem sairem do ambiente da aplicação. Em outras palavras, de dentro do Mapas, usando Remote Logout, um usuário poderia sair do Login Cidadão. No entanto essa funcionalidade ainda não foi implementada/testada para operar com Mapas Culturais. Provisoriamente, uma função javascript tem funcionado como um caminho seguro para fazer logout do Login Cidadão de dentro do Mapas. Caso o Login Cidadão seja seu único sistema de autenticação funcionando em conjunto com Mapas Culturais e você queira prover o que chamamos de Logout Inside Application, siga as instruções abaixo para implementar a saída. 
 
-1 - Acesse o arquivo de header da aplicação:
+1 - Acesse o arquivo de header da aplicação, do template criado e ativo na instalação:
 
 ```
-$ vi ~/mapasculturais/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php
+$ vi ~/mapasculturais/src/protected/application/themes/NAME-OF-YOUR-TEMPLATE/layouts/parts/header-main-nav.php
 ```
 2 - Acrescente, no final deste arquivo, a seguinte função javascript:  
 
 ```
 <script language="javascript" type="text/javascript">
 function logoutForce() {
-    window.open('https://logindacultura.sp.gov.br/logout', '_blank');
+    window.open('https://NAME-OF-YOUR-URL-LOGIN-CIDADAO-HERE/logout', '_blank');
     var oldURL = document.referrer;
     alert("Logout efetuado com sucesso!");
     location.reload();
