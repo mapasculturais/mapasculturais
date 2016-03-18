@@ -69,14 +69,14 @@ $this->includeAngularEntityAssets($entity);
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p><span class="label">Sitio web:</span>
                         <?php if($this->isEditable()): ?>
-                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Agregue a url de seu site"><?php echo $entity->site; ?></span></p>
+                            <span class="js-editable" data-edit="site" data-original-title="Sitio web" data-emptytext="Agregue la url de su sitio web"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if($this->isEditable()): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nombre:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nombre Completo o Razón Social" data-emptytext="Agregue seu Nombre Completo o Razón Social"><?php echo $entity->nomeCompleto; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nombre:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nombre Completo o Razón Social" data-emptytext="Agregue su Nombre Completo o Razón Social"><?php echo $entity->nomeCompleto; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label">CI/RUT:</span> <span class="js-editable" data-edit="documento" data-original-title="CI/RUT" data-emptytext="Agregue CI ou RUT con puntos, guiones y barras"><?php echo $entity->documento; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label">Fecha de nacimiento/fundación:</span>
                             <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="Fecha de nacimiento/fundación" data-emptytext="Agregue la feche de nacimento o fundación del agente">

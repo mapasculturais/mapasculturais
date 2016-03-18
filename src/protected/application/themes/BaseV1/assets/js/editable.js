@@ -45,9 +45,18 @@ jQuery(function(){
     
     /*MÁSCARA TELÉFONOS URUGUAY*/
     
-    $('.js-editable').on('shown', function(e, editable) {
+    /*$('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-mask-phone')) {
             var masks = ['(000) 00-00-00-00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }*/
+    $('.js-editable').on('shown', function(e, editable) {
+        if ($(this).hasClass('js-mask-phone')) {
+            var masks = ['000 00 00 00 00'];
             editable.input.$input.mask(masks[0], {onKeyPress:
                function(val, e, field, options) {
                    field.mask(masks[0], options) ;

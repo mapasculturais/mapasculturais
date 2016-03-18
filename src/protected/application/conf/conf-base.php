@@ -125,7 +125,8 @@ return array(
         'agentRelationGroupName' => 'owner',
         'description' => 'Agente individual (persona física) con los campos CI, Raza/Color, Fecha de nacimiento/fundación, Género, Email Privado y Teléfono 1 obligatoriamente completados',
         'type' => 1,
-        'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+       // 'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+    	'requiredProperties' => array('documento', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
     'registration.agentRelations' => array(
         array(

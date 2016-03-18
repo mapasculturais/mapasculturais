@@ -129,7 +129,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             Inscripciones Abiertas de
                             <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Fecha inicial'; ?></strong>
                             a
-                            <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Data final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Fecha final'; ?></strong>
+                            <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Fecha final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Fecha final'; ?></strong>
                             a las
                             <strong class="js-editable" id="registrationTo_time" data-datetime-value="<?php echo $entity->registrationTo ? $entity->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="Hora final" data-emptytext="Hora final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('H:i') : ''; ?></strong>
                             .
@@ -158,7 +158,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p>
                             <span class="label">Sitio web:</span>
-                            <span ng-if="data.isEditable" class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Ingrese la url de su sitio web"><?php echo $entity->site; ?></span>
+                            <span ng-if="data.isEditable" class="js-editable" data-edit="site" data-original-title="Sitio web" data-emptytext="Ingrese la url de su sitio web"><?php echo $entity->site; ?></span>
                             <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         </p>
                     <?php endif; ?>
@@ -251,7 +251,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <div id="intro-das-inscricoes" ng-class="{'registration-fieldset': data.isEditable}">
                     <h4 ng-if="data.isEditable">1. Introducción</h4>
                     <p class="registration-help" ng-if="data.isEditable">Cree un texto de introducción.</p>
-                    <p class="js-editable" data-edit="introInscricoes" data-original-title="Introducción de la inscripción" data-emptytext="Ingrese el texto." data-placeholder="Insira o texto." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
+                    <p class="js-editable" data-edit="introInscricoes" data-original-title="Introducción de la inscripción" data-emptytext="Ingrese el texto." data-placeholder="Ingrese el texto." data-showButtons="bottom" data-placement="bottom"><?php echo $this->isEditable() ? $entity->introInscricoes : nl2br($entity->introInscricoes); ?></p>
                 </div>
                 <!-- #intro-das-inscricoes -->
             <?php endif; ?>
@@ -304,7 +304,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">La edición de estas opciones está deshabilitada porque agentes ya se inscribieron en este proyecto. </p>
                     <p>
                         <span class="label">Título de las opciones</span><br>
-                        <span class="<?php echo $ditable_class ?>" data-edit="registrationCategTitle" data-original-title="Título de las opciones" data-emptytext="Ingrese un título para el campo de opciones"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categoria'; ?></span>
+                        <span class="<?php echo $ditable_class ?>" data-edit="registrationCategTitle" data-original-title="Título de las opciones" data-emptytext="Ingrese un título para el campo de opciones"><?php echo $entity->registrationCategTitle ?  $entity->registrationCategTitle : 'Categoría'; ?></span>
                     </p>
                     <p>
                         <span class="label">Descripción de las opciones</span><br>
