@@ -104,9 +104,9 @@ return array(
         'telefonePublico' => array(
             'label' => 'Teléfono Público',
             'type' => 'string',
-            'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el Teléfono Público en el formato (xx) xxxx-xxxx.'
-            )
+            //'validations' => array(
+            //    'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el Teléfono Público en el formato (xx) xxxx-xxxx.'
+            //)
         ),
 
         'telefone1' => array(

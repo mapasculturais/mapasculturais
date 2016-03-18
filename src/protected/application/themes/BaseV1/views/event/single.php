@@ -165,7 +165,7 @@ $this->includeMapAssets();
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                        <p><span class="label">Más información:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Más información" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
+                        <p><span class="label">Más información (tel.):</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Más información" data-emptytext="000 00 00 00 00"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
