@@ -123,7 +123,7 @@ return array(
         'required' => true,
         'label' => 'Agente responsable por la inscripción',
         'agentRelationGroupName' => 'owner',
-        'description' => 'Agente individual (persona física) con los campos CI, Raza/Color, Fecha de nacimiento/fundación, Género, Email Privado y Teléfono 1 obligatoriamente completados',
+        'description' => 'Agente individual (persona física) con los campos CI, Fecha de nacimiento/fundación, Género, Email Privado y Teléfono 1 obligatoriamente completados',
         'type' => 1,
        // 'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     	'requiredProperties' => array('documento', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
