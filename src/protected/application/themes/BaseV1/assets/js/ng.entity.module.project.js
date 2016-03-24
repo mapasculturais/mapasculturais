@@ -808,7 +808,7 @@
                                 focused = true;
                             }
                         });
-                        MapasCulturais.Messages.error('Corrija los errores indicados abajo.');
+                        MapasCulturais.Messages.error('Corrija los errores indicados abajo y pulsee "Salvar" antes de enviar nuevamente la inscpripción.');
                     }else{
                         MapasCulturais.Messages.success('Inscripción enviada. Espere pantalla de resumen.');
                         document.location = response.singleUrl;
