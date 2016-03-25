@@ -106,7 +106,7 @@ class Event extends EntityController {
                 if(!empty($occ->rule->description)) {
                     return $occ->rule->description;
                 }else{
-                    return $occ->startsOn->format('d \d\e') . ' ' . $app->txt($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
+                    return $occ->startsOn->format('d \d\e') . ' ' . $app->txt($occ->startsOn->format('F')) . ' a las ' . $occ->startsAt->format('H:i');
                 }
             }, $occurrences[$e->id]);
 

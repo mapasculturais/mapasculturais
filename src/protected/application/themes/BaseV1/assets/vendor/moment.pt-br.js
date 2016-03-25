@@ -21,7 +21,7 @@
             LT : "HH:mm",
             L : "DD/MM/YYYY",
             LL : "D [de] MMMM [de] YYYY",
-            LLL : "D [de] MMMM [de] YYYY [às] LT",
+            LLL : "D [de] MMMM [de] YYYY [a las] LT",
             LLLL : "dddd, D [de] MMMM [de] YYYY [a las] LT"
         },
         calendar : {

@@ -314,9 +314,9 @@ MapasCulturais.EventHumanReadableManager = {
 
         if (hour) {
             if (hour.substring(0,2) == '01')
-                human += ' à ' + hour;
+                human += ' a ' + hour;
             else
-                human += ' às ' + hour;
+                human += ' a las ' + hour;
         }
 
         return human;
