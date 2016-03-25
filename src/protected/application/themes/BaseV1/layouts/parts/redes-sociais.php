@@ -8,7 +8,7 @@
 	<div class="btn-social-share">
 		<div class="g-plus" data-action="share" data-annotation="bubble" data-href="<?php echo $entity->singleUrl; ?>"></div>
 		<script type="text/javascript">
-		  window.___gcfg = {lang: 'pt-BR'};
+		  window.___gcfg = {lang: 'es'};
 
 		  (function() {
 			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;

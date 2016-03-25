@@ -139,7 +139,7 @@ return array(
         ),
         array(
             'required' => false,
-            'label' => 'Coletivo',
+            'label' => 'Colectivo',
             'agentRelationGroupName' => 'coletivo',
             'description' => 'Agente colectivo sin RUT, con los campos Fecha de nacimiento/fundación e Email Privado obligatoriamente completados',
             'type' => 2,
