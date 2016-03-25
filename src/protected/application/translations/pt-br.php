@@ -19,8 +19,8 @@ return array(
     'This agent is required.' => 'Este agente es obligatorio.',
     'The agent "%s" must be of type "%s".' => 'El agente "%s" debe ser del tipo "%s".',
     'This agent must be of type "%s".' => 'Este agente debe ser del tipo "%s".',
-    'The field "%s" is required.' => 'Este agente necesita tener el campo "%s" completo.',
-    'The fields %s are required.' => 'Este agente necesita tener los campos %s completos.',
+    'The field "%s" is required.' => 'Este agente necesita tener el campo "%s" completo. SALVE LOS CAMBIOS ANTES DE ENVIAR!!!',
+    'The fields %s are required.' => 'Este agente necesita tener los campos %s completos SALVE LOS CAMBIOS ANTES DE ENVIAR!!!.',
     'The field "%s" of the agent "%s" is required.' => 'El campo "%s" del agente "%s" es obligatorio.',
     'The file "%s" is required.' => 'El archivo "%s" es obligatorio.',
 
