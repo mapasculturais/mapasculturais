@@ -72,10 +72,11 @@ class Project extends EntityController {
         $response = $app->response();
         //$response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';
-        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
+        $response['Content-Disposition'] ='attachment; filename=mapas-culturales-datos-exportados.ods';
         $response['Pragma'] ='no-cache';
 
-        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        //$app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        $app->contentType('application/vnd.oasis.opendocument.spreadsheet; charset=UTF-8');
 
         ob_start();
         $this->partial('report', ['entity' => $entity]);
