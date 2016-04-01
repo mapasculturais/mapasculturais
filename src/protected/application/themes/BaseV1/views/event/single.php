@@ -158,7 +158,7 @@ $this->includeMapAssets();
                     <?php if ($this->isEditable() || $entity->site): ?>
                         <p><span class="label">Sitio web:</span>
                             <?php if ($this->isEditable()): ?>
-                                <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe la dirección del sitio web del evento"><?php echo $entity->site; ?></span></p>
+                                <span class="js-editable" data-edit="site" data-original-title="Sitio" data-emptytext="Informe la dirección del sitio web del evento"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>
@@ -174,7 +174,7 @@ $this->includeMapAssets();
                             <span>Accesibilidad:</span>
 
                             <?php if($this->isEditable() || $entity->traducaoLibras): ?>
-                                <p><span class="label">Traducción para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Traducción para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
+                                <p><span class="label">Traducción para Lenguaje de Señas: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Traducción para Lenguaje de Señas"><?php echo $entity->traducaoLibras; ?></span></p>
                             <?php endif; ?>
 
                             <?php if($this->isEditable() || $entity->descricaoSonora): ?>

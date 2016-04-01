@@ -98,7 +98,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p><span class="label">Sitio web:</span>
                         <?php if($this->isEditable()): ?>
-                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Ingrese la url de su sitio"><?php echo $entity->site; ?></span></p>
+                            <span class="js-editable" data-edit="site" data-original-title="Sitio" data-emptytext="Ingrese la url de su sitio"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>

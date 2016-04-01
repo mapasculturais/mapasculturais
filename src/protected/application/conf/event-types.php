@@ -40,7 +40,7 @@ return array(
         ),
 
         'traducaoLibras' => array(
-            'label' => 'Traducción para LIBRAS',
+            'label' => 'Traducción para Lenguaje de Señas',
             'type' => 'select',
             'options' => array(
                 '' => 'No Informado',
@@ -60,7 +60,7 @@ return array(
         ),
 
         'site' => array(
-            'label' => 'Site',
+            'label' => 'Sitio',
             'validations' => array(
                 "v::url()" => "La url informada no es válida."
             )
