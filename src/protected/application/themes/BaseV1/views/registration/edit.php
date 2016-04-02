@@ -147,6 +147,8 @@ $this->includeAngularEntityAssets($entity);
         <?php if($entity->project->isRegistrationOpen()): ?>
             <p class="registration-help">Asegúrese de que ha completado la información correctamente antes de presentar su solicitud. <strong>Después de enviada, no será posible editarla.</strong></p>
             <a class="btn btn-primary" ng-click="sendRegistration()">Enviar inscripción</a>
+            <p class="registration-help"><strong>Debe Salvar antes de Enviar inscripción.</strong> Si no se puede enviar, se le indicarán los errores con un signo de exclamación en los registros correspondientes. </p>
+            
         <?php else: ?>
             <p class="registration-help">
                 <strong>

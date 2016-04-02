@@ -51,7 +51,7 @@ $this->includeAngularEntityAssets($entity);
     </header>
     <div class="alert success">
         Inscripción enviada el día
-        <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i:s'); ?>
+        <?php echo $entity->sentTimestamp->format('d/m/Y \a \l\a\s H:i:s'); ?>
     </div>
 
     <h3 class="registration-header">Formulario de Inscripción</h3>
