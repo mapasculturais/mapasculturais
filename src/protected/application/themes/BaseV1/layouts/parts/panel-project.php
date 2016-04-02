@@ -13,11 +13,11 @@
                         <?php
                             if($entity->isRegistrationOpen()) echo'open ';
                             if($entity->registrationFrom && !$entity->registrationTo)
-                                echo 'a partir de '.$entity->registrationFrom->format('d/m/Y');
+                                echo 'a partir del '.$entity->registrationFrom->format('d/m/Y');
                             elseif(!$entity->registrationFrom && $entity->registrationTo)
-                                echo ' até '. $entity->registrationTo->format('d/m/Y');
+                                echo ' hasta '. $entity->registrationTo->format('d/m/Y');
                             else
-                                echo 'de '. $entity->registrationFrom->format('d/m/Y') .' a '. $entity->registrationTo->format('d/m/Y');
+                                echo 'del '. $entity->registrationFrom->format('d/m/Y') .' al '. $entity->registrationTo->format('d/m/Y');
                         ?>
                     </div>
                 <?php endif; ?>

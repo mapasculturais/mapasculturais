@@ -235,7 +235,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                                 </td>
                                 <td class="registration-status-col">
                                     <?php if($registration->status > 0): ?>
-                                        Enviada en <?php echo $registration->sentTimestamp->format('d/m/Y à\s H:i'); ?>.
+                                        Enviada el <?php echo $registration->sentTimestamp->format('d/m/Y \a \l\a\s H:i'); ?>.
                                     <?php else: ?>
                                         No enviada.<br>
                                         <a class="btn btn-small btn-primary" href="<?php echo $registration->singleUrl ?>">Editar y enviar</a>

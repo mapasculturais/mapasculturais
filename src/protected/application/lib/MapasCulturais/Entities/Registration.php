@@ -29,8 +29,8 @@ class Registration extends \MapasCulturais\Entity
 
     protected static $validations = [
         'owner' => [
-            'required' => "O agente responsable es obligatorio.",
-            '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsable.',
+            'required' => "El agente responsable es obligatorio.",
+            '$this->validateOwnerLimit()' => 'Fue superado el límite de inscripciones para este agente responsable.',
         ]
     ];
 
