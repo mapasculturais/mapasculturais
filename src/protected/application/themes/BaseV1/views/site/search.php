@@ -57,6 +57,8 @@ $this->includeMapAssets();
             <img class="objeto-thumb" ng-src="{{openEntity.agent['@files:avatar.avatarSmall'].url||assetsUrl.avatarAgent}}">
             <p class="objeto-resumo">{{openEntity.agent.shortDescription}}</p>
             <div class="objeto-meta">
+                <?php $this->applyTemplateHook('agent-infobox-new-fields-before','begin'); ?>
+                <?php $this->applyTemplateHook('agent-infobox-new-fields-before','end'); ?>
                 <div><span class="label">Tipo:</span> <a ng-click="data.agent.type=openEntity.agent.type.id">{{openEntity.agent.type.name}}</a></div>
                 <div>
                     <span class="label">Áreas de atuação:</span>
@@ -64,8 +66,6 @@ $this->includeMapAssets();
                             <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                         </span>
                 </div>
-                <?php $this->applyTemplateHook('agent-infobox-new-fields','begin'); ?>
-                <?php $this->applyTemplateHook('agent-infobox-new-fields','end'); ?>
             </div>
         </article>
 
