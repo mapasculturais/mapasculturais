@@ -64,6 +64,8 @@ $this->includeMapAssets();
                             <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                         </span>
                 </div>
+                <?php $this->applyTemplateHook('agent-infobox-new-fields','begin'); ?>
+                <?php $this->applyTemplateHook('agent-infobox-new-fields','end'); ?>
             </div>
         </article>
 
