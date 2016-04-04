@@ -518,7 +518,7 @@ abstract class Theme extends \Slim\View {
 
     }
     
-    function applyTemplateHook($name, $sufix = '', $args){
+    function applyTemplateHook($name, $sufix = '', $args = []){
         $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
         if($sufix){
             $hook .= ':' . $sufix;
