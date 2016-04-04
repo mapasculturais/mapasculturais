@@ -155,7 +155,11 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_spaces(){
-        $this->renderList('spaces', 'space', 'name,type,status,terms,endereco,singleUrl,editUrl,deleteUrl,publishUrl,unpublishUrl,acessibilidade,createTimestamp');
+        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
+                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp'];
+        $app = App::i();
+        $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
+        $this->renderList('spaces', 'space', implode(',', $fields));
     }
 
     /**
@@ -170,7 +174,11 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_events(){
-        $this->renderList('events', 'event', 'name,type,status,terms,classificacaoEtaria,singleUrl,editUrl,deleteUrl,publishUrl,unpublishUrl,createTimestamp');
+        $fields = ['name', 'type', 'status', 'terms', 'classificacaoEtaria', 'singleUrl',
+                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp'];
+        $app = App::i();
+        $app->applyHook('controller(panel).extraFields(event)', [&$fields]);
+        $this->renderList('events', 'event', implode(',', $fields));
     }
 
     /**
