@@ -13,7 +13,7 @@
         <div class="filter search-filter--area">
             <span class="label">Área de actuación</span>
             <div class="dropdown">
-                <div class="placeholder">Selecione las áreas</div>
+                <div class="placeholder">Seleccione las áreas</div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list">
                         <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.space.areas, area.id)}" ng-click="toggleSelection(data.space.areas, area.id)">

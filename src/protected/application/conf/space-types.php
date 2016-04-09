@@ -260,7 +260,8 @@ return array(
             		119 => array( 'name' => 'Radio comunitaria' ),
             		120 => array( 'name' => 'Sala de ensayo' ),
             		121 => array( 'name' => 'Sellos discográfico' ),
-            		122 => array( 'name' => 'Usina Cultural' )
+            		122 => array( 'name' => 'Usina Cultural' ),
+                        123 => array( 'name' => 'Oficina cultural')
             )
         ),
 
