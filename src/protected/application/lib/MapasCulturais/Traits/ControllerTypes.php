@@ -38,7 +38,7 @@ trait ControllerTypes{
      * Prints a JSON with the registered entity types for the entity related with this controller.
      */
     public function API_getTypes(){
-        $this->json($this->types);
+        $this->apiArrayResponse($this->getTypes());
     }
 
     /**
