@@ -40,7 +40,7 @@ Stories: [![Stories in Dev Ready](https://badge.waffle.io/LibreCoopUruguay/mapas
 - Postgis >= 2.1
 -  PostgreSQL Postgis Scripts
 
-En distribuiciones GNU/Linux basadas en Debian:
+#### En distribuiciones GNU/Linux basadas en Debian:
 ```shell
 sudo apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 ```
@@ -56,7 +56,8 @@ sudo npm install -g uglify-js uglifycss autoprefixer
 ```shell
 sudo gem install sass
 ```
-### Suporte
-[Chat general en portugués] (http://chat.mapasculturais.org/channel/general)]
-[Chat en español] (http://chat.mapasculturais.org/channel/spanish)]
+### Soporte
+[Chat general en portugués] (http://chat.mapasculturais.org/channel/general)
+
+[Chat en español] (http://chat.mapasculturais.org/channel/spanish)
 
