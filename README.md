@@ -57,6 +57,6 @@ sudo npm install -g uglify-js uglifycss autoprefixer
 sudo gem install sass
 ```
 ### Suporte
-[![Chat general en portugués] (http://chat.mapasculturais.org/channel/general)]
-[![Chat en español] (http://chat.mapasculturais.org/channel/spanish)]
+[Chat general en portugués] (http://chat.mapasculturais.org/channel/general)]
+[Chat en español] (http://chat.mapasculturais.org/channel/spanish)]
 
