@@ -1,29 +1,28 @@
 # Mapas Culturais
-Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturais, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados.
 
-Mapas Culturais é uma plataforma colaborativa que reúne informações sobre agentes, espaços, eventos e projetos culturais, fornecendo ao poder público uma radiografia da área de cultura e ao cidadão um mapa de espaços e eventos culturais da região. A plataforma está alinhada ao Sistema Nacional de Informação e Indicadores Culturais do Ministério da Cultura (SNIIC) e contribui para a realização de alguns dos objetivos do Plano Nacional de Cultura.
+En julio de 2013, agentes culturales de diferentes países de América Latina y Brasil se reunieron para discutir la creación de una herramienta de mapeo de iniciativas de gestión cultural y de gestión cultural. De esa reunión surgió la base para la creación de Mapas Culturales, software libre que permite la mejora de la gestión cultural de las ciudades y estados y que en la región lleva el nombre de Mapas Culturales.
 
-A plataforma já está em uso, por exemplo, no município de São Paulo (http://spcultura.prefeitura.sp.gov.br/) e no estado do Rio Grande do Sul (http://mapa.cultura.rs.gov.br/).
+Mapas Culturales es una plataforma colaborativa que reúne información sobre los agentes, lugares, eventos y proyectos culturales, dando al gobierno una instantánea de la cultura de la zona y un mapa de los espacios ciudadanos y eventos culturales en la región. La plataforma está alineada con el Sistema Nacional de Información e Indicadores Culturales del Ministerio de Cultura (SNIIC) y contribuye a la realización de algunos de los objetivos del Plan Nacional de Cultura.
 
-### Travis Build Status
+El Instituto TIM, en colaboración con una serie de Departamentos Cultura, ha actuado para la ejecución de los Mapas Culturales en la gestión pública de las ciudades y estados. La plataforma ya está en uso, por ejemplo, en São Paulo (http://spcultura.prefeitura.sp.gov.br/) y en el estado de Río Grande do Sul (http://mapa.cultura.rs.gov.br/).
 
-[![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
+En Julio de 2015 comenzamos este proyecto de traducción y adaptación de la plataforma.
 
 ### Issue Tracker
 
-Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) for Development, [![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais) for Test, [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais) for Deploy
+Stories: [![Stories in Dev Ready](https://badge.waffle.io/LibreCoopUruguay/mapasculturais.png?label=status:dev-ready)](https://waffle.io/LibreCoopUruguay/mapasculturais) for Development, [![Stories in Test Ready](https://badge.waffle.io/LibreCoopUruguay/mapasculturais.png?label=status:test-ready)](https://waffle.io/LibreCoopUruguay/mapasculturais) for Test, [![Stories in Deploy Ready](https://badge.waffle.io/LibreCoopUruguay/mapasculturais.png?label=status:tested)](https://waffle.io/LibreCoopUruguay/mapasculturais) for Deploy
 
-### Documentação 
-- [Entidades dos Mapas Culturais](doc/entidades.md)
-- [API](doc/api.md)
-- [Guia do desenvolvedor](doc/developer-guide.md)
-- [Criando um tema personalizado](doc/developer-guide/themes.md)
-- [Deploy no Ubuntu 14.04 com nginx e php-fpm](doc/deploy-ubuntu-14.04.md)
-- [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
+### Documentación 
+- [Entidades de los Mapas Culturales](doc/entidades.md)
+- [API](doc/api.md) (En portugués)
+- [Guía del desarrollador](doc/developer-guide.md) (En portugués)
+- [Creando un tema personalizado](doc/developer-guide/themes.md) (En portugués)
+- [Deploy en Ubuntu 14.04 con nginx y php-fpm](doc/deploy-ubuntu-14.04.md) (En Español)
+- [Importación de archivos de datos geoespaciales (Shapefiles)](doc/shapefiles.md)
 
-### Requisitos para Instalação
+### Requisitos de Instalación
 - PHP >= 5.4
-- Extensões PHP:
+- Extensiones PHP:
   - php5-gd
   - php5-cli
   - php5-json
@@ -36,12 +35,12 @@ Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturai
     curl -sS https://getcomposer.org/installer | php
     sudo mv composer.phar /usr/local/bin/composer
 ```
-- PostgreSQL >= 9.3
+- PostgreSQL >= 9.3 o superior
 - Postgis Contrib (for Unaccent extension)
 - Postgis >= 2.1
 -  PostgreSQL Postgis Scripts
 
-Em distribuições GNU/Linux baseadas em Debian:
+En distribuiciones GNU/Linux basadas en Debian:
 ```shell
 sudo apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 ```
@@ -58,6 +57,6 @@ sudo npm install -g uglify-js uglifycss autoprefixer
 sudo gem install sass
 ```
 ### Suporte
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/hacklabr/mapasculturais?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Chat general en portugués] (http://chat.mapasculturais.org/channel/general)]
+[![Chat en español] (http://chat.mapasculturais.org/channel/spanish)]
 
-Lista de discussão: https://groups.google.com/forum/?hl=en#!forum/mapas-culturais

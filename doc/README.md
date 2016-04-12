@@ -1,7 +1,7 @@
 MapasCulturais
 ==============
 
-- [API](api.md)
-- [Guia do desenvolvedor](developer-guide.md)
-- [Criando um tema personalizado](developer-guide/themes.md)
-- [Deploy no Ubuntu 14.04 com nginx e php-fpm](deploy-ubuntu-14.04.md)
+- [API](api.md) (En portugués)
+- [Guía del desarrollador](developer-guide.md) (En portugués)
+- [Creando un tema personalizado](developer-guide/themes.md) (En portugués)
+- [Deploy en Ubuntu 14.04 con nginx y php-fpm](deploy-ubuntu-14.04.md) (En español)

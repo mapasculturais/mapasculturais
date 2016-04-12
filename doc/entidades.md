@@ -1,237 +1,103 @@
 Entidades dos Mapas Culturais
 =============================
+La base de datos está compuesta, básicamente, por cuatro entidades: Agentes, Espacios, Eventos y Proyectos
 
-O banco de dados é composto, basicamente, por quatro entidades: Agentes, Espaços, Eventos e Projetos
-
-As quatro entidades possuem em comum:
+Las cuatro entidades poseen en comúm:
 -------------------------------------
-* Entidade Verificada ou não pelo mantenedor do sistema
-* Nome de Exibição
-* Imagem de Capa
-* Imagem de Avatar
-* Agentes Relacionados
-* Descrição Curta
-* Descrição Longa
-* Tags
-* Site
-* Vídeos
-* Galeria de Imagens
-* Download (lista de arquivos)
+* Entidad Verificada o no por el administrador del sistema
+* Nombre para mostrar
+* Imagen de la cubierta
+* Imagen de Avatar
+* Agentes relacionados
+* Descripción breve
+* Descripción larga
+* Etiquetas
+* página web
+* Videos
+* Galería de imágenes
+* Lista de archivos para descarga
 * Links (lista)
 * Facebook
 * Tweeter
 * Google+
-* Publicado por (Agente responsável pela entidade)
+* Publicado por (Agente responsable por la entidad)
 
 
-Agentes e Espaços possuem em comum:
+Los agentes y los espacios tienen en común:
 -----------------------------------
-* Email Privado
-* Email Público
-* Telefone Público
-* Telefones Privados 1 e 2
-* Localização Geográfica
-* Endereço
-* Agenda de Eventos
-* Áreas de Atuação:
-	* Antropologia
-	* Arqueologia
-	* Arquitetura*Urbanismo
-	* Arquivo
-	* Arte Digital
-	* Arte de Rua
-	* Artes Visuais
-	* Artesanato
-	* Audiovisual
-	* Cinema
-	* Circo
-	* Comunicação
-	* Cultura Cigana
-	* Cultura Digital
-	* Cultura Estrangeira (imigrantes)
-	* Cultura Indígena
-	* Cultura LGBT
-	* Cultura Negra
-	* Cultura Popular
-	* Dança
-	* Design
-	* Direito Autoral
-	* Economia Criativa
-	* Educação
-	* Esporte
-	* Filosofia
-	* Fotografia
-	* Gastronomia
-	* Gestão Cultural
-	* História
-	* Jogos Eletrônicos
-	* Jornalismo
-	* Leitura
-	* Literatura
-	* Livro
-	* Meio Ambiente
-	* Moda
-	* Museu
-	* Mídias Sociais
-	* Música
-	* Novas Mídias
-	* Outros
-	* Patrimônio Imaterial
-	* Patrimônio Material
-	* Pesquisa
-	* Produção Cultural
-	* Rádio
-	* Saúde
-	* Sociologia
-	* Teatro
-	* Televisão
-	* Turismo
+* Email privado
+* Email público
+* Teléfono público
+* Teléfonos Privados 1 y 2
+* Localización geográfica
+* Dirección
+* Calendario de Eventos
+* Áreas de Actuación
 
 
-Agentes possuem exclusivamente:
+
+Los agentes tienen exclusivamente:
 -------------------------------
-* Nome Completo
+* Nombre completo
 * Tipo
-	* Coletivo
-	* Individual
-* CPF/CNPJ
-* Data de Nascimento/Fundação
-* Gênero
-* Raça/Cor
+    * Colectivo
+    * individual
+* CI / RUT
+* Fecha de Nacimiento / Fundación
+* Género
+* Raza / Color
 
-Espaços possuem exclusivamente:
+Los Espacios tienen exclusivamente
 -----------------------------------
-* Tipo:
-	* Antiquário
-	* Arquivo Privado
-	* Arquivo Público
-	* Ateliê
-	* Banca de jornal
-	* Bens culturais de natureza material
-	* Biblioteca Privada
-	* Biblioteca Pública
-	* Casa de espetáculo
-	* Casa do Patrimônio
-	* Centro Comunitário
-	* Centro Cultural Privado
-	* Centro Cultural Público
-	* Centro de Documentação Privado
-	* Centro de Documentação Público
-	* Centro de artesanato
-	* Cine itinerante
-	* Cineclube
-	* Circo Fixo
-	* Circo Itinerante
-	* Concha acústica
-	* Creative Bureau
-	* Danceteria
-	* Drive-in
-	* Espaço Mais Cultura
-	* Espaço Público Para Projeção de Filmes
-	* Espaço para Eventos
-	* Espaço para apresentação de dança
-	* Estúdio
-	* Gafieira
-	* Galeria de arte
-	* Igreja
-	* Lan-house
-	* Livraria
-	* Mesquitas
-	* Museu Privado
-	* Museu Público
-	* Palco de Rua
-	* Ponto de Leitura Afro
-	* Praça dos esportes e da cultura
-	* Rádio Comunitária
-	* Sala de cinema
-	* Sala de dança
-	* Sebo
-	* Sinagoga
-	* Teatro Privado
-	* Teatro Público
-	* Templo
-	* Terreiro
-	* Terreno para Circo
-	* Usina Cultural
-	* Videolocadora
-* Status de Publicação:
-	* Publicação restrita - requer autorização para criar eventos
-	* Publicação livre - qualquer pessoa pode criar eventos
-* Acessibilidade
-* Capacidade
-* Horário de Funcionamento
-* Critérios de Uso do Espaço
-* Subespaços ou Espaço*pai ao qual pertencem
+* Tipo	
+* Estado de la publicación:
+    * Publicación restringida - requiere autorización para crear eventos
+    * Publicación libre - cualquier persona puede crear eventos
+* Accesibilidad
+* Capacidad
+* Horario de funcionamiento
+* Criterios de uso del Espacio
+* El subespacio o espacio padre al que pertenecen
 
 
-Eventos possuem exclusivamente:
+Los Eventos tienen exclusivamente:
 -----------------------------------
-* Linguagens:
-	* Artes Circenses
-	* Artes Integradas
-	* Artes Visuais
-	* Audiovisual
-	* Cinema
-	* Cultura Digital
-	* Cultura Indígena
-	* Cultura Tradicional
-	* Curso ou Oficina
-	* Dança
-	* Exposição
-	* Hip Hop
-	* Livro e Literatura
-	* Música Erudita
-	* Música Popular
-	* Outros
-	* Palestra, Debate ou Encontro
-	* Rádio
-	* Teatro
+* Tipos de Eventos
 * Subtítulo
-* Inscrições
-* Classificação Etária
-* Número de Telefone para Informações
-* Acessibilidade:
-	* Tradução para LIBRAS
-	*Áudio Desrição
-* Projeto ao qual pertence
-* Ocorrências: um evento pode ter várias ocorrências, cada ocorrência possui:
-	* Espaço relacionado
-	* Regras de Repetição de Datas, Horários, Duração
-	* Preço
+* Inscripciones
+* Clasificación etaria
+* Número de teléfono para obtener información
+* Accesibilidad:
+    * Traducción al lenguaje de señas
+    * Audio Descripción
+* Proyecto al que pertenece
+* Eventos: un evento puede tener varias instancias, cada instancia tiene:
+    * Espacio relacionado
+    * Reglas de repetición de fechas; Horarios, Duración
+    * Precio
 
-Projetos possuem exclusivamente:
+
+Los Proyectos tienen exclusivamente:
 --------------------------------
-* Tipo:
-	* Ciclo
-	* Concurso
-	* Convenção
-	* Edital
-	* Encontro
-	* Festival
-	* Jornada
-	* Mostra
-	* Programa
-	* Reunião
-	* Sarau
-* Inscrições:
-	* Online Ativadas ou Desativadas
-	* Data Inicial, Final, Horário Final
-	* Texto de Introdução
-	* Regulamento
-	* Categorias
-	* Agentes:
-		* Responsável
-		* Instituição Responsável
-		* Coletivo
-		* Numero máximo de inscrições por Agente Responsável
-		* Arquivos Anexos:
-			* Obrigatório/Opcional
-			* Com ou sem arquivo de Modelo (formulário)
-	* Status:
-		* Inválida - em desacordo com o regulamento (ex. documentação incorreta).
-		* Pendente - ainda não avaliada.
-		* Não selecionada * avaliada, mas não selecionada.
-		* Suplente - avaliada, mas aguardando vaga.
-		* Selecionada - avaliada e selecionada.
-		* Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.
-
+* Tipo
+* Inscripciones:
+    * En línea - activado o desactivado
+    * Fecha de Inicio, Fin, Hora de finalización
+    * Introducción de texto
+    * Reglamento
+    * Categorías
+    * Agentes:
+        * Responsable
+        * Institución Responsable
+        * Colectivo
+        * El número máximo de entradas por agente responsable
+        * Los archivos adjuntos:
+            * Obligatorio / Opcional
+            * Con o sin archivo de plantilla (forma)
+    * Estado:
+        * No válida - en violación de la reglamentación (por ejemplo, documentación incorrecta.).
+        * Pendiente - aún no evaluado.
+        * No seleccionada - evaluado, pero no seleccionado.
+        * Suplente - evaluado, pero esperando vacante.
+        * Seleccionado - evaluado y seleccionado.
+        * Borrador - utilice esta opción para permitir la edición y volver a presentar una solicitud. Al seleccionar esta opción, la inscripción ya no se mostrará en esta tabla.
