@@ -30,12 +30,12 @@
             <li><a <?php if($this->template == 'panel/registrations') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'registrations') ?>"><span class="icon icon-project"></span> Mis Inscripciones</a></li>
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
         <?php endif; ?>
-            
-        <?php if($app->isEnabled('apps')): ?>
-            <?php $this->applyTemplateHook('nav.panel.apps','before'); ?>
-            <li><a <?php if($this->template == 'panel/apps') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'apps') ?>"><span class="icon icon-api"></span> Mis Apps</a></li>
-            <?php $this->applyTemplateHook('nav.panel.apps','after'); ?>
-        <?php endif; ?>
+    <!--#oculto Mis Apps del panel-->        
+      <?php //if($app->isEnabled('apps')): ?> 
+           <?php //$this->applyTemplateHook('nav.panel.apps','before'); ?>
+           <!-- <li><a <?php //if($this->template == 'panel/apps') echo 'class="active"'; ?> href="<?php // echo $app->createUrl('panel', 'apps') ?>"><span class="icon icon-api"></span> Mis Apps</a></li> -->
+            <?php // $this->applyTemplateHook('nav.panel.apps','after'); ?>
+        <?php //endif; ?>
             
         <?php $app->applyHookBoundTo($this, 'panel.menu:after') ?>
     </ul>
