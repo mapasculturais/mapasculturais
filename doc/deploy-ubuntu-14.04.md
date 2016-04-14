@@ -25,6 +25,7 @@ Primero instalamos los paquetes via apt
 Instalación del generador de dependencias de PHP Composer
 
 @ curl -sS https://getcomposer.org/installer | php
+
 @ mv composer.phar /usr/local/bin/composer.phar
 
 En Ubuntu el ejecutable de NodeJS se llama nodejs, pero para el correcto funcionamiento de las bibliotecas utilizadas, el ejecutable debe llamarse simplemente node. Para ello creamos un enlace simbólico con el siguiente comando
