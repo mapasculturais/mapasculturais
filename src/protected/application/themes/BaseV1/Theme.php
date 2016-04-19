@@ -1115,8 +1115,14 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $controller = $app->getControllerByEntity($class);
+        
+        $q = ['@count'=>1];
+        
+        if($verified === true){
+            $q['isVerified'] = 'EQ(true)';
+        }
 
-        $result = $controller->apiQuery(['@count'=>1]);
+        $result = $controller->apiQuery($q);
 
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);
