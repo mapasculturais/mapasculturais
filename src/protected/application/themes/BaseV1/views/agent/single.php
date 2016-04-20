@@ -98,6 +98,7 @@ $this->includeAngularEntityAssets($entity);
                         </span>
                     </p>
                     <p class="privado"><span class="icon icon-private-info"></span><span class="label">Gênero:</span> <span class="js-editable" data-edit="genero" data-original-title="Gênero" data-emptytext="Selecione o gênero se for pessoa física"><?php echo $entity->genero; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Orientação Sexual:</span> <span class="js-editable" data-edit="orientacaoSexual" data-original-title="Orientação Sexual" data-emptytext="Selecione a orientação sexual se for pessoa física"><?php echo $entity->orientacaoSexual; ?></span></p>
                     <p class="privado"><span class="icon icon-private-info"></span><span class="label">Raça/Cor:</span> <span class="js-editable" data-edit="raca" data-original-title="Raça/cor" data-emptytext="Selecione a raça/cor se for pessoa física"><?php echo $entity->raca; ?></span></p>
 
                     <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>

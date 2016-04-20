@@ -80,8 +80,28 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => 'Não Informar',
-                'Feminino' => 'Feminino',
-                'Masculino' => 'Masculino'
+                'Mulher Transexual' => 'Mulher Transexual',
+                'Mulher' => 'Mulher',
+                'Homem Transexual' => 'Homem Transexual',
+                'Homem' => 'Homem',
+                'Não Binário' => 'Não Binário',
+                'Travesti' => 'Travesti',
+                'Outras' => 'Outras'
+            )
+        ),
+
+        'orientacaoSexual' => array(
+            'private' => true,
+            'label' => 'Orientação Sexual',
+            'type' => 'select',
+            'options' => array(
+                '' => 'Não Informar',
+                'Heterossexual' => 'Heterossexual',
+                'Lésbica' => 'Lésbica',
+                'Gay' => 'Gay',
+                'Bissexual' => 'Bissexual',
+                'Assexual' => 'Assexual',
+                'Outras' => 'Outras'
             )
         ),
 
