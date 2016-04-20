@@ -122,7 +122,8 @@ class App extends \Slim\Slim{
             ],
             'api_outputs' => [],
             'image_transformations' => [],
-            'registration_agent_relations' => []
+            'registration_agent_relations' => [],
+            'registration_fields' => []
         ];
 
     protected $_registerLocked = true;
@@ -516,6 +517,7 @@ class App extends \Slim\Slim{
 
         $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
         $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
+        $this->registerController('registrationFieldConfiguration', 'MapasCulturais\Controllers\RegistrationFieldConfiguration');
 
         $this->registerController('term',           'MapasCulturais\Controllers\Term');
         $this->registerController('file',           'MapasCulturais\Controllers\File');
@@ -1639,6 +1641,22 @@ class App extends \Slim\Slim{
             $entity = $entity->getClassName();
 
         return @$this->_register['entity_types'][$entity];
+    }
+    
+    function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
+        $this->_register['registration_fields'][$registration_field->name] = $registration_field;
+    }
+    
+    function getRegisteredRegistrationFieldTypes(){
+        return $this->_register['registration_fields'];
+    }
+    
+    function getRegisteredRegistrationFieldTypeByName($name) {
+        if (isset($this->_register['registration_fields'][$name])) {
+            return $this->_register['registration_fields'][$name];
+        } else {
+            return null;
+        }
     }
 
     /**

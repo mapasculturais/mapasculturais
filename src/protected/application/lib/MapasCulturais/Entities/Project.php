@@ -182,6 +182,13 @@ class Project extends \MapasCulturais\Entity
     public $registrationFileConfigurations;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
+     *
+     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
+     */
+    public $registrationFieldConfigurations;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
