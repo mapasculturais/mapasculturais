@@ -961,7 +961,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum projeto encontrado.';
+                return 'Ningún proyecto encontrado.';
             },
 
             onClear: function($selector){
@@ -1102,7 +1102,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum projeto encontrado.';
+                return 'Ningún proyecto encontrado.';
             },
 
             onClear: function($selector){

@@ -92,7 +92,7 @@ MapasCulturais.EventOccurrenceManager = {
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Error:'+message+'"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
@@ -283,7 +283,7 @@ MapasCulturais.EventHumanReadableManager = {
                     if (weekDays[0] == '0' || weekDays[0] == '6') {
                         human += 'Todo ';
                     } else {
-                        human += 'Toda ';
+                        human += 'Todo ';
                     }
 
                     var count = 1;
@@ -292,7 +292,7 @@ MapasCulturais.EventHumanReadableManager = {
                         human += moment().day(v).format(wformat);
                         count ++;
                         if (count == weekDays.length)
-                            human += ' e ';
+                            human += ' y ';
                         else if (count < weekDays.length)
                             human += ', '
                     });
@@ -300,12 +300,12 @@ MapasCulturais.EventHumanReadableManager = {
             }
 
             if (mdate_s.year() != mdate_e.year()) {
-                human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                human += ' del ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
             } else {
                 if (mdate_s.month() != mdate_e.month()) {
-                    human += ' de ' + mdate_s.format('D [de] MMMM') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                    human += ' del ' + mdate_s.format('D [de] MMMM') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
                 } else {
-                    human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                    human += ' del ' + mdate_s.format('D') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
                 }
             }
 

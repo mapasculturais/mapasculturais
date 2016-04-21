@@ -38,11 +38,11 @@ $this->includeMapAssets();
         <div class="infos">
             <p><span class="label">Descripción legible: </span>{{#rule.description}}{{rule.description}}{{/rule.description}}{{^rule.description}}No Informado.{{/rule.description}}</p>
             <p><span class="label">Precio:</span> {{#rule.price}}{{rule.price}}{{/rule.price}}{{^rule.price}}No Informado.{{/rule.price}}</p>
-            <p><span class="label">Horario inicial:</span> {{rule.startsAt}}</p>
+            <p><span class="label">Horario inicial(formato HH:MM):</span> {{rule.startsAt}}</p>
             {{#rule.duration}}
-                <p><span class="label">Duración:</span> {{rule.duration}} min</p>
+                <p><span class="label">Duración (en minutos):</span> {{rule.duration}} min</p>
             {{/rule.duration}}
-            <p><span class="label">Horario final:</span> {{rule.endsAt }}</p>
+            <p><span class="label">Horario final(formato HH:MM):</span> {{rule.endsAt }}</p>
             <?php if($this->isEditable()): ?>
                 <p class="privado"><span class="icon icon-private-info"></span><span class="label">Frecuencia:</span> {{rule.screen_frequency}}</p>
             <?php endif; ?>
