@@ -81,7 +81,8 @@ return array(
             'options' => array(
                 '' => 'No informar',
                 'Femenino' => 'Femenino',
-                'Masculino' => 'Masculino'
+                'Masculino' => 'Masculino',
+                'Otro' => 'Otro'
             )
         ),
 
