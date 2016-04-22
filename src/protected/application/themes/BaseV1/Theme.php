@@ -11,7 +11,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected $_libVersions = array(
         'leaflet' => '0.7.3',
-        'angular' => '1.2.26',
+        'angular' => '1.5.5',
         'jquery' => '2.1.1',
         'jquery-ui' => '1.11.1',
         'select2' => '3.5.0',
