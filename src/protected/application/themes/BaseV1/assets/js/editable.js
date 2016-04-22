@@ -170,7 +170,7 @@ MapasCulturais.Remove = {
         $('body').on('click','.js-remove-item', function(e){
             e.stopPropagation();
             var $this = $(this);
-            MapasCulturais.confirm('Deseja eliminar este ítem?', function(){
+            MapasCulturais.confirm('Desea eliminar este ítem?', function(){
                 var $target = $($this.data('target'));
                 var href = $this.data('href');
 
@@ -763,13 +763,13 @@ MapasCulturais.MetalistManager = {
 
                 if(group === 'videos'){
                     if($.trim($form.find('input.js-metalist-title').val()) === ''){
-                        $errorTag.html('Insira um título para seu vídeo.').show();
+                        $errorTag.html('Agregue un título a su video.').show();
                         return false;
                     }
 
                     var parsedURL = purl($linkField.val());
                     if (parsedURL.attr('host').indexOf('youtube') === -1 && parsedURL.attr('host').indexOf('vimeo')  === -1){
-                        $errorTag.html('Agregue una url de um video de YouTube o de Vimeo.').show();
+                        $errorTag.html('Agregue una url de un video de YouTube o de Vimeo.').show();
 
                         return false;
                     }

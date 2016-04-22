@@ -155,27 +155,27 @@ return array(
 
         'site' => array(
             'label' => 'Sitio',
-            'validations' => array(
-                "v::url()" => "La url informada no es válida."
-            )
+            //'validations' => array(
+            //    "v::url()" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         ),
         'facebook' => array(
             'label' => 'Facebook',
-            'validations' => array(
-                "v::url('facebook.com')" => "La url informada no es válida."
-            )
+           // 'validations' => array(
+           //     "v::url('facebook.com')" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         ),
         'twitter' => array(
             'label' => 'Twitter',
-            'validations' => array(
-                "v::url('twitter.com')" => "La url informada no es válida."
-            )
+           // 'validations' => array(
+           //     "v::url('twitter.com')" => "La url informada no es válida. Deber comenzar con http://"
+          //  )
         ),
         'googleplus' => array(
             'label' => 'Google+',
-            'validations' => array(
-                "v::url('plus.google.com')" => "La url informada no es válida."
-            )
+           // 'validations' => array(
+            //    "v::url('plus.google.com')" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         )
     ),
 
