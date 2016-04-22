@@ -462,8 +462,9 @@
 
             return from !== to ? 'de ' + from + ' a ' + to : from;
         };
-
-        $scope.collapsedFilters = true;
+        
+        $scope.collapsedFilters = screen.availWidth <= 768;
+        
         $scope.toggleAdvancedFilters = function(){
             $scope.collapsedFilters = !$scope.collapsedFilters;
             setTimeout(function(){
