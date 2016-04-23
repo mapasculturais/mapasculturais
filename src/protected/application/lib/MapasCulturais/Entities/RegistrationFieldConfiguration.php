@@ -60,7 +60,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      *
      * @ORM\Column(name="categories", type="array", nullable=true)
      */
-    protected $categories = false;
+    protected $categories = [];
 
     /**
      * @var boolean
@@ -73,11 +73,36 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @var string
      *
      * @ORM\Column(name="field_type", type="string", length=255, nullable=false)
-     */protected $fieldType = null;
+     */
+    protected $fieldType = null;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="field_options", type="array", length=255, nullable=false)
+     */
+    protected $fieldOptions = [];
 
     public function setOwnerId($id){
 //        $this->owner = $this->repo()->find('project', $id);
         $this->owner = App::i()->repo('Project')->find($id);
+    }
+    
+    public function setFieldOptions($value){
+        if(!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        
+        $this->fieldOptions = $value;
+    }
+    
+    public function setCategories($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->categories = $value;
     }
 
     public function jsonSerialize() {
@@ -87,7 +112,9 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
             'title' => $this->title,
             'description' => $this->description,
             'required' => $this->required,
-            'fieldType' => $this->fieldType
+            'fieldType' => $this->fieldType,
+            'fieldOptions' => $this->fieldType,
+            'categories' => $this->categories
         ];
     }
 

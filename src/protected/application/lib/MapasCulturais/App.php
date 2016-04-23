@@ -531,6 +531,63 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
+        
+        // register registration field types
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'textarea',
+            'name' => $this->txt('Textarea Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'text',
+            'name' => $this->txt('Text Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'date',
+            'name' => $this->txt('Date Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'url',
+            'name' => $this->txt('URL Field'),
+            'validations' => [
+                'v::url()' => $this->txt('The value is not a valid URL')
+            ]
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'email',
+            'name' => $this->txt('Email Field'),
+            'validations' => [
+                'v::email()' => $this->txt('The value is not a valid email')
+            ]
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'select',
+            'name' => $this->txt('Select Field'),
+            'requireValuesConfiguration' => true
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'radio',
+            'name' => $this->txt('Radio Buttons Field'),
+            'requireValuesConfiguration' => true
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'checkboxes',
+            'name' => $this->txt('Check Boxes Field'),
+            'requireValuesConfiguration' => true,
+            'serialize' => function (array $value) {
+                return json_encode($value);
+            },
+            'unserialize' => function ($value) {
+                return json_decode($value);
+            }
+        ]));
 
         /**
          * @todo melhores mensagens de erro
@@ -1644,16 +1701,16 @@ class App extends \Slim\Slim{
     }
     
     function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
-        $this->_register['registration_fields'][$registration_field->name] = $registration_field;
+        $this->_register['registration_fields'][$registration_field->slug] = $registration_field;
     }
     
     function getRegisteredRegistrationFieldTypes(){
         return $this->_register['registration_fields'];
     }
     
-    function getRegisteredRegistrationFieldTypeByName($name) {
-        if (isset($this->_register['registration_fields'][$name])) {
-            return $this->_register['registration_fields'][$name];
+    function getRegisteredRegistrationFieldTypeBySlug($slug) {
+        if (isset($this->_register['registration_fields'][$slug])) {
+            return $this->_register['registration_fields'][$slug];
         } else {
             return null;
         }
