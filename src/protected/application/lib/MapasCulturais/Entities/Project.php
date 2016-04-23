@@ -35,7 +35,7 @@ class Project extends \MapasCulturais\Entity
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
-            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ],
         'type' => [
             'required' => 'O tipo do projeto é obrigatório',
@@ -180,6 +180,13 @@ class Project extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFileConfiguration", mappedBy="owner", fetch="LAZY")
      */
     public $registrationFileConfigurations;
+
+    /**
+     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
+     *
+     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
+     */
+    public $registrationFieldConfigurations;
 
     /**
      * @var bool

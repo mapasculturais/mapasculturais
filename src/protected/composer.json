@@ -3,19 +3,23 @@
         "psr-0": {"MapasCulturais": "./application/lib/"}
     },
     "require": {
+	"php": ">=5.4.0",
         "slim/slim": "2.*",
+	"symfony/console": "2.*",
+	"symfony/yaml": "2.*",
         "doctrine/orm": "2.*",
         "doctrine/dbal": "2.*",
         "opauth/openid": "*",
         "respect/validation": "*",
-        "smottt/wideimage": "dev-master",
+        "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "v2.5.1",
         "phpoffice/phpword": "dev-master",
         "michelf/php-markdown": "1.4.1",
         "opauth/logincidadao" : "*",
-        "curl/curl": "1.2.0"
+        "curl/curl": "1.2.0",
+        "firebase/php-jwt": "^2.2"
     },
 
     "repositories": [{

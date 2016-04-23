@@ -53,5 +53,16 @@ return array(
     'Use relation %s' => 'Usar relação %s',
     "Required" => 'Obrigatório',
     "Facultative" => 'Facultativo',
-    "Don't use" => 'Não usar'
+    "Don't use" => 'Não usar',
+    
+    // registration field types
+    'Check Boxes Field' => 'Seleção múltipla (checkboxes)',
+    'Radio Buttons Field' => 'Seleção única (radio)',
+    'Select Field' => 'Seleção única (select)',
+    'Email Field' => 'Campo de email',
+    'URL Field' => 'Campo de URL (link)',
+    'Text Field' => 'Campo de texto simples',
+    'Textarea Field' => 'Campo de texto (textarea)',
+    'Date Field' => 'Campo de data',
+    
 );

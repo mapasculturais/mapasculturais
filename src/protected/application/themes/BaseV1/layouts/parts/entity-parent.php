@@ -22,16 +22,16 @@
         <?php elseif($entity instanceof MapasCulturais\Entities\Space): ?>
             <span  class="js-search js-include-editable"
                     data-field-name='parentId'
-                    data-emptytext="Selecionar espaço pai"
+                    data-emptytext="Selecionar <?php $this->dict('entities: parent space') ?>"
                     data-search-box-width="400px"
-                    data-search-box-placeholder="Selecionar espaço pai"
+                    data-search-box-placeholder="Selecionar <?php $this->dict('entities: parent space') ?>"
                     data-entity-controller="space"
                     data-search-result-template="#agent-search-result-template"
                     data-selection-template="#agent-response-template"
                     data-no-result-template="#agent-response-no-results-template"
                     data-selection-format="parentSpace"
                     data-allow-clear="1"
-                    title="Selecionar espaço pai"
+                    title="Selecionar <?php $this->dict('entities: parent space') ?>"
                     data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                     data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
               ><?php if($entity->parent) echo $entity->parent->name; ?></span>

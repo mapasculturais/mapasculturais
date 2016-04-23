@@ -1,7 +1,12 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use \MapasCulturais\App;
+use MapasCulturais\App;
+
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\Project;
 
 /**
  * User Panel Controller
@@ -26,24 +31,26 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
 
         $app = App::i();
-
+        
         $count = new \stdClass();
-        $count->agents = 0;
-        $count->spaces = 0;
-        $count->events = 0;
-        $count->projects = 0;
 
-        foreach($count as $entity=>$c){
-            $n = 0;
-            foreach($app->user->$entity as $e) {
-                if($e->status >= 0){
-                    $n++;
-                }
-            }
-            $count->$entity = str_pad($n,2,'0', STR_PAD_LEFT);
-        }
+        $count->spaces = $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->agents = $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->events = $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->projects = $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
+    }
+
+    protected function countEntity($entityName){
+        $app = App::i();
+        $entityClass = '\\MapasCulturais\\Entities\\' . $entityName;
+        $dql = "SELECT COUNT(e.id) FROM $entityClass e JOIN e.owner o WHERE o.user = :user AND e.status >= 0";
+        $query = $app->em->createQuery($dql);
+        $query->setParameter('user', $app->user);
+        $count = $query->getSingleScalarResult();
+        $padded = str_pad($count, 2, '0', STR_PAD_LEFT);
+        return $padded;
     }
 
     protected function _getUser(){
@@ -86,6 +93,55 @@ class Panel extends \MapasCulturais\Controller {
         $this->render('agents', ['user' => $user]);
     }
 
+    protected function renderList($viewName, $entityName, $entityFields){
+        $this->requireAuthentication();
+        
+        $user = $this->_getUser();
+
+        $app = App::i();
+
+        $user_filter = 'EQ(' . $app->user->id . ')';
+
+        $query = [
+            '@select' => $entityFields,
+            '@files' => '(avatar.avatarSmall):url',
+            'user' => $user_filter,
+            'status' => 'EQ(' . Space::STATUS_ENABLED . ')',
+            '@limit' => 50,
+            '@order' => ''
+        ];
+
+        if(isset($this->data['keyword'])){
+            $query['@keyword'] = $this->data['keyword'];
+        }
+
+        if(isset($this->data['order'])){
+            $query['@order'] = $this->data['order'];
+        } else {
+            $query['@order'] = 'name ASC';
+        }
+
+        if(isset($this->data['page'])){
+            $query['@page'] = intval($this->data['page']);
+        } else{
+            $query['@page'] = 1;
+        }
+
+        $controller = $app->controller($entityName);
+
+        $enabled = $controller->apiQuery($query);
+        $meta = $controller->lastQueryMetadata;
+//        var_dump($meta);
+//        die();
+        $draft   = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
+        $trashed = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
+
+        $enabled = json_decode(json_encode($enabled));
+        $draft   = json_decode(json_encode($draft));
+        $trashed = json_decode(json_encode($trashed));
+
+        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta]);
+    }
 
     /**
      * Render the space list of the user panel.
@@ -99,10 +155,11 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_spaces(){
-        $this->requireAuthentication();
-        $user = $this->_getUser();
-
-        $this->render('spaces', ['user' => $user]);
+        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
+                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp'];
+        $app = App::i();
+        $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
+        $this->renderList('spaces', 'space', implode(',', $fields));
     }
 
     /**
@@ -117,10 +174,11 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_events(){
-        $this->requireAuthentication();
-        $user = $this->_getUser();
-
-        $this->render('events', ['user' => $user]);
+        $fields = ['name', 'type', 'status', 'terms', 'classificacaoEtaria', 'singleUrl',
+                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp'];
+        $app = App::i();
+        $app->applyHook('controller(panel).extraFields(event)', [&$fields]);
+        $this->renderList('events', 'event', implode(',', $fields));
     }
 
     /**
@@ -157,5 +215,24 @@ class Panel extends \MapasCulturais\Controller {
         $user = $this->_getUser();
 
         $this->render('registrations', ['user' => $user]);
+    }
+
+    /**
+     * Render the project list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/projects'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'registrations');
+     * </code>
+     *
+     */
+    function GET_apps(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+        $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
+        $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
+        $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
     }
 }

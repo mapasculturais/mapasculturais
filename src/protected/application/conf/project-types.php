@@ -20,7 +20,7 @@ return array(
         'registrationLimitPerOwner' => array(
             'label' => 'Número máximo de inscrições por agente responsável',
             'validations' => array(
-                "v::int()" => "O número máximo de inscrições por agente responsável deve ser um número inteiro"
+                "v::intVal()" => "O número máximo de inscrições por agente responsável deve ser um número inteiro"
             )
         ),
 
@@ -63,7 +63,30 @@ return array(
         9 =>  array( 'name' => "Edital"),
         10 => array( 'name' => "Concurso"),
         11 => array( 'name' => "Exposição"),
-        11 => array( 'name' => "Jornada"),
+        12 => array( 'name' => "Jornada"),
+        13 => array( 'name' => "Exibição"),
+        14 => array( 'name' => "Feira"),
+        15 => array( 'name' => "Intercâmbio Cultural"),
+        16 => array( 'name' => "Festa Popular"),
+        17 => array( 'name' => "Festa Religiosa"),
+        18 => array( 'name' => "Seminário"),
+        19 => array( 'name' => "Congresso"),
+        20 => array( 'name' => "Palestra"),
+        21 => array( 'name' => "Simpósio"),
+        22 => array( 'name' => "Fórum"),
+        23 => array( 'name' => "Curso"),
+        24 => array( 'name' => "Oficina"),
+        25 => array( 'name' => "Jornada"),
+        26 => array( 'name' => "Conferência Pública Setorial"),
+        27 => array( 'name' => "Conferência Pública Nacional"),
+        28 => array( 'name' => "Conferência Pública Estadual"),
+        29 => array( 'name' => "Conferência Pública Municipal"),
+        30 => array( 'name' => "Parada e Desfile Militar"),
+        31 => array( 'name' => "Parada e Desfile Cívico"),
+        32 => array( 'name' => "Parada e Desfile Festivo"),
+        33 => array( 'name' => "Parada e Desfile Político"),
+        34 => array( 'name' => "Parada e Desfile de Ações Afirmativas"),
+        
     )
     /* EXEMPLOS DE METADADOS:
 
@@ -101,7 +124,7 @@ return array(
         ),
         'default_value' => array(),
         'validations' => array(
-            'v::arr()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
+            'v::arrayType()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
         )
     ),
     'checkbox' => array(
@@ -161,7 +184,7 @@ return array(
         ),
 
         'validations' => array(
-            "v::string()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
+            "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
         )
     )
      */

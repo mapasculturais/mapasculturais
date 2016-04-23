@@ -11,7 +11,7 @@ trait EntityVerifiable{
      * This entity is verifiable
      * @return bool true
      */
-    public function usesVerifiable(){
+    public static function usesVerifiable(){
         return true;
     }
 

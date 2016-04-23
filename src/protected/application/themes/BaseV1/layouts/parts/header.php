@@ -1,9 +1,12 @@
-<?php $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle() ?>
+<?php
+$site_name = $this->dict('site: name', false);
+$title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
+?>
 <!DOCTYPE html>
 <html lang="pt-BR" dir="ltr">
     <head>
         <meta charset="UTF-8" />
-        <title><?php echo $title == $app->siteName ? $title : "{$app->siteName} - {$title}"; ?></title>
+        <title><?php echo $title == $site_name ? $title : "{$site_name} - {$title}"; ?></title>
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <link rel="shortcut icon" href="<?php $this->asset('img/favicon.ico') ?>" />
         <?php $this->head(isset($entity) ? $entity : null); ?>

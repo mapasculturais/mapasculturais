@@ -1,0 +1,6 @@
+<span ng-click="openEditBox($event)" ng-class="{editable: data.isEditable}">{{displayValue()}}</span>
+<edit-box ng-if="data.isEditable" position="top" id="{{data.editBoxId}}" title="{{data.boxTitle}}" submit-label="ok" cancel-label="cancelar" close-on-cancel="true" on-submit="submit" on-cancel="cancel">
+    <small class="help" ng-if="helpText">{{helpText}}</small>
+    <singleselect name="field-{{entityProperty}}" value="data.value" terms="terms" allow-other="{{data.allowOther}}" allow-other-text="{{data.allowOtherText}}"></singleselect>
+</edit-box>
+<input ng-if="data.isEditable" type="hidden" id="{{entityProperty}}" data-name="{{entityProperty}}" class="js-editable" data-edit="{{entityProperty}}" data-value=""/>

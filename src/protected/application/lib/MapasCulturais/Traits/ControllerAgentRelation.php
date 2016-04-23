@@ -17,7 +17,7 @@ trait ControllerAgentRelation{
      * 
      * @return true
      */
-    public function usesAgentRelation(){
+    public static function usesAgentRelation(){
         return true;
     }
 

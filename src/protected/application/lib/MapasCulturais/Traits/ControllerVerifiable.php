@@ -2,7 +2,7 @@
 namespace MapasCulturais\Traits;
 
 trait ControllerVerifiable{
-    public function usesVerifiable(){
+    public static function usesVerifiable(){
         return true;
     }
 

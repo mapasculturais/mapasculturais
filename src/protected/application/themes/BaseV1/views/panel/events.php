@@ -12,28 +12,31 @@ $this->layout = 'panel'
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
-        <?php foreach($user->enabledEvents as $entity): ?>
+
+        <?php $this->part('panel-search', ['meta' => $meta, 'search_entity' => 'event']); ?>
+
+        <?php foreach($enabled as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->enabledEvents): ?>
+        <?php if(!$enabled): ?>
             <div class="alert info">Você não possui nenhum evento cadastrado.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="rascunhos">
-        <?php foreach($user->draftEvents as $entity): ?>
+        <?php foreach($draft as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->draftEvents): ?>
+        <?php if(!$draft): ?>
             <div class="alert info">Você não possui nenhum rascunho de evento.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
     <div id="lixeira">
-        <?php foreach($user->trashedEvents as $entity): ?>
+        <?php foreach($trashed as $entity): ?>
             <?php $this->part('panel-event', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->trashedEvents): ?>
+        <?php if(!$trashed): ?>
             <div class="alert info">Você não possui nenhum evento na lixeira.</div>
         <?php endif; ?>
     </div>

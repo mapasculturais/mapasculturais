@@ -21,6 +21,8 @@ $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
 
+$brand-developer: #9966cc !default;
+
 $brand-info: #40b4b4 !default;
 $brand-warning: #cc9933 !default;
 $brand-danger: #cc3333 !default;
@@ -128,6 +130,11 @@ $unicode-add-button:            "\e050" !default;
 // .icon-agent on _icons.scss file
 // .btn-map-agent on _maps.scss file
 $unicode-agent:                 "\e08a" !default;
+
+//** API icon
+// used on:
+// .icon-api on _icons.scss file
+$unicode-api:                   "\e102" !default;
 
 //** Attachment icon
 // used on .attachment-title on _registration-form.scss file

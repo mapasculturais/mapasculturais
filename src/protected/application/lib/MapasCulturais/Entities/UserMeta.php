@@ -9,7 +9,7 @@ use MapasCulturais\App;
 /**
  * UserMeta
  *
- * @ORM\Table(name="agent_meta")
+ * @ORM\Table(name="user_meta")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -21,7 +21,7 @@ class UserMeta extends \MapasCulturais\Entity {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="agent_meta_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="user_meta_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 

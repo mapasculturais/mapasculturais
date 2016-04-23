@@ -2,7 +2,7 @@
     <span class='js-dialog-disabled' data-message='Para subir arquivos você primeiro deve salvar.'></span>
 <?php else: ?>
 
-<form class="js-ajax-upload"
+<form class="js-ajax-upload" style="display:none"
       data-action="<?php echo $response_action ?>"
       data-target="<?php echo $response_target ?>"
       data-group="<?php echo $file_group ?>"
@@ -21,7 +21,7 @@
 </form>
 
 <div class="js-ajax-upload-progress">
-    <div class="progress">
+    <div class="progress inactive">
         <div class="bar"></div >
         <div class="percent">0%</div >
     </div>

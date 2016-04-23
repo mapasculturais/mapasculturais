@@ -37,16 +37,11 @@ class Space extends \MapasCulturais\Entity
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
-            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ],
         'type' => [
             'required' => 'O tipo do espaço é obrigatório',
-        ],
-        'location' => [
-            'required' => 'A localização do espaço no mapa é obrigatória',
-            //'v::allOf(v::key("x", v::numeric()->between(-90,90)),v::key("y", v::numeric()->between(-180,180)))' => 'The space location is not valid'
         ]
-        //@TODO add validation to property type
     ];
 
     //

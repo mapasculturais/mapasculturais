@@ -44,6 +44,11 @@ h1 .icon {
         content: $unicode-space;
     }
 }
+.icon-api {
+    &:before {
+        content: $unicode-api;
+    }
+}
 .icon-event {
     &:before {
         content: $unicode-event;

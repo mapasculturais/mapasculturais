@@ -45,13 +45,10 @@ class Agent extends \MapasCulturais\Entity
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
-            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ],
         'type' => [
             'required' => 'O tipo do agente é obrigatório',
-        ],
-        'location' => [
-            '$this->validateLocation()' => 'A localização geográfica do agente é obrigatória',
         ]
     ];
 
@@ -139,7 +136,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })

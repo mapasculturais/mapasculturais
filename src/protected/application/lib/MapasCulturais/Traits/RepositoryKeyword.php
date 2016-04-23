@@ -17,7 +17,7 @@ trait RepositoryKeyword{
      * This repository uses Keyword
      * @return true
      */
-    function usesKeyword(){
+    public static function usesKeyword(){
         return true;
     }
 

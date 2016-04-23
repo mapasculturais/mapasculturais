@@ -65,7 +65,7 @@ class Metadata extends \MapasCulturais\Definition{
 
     /**
      * Array of validations where the key is a Respect/Validation call and the value is a error message.
-     * @example to validate a positive integet the key must be 'v::int()->positive()'
+     * @example to validate a positive integet the key must be 'v::intVal()->positive()'
      * @var array
      */
     protected $_validations= [];
@@ -92,7 +92,7 @@ class Metadata extends \MapasCulturais\Definition{
      *      'type' => 'text',
      *      'validations' => array(
      *          'required' => 'You must inform your age',
-     *          'v::int()->min(18)' => 'You must be older than 18'
+     *          'v::intVal()->min(18)' => 'You must be older than 18'
      *      )
      * ));
      * </code>
@@ -128,6 +128,19 @@ class Metadata extends \MapasCulturais\Definition{
         }
 
         $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
+
+        if (isset($config['options'])) {
+            $new_array = [];
+            foreach ($config['options'] as $key => $value) {
+                if (!is_string($key)) {
+                    $key = $value;
+                }
+
+                $new_array[$key] = $value;
+            }
+
+            $config['options'] = $new_array;
+        }
 
         $this->config = $config;
     }
@@ -229,11 +242,26 @@ class Metadata extends \MapasCulturais\Definition{
             'private' => $this->private
         ];
 
-        if(key_exists('options', $this->config))
-                $result['options'] = $this->config['options'];
+        if(key_exists('options', $this->config)){
+            $result['options'] = $this->config['options'];
+            $result['optionsOrder'] = array_keys($this->config['options']);
+        }
 
-        if(key_exists('label', $this->config))
-                $result['label'] = $this->config['label'];
+        if(key_exists('label', $this->config)){
+            $result['label'] = $this->config['label'];
+        }
+
+
+        if(key_exists('allowOther', $this->config)){
+            $result['allowOther'] = $this->config['allowOther'];
+        }
+
+
+        if(key_exists('allowOtherText', $this->config)){
+            $result['allowOtherText'] = $this->config['allowOtherText'];
+        }
+
+
 
         return $result;
     }

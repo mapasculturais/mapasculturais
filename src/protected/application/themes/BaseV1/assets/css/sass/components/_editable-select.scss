@@ -1,0 +1,43 @@
+editable-multiselect, editable-singleselect{
+    .help {
+        margin-top:-5px;
+        margin-bottom:5px;
+        max-width:500px;
+        display:block;
+    }
+    .edit-box {
+        width:auto;
+        
+        .mc-select-directive--other {
+            padding:10px 0
+        }
+
+        .select-table {
+            margin-bottom: 5px;
+
+            td {
+                text-align: left;
+                padding:0;
+                margin:0;
+                border:none;
+                width:50%;
+
+                label {
+                    display:block;
+                    padding-right:5px;
+                    /*white-space: nowrap;*/
+                    max-width:300px;
+                    
+                }
+                
+                &.left{
+                    border-right:1px solid #ddd;
+                }
+
+                &.right{
+                    padding-left:10px;
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
 jQuery(function(){
-    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">Cancelar</button> <button type="submit" class="editable-submit">Enviar</button>';
+    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">cancelar</button> <button type="submit" class="editable-submit">ok</button>';
     $.fn.select2.defaults.separator = '; ';
     $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.Editables.init('#editable-entity');
@@ -31,17 +31,47 @@ jQuery(function(){
         return false;
     });
 
-    //Máscaras de telefone
-    var masks = ['(00) 00000-0000', '(00) 0000-00009'];
+    //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-mask-phone')) {
+            var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:
                function(val, e, field, options) {
                    field.mask(val.length > 14 ? masks[0] : masks[1], options) ;
                }
             });
         }
+
+        if ($(this).hasClass('js-mask-cep')) {
+            var masks = ['00000-000'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        if ($(this).hasClass('js-mask-time')) {
+            //Mask
+            var masks = ['00:00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        // Fixes editable input size based on placeholder length
+        var placeholder = editable.input.$input.attr('placeholder'),
+        possibleSize = placeholder ? Math.max(placeholder.length, editable.value.length + 5) : 0;
+        if (possibleSize > 20) {
+            editable.input.$input.attr('size', possibleSize);
+        }
+            
+
+        // Fixes padding right hardcoded on 24px, now 0;
+        //editable.input.$input.css('padding-right', 10);
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
@@ -488,9 +518,6 @@ MapasCulturais.Editables = {
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true; // don't show editable
                                 $field = $('#registration-agent-owner').parent().find('.registration-label span');
-                            }else if(MapasCulturais.request.controller === 'agent' && p === 'location'){
-                                firstShown = true; // don't show editable
-                                $field = $('.js-editable[data-edit="publicLocation"]');
                             }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
                             }
@@ -522,6 +549,8 @@ MapasCulturais.Editables = {
                         }
 
                     }else{
+
+                        $('body').trigger('entity-saved', response);
 
                         $('.js-geo-division-address').each(function(){
                             var r = response[$(this).data('metakey')];
@@ -581,6 +610,7 @@ MapasCulturais.AjaxUploader = {
             if($(this).data('initialized'))
                 return;
 
+            $(this).show();
             $(this).data('initialized', true);
 
             var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
@@ -861,3 +891,41 @@ MapasCulturais.MetalistManager = {
         }
     }
 };
+
+
+$(function(){
+    function concatena_enderco(){
+        var nome_logradouro = $('#En_Nome_Logradouro').editable('getValue', true);
+        var cep = $('#En_CEP').editable('getValue', true);
+        var numero = $('#En_Num').editable('getValue', true);
+        var complemento = $('#En_Complemento').editable('getValue', true);
+        var bairro = $('#En_Bairro').editable('getValue', true);
+        var municipio = $('#En_Municipio').editable('getValue', true);
+        var estado = $('#En_Estado').editable('getValue', true);
+        if(cep && nome_logradouro && numero && bairro && municipio && estado){
+            var endereco =  nome_logradouro + ", " + numero + (complemento ? ", " + complemento : " ") + ", " + bairro + ", " + cep  + ", " + municipio + ", " + estado;
+            $('#endereco').editable('setValue', endereco);
+            $('#endereco').trigger('changeAddress', endereco);
+            $('.js-endereco').html(endereco);
+        }
+
+
+    };
+
+    $('#En_Nome_Logradouro, #En_CEP, #En_Num, #En_Complemento, #En_Bairro, #En_Municipio,  #En_Estado').on('hidden', function(e, params) {
+        concatena_enderco();
+    });
+
+    $('#En_CEP').on('hidden', function(e, params){
+        var cep = $('#En_CEP').editable('getValue', true);
+        cep = cep.replace('-','');
+        $.getJSON('http://cep.correiocontrol.com.br/'+cep+'.json',function(r){
+            $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
+            $('#En_Bairro').editable('setValue', r.bairro);
+            $('#En_Municipio').editable('setValue', r.localidade);
+            $('#En_Estado').editable('setValue', r.uf);
+            concatena_enderco();
+        });
+
+    });
+});
