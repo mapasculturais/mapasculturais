@@ -13,6 +13,22 @@ return array(
     'change id of space type 201 to 210' => function() use($conn) {
         $conn->executeQuery("UPDATE space SET type = 210 WHERE type = 201");
     },
+    
+    'migrate geo metadata' => function() use($conn) {
+        $conn->executeQuery("UPDATE space_meta SET key = 'En_Municipio' WHERE key = 'geoMunicipio'");
+        $conn->executeQuery("UPDATE agent_meta SET key = 'En_Municipio' WHERE key = 'geoMunicipio'");
+        
+        foreach(['agent_meta', 'space_meta'] as $table){
+            $ids = $conn->fetchAll("SELECT object_id FROM {$table} WHERE key = 'En_Municipio'");
+            $ids = array_map(function($e) {
+                return $e['object_id'];
+            }, $ids);
+
+            foreach($ids as $id){
+                $conn->executeQuery("INSERT INTO {$table} (object_id, key, value) VALUES ({$id}, 'En_Estado', 'CE')");
+            }
+        }
+    },
             
     'import ceara data' => function() use( $conn, $app ) {
         return true; // já executou
