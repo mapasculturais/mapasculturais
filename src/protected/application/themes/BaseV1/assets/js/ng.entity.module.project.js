@@ -590,7 +590,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
     }]);
 
 
-    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
+    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationConfigurationService, EditBox, $http, UrlService) {
         var registrationsUrl = new UrlService('registration');
 
         $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
