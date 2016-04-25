@@ -22,10 +22,12 @@
     }]);
 
 
-    app.directive('onRepeatDone', ['$rootScope', function($rootScope) {
+    app.directive('onRepeatDone', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         return function($scope, element, attrs) {
             if ($scope.$last) {
-                $rootScope.$emit('repeatDone:' + attrs.onRepeatDone);
+                $timeout(function(){
+                    $rootScope.$emit('repeatDone:' + attrs.onRepeatDone);
+                })
             }
         };
     }]);
