@@ -273,12 +273,13 @@ class EventOccurrence extends \MapasCulturais\Entity
 
 
     function getPrice(){
-        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
+        return key_exists('price', $this->rule) ? $this->rule['price'] : '';
     }
 
     function setRule($value) {
+        
         if ($value === '') {
-            $this->_rule = '';
+            $this->rule = '';
             return;
         }
         $value = (array) $value;
@@ -306,7 +307,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->until = $value['until'] ? $value['until'] : null;
         $this->frequency = $value['frequency'];
 
-        $this->_rule = json_encode($value);
+        $this->rule = json_encode($value);
 
         if ($this->validationErrors) {
             return;
