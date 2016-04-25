@@ -361,7 +361,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <?php endif; ?>
                         <!-- edit-box to add attachment -->
                         
-                        <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="bottom" title="Adicionar campo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
+                        <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="right" title="Adicionar campo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
                             <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
                             <input type="text" ng-model="data.newFieldConfiguration.title" placeholder="Nome do campo"/>
                             <textarea ng-model="data.newFieldConfiguration.description" placeholder="Descrição do campo"/></textarea>
@@ -377,7 +377,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             </p>
                         </edit-box>
                         
-                        <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="bottom" title="Adicionar anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
+                        <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="Adicionar anexo" cancel-label="Cancelar" submit-label="Criar" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                             <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
                             <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                             <p><label><input type="checkbox" ng-model="data.newFileConfiguration.required"> <small>O envio deste anexo é obrigatório</small></label></p>

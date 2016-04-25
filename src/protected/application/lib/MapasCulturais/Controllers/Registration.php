@@ -91,6 +91,47 @@ class Registration extends EntityController {
             $tmpFile['name'] = $this->name;
             $this->tmpFile = $tmpFile;
         });
+        
+                
+        $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() use($app){
+            $registration = $this->getRequestedEntity();
+            
+            
+            if(!$registration || !$registration->id){
+                return;
+            }
+            
+            $project = $registration->project;
+
+            foreach($project->registrationFieldConfigurations as $field){
+
+                $cfg = [
+                    'label' => $field->title,
+                    'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
+                    'private' => true,
+                ];
+
+                $def = $field->getFieldTypeDefinition();
+                
+                if($def->requireValuesConfiguration){
+                    $cfg['options'] = $field->fieldOptions;
+                }
+                
+                if(is_callable($def->serialize)){
+                    $cfg['serialize'] = $def->serialize;
+                }
+                
+                if(is_callable($def->unserialize)){
+                    $cfg['unserialize'] = $def->unserialize;
+                }
+
+                $metadata = new Definitions\Metadata($field->fieldName, $cfg);
+                
+                $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
+            }
+            
+            
+        });
 
         parent::__construct();
     }
@@ -109,7 +150,7 @@ class Registration extends EntityController {
 
         return $project;
     }
-
+    
     function GET_create(){
         $this->requireAuthentication();
 

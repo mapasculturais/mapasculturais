@@ -104,8 +104,21 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         }
         $this->categories = $value;
     }
+    
+    public function getFieldName(){
+        return 'field_' . $this->id;
+    }
+    
+    /**
+     * 
+     * @return \MapasCulturais\Definitions\RegistrationFieldType
+     */
+    public function getFieldTypeDefinition(){
+        return App::i()->getRegisteredRegistrationFieldTypeBySlug($this->fieldType);
+    }
 
     public function jsonSerialize() {
+        
         return [
             'id' => $this->id,
             'ownerId' => $this->owner->id,
@@ -113,8 +126,9 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
             'description' => $this->description,
             'required' => $this->required,
             'fieldType' => $this->fieldType,
-            'fieldOptions' => $this->fieldType,
-            'categories' => $this->categories
+            'fieldOptions' => $this->fieldOptions,
+            'categories' => $this->categories,
+            'fieldName' => $this->getFieldName()
         ];
     }
 
@@ -136,29 +150,37 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before', $args);
+        
+        if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
+            $this->fieldOptions = [];
+        }
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:after', $args);
     }
 
     /** @ORM\PreRemove */
     public function _preRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').remove:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:before', $args);
     }
     /** @ORM\PostRemove */
     public function _postRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').remove:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:after', $args);
     }
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').update:before', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:before', $args);
+        
+        if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
+            $this->fieldOptions = [];
+        }
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').update:after', $args);
+        App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:after', $args);
     }
 
     //============================================================= //

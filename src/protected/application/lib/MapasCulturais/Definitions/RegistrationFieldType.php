@@ -19,12 +19,6 @@ class RegistrationFieldType extends \MapasCulturais\Definition {
 
     public function __construct(array $config) {
         $default = [
-            'serialize' => function($value) {
-                return $value;
-            },
-            'unserialize' => function($value) {
-                return $value;
-            },
             'validations' => []
         ];
 
