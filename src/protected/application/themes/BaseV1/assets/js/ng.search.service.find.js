@@ -244,10 +244,10 @@
                 }
 
                 if(entityData.from)
-                    searchData['@from'] = entityData.from;
+                    searchData['@from'] = moment(entityData.from).format('YYYY-MM-DD');
 
                 if(entityData.to)
-                    searchData['@to'] = entityData.to;
+                    searchData['@to'] = moment(entityData.to).format('YYYY-MM-DD');
 
                 // project registration is open?
                 if(entityData.ropen){
