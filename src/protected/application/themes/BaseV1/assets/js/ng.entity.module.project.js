@@ -649,13 +649,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
     }]);
 
 
-    module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
+    module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
         var registrationsUrl = new UrlService('registration');
 
         $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
 
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
+        $scope.entity = MapasCulturais.entity.object;
+        
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -667,11 +669,34 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         
         $scope.data.fields = RegistrationService.getFields();
         
+        var fieldsByName = {};
+        $scope.data.fields.forEach(function(e){
+            fieldsByName[e.fieldName] = e;
+        });
+        
+        $rootScope.$on('repeatDone:registration-fields', function(){
+            // só para esperar a renderização
+            $timeout(function(){
+                jQuery('.js-editable-field').each(function(){
+                    var field = fieldsByName[this.id];
+                    if(field.fieldOptions){
+                        var cfg = {};
+                        cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+                        
+                        jQuery(this).editable(cfg);
+                    } else {
+                        jQuery(this).editable();
+                    }
 
+                });
+                
+            });
+        });
+        
         $scope.showField = function (field) {
 
         }
-
+        
         $scope.sendFile = function(attrs){
             var $form = $('#' + attrs.id + ' form');
             $form.submit();
@@ -690,8 +715,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.removeFile = function (id, $index) {
             if(confirm('Deseja remover este anexo?')){
-                $http.get($scope.data.fileConfigurations[$index].file.deleteUrl).success(function(response){
-                    delete $scope.data.fileConfigurations[$index].file;
+                $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
+                    delete $scope.data.fields[$index].file;
                 });
             }
         };
@@ -709,7 +734,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             });
 
             $form.on('ajaxForm.success', function(evt, response){
-                $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
+                $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
                 $scope.$apply();
                 setTimeout(function(){
                     EditBox.close('editbox-file-'+id, event);
@@ -999,7 +1024,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 EditBox.open('edibox-upload-rules', event);
                 initAjaxUploader('edibox-upload-rules');
             };
-
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){

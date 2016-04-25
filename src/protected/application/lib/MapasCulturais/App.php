@@ -571,11 +571,11 @@ class App extends \Slim\Slim{
             'requireValuesConfiguration' => true
         ]));
         
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'radio',
-            'name' => $this->txt('Radio Buttons Field'),
-            'requireValuesConfiguration' => true
-        ]));
+//        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+//            'slug' => 'radio',
+//            'name' => $this->txt('Radio Buttons Field'),
+//            'requireValuesConfiguration' => true
+//        ]));
         
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',

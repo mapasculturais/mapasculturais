@@ -137,6 +137,14 @@ class Registration extends \MapasCulturais\Entity
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
+        
+        
+        foreach($this->__metadata as $meta){
+            if(substr($meta->key, 0, 6) === 'field_'){
+                $key = $meta->key;
+                $json[$meta->key] = $this->$key;
+            }
+        }
 
         if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
             $json['status'] = $this->status;

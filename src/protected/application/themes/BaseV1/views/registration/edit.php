@@ -111,18 +111,40 @@ $this->includeAngularEntityAssets($entity);
         <h4>Anexos (documentos necessários)</h4>
         <p class="registration-help">Para efetuar sua inscrição, faça upload dos documentos abaixo.</p>
         <ul class="attachment-list" ng-controller="RegistrationFieldsController"> 
-            <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="init-ajax-uploaders" id="registration-file-{{field.id}}" class="attachment-list-item registration-edit-mode">
-                <div ng-if="field.fieldType !== 'file'">
+            <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" id="registration-file-{{field.id}}" class="attachment-list-item registration-edit-mode">
+                <div ng-show="field.fieldType !== 'file'">
                     <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                     <div class="attachment-description">
                         {{field.description}}
                     </div>
                     
-                    <p ng-if="field.fieldType === 'email'">
-                        <span class='js-editable-registrationCategory' data-original-title="Opção" data-emptytext="Selecione uma opção" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
+                    <p ng-if="field.fieldType === 'textarea'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                     </p>
                     
-                    <strong>{{field.fieldType}}</strong>
+                    <p ng-if="field.fieldType === 'text'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    </p>
+                    
+                    <p ng-if="field.fieldType === 'date'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-viewformat="dd/mm/yyyy" data-name="{{field.fieldName}}" data-type="date" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    </p>
+                    
+                    <p ng-if="field.fieldType === 'url'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="url" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    </p>
+                    
+                    <p ng-if="field.fieldType === 'email'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="email" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    </p>
+                    
+                    <p ng-if="field.fieldType === 'select'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="select" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    </p>
+                    
+                    <p ng-if="field.fieldType === 'checkboxes'">
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
+                    </p>
                 </div>
                 
                 

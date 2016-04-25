@@ -105,6 +105,10 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         $this->categories = $value;
     }
     
+    public function getFieldName(){
+        return 'field_' . $this->id;
+    }
+    
     /**
      * 
      * @return \MapasCulturais\Definitions\RegistrationFieldType
@@ -123,7 +127,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
             'required' => $this->required,
             'fieldType' => $this->fieldType,
             'fieldOptions' => $this->fieldOptions,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'fieldName' => $this->getFieldName()
         ];
     }
 
