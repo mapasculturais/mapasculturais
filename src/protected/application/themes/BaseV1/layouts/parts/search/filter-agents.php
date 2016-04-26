@@ -39,7 +39,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--acessibilidade">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.agent.isVerified}" title="Mostrar solamente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
     </div>

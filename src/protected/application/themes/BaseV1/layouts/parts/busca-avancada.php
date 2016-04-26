@@ -81,7 +81,7 @@
             <a class="tag-selected tag-agent" ng-if="showFilters('agent')" ng-repeat="areaId in data.agent.areas" ng-click="toggleSelection(data.agent.areas, areaId)">{{ getName(areas, areaId)}}</a>
             <a class="tag-selected tag-space" ng-if="showFilters('space')" ng-repeat="areaId in data.space.areas" ng-click="toggleSelection(data.space.areas, areaId)">{{ getName(areas, areaId)}}</a>
 
-            <a class="tag-selected tag-space" ng-if="showFilters('space') && data.space.acessibilidade" ng-click="data.space.acessibilidade = !data.space.acessibilidade">acessibilidade</a>
+            <a class="tag-selected tag-space" ng-if="showFilters('space') && data.space.acessibilidade" ng-click="data.space.acessibilidade = !data.space.acessibilidade">accesibilidad</a>
 
             <a class="tag-selected tag-project" ng-if="showFilters('project') && data.project.ropen" ng-click="data.project.ropen = !data.project.ropen">Inscripciones Abiertas</a>
 

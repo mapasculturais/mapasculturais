@@ -21,6 +21,8 @@ class Html extends \MapasCulturais\ApiOutput{
         'tag'=>'Tags',
         'area'=>'Áreas',
         'linguagem' => 'Tipos de eventos',
+        
+        'acessibilidade' => 'accesibilidad',
 
         'agent'=>'Agente',
         'space'=>'Espacio',

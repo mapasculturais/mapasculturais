@@ -216,6 +216,7 @@ return array(
             'range' => array(40,49),
             'items' => array(
                 40 => array( 'name' => 'Centro Cultural' ),
+                41 => array( 'name' => 'Centros MEC' ),
                 
             )
         ),
