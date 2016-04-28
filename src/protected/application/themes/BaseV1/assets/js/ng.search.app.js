@@ -474,7 +474,8 @@
         };
         
         $scope.showSearch = function(){
-            if (screen.availWidth > 768) {
+            
+            if (document.body.clientWidth > 768) {
                 return true;
             } else {
                 return !$scope.collapsedFilters && !$scope.showInfobox();
