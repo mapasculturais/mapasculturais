@@ -379,11 +379,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         // Files
         $scope.fileConfigurationBackups = [];
-
+        
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
             fileService.create($scope.data.newFileConfiguration).then(function(response){
-                $scope.data.uploadFalse = true;
+                $scope.data.uploadSpinner = false;
                 if (response.error) {
                     validationErrors(response);
                     
@@ -674,22 +674,25 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsByName[e.fieldName] = e;
         });
         
+        function initEditables(){
+            jQuery('.js-editable-field').each(function(){
+                var field = fieldsByName[this.id];
+                if(field.fieldOptions){
+                    var cfg = {};
+                    cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+
+                    jQuery(this).editable(cfg);
+                } else {
+                    jQuery(this).editable();
+                }
+
+            });
+        }
+        
         $rootScope.$on('repeatDone:registration-fields', function(){
             // só para esperar a renderização
             $timeout(function(){
-                jQuery('.js-editable-field').each(function(){
-                    var field = fieldsByName[this.id];
-                    if(field.fieldOptions){
-                        var cfg = {};
-                        cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
-                        
-                        jQuery(this).editable(cfg);
-                    } else {
-                        jQuery(this).editable();
-                    }
-
-                });
-                
+                initEditables();
             });
         });
         
@@ -759,17 +762,25 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     });
                 },50);
             });
-
+            
+            $scope.$watch('selectedCategory', function(){
+                $timeout(function(){
+                    initEditables();
+                });
+            });
 
         }
         
         $scope.showFieldForCategory = function(field){
+//            console.log($scope.selectedCategory, field.categories);
             if (!$scope.useCategories){
                 return true;
             } else {
                 return field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
             }
         };
+        
+        
 
     }]);
 
