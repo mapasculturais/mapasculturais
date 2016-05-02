@@ -313,12 +313,12 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $label = '';
 
-        $class = get_called_class();
-
-        if(isset($app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name];
-        }elseif(isset($app->config['app.entityPropertiesLabels']['@default'][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels']['@default'][$property_name];
+        $prop_labels = $app->config['app.entityPropertiesLabels'];
+        
+        if(isset($prop_labels [self::getClassName()][$property_name])){
+            $label = $prop_labels[self::getClassName()][$property_name];
+        }elseif(isset($prop_labels ['@default'][$property_name])){
+            $label = $prop_labels ['@default'][$property_name];
         }
 
         return $label;
