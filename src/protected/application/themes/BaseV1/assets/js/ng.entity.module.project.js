@@ -144,10 +144,16 @@
                 getSelectedCategory: function(){
                     return $q(function(resolve){
                         var interval = setInterval(function(){
-                            var editable = jQuery('.js-editable-registrationCategory').data('editable');
-                            if(editable){
-                                clearInterval(interval);
-                                resolve(editable.value);
+                            var $editable = jQuery('.js-editable-registrationCategory');
+                        
+                            if($editable.length){
+                                var editable = $editable.data('editable');
+                                if(editable){
+                                    clearInterval(interval);
+                                    resolve(editable.value);
+                                }
+                            }else{
+                                resolve(MapasCulturais.entity.object.category);
                             }
                         },50)
                     });
@@ -685,6 +691,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 } else {
                     jQuery(this).editable();
                 }
+                
+                if(!jQuery(this).data('editable-init')){
+                    jQuery(this).data('editable-init', true);
+                    jQuery(this).on('save', function(){
+                        setTimeout(function(){
+                            RegistrationService.save();
+                        });
+                    });
+                }
 
             });
         }
@@ -772,7 +787,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         }
         
         $scope.showFieldForCategory = function(field){
-//            console.log($scope.selectedCategory, field.categories);
             if (!$scope.useCategories){
                 return true;
             } else {
@@ -781,6 +795,21 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
         
         
+        
+        $scope.printField = function(field, value){
+            
+            if (field.fieldType === 'date') {
+                return moment(value).format('DD-MM-YYYY');
+            } else if (field.fieldType === 'url'){
+                return '<a href="' + value + '">' + value + '</a>';
+            } else if (field.fieldType === 'email'){
+                return '<a href="mailto:' + value + '">' + value + '</a>';
+            } else if (value instanceof Array) {
+                return value.join(', ');
+            } else {
+                return value;
+            }
+        };
 
     }]);
 

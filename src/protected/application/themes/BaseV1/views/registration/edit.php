@@ -108,15 +108,14 @@ $this->includeAngularEntityAssets($entity);
     
     <!-- anexos -->
     <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
-        <h4>Anexos (documentos necessários)</h4>
-        <p class="registration-help">Para efetuar sua inscrição, faça upload dos documentos abaixo.</p>
+        <h4>Campos adicionais</h4>
+        <p class="registration-help">Para efetuar sua inscrição, informe os campos abaixo.</p>
         <ul class="attachment-list" ng-controller="RegistrationFieldsController"> 
-            <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" id="registration-file-{{field.id}}" class="attachment-list-item registration-edit-mode">
-                <div ng-show="field.fieldType !== 'file'">
+            <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode">
+                <div ng-show="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
                     <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
-                    <div class="attachment-description">
-                        {{field.description}}
-                    </div>
+                    
+                    <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
                     
                     <p ng-if="field.fieldType === 'textarea'">
                         <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
@@ -127,7 +126,7 @@ $this->includeAngularEntityAssets($entity);
                     </p>
                     
                     <p ng-if="field.fieldType === 'date'">
-                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-viewformat="dd/mm/yyyy" data-name="{{field.fieldName}}" data-type="date" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-viewformat="dd-mm-yyyy" data-name="{{field.fieldName}}" data-type="date" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}"></span>
                     </p>
                     
                     <p ng-if="field.fieldType === 'url'">
@@ -148,10 +147,10 @@ $this->includeAngularEntityAssets($entity);
                 </div>
                 
                 
-                <div ng-show="field.fieldType === 'file'">
+                <div ng-show="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
                     <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                     <div class="attachment-description">
-                        {{field.description}}
+                        <span ng-if="field.description">{{field.description}}<span>
                         <span ng-if="field.template">
                             (<a class="attachment-template" target="_blank" href="{{field.template.url}}">baixar modelo</a>)
                         </span>

@@ -348,7 +348,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <!-- #registration-agent-relations -->
                 <div id="registration-attachments" class="registration-fieldset">
                     <h4>5. Campos</h4>
-                    <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Configure aqui os campos do formulário.</p>
+                    <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Configure aqui os campos do formulário de inscrição.</p>
                     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
                     <div ng-controller="RegistrationConfigurationsController">
                         <?php if($this->controller->action == 'create'): ?>
@@ -369,8 +369,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                                 <textarea ng-model="data.newFieldConfiguration.fieldOptions" placeholder="Opções de seleção" style="min-height: 75px"/></textarea>
                                 <p class="registration-help">Informe uma opção por linha.</p>
                             </div>
-                            <p><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> O preenchimento deste campo é obrigatório</label></p>
-                            <p>
+                            <p><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> <small>O preenchimento deste campo é obrigatório</small></label></p>
+                            <p ng-if="data.categories.length > 1">
                                 <small>Selecione em quais categorias este campo é utilizado:</small><br>
                                 <label><input type="checkbox" onclick="if(!this.checked) return false" ng-click="data.newFieldConfiguration.categories = []" ng-checked="allCategories(data.newFieldConfiguration)"> Todas </label>
                                 <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFieldConfiguration.categories" checklist-value="category"> {{category}} </label>
@@ -381,7 +381,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             <input type="text" ng-model="data.newFileConfiguration.title" placeholder="Nome do anexo"/>
                             <textarea ng-model="data.newFileConfiguration.description" placeholder="Descrição do anexo"/></textarea>
                             <p><label><input type="checkbox" ng-model="data.newFileConfiguration.required"> <small>O envio deste anexo é obrigatório</small></label></p>
-                            <p>
+                            <p ng-if="data.categories.length > 1">
                                 <small>Selecione em quais categorias este anexo é utilizado:</small><br>
                                 <label><input type="checkbox" onclick="if(!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> Todas </label>
                                 <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFileConfiguration.categories" checklist-value="category"> {{category}} </label>
@@ -416,7 +416,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                                             <p class="registration-help">Informe uma opção por linha.</p>
                                         </div>
                                         <p><label><input type="checkbox" ng-model="field.required"> O preenchimento deste campo é obrigatório</label></p>
-                                        <p>
+                                        <p ng-if="data.categories.length > 1">
                                             <small>Selecione em quais categorias este campo é utilizado:</small><br>
                                             <label><input type="checkbox" onclick="if(!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> Todas </label>
                                             <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
@@ -450,7 +450,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                                         <textarea ng-model="field.description" placeholder="Descrição do anexo"/></textarea>
                                         <p><label><input type="checkbox" ng-model="field.required" ng-checked="field.required"> O envio deste anexo é obrigatório</label></p>
                                         
-                                        <p>
+                                        <p ng-if="data.categories.length > 1">
                                             <small>Selecione em quais categorias este anexo é utilizado:</small><br>
                                             <label><input type="checkbox" onclick="if(!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> Todas </label>
                                             <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
