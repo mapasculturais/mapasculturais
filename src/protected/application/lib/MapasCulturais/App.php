@@ -490,7 +490,7 @@ class App extends \Slim\Slim{
         }
         $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
-        if (file_exists($this->_config['namespaces'][$this->_config['themes.active']] . '/space-types.php')) {
+        if (file_exists($this->_config['namespaces'][$this->_config['themes.active']] . '/agent-types.php')) {
             $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
         }
         $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
