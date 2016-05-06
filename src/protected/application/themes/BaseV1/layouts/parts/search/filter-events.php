@@ -4,7 +4,7 @@
         Eventos
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="!collapsedFilters && !showInfobox()">
+    <div ng-show="showSearch()">
         <form class="form-palavra-chave filter searcj-filter--keyword">
             <label for="palavra-chave-evento">Palabra clave</label>
             <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />

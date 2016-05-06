@@ -268,7 +268,6 @@ class Event extends EntityController {
 
         $_occurrences = $app->repo('EventOccurrence')->findByEventsAndSpaces($events, [$space], $date_from, $date_to);
 
-
         foreach($events as $e){
             $occurrences_readable[$e->id] = [];
 
@@ -319,6 +318,7 @@ class Event extends EntityController {
             $query_data['@from'],
             $query_data['@to'],
             $query_data['space']
+                
         );
 
         $space_data = [];

@@ -523,6 +523,6 @@ abstract class Theme extends \Slim\View {
         if($sufix){
             $hook .= ':' . $sufix;
         }
-        App::i()->applyHookBoundTo($this, $hook);
+        App::i()->applyHookBoundTo($this, $hook, $args);
     }
 }
