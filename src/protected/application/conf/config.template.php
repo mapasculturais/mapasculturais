@@ -59,16 +59,6 @@ return array_merge($config,
 //            'timeout' => '24 hours'
 //        ],
 
-//Modelo de autenticação para Login Cidadão
-//        'auth.provider' => 'OpauthLoginCidadao',
-//        'auth.config' => array(
-//        'client_id' => '',
-//        'client_secret' => '',
-//        'auth_endpoint' => 'https://[SUA-URL]/openid/connect/authorize',
-//        'token_endpoint' => 'https://[SUA-URL]/openid/connect/token',
-//        'user_info_endpoint' => 'https://[SUA-URL]/api/v1/person.json'
-//        ),
-
         'doctrine.database' => [
             'dbname'    => 'mapas',
             'user'      => 'mapas',

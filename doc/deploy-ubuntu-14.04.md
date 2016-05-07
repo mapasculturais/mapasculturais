@@ -127,11 +127,6 @@ server {
     try_files $uri $uri/ /index.php?$args;
   }
 
-  location ~ /files/.*\.php$ {
-      deny all;
-      return 403;
-  }
-  
   location ~* \.(js|css|png|jpg|jpeg|gif|ico|woff)$ {
           expires 1w;
           log_not_found off;
@@ -196,31 +191,3 @@ Reinicie los servicios de nginx y php-fpm
 
 @ service nginx restart
 @ service php5-fpm restart
-<<<<<<< HEAD
-=======
-```
-
-### Criando super admin
-
-Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma: 
-
-1 - Crie um usuário pelo painel;
-
-2 - Entre no postgres e conecte-se na base. Caso esteja usando socket, basta que você esteja logado no terminal com o usuário do sistema em questão (se tiver seguido a documentação, esse usuário será o 'mapas') e digite psql. Isso irá mudar o terminal para:
-
-  $ mapas => 
-
-3 - Verifique o número do ID do usuário criado. Você pode ver pelo painel do mapas, na url do usuário ou ainda usar um select. 
-
-  $ mapas => select id,status, email from usr where email='digite o endereço de email do usuário criado';
-  
-Quando executar essa linha você vai pegar o id. 
-
-4 - Dê um insert na tabela Role. 
-
-  $ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin'); 
-  
-5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.
-
-select * from role;
->>>>>>> remotes/hacklab/master

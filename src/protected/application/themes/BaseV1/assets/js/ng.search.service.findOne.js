@@ -6,7 +6,7 @@
         return function(data){
 
             if(data.global.viewMode === 'list') return;
-            var select = MapasCulturais.infoboxFields,
+            var select = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl',
                 requestAction = 'findOne',
                 page=null,
                 result = {},

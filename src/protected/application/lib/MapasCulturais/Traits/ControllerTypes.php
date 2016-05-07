@@ -45,6 +45,6 @@ trait ControllerTypes{
      * Prints a JSON with the registered entity type groups for the entity related with this controller.
      */
     public function API_getTypeGroups(){
-        $this->apiArrayResponse($this->getTypeGroups());
+        $this->json($this->typeGroups);
     }
 }

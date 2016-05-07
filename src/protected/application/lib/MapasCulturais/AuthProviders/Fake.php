@@ -110,7 +110,6 @@ class Fake extends \MapasCulturais\AuthProvider{
 
         $a = new \MapasCulturais\Entities\Agent($u);
         $a->name = $data['name'];
-        $a->status = 0;
 
         $app->em->persist($a);
         $app->em->flush();

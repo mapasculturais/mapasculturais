@@ -4,7 +4,7 @@
         Proyectos
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="showSearch()">
+    <div ng-show="!collapsedFilters && !showInfobox()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-evento">Palabra clave</label>
             <input ng-model="data.project.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar proyectos" />

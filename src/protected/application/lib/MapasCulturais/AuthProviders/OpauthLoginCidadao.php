@@ -201,8 +201,6 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
 
-        $agent->status = 0;
-
         if(isset($response['auth']['raw']['first_name']) && isset($response['auth']['raw']['surname'])){
             $agent->name = $response['auth']['raw']['first_name'] . ' ' . $response['auth']['raw']['surname'];
         }else if(isset($response['auth']['raw']['first_name'])){

@@ -6,11 +6,6 @@ $em = $app->em;
 $conn = $em->getConnection();
 
 return [
-    'migrate gender' => function() use ($conn) {
-        $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
-        $conn->executeQuery("UPDATE agent_meta SET value='Mulher' WHERE key='genero' AND value='Feminino'");
-    },
-
     'remove circular references' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id = parent_id");
 

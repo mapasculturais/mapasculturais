@@ -1,11 +1,8 @@
 <article class="objeto clearfix">
     <h1><a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a></h1>
     <div class="objeto-meta">
-
-        <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
-        <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
 		<div><span class="label">Tipos de eventos:</span> <?php echo implode(', ', $entity->terms->linguagem)?></div>
-		<!--div><span class="label">Horário:</span> <time>00h00</time></div-->
+		<!--div><span class="label">Horario:</span> <time>00h00</time></div-->
 		<!--div><span class="label">Local:</span> Teatro</div-->
 		<?php if($entity->classificacaoEtaria): ?>
                     <div><span class="label">Clasificación:</span> <?php echo $entity->classificacaoEtaria; ?></div>

@@ -61,6 +61,8 @@ foreach($rs as $i => $obj){
     
     $obj['area'] = fetchTerms(2,'Agent', $obj['id']);
     
+    unset($obj['id']);
+    
     if($i == 0){
         $obj_keys = array_keys($obj);
         file_put_contents('output/agents.csv', arrayToCsv($obj_keys) . "\n", FILE_APPEND);
@@ -76,6 +78,8 @@ foreach($rs as $i => $obj){
     $type = $app->getRegisteredEntityTypeById('MapasCulturais\Entities\Space', $obj['type']);
     $obj['type'] = $type->name;
     $obj['area'] = fetchTerms(2, 'Space', $obj['id']);
+    
+    unset($obj['id']);
     
     if($i == 0){
         $obj_keys = array_keys($obj);
@@ -107,6 +111,8 @@ $rs = $conn->fetchAll($sql_events);
 
 foreach($rs as $i => $obj){
     $obj['linguagem'] = fetchTerms(3,'Event',$obj['id']);
+    
+    unset($obj['id']);
     
     if($i == 0){
         $obj_keys = array_keys($obj);

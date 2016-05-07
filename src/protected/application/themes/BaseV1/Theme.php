@@ -11,7 +11,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected $_libVersions = array(
         'leaflet' => '0.7.3',
-        'angular' => '1.5.5',
+        'angular' => '1.2.26',
         'jquery' => '2.1.1',
         'jquery-ui' => '1.11.1',
         'select2' => '3.5.0',
@@ -1114,14 +1114,8 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $controller = $app->getControllerByEntity($class);
-        
-        $q = ['@count'=>1];
-        
-        if($verified === true){
-            $q['isVerified'] = 'EQ(true)';
-        }
 
-        $result = $controller->apiQuery($q);
+        $result = $controller->apiQuery(['@count'=>1]);
 
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);
