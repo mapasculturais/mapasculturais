@@ -475,16 +475,28 @@ class App extends \Slim\Slim{
     private $_registered = false;
 
     public function register(){
+        //        phpdbg_break_next();
+
         if($this->_registered)
             return;
 
         $this->_registered = true;
 
         // get types and metadata configurations
-        $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        $theme_space_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/space-types.php';
+        if (file_exists($theme_space_types)) {
+            $space_types = include $theme_space_types;
+        } else {
+            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        }
         $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
-        $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        $theme_agent_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/agent-types.php';
+        if (file_exists($theme_agent_types)) {
+            $agent_types = include $theme_agent_types;
+        } else {
+            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        }
         $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
 
         $event_types = include APPLICATION_PATH.'/conf/event-types.php';
