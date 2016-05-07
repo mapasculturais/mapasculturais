@@ -61,3 +61,5 @@ sudo gem install sass
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/hacklabr/mapasculturais?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Lista de discussão: https://groups.google.com/forum/?hl=en#!forum/mapas-culturais
+
+Chat de discussão: http://chat.mapasculturais.org
