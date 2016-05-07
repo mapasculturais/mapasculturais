@@ -209,7 +209,7 @@ Reinicie os serviços do **nginx** e **php-fpm**
 @ service php5-fpm restart
 ```
 
-### Criando super admin
+### 6. Pós-instalação - Criando super admin
 
 Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma: 
 
@@ -232,3 +232,58 @@ Quando executar essa linha você vai pegar o id.
 5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.
 
 select * from role;
+
+### 7. Pós-instalação - Processo de autenticação
+
+O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao). 
+
+* Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
+
+#### 7.1 Requisitos para implementação dos sistemas de autenticação
+
+##### Mapas Open ID Conect
+
+Esté é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsonem a retomada da ferramenta. 
+Fonte:  https://github.com/hacklabr/mapasculturais-openid
+
+##### Login Cidadão – Instalação própria
+
+O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php) 
+
+**Prós**
+
+Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são: 
+* Confidencialidade dos dados e soberania: todos os dados estarão fisicamente em posse do implementador;
+* Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador; 
+
+**Contras**
+* Necessidade de servidor próprio e dedicado a instalação;
+* Manutenção com ônus financeiro uma vez que é necessário manter time (interno ou terceirizado) com conhecimentos técnicos adequado à operação técnica do software;
+* Necessidade de endereço (url) dedicada e de certificado SSL implementado (o que também pode gerar custos uma vez 99% dos certificados são pagos anualmente);
+* Comunidade pequena em torno do software, o que dificulta suporte espontâneo quando necessário;
+* Versão 1.0 do software ainda não lançada;
+* A aplicação não possui sistema de templates gerenciado via painel, o que gera necessidade de horas-técnicas para desenvolvimento/customização de tema no código;
+* Documentação ainda incompleta, aumentando curva de aprendizado sobre o sistema; 
+**Fonte:** https://github.com/redelivre/login-cidadao
+**Documentação de instalação e parametrização técnica:** https://github.com/redelivre/login-cidadao/tree/master/doc (incompleto)
+**Documentação de operação:** (inexistente)
+**Portal:** http://logincidadao.org.br
+
+##### Login Cidadão Federal (ID da Cultura)
+
+**Prós**
+* Confidencialidade dos dados e soberania protegidas por uma entidade federal (Ministério da Cultura);
+* Dispensa necessidade de servidor próprio e dedicado a instalação;
+* Manutenção sem ônus financeiro uma vez que equipe do Departamento de Tecnologia da Informação do Ministério da Cultura incorpora em seu workflow de trabalho as demandas de atualização do sistema;
+* Dispensa necessidade de endereço (url) dedicado e de certificado SSL próprio;
+
+**Contras**
+* Menor controle técnico de customização de layout e features. A posse/soberania destas customização é do Ministério da Cultura e este deve ser acionado se necessário; 
+* Para implementação, é necessário acionar equipe do Minc/DTI para criar uma entrada de origem do sistema, uma vez que os administradores são membros do DTI. No entanto esse processo é rápido e deve acontecer apenas uma vez, no inicio da instalação ou em momento esporádico de eventual manutenção do sistema. 
+**Fonte:** http://id.cultura.gov.br/login
+
+
+
+
+
+
