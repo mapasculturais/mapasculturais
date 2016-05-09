@@ -85,7 +85,10 @@ return array(
         		'Títeres',
         		'Turismo',
         		'Urbanismo',
-        	'Otro'
+                        'Diseño',
+                        'Artes escénicas',                        
+                        'Memoria y Tradiciones',
+                        'Otro'
         )
     ),
 
