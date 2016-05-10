@@ -1,9 +1,29 @@
 #!/bin/bash
-if [ $1 ]; then
-	DOMAIN=$1
-else
-	DOMAIN=localhost
-fi
+
+DOMAIN="localhost"
+MODE="production"
+
+for i in "$@"
+do
+case $i in
+    -d=*|--domain=*)
+	    DOMAIN="${i#*=}"
+	    shift # past argument=value
+    ;;
+    -m=*|--mode=*)
+	    MODE="${i#*=}"
+	    shift # past argument=value
+    ;;
+    --dev|--devel|--development)
+    	    MODE="development"
+            shift # past argument with no value
+    ;;
+    *)
+            DOMAIN=$i
+    ;;
+esac
+done
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
@@ -21,7 +41,12 @@ else
 	composer="composer"
 fi
 
-$composer install --prefer-dist
+if [[ $MODE == 'development' ]]; then
+	$composer install --prefer-dist 
+else
+	$composer install --prefer-dist --no-dev
+fi;
+
 
 $composer dump-autoload --optimize
 

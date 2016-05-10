@@ -426,7 +426,7 @@ class App extends \Slim\Slim{
         return $this->_workflowEnabled;
     }
 
-    protected function _dbUpdates(){
+    function _dbUpdates(){
         $this->disableAccessControl();
 
         $executed_updates = [];
