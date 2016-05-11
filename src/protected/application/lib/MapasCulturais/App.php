@@ -738,7 +738,12 @@ class App extends \Slim\Slim{
         }
 
         // register taxonomies
-        $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        $theme_taxonomies = $this->_config['namespaces'][$this->_config['themes.active']] . '/taxonomies.php';
+        if (file_exists($theme_taxonomies)) {
+            $taxonomies = include $theme_taxonomies;
+        } else {
+            $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        }
 
         foreach($taxonomies as $taxonomy_id => $taxonomy_definition){
             $taxonomy_slug = $taxonomy_definition['slug'];
