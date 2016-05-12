@@ -462,14 +462,25 @@
 
             return from !== to ? 'de ' + from + ' a ' + to : from;
         };
-
+        
         $scope.collapsedFilters = true;
+        
         $scope.toggleAdvancedFilters = function(){
+            
             $scope.collapsedFilters = !$scope.collapsedFilters;
             setTimeout(function(){
                 window.adjustHeader();
             }, 10);
         };
+        
+        $scope.showSearch = function(){
+            
+            if (document.body.clientWidth > 768) {
+                return true;
+            } else {
+                return !$scope.collapsedFilters && !$scope.showInfobox();
+            }
+        }
 
     }]);
 })(angular);

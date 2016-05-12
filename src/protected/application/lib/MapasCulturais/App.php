@@ -399,7 +399,7 @@ class App extends \Slim\Slim{
     }
     
     function isEnabled($entity){
-        return $this->config['app.enabled.' . $entity];
+        return $this->_config['app.enabled.' . $entity];
     }
 
     function enableAccessControl(){
@@ -474,16 +474,28 @@ class App extends \Slim\Slim{
     private $_registered = false;
 
     public function register(){
+        //        phpdbg_break_next();
+
         if($this->_registered)
             return;
 
         $this->_registered = true;
 
         // get types and metadata configurations
-        $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        $theme_space_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/space-types.php';
+        if (file_exists($theme_space_types)) {
+            $space_types = include $theme_space_types;
+        } else {
+            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        }
         $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
-        $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        $theme_agent_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/agent-types.php';
+        if (file_exists($theme_agent_types)) {
+            $agent_types = include $theme_agent_types;
+        } else {
+            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        }
         $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
 
         $event_types = include APPLICATION_PATH.'/conf/event-types.php';
@@ -575,7 +587,7 @@ class App extends \Slim\Slim{
 
         // registration agent relations
 
-        foreach($this->config['registration.agentRelations'] as $config){
+        foreach($this->_config['registration.agentRelations'] as $config){
             $def = new Definitions\RegistrationAgentRelation($config);
             $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
 
@@ -752,7 +764,7 @@ class App extends \Slim\Slim{
 
     function getRegisteredGeoDivisions(){
         $result = [];
-        foreach($this->config['app.geoDivisionsHierarchy'] as $key => $name) {
+        foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $name) {
             $d = new \stdClass();
             $d->key = $key;
             $d->name = $name;
@@ -948,7 +960,7 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->config['app.log.hook'])
+        if ($this->_config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
 
         $callables = $this->_getHookCallables($name);
@@ -970,7 +982,7 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->config['app.log.hook'])
+        if ($this->_config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
 
         $callables = $this->_getHookCallables($name);
@@ -1152,7 +1164,7 @@ class App extends \Slim\Slim{
      * @return string the base url
      */
     public function getBaseUrl(){
-        return $this->config['base.url'];
+        return $this->_config['base.url'];
     }
 
     /**
@@ -1160,7 +1172,7 @@ class App extends \Slim\Slim{
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
+        return isset($this->_config['base.assetUrl']) ? $this->_config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
     }
 
     /**
