@@ -12,8 +12,8 @@
         <!--.filter-->
         <div class="filter search-filter--date">
             <label class="show-label" for="data-de-inicio">De</label>
-            <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> <label class="show-label">a</label>
-            <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" />
+            <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" /> <label class="show-label">a</label>
+            <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" />
         </div>
         <!--.filter-->
         <div class="filter search-filter--linguagem">
