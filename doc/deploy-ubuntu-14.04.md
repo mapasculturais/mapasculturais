@@ -54,7 +54,7 @@ Ahora vamos a clonar el repositorio utilizando el usuario creado antes, entonces
 ```
 Ahora clonamos el repositorio.
 ```BASH
-$ git clone https://github.com/hacklabr/mapasculturais.git
+$ git clone https://github.com/LibreCoopUruguay/mapasculturais.git
 ```
 
 Y cambiamos a la rama estable. Si se tratara de una instalación de prueba, se puede omitir este paso.
@@ -165,7 +165,7 @@ server {
   server_name www.meu.dominio.gov.br;
   return 301 $scheme://meu.dominio.gov.br$request_uri;
 }
-
+```
 
 Cree el link para habilitar el virtual host.
 ```BASH
