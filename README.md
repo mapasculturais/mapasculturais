@@ -33,7 +33,6 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 
 ## Requisitos para Instalação
 - [PHP >= 5.4](http://php.net)
-- Extensões PHP:
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
   - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
   - [php5-json](http://php.net/manual/pt_BR/book.json.php)
@@ -56,12 +55,12 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
 
-## Stories, Travis Tests
+## Stories & Tests
 
-Stories for development: 
+- Stories for development: 
 [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) 
-Stories for test: 
+- Stories for test: 
 [![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais)
-Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais)
-Travis:
+- Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais)
+- Travis:
 [![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
