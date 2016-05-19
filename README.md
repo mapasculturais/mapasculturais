@@ -23,7 +23,10 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 * http://bibliotecas.cultura.gov.br
 * http://museus.cultura.gov.br
 
-## Documentação 
+## Sobre a aplicação
+Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.  
+
+### Documentação 
 Toda documentação da aplicação está na pasta [doc](doc). Principais referências: 
 - [Deploy](doc/deploy-ubuntu-14.04.md)
 - [API](doc/api.md)
@@ -31,7 +34,7 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 - [Criando um tema personalizado](doc/developer-guide/themes.md)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
 
-## Requisitos para Instalação
+### Requisitos para Instalação
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
   - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
@@ -55,7 +58,7 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
 
-## Stories & Tests
+### Stories & Tests
 
 - Stories for development: 
 [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) 
@@ -64,3 +67,7 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 - Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais)
 - Travis:
 [![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
+
+### Licença de uso e desenvolvimento
+
+Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 
