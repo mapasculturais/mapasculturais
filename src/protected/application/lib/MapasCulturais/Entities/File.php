@@ -172,7 +172,7 @@ abstract class File extends \MapasCulturais\Entity
 
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
-            throw new \MapasCulturais\Exfilesceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
         parent::save($flush);
     }

@@ -4,7 +4,7 @@
         Eventos
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="!collapsedFilters && !showInfobox()">
+    <div ng-show="showSearch()">
         <form class="form-palavra-chave filter searcj-filter--keyword">
             <label for="palavra-chave-evento">Palavra-chave</label>
             <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
@@ -12,8 +12,8 @@
         <!--.filter-->
         <div class="filter search-filter--date">
             <label class="show-label" for="data-de-inicio">De</label>
-            <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" /> <label class="show-label">a</label>
-            <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" readonly="readonly" />
+            <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" /> <label class="show-label">a</label>
+            <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" />
         </div>
         <!--.filter-->
         <div class="filter search-filter--linguagem">
