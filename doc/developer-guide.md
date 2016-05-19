@@ -54,8 +54,8 @@ Atualmente a aplicação possui 4 branches principais: **Master**, **RC**, **v2*
 - **Branch v1**: 
   - Antigo stable da aplicação;
   - Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e voltar para esse mesmo branch (uma vez o branch do bug finalizado, deve haver um merge para para o v1 novamente); 
-  - 
-![Alt text](doc/img/2016_05_19_branches.png)
+
+![Alt text](img/2016_05_19_branches.png)
 
 ## Requisitos
 
