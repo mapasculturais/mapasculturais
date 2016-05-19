@@ -35,6 +35,8 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
 
 ### Requisitos para Instalação
+Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](doc/deploy-ubuntu-14.04.md) ou [guia do desenvolvedor](doc/developer-guide.md). 
+
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
   - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
