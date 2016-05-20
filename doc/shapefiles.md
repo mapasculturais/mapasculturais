@@ -34,7 +34,72 @@ Ex:
   
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
   
-2. Como camadas na visualização do mapa
+2. Como adicionar camadas na visualização do mapa
 ---------------------------------------
 
-Incluir documentação
+[necessita teste e aprimoramento de procedimento]
+
+Na base de dados do mapas, há uma tabela geo_division com os seguintes campos: 
+
+---------
+id                - serial - PK
+parente_id - integer
+type            - character varying (32)
+cod             - character varying (32)
+name          - character varying (32)
+geom          - geometry
+
+---------
+
+Os campos ID, name e geom são os mais importantes. 
+
+------------------
+
+**0. Tenha os arquivos de formas**
+Você necessitará tem, se possível no ambiente em que deseja fazer a importação, os arquivos de formas (shapefiles). Eles devem vir em um diretório com os seguintes arquivos:
+
+NOME-DO-ARQUIVO.shp
+NOME-DO-ARQUIVO.shx
+NOME-DO-ARQUIVO.dbf 
+
+
+**1. Verifique se PostGis está respondendo requisições.**
+
+Execute os seguintes comandos:
+```
+# su postgres
+$ psql -U postgres -d mapas -c "SELECT postgis_version()"
+```
+
+Você verá uma mensagem como essa:
+
+```
+            postgis_version           
+---------------------------------------
+ 2.1 USE_GEOS=1 USE_PROJ=1 USE_STATS=1
+(1 row)
+```
+
+**2 - Converta os arquivos de formato shape (.shp) para formato base de dados (.sql)**
+
+Exemplo de conversão:
+
+```
+shp2pgsql -W LATIN1 -s -I mapasculturais/shapefiles/BAIRRO_POP.shp BAIRRO-TEMPORARIO > bairro-shapefiles.sql
+```
+obs: é importante colocar um nome temporário para não sobreescrever alguma tabela da base.
+
+**3 - Insira o arquivo `.sql` gerador em uma nova tabela.**
+
+O arquivo .sql gerado tem comandos para criação de uma nova tabela com nome designado e inserção de registros. Rode esse comando para criar e inserir registros na tabela mapas:
+
+```
+$ psql -U mapas -d mapas -a -f /caminho/para/arquivo/bairro-shapefiles.sql
+```
+
+**4 - Popule a tabela geo_division na base do mapas**
+
+Modelo de população de tabela:
+```
+ $ insert into geo_division (type, cod, name, geom) (select 'bairro', cod_docto_, nome_bairr, geom from "bairro-temporario");
+```
