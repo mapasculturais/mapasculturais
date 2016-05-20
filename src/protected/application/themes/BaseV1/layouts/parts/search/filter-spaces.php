@@ -1,10 +1,14 @@
+<?php 
+$this->addAdvancedFiltersToJs('space');
+
+?>
 <div id="filter-spaces" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'space'">
     <header class="clearfix">
         <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
         <?php $this->dict('entities: Spaces') ?>
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="showSearch()">
+    <div class="simple-filters" ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-espaco">Palavra-chave</label>
             <input ng-model="data.space.keyword" class="search-field" type="text" name="palavra-chave-espaco" placeholder="Buscar <?php $this->dict('entities: spaces') ?>" />
@@ -43,10 +47,101 @@
             <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
         </div>
         <!--.filter-->
+        <div class="filter show-advanced-filters">
+            <span class="icon icon-check"></span>
+            <span class="label show-label hltip" title="Exibir opções de filtro avançadas">Opções avançadas</span>
+        </div>
+        <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
             <a class="hltip btn btn-verified" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+    </div>
+    <div ng-if="GlobalConfiguration" class="advanced-filters">
+        <div class="filter search-filter--adv1">
+            <span class="label">Filtro avançado 1</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 1</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
+        <div class="filter search-filter--adv2">
+            <span class="label">Filtro avançado 2</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 2</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
+        <div class="filter search-filter--adv3">
+            <span class="label">Filtro avançado 3</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 3</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
+        <div class="filter search-filter--adv4">
+            <span class="label">Filtro avançado 4</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 4</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
+       <div class="filter search-filter--adv5">
+            <span class="label">Filtro avançado 5</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 5</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
+        <div class="filter search-filter--adv6">
+            <span class="label">Filtro avançado 6</span>
+            <div class="dropdown">
+                <div class="placeholder">Filtro avançado 6</div>
+                <div class="submenu-dropdown">
+                    <ul class="filter-list">
+                        <li>Opção 1</li>
+                        <li>Opção 2</li>
+                        <li>Opção 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-spaces-->

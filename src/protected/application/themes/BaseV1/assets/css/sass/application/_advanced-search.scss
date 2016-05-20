@@ -157,3 +157,56 @@
         text-align: center;
     }
 }
+
+//
+// componentes/_icons.scss
+// --------------------------------------------------
+.icon-show-advanced-filters {
+    &:before {
+        content: $unicode-show-advanced-search;
+    }
+}
+
+//
+// application/_advanced-search.scss
+// --------------------------------------------------
+
+.entity-filter {
+    position: relative;
+    clear: both;
+    min-height: 2px;
+    padding: 0;
+    color: $brand-accent;
+    font-size: $font-size-small;
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-base 0;
+        .simple-filters {
+            display: block !important;
+            height: 34px;
+        }
+    }
+    .simple-filters {
+        overflow: hidden;
+        padding-bottom: $padding-base;
+    }
+    .advanced-filters {
+        border-top: 1px solid $brand-accent;
+        padding-top: $padding-base;
+        > .filter {
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+}
+.filter {
+    @media screen and (min-width: $screen-desktop) {
+        width: 16.6%;
+    }
+}
+//** Verified button filter set.
+.verified-filter {
+    @media screen and (min-width: $screen-desktop) {
+        float: left;
+    }
+}
