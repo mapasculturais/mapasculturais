@@ -183,7 +183,7 @@
                     sortFiles();
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
-                    MapasCulturais.Messages.success('Anexo creado.');
+                    MapasCulturais.Messages.success('Adjunto creado.');
                 }
             });
         };
@@ -193,7 +193,7 @@
                 RegistrationFileConfigurationService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fileConfigurations.splice($index, 1);
-                        MapasCulturais.Messages.alert('Anexo eliminado.');
+                        MapasCulturais.Messages.alert('Adjunto eliminado.');
                     }
                 });
             }

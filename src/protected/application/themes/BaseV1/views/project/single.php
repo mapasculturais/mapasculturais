@@ -255,21 +255,21 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 </div>
                 <!-- #intro-das-inscricoes -->
             <?php endif; ?>
-            <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Descargar el reglamento</a></p>
+            <p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" >Descargar las bases</a></p>
             <div ng-if="data.isEditable" class="registration-fieldset">
-                <h4>2. Reglamento</h4>
+                <h4>2. Bases</h4>
 
                 <?php if($this->controller->action == 'create'): ?>
-                    <p class="allert warning">Antes de subir el reglamento es preciso salvar el proyecto.</p>
+                    <p class="allert warning">Antes de subir las bases es preciso salvar el proyecto.</p>
 
                 <?php else: ?>
-                    <p class="registration-help">Envíe un archivo con el reglamento. Formatos aceptados .doc, .odt e .pdf.</p>
-                    <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar reglamento" >Enviar</a>
+                    <p class="registration-help">Envíe un archivo con las bases. Formatos aceptados .doc, .odt e .pdf.</p>
+                    <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="Enviar bases" >Enviar</a>
                     <div ng-if="data.entity.registrationRulesFile">
                         <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
-                        <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="eliminar reglamento"></a>
+                        <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="eliminar bases"></a>
                     </div>
-                    <edit-box id="edibox-upload-rules" position="bottom" title="Reglamento" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+                    <edit-box id="edibox-upload-rules" position="bottom" title="Bases" submit-label="Enviar" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
                         <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id))?>" data-group="rules"  enctype="multipart/form-data">
                             <div class="alert danger hidden"></div>
                             <p class="form-help">Tamaño máximo de archivo: {{maxUploadSizeFormatted}}</p>
@@ -347,7 +347,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 </div>
                 <!-- #registration-agent-relations -->
                 <div id="registration-attachments" class="registration-fieldset">
-                    <h4>5. Anexos</h4>
+                    <h4>5. Adjuntos</h4>
                     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Puede pedir a los solicitantes que envíen archivos adjuntos para registrarse en su Proyecto. Para cada archivo adjunto, puede proporcionar un modelo que el solicitante puede descargar, rellenar y volver a subir.</p>
                     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">La edición de estas opciones están deshabilitadas porque agentes ya se inscrebieron en este proyecto. </p>
                     <div ng-controller="RegistrationFileConfigurationsController">

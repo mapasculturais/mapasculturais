@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eaba0716f0899894ee2399148dd8173b",
-    "content-hash": "7f7217dbcdf4698af4100509f1c421c9",
+    "hash": "e489aa067f82d46354a055b30ef376cc",
+    "content-hash": "2a3e3e5ebd48b44f9afe52b7f77a398d",
     "packages": [
         {
             "name": "creof/doctrine2-spatial",
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creof/doctrine2-spatial/zipball/6dfc33b4729a96de9592dc57b2803f5247f50a02",
+                "url": "https://api.github.com/repos/creof/doctrine2-spatial/zipball/9fe9658071c2b9064cf972dca014a48e5ecdccf6",
                 "reference": "6dfc33b4729a96de9592dc57b2803f5247f50a02",
                 "shasum": ""
             },
@@ -1724,16 +1724,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "1.0.3",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "0c536453114987b7e0f6f72369d3be0af8dd1109"
+                "reference": "b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/0c536453114987b7e0f6f72369d3be0af8dd1109",
-                "reference": "0c536453114987b7e0f6f72369d3be0af8dd1109",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb",
+                "reference": "b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb",
                 "shasum": ""
             },
             "require": {
@@ -1759,7 +1759,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1778,13 +1778,13 @@
                 }
             ],
             "description": "The most awesome validation engine ever created for PHP",
-            "homepage": "http://respect.li",
+            "homepage": "http://respect.github.io/Validation/",
             "keywords": [
                 "respect",
                 "validation",
                 "validator"
             ],
-            "time": "2015-11-25 20:03:11"
+            "time": "2016-05-07 18:54:08"
         },
         {
             "name": "sebastian/comparator",

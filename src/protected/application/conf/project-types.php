@@ -20,7 +20,7 @@ return array(
         'registrationLimitPerOwner' => array(
             'label' => 'Número máximo de inscripciones por agente responsable',
             'validations' => array(
-                "v::int()" => "El número máximo de inscripciones por agente responsable debe ser un número entero"
+                "v::intVal()" => "El número máximo de inscripciones por agente responsable debe ser un número entero"
             )
         ),
 
