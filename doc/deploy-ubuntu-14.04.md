@@ -1,4 +1,5 @@
-# Deploy do Mapas Culturais em Ubuntu 14.04
+# Mapas Culturais > Deploy
+
 Neste guia faremos o deploy do Mapas Culturais utilizando o nginx + php-fpm num sistema Ubuntu 14.04 Server recem instalado somente com o OpenSSH Server. O Banco de dados e a aplicação rodarão no mesmo servidor e usuário.
 
 Não abordaremos as configurações de autenticação, seja com ID da Cultura, seja com Login Cidadão. Ao final do guia teremos a aplicação rodando com o método de autenticação Fake.
