@@ -300,6 +300,16 @@
                 delete searchData['@count'];
 
                 var querystring = '';
+                var Description = MapasCulturais.EntitiesDescription[entity];
+                Object.keys(Description).forEach(function(prop) {
+                	if (!Description[prop].isEntityRelation && !Description[prop].private) {
+                		if (Description[prop]['@select']) {
+                			prop = Description[prop]['@select'];
+                		}
+                		selectData += "," + prop;
+                	}
+                })
+                
                 var queryString_apiExport = '@select='+selectData;
 
                 //removes type column from event export
@@ -313,6 +323,7 @@
                     if(att != '@select' && att!='@page' && att!='@limit')
                         queryString_apiExport += "&"+att+"="+searchData[att];
                 }
+                
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
 
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});

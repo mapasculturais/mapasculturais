@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\ApiOutputs;
 use \MapasCulturais\App;
+use MapasCulturais;
 
 
 
@@ -42,6 +43,9 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     protected function printArrayTable($data){
+    	$app = App::i();
+    	$controller = $app->view->controller;
+    	$entity = \MapasCulturais\Entities::
         $first = true; ?>
         <table border="1">
         <?php foreach($data as $item): ?>
@@ -53,6 +57,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <?php if(isset($item->occurrences)) : //Occurrences to the end
                 $occs = $item->occurrences; unset($item->occurrences); $item->occurrences = $occs; ?>
             <?php endif; ?>
+            
             <?php if($first): $first=false;?>
             <thead>
                 <tr>
@@ -73,7 +78,11 @@ class Html extends \MapasCulturais\ApiOutput{
                             if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                 continue;
                             }
-                            ?><th><?php echo key_exists($k,$this->translate) ? mb_convert_encoding($this->translate[$k], 'HTML-ENTITIES','UTF-8') : $k; ?></th><?php
+                            ?>
+                            <th>
+                            	<?php var_dump();?>
+                            </th>
+                        <?php
                         }
                     ?><?php endforeach; ?>
                     <th></th>
@@ -118,10 +127,15 @@ class Html extends \MapasCulturais\ApiOutput{
                             ?>
                             <td>
                                 <?php
+                                
                                 if(is_object($v) && $k==='type'){
                                     echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
                                 }elseif(is_string($v) || is_numeric($v)){
                                     echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
+                                }elseif(is_object($v) && isset($v->date)){
+									echo date_format(date_create($v->date),'Y-m-d H:i:s');
+                                }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
+									echo $v->latitude . ',' . $v->longitude;
                                 }elseif(is_array($v) || is_object($v)){
                                     $this->printTable($v);
                                 }else{
