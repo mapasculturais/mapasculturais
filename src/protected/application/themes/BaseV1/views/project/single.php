@@ -127,7 +127,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <?php if($this->isEditable() || $entity->registrationFrom): ?>
                         <div class="registration-dates">
                             Inscripciones Abiertas de
-                            <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Fecha inicial'; ?></strong>
+                            <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Fecha inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Fecha inicial'; ?></strong>
                             a
                             <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Fecha final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Fecha final'; ?></strong>
                             a las

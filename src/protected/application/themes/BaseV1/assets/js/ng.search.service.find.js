@@ -273,7 +273,7 @@
 
                 if(entity === 'space'){
                     if(action === 'find') {
-                        selectData += ',endereco,acessibilidade';
+                        selectData += ',endereco,En_Estado,acessibilidade';
                     }else{
                         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                         apiExportURL += 'event/findByLocation/?';
@@ -282,6 +282,9 @@
                     selectData += ',registrationFrom,registrationTo';
                 }else if(entity === 'event'){
                     selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
+                }
+                else if(entity === 'agent'){
+                    selectData += ',En_Estado';
                 }
 
                 if(data.global.viewMode === 'list'){

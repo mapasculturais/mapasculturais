@@ -23,7 +23,7 @@ class Html extends \MapasCulturais\ApiOutput{
         'linguagem' => 'Tipos de eventos',
         
         'acessibilidade' => 'accesibilidad',
-
+        'En_Estado' => 'Departamento',
         'agent'=>'Agente',
         'space'=>'Espacio',
         'event'=>'Evento',
