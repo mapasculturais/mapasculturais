@@ -10,6 +10,7 @@ namespace MapasCulturais\Controllers;
  *
  */
 class Site extends \MapasCulturais\Controller {
+    use \MapasCulturais\Traits\ControllerAPI;
 
     /**
      * Default action.
