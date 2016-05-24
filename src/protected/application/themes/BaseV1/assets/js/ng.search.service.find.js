@@ -270,11 +270,12 @@
                 
                 var selectData = 'id,singleUrl,name,type,shortDescription,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
-
+                var exportEntity = entity;
                 if(entity === 'space'){
                     if(action === 'find') {
                         selectData += ',endereco,acessibilidade';
                     }else{
+                    	exportEntity = 'event';
                         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                         apiExportURL += 'event/findByLocation/?';
                     }
@@ -300,7 +301,7 @@
                 delete searchData['@count'];
 
                 var querystring = '';
-                var Description = MapasCulturais.EntitiesDescription[entity];
+                var Description = MapasCulturais.EntitiesDescription[exportEntity];
                 Object.keys(Description).forEach(function(prop) {
                 	if (!Description[prop].isEntityRelation && !Description[prop].private) {
                 		if (Description[prop]['@select']) {

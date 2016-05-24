@@ -44,21 +44,25 @@ class Html extends \MapasCulturais\ApiOutput{
 
     protected function printArrayTable($data){
     	$app = App::i();
-    	$controller = $app->view->controller;
-    	$entity = \MapasCulturais\Entities::
-        $first = true; ?>
+    	$entity = $app->view->controller->entityClassName;
+    	$label = $entity::getPropertiesLabels();
+        $first = true; 
+        
+        ?>
         <table border="1">
         <?php foreach($data as $item): ?>
             <?php
             $item = json_encode($item);
-            //$item = mb_convert_encoding($item,"HTML-ENTITIES","UTF-8");
             $item = json_decode($item);
+            
             ?>
             <?php if(isset($item->occurrences)) : //Occurrences to the end
                 $occs = $item->occurrences; unset($item->occurrences); $item->occurrences = $occs; ?>
             <?php endif; ?>
             
-            <?php if($first): $first=false;?>
+            <?php 
+            if($first): $first=false;
+            ?>
             <thead>
                 <tr>
                     <?php foreach($item as $k => $v): ?><?php
@@ -80,7 +84,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             }
                             ?>
                             <th>
-                            	<?php var_dump();?>
+                            	<?php echo isset($label[$k])? $label[$k]: $k ;?>
                             </th>
                         <?php
                         }
@@ -137,7 +141,11 @@ class Html extends \MapasCulturais\ApiOutput{
                                 }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
 									echo $v->latitude . ',' . $v->longitude;
                                 }elseif(is_array($v) || is_object($v)){
-                                    $this->printTable($v);
+                                    if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
+                                    	echo implode(', ',$v);	
+                                    } else {
+                                    	$this->printTable($v);
+	                                }
                                 }else{
                                     //var_dump($v);
                                 }
