@@ -259,7 +259,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
-        $rsm->addFieldResult('e', 'rule', '_rule');
+        $rsm->addFieldResult('e', 'rule', 'rule');
 
         $dql_limit = $dql_offset = '';
 

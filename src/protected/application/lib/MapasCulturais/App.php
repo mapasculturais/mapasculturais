@@ -426,7 +426,7 @@ class App extends \Slim\Slim{
         return $this->_workflowEnabled;
     }
 
-    protected function _dbUpdates(){
+    function _dbUpdates(){
         $this->disableAccessControl();
 
         $executed_updates = [];
@@ -480,28 +480,34 @@ class App extends \Slim\Slim{
             return;
 
         $this->_registered = true;
-
+        
         // get types and metadata configurations
-        $theme_space_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/space-types.php';
-        if (file_exists($theme_space_types)) {
+        if ($theme_space_types = $this->view->resolveFilename('','space-types.php')) {
             $space_types = include $theme_space_types;
         } else {
             $space_types = include APPLICATION_PATH.'/conf/space-types.php';
         }
         $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
-        $theme_agent_types = $this->_config['namespaces'][$this->_config['themes.active']] . '/agent-types.php';
-        if (file_exists($theme_agent_types)) {
+        if ($theme_agent_types = $this->view->resolveFilename('','agent-types.php')) {
             $agent_types = include $theme_agent_types;
         } else {
             $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
         }
         $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
 
-        $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        if ($theme_event_types = $this->view->resolveFilename('','event-types.php')) {
+            $event_types = include $theme_event_types;
+        } else {
+            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        }
         $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : [];
 
-        $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        if ($theme_project_types = $this->view->resolveFilename('','project-types.php')) {
+            $project_types = include $theme_project_types;
+        } else {
+            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
         // register auth providers
@@ -736,9 +742,13 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
-
+        
         // register taxonomies
-        $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        if ($theme_taxonomies = $this->view->resolveFilename('','taxonomies.php')) {
+            $taxonomies = include $theme_taxonomies;
+        } else {
+            $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        }
 
         foreach($taxonomies as $taxonomy_id => $taxonomy_definition){
             $taxonomy_slug = $taxonomy_definition['slug'];

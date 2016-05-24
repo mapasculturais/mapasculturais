@@ -214,7 +214,7 @@ Reinicie los servicios de **nginx** y **php-fpm**
 ```
 
 
-### Creando un super admin
+### 6. Post-instalación - Creando un super admin
 
 Para crear super usuarios, es necesario cambiar el status de un usuario ya creado, dejándolo como superadmin. Se puede proceder de la siguiente forma: 
 

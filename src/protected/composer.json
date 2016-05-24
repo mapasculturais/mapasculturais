@@ -21,7 +21,9 @@
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "^2.2"
     },
-
+    "require-dev": {
+        "psy/psysh": "@stable"
+    },
     "repositories": [{
         "type": "git",
         "url": "https://github.com/hacklabr/opauth-logincidadao.git"
