@@ -1055,12 +1055,10 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
 
         $cache_id = __METHOD__ . ':' . $entity_class;
-
+        
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-
-
 
         $controller = $app->getControllerByEntity($entity_class);
 
