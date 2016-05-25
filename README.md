@@ -81,27 +81,6 @@ sudo gem install sass
 ## Sobre la aplicación
 Mapas Culturales es una aplicación web server-side basada en linguage PHP y base de datos Postgres, entre otras tecnologías y componentes, que propicia un ambiente virtual para mapeamiento, divulgación y gestión de activos culturales.  
 
-### Requisitos para la instalación
-Lista (para más detalles ver la documentación) 
-
-- [PHP >= 5.4](http://php.net)
-  - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
-  - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
-  - [php5-json](http://php.net/manual/pt_BR/book.json.php)
-  - [php5-curl](http://php.net/manual/pt_BR/book.curl.php)
-  - [php5-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
-  - [php-apc](http://php.net/manual/pt_BR/book.apc.php)
-- [Composer](https://getcomposer.org/)
-- [PostgreSQL >= 9.3](http://www.postgresql.org/)
-- [Postgis >= 2.1](http://postgis.net)
-  - [PostgreSQL-Postgis-Scripts](http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1)
-- [Node.JS >= 0.10](https://nodejs.org/en/)
-  - [NPM](https://www.npmjs.com/)
-  - [UglifyJS](https://www.npmjs.com/package/uglify-js)
-  - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
-- [Ruby] (https://www.ruby-lang.org/pt)
-  - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
-
 ### Licença de uso e desenvolvimento (portugués)
 
 Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 
