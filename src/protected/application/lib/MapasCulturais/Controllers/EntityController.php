@@ -35,7 +35,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @see \MapasCulturais\Controller::$entityClassName
      */
     protected function __construct() {
-        parent::__construct();
         $this->entityClassName = preg_replace("#Controllers\\\([^\\\]+)$#", 'Entities\\\$1', get_class($this));
     }
 

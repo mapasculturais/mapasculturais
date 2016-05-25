@@ -87,11 +87,6 @@ abstract class Controller{
 
 
     protected $action = null;
-    
-    protected function __construct() {
-        App::i()->view->setController($this);
-    }
-
     // =================== GETTERS ================== //
 
     /**
