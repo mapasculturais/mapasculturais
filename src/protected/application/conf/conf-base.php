@@ -49,10 +49,11 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
+	'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
-    'themes.active.debugParts' => false,
+    'themes.active.debugParts' => true,
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
         'publishPath' => BASE_PATH . $asset_dir,
 
@@ -146,8 +147,8 @@ return array(
         )
     ),
 
-    /* ============ ENTITY PROPERTIES LABELS ============= */
-    'app.entityPropertiesLabels' => array(
+    /* ============ ENTITY PROPERTIES SEALS ============= */
+    'app.entityPropertiesSeals' => array(
         '@default' => array(
             'id' => 'Id',
             'name' => 'Nome',
@@ -155,7 +156,6 @@ return array(
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
             'status' => 'Status',
-            'location' => 'Coordenada Geográfica',
             '_type' => 'Tipo'
         ),
 

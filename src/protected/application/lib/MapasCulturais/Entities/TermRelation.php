@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectTermRelation",
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventTermRelation",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentTermRelation",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceTermRelation"
+        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceTermRelation",
+        "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealTermRelation"
    })
  */
 abstract class TermRelation extends \MapasCulturais\Entity {

@@ -50,6 +50,9 @@ class Theme extends MapasCulturais\Theme {
             'entities: Space Description'=> 'Descrição do Espaço',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
+        		
+        	'entities: My Seals'=> 'Meus Selos',
+        	'entities: My seals'=> 'Meus selos',
             
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
@@ -92,6 +95,10 @@ class Theme extends MapasCulturais\Theme {
 
     function getSearchProjectsUrl(){
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
+    }
+    
+    function getSearchSealsUrl(){
+    	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
     }
 
     protected function _init() {
@@ -408,7 +415,8 @@ class Theme extends MapasCulturais\Theme {
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
         		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
-        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
+        		"seal" => \MapasCulturais\Entities\Seal::getPropertiesMetadata()
         ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
@@ -468,6 +476,7 @@ class Theme extends MapasCulturais\Theme {
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels(),
+            	'seal' => \MapasCulturais\Entities\Seal::getPropertiesLabels()
             );
 
             $this->jsObject['routes'] = $app->config['routes'];
@@ -478,7 +487,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -511,16 +520,16 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -784,6 +793,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
         $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
         $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+        $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
 
 
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
@@ -799,14 +809,17 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agente.png', false);
         $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-espaco.png', false);
         $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-evento.png', false);
+        $this->jsObject['assets']['pinSeal'] = $this->asset('img/pin-selo.png', false);
 
         $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agente.png', false);
         $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-evento.png', false);
         $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-espaco.png', false);
+        //$this->jsObject['assets']['pinSealGroup'] = $this->asset('img/agrupador-selo.png', false);
 
         $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agente-evento.png', false);
         $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-espaco-evento.png', false);
         $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-agente.png', false);
+        //$this->jsObject['assets']['pinSealSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-selo.png', false);
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
 

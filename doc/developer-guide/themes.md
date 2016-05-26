@@ -50,6 +50,7 @@ $brand-event:   #F7931D !default;
 $brand-agent:   #5FB643 !default;
 $brand-space:   #AB1F24 !default;
 $brand-project: #795099 !default;
+$brand-seal: 	#795099 !default;
 $brand-devs:    #CE5AA1 !default;
 ```
 
@@ -259,6 +260,7 @@ As divisões geográficas configuradas devem ser as mesmas que foram importadas 
             - [panel-project.php](../../src/protected/application/themes/BaseV1/layouts/parts/panel-project.php)
             - [panel-registration.php](../../src/protected/application/themes/BaseV1/layouts/parts/panel-registration.php)
             - [panel-space.php](../../src/protected/application/themes/BaseV1/layouts/parts/panel-space.php)
+            - [panel-seal.php](../../src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php)
             - [redes-sociais.php](../../src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php)
             - [related-agents.php](../../src/protected/application/themes/BaseV1/layouts/parts/related-agents.php)
             - [templates.php](../../src/protected/application/themes/BaseV1/layouts/parts/templates.php)

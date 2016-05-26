@@ -344,6 +344,28 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
+    
+    public function getSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
+    }
+    function getEnabledSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ENABLED, '=');
+    }
+    function getDraftSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DRAFT, '=');
+    }
+    function getTrashedSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_TRASH, '=');
+    }
+    function getDisabledSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
+    }
 
     function getNotifications($status = null){
         if(is_null($status)){

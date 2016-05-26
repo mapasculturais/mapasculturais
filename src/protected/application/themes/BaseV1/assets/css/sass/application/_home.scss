@@ -90,6 +90,9 @@
 #nav-projects {
     background: $brand-project;
 }
+#nav-seals {
+    background: $brand-seal;
+}
 #nav-developers {
     background: $brand-developer;
 }
@@ -372,6 +375,10 @@
 #projects-filter:focus {
     background-color: $brand-project;
 }
+#seals-filter:hover,
+#seals-filter:focus {
+    background-color: $brand-seal;
+}
 //** Events section
 #home-events {
     background: $brand-event;
@@ -398,6 +405,13 @@
     background: $brand-project;
     .abas li.active {
         border-bottom-color: $brand-project;
+    }
+}
+//** Seals section
+#home-seals {
+    background: $brand-seal;
+    .abas li.active {
+        border-bottom-color: $brand-seal;
     }
 }
 //** Developers section
