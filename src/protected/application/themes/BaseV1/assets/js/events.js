@@ -92,11 +92,11 @@ MapasCulturais.EventOccurrenceManager = {
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Error:'+message+'"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
-                    $form.find('div.alert.danger').html('Corrija os erros indicados abaixo.')
+                    $form.find('div.alert.danger').html('Corrija los errores indicados abajo.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -132,7 +132,7 @@ MapasCulturais.EventOccurrenceManager = {
 
 
                 if(xhr.status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição para criar a ocorrência do evento no espaço <strong>' + response.space.name + '</strong> foi enviada.');
+                    MapasCulturais.Messages.alert('Su solicitud para crear la fecha del evento en el espacio <strong>' + response.space.name + '</strong> fue enviada.');
                 }
 
             },
@@ -140,12 +140,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parent().scrollTop(0);
 
                 if(xhr.status === 403){
-                    $form.find('div.alert.danger').html('Você não tem permissão para criar eventos nesse espaço.')
+                    $form.find('div.alert.danger').html('Usted no tiene permisos para crear eventos en este espacio.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }else{
-                    $form.find('div.alert.danger').html('Erro inesperado.')
+                    $form.find('div.alert.danger').html('Error inesperado.')
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -155,7 +155,7 @@ MapasCulturais.EventOccurrenceManager = {
             beforeSubmit: function(arr, $form, options) {
 
                 if ($form.find('input[name="description"]').data('synced') != 1)
-                    return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
+                    return confirm('Las fechas fueron modificadas pero la descripción no. Está seguro de querer salvar?');
 
                 return true;
 
@@ -283,7 +283,7 @@ MapasCulturais.EventHumanReadableManager = {
                     if (weekDays[0] == '0' || weekDays[0] == '6') {
                         human += 'Todo ';
                     } else {
-                        human += 'Toda ';
+                        human += 'Todo ';
                     }
 
                     var count = 1;
@@ -292,7 +292,7 @@ MapasCulturais.EventHumanReadableManager = {
                         human += moment().day(v).format(wformat);
                         count ++;
                         if (count == weekDays.length)
-                            human += ' e ';
+                            human += ' y ';
                         else if (count < weekDays.length)
                             human += ', '
                     });
@@ -300,12 +300,12 @@ MapasCulturais.EventHumanReadableManager = {
             }
 
             if (mdate_s.year() != mdate_e.year()) {
-                human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                human += ' del ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
             } else {
                 if (mdate_s.month() != mdate_e.month()) {
-                    human += ' de ' + mdate_s.format('D [de] MMMM') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                    human += ' del ' + mdate_s.format('D [de] MMMM') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
                 } else {
-                    human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
+                    human += ' del ' + mdate_s.format('D') + ' al ' + mdate_e.format('D [de] MMMM [de] YYYY');
                 }
             }
 
@@ -314,9 +314,9 @@ MapasCulturais.EventHumanReadableManager = {
 
         if (hour) {
             if (hour.substring(0,2) == '01')
-                human += ' à ' + hour;
+                human += ' a ' + hour;
             else
-                human += ' às ' + hour;
+                human += ' a las ' + hour;
         }
 
         return human;

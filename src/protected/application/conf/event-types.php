@@ -9,85 +9,84 @@ return array(
             'type' => 'text'
         ),
         'registrationInfo' => array(
-            'label' => 'Inscrições',
+            'label' => 'Inscripciones',
             'type' => 'text'
         ),
         'classificacaoEtaria' => array(
-            'label' => 'Classificação Etária',
+            'label' => 'Clasificación Etaria',
             'type' => 'select',
             'options' => array(
-                'Livre' => 'Livre',
-                '18 anos' => '18 anos',
-                '16 anos' => '16 anos',
-                '14 anos' => '14 anos',
-                '12 anos' => '12 anos',
-                '10 anos' => '10 anos'
+                 'Todo Público' => 'Todo Público',
+                'Tercera Edad' => 'Tercera Edad',
+                'Adultos' => 'Adultos',
+                'Adolescente-Juvenil' => 'Adolescente-Juvenil',
+                'Infantiles' => 'Infantiles'
             ),
             'validations' => array(
-                'required' => "A classificação etária é obrigatória."
+                'required' => "La Clasificación Etaria es obligatoria."
             )
         ),
 
         'telefonePublico' => array(
-            'label' => 'Mais Informações',
+            'label' => 'Más información',
             'type' => 'string',
-            'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
-            )
+         //   'validations' => array(
+         //       'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el Teléfono Público en el formato (xx) xxxx-xxxx.'
+         //   )
         ),
 
         'preco' => array(
-            'label' => 'Preço'
+            'label' => 'Precio'
         ),
 
         'traducaoLibras' => array(
-            'label' => 'Tradução para LIBRAS',
+            'label' => 'Traducción para Lenguaje de Señas',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informado',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '' => 'No Informado',
+                'Sim' => 'Sí',
+                'Não' => 'No'
             )
         ),
 
         'descricaoSonora' => array(
-            'label' => 'Áudio descrição',
+            'label' => 'Audio descripción',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informado',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '' => 'No Informado',
+                'Sim' => 'Sí',
+                'Não' => 'No'
             )
         ),
 
         'site' => array(
-            'label' => 'Site',
-            'validations' => array(
-                "v::url()" => "A url informada é inválida."
-            )
+            'label' => 'Sitio',
+          //  'validations' => array(
+          //      "v::url()" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         ),
         'facebook' => array(
             'label' => 'Facebook',
-            'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
-            )
+        //    'validations' => array(
+        //        "v::url('facebook.com')" => "La url informada no es válida. Deber comenzar con http://"
+        //    )
         ),
         'twitter' => array(
             'label' => 'Twitter',
-            'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
-            )
+         //   'validations' => array(
+         //       "v::url('twitter.com')" => "La url informada no es válida. Deber comenzar con http://"
+         //   )
         ),
         'googleplus' => array(
             'label' => 'Google+',
-            'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
-            )
+         //   'validations' => array(
+         //       "v::url('plus.google.com')" => "La url informada no es válida. Deber comenzar con http://"
+         //   )
         ),
 
     ),
     'items' => array(
-        1 =>  array('name' => 'Padrão'),
+        1 =>  array('name' => 'Patrón'),
     )
     /* EXEMPLOS DE METADADOS:
 
@@ -145,7 +144,7 @@ return array(
         'label' => 'Site',
         'type' => 'text',
         'validations'=> array(
-            'v::url()' => 'A URL informada é inválida.'
+            'v::url()' => 'La url informada no es válida.'
         )
     ),
     'estado' => array(

@@ -12,14 +12,14 @@
             <h1>{{entity.name}}</h1>
             <div class="objeto-meta">
                 <div>
-                    <span class="label">área de atuação:</span>
+                    <span class="label">Área de actuación:</span>
                     {{entity.terms.area.join(', ')}}
                 </div>
                 <div><span class="label">tipo:</span>{{entity.type.name}}</div>
             </div>
         </li>
         <ol ng-if="noMoreResults" class="no-more-results">
-            Sem mais resultados
+            No hay más resultados
         </ol>
     </ul>
 </div>

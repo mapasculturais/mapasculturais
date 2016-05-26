@@ -67,7 +67,7 @@
             options.zoomControl = false;
             options.minZoom = config.zoomMin;
             var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+                attribution: 'Datos e Imágenes &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
                 maxZoom: config.zoomMax
             });
 
@@ -196,8 +196,8 @@
                             });
 
                         var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
-                        controlUI.title = 'Localizar sua posição através do navegador';
-                        controlUI.innerHTML = '<span class="icon icon-show-map"></span> Localize-me';
+                        controlUI.title = 'Localizar su posición a través del navegador';
+                        controlUI.innerHTML = '<span class="icon icon-show-map"></span> Localízame';
                         return controlDiv;
                     }
                 });
@@ -263,7 +263,7 @@
             });
 
             /*Controles*/
-            (new L.Control.FullScreen({position: 'bottomright', title: 'Tela Cheia'})).addTo(map);
+            (new L.Control.FullScreen({position: 'bottomright', title: 'Pantalla Completa'})).addTo(map);
             (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
             var geoDivisionsObj = {};
             for(var div_id in MapasCulturais.geoDivisionsHierarchy){

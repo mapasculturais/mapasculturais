@@ -6,7 +6,7 @@
     </header>
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter searcj-filter--keyword">
-            <label for="palavra-chave-evento">Palavra-chave</label>
+            <label for="palavra-chave-evento">Palabra clave</label>
             <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
         </form>
         <!--.filter-->
@@ -17,9 +17,9 @@
         </div>
         <!--.filter-->
         <div class="filter search-filter--linguagem">
-            <label>Linguagem</label>
+            <label>Tipo de evento</label>
             <div class="dropdown">
-                <div class="placeholder">Selecione as linguagens</div>
+                <div class="placeholder">Seleccione los tipos de eventos</div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list select">
                         <li ng-repeat="linguagem in linguagens" ng-class="{'selected':isSelected(data.event.linguagens, linguagem.id)}" ng-click="toggleSelection(data.event.linguagens, linguagem.id)">
@@ -31,9 +31,9 @@
         </div>
         <!--.filter-->
         <div class="filter search-filter--classificacao">
-            <span class="label">Classificação</span>
+            <span class="label">Clasificación</span>
             <div id="classificacao" class="dropdown">
-                <div class="placeholder">Selecione a classificação</div>
+                <div class="placeholder">Seleccione la clasificación</div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list select">
                         <li ng-repeat="classificacao in classificacoes" ng-class="{'selected':isSelected(data.event.classificacaoEtaria, classificacao.id)}" ng-click="toggleSelection(data.event.classificacaoEtaria, classificacao.id)">
@@ -45,7 +45,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="Exhibir solamente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
     </div>

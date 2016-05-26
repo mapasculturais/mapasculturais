@@ -87,7 +87,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             if (!empty($occurrence->rule->description)) {
                 $occurenceDescription .= trim($occurrence->rule->description) . '. ';
             } else {
-                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
+                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' a las ' . $occurrence->startsAt->format('H:i').'. ';
             }
             if (!empty($occurrence->rule->price)) {
                 $occurenceDescription .= trim($occurrence->rule->price) . '. ';

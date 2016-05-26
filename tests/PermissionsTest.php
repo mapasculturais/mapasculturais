@@ -767,8 +767,8 @@ class PermissionsTest extends MapasCulturais_TestCase{
             'frequency' => 'once',
             'startsOn' => '2014-07-16',
             'until' => '',
-            'description' => 'das 11:11 às 12:11 do dia 16 de Julho',
-            'price' => 'R$11,11'
+            'description' => 'de las 11:11 a las 12:11 del día 16 de Julio',
+            'price' => '$11,11'
         );
 
         $user0 = $this->getUser('normal', 0);

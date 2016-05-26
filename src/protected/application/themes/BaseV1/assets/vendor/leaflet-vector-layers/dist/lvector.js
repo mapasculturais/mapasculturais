@@ -9,7 +9,7 @@
 
 (function(a){a.lvector={VERSION:"1.5.1",noConflict:function(){a.lvector=this._originallvector;return this},_originallvector:a.lvector}})(this);
 
-/*Seccionei a parte inicial do do arquivo dist e adicionei a classe baes layer com os eventos mouseover*/
+/*Seccionei a parte inicial do do arquivo dist e adicionei a classe baes layer con els eventos mouseover*/
 /*Ver https://github.com/bmcbride/leaflet-vector-layers/blob/680e9b33131d580bca3817c8da18925e37de0ca2/src/layer/Layer.js*/
 
 /*

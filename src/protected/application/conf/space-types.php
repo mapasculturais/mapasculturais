@@ -7,40 +7,40 @@ return array(
         'emailPublico' => array(
             'label' => 'Email Público',
             'validations' => array(
-                'v::email()' => 'O email público não é um email válido.'
+                'v::email()' => 'El email público no es un email válido.'
             )
         ),
 
         'emailPrivado' => array(
             'label' => 'Email Privado',
             'validations' => array(
-                'v::email()' => 'O email privado não é um email válido.'
+                'v::email()' => 'El email privado no es un email válido.'
             )
         ),
 
         'telefonePublico' => array(
-            'label' => 'Telefone Público',
+            'label' => 'Teléfono Público',
             'type' => 'string',
-            'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
-            )
+            //'validations' => array(
+            //    'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el Teléfono Público en el formato (xx) xxxx-xxxx.'
+            //)
         ),
 
         'telefone1' => array(
-            'label' => 'Telefone 1',
+            'label' => 'Teléfono 1',
             'type' => 'string',
-            'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
-            )
+            //'validations' => array(
+            //    'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el teléfono 1 en el formato (xx) xxxx-xxxx.'
+            //)
         ),
 
 
         'telefone2' => array(
-            'label' => 'Telefone 2',
+            'label' => 'Teléfono 2',
             'type' => 'string',
-            'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.'
-            )
+            //'validations' => array(
+            //    'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe el teléfono 2 en el formato (xx) xxxx-xxxx.'
+            //)
         ),
 
         /*
@@ -54,56 +54,56 @@ return array(
         ),
         */
         'acessibilidade' => array(
-            'label' => 'Acessibilidade',
+            'label' => 'Accesibilidad',
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informado',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '' => 'No Informado',
+                'Sim' => 'Sí',
+                'Não' => 'No'
             )
         ),
         'acessibilidade_fisica' => array(
-            'label' => 'Acessibilidade física',
+            'label' => 'Accesibilidad física',
             'type' => 'multiselect',
             'allowOther' => true,
-            'allowOtherText' => 'Outros',
+            'allowOtherText' => 'Otros',
             'options' => array(
-                'Banheiros adaptados',
-                'Rampa de acesso',
+                'Baños adaptados',
+                'Rampa de acceso',
                 'Elevador',
-                'Sinalização tátil',
+                'Señalización táctil',
                 
                 // vindos do sistema de museus.cultura.gov.br
-                'Bebedouro adaptado',
-                'Cadeira de rodas para uso do visitante',
-                'Circuito de visitação adaptado',
-                'Corrimão nas escadas e rampas',
+                'Bebedero adaptado',
+                'Silla de ruedas para uso del visitante',
+                'Circuito de visita adaptado',
+                'Barandilla en las escaleras y rampas',
                 'Elevador adaptado',
-                'Rampa de acesso',
-                'Sanitário adaptado',
-                'Telefone público adaptado',
-                'Vaga de estacionamento exclusiva para deficientes',
-                'Vaga de estacionamento exclusiva para idosos'
+                'Rampa de acceso',
+                'Sanitario adaptado',
+                'Teléfono Público adaptado',
+                'Estacionamento exclusivo para discapacitados',
+                'Estacionamento exclusivo para tercera edad'
             )
         ),
         'capacidade' => array(
-            'label' => 'Capacidade',
+            'label' => 'Capacidad',
             'validations' => array(
-                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
+                "v::int()->positive()" => "La capacidad debe ser un número positivo."
             )
         ),
 
         'endereco' => array(
-            'label' => 'Endereço',
+            'label' => 'Dirección',
             'type' => 'text'
         ),
         
 
         'En_CEP' => [
-            'label' => 'CEP',
+            'label' => 'CP',
         ],
         'En_Nome_Logradouro' => [
-            'label' => 'Logradouro',
+            'label' => 'Dirección',
         ],
         'En_Num' => [
             'label' => 'Número',
@@ -112,78 +112,70 @@ return array(
             'label' => 'Complemento',
         ],
         'En_Bairro' => [
-            'label' => 'Bairro',
+            'label' => 'Barrio',
         ],
         'En_Municipio' => [
-            'label' => 'Município',
+            'label' => 'Municipio',
         ],
         'En_Estado' => [
-            'label' => 'Estado',
+            'label' => 'Departamento',
             'type' => 'select',
             'options' => array(
-                'AC'=>'Acre',
-                'AL'=>'Alagoas',
-                'AP'=>'Amapá',
-                'AM'=>'Amazonas',
-                'BA'=>'Bahia',
-                'CE'=>'Ceará',
-                'DF'=>'Distrito Federal',
-                'ES'=>'Espírito Santo',
-                'GO'=>'Goiás',
-                'MA'=>'Maranhão',
-                'MT'=>'Mato Grosso',
-                'MS'=>'Mato Grosso do Sul',
-                'MG'=>'Minas Gerais',
-                'PA'=>'Pará',
-                'PB'=>'Paraíba',
-                'PR'=>'Paraná',
-                'PE'=>'Pernambuco',
-                'PI'=>'Piauí',
-                'RJ'=>'Rio de Janeiro',
-                'RN'=>'Rio Grande do Norte',
-                'RS'=>'Rio Grande do Sul',
-                'RO'=>'Rondônia',
-                'RR'=>'Roraima',
-                'SC'=>'Santa Catarina',
-                'SP'=>'São Paulo',
-                'SE'=>'Sergipe',
-                'TO'=>'Tocantins',
+               'AR'=>'Artigas',
+                'CA'=>'Canelones',
+                'CL'=>'Cerro Largo',
+                'CO'=>'Colonia',
+                'DU'=>'Durazno',
+                'FS'=>'Flores',
+                'FD'=>'Florida',
+                'LA'=>'Lavalleja',
+                'MA'=>'Maldonado',
+                'MO'=>'Montevideo',
+                'PA'=>'Paysandú',
+                'RN'=>'Río Negro',
+                'RV'=>'Rivera',
+                'RO'=>'Rocha',
+                'SA'=>'Salto',
+                'SJ'=>'San José',
+                'SO'=>'Soriano',
+                'TA'=>'Tacuarembó',
+                'TT'=>'Treinta y Tres',
             )
         ],
 
         'horario' => array(
-            'label' => 'Horário de funcionamento',
+            'label' => 'Horario de funcionamiento',
             'type' => 'text'
         ),
 
         'criterios' => array(
-            'label' => 'Critérios de uso do espaço',
+            'label' => 'Criterios de uso del espacio',
             'type' => 'text'
         ),
 
         'site' => array(
-            'label' => 'Site',
-            'validations' => array(
-                "v::url()" => "A url informada é inválida."
-            )
+            'label' => 'Sitio',
+            //'validations' => array(
+            //    "v::url()" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         ),
         'facebook' => array(
             'label' => 'Facebook',
-            'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
-            )
+           // 'validations' => array(
+           //     "v::url('facebook.com')" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         ),
         'twitter' => array(
             'label' => 'Twitter',
-            'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
-            )
+           // 'validations' => array(
+           //     "v::url('twitter.com')" => "La url informada no es válida. Deber comenzar con http://"
+          //  )
         ),
         'googleplus' => array(
             'label' => 'Google+',
-            'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
-            )
+           // 'validations' => array(
+            //    "v::url('plus.google.com')" => "La url informada no es válida. Deber comenzar con http://"
+           // )
         )
     ),
 
@@ -192,146 +184,119 @@ return array(
  */
 
     'items' => array(
-        'Espaços de Exibição de Filmes' => array(
+        'Espacios de Exhibición de películas' => array(
             'range' => array(10,19),
             'items' => array(
-                10 => array( 'name' => 'Cine itinerante' ),
-                11 => array( 'name' => 'Cineclube' ),
-                12 => array( 'name' => 'Drive-in' ),
-                13 => array( 'name' => 'Espaço Público Para Projeção de Filmes' ),
-                14 => array( 'name' => 'Sala de cinema' ),
-            )
+                10 => array( 'name' => 'Cine' ),
+        	)
         ),
 
         'Bibliotecas' => array(
             'range' => array(20,29),
             'items' => array(
-                20 => array( 'name' => 'Biblioteca Pública' ),
-                21 => array( 'name' => 'Biblioteca Privada' ),
-                22 => array( 'name' => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)'),
-                23 => array( 'name' => 'Biblioteca Escolar'),
-                24 => array( 'name' => 'Biblioteca Nacional'),
-                25 => array( 'name' => 'Biblioteca Universitária'),
-                26 => array( 'name' => 'Biblioteca Especializada')
+                20 => array( 'name' => 'Biblioteca' )
             )
         ),
 
         'Teatros' => array(
             'range' => array(30,39),
             'items' => array(
-                30 => array('name' => 'Teatro Público'),
-                31 => array('name' => 'Teatro Privado')
+                30 => array('name' => 'Teatro')
             )
         ),
 
         'Circos' => array(
             'range' => array(90,99),
             'items' => array(
-                90 => array( 'name' => 'Circo Itinerante' ),
-                91 => array( 'name' => 'Circo Fixo' ),
-                92 => array( 'name' => 'Terreno para Circo' ),
-                93 => array( 'name' => 'Circo Tradicional' ),
-                94 => array( 'name' => 'Circo Moderno' ),
+                90 => array( 'name' => 'Circo' )
             )
         ),
 
-       'Centros Culturais' => array(
+       'Centros Culturales' => array(
             'range' => array(40,49),
             'items' => array(
-                40 => array( 'name' => 'Centro Cultural Público' ),
-                41 => array( 'name' => 'Centro Cultural Privado' ),
+                40 => array( 'name' => 'Centro Cultural' ),
+                41 => array( 'name' => 'Centros MEC' ),
+                
             )
         ),
 
-       'Arquivos' => array(
+      /* 'Archivos' => array(
             'range' => array(50,59),
             'items' => array(
-                50 => array( 'name' => 'Arquivo Público' ),
-                51 => array( 'name' => 'Arquivo Privado' ),
+                50 => array( 'name' => 'Archivo Público' ),
+                51 => array( 'name' => 'Archivo Privado' ),
             )
-        ),
+        ),*/
 
-       'Museus' => array(
+       'Museos' => array(
             'range' => array(60,69),
             'items' => array(
-                60 => array( 'name' => 'Museu Público' ),
-                61 => array( 'name' => 'Museu Privado' ),
+                60 => array( 'name' => 'Museo' )
             )
         ),
 
-        'Demais Equipamentos Culturais' => array(
+        'Otros Espacios Culturales' => array(
             'range' => array(100,199),
             'items' => array(
-                100 => array( 'name' => 'Galeria de arte' ),
-                101 => array( 'name' => 'Livraria' ),
-                102 => array( 'name' => 'Sebo' ),
-                103 => array( 'name' => 'Videolocadora' ),
-                104 => array( 'name' => 'Lan-house' ),
-                105 => array( 'name' => 'Antiquário' ),
-                106 => array( 'name' => 'Ateliê' ),
-                107 => array( 'name' => 'Centro de artesanato' ),
-                108 => array( 'name' => 'Casa de espetáculo' ),
-                109 => array( 'name' => 'Danceteria' ),
-                110 => array( 'name' => 'Estúdio' ),
-                111 => array( 'name' => 'Concha acústica' ),
-                112 => array( 'name' => 'Banca de jornal' ),
-                113 => array( 'name' => 'Espaço para Eventos' ),
-                114 => array( 'name' => 'Creative Bureau' ),
-                115 => array( 'name' => 'Ponto de Leitura Afro' ),
-                116 => array( 'name' => 'Centro Comunitário' ),
-                117 => array( 'name' => 'Casa do Patrimônio' ),
-                125 => array( 'name' => 'Ponto de Cultura' ),
-                118 => array( 'name' => 'Usina Cultural' ),
-                119 => array( 'name' => 'Praça dos esportes e da cultura' ),
-                120 => array( 'name' => 'Espaço Mais Cultura' ),
-                121 => array( 'name' => 'Sala de dança' ),
-                122 => array( 'name' => 'Gafieira' ),
-                123 => array( 'name' => 'Espaço para apresentação de dança' ),
-                126=> array( 'name' => 'Centro cultural itinerante' ),
-                127 => array( 'name' => 'Trio elétrico' ),
-                128 => array( 'name' => 'Clube social' ),
-                129 => array( 'name' => 'Centro de tradições' ),
-                130 => array( 'name' => 'Sala Multiuso' ),
-                124 => array( 'name' => 'Rádio Comunitária' ),
-                131 => array( 'name' => 'Audioteca' ),
-                132 => array( 'name' => 'Centro de Artes e Esportes Unificados - CEUs' ),
-                133 => array( 'name' => 'Coreto' ),
-                134 => array( 'name' => 'Ginásio Poliesportivo' ),
-                135 => array( 'name' => 'Sala de Leitura' ),
+            		100 => array( 'name' => 'Galería' ),
+            		101 => array( 'name' => 'Librería' ),
+            		102 => array( 'name' => 'Atelier' ),
+            		103 => array( 'name' => 'Boliche' ),
+            		104 => array( 'name' => 'Bar' ),
+            		105 => array( 'name' => 'Canales de TV abierta' ),
+            		106 => array( 'name' => 'Centro de formación' ),
+            		107 => array( 'name' => 'Disquería' ),
+            		108 => array( 'name' => 'Distribuidora' ),
+            		109 => array( 'name' => 'Editorial' ),
+            		110 => array( 'name' => 'Escenario' ),
+            		111 => array( 'name' => 'Espacios de exposición o exhibición' ),
+            		112 => array( 'name' => 'Espacios no convencionales' ),
+            		113 => array( 'name' => 'Espacios Verdes' ),
+            		114 => array( 'name' => 'Medios de comunicación digital' ),
+            		115 => array( 'name' => 'Milongas' ),
+            		116 => array( 'name' => 'Otras salas y/o escenarios ' ),
+            		117 => array( 'name' => 'Prensa escrita' ),
+            		118 => array( 'name' => 'Radio' ),
+            		119 => array( 'name' => 'Radio comunitaria' ),
+            		120 => array( 'name' => 'Sala de ensayo' ),
+            		121 => array( 'name' => 'Sellos discográfico' ),
+            		122 => array( 'name' => 'Usina Cultural' ),
+                        123 => array( 'name' => 'Oficina cultural')
             )
         ),
 
-       'Centros de Documentação' => array(
+      /* 'Centros de Documentación' => array(
             'range' => array(70,79),
             'items' => array(
-                70 => array( 'name' => 'Centro de Documentação Público' ),
-                71 => array( 'name' => 'Centro de Documentação Privado' ),
+                70 => array( 'name' => 'Centro de Documentación Público' ),
+                71 => array( 'name' => 'Centro de Documentación Privado' ),
             )
-        ),
+        ),*/
 
-       'Espaços Religiosos' => array(
+       /*'Espacios Religiosos' => array(
             'range' => array(80,89),
             'items' => array(
                 80 => array( 'name' => 'Templo' ),
                 81 => array( 'name' => 'Terreiro' ),
                 82 => array( 'name' => 'Mesquitas' ),
                 83 => array( 'name' => 'Sinagoga' ),
-                84 => array( 'name' => 'Igreja' ),
-                85 => array( 'name' => 'Centro Espírita' ),
+                84 => array( 'name' => 'Iglesia' ),
+                85 => array( 'name' => 'Centro Espiritual' ),
               )
-        ),
+        ),*/
 
 /**
  * Espaços de Formação Cultural
  */
 
-       'Instituições Públicas de Ensino Regular' => array(
+      /* 'Instituciones Públicas de Enseñanza Formal' => array(
             'range' => array(300,399),
             'items' => array(
-                300 => array( 'name' => 'Instituição Pública de Ensino Regular Federal' ),
-                301 => array( 'name' => 'Instituição Pública de Ensino Regular Estadual' ),
-                302 => array( 'name' => 'Instituição Pública de Ensino Regular Municipal' ),
-                303 => array( 'name' => 'Instituição Pública de Ensino Regular Distrital' ),
+                300 => array( 'name' => 'Institución Pública de Enseñanza Formal Estatal' ),
+                301 => array( 'name' => 'Institución Pública de Enseñanza Regular Estadual' ),
+                302 => array( 'name' => 'Institución Pública de Enseñanza Regular Municipal' ),
+                303 => array( 'name' => 'Institución Pública de Enseñanza Regular Distrital' ),
               )
         ),
 
@@ -343,9 +308,9 @@ return array(
                 402 => array( 'name' => 'Instituição Privada Confessional' ),
                 403 => array( 'name' => 'Instituição Privada Filantrópica' ),
               )
-        ),
+        ),*/
 
-       'Instituições Públicas exclusivamente voltada para formação artistica e cultural' => array(
+     /*  'Instituições Públicas exclusivamente voltada para formação artistica e cultural' => array(
             'range' => array(601,699),
             'items' => array(
                 601 => array( 'name' => 'Instituição Pública Federal exclusivamente voltada para formação artistica e cultural' ),
@@ -363,9 +328,9 @@ return array(
                 702 => array( 'name' => 'Instituição Privada Confessional exclusivamente voltada para formação artistica e cultural' ),
                 703 => array( 'name' => 'Instituição Privada Filantrópica exclusivamente voltada para formação artistica e cultural' ),
               )
-        ),
+        ),*/
 
-       'Escolas livres' => array(
+     /*  'Escolas livres' => array(
             'range' => array(800,899),
             'items' => array(
                 800 => array( 'name' => 'Escola livre de Artes Cênicas' ),
@@ -380,13 +345,13 @@ return array(
                 809 => array( 'name' => 'Escola livre de Patrimônio' ),
                 810 => array( 'name' => 'Escola livre de Design' ),
               )
-        ),
+        ),*/
 
 /**
  * Patrimônios Culturais
  */
 
-        'Bens culturais de natureza material' => array(
+      /*  'Bens culturais de natureza material' => array(
             'range' => array(200, 299),
             'items' => array(
                 200 => array( 'name' => 'Bens culturais de natureza material' ),
@@ -398,14 +363,14 @@ return array(
                 206 => array( 'name' => 'Documentação' ),
                 207 => array( 'name' => 'Coleções' ),
             )
-        ),
+        ),*/
 
-        'Temporário' => array(
+      /*  'Temporário' => array(
             'range' => array(500,600),
             'items' => array(
                 501 => array( 'name' => 'Palco de Rua' ),
             )
-        ),
+        ),*/
     )
     /* EXEMPLOS DE METADADOS:
 
@@ -463,7 +428,7 @@ return array(
         'label' => 'Site',
         'type' => 'text',
         'validations'=> array(
-            'v::url()' => 'A URL informada é inválida.'
+            'v::url()' => 'La url informada no es válida.'
         )
     ),
     'estado' => array(

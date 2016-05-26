@@ -5,11 +5,11 @@ use MapasCulturais\Entities\Agent;
 function echoStatus($registration){
     switch ($registration->status){
         case R::STATUS_APPROVED:
-            echo 'selecionada';
+            echo 'seleccionada';
             break;
 
         case R::STATUS_NOTAPPROVED:
-            echo 'não selecionada';
+            echo 'no seleccionada';
             break;
 
         case R::STATUS_WAITLIST:
@@ -21,7 +21,7 @@ function echoStatus($registration){
             break;
 
         case R::STATUS_SENT:
-            echo 'pendente';
+            echo 'pendiente';
             break;
     }
 }
@@ -39,6 +39,7 @@ $_properties = $app->config['registration.propertiesToExport'];
     <thead>
         <tr>
             <th>Número</th>
+            <th>URL</th>
             <th>Status</th>
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
@@ -55,7 +56,8 @@ $_properties = $app->config['registration.propertiesToExport'];
     <tbody>
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
-                <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
+                <td><?php echo $r->number; ?></td>
+                <td><?php echo $r->singleUrl; ?></td>
                 <td><?php echo echoStatus($r); ?></td>
 
                 <?php if($entity->registrationCategories):?>

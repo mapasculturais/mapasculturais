@@ -4,7 +4,7 @@
         <h1>{{name}}</h1>
         <div class="objeto-meta">
             <div>
-                <span class="label">área de atuação:</span>
+                <span class="label">área de actuación:</span>
                 {{areas}}
             </div>
             <div><span class="label">tipo:</span>{{type.name}}</div>

@@ -135,9 +135,9 @@ $(function(){
         MapasCulturais.entity.getTypeName = function(){
             switch(MapasCulturais.request.controller){
                 case 'agent' : return 'agente'; break;
-                case 'space' : return 'espaço'; break;
+                case 'space' : return 'espacio'; break;
                 case 'event' : return 'evento'; break;
-                case 'project' : return 'projeto'; break;
+                case 'project' : return 'proyecto'; break;
             }
         };
     }
@@ -961,7 +961,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum projeto encontrado.';
+                return 'Ningún proyecto encontrado.';
             },
 
             onClear: function($selector){
@@ -1000,7 +1000,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum espaço encontrado.';
+                return 'ningún espacio encontrado.';
             },
 
             onClear: function($selector){ },
@@ -1078,7 +1078,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum espaço encontrado.';
+                return 'ningún espacio encontrado.';
             },
 
             onClear: function($selector){
@@ -1102,7 +1102,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum projeto encontrado.';
+                return 'Ningún proyecto encontrado.';
             },
 
             onClear: function($selector){
@@ -1141,7 +1141,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum agente encontrado.';
+                return 'Ningún agente encontrado.';
             },
 
             onClear: function($selector){ },
@@ -1189,7 +1189,7 @@ MapasCulturais.Search = {
             },
 
             noMatches: function(term, $selector){
-                return 'Nenhum agente encontrado.';
+                return 'Ningún agente encontrado.';
             },
 
             onClear: function($selector){ },

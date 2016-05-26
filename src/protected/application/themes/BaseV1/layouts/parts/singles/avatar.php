@@ -13,7 +13,7 @@
     <?php endif; ?>
     <!-- pro responsivo!!! -->
     <?php if($entity->isVerified): ?>
-        <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> é verificado." href="#"></a>
+        <a class="verified-seal hltip active" title="Este <?php echo $entity->entityType ?> está verificado." href="#"></a>
     <?php endif; ?>
 </div>
 <!--.avatar-->

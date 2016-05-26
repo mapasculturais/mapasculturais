@@ -1,2 +1,2 @@
-- [Sobre o {{dict: site: name}}](/sobre/)
-- [Como usar](/como-usar/)
+- [Sobre {{dict: site: name}}](/sobre/)
+- [Cómo usar](/como-usar/)

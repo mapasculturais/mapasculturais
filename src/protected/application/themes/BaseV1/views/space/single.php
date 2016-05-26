@@ -61,64 +61,64 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                    <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                    <div class="alert warning">el límite de caracteres de la descripción corta disminuyó a 400, pero su texto actual posee <?php echo strlen($entity->shortDescription) ?> caracteres. Debe cambiar su texto o este será recortado al salvar.</div>
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descripción Corta" data-emptytext="Ingrese una descripción corta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     
                     <?php if($this->isEditable()): ?>
-                        <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual ou Físico? (se for virtual a localização não é obrigatória)</p>
+                        <p style="display:none" class="privado"><span class="icon icon-private-info"></span>Virtual o Físico? (se fuera virtual la localización no es obligatoria)</p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->acessibilidade): ?>
-                    <p><span class="label">Acessibilidade: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Acessibilidade"><?php echo $entity->acessibilidade; ?></span></p>
+                    <p><span class="label">Accesibilidad: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Accesibilidad"><?php echo $entity->acessibilidade; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->acessibilidade_fisica): ?>
                     <p>
-                        <span class="label">Acessibilidade física: </span>
-                        <editable-multiselect entity-property="acessibilidade_fisica" empty-label="Selecione" allow-other="true" box-title="Acessibilidade física:"></editable-multiselect>
+                        <span class="label">Accesibilidad física: </span>
+                        <editable-multiselect entity-property="acessibilidade_fisica" empty-label="Seleccione" allow-other="true" box-title="Accesibilidad física:"></editable-multiselect>
                     </p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('acessibilidade','after'); ?>
 
                     <?php if($this->isEditable() || $entity->capacidade): ?>
-                    <p><span class="label">Capacidade: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span></p>
+                    <p><span class="label">Capacidad: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidad" data-emptytext="Especifique la capacidad <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->horario): ?>
-                    <p><span class="label">Horário de funcionamento: </span><span class="js-editable" data-edit="horario" data-original-title="Horário de Funcionamento" data-emptytext="Insira o horário de abertura e fechamento"><?php echo $entity->horario; ?></span></p>
+                    <p><span class="label">Horario de funcionamiento: </span><span class="js-editable" data-edit="horario" data-original-title="Horario de Funcionamiento" data-emptytext="Ingrese el horario de apertura y cierre"><?php echo $entity->horario; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->site): ?>
-                        <p><span class="label">Site:</span>
+                        <p><span class="label">Sitio web:</span>
                         <?php if($this->isEditable()): ?>
-                            <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span></p>
+                            <span class="js-editable" data-edit="site" data-original-title="Sitio" data-emptytext="Ingrese la url de su sitio"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
                             <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->emailPublico): ?>
-                    <p><span class="label">Email Público:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Insira um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
+                    <p><span class="label">Email Público:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Ingrese un email que será exhibido públicamente"><?php echo $entity->emailPublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable()):?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Ingrese un email que no será exhibido públicamente"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                    <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>
+                    <p><span class="label">Teléfono Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Teléfono Público" data-emptytext="Ingrese un teléfono que será exhibido públicamente"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable()):?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone1; ?></span></p>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Telefone Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Telefone Privado" data-emptytext="Insira um telefone que não será exibido publicamente"><?php echo $entity->telefone2; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Teléfono Privado 1:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="Teléfono Privado" data-emptytext="Ingrese un Teléfono que no será exhibido públicamente"><?php echo $entity->telefone1; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Teléfono Privado 2:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="Teléfono Privado" data-emptytext="Ingrese un Teléfono que no será exhibido públicamente"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
@@ -128,13 +128,13 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             </div>
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-                <h3>Descrição</h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição <?php $this->dict('entities: of the Space') ?>" data-emptytext="Insira uma descrição <?php $this->dict('entities: of the space') ?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+                <h3>Descripción</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descripción <?php $this->dict('entities: of the Space') ?>" data-emptytext="Ingrese una Descripción <?php $this->dict('entities: of the space') ?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
 
             <?php if ( $this->isEditable() || $entity->criterios ): ?>
-                <h3>Critérios de uso <?php $this->dict('entities: of the space') ?></h3>
-                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
+                <h3>Criterios de uso <?php $this->dict('entities: of the space') ?></h3>
+                <div class="descricao js-editable" data-edit="criterios" data-original-title="Criterios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Ingrese los criterios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Ingrese los criterios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
             <?php endif; ?>
 
             <!-- Video Gallery BEGIN -->
@@ -161,24 +161,24 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 <div class="sidebar-left sidebar space">
     <?php $this->part('verified', array('entity' => $entity)); ?>
     <div class="widget">
-        <h3>Status</h3>
+        <h3>Estado (Status)</h3>
         <?php if($this->isEditable()): ?>
-            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
+            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicación restringida - requiere autorización para crear eventos'},{value: 1, text:'Publicación libre - cualquier persona puede crear eventos'}]">
                 <?php if ($entity->public) : ?>
-                    <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
-                    <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+                    <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicación libre</div>
+                    <p class="venue-status-definition">Cualquier persona puede crear eventos.</p>
                 <?php else: ?>
-                    <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
-                    <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+                    <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicación restringida</div>
+                    <p class="venue-status-definition">Requiere autorización para crear eventos.</p>
                 <?php endif; ?>
             </div>
         <?php else: ?>
             <?php if ($entity->public) : ?>
-                <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
-                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
+                <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicación libre</div>
+                <p class="venue-status-definition">Cualquier persona puede crear eventos.</p>
             <?php else: ?>
-                <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
-                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
+                <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicación restringida</div>
+                <p class="venue-status-definition">Requiere autorización para crear eventos.</p>
             <?php endif; ?>
         <?php endif; ?>
     </div>
@@ -189,7 +189,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 <div class="sidebar space sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.<span class="close"></span></p>
+            <p class="alert info">Para agregar archivos para descargar o links, primero es preciso salvar el espacio.<span class="close"></span></p>
         </div>
     <?php endif; ?>
     <!-- Related Agents BEGIN -->
@@ -198,7 +198,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php if($this->controller->action !== 'create'): ?>
         <div class="widget">
             <?php if($entity->children && $entity->children->count()): ?>
-            <h3>Sub-espaços</h3>
+            <h3>Sub-espacios</h3>
             <ul class="js-slimScroll widget-list">
                 <?php foreach($entity->children as $space): ?>
                 <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
@@ -207,7 +207,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <?php endif; ?>
 
             <?php if($entity->id && $entity->canUser('createChild')): ?>
-            <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Adicionar sub-espaço</a>
+            <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Agregar sub-espacio</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

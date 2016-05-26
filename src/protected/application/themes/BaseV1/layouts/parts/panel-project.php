@@ -11,34 +11,34 @@
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
                 <?php if($entity->registrationFrom || $entity->registrationTo): ?>
                     <div>
-                        <span class="label">Inscrições:</span>
+                        <span class="label">Inscripciones:</span>
                         <?php
                             if($entity->isRegistrationOpen()) echo'open ';
                             if($entity->registrationFrom && !$entity->registrationTo)
-                                echo 'a partir de '.$entity->registrationFrom->format('d/m/Y');
+                                echo 'a partir del '.$entity->registrationFrom->format('d/m/Y');
                             elseif(!$entity->registrationFrom && $entity->registrationTo)
-                                echo ' até '. $entity->registrationTo->format('d/m/Y');
+                                echo ' hasta '. $entity->registrationTo->format('d/m/Y');
                             else
-                                echo 'de '. $entity->registrationFrom->format('d/m/Y') .' a '. $entity->registrationTo->format('d/m/Y');
+                                echo 'del '. $entity->registrationFrom->format('d/m/Y') .' al '. $entity->registrationTo->format('d/m/Y');
                         ?>
                     </div>
                 <?php endif; ?>
-		<div><span class="label">Organização:</span> <?php echo $entity->owner->name; ?></div>
+		<div><span class="label">Organización:</span> <?php echo $entity->owner->name; ?></div>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Project::STATUS_ENABLED): ?>
-            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">eliminar</a>
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_DRAFT): ?>
             <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
-            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">eliminar</a>
 
         <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
                 <?php if($entity->canUser('destroy')): ?>
-                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>
+                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">eliminar definitivamente</a>
                 <?php endif; ?>
         <?php endif; ?>
     </div>

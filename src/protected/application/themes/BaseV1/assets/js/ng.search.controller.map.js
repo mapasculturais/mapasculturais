@@ -98,7 +98,7 @@
                     $window.leaflet.iconOptions[entity]
                 ).bindLabel(
                     entity === 'event' ?
-                        '<center>Eventos encontrados no espaço <br> <strong>'+item.name+'</strong></center>'
+                        '<center>Eventos encontrados en el espacio <br> <strong>'+item.name+'</strong></center>'
                         : item.name
                 ).on('click', function() {
 

@@ -34,8 +34,8 @@ return array(
     'app.dbUpdatesDisabled' => false,
     'app.defaultApiOutput' => 'json',
 
-    'app.siteName' => 'Mapas Culturais',
-    'app.siteDescription' => 'O Mapas Culturais é uma plataforma livre para mapeamento cultural.',
+    'app.siteName' => 'Mapas Culturales',
+    'app.siteDescription' => 'Mapas Culturales es una plataforma libre para mapeamento cultural.',
 
     'api.accessControlAllowOrigin' => '*',
 
@@ -81,19 +81,19 @@ return array(
 
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais
-        'regiao'        => 'Região',        // metadata: geoRegiao
+        'regiao'        => 'Región',        // metadata: geoRegiao
         'estado'        => 'Estado',        // metadata: geoEstado
-        'mesorregiao'   => 'Mesorregião',   // metadata: geoMesorregiao
-        'microrregiao'  => 'Microrregião',  // metadata: geoMicrorregiao
-        'municipio'     => 'Município',     // metadata: geoMunicipio
+        'mesorregiao'   => 'Mesorregión',   // metadata: geoMesorregiao
+        'microrregiao'  => 'Microrregión',  // metadata: geoMicrorregiao
+        'municipio'     => 'Municipio',     // metadata: geoMunicipio
         'zona'          => 'Zona',          // metadata: geoZona
-        'subprefeitura' => 'Subprefeitura', // metadata: geoSubprefeitura
+        'subprefeitura' => 'Alcaldía', // metadata: geoSubprefeitura
         'distrito'      => 'Distrito'       // metadata: geoDistrito
     ],
 
     'registration.agentRelationsOptions' => array(
-        'dontUse' => 'Não utilizar',
-        'required' => 'Obrigatório',
+        'dontUse' => 'No utilizar',
+        'required' => 'Obligatorio',
         'optional' => 'Opcional'
     ),
     'registration.propertiesToExport' => array(
@@ -121,26 +121,27 @@ return array(
     ),
     'registration.ownerDefinition' => array(
         'required' => true,
-        'label' => 'Agente responsável pela inscrição',
+        'label' => 'Agente responsable por la inscripción',
         'agentRelationGroupName' => 'owner',
-        'description' => 'Agente individual (pessoa física) com os campos CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos',
+        'description' => 'Agente individual (persona física) con los campos CI, Fecha de nacimiento/fundación, Género, Email Privado y Teléfono 1 obligatoriamente completados',
         'type' => 1,
-        'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+       // 'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+    	'requiredProperties' => array('documento', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
     'registration.agentRelations' => array(
         array(
             'required' => false,
-            'label' => 'Instituição responsável',
+            'label' => 'Institución responsable',
             'agentRelationGroupName' => 'instituicao',
-            'description' => 'Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos',
+            'description' => 'Agente colectivo (persona jurídica) con los campos RUT, Fecha de nacimiento/fundación, Email Privado y Teléfono 1 obligatoriamente completados',
             'type' => 2,
             'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
         array(
             'required' => false,
-            'label' => 'Coletivo',
+            'label' => 'Colectivo',
             'agentRelationGroupName' => 'coletivo',
-            'description' => 'Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email Privado obrigatoriamente preenchidos',
+            'description' => 'Agente colectivo sin RUT, con los campos Fecha de nacimiento/fundación e Email Privado obligatoriamente completados',
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
@@ -150,11 +151,11 @@ return array(
     'app.entityPropertiesLabels' => array(
         '@default' => array(
             'id' => 'Id',
-            'name' => 'Nome',
-            'createTimestamp' => 'Data de Criação',
-            'shortDescription' => 'Descrição Curta',
-            'longDescription' => 'Descrição Longa',
-            'status' => 'Status',
+            'name' => 'Nombre',
+            'createTimestamp' => 'Fecha de creación',
+            'shortDescription' => 'Descripción corta',
+            'longDescription' => 'Descripción larga',
+            'status' => 'Estatus',
             'location' => 'Coordenada Geográfica',
             '_type' => 'Tipo'
         ),
@@ -317,7 +318,7 @@ return array(
                 'agent'         => 'Agente',    'agents'        => 'Agentes',
                 'space'         => 'Espaço',    'spaces'        => 'Espaços',
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
-                'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
+                'registration'  => 'Inscrição', 'registrations' => 'Inscripciones',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',
             //actions
                 'list'          => 'Listando',

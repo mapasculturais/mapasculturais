@@ -11,9 +11,9 @@ if ($this->isEditable() || "$entity" != "$owner"):
         <?php if ($this->isEditable() && $entity->canUser('changeOwner')): ?>
             <h6 class="js-search js-include-editable"
                 data-field-name='ownerId'
-                data-emptytext="Selecione um agente"
+                data-emptytext="Seleccione un agente"
                 data-search-box-width="400px"
-                data-search-box-placeholder="Selecione um agente"
+                data-search-box-placeholder="Seleccione un agente"
                 data-entity-controller="agent"
                 data-search-result-template="#agent-search-result-template"
                 data-selection-template="#agent-response-template"
@@ -21,7 +21,7 @@ if ($this->isEditable() || "$entity" != "$owner"):
                 data-selection-format="changeOwner"
                 data-auto-open="true"
                 data-value="<?php echo $owner->id ?>"
-                title="Repassar propriedade"
+                title="Pasar propriedad"
                 ><?php echo $owner->name ?></h6>
             <?php else: ?>
             <h6 class='js-owner-name'><a href="<?php echo $app->createUrl('agent', 'single', array($owner->id)) ?>"><?php echo $owner->name ?></a></h6>
@@ -32,14 +32,14 @@ if ($this->isEditable() || "$entity" != "$owner"):
         <p class="owner-description js-owner-description"><?php echo nl2br($owner->shortDescription); ?></p>
         <div class="clearfix">
             <?php if (!$this->isEditable() && !$app->user->is('guest')): ?>
-                <a class="btn btn-small btn-default staging-hidden" href="#">Reportar erro</a>
+                <a class="btn btn-small btn-default staging-hidden" href="#">Reportar error</a>
                 <?php if($entity->canUser('@control')): ?>
-                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)">Ceder propriedade</a>
+                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)">Ceder propriedad</a>
                 <?php else: ?>
-                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedade</a>
+                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)">Reivindicar propriedad</a>
                 <?php endif; ?>
-                <edit-box id="editbox-change-owner" position="right" title="Selecione o agente para o qual você deseja passar a propriedade deste <?php echo strtolower($entity->getEntityType()) ?>" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.spinner">
-                    <find-entity id='find-entity-change-owner' entity="agent" no-results-text="Nenhum agente encontrado" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
+                <edit-box id="editbox-change-owner" position="right" title="Seleccione el agente para el cual desea pasar la propriedad de este <?php echo strtolower($entity->getEntityType()) ?>" cancel-label="Cancelar" close-on-cancel='true' spinner-condition="data.spinner">
+                    <find-entity id='find-entity-change-owner' entity="agent" no-results-text="Ningún agente encontrado" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
                 </edit-box>
             <?php endif; ?>
         </div>

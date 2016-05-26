@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creof/doctrine2-spatial/zipball/6dfc33b4729a96de9592dc57b2803f5247f50a02",
+                "url": "https://api.github.com/repos/creof/doctrine2-spatial/zipball/9fe9658071c2b9064cf972dca014a48e5ecdccf6",
                 "reference": "6dfc33b4729a96de9592dc57b2803f5247f50a02",
                 "shasum": ""
             },
@@ -1967,16 +1967,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "1.0.3",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "0c536453114987b7e0f6f72369d3be0af8dd1109"
+                "reference": "b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/0c536453114987b7e0f6f72369d3be0af8dd1109",
-                "reference": "0c536453114987b7e0f6f72369d3be0af8dd1109",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb",
+                "reference": "b8ecd59f48868f5cefab21cc3f1cf4566c9cdcfb",
                 "shasum": ""
             },
             "require": {
@@ -2002,7 +2002,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -2021,13 +2021,13 @@
                 }
             ],
             "description": "The most awesome validation engine ever created for PHP",
-            "homepage": "http://respect.li",
+            "homepage": "http://respect.github.io/Validation/",
             "keywords": [
                 "respect",
                 "validation",
                 "validator"
             ],
-            "time": "2015-11-25 20:03:11"
+            "time": "2016-05-07 18:54:08"
         },
         {
             "name": "sebastian/comparator",

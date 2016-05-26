@@ -268,7 +268,7 @@
                     console.log(entity , searchData, MapasCulturais.searchFilters);
                 }
                 
-                var selectData = 'id,singleUrl,name,type,shortDescription,terms';
+                var selectData = 'id,singleUrl,name,type,shortDescription,En_Estado,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
                 var exportEntity = entity;
                 if(entity === 'space'){
@@ -284,6 +284,7 @@
                 }else if(entity === 'event'){
                     selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                 }
+                
 
                 if(data.global.viewMode === 'list'){
                     searchData['@select'] = selectData;

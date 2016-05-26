@@ -1,26 +1,5 @@
 <?php if($app->getConfig('auth.provider') === 'Fake' && $app->user->id !== 1): ob_start(); ?>
-    <style>
-        span.fake-dummy{
-            white-space:nowrap; padding: 0.5rem 0 0 0.5rem; cursor:default;
-        }
-        span.fake-dummy a{
-            display:inline !important; font-weight:bold !important; vertical-align: baseline !important;
-        }
-    </style>
-    <span class="fake-dummy">
-        Admin:
-        <a onclick="jQuery.get('<?php echo $app->createUrl('auth', 'fakeLogin') ?>/?fake_authentication_user_id=1',
-            function(){
-                console.info('Logado como Admin');
-                MapasCulturais.Messages.success('Logado como Admin.');
-            })">
-            Login
-        </a>
-        <a onclick="jQuery.get('<?php echo $app->createUrl('auth', 'fakeLogin') ?>/?fake_authentication_user_id=1',
-            function(){ location.reload();})">
-            Reload
-        </a>
-    </span>
+    
 <?php $fake_options = ob_get_clean(); endif; ?>
 
 <nav id="main-nav" class="clearfix">
@@ -63,7 +42,7 @@
             <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
                 <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                     <div class="icon icon-project"></div>
-                    <div class="menu-item-label">Projetos</div>
+                    <div class="menu-item-label">Proyectos</div>
                 </a>
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
@@ -76,13 +55,13 @@
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="icon icon-notifications"></div>
-                    <div class="menu-item-label">Notificações</div>
+                    <div class="menu-item-label">Notificaciones</div>
                 </a>
                 <ul class="submenu hidden">
                     <li>
                         <div class="clearfix">
-                            <h6 class="alignleft">Notificações</h6>
-                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="Marcar todas como lidas"></a>
+                            <h6 class="alignleft">Notificaciones</h6>
+                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="Marcar todas como leídas"></a>
                         </div>
                         <ul>
                             <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
@@ -90,7 +69,7 @@
                                     <span ng-bind-html="notification.message"></span>
                                     <br>
 
-                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)">aceitar</a>
+                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)">aceptar</a>
 
                                     <span ng-if="notification.request.permissionTo.reject">
                                         <span ng-if="notification.request.requesterUser.id === MapasCulturais.userId">
@@ -98,7 +77,7 @@
                                             <a class="btn btn-small btn-success" ng-click="delete(notification.id)">ok</a>
                                         </span>
                                         <span ng-if="notification.request.requesterUser.id !== MapasCulturais.userId">
-                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)">rejeitar</a>
+                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)">rechazar</a>
                                         </span>
                                     </span>
 
@@ -110,7 +89,7 @@
                             </li>
                         </ul>
                         <a href="<?php echo $app->createUrl('panel'); ?>">
-                            Ver todas atividades
+                            Ver todas las actividades
                         </a>
                     </li>
                 </ul>
@@ -132,12 +111,12 @@
                 </a>
                 <ul class="submenu hidden">
                     <li>
-                        <a href="<?php echo $app->createUrl('panel'); ?>">Painel</a>
+                        <a href="<?php echo $app->createUrl('panel'); ?>">Panel</a>
                     </li>
                     <?php if($app->isEnabled('events')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
+                            <a href="<?php echo $app->createUrl('panel', 'events') ?>">Mis Eventos</a>
                             <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
@@ -146,7 +125,7 @@
                     <?php if($app->isEnabled('agents')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
+                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Mis Agentes</a>
                             <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
@@ -164,26 +143,26 @@
                     <?php if($app->isEnabled('projects')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
+                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Mis Proyectos</a>
                             <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
                         
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
+                            <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Mis Inscripciones</a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
                         
                     <li class="row"></li>
-                    <!--<li><a href="#">Ajuda</a></li>-->
+                    <!--<li><a href="#">Ayuda</a></li>-->
                     <li>
                         <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
-                            <a href="<?php echo $app->createUrl('auth'); ?>">Trocar Usuário</a>
+                            <a href="<?php echo $app->createUrl('auth'); ?>">Cambiar Usuario</a>
                             <?php if(!empty($fake_options)) echo $fake_options; ?>
                         <?php endif; ?>
-                        <a href="<?php echo $app->createUrl('auth', 'logout'); ?>">Sair</a>
+                        <a href="<?php echo $app->createUrl('auth', 'logout'); ?>">Salir</a>
                     </li>
                 </ul>
             </li>
@@ -196,9 +175,7 @@
                     <div class="icon icon-login"></div>
                     <div class="menu-item-label">Entrar</div>
                 </a>
-                <?php if(!empty($fake_options)): ?>
-                    <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
-                <?php endif; ?>
+                
             </li>
             <!--.login-->
             <?php $this->applyTemplateHook('nav.main.login','after'); ?>

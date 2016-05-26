@@ -11,7 +11,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                         data-response-target='#link-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='editar'></a>
-                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='Excluir este link?' title='excluir'></a>
+                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='Eliminar este link?' title='eliminar'></a>
                 </div>
             </li>";
 ?>
@@ -23,10 +23,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
             <a class="add js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                data-response-target="ul.js-metalist"
-               data-dialog-title="Adicionar Link"
+               data-dialog-title="Agregar Link"
                data-metalist-action='insert'
                data-response-template="<?php echo $template ?>"
-               title="Clique para adicionar links">
+               title="Cliquee para agregar links">
             </a>
         <?php endif; ?>
         <ul class="js-metalist widget-list js-slimScroll">
@@ -42,7 +42,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                                data-metalist-action="edit"
                                data-item="<?php echo htmlentities(json_encode($link)) ?>"
                                href="#" title='editar'></a>
-                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Excluir este link?" title='excluir'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Eliminar este link?" title='eliminar'></a>
                         </div>
                     <?php endif; ?>
                 </li>
@@ -53,9 +53,9 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
              data-action-url="<?php echo $this->controller->createUrl('metalist', array('id' => $entity->id)) ?>"
              data-response-template="<?php echo $template ?>"
              data-metalist-group="links"
-             data-metalist-title-label="Título" data-metalist-value-label="Endereço (com http://)" data-metalist-description-label="Descrição">
+             data-metalist-title-label="Título" data-metalist-value-label="Dirección (con http://)" data-metalist-description-label="Descripción">
             <?php if($this->controller->action == 'create'): ?>
-                <span class="js-dialog-disabled" data-message="Para adicionar links você primeiro deve salvar."></span>
+                <span class="js-dialog-disabled" data-message="Para agregar links primero debe salvar."></span>
             <?php else: ?>
                 <?php $this->part('metalist-form-template'); ?>
             <?php endif; ?>

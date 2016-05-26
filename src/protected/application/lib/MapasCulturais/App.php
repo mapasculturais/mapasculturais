@@ -605,13 +605,13 @@ class App extends \Slim\Slim{
             'links' => new Definitions\MetaListGroup('links',
                 [
                     'title' => [
-                        'label' => 'Nome'
+                        'label' => 'Nombre'
                     ],
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => 'El link del video es obligatorio',
+                            "v::url('vimeo.com')" => "Ingrese el link de un video de Vimeo o Youtube"
                         ]
                     ],
                 ],
@@ -621,13 +621,13 @@ class App extends \Slim\Slim{
             'videos' => new Definitions\MetaListGroup('videos',
                 [
                     'title' => [
-                        'label' => 'Nome'
+                        'label' => 'Nombre'
                     ],
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => 'El link del video es obligatorio',
+                            "v::url('vimeo.com')" => "Ingrese el link de un video de Vimeo o Youtube"
                         ]
                     ],
                 ],

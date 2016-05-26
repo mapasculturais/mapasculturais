@@ -41,14 +41,14 @@ class Agent extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do agente é obrigatório'
+            'required' => 'El nombre del agente es obligatorio'
         ],
         'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+            'required' => 'La Descripción corta es obligatoria',
+            'v::stringType()->length(0,400)' => 'La Descripción corta debe tener un máximo de 400 caracteres'
         ],
         'type' => [
-            'required' => 'O tipo do agente é obrigatório',
+            'required' => 'El tipo de agente es obligatorio',
         ]
     ];
 
