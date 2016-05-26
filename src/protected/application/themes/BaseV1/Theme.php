@@ -910,14 +910,43 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
-        
+//        eval(\Psy\sh());
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
             $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
         }
     }
     
     protected function _getAdvancedFilters(){
-        return [];
+        return [
+            'space' => [
+                [
+                    'fieldtype' => 'text',
+                    'label' => 'Endereço',
+                    'filter' => [
+                        'endereco' => 'ILIKE(*[val]*)'
+                    ],
+                    'parsevalue' => []
+                        
+                ]
+            ],
+            'agent' => [
+                [
+                    'fieldtype' => 'text',
+                    'label' => 'Endereço',
+                    'filter' => [
+                        'endereco' => 'ILIKE(*[val]*)'
+                    ],
+                    'parsevalue' => []
+                        
+                ]
+            ],
+            'event' => [
+                
+            ],
+            'project' => [
+                
+            ]
+        ];
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){

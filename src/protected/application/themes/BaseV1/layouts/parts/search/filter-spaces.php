@@ -1,7 +1,3 @@
-<?php 
-$this->addAdvancedFiltersToJs('space');
-
-?>
 <div id="filter-spaces" class="entity-filter clearfix" ng-show="data.global.filterEntity === 'space'">
     <header class="clearfix">
         <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
@@ -57,7 +53,8 @@ $this->addAdvancedFiltersToJs('space');
         </div>
         <!-- div.verified-filter -->
     </div>
-    <div ng-if="GlobalConfiguration" class="advanced-filters">
+    {{GlobalConfiguration}}
+    <div ng-if="" class="advanced-filters">
         <div class="filter search-filter--adv1">
             <span class="label">Filtro avançado 1</span>
             <div class="dropdown">
