@@ -6,7 +6,7 @@ Mapas Culturales es una plataforma colaborativa que reúne información sobre lo
 
 El Instituto TIM, en colaboración con una serie de Departamentos Cultura, ha actuado para la ejecución de los Mapas Culturales en la gestión pública de las ciudades y estados. La plataforma ya está en uso, por ejemplo, en São Paulo (http://spcultura.prefeitura.sp.gov.br/) y en el estado de Río Grande do Sul (http://mapa.cultura.rs.gov.br/).
 
-En Julio de 2015 comenzamos este proyecto de traducción y adaptación de la plataforma.
+En Julio de 2015 (<a href="http://libre.coop/">Libre Coop</a>) comenzó este proyecto de traducción y adaptación de la plataforma para la Dirección de Cultura del <a href="http://www.mec.gub.uy/"> Ministerio de Educación y Cultura</a> de Uruguay.
 
 La plataforma está en uso en diversos municipios, estados, gobierno federal de Brasil, en varios proyectos del ministerio de cultura de Brasil. Las instalaciones son:
 
