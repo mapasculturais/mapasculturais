@@ -43,8 +43,8 @@
             <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
         </div>
         <!--.filter-->
-        <div class="filter show-advanced-filters">
-            <span class="icon icon-check"></span>
+        <div ng-if="hasAdvancedFilters('space')" ng-click="data.space.showAdvancedFilters = !data.space.showAdvancedFilters" class="filter show-advanced-filters">
+            <span ng-class="{selected: data.space.showAdvancedFilters}" class="icon icon-check"></span>
             <span class="label show-label hltip" title="Exibir opções de filtro avançadas">Opções avançadas</span>
         </div>
         <!--.filter-->
@@ -53,8 +53,15 @@
         </div>
         <!-- div.verified-filter -->
     </div>
-    {{GlobalConfiguration}}
-    <div ng-if="" class="advanced-filters">
+    
+    <div ng-if="hasAdvancedFilters('space') && data.space.showAdvancedFilters" ng-repeat="entity in ['space']" class="advanced-filters" >
+        <!-- colocar este conteudo numa diretiva ou ng-include -->
+        <div ng-repeat="filter in advancedFilters[entity]">
+            <div ng-if="filter.fieldType === 'text'">
+                <input ng-model="data[entity].advancedFilters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
+            </div>
+        </div>
+        <?php /*
         <div class="filter search-filter--adv1">
             <span class="label">Filtro avançado 1</span>
             <div class="dropdown">
@@ -139,6 +146,8 @@
             </div>
         </div>
         <!--.filter-->
+         */
+        ?>
     </div>
 </div>
 <!--#filter-spaces-->

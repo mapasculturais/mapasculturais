@@ -920,23 +920,26 @@ class Theme extends MapasCulturais\Theme {
         return [
             'space' => [
                 [
-                    'fieldtype' => 'text',
+                    'fieldType' => 'text',
                     'label' => 'Endereço',
+                    'placeholder' => 'Busque por endereço',
                     'filter' => [
-                        'endereco' => 'ILIKE(*[val]*)'
+                        'param' => 'endereco',
+                        'value' => 'ILIKE(*{val}*)'
                     ],
-                    'parsevalue' => []
+                    'parseValue' => []
                         
                 ]
             ],
             'agent' => [
                 [
-                    'fieldtype' => 'text',
+                    'fieldType' => 'text',
                     'label' => 'Endereço',
                     'filter' => [
-                        'endereco' => 'ILIKE(*[val]*)'
+                        'param' => 'endereco',
+                        'value' => 'ILIKE(*{val}*)'
                     ],
-                    'parsevalue' => []
+                    'parseValue' => []
                         
                 ]
             ],
