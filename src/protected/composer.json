@@ -10,7 +10,7 @@
         "doctrine/orm": "2.*",
         "doctrine/dbal": "2.*",
         "opauth/openid": "*",
-        "respect/validation": ">=1.1.1",
+        "respect/validation": "*",
         "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",

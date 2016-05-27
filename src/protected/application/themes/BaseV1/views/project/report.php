@@ -44,7 +44,7 @@ $_properties = $app->config['registration.propertiesToExport'];
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
-            <th>Arquivos</th>
+            <th>Archivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
