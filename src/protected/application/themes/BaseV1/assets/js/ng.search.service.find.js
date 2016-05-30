@@ -42,7 +42,7 @@
                 var entityQueryData = data2searchData(activeEntity, data.agent);
                 if(!angular.equals(entityQueryData, lastQueries[activeEntity]) || !compareEnabledEntities){
                     lastQueries[activeEntity] = angular.copy(entityQueryData);
-                    callApi(entityQueryData, entityQueryData);
+                    callApi(activeEntity, entityQueryData);
                 }else{
                     results[activeEntity] = $rootScope.lastResult[activeEntity];
                 }
