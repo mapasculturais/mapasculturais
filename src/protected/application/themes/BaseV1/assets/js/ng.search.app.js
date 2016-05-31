@@ -94,7 +94,11 @@
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     ['space', 'agent', 'event', 'project'].forEach(function(entity){
         MapasCulturais.advancedFilters[entity].forEach(function(filter){
-            skeletonData[entity].advancedFilters[filter.filter.param] = null;
+            if(filter.isArray){
+                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+            } else {
+                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+            }
         });
     });
 

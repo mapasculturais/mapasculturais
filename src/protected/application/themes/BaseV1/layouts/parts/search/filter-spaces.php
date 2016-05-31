@@ -56,9 +56,21 @@
     
     <div ng-if="hasAdvancedFilters('space') && data.space.showAdvancedFilters" ng-repeat="entity in ['space']" class="advanced-filters" >
         <!-- colocar este conteudo numa diretiva ou ng-include -->
-        <div ng-repeat="filter in advancedFilters[entity]">
+        <div ng-repeat="filter in advancedFilters[entity]" class="filter">
             <div ng-if="filter.fieldType === 'text'">
                 <input ng-model="data[entity].advancedFilters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
+            </div>
+            <div ng-if="filter.fieldType === 'checklist'">
+                <div class="dropdown">
+                    <div class="placeholder">{{filter.placeholder}}</div>
+                    <div class="submenu-dropdown">
+                        <ul class="filter-list" style="max-height:400px; overflow-y: auto">
+                            <li ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].advancedFilters[filter.filter.param], option.value)}" ng-click="toggleSelection(data[entity].advancedFilters[filter.filter.param], option.value)">
+                                <span>{{option.label}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <?php /*

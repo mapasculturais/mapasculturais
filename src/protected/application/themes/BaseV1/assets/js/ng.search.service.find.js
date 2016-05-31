@@ -247,6 +247,17 @@
                         return filter;
                     }
                 })
+                
+                if(filter.parseValue && filter.parseValue.length > 0){
+                    filter.parseValue.forEach(function(parser){
+                        switch(parser){
+                            case 'join':
+                                val = val.join(',');
+                            break;
+                        }
+                    });
+                }
+                
                 if(val){
                     var parsed = filter.filter.value.replace(/\{val\}/g, val);
                     searchData[key] = parsed;
