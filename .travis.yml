@@ -13,7 +13,7 @@ matrix:
 
 install:
   - composer self-update && composer --version
-  - pushd src/protected; composer install --prefer-dist; popd
+  - pushd src/protected; composer install --prefer-dist --no-dev; popd
 
 before_script:
   - gem install sass
