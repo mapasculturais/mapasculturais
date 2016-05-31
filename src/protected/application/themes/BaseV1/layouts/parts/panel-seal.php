@@ -9,7 +9,6 @@ use MapasCulturais\Entities\Seal;
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
         <div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
-        <div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms['area'])?></div>
     </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>

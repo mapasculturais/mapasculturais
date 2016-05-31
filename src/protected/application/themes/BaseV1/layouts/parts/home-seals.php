@@ -4,10 +4,9 @@ if(!$app->isEnabled('seals')){
     return;
 }
 
-$class_seal = 'MapasCulturais\Entities\Seal';
-$num_seals             = $this->getNumEntities($class_seal);
-$num_verified_seals    = $this->getNumEntities($class_seal, true);
-$seal_areas = array_values($app->getRegisteredTaxonomy($class_seal, 'area')->restrictedTerms);
+$class_seal				= 'MapasCulturais\Entities\Seal';
+$num_seals				= $this->getNumEntities($class_seal);
+$num_verified_seals		= $this->getNumEntities($class_seal, true);
 sort($seal_areas);
 
 $seal_types = $app->getRegisteredEntityTypes($class_seal);
@@ -42,13 +41,6 @@ $url_search_seals = $this->searchSealsUrl;
             <li class="active"><a href="#seal-terms">Área de atuação</a></li>
             <li><a href="#seal-types">Tipo</a></li>
         </ul>
-        <div id="seal-terms" class="tag-box">
-            <div>
-                <?php foreach ($seal_areas as $i => $t): ?>
-                    <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(seal:(areas:!(<?php echo $i ?>)),global:(enabled:(seal:!t),filterEntity:seal))"><?php echo $t ?></a>
-                <?php endforeach; ?>
-            </div>
-        </div>
         <div id="agent-types" class="tag-box">
             <div>
                 <?php foreach ($seal_types as $t): ?>

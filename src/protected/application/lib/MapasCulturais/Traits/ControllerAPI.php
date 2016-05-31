@@ -194,7 +194,7 @@ trait ControllerAPI{
             $dql_joins = "";
             $dql_select = [];
             $dql_select_joins = [];
-
+	
             if($class::usesMetadata()){
                 $metadata_class = $class::getMetadataClassName();
 
@@ -206,7 +206,7 @@ trait ControllerAPI{
                     $entity_metadata[] = $meta->key;
                 }
             }
-
+            
             if($class::usesTaxonomies()){
                 $taxonomies = [];
                 $taxonomies_ids = [];
