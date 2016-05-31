@@ -17,18 +17,15 @@ use MapasCulturais\App;
  */
 class Seal extends \MapasCulturais\Entity
 {
-    use Traits\EntityTypes,
+    use Traits\EntityOwnerAgent,
+    	Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityAvatar,
-        Traits\EntityMetaLists,
-        Traits\EntityGeoLocation,
-        Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
-
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -66,7 +63,7 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="agent_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="seal_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
@@ -83,27 +80,6 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="public_location", type="boolean", nullable=true)
-     */
-    //protected $publicLocation = true; [kco]
-
-    /**
-     * @var \MapasCulturais\Types\GeoPoint
-     *
-     * @ORM\Column(name="location", type="point", nullable=false)
-     */
-    //protected $location; [kco]
-
-    /**
-     * @var geography
-     *
-     * @ORM\Column(name="_geo_location", type="geography", nullable=false)
-     */
-    //protected $_geoLocation; [kco]
 
     /**
      * @var string
@@ -133,6 +109,16 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+   /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * })
+     */
+    protected $agent;
+    
     /**
      * @var \MapasCulturais\Entities\Seal
      *
@@ -143,24 +129,26 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $parent;
 
-
     /**
-     * @var \MapasCulturais\Entities\User
+     * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      */
-    protected $user;
-
+    protected $owner;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     * @ORM\Column(name="agent_id", type="integer", nullable=false)
      */
-    protected $userId;
+    protected $_ownerId;
+
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     */
+    protected $_seals = [];
+    
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
@@ -168,162 +156,99 @@ class Seal extends \MapasCulturais\Entity
     protected $__metadata;
     
     /**
-     * @var \MapasCulturais\Entities\SealTermRelation[] TermRelation
+     * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
      */
-    protected $__termRelations;
-
-    /**
-     * Constructor
-     */
-    public function __construct($user = null) {
-        $this->user = $user ? $user : App::i()->user;
-        $this->type = 1;
-
-        parent::__construct();
-    }
-
-    function setAsUserProfile(){
-        $this->checkPermission('setAsUserProfile');
-
-        $this->user->profile = $this;
-
-        $this->user->save(true);
-    }
-
-    function setParentAsNull($flush = true){
-        $this->parent = null;
-
+    protected $__agentRelations;
+    
+    function publish($flush = false){
+        $this->checkPermission('publish');
+        
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        
+        $this->status = self::STATUS_ENABLED;
         $this->save($flush);
+        
+        $app->enableAccessControl();
     }
 
-    function getIsUserProfile(){
-        return $this->equals($this->user->profile);
-    }
+    public function save($flush = false) {
+        App::i()->hook("entity($this).save:requests", function(){
+            if($this->_newProject !== false){
+                try{
+                    if($this->_newProject){
+                        $this->_newProject->checkPermission('createEvents');
+                    }
 
-    function getOwnerUser(){
-        return $this->user ? $this->user : App::i()->user;
-    }
+                    $this->project = $this->_newProject;
 
-    function getOwner(){
-        if($parent = $this->getParent()){
-            return $parent;
-        }else{
-            return $this->user ? $this->user->profile : App::i()->user->profile;
-        }
-    }
+                }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
+                    if(!App::i()->isWorkflowEnabled())
+                        throw $e;
 
-    function setOwner(Seal $parent = null){
-        $this->setParent($parent);
-    }
+                    $request = new RequestEventProject;
+                    $request->origin = $this;
+                    $request->destination = $this->_newProject;
+                    $this->_newProject = false;
 
-
-    function setOwnerId($owner_id){
-        $owner = App::i()->repo('Seal')->find($owner_id);
-        $this->setParent($owner);
-    }
-
-    private $_newUser = false;
-
-    function setUser(User $user){
-        $this->_newUser = $user;
-        if($this->_newParent === false)
-            $this->_newParent = $user->profile;
-    }
-
-    function setParent(Seal $parent = null){
-        $this->nestedSetParent($parent);
-        if($parent)
-            $this->setUser($parent->user);
-    }
-
-    function getParent(){
-        return $this->parent;
-    }
-
-    protected function _saveNested($flush = false) {
-        if($this->_newParent !== false){
-            $app = App::i();
-
-            if(is_object($this->parent) && is_object($this->_newParent) && $this->parent->equals($this->_newParent) || is_null($this->parent) && is_null($this->_newParent)){
-                return;
-            }
-
-            try{
-                $this->checkPermission('changeOwner');
-                if($this->_newParent){
-                    $this->_newParent->checkPermission('@control');
-                    $this->parent = $this->_newParent;
-                    $this->user = $this->_newUser;
-                    $this->_newParent = false;
+                    throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
                 }
-
-            }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-                if(!$app->isWorkflowEnabled())
-                    throw $e;
-
-                $destination = $this->_newParent;
-                $this->_newParent = false;
-
-                $ar = new \MapasCulturais\Entities\RequestChangeOwnership;
-                $ar->origin = $this;
-                $ar->destination = $destination;
-
-                throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($ar);
-
             }
-        }
-    }
-
-    function jsonSerialize() {
-        $result = parent::jsonSerialize();
-        unset($result['user']);
-        return $result;
+        });
+        parent::save($flush);
     }
 
     protected function canUserCreate($user){
-        if($user->is('guest'))
-            return true;
-        else
-            return $this->genericPermissionVerification($user);
-    }
+        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
 
-    protected function canUserRemove($user){
-
-        if($this->isUserProfile)
-            return false;
-        else
-            return parent::canUserRemove($user);
-    }
-
-    protected function canUserDestroy($user){
-        if($this->isUserProfile)
-            return false;
-        else
-            return $user->is('superAdmin');
-    }
-
-    protected function canUserChangeOwner($user){
-        if($this->isUserProfile)
-            return false;
-
-        if($user->is('guest'))
-            return false;
-
-        if($user->is('admin'))
-            return true;
-
-        return $this->getOwner()->canUser('modify') && $this->canUser('modify');
-    }
-
-
-    /** @ORM\PrePersist */
-    public function __setParent($args = null){
-        if($this->equals($this->ownerUser->profile)){
-            $this->parent = null;
+        if($can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
         }
+    }
+
+    protected function canUserModify($user){
+        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
+        if($this->_projectChanged && $can && $this->project){
+            return $this->project->userHasControl($user);
+        }else{
+            return $can;
+        }
+    }
+    
+    protected function canUserPublish($user){
+        if($user->is('guest')){
+            return false;
+        }
+        
+        if($user->is('admin')){
+            return true;
+        }
+        
+        if($this->canUser('@control', $user)){
+            return true;
+        }
+        
+        if($this->project && $this->project->canUser('@control', $user)){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    protected function canUserView($user){
+        if($this->status === self::STATUS_ENABLED){
+            return true;
+        }else if($this->status === self::STATUS_DRAFT){
+            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
+        }
+        
+        return false;
     }
 
     //============================================================= //

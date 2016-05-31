@@ -275,6 +275,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
+        	'selo'  	=> array('seal',	'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -294,6 +295,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
+        	'selos'      	 => 'seal',
             'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration'
         ),
@@ -305,6 +307,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+        	'selos'      	=> 'seals',
             'inscricoes'    => 'registrations'
         ),
 
@@ -316,6 +319,7 @@ return array(
                 'event'         => 'Evento',    'events'        => 'Eventos',
                 'agent'         => 'Agente',    'agents'        => 'Agentes',
                 'space'         => 'Espaço',    'spaces'        => 'Espaços',
+        		'seal'       	=> 'Selo',   	'seals'      	=> 'Selos',
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
                 'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',
