@@ -967,7 +967,17 @@ class Theme extends MapasCulturais\Theme {
                         ['value' => 'SP', 'label' => 'São Paulo'],
                         ['value' => 'SE', 'label' => 'Sergipe'],
                         ['value' => 'TO', 'label' => 'Tocantins'],
-                    ]
+                    ],
+                ],
+                [
+                    'fieldType' => 'text',
+                    'label' => 'Município',
+                    'placeholder' => 'Busque por Município',
+                    'filter' => [
+                        'param' => 'En_Municipio',
+                        'value' => 'ILIKE(*{val}*)'
+                    ],
+                    'parseValue' => []
                 ],
             ],
             'agent' => [
