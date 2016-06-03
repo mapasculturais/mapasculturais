@@ -61,6 +61,7 @@
             areas: [],
             type: null,
             isVerified: false,
+            showAdvancedFilters:false,
             advancedFilters: {}
         },
         space: {
@@ -69,6 +70,7 @@
             types: [],
             acessibilidade: false,
             isVerified: false,
+            showAdvancedFilters:false,
             advancedFilters: {}
         },
         event: {
@@ -78,6 +80,7 @@
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
             classificacaoEtaria: [],
             isVerified: false,
+            showAdvancedFilters:false,
             advancedFilters: {}
         },
         project: {
@@ -87,6 +90,7 @@
             isVerified: false,
             // registration open
             ropen: false,
+            showAdvancedFilters:false,
             advancedFilters: {}
         }
     };

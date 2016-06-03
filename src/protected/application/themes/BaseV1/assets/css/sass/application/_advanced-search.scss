@@ -57,15 +57,31 @@
 //** entity filter id's to set its background-color
 #filter-events {
     background: $brand-event;
+    
+    .advanced-filters {
+        background: $brand-event;
+    }
 }
 #filter-agents {
     background: $brand-agent;
+    
+    .advanced-filters {
+        background: $brand-agent;
+    }
 }
 #filter-spaces {
     background: $brand-space;
+    
+    .advanced-filters {
+        background: $brand-space;
+    }
 }
 #filter-projects {
     background: $brand-project;
+    
+    .advanced-filters {
+        background: $brand-project;
+    }
 }
 //** each filter set has a class .filter
 .filter {
@@ -164,6 +180,7 @@
 .icon-show-advanced-filters {
     &:before {
         content: $unicode-show-advanced-search;
+        font-size: 2em;
     }
 }
 
@@ -185,18 +202,8 @@
             height: 34px;
         }
     }
-    .simple-filters {
-        overflow: hidden;
-        padding-bottom: $padding-base;
-    }
     .advanced-filters {
-        border-top: 1px solid $brand-accent;
-        padding-top: $padding-base;
-        > .filter {
-            &:first-child {
-                border-left: 0;
-            }
-        }
+        
     }
 }
 .filter {
@@ -208,5 +215,38 @@
 .verified-filter {
     @media screen and (min-width: $screen-desktop) {
         float: left;
+    }
+}
+
+.show-advanced-filters {
+    float: right;
+    margin: .2em 1em 0 0;
+    .icon {
+        cursor: pointer;
+    }
+    
+    .advanced-filters {
+        position: absolute;
+        right:1em;
+        margin-top:80px;
+        min-width: 250px;
+        padding: 1em;
+        .advanced-filter {
+            padding-bottom: 1em;
+            input { 
+                margin: 0;
+                width:100%;    
+            }
+            
+            .dropdown {
+                background: white;
+                width:100%;
+                
+                .submenu-dropdown {
+                    background: white;
+                }
+            }
+            
+        }
     }
 }
