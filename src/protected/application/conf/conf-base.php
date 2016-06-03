@@ -285,6 +285,7 @@ return array(
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
             'inscricao' => array('registration', 'view'),
+        	'certificado' => array('relatedSeal','single'),
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -297,7 +298,7 @@ return array(
             'projetos'       => 'project',
         	'selos'      	 => 'seal',
             'inscricoes'     => 'registration',
-            'anexos'         => 'registrationfileconfiguration'
+            'anexos'         => 'registrationfileconfiguration',
         ),
         'actions' => array(
             'lista'         => 'list',

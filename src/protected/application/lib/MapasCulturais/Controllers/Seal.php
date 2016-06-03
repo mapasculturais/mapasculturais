@@ -21,20 +21,8 @@ class Seal extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
-        Traits\ControllerAPI,
-        Traits\ControllerAPINested;
-    
-	function GET_create() {
-    	if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
-        	$parent = $this->repository->find($this->urlData['parentId']);
-        	if($parent)
-        		App::i()->hook('entity(seal).new', function() use ($parent){
-        			$this->parent = $parent;
-        		});
-        }
-        parent::GET_create();
-	}
-	
+        Traits\ControllerAPI;
+ 
 	/**
 	 * Creates a new Seal
 	 *

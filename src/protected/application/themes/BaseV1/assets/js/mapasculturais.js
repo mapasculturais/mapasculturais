@@ -1060,7 +1060,7 @@ MapasCulturais.Search = {
                 }catch(e){}
 
                 excludedIds = excludedIds.concat (
-                    $selector.parents('.js-related-group').find('.agentes .avatar').map(
+                    $selector.parents('.js-related-group').find('.agentes .avatar .selos').map(
                         function(){ return $(this).data('id'); }
                 ).toArray());
 

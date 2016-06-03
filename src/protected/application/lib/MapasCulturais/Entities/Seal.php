@@ -25,10 +25,7 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft,
-        Traits\EntityNested {
-            Traits\EntityNested::setParent as nestedSetParent;
-        }
+        Traits\EntityDraft;
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
@@ -120,16 +117,6 @@ class Seal extends \MapasCulturais\Entity
     protected $agent;
     
     /**
-     * @var \MapasCulturais\Entities\Seal
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * })
-     */
-    protected $parent;
-
-    /**
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
@@ -154,6 +141,14 @@ class Seal extends \MapasCulturais\Entity
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
+    
+    /**
+     * @var \MapasCulturais\Entities\SealFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     */
+    protected $__files;
     
     /**
      * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations

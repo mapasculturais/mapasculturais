@@ -56,6 +56,23 @@ a.editable-click:hover {
     color: $gray-darker;
 }
 
+/*nos grupos relacionados*/
+.selos-relacionados .editable {
+    width: 3rem;
+    height: 3rem;
+    background: #d8d8d8;
+    text-align: center;
+    line-height: 3rem;
+}
+.selos-relacionados .editable:after {
+    content: $unicode-add-button;
+    color: $gray-dark;
+    margin-left: 0;
+}
+.selos-relacionados .editable:hover:after {
+    color: $gray-darker;
+}
+
 /* balãozinho*/
 .tip-yellowsimple {
     z-index: $z-index-tip;
