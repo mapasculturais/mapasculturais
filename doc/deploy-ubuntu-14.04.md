@@ -1,4 +1,5 @@
-# Deploy do Mapas Culturais em Ubuntu 14.04
+# Mapas Culturais > Deploy
+
 Neste guia faremos o deploy do Mapas Culturais utilizando o nginx + php-fpm num sistema Ubuntu 14.04 Server recem instalado somente com o OpenSSH Server. O Banco de dados e a aplicação rodarão no mesmo servidor e usuário.
 
 Não abordaremos as configurações de autenticação, seja com ID da Cultura, seja com Login Cidadão. Ao final do guia teremos a aplicação rodando com o método de autenticação Fake.
@@ -138,6 +139,11 @@ server {
     try_files $uri $uri/ /index.php?$args;
   }
 
+  location ~ /files/.*\.php$ {
+      deny all;
+      return 403;
+  }
+  
   location ~* \.(js|css|png|jpg|jpeg|gif|ico|woff)$ {
           expires 1w;
           log_not_found off;
@@ -203,3 +209,82 @@ Reinicie os serviços do **nginx** e **php-fpm**
 @ service nginx restart
 @ service php5-fpm restart
 ```
+
+### 6. Pós-instalação - Criando super admin
+
+Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma: 
+
+1 - Crie um usuário pelo painel;
+
+2 - Entre no postgres e conecte-se na base. Caso esteja usando socket, basta que você esteja logado no terminal com o usuário do sistema em questão (se tiver seguido a documentação, esse usuário será o 'mapas') e digite psql. Isso irá mudar o terminal para:
+
+  $ mapas => 
+
+3 - Verifique o número do ID do usuário criado. Você pode ver pelo painel do mapas, na url do usuário ou ainda usar um select. 
+
+  $ mapas => select id,status, email from usr where email='digite o endereço de email do usuário criado';
+  
+Quando executar essa linha você vai pegar o id. 
+
+4 - Dê um insert na tabela Role. 
+
+  $ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin'); 
+  
+5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.
+
+select * from role;
+
+### 7. Pós-instalação - Processo de autenticação
+
+O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao). 
+
+* Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
+
+#### 7.1 Requisitos para implementação dos sistemas de autenticação
+
+##### Mapas Open ID Conect
+
+Esté é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsonem a retomada da ferramenta. 
+Fonte:  https://github.com/hacklabr/mapasculturais-openid
+
+##### Login Cidadão – Instalação própria
+
+O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php) 
+
+**Prós**
+
+Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são: 
+* Confidencialidade dos dados e soberania: todos os dados estarão fisicamente em posse do implementador;
+* Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador; 
+
+**Contras**
+* Necessidade de servidor próprio e dedicado a instalação;
+* Manutenção com ônus financeiro uma vez que é necessário manter time (interno ou terceirizado) com conhecimentos técnicos adequado à operação técnica do software;
+* Necessidade de endereço (url) dedicada e de certificado SSL implementado (o que também pode gerar custos uma vez 99% dos certificados são pagos anualmente);
+* Comunidade pequena em torno do software, o que dificulta suporte espontâneo quando necessário;
+* Versão 1.0 do software ainda não lançada;
+* A aplicação não possui sistema de templates gerenciado via painel, o que gera necessidade de horas-técnicas para desenvolvimento/customização de tema no código;
+* Documentação ainda incompleta, aumentando curva de aprendizado sobre o sistema; 
+**Fonte:** https://github.com/redelivre/login-cidadao
+**Documentação de instalação e parametrização técnica:** https://github.com/redelivre/login-cidadao/tree/master/doc (incompleto)
+**Documentação de operação:** (inexistente)
+**Portal:** http://logincidadao.org.br
+
+##### Login Cidadão Federal (ID da Cultura)
+
+**Prós**
+* Confidencialidade dos dados e soberania protegidas por uma entidade federal (Ministério da Cultura);
+* Dispensa necessidade de servidor próprio e dedicado a instalação;
+* Manutenção sem ônus financeiro uma vez que equipe do Departamento de Tecnologia da Informação do Ministério da Cultura incorpora em seu workflow de trabalho as demandas de atualização do sistema;
+* Dispensa necessidade de endereço (url) dedicado e de certificado SSL próprio;
+
+**Contras**
+* Menor controle técnico de customização de layout e features. A posse/soberania destas customização é do Ministério da Cultura e este deve ser acionado se necessário; 
+* Para implementação, é necessário acionar equipe do Minc/DTI para criar uma entrada de origem do sistema, uma vez que os administradores são membros do DTI. No entanto esse processo é rápido e deve acontecer apenas uma vez, no inicio da instalação ou em momento esporádico de eventual manutenção do sistema. 
+**Fonte:** http://id.cultura.gov.br/login
+
+
+
+
+
+

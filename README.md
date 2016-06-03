@@ -1,63 +1,75 @@
 # Mapas Culturais
+
 Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturais, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados.
 
 Mapas Culturais é uma plataforma colaborativa que reúne informações sobre agentes, espaços, eventos e projetos culturais, fornecendo ao poder público uma radiografia da área de cultura e ao cidadão um mapa de espaços e eventos culturais da região. A plataforma está alinhada ao Sistema Nacional de Informação e Indicadores Culturais do Ministério da Cultura (SNIIC) e contribui para a realização de alguns dos objetivos do Plano Nacional de Cultura.
 
-A plataforma já está em uso, por exemplo, no município de São Paulo (http://spcultura.prefeitura.sp.gov.br/) e no estado do Rio Grande do Sul (http://mapa.cultura.rs.gov.br/).
+A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil no Uruguai. Instalações recentes: 
 
-### Travis Build Status
+* http://spcultura.prefeitura.sp.gov.br
+* http://estadodacultura.sp.gov.br
+* http://jpcultura.joaopessoa.pb.gov.br
+* http://cultura.sobral.ce.gov.br
+* http://mapa.cultura.ce.gov.br
+* http://blumenaumaiscultura.com.br
+* http://mapa.cultura.rs.gov.br
+* http://culturaz.santoandre.sp.gov.br
+* http://mapa.cultura.to.gov.br
+* https://mapas.cultura.mt.gov.br
+* http://mapaculturalbh.pbh.gov.br
+* http://lugaresdacultura.org.br
+* http://mapas.cultura.gov.br
+* http://culturaviva.gov.br
+* http://bibliotecas.cultura.gov.br
+* http://museus.cultura.gov.br
 
-[![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
-
-### Issue Tracker
-
-Stories: [![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) for Development, [![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais) for Test, [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais) for Deploy
+## Sobre a aplicação
+Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.  
 
 ### Documentação 
-- [Entidades dos Mapas Culturais](doc/entidades.md)
+Toda documentação da aplicação está na pasta [doc](doc). Principais referências: 
+- [Deploy](doc/deploy-ubuntu-14.04.md)
 - [API](doc/api.md)
 - [Guia do desenvolvedor](doc/developer-guide.md)
 - [Criando um tema personalizado](doc/developer-guide/themes.md)
-- [Deploy no Ubuntu 14.04 com nginx e php-fpm](doc/deploy-ubuntu-14.04.md)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
 
 ### Requisitos para Instalação
-- PHP >= 5.4
-- Extensões PHP:
-  - php5-gd
-  - php5-cli
-  - php5-json
-  - php5-curl
-  - php5-pgsql
-  - php-apc
-  - Zip extension enabled in php.ini
-- Composer
-```shell
-    curl -sS https://getcomposer.org/installer | php
-    sudo mv composer.phar /usr/local/bin/composer
-```
-- PostgreSQL >= 9.3
-- Postgis Contrib (for Unaccent extension)
-- Postgis >= 2.1
--  PostgreSQL Postgis Scripts
+Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](doc/deploy-ubuntu-14.04.md) ou [guia do desenvolvedor](doc/developer-guide.md). 
 
-Em distribuições GNU/Linux baseadas em Debian:
-```shell
-sudo apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
-```
-- Node.JS >= 0.10
-  - NPM
-  - UglifyJS
-  - UglifyCSS
-```shell
-sudo npm install -g uglify-js uglifycss autoprefixer
-```
-- Ruby  >= 1.9.3
-  - SASS
-```shell
-sudo gem install sass
-```
-### Suporte
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/hacklabr/mapasculturais?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+- [PHP >= 5.4](http://php.net)
+  - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
+  - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
+  - [php5-json](http://php.net/manual/pt_BR/book.json.php)
+  - [php5-curl](http://php.net/manual/pt_BR/book.curl.php)
+  - [php5-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
+  - [php-apc](http://php.net/manual/pt_BR/book.apc.php)
+- [Composer](https://getcomposer.org/)
+- [PostgreSQL >= 9.3](http://www.postgresql.org/)
+- [Postgis >= 2.1](http://postgis.net)
+  - [PostgreSQL-Postgis-Scripts](http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1)
+- [Node.JS >= 0.10](https://nodejs.org/en/)
+  - [NPM](https://www.npmjs.com/)
+  - [UglifyJS](https://www.npmjs.com/package/uglify-js)
+  - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
+- [Ruby] (https://www.ruby-lang.org/pt)
+  - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
 
-Lista de discussão: https://groups.google.com/forum/?hl=en#!forum/mapas-culturais
+### Canais de comunicação
+
+* [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
+* [Chat de discussão](http://chat.mapasculturais.org)
+
+### Stories & Tests
+
+- Stories for development: 
+[![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) 
+- Stories for test: 
+[![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais)
+- Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais)
+- Travis:
+[![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
+
+### Licença de uso e desenvolvimento
+
+Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 

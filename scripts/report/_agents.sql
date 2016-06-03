@@ -1,12 +1,13 @@
 SELECT
     e.id,
+    e.name,
     e.create_timestamp::DATE AS data_cadastro,
     CASE WHEN e.is_verified=TRUE 
         THEN 'COM SELO' 
         ELSE 'SEM SELO' 
         END AS selo,
 
-    CASE WHEN e.parent_id IS NOT NULL 
+    CASE WHEN e.parent_id IS NOT NULL AND e.parent_id <> e.id
         THEN (SELECT name FROM agent WHERE id = e.parent_id) 
         ELSE '' 
         END AS publicado_por,

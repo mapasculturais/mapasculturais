@@ -4,7 +4,7 @@
         Agentes
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="!collapsedFilters && !showInfobox()">
+    <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label>Palavra-chave</label>
             <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="Buscar agentes" />
