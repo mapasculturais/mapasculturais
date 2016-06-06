@@ -31,7 +31,8 @@ trait ControllerSealRelation{
      * @WriteAPI POST createSealRelation
      */
     public function POST_createSealRelation(){
-        $this->requireAuthentication();
+//         $this->requireAuthentication();
+        
        
         $app = App::i();
         
@@ -47,6 +48,7 @@ trait ControllerSealRelation{
         }
 
         $relation = $owner->createSealRelation($seal);
+        
         $this->_finishRequest($relation, true);
 
     }
@@ -59,7 +61,7 @@ trait ControllerSealRelation{
      * @WriteAPI POST removeSealRelation
      */
     public function POST_removeSealRelation(){
-        $this->requireAuthentication();
+//         $this->requireAuthentication();
         $app = App::i();
 
         if(!$this->urlData['id'])
@@ -89,13 +91,9 @@ trait ControllerSealRelation{
         if(!key_exists('sealId', $this->postData))
             $this->errorJson('Missing argument: sealId');
 
-        if(!key_exists('hasControl', $this->postData))
-            $this->errorJson('Missing argument: hasControl');
-
         $seal = $app->repo('Seal')->find($this->data['sealId']);
-        $hasControl = $this->postData['hasControl'];
 
-        $owner->setRelatedSealControl($seal, $hasControl == 'true');
+        $owner->setRelatedSealControl($seal);
 
         $this->json(true);
     }

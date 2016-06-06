@@ -48,13 +48,6 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $objectId;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="has_control", type="boolean", nullable=false)
-     */
-    protected $hasControl = false;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
@@ -84,43 +77,6 @@ abstract class SealRelation extends \MapasCulturais\Entity
         $result['seal'] = $this->seal->simplify('id,name,avatar,singleUrl');
 
         return $result;
-    }
-
-    protected function canUserCreate($user){
-        $app = App::i();
-
-        $seal_control = !$app->isWorkflowEnabled() || $this->seal->canUser('@control', $user);
-
-        if($this->hasControl)
-            return $this->owner->canUser('createSealRelationWithControl', $user) && $seal_control;
-        else
-            return $this->owner->canUser('createSealRelation', $user) && $seal_control;
-    }
-
-    protected function canUserRemove($user){
-        $app = App::i();
-
-        $agent_control = $app->isWorkflowEnabled() && $this->seal->canUser('@control', $user);
-
-        if($user->id == $this->seal->getOwnerUser()->id)
-            return true;
-
-        else if($this->hasControl)
-            return $this->owner->canUser('removeSealRelationWithControl', $user) || $seal_control;
-
-        else
-            return $this->owner->canUser('removeSealRelation', $user) || $seal_control;
-    }
-
-    protected function canUserChangeControl($user){
-        if($this->hasControl)
-            return $this->owner->canUser('removeSealRelationWithControl', $user);
-        else
-            return $this->owner->canUser('createSealRelationWithControl', $user);
-    }
-
-    public function _setTarget(\MapasCulturais\Entity $target){
-        $this->objectId = $target->id;
     }
 
     function save($flush = false) {

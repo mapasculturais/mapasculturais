@@ -16,6 +16,7 @@ class Space extends EntityController {
         Traits\ControllerUploads,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
+        Traits\ControllerSealRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,

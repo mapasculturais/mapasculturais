@@ -93,7 +93,7 @@
         
         $scope.sealRelated = function(seal) {
         	var related = $scope.relations.find(function(r){
-        		if(angular.equals(r.seal,seal)) {
+        		if(r.seal.id === seal.id) {
         			return r;
         		};
         	});
@@ -101,29 +101,6 @@
         	return related;
         };
         
-        $scope.toggleSeal = function(seal){
-        	var relation = $scope.sealRelated(seal);
-        	if(relation){
-        		$scope.deleteRelation(relation);
-        	} else {
-        		$scope.createRelation(seal);
-        	};
-        };
-        $scope.toggleControl = function(relation){
-            relation.hasControl = !relation.hasControl;
-            
-            if(relation.hasControl){
-                RelatedSealsService.giveControl(relation.seal.id).
-                        error(function(){
-                            relation.hasControl = false;
-                        });
-            } else {
-                RelatedSealsService.removeControl(relation.seal.id).
-                        error(function(){
-                            relation.hasControl = true;
-                        });
-            }
-        };
         
         $scope.filterResult = function( data, status ){
             if(relations.length > 0){
