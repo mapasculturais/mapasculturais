@@ -49,32 +49,8 @@
         </div>
         <!-- div.verified-filter -->
         
-        <div class="show-advanced-filters ">
-            <span ng-if="hasAdvancedFilters('space')" ng-click="data.space.showAdvancedFilters = !data.space.showAdvancedFilters" ng-class="{selected: data.space.showAdvancedFilters}" class="icon icon-show-advanced-filters hltip" title="Exibir opções avançadas"></span>
-            
-            <div ng-show="data.space.showAdvancedFilters" ng-repeat="entity in ['space']" class="advanced-filters" >
-                <div><strong> Filtros Avançados </strong></div>
-                <!-- colocar este conteudo numa diretiva ou ng-include -->
-                <div ng-repeat="filter in advancedFilters[entity]" class="advanced-filter">
-                    <div ng-if="filter.fieldType === 'text'">
-                        <span>{{filter.label}}</span><br>
-                        <input ng-model="data[entity].advancedFilters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
-                    </div>
-                    <div ng-if="filter.fieldType === 'checklist'">
-                        <span>{{filter.label}}</span><br>
-                        <div class="dropdown">
-                            <div class="placeholder">{{filter.placeholder}}</div>
-                            <div class="submenu-dropdown">
-                                <ul class="filter-list">
-                                    <li style="white-space: nowrap" ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].advancedFilters[filter.filter.param], option.value)}" ng-click="toggleSelection(data[entity].advancedFilters[filter.filter.param], option.value)">
-                                        <span>{{option.label}}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div ng-repeat="entity in ['space']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
         </div>
         <!--.filter-->
     </div>

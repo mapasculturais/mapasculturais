@@ -915,89 +915,12 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
         }
     }
-    
     protected function _getAdvancedFilters(){
         return [
-            'space' => [
-                [
-                    'fieldType' => 'text',
-                    'label' => 'Endereço',
-                    'placeholder' => 'Busque por endereço',
-                    'filter' => [
-                        'param' => 'endereco',
-                        'value' => 'ILIKE(*{val}*)'
-                    ],
-                    'parseValue' => []
-                ],
-                [
-                    'fieldType' => 'checklist',
-                    'isArray' => true,
-                    'label' => 'Estado',
-                    'placeholder' => 'Filtre por Estado',
-                    'filter' => [
-                        'param' => 'En_Estado',
-                        'value' => 'IN({val})'
-                    ],
-                    'parseValue' => ['join'],
-                    'options' => [
-                        ['value' => 'AC', 'label' => 'Acre'],
-                        ['value' => 'AL', 'label' => 'Alagoas'],
-                        ['value' => 'AP', 'label' => 'Amapá'],
-                        ['value' => 'AM', 'label' => 'Amazonas'],
-                        ['value' => 'BA', 'label' => 'Bahia'],
-                        ['value' => 'CE', 'label' => 'Ceará'],
-                        ['value' => 'DF', 'label' => 'Distrito Federal'],
-                        ['value' => 'ES', 'label' => 'Espírito Santo'],
-                        ['value' => 'GO', 'label' => 'Goiás'],
-                        ['value' => 'MA', 'label' => 'Maranhão'],
-                        ['value' => 'MT', 'label' => 'Mato Grosso'],
-                        ['value' => 'MS', 'label' => 'Mato Grosso do Sul'],
-                        ['value' => 'MG', 'label' => 'Minas Gerais'],
-                        ['value' => 'PA', 'label' => 'Pará'],
-                        ['value' => 'PB', 'label' => 'Paraíba'],
-                        ['value' => 'PR', 'label' => 'Paraná'],
-                        ['value' => 'PE', 'label' => 'Pernambuco'],
-                        ['value' => 'PI', 'label' => 'Piauí'],
-                        ['value' => 'RJ', 'label' => 'Rio de Janeiro'],
-                        ['value' => 'RN', 'label' => 'Rio Grande do Norte'],
-                        ['value' => 'RS', 'label' => 'Rio Grande do Sul'],
-                        ['value' => 'RO', 'label' => 'Rondônia'],
-                        ['value' => 'RR', 'label' => 'Roraima'],
-                        ['value' => 'SC', 'label' => 'Santa Catarina'],
-                        ['value' => 'SP', 'label' => 'São Paulo'],
-                        ['value' => 'SE', 'label' => 'Sergipe'],
-                        ['value' => 'TO', 'label' => 'Tocantins'],
-                    ],
-                ],
-                [
-                    'fieldType' => 'text',
-                    'label' => 'Município',
-                    'placeholder' => 'Busque por Município',
-                    'filter' => [
-                        'param' => 'En_Municipio',
-                        'value' => 'ILIKE(*{val}*)'
-                    ],
-                    'parseValue' => []
-                ],
-            ],
-            'agent' => [
-                [
-                    'fieldType' => 'text',
-                    'label' => 'Endereço',
-                    'filter' => [
-                        'param' => 'endereco',
-                        'value' => 'ILIKE(*{val}*)'
-                    ],
-                    'parseValue' => []
-                        
-                ]
-            ],
-            'event' => [
-                
-            ],
-            'project' => [
-                
-            ]
+            'space' => [],
+            'agent' => [],
+            'event' => [],
+            'project' => []
         ];
     }
 
