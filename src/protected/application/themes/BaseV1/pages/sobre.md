@@ -13,10 +13,14 @@ En Julio de 2015 <a href="http://libre.coop/">Libre Coop</a> comenzó este proye
 <h3>Realización</h3>
 <img src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" />
 
-<p><a href="http://libre.coop"><img src="/assets/logo_libre_coop.png" alt="Libre Coop" /></a>  
-
+<img class="alignleft" src="{{asset:img/logo_libre_coop.png}}" alt="libre.coop" />
+<p>
+</br>
 en la adaptación, traducción y mejoras en Uruguay para el <a href="http://www.mec.gub.uy/"> MEC</a></p>
-
+</p>
+<p>
+</br>
+</p>
 <h2>Acerca de Mapas Culturales (Portugués)</h2>
 
 Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturales, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados, e que {{dict: site: in the region}} leva o nome de {{dict: site: name}}.
