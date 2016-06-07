@@ -401,8 +401,15 @@ class Theme extends MapasCulturais\Theme {
                 <?php
             endif;
         });
-
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
+        
+        $this->jsObject['EntitiesDescription'] = [
+        		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+        		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
+        		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');

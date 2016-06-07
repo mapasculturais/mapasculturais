@@ -1,8 +1,10 @@
-Guia do Desenvolvedor
-=====================
+# Mapas Culturais > Guia do Desenvolvedor
+======================================
+
 O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.
 
-- [Introdução](#introdução)
+- [Branches e desenvolvimento](#branches-e-desenvolvimento)
+- [Requisitos](#requisitos)
     - [Bibliotecas PHP utilizadas](#bibliotecas-php-utilizadas)
     - [Bibliotecas Javascript utilizadas](#bibliotecas-javascript-utilizadas)
 - [Arquivo de Configuração](#arquivo-de-configuracao)
@@ -30,11 +32,50 @@ O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcio
 - [Exceções]()
 - [Busca Por Palavra-chave](developer-guide/keywords.md)
 
-## Introdução
-O mínimo requerido para rodar o Mapas Culturais é PHP >= 5.4, PostgreSQL >= 9.1 com PostGIS >= 2.1.
+## Branches e desenvolvimento
 
-As seguintes extensões do PHP são requeridas: *gd, apc, zip, curl, pgsql, phar, pdo_pgsql*.
+Atualmente a aplicação possui 4 branches principais: **Master**, **RC**, **v2** e **v1**. A saber:
 
+- **Branch Master**: 
+  - Branch utilizado para desenvolvimento;
+  - Tudo que existe de novo está nesse branch;
+  - Atenção: para desenvolvimento de novas features, o desenvolvedor deve criar um branch novo a partir da versão v2 (stable) e não do master;
+
+- **Branch RC** (release candidate): 
+  - Branch utilizado para um conjunto estável de novas funcionalidades;
+  - Após um conjunto novo de funcionalidades nessa branch, a branch vira no novo stable;
+
+- **Branch v2**: 
+  - Atual stable da aplicação;
+  - Novas instalações devem ser feitas usando esse branch;
+  - Branches novos para novas funcionalidades devem partir desse branch;
+  -  Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e depois gerarem merge no **Branch v2**, no **Branch RC** e no **Branch Master**. Caso seja um bugfix estrutural ou de segurança que impacte todas as versões, deve gerar merge no **Branch v1** também. 
+
+- **Branch v1**: 
+  - Antigo stable da aplicação;
+  - Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e voltar para esse mesmo branch (uma vez o branch do bug finalizado, deve haver um merge para para o v1 novamente); 
+
+![Alt text](img/2016_05_19_branches.png)
+
+## Requisitos
+
+- [PHP >= 5.4](http://php.net)
+  - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
+  - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
+  - [php5-json](http://php.net/manual/pt_BR/book.json.php)
+  - [php5-curl](http://php.net/manual/pt_BR/book.curl.php)
+  - [php5-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
+  - [php-apc](http://php.net/manual/pt_BR/book.apc.php)
+- [Composer](https://getcomposer.org/)
+- [PostgreSQL >= 9.3](http://www.postgresql.org/)
+- [Postgis >= 2.1](http://postgis.net)
+  - [PostgreSQL-Postgis-Scripts](http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1)
+- [Node.JS >= 0.10](https://nodejs.org/en/)
+  - [NPM](https://www.npmjs.com/)
+  - [UglifyJS](https://www.npmjs.com/package/uglify-js)
+  - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
+- [Ruby] (https://www.ruby-lang.org/pt)
+  - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
 
 ### Bibliotecas PHP Utilizadas
 Ver arquivo [composer.json](../src/protected/composer.json)

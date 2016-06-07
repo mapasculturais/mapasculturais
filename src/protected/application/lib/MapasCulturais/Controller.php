@@ -87,7 +87,6 @@ abstract class Controller{
 
 
     protected $action = null;
-
     // =================== GETTERS ================== //
 
     /**
@@ -290,7 +289,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->render($template, $data);
     }
 
@@ -305,7 +303,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->view->partial = true;
         $app->render($template, $data);
     }
