@@ -24,6 +24,7 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
+        Traits\EntitySealRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,

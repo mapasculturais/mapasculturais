@@ -155,8 +155,7 @@ return array(
             'createTimestamp' => 'Data de Criação',
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
-            'status' => 'Status',
-            '_type' => 'Tipo'
+            'status' => 'Status'
         ),
 
 //        'MapasCulturais\Entities\Agent' => array()

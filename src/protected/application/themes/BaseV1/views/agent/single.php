@@ -137,10 +137,10 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar agent">
-	<!-- Related Agents BEGIN -->
+	<!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    <!-- Related Agents END -->
-    
+    <!-- Related Seals END -->
+
     <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
@@ -166,9 +166,6 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     <?php endif; ?>
-    <!-- Related Seals BEGIN -->
-    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    <!-- Related Seals END -->
     <!--
     <div class="widget">
         <h3>Projetos do agente</h3>

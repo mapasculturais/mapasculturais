@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class EventSealRelation extends SealRelation {
 
     /**
-     * @var \MapasCulturais\Entities\Seal
+     * @var \MapasCulturais\Entities\Event
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })

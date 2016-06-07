@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class SpaceSealRelation extends SealRelation {
 
     /**
-     * @var \MapasCulturais\Entities\Seal
+     * @var \MapasCulturais\Entities\Space
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })
