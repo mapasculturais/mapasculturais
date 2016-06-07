@@ -268,12 +268,12 @@
                     console.log(entity , searchData, MapasCulturais.searchFilters);
                 }
                 
-                var selectData = 'id,singleUrl,name,type,shortDescription,En_Estado,terms';
+                var selectData = 'id,singleUrl,name,type,shortDescription,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
 
                 if(entity === 'space'){
                     if(action === 'find') {
-                        selectData += ',endereco,acessibilidade';
+                        selectData += ',En_Estado,endereco,acessibilidade';
                     }else{
                         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                         apiExportURL += 'event/findByLocation/?';
@@ -282,6 +282,8 @@
                     selectData += ',registrationFrom,registrationTo';
                 }else if(entity === 'event'){
                     selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
+                } else if(entity === 'agent'){
+                    selectData += ',En_Estado,En_Municipio,En_Nome_Logradouro,En_Num';
                 }
                 
 

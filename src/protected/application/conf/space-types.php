@@ -140,7 +140,7 @@ return array(
                 'SO'=>'Soriano',
                 'TA'=>'Tacuarembó',
                 'TT'=>'Treinta y Tres',*/
-                 'Artigas'=>'Artigas',
+                'Artigas'=>'Artigas',
                 'Canelones'=>'Canelones',
                 'Cerro Largo'=>'Cerro Largo',
                 'Colonia'=>'Colonia',

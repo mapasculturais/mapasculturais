@@ -18,7 +18,8 @@ return array(
             'MapasCulturais\Entities\Agent'
         ),
         'restricted_terms' => array(
-            'Arte Circense',
+                        'Animación',
+                        'Arte Circense',
         		'Antropología',
         		'Arqueología',
         		'Arquitectura',

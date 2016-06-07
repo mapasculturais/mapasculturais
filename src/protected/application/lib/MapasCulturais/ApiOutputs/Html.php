@@ -24,6 +24,9 @@ class Html extends \MapasCulturais\ApiOutput{
         
         'acessibilidade' => 'accesibilidad',
         'En_Estado' => 'Departamento',
+        'En_Nome_Logradouro' => 'Calle',
+        'En_Num' => 'Número',
+        'En_Municipio' => 'Ciudad',
         'agent'=>'Agente',
         'space'=>'Espacio',
         'event'=>'Evento',
