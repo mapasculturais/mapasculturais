@@ -13,7 +13,7 @@ En Julio de 2015 <a href="http://libre.coop/">Libre Coop</a> comenzó este proye
 <h3>Realización</h3>
 <img src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" />
 
-<p><a href="http://libre.coop"><img src="/assets/img/logo_libre_coop.png" alt="Libre Coop" /></a>  
+<p><a href="http://libre.coop"><img src="/assets/logo_libre_coop.png" alt="Libre Coop" /></a>  
 
 en la adaptación, traducción y mejoras en Uruguay para el <a href="http://www.mec.gub.uy/"> MEC</a></p>
 
