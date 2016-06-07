@@ -1,5 +1,5 @@
 <h1>Cómo usar</h1>
-<a href="{{asset:manual.pdf}}">Realice la descarga del manual completo.</a>
+========> <a href="{{asset:manual.pdf}}">Realice la descarga del manual completo.</a> <========
 
 <section id="como-usar-encontre" class="como-usar clearfix">
 	<img class="como-usar-img alignleft" src="{{asset:img/tour/tour01.png}}" alt="" />

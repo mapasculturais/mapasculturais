@@ -10,7 +10,14 @@ El Instituto TIM, en colaboración con una serie de Departamentos Cultura, ha ac
 
 En Julio de 2015 <a href="http://libre.coop/">Libre Coop</a> comenzó este proyecto de traducción y adaptación de la plataforma para la Dirección de Cultura del <a href="http://www.mec.gub.uy/"> Ministerio de Educación y Cultura</a> de Uruguay.
 
-<h3>Acerca de Mapas Culturales (Portugués)</h3>
+<h3>Realización</h3>
+<img src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" />
+
+<p><a href="http://libre.coop"><img src="/assets/img/logo_libre_coop.jpg" alt="Libre Coop" /></a>  
+
+en la adaptación, traducción y mejoras en Uruguay para el <a href="http://www.mec.gub.uy/"> MEC</a></p>
+
+<h2>Acerca de Mapas Culturales (Portugués)</h2>
 
 Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturales, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados, e que {{dict: site: in the region}} leva o nome de {{dict: site: name}}.
 
@@ -22,6 +29,5 @@ Você encontra Más información sobre a ferramenta Mapas Culturales no site do 
 
 
 <h2>Realização</h2>
-<img class="alignleft" src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" />
-
-<a href="http://libre.coop">Libre Coop</a>  en la adaptación, traducción y mejoras en Uruguay para el <a href="http://www.mec.gub.uy/"> MEC</a>
+<p><img src="/assets/img/instituto-tim-white.png" alt="Insituto TIM" /></p>
+<p><a href="http://libre.coop"><img src="/assets/img/logo_libre_coop.jpg" alt="Libre Coop" /></a>  en la adaptación, traducción y mejoras en Uruguay para el <a href="http://www.mec.gub.uy/"> MEC</a></p>
