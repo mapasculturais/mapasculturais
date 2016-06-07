@@ -80,7 +80,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     }
 
     function save($flush = false) {
-        try{
+    	try{
             parent::save($flush);
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
@@ -92,9 +92,11 @@ abstract class SealRelation extends \MapasCulturais\Entity
            parent::save($flush);
            $app->enableAccessControl();
 
-           $request = new RequestSealRelation;
-           $request->sealRelation = $this;
+           $request = new RequestAgentRelation;
+           $request->agentRelation = $this;
            $request->save(true);
+
+           throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
 
         }
     }

@@ -345,9 +345,32 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições por agente responsável" data-emptytext="Insira o número máximo de inscrições por agente responsável"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
                     </p>
                 </div>
+                
+				<!-- BEGIN Seals -->
+				<div class="registration-fieldset">
+					<h4>5. Selos Certificadores</h4>
+					<p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
+					<div class="registration-related-agent-configuration">
+						<p>
+                           <span class="label">Agentes</span> <span class="registration-help">Selos atribuídos a agentes.</span>
+                        </p>
+						<p>
+							<span class="label">Espaços</span> <span class="registration-help">Selos atribuídos a agentes.</span>
+						</p>
+						<p>
+							<span class="label">Projetos</span> <span class="registration-help">Selos atribuídos a agentes.</span>
+						</p>
+						<p>
+							<span class="label">Eventos</span> <span class="registration-help">Selos atribuídos a agentes.</span>
+						</p>
+					</div>
+                </div>
+					
+				<! END Seals -->
+                
                 <!-- #registration-agent-relations -->
                 <div id="registration-attachments" class="registration-fieldset">
-                    <h4>5. Anexos</h4>
+                    <h4>6. Anexos</h4>
                     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
                     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
                     <div ng-controller="RegistrationFileConfigurationsController">
