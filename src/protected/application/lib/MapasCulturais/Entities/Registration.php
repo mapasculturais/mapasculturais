@@ -37,7 +37,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", options={"default": "random_id_generator('registration', 10000)"})
+     * @ORM\Column(name="id", type="integer", options={"default": "pseudo_random_id_generator()"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
@@ -287,10 +287,6 @@ class Registration extends \MapasCulturais\Entity
         }else{
             return [];
         }
-    }
-
-    function randomIdGeneratorFormat($id){
-        return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
     }
 
     function randomIdGeneratorInitialRange(){
