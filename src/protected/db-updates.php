@@ -6,40 +6,56 @@ $em = $app->em;
 $conn = $em->getConnection();
 
 return [
+    
+    
+    'new random id generator' => function () use ($conn) {
+        $conn->executeQuery("
+            CREATE SEQUENCE pseudo_random_id_seq
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;");
+        
+        $conn->executeQuery("
+            CREATE OR REPLACE FUNCTION pseudo_random_id_generator() returns int AS $$
+                DECLARE
+                    l1 int;
+                    l2 int;
+                    r1 int;
+                    r2 int;
+                    VALUE int;
+                    i int:=0;
+                BEGIN
+                    VALUE:= nextval('pseudo_random_id_seq');
+                    l1:= (VALUE >> 16) & 65535;
+                    r1:= VALUE & 65535;
+                    WHILE i < 3 LOOP
+                        l2 := r1;
+                        r2 := l1 # ((((1366 * r1 + 150889) % 714025) / 714025.0) * 32767)::int;
+                        l1 := l2;
+                        r1 := r2;
+                        i := i + 1;
+                    END LOOP;
+                    RETURN ((r1 << 16) + l1);
+                END;
+            $$ LANGUAGE plpgsql strict immutable;");
+    },
+    
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
         $conn->executeQuery("UPDATE agent_meta SET value='Mulher' WHERE key='genero' AND value='Feminino'");
     },
 
-    'remove circular references' => function() use ($conn) {
+
+    'remove circular references again... ;)' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id = parent_id");
 
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id IN (SELECT profile_id FROM usr)");
+        
+        return false; // executa todas as vezes só para garantir...
     },
-
-    'create table user_meta' => function() use ($conn) {
-
-        $conn->executeQuery("CREATE TABLE user_meta (
-                                object_id integer NOT NULL,
-                                key character varying(32) NOT NULL,
-                                value text,
-                                id integer NOT NULL);");
-
-        $conn->executeQuery("CREATE SEQUENCE user_meta_id_seq
-                                START WITH 1
-                                INCREMENT BY 1
-                                NO MINVALUE
-                                NO MAXVALUE
-                                CACHE 1;");
-
-        $conn->executeQuery("ALTER TABLE user_meta_id_seq OWNER TO mapasculturais;");
-        $conn->executeQuery("ALTER SEQUENCE user_meta_id_seq OWNED BY user_meta.id;");
-        $conn->executeQuery("ALTER TABLE ONLY user_meta ALTER COLUMN id SET DEFAULT nextval('user_meta_id_seq'::regclass);");
-        $conn->executeQuery("ALTER TABLE ONLY user_meta ADD CONSTRAINT user_meta_pk PRIMARY KEY (id);");
-        $conn->executeQuery("CREATE INDEX user_meta_owner_key_index ON user_meta USING btree (object_id, key);");
-        $conn->executeQuery("CREATE INDEX user_meta_owner_key_value_index ON user_meta USING btree (object_id, key, value);");
-        $conn->executeQuery("ALTER TABLE ONLY user_meta ADD CONSTRAINT usr_user_meta_fk FOREIGN KEY (object_id) REFERENCES usr(id);");
-    },
+            
     'create table user apps' => function() use ($conn) {
 
         $conn->executeQuery("CREATE TABLE user_app (
@@ -63,4 +79,5 @@ return [
         $conn->executeQuery('ALTER TABLE project_meta ALTER COLUMN key TYPE varchar(128)');
         $conn->executeQuery('ALTER TABLE user_meta ALTER COLUMN key TYPE varchar(128)');
     }
+
 ];
