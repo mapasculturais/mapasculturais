@@ -31,21 +31,21 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 <article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <!--.header-image-->
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
-            
+
             <?php $this->part('singles/type', ['entity' => $entity]) ?>
-            
+
             <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -73,7 +73,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <?php $this->applyTemplateHook('tabs','before'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
-    
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <?php if($app->user->is('admin') || $app->user->is('staff')): // @TODO: remover este if quando o layout estiver pronto ?>
@@ -120,7 +120,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         </div>
         <?php endif; ?>
         <?php endif; ?>
-        
+
         <div id="sobre" class="aba-content">
             <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
                 <div class="highlighted-message clearfix">
@@ -345,29 +345,71 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições por agente responsável" data-emptytext="Insira o número máximo de inscrições por agente responsável"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
                     </p>
                 </div>
-                
+
 				<!-- BEGIN Seals -->
 				<div class="registration-fieldset">
 					<h4>5. Selos Certificadores</h4>
 					<p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
 					<div class="registration-related-agent-configuration">
 						<p>
-                           <span class="label">Agentes</span> <span class="registration-help">Selos atribuídos a agentes.</span>
+                            <span class="label">Agente responsável</span> <span class="registration-help">(Selos atribuídos a agentes)</span><br>
+                            <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção">Adicionar selos</span>
                         </p>
+                        <ul class="registration-seals">
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                            <li>
+                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
+                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
+                            </li>
+                        </ul>
 						<p>
-							<span class="label">Espaços</span> <span class="registration-help">Selos atribuídos a agentes.</span>
-						</p>
-						<p>
-							<span class="label">Projetos</span> <span class="registration-help">Selos atribuídos a agentes.</span>
-						</p>
-						<p>
-							<span class="label">Eventos</span> <span class="registration-help">Selos atribuídos a agentes.</span>
-						</p>
+							<span class="label">Instituição responsável</span> <span class="registration-help">(Selos atribuídos a instituições)</span><br>
+                            <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção">Adicionar selos</span>
+                        </p>
+                        <p>
+							<span class="label">Espaços</span> <span class="registration-help">(Selos atribuídos a espaços)</span><br>
+                            <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção">Adicionar selos</span>
+                        </p>
 					</div>
                 </div>
-					
-				<! END Seals -->
-                
+
+				<!-- END Seals -->
+
                 <!-- #registration-agent-relations -->
                 <div id="registration-attachments" class="registration-fieldset">
                     <h4>6. Anexos</h4>
@@ -612,19 +654,19 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <?php endif; ?>
         </div>
         <!--#inscritos-->
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar project">
     <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
-    
+
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
