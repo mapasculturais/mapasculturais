@@ -108,7 +108,7 @@ class Registration extends EntityController {
                 $cfg = [
                     'label' => $field->title,
                     'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
-                    'private' => true,
+                    'private' => false,
                 ];
 
                 $def = $field->getFieldTypeDefinition();
