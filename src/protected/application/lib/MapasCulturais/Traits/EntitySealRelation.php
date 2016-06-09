@@ -98,12 +98,12 @@ trait EntitySealRelation {
     }
 
     protected function canUserCreateSealRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $user->is('admin');
         return $result;
     }
 
     function canUserRemoveSealRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $user->is('admin');
         return $result;
     }
 }

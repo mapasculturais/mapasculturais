@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
-
 /**
  * Seal
  *
@@ -158,44 +157,6 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $__agentRelations;
     
-    function publish($flush = false){
-        $this->checkPermission('publish');
-        
-        $app = App::i();
-        
-        $app->disableAccessControl();
-        
-        $this->status = self::STATUS_ENABLED;
-        $this->save($flush);
-        
-        $app->enableAccessControl();
-    }
-
-    public function save($flush = false) {
-        App::i()->hook("entity($this).save:requests", function(){
-            if($this->_newProject !== false){
-                try{
-                    if($this->_newProject){
-                        $this->_newProject->checkPermission('createEvents');
-                    }
-
-                    $this->project = $this->_newProject;
-
-                }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
-                    if(!App::i()->isWorkflowEnabled())
-                        throw $e;
-
-                    $request = new RequestEventProject;
-                    $request->origin = $this;
-                    $request->destination = $this->_newProject;
-                    $this->_newProject = false;
-
-                    throw new \MapasCulturais\Exceptions\WorkflowRequestTransport($request);
-                }
-            }
-        });
-        parent::save($flush);
-    }
 
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
@@ -245,7 +206,7 @@ class Seal extends \MapasCulturais\Entity
         
         return false;
     }
-
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

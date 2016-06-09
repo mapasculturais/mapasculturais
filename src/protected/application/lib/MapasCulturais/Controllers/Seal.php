@@ -4,11 +4,14 @@ namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use MapasCulturais\Entities;
 
 /**
  * Seal Controller
  *
  * By default this controller is registered with the id 'seal'.
+ *
+ *  @property-read \MapasCulturais\Entities\Project $requestedEntity The Requested Entity
  *
  */
 class Seal extends EntityController {
@@ -19,7 +22,6 @@ class Seal extends EntityController {
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
-        Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
         Traits\ControllerAPI;
  

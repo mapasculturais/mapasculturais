@@ -263,9 +263,6 @@ class App extends \Slim\Slim{
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
 
-        $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
-        $classLoader->register();
-
         $driver = new AnnotationDriver(new AnnotationReader());
 
         $driver->addPaths([__DIR__ . '/Entities/']);

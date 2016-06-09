@@ -22,8 +22,7 @@ use MapasCulturais\App;
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectSealRelation",
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventSealRelation",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentSealRelation",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceSealRelation",
-        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationSealRelation"
+        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceSealRelation"
    })
  */
 abstract class SealRelation extends \MapasCulturais\Entity
@@ -78,26 +77,35 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         return $result;
     }
+    
+    protected function canUserRemove($user){
+    	if($user->is('guest'))
+    		return false;
+    
+		if($user->is('admin') || $this->seal->canUser("@control"))
+			return true;
+    
+		return false;	
+    }
 
-    function save($flush = false) {
-    	try{
+    public function save($flush = false) {
+    	 try{
             parent::save($flush);
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
                throw $e;
-
-           $app = App::i();
-           $app->disableAccessControl();
-           $this->status = self::STATUS_PENDING;
-           parent::save($flush);
-           $app->enableAccessControl();
-
-           $request = new RequestAgentRelation;
-           $request->agentRelation = $this;
-           $request->save(true);
-
-           throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
-
+    
+	    	$app = App::i();
+	    	$app->disableAccessControl();
+	    	$this->status = self::STATUS_PENDING;
+	    	parent::save($flush);
+	    	$app->enableAccessControl();
+	    
+	    	$request = new RequestSealRelation;
+	    	$request->setSealRelation($this);
+	    	$request->save(true);
+    
+			throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
         }
     }
 

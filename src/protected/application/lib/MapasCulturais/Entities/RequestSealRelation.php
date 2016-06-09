@@ -7,7 +7,6 @@ use MapasCulturais\App;
 /**
  *
  * @property \MapasCulturais\Entities\Seal $destination The seal to be related
- * @property-read string $group The Seal relation Group
  *
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -15,8 +14,8 @@ use MapasCulturais\App;
 class RequestSealRelation extends Request{
 
     function setSealRelation(SealRelation $relation){
-        $this->destination = $relation->seal;
-        $this->origin = $relation->owner;
+        $this->destination = $relation->owner;
+        $this->origin = $relation->seal;
         $this->metadata['class'] = $relation->getClassName();
         $this->metadata['relationId'] = $relation->id;
 
@@ -31,6 +30,8 @@ class RequestSealRelation extends Request{
     function _doApproveAction() {
         $relation = $this->getSealRelation();
         if($relation){
+        	$app = App::i();
+        	$app->log->debug("SealRelationId".$relation->id);
             $relation->status = SealRelation::STATUS_ENABLED;
             $relation->save(true);
         }
