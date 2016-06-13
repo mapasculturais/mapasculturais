@@ -401,8 +401,15 @@ class Theme extends MapasCulturais\Theme {
                 <?php
             endif;
         });
-
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
+        
+        $this->jsObject['EntitiesDescription'] = [
+        		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+        		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
+        		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
@@ -887,7 +894,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _populateJsObject() {
-
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
@@ -904,6 +910,18 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
+//        eval(\Psy\sh());
+        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+        }
+    }
+    protected function _getAdvancedFilters(){
+        return [
+            'space' => [],
+            'agent' => [],
+            'event' => [],
+            'project' => []
+        ];
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){
@@ -1055,12 +1073,10 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
 
         $cache_id = __METHOD__ . ':' . $entity_class;
-
+        
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
-
-
 
         $controller = $app->getControllerByEntity($entity_class);
 
