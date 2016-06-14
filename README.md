@@ -65,10 +65,11 @@ Para instalações de pequeno/medio porte nas quais o número de entidades, isto
 * 50mbit de rede;
 
 Desejável:
+
 *  4 cores de CPU;
 * 4gb de RAM;
 * 100mbit de rede;
-* 
+
 Para instalações em cidades de grande porte onde o número de entidades, isto é, número de agentes, espaços, projetos e evento, giram em torno de dezenas de milhares de ativos de cada, recomenda-se o mínimo de recursos para um servidor:
 
 * 4 cores de CPU
