@@ -34,9 +34,10 @@ Toda documentação da aplicação está na pasta [doc](doc). Principais referê
 - [Criando um tema personalizado](doc/developer-guide/themes.md)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
 
-### Requisitos para Instalação
+### [Software] Requisitos para Instalação
 Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](doc/deploy-ubuntu-14.04.md) ou [guia do desenvolvedor](doc/developer-guide.md). 
 
+- [Ubuntu Server >= 14.04](http://www.ubuntu.com) ou [Debian Server >= 8](https://www.debian.org.)
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
   - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
@@ -54,6 +55,32 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
   - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
 - [Ruby] (https://www.ruby-lang.org/pt)
   - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
+
+### [Hardware] Requisitos para instalação
+
+Para instalações de pequeno/medio porte nas quais o número de entidades, isto é, número de agentes, espaços, projetos e evento,giram em torno de 2000 ativos, recomenda-se o mínimo de recursos para um servidor (aplicação + base de dados):
+
+* 2 cores de CPU;
+* 2gb de RAM;
+* 50mbit de rede;
+
+Desejável:
+*  4 cores de CPU;
+* 4gb de RAM;
+* 100mbit de rede;
+* 
+Para instalações em cidades de grande porte onde o número de entidades, isto é, número de agentes, espaços, projetos e evento, giram em torno de dezenas de milhares de ativos de cada, recomenda-se o mínimo de recursos para um servidor:
+
+* 4 cores de CPU
+* 4gb de RAM
+* 100mbit de rede
+
+Recomendado:
+* 8 cores de CPU
+* 8gb de RAM
+* 500mbit de rede
+
+Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
 
 ### Canais de comunicação
 
