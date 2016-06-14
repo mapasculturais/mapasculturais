@@ -611,22 +611,11 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-    <?php if($this->controller->action !== 'create'): ?>
-        <div class="widget">
-            <?php if($entity->children && $entity->children->count()): ?>
-            <h3>Sub-projetos</h3>
-            <ul class="widget-list js-slimScroll">
-                <?php foreach($entity->children as $space): ?>
-                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><span><?php echo $space->name; ?></span></a></li>
-                <?php endforeach; ?>
-            </ul>
-            <?php endif; ?>
-
-            <?php if($entity->id && $entity->canUser('createChild')): ?>
-            <a class="btn btn-default add" href="<?php echo $app->createUrl('project','create', array('parentId' => $entity->id)) ?>">Adicionar sub-projeto</a>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
+    
+    <!-- Projects BEGIN -->
+    <?php $this->part('singles/widget-projects', ['entity' => $entity, 'projects' => $entity->children->toArray()]); ?>
+    <!-- Projects END -->
+    
     <!-- Downloads BEGIN -->
     <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->

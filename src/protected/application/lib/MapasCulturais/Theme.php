@@ -303,13 +303,21 @@ abstract class Theme extends \Slim\View {
         } else {
             $template_filename = $template . '.php';
         }
-
-        if(is_array($data))
+        
+        if($data instanceof \Slim\Helper\Set){
+            $_data = $data;
+            $data = [];
+            
+            foreach($_data->keys() as $k){
+                $data[$k] = $_data->get($k);
+            }
+        }
+        
+        $app->applyHookBoundTo($this, 'view.partial(' . $template . ').params', [&$data]);
+        
+        if(is_array($data)){
             extract($data);
-        elseif($data instanceof \Slim\Helper\Set)
-            foreach($this->data->keys() as $k)
-                $$k = $this->data->get($k);
-
+        }
 
         // render the template
         if($_is_part){
