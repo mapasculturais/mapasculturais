@@ -31,45 +31,26 @@
                 paginating = ev.name === 'resultPagination';
 
 
-            if(!paginating)
+            if(!paginating){
                 $rootScope.resetPagination();
+            }
 
+            var activeEntity = data.global.filterEntity;
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
-                if(data.global.enabled.agent){
-                    var agentQueryData = data2searchData(data.agent);
-                    if(!angular.equals(agentQueryData, lastQueries.agent) || !compareEnabledEntities){
-                        lastQueries.agent = angular.copy(agentQueryData);
-                        callApi('agent', agentQueryData);
-                    }else{
-                        results.agent = $rootScope.lastResult.agent;
-                    }
+                
+                var entityQueryData = data2searchData(activeEntity, data.agent);
+                if(!angular.equals(entityQueryData, lastQueries[activeEntity]) || !compareEnabledEntities){
+                    lastQueries[activeEntity] = angular.copy(entityQueryData);
+                    callApi(activeEntity, entityQueryData);
+                }else{
+                    results[activeEntity] = $rootScope.lastResult[activeEntity];
                 }
-
-                if(data.global.enabled.event){
-                    var eventQueryData = data2searchData(data.event);
-                    if(!angular.equals(eventQueryData, lastQueries.event) || !compareEnabledEntities){
-                        lastQueries.event = angular.copy(eventQueryData);
-                        callApi('event', eventQueryData);
-                    }else{
-                        results.event = $rootScope.lastResult.event;
-                    }
-                }
-
-                if(data.global.enabled.space){
-                    var spaceQueryData = data2searchData(data.space);
-                    if(!angular.equals(spaceQueryData, lastQueries.space) || !compareEnabledEntities){
-                        lastQueries.space = angular.copy(spaceQueryData);
-                        callApi('space', spaceQueryData);
-                    }else{
-                        results.space = $rootScope.lastResult.space;
-                    }
-                }
-
+                
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
-                var activeEntity = data.global.filterEntity;
-                var listQueryData = data2searchData(data[activeEntity]);
+                
+                var listQueryData = data2searchData(activeEntity, data[activeEntity]);
 
                 if(activeEntity !== lastQueries.listedEntity)
                     $rootScope.pagination[activeEntity] = 1;
@@ -132,6 +113,7 @@
                 numRequests++;
                 activeRequests++;
                 $rootScope.spinnerCount++;
+                
                 apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
                     var metadata = JSON.parse(header('API-Metadata'));
                     numSuccessRequests++;
@@ -189,7 +171,7 @@
                 }
             }
 
-            function data2searchData(entityData){
+            function data2searchData(entity, entityData){
                 var searchData = {};
 
                 if(entityData.keyword){
@@ -255,6 +237,32 @@
                     searchData.registrationFrom = 'LTE(' + today + ')';
                     searchData.registrationTo   = 'GTE(' + today + ')';
                 }
+                
+                            // adiciona os filtros avancados ao sData
+//            console.log("chegou aqui");
+            Object.keys(data[entity].advancedFilters).forEach(function(key){
+                var val = data[entity].advancedFilters[key];
+                var filter = MapasCulturais.advancedFilters[entity].find(function(filter){
+                    if(filter.filter.param === key){
+                        return filter;
+                    }
+                })
+                
+                if(filter.parseValue && filter.parseValue.length > 0){
+                    filter.parseValue.forEach(function(parser){
+                        switch(parser){
+                            case 'join':
+                                val = val.join(',');
+                            break;
+                        }
+                    });
+                }
+                
+                if(val){
+                    var parsed = filter.filter.value.replace(/\{val\}/g, val);
+                    searchData[key] = parsed;
+                }
+            });
 
 
                 return searchData;
