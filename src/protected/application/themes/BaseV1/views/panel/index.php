@@ -67,12 +67,12 @@ $this->layout = 'panel';
             </div>
         <?php endif; ?>
         
-        <?php if($app->isEnabled('seals')): ?>
+        <?php if($app->isEnabled('seals') && $app->user->is('superAdmin')): ?>
             <div>
                 <div>
                     <div class="clearfix">
                         <span class="alignleft">Selos</span>
-                        <div class="icon icon-label alignright"></div>
+                        <div class="icon icon-seal alignright"></div>
                     </div>
                     <div class="clearfix">
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'seals') ?>" title="Ver meus selos"><?php echo $count->seals; ?></a>

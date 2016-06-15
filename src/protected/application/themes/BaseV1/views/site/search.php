@@ -47,7 +47,7 @@ $this->includeMapAssets();
                 <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
             <?php endif; ?>
             
-            <?php if($app->isEnabled('seals')): ?>
+            <?php if($app->isEnabled('seals') && $app->user->is('superAdmin')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} selos"></a>
             <?php endif; ?>
             
@@ -297,7 +297,7 @@ $this->includeMapAssets();
             </article>
         </div>
         <header id="label-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'seal'">
-            <h1><span class="icon icon-label"></span> Selos</h1>
+            <h1><span class="icon icon-seal"></span> Selos</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('seal', 'create'); ?>">Adicionar selo</a>
         </header>
 

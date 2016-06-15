@@ -27,8 +27,6 @@ $this->includeAngularEntityAssets($entity);
             
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--seal.png']); ?>
             
-            <?php $this->part('singles/type', ['entity' => $entity]) ?>
-            
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
             
             <?php $this->applyTemplateHook('header-content','end'); ?>
@@ -68,12 +66,7 @@ $this->includeAngularEntityAssets($entity);
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
             <!--.descricao-->
-            <!-- Video Gallery BEGIN -->
-                <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
-            <!-- Video Gallery END -->
-            <!-- Image Gallery BEGIN -->
-                <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
-            <!-- Image Gallery END -->
+            
         </div>
         <!-- #sobre -->
         
@@ -85,10 +78,24 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar seal">
-    <?php $this->part('verified', array('entity' => $entity)); ?>
+
+
 </div>
 <div class="sidebar seal sidebar-right">
-
+	<?php if($this->controller->action == 'create'): ?>
+        <div class="widget">
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
+        </div>
+    <?php endif; ?>
+    
+	<!-- Related Agents BEGIN -->
+        <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Agents END -->
+    
+    <!-- Downloads BEGIN -->
+        <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
+    <!-- Downloads END -->
+    
     <!-- Link List BEGIN -->
         <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->

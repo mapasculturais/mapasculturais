@@ -70,6 +70,13 @@
         
         $scope.data = {};
         
+        $scope.avatarUrl = function(url){
+            if(url)
+                return url;
+            else
+                return MapasCulturais.assets.avatarSeal;
+        };
+        
         $scope.createRelation = function(entity){
             var _scope = this.$parent;
             

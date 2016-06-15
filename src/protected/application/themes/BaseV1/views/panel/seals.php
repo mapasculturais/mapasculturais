@@ -12,7 +12,6 @@ $this->layout = 'panel'
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
     <div id="ativos">
-        <?php $this->part('panel-seal', array('entity' => $app->user->profile)); ?>
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
             <?php $this->part('panel-seal', array('entity' => $entity)); ?>
         <?php endforeach; ?>
