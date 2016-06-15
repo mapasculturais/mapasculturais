@@ -48,6 +48,11 @@
             <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+        
+        <div ng-repeat="entity in ['event']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-events-->
