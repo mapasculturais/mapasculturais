@@ -57,7 +57,7 @@
 
         $interval(function(){
             getNotifications();
-        }, 60*1000);
+        }, MapasCulturais.notificationsInterval * 1000);
 
         $scope.approve = function(id){
             NotificationService.updateOne(id,'approve').then(getNotifications);

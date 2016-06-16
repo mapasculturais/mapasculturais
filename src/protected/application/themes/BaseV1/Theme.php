@@ -402,6 +402,8 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
         
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
         
         $this->jsObject['EntitiesDescription'] = [
