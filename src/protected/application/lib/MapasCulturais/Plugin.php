@@ -4,28 +4,24 @@ namespace MapasCulturais;
 use MapasCulturais\Traits;
 
 abstract class Plugin {
-    use Traits\Singleton,
-        Tratis\MagicGetter,
+    use Traits\MagicGetter,
         Traits\MagicSetter;
     
     protected $_config;
     
-    final protected function __construct(array $config = []) {
+    final function __construct(array $config = []) {
         $this->_config = $config;
-    }
-    
-    
-    function init(){
+        
         $app = App::i();
         $active_theme = $app->view;
-        
         $class = get_called_class();
-        while($class != __CLASS__){
-            $reflaction = new \ReflectionClass($class);
+        $reflaction = new \ReflectionClass($class);
+        
+        while($reflaction->getName() != __CLASS__){
             $dir = dirname($reflaction->getFileName());
             $active_theme->addPath($dir);
             
-            $class = $reflaction->getParentClass();
+            $reflaction = $reflaction->getParentClass();
         }
         
         $app->applyHookBoundTo($this, "plugin({$class}).init:before");
@@ -33,7 +29,11 @@ abstract class Plugin {
         $app->applyHookBoundTo($this, "plugin({$class}).init:after");
     }
     
+    function getConfig(){
+        return $this->_config;
+    }
+    
     abstract function _init();
     
-    abstract function _register();
+    abstract function register();
 }
