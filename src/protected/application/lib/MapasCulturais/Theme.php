@@ -297,12 +297,6 @@ abstract class Theme extends \Slim\View {
      */
     public function partialRender($__template, $__data = [], $_is_part = false){
         $app = App::i();
-        if(strtolower(substr($__template, -4)) === '.php'){
-            $__template_filename = $__template;
-            $__template = substr($__template, 0, -4);
-        } else {
-            $__template_filename = $__template . '.php';
-        }
         
         if($__data instanceof \Slim\Helper\Set){
             $_data = $__data;
@@ -313,7 +307,15 @@ abstract class Theme extends \Slim\View {
             }
         }
         
-        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data, &$__template]);
+
+        if(strtolower(substr($__template, -4)) === '.php'){
+            $__template_filename = $__template;
+            $__template = substr($__template, 0, -4);
+        } else {
+            $__template_filename = $__template . '.php';
+        }
+        
         
         if(is_array($__data)){
             extract($__data);
