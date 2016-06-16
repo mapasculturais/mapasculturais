@@ -1,7 +1,8 @@
 <?php
 namespace ProjectPhases;
 
-use MapasCulturais\App;
+use MapasCulturais\App,
+    MapasCulturais\Entities;
 
 
 class Plugin extends \MapasCulturais\Plugin{
@@ -12,11 +13,12 @@ class Plugin extends \MapasCulturais\Plugin{
         $app->hook('GET(project.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
 
-            $phase = new MapasCulturais\Entities\Project;
+            $phase = new Entities\Project;
             $phase->parent = $parent;
             $phase->name = "Nova fase";
             $phase->type = $parent->type;
             $phase->owner = $parent->owner;
+            $phase->useRegistrations = true;
 
             $phase->save(true);
 
@@ -33,6 +35,10 @@ class Plugin extends \MapasCulturais\Plugin{
         });
 
         $app->hook('view.partial(downloads):before', function() use ($app){
+            if($this->controller->action === 'create'){
+                return;
+            }
+            
             $project = $this->controller->requestedEntity;
 
             if(!$project->useRegistrations){
