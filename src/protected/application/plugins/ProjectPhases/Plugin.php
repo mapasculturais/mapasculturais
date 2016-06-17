@@ -59,16 +59,7 @@ class Plugin extends \MapasCulturais\Plugin{
             $app->redirect($phase->editUrl);
         });
         
-        $app->hook('view.partial(singles/widget-projects).params', function(&$params){
-
-            $params['projects'] = array_filter($params['projects'], function($e){
-                if(! (bool) $e->isProjectPhase){
-                    return $e;
-                }
-            });
-        });
-
-        $app->hook('view.partial(downloads):before', function() use ($app, $plugin){
+        $app->hook('view.partial(singles/widget-projects).params', function(&$params, &$template) use ($app, $plugin){
             if($this->controller->action === 'create'){
                 return;
             }
@@ -76,10 +67,20 @@ class Plugin extends \MapasCulturais\Plugin{
             $project = $this->controller->requestedEntity;
             
             if($project->isProjectPhase){
+                $template = 'empty';
+            }
+
+            $params['projects'] = array_filter($params['projects'], function($e){
+                if(! (bool) $e->isProjectPhase){
+                    return $e;
+                }
+            });
+            
+            if($project->isProjectPhase){
                 $project = $project->parent;
             }
 
-            if(!$project->useRegistrations){
+            if(!$project->useRegistrations || !$project->canUser('@controll')){
                 return;
             }
             
@@ -87,17 +88,25 @@ class Plugin extends \MapasCulturais\Plugin{
             
             $app->view->part('widget-project-phases', ['project' => $project, 'phases' => $phases]);
         });
+
+        $app->hook('view.partial(<<singles/type|entity-parent>>).params', function(&$data, &$template){
+            $project = $this->controller->requestedEntity;
+            
+            if($project->isProjectPhase){
+                $data['disable_editable'] = true;
+            }
+        });
         
         // remove a aba agenda de um projeto que é uma fase de outro projeto
         $app->hook('view.partial(<<agenda|singles/project-events>>).params', function(&$data, &$template){
             
-            $entity = $data['entity'];
-            if($entity instanceof Entities\Project){
+            $project = $this->controller->requestedEntity;
+            
+            if($project->isProjectPhase){
                 $template = 'empty';
             }
-
         });
-
+        
         // faz com que a fase seja acessível mes
         $app->hook('entity(Project).canUser(view)', function($user, &$result){
             if($this->isProjectPhase && $this->status === -1){
