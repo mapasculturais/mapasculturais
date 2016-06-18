@@ -247,8 +247,9 @@ abstract class Theme extends \Slim\View {
         // render the template
         $__templatePath = $this->resolveFilename('views', $__template_filename);
 
-        if(strtolower(substr($__templatePath, -4)) !== '.php')
-                $__templatePath .= '.php';
+        if(!$__templatePath){
+            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+        }
 
 
         $__template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $__templatePath);
@@ -327,10 +328,10 @@ abstract class Theme extends \Slim\View {
         }else{
             $__templatePath = $this->resolveFilename('views', $__template_filename);
         }
-
-
-        if(strtolower(substr($__templatePath, -4)) !== '.php' && strtolower(substr($__templatePath, -5)) !== '.html')
-                $__templatePath .= '.php';
+        
+        if(!$__templatePath){
+            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+        }
 
         $__template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $__templatePath),0,-4);
 

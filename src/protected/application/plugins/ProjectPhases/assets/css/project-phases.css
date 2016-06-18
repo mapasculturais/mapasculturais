@@ -1,0 +1,12 @@
+.project-phases {
+    margin-top: 1em;
+}
+
+.project-phases li {
+    margin-bottom:.5em;
+}
+
+.project-phases li.active {
+    padding: .5em;
+    background: rgba(0,0,0,.05);
+}

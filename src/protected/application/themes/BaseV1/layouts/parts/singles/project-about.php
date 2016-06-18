@@ -1,26 +1,8 @@
 <div id="sobre" class="aba-content">
-    <?php if($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
-        <div class="highlighted-message clearfix">
-            <?php if($this->isEditable() || $entity->registrationFrom): ?>
-                <div class="registration-dates">
-                    Inscrições abertas de
-                    <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="Data inicial"><?php echo $entity->registrationFrom ? $entity->registrationFrom->format('d/m/Y') : 'Data inicial'; ?></strong>
-                    a
-                    <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="Data final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('d/m/Y') : 'Data final'; ?></strong>
-                    às
-                    <strong class="js-editable" id="registrationTo_time" data-datetime-value="<?php echo $entity->registrationTo ? $entity->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="Hora final" data-emptytext="Hora final"><?php echo $entity->registrationTo ? $entity->registrationTo->format('H:i') : ''; ?></strong>
-                    .
-                </div>
-            <?php endif; ?>
-            <?php if ($entity->useRegistrations && !$this->isEditable() ) : ?>
-                <a ng-if="data.projectRegistrationsEnabled" class="btn btn-primary" href="#tab=inscricoes" onclick="$('#tab-inscricoes').click()">Inscrições online</a>
-            <?php endif; ?>
-            <div class="clear" ng-if="data.projectRegistrationsEnabled && data.isEditable">Inscrições online <strong><span id="editable-use-registrations" class="js-editable clear" data-edit="useRegistrations" data-type="select" data-value="<?php echo $entity->useRegistrations ? '1' : '0' ?>"
-                    data-source="[{value: 0, text: 'desativadas'},{value: 1, text:'ativadas'}]"></span></strong>
-            </div>
-
-        </div>
-    <?php endif; ?>
+    <?php $this->applyTemplateHook('tab-about','begin'); ?>
+    
+    <?php $this->part('singles/project-about--highlighted-message', ['entity' => $entity]) ?>
+    
     <div class="ficha-spcultura">
         <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
             <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
@@ -57,5 +39,7 @@
     <!-- Image Gallery BEGIN -->
     <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
     <!-- Image Gallery END -->
+    
+    <?php $this->applyTemplateHook('tab-about','end'); ?>
 </div>
 <!-- #sobre -->

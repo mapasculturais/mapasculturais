@@ -54,6 +54,7 @@ $this->includeAngularEntityAssets($entity);
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
+            <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                     <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
@@ -122,6 +123,8 @@ $this->includeAngularEntityAssets($entity);
             <!-- Image Gallery BEGIN -->
                 <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
             <!-- Image Gallery END -->
+            
+            <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
         <div id="agenda" class="aba-content">
