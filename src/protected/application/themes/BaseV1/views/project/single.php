@@ -25,6 +25,11 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
+/*
+ * Seals available to relate to request agents.
+ */
+$this->addPermitedSealsToJs();
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -355,43 +360,29 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             <span class="label">Agente responsável</span> <span class="registration-help">(Selos atribuídos a agentes)</span><br>
                             <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção">Adicionar selos</span>
                         </p>
+						<div class="selos-relacionados" ng-controller="RelatedSealsController">
+							<input id="registrationSeals" type="text" class="js-editable" data-edit="registrationSeals" value="<?php echo $entity->registrationSeals;?>">
+						    <div class="widget">
+						        <div class="selos clearfix">
+						            <div ng-if="!disabledCD(group.name)" ng-click="editbox.open('set-seal-owner', $event)" class="hltip editable editable-empty" title="Adicionar selo"></div>
+						            
+						            <edit-box id='set-seal-owner'>
+						            <div ng-if="seals.length > 0" class="widget">
+								    	<h3>Selos Disponíveis</h3>
+								        <div class="selos clearfix">
+								            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
+												<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
+												
+													<h1><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h1>
+												
+								            </div>
+								        </div>
+								    </div>
+						            </edit-box>
+						        </div>
+						    </div>
+						</div>                        
                         <ul class="registration-seals">
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
-                            <li>
-                                <img src="/assets/img/avatar--seal.png" alt="nome do selo">
-                                <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>
-                            </li>
                             <li>
                                 <img src="/assets/img/avatar--seal.png" alt="nome do selo">
                                 <div class="botoes"><a class="delete hltip js-remove-item" data-href="" data-target="" data-confirm-message="" title="Excluir selo"></a></div>

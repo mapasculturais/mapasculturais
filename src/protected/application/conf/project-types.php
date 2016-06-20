@@ -49,7 +49,12 @@ return array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
         ),
-
+    	
+		'registrationSeals' => array(
+			'label' => 'Selos',
+			'serialize' => function($value) { return json_encode($value); },
+			'unserialize' => function($value) { return json_decode($value); }
+		),
     ),
     'items' => array(
         1 =>  array( 'name' => "Festival"),

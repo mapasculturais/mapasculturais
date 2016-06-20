@@ -36,18 +36,6 @@ $url_search_seals = $this->searchSealsUrl;
             </div>
         </div>
         <p><?php $this->dict('home: seals') ?></p>
-        <h4>Encontre selos por</h4>
-        <ul class="abas clearfix">
-            <li class="active"><a href="#seal-terms">Área de atuação</a></li>
-            <li><a href="#seal-types">Tipo</a></li>
-        </ul>
-        <div id="agent-types" class="tag-box">
-            <div>
-                <?php foreach ($seal_types as $t): ?>
-                    <a class="tag" href="<?php echo $app->createUrl('site', 'search') ?>##(seal:(type:<?php echo $t->id ?>),global:(enabled:(seal:!t),filterEntity:seal))"><?php echo $t->name ?></a>
-                <?php endforeach; ?>
-            </div>
-        </div>
     </div>
     <div class="box">
         <?php if($seal): ?>

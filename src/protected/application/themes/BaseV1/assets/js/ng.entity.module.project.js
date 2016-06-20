@@ -312,8 +312,6 @@
             });
         };
 
-
-
         $scope.eventFilterTimeout = null;
 
         $scope.filterEvents = function(){
@@ -827,4 +825,63 @@
                     });
             };
         }]);
+    
+    module.controller('RelatedSealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
+        $scope.editbox = EditBox;
+        
+        $scope.seals = [];
+        
+        for(var i in MapasCulturais.allowedSeals)
+            $scope.seals.push(MapasCulturais.allowedSeals[i]);
+        
+        $scope.showCreateDialog = {};
+        
+        $scope.isEditable = MapasCulturais.isEditable;
+        
+        $scope.data = {};
+        
+        $scope.avatarUrl = function(url){
+            if(url)
+                return url;
+            else
+                return MapasCulturais.assets.avatarSeal;
+        };
+        
+        $scope.closeNewSealEditBox = function(){
+            EditBox.close('new-related-seal');
+        };
+        
+        $scope.getCreateSealRelationEditBoxId = function(){
+            return 'add-related-seal';
+        };
+        
+        $scope.entity = MapasCulturais.entity.object;
+        
+        $scope.setSeal = function(agent, entity){
+            var _scope = this.$parent;
+            console.log(agent, entity);
+            
+            if(typeof $scope.entity.registrationSeals !== "object") {
+            	$scope.entity.registrationSeals = {};
+        	} 
+            
+            $scope.entity.registrationSeals[agent] =  entity.id;
+            jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
+            
+            EditBox.close('set-seal-' + agent);
+//            
+//            RelatedSealsService.create(entity.id).success(function(data){
+//                $scope.showCreateDialog = false;
+//                _scope.$parent.searchText = 'Mary, vocÊ está aqui!';
+//                _scope.$parent.result = [];
+//                EditBox.close($scope.getCreateSealRelationEditBoxId());
+//            });
+        };
+        
+        $scope.deleteRelation = function(relation){
+            RelatedSealsService.remove(relation.seal.id).error(function(){
+                relations = oldRelations;
+            });
+        };
+    }]);
 })(angular);

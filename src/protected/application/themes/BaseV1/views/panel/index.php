@@ -67,7 +67,7 @@ $this->layout = 'panel';
             </div>
         <?php endif; ?>
         
-        <?php if($app->isEnabled('seals') && $app->user->is('superAdmin')): ?>
+        <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
             <div>
                 <div>
                     <div class="clearfix">

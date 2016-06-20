@@ -6,7 +6,7 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 $this->addEntityToJs($entity);
 
 if($this->isEditable()){
-    $this->addEntityTypesToJs($entity);
+	$this->addEntityTypesToJs($entity);
 }
 
 $this->includeMapAssets();
@@ -52,23 +52,21 @@ $this->includeAngularEntityAssets($entity);
                 <p>
                     <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
-                <?php $this->applyTemplateHook('tab-about-service','before'); ?>
-                <div class="servico">
-                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
-                </div>
-                <?php $this->applyTemplateHook('tab-about-service','after'); ?>
-
             </div>
             <!--.ficha-spcultura-->
-
-            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-                <h3>Descrição</h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
-            <?php endif; ?>
-            <!--.descricao-->
-            
-        </div>
-        <!-- #sobre -->
+            <?php $this->applyTemplateHook('tab-about-service','before'); ?>
+				<div class="servico">
+					<?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+				
+					<p><span class="label">Validade:</span>
+					<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span> 
+					<span class="js-editable" data-edit="timeUnit" data-original-title="Periodicidade" data-emptytext="Selecione a periodicidade da validade do selo"><?php echo $entity->timeUnit; ?></span></p>
+					
+					<?php $this->applyTemplateHook('tab-about-service','end'); ?>
+				</div>
+                <?php $this->applyTemplateHook('tab-about-service','after'); ?>
+            </div>
+            <!--.ficha-spcultura-->
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>

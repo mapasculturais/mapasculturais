@@ -17,7 +17,7 @@ use MapasCulturais\Entities;
 class Seal extends EntityController {
     use	 
     	Traits\ControllerUploads,
-        Traits\ControllerTypes,
+    	Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
         Traits\ControllerVerifiable,
@@ -105,5 +105,15 @@ class Seal extends EntityController {
         }else{
             $app->redirect($app->request()->getReferer());
         }
+    }
+    
+    function GET_sealRelation(){
+    	$app = App::i();
+    	
+    	$id = $this->data['id'];
+    	
+    	$rel = $app->repo('SealRelation')->find($id);
+    	
+    	die($rel->dump());
     }
 }

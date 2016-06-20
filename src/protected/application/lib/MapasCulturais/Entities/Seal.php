@@ -16,8 +16,9 @@ use MapasCulturais\App;
  */
 class Seal extends \MapasCulturais\Entity
 {
-    use Traits\EntityOwnerAgent,
-    	Traits\EntityTypes,
+    use Traits\EntityTypes,
+        Traits\EntityMetadata, 
+    	Traits\EntityOwnerAgent,
         Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityAvatar,
@@ -39,9 +40,6 @@ class Seal extends \MapasCulturais\Entity
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do agente é obrigatório',
         ]
     ];
 
@@ -62,11 +60,11 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="seal_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
-
+    
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="smallint", nullable=false)
+     * @ORM\Column(name="type", type="smallint", nullable=true)
      */
     protected $_type;
 
@@ -90,6 +88,20 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="long_description", type="text", nullable=true)
      */
     protected $longDescription;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="valid_period", type="smallint", nullable=false)
+     */
+    protected $validPeriod;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="time_unit", type="smallint", nullable=false)
+     */
+    protected $timeUnit;
 
     /**
      * @var \DateTime

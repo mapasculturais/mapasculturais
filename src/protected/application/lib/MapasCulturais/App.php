@@ -757,25 +757,22 @@ class App extends \Slim\Slim{
             }
         }
         
-        // register seal types and seal metadata
+        // register seal time unit types
 		$entity_class = 'MapasCulturais\Entities\Seal';
         
         foreach($seal_types['items'] as $type_id => $type_config){
         	$type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-        
         	$this->registerEntityType($type);
-        	$type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
-        
-        	// add agents metadata definition to seal type
-        	foreach($seals_meta as $meta_key => $meta_config)
-        		if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-        			$type_config['metadata'][$meta_key] = $meta_config;
-        
-        			foreach($type_config['metadata'] as $meta_key => $meta_config){
-        
-        				$metadata = new Definitions\Metadata($meta_key, $meta_config);
-        				$this->registerMetadata($metadata, $entity_class, $type_id);
-        			}
+        	
+        	// add projects metadata definition to project type
+            foreach($seals_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
+
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
         }
         
         // register taxonomies

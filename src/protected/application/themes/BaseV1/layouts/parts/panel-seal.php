@@ -6,11 +6,6 @@ use MapasCulturais\Entities\Seal;
         <a class="icon icon-seal hltip"></a>
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
     </h1>
-    <div class="objeto-meta">
-        <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
-        <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-        <div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
-    </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
             <?php if($entity->status === Seal::STATUS_ENABLED): ?>
