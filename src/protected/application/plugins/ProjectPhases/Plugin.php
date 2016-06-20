@@ -124,13 +124,16 @@ class Plugin extends \MapasCulturais\Plugin{
         
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(project.importLastPhaseRegistrations)', function() use($app) {
-            $phase = $this->requestedEntity;
+            $base_project = self::getBaseProject();
+            $phase = self::getCurrentPhase($base_project);
             
             $phase->checkPermission('@control');
             
             $last_phase = self::getLastCompletedPhase($base_project);
             
-            $registrations = $last_phase->registrations;
+            $registrations = $last_phase->getSentRegistrations();
+            
+            die(var_dump($last_phase->name, count($registrations)));
         });
         
         // action para criar uma nova fase no projeto
