@@ -8,6 +8,11 @@ use MapasCulturais\App,
 
 class Plugin extends \MapasCulturais\Plugin{
     
+    /**
+     * Retorna o projeto principal
+     * 
+     * @return \MapasCulturais\Entities\Project
+     */
     static function getBaseProject(){
         $project = self::getRequestedProject();
         
@@ -22,6 +27,11 @@ class Plugin extends \MapasCulturais\Plugin{
         return $project;
     }
     
+    /**
+     * Retorna o projeto/fase que está sendo visualizado
+     * 
+     * @return \MapasCulturais\Entities\Project
+     */
     static function getRequestedProject(){
         $app = App::i();
         
@@ -34,6 +44,12 @@ class Plugin extends \MapasCulturais\Plugin{
         return $project;
     }
     
+    /**
+     * Retorna a última fase do projeto
+     * 
+     * @param \MapasCulturais\Entities\Project $base_project
+     * @return \MapasCulturais\Entities\Project
+     */
     static function getLastPhase(Entities\Project $base_project){
         $app = App::i();
         
@@ -96,11 +112,40 @@ class Plugin extends \MapasCulturais\Plugin{
         return $result;
     }
     
-    static function canCreatePhases(Entities\Project $project){
-        return $project->useRegistrations && $project->registrationTo;
+    /**
+     * Retorna a fase anterior a fase informada
+     * 
+     * @param \MapasCulturais\Entities\Project $phase
+     * @return \MapasCulturais\Entities\Project a fase anterior
+     */
+    static function getPreviousPhase(Entities\Project $phase){
+        if (!$phase->isProjectPhase) { 
+            return null;
+        }
+        
+        $base_project = self::getBaseProject();
+        
+        $phases = self::getPhases($base_project);
+        
+        $result = $base_project;
+        
+        foreach($phases as $p){
+            if($p->registrationTo < $phase->registrationTo){
+                $result = $p;
+            }
+        }
+        
+        return $result;
     }
     
-    static function getPhases($project){
+    
+    /**
+     * Retorna as fases do projeto informado
+     * 
+     * @param \MapasCulturais\Entities\Project $project
+     * @return \MapasCulturais\Entities\Project[]
+     */
+    static function getPhases(Entities\Project $project){
         if ($project->canUser('@control')) {
             $status = [0,-1];
         } else {
@@ -113,7 +158,23 @@ class Plugin extends \MapasCulturais\Plugin{
             'status' => $status
         ],['registrationTo' => 'ASC', 'id' => 'ASC']);
         
+        $phases = array_filter($phases, function($item) { 
+            if($item->isProjectPhase){
+                return $item;
+            }
+        });
+        
         return $phases;
+    }
+    
+    /**
+     * O projeto informado tem os requisitos mínimos para se criar novas fases?
+     * 
+     * @param \MapasCulturais\Entities\Project $project
+     * @return type
+     */
+    static function canCreatePhases(Entities\Project $project){
+        return $project->useRegistrations && $project->registrationTo;
     }
     
     function _init () {
@@ -121,20 +182,6 @@ class Plugin extends \MapasCulturais\Plugin{
         
         $app->view->enqueueScript('app', 'plugin-project-phases', 'js/project-phases.js', ['mapasculturais']);
         $app->view->enqueueStyle('app', 'plugin-project-phases', 'css/project-phases.css');
-        
-        // action para importar as inscrições da última fase concluida
-        $app->hook('GET(project.importLastPhaseRegistrations)', function() use($app) {
-            $base_project = self::getBaseProject();
-            $phase = self::getCurrentPhase($base_project);
-            
-            $phase->checkPermission('@control');
-            
-            $last_phase = self::getLastCompletedPhase($base_project);
-            
-            $registrations = $last_phase->getSentRegistrations();
-            
-            die(var_dump($last_phase->name, count($registrations)));
-        });
         
         // action para criar uma nova fase no projeto
         $app->hook('GET(project.createNextPhase)', function() use($app){
@@ -186,6 +233,65 @@ class Plugin extends \MapasCulturais\Plugin{
             if($entity->isProjectPhase){
                 $redirect_url = $entity->parent->singleUrl;
             }
+        });
+        
+        $app->hook('view.partial(footer):after', function($asd, &$html){
+            $html .= 'RAFAEL';
+        });
+        
+        // action para importar as inscrições da última fase concluida
+        $app->hook('GET(project.importLastPhaseRegistrations)', function() use($app) {
+            $target_project = self::getRequestedProject();
+            
+            $target_project ->checkPermission('@control');
+            
+            if($target_project->previousPhaseRegistrationsImported){
+                $this->errorJson($app->txt('As inscrições já foram importadas para esta fase'), 400);
+            }
+            
+            $previous_phase = self::getPreviousPhase($target_project);
+            
+            $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
+                if($item->status === Entities\Registration::STATUS_APPROVED || $item->status === Entities\Registration::STATUS_WAITLIST){
+                    return $item;
+                }
+            });
+            
+            if(count($registrations) < 1){
+                $this->errorJson($app->txt('Não há inscrições aprovadas ou suplentes na fase anterior'), 400);
+            }
+            
+            $new_registrations = [];
+            
+            $app->disableAccessControl();
+            foreach ($registrations as $r){
+                $reg = new Entities\Registration;
+                $reg->owner = $r->owner;
+                $reg->project = $target_project;
+                $reg->status = Entities\Registration::STATUS_DRAFT;
+                $reg->previousPhaseRegistrationId = $r->id;
+                $reg->save(true);
+                
+                $r->nextPhaseRegistrationId = $reg->id;
+                $r->save(true);
+                
+                $new_registrations[] = $reg;
+            }
+            
+            $target_project->previousPhaseRegistrationsImported = true;
+            
+            $target_project->save(true);
+            
+            $app->enableAccessControl();
+            
+            $this->finish($new_registrations);
+        });
+        
+        // links para próxima fase 
+        $app->hook("view.partial(singles/registration-edit--header).after", function(&$params){
+            $registration = $this->controller->requestedEntity;
+            
+            var_dump($registration); die;
         });
         
         // desliga a edição do campo principal de data quando vendo uma fase
@@ -324,11 +430,17 @@ class Plugin extends \MapasCulturais\Plugin{
     function register () {
         $app = App::i();
 
-        $def = new Definitions\Metadata('isProjectPhase', [
-            'label' => $app->txt('Is a project phase?')
-        ]);
+        $def__is_project_phase = new Definitions\Metadata('isProjectPhase', ['label' => $app->txt('Is a project phase?')]);
+        $def__previous_phase_imported = new Definitions\Metadata('previousPhaseRegistrationsImported', ['label' => $app->txt('Previous phase registrations imported')]);
 
-        $app->registerMetadata($def, 'MapasCulturais\Entities\Project');
+        $app->registerMetadata($def__is_project_phase, 'MapasCulturais\Entities\Project');
+        $app->registerMetadata($def__previous_phase_imported, 'MapasCulturais\Entities\Project');
+        
+        $def__prev = new Definitions\Metadata('previousPhaseRegistrationId', ['label' => $app->txt('Previous phase registration id')]);
+        $def__next = new Definitions\Metadata('nextPhaseRegistrationId', ['label' => $app->txt('Next phase registration id')]);
+
+        $app->registerMetadata($def__prev, 'MapasCulturais\Entities\Registration');
+        $app->registerMetadata($def__next, 'MapasCulturais\Entities\Registration');
     }
     
 }

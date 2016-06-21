@@ -139,8 +139,14 @@ abstract class EntityController extends \MapasCulturais\Controller{
             header('CreatedRequests: ' . json_encode($reqs));
         }
         
+        $this->finish($entity, $status, $isAjax);
+    }
+    
+    function finish($data, $status = 200, $isAjax = false){
+        $app = App::i();
+        
         if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
-            $this->json($entity, $status);
+            $this->json($data, $status);
         }elseif(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
         }else{
