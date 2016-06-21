@@ -216,7 +216,7 @@ abstract class Theme extends \Slim\View {
      *
      * This method extracts the property "data" array to make the variables accessible inside the template.
      *
-     * @param string $template the template to render
+     * @param string $__template the template to render
      *
      * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
      * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -225,10 +225,10 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function fullRender($template){
+    public function fullRender($__template){
         $app = App::i();
 
-        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        $__template_filename = strtolower(substr($__template, -4)) === '.php' ? $__template : $__template . '.php';
         $render_data = [];
 
         foreach($this->data->keys() as $k){
@@ -245,37 +245,37 @@ abstract class Theme extends \Slim\View {
             $this->bodyClasses[] = 'entity';
 
         // render the template
-        $templatePath = $this->resolveFilename('views', $template_filename);
+        $__templatePath = $this->resolveFilename('views', $__template_filename);
 
-        if(strtolower(substr($templatePath, -4)) !== '.php')
-                $templatePath .= '.php';
+        if(strtolower(substr($__templatePath, -4)) !== '.php')
+                $__templatePath .= '.php';
 
 
-        $template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $templatePath);
+        $__template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $__templatePath);
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', ['template' => $template_name]);
+        $app->applyHookBoundTo($this, 'view.render(' . $__template_name . '):before', ['template' => $__template_name]);
 
-        $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
+        $TEMPLATE_CONTENT = $this->partialRender($__template_name, $this->data);
 
-        $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
+        $__layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         // render the layout with template
-        $layoutPath = $this->resolveFilename('layouts', $layout_filename);
+        $__layoutPath = $this->resolveFilename('layouts', $__layout_filename);
 
-        if(strtolower(substr($layoutPath, -4)) !== '.php')
-                $layoutPath .= '.php';
+        if(strtolower(substr($__layoutPath, -4)) !== '.php')
+                $__layoutPath .= '.php';
 
         ob_start(function($output){
             return $output;
         });
 
-        include $layoutPath;
+        include $__layoutPath;
 
-        $html = ob_get_clean();
+        $__html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
+        $app->applyHookBoundTo($this, 'view.render(' . $__template_name . '):after', ['template' => $__template_name, 'html' => &$__html]);
 
-        return $html;
+        return $__html;
     }
 
     /**
@@ -285,8 +285,8 @@ abstract class Theme extends \Slim\View {
      *
      * This method extracts the data array to make the variables accessible inside the template.
      *
-     * @param string $template the template to render
-     * @param array $data the data to be passed to template.
+     * @param string $__template the template to render
+     * @param array $__data the data to be passed to template.
      *
      * @hook **view.partial:before ($template_name)** - executed before the template render.
      * @hook **view.partial({$template_name}):before ($template_name)** - executed before the template render.
@@ -295,57 +295,65 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function partialRender($template, $data = [], $_is_part = false){
+    public function partialRender($__template, $__data = [], $_is_part = false){
         $app = App::i();
-        if(strtolower(substr($template, -4)) === '.php'){
-            $template_filename = $template;
-            $template = substr($template, 0, -4);
+        if(strtolower(substr($__template, -4)) === '.php'){
+            $__template_filename = $__template;
+            $__template = substr($__template, 0, -4);
         } else {
-            $template_filename = $template . '.php';
+            $__template_filename = $__template . '.php';
         }
-
-        if(is_array($data))
-            extract($data);
-        elseif($data instanceof \Slim\Helper\Set)
-            foreach($this->data->keys() as $k)
-                $$k = $this->data->get($k);
-
+        
+        if($__data instanceof \Slim\Helper\Set){
+            $_data = $__data;
+            $__data = [];
+            
+            foreach($_data->keys() as $k){
+                $__data[$k] = $_data->get($k);
+            }
+        }
+        
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data]);
+        
+        if(is_array($__data)){
+            extract($__data);
+        }
 
         // render the template
         if($_is_part){
-            $templatePath = $this->resolveFilename('layouts', 'parts/' . $template_filename);
+            $__templatePath = $this->resolveFilename('layouts', 'parts/' . $__template_filename);
         }else{
-            $templatePath = $this->resolveFilename('views', $template_filename);
+            $__templatePath = $this->resolveFilename('views', $__template_filename);
         }
 
 
-        if(strtolower(substr($templatePath, -4)) !== '.php' && strtolower(substr($templatePath, -5)) !== '.html')
-                $templatePath .= '.php';
+        if(strtolower(substr($__templatePath, -4)) !== '.php' && strtolower(substr($__templatePath, -5)) !== '.html')
+                $__templatePath .= '.php';
 
-        $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
+        $__template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $__templatePath),0,-4);
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template . '):before', ['template' => $template]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . '):before', ['template' => $__template]);
 
         ob_start(function($output){
             return $output;
         });
         
         if($app->config['themes.active.debugParts']){
-            $template_debug = str_replace(THEMES_PATH, '', $template_name);
+            $template_debug = str_replace(THEMES_PATH, '', $__template_name);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
-        include $templatePath;
+        include $__templatePath;
         
         if($app->config['themes.active.debugParts']){
             echo '<!-- ' . $template_debug . ".php # END -->";
         }
 
-        $html = ob_get_clean();
+        $__html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template . '):after', ['template' => $template, 'html' => &$html]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . '):after', ['template' => $__template, 'html' => &$__html]);
 
-        return $html;
+        return $__html;
     }
 
     /**

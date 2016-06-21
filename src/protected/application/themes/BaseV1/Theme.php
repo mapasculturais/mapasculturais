@@ -402,6 +402,8 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
         
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
         
         $this->jsObject['EntitiesDescription'] = [
@@ -894,7 +896,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _populateJsObject() {
-
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
@@ -911,6 +912,18 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
+//        eval(\Psy\sh());
+        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+        }
+    }
+    protected function _getAdvancedFilters(){
+        return [
+            'space' => [],
+            'agent' => [],
+            'event' => [],
+            'project' => []
+        ];
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){
