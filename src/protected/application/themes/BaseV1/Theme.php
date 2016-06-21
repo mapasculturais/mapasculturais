@@ -526,7 +526,6 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agente.png', false);
         $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-espaco.png', false);
         $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-evento.png', false);
-        $this->jsObject['assets']['pinSeal'] = $this->asset('img/pin-selo.png', false);
 
         $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agente.png', false);
         $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-evento.png', false);
