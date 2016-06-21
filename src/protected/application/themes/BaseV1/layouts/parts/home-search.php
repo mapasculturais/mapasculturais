@@ -23,6 +23,10 @@
                         <?php if($app->isEnabled('projects')): ?>
                             <li tabindex="5" id="projects-filter" data-entity="project" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}},viewMode:list),{{entity}}:(keyword:'{{keyword}}'))"><span class="icon icon-project"></span> Projetos</li>
                         <?php endif; ?>
+                        
+                        <?php if($app->isEnabled('seals')): ?>
+                            <li tabindex="5" id="seals-filter" data-entity="seal"><span class="icon icon-seal"></span> Selos</li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

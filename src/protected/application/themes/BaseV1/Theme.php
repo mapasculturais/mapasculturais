@@ -50,6 +50,9 @@ class Theme extends MapasCulturais\Theme {
             'entities: Space Description'=> 'Descrição do Espaço',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
+        		
+        	'entities: My Seals'=> 'Meus Selos',
+        	'entities: My seals'=> 'Meus selos',
             
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
@@ -93,299 +96,16 @@ class Theme extends MapasCulturais\Theme {
     function getSearchProjectsUrl(){
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
     }
+    
+    function getSearchSealsUrl(){
+    	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
+    }
 
     protected function _init() {
         $app = App::i();
 
 
-        /* === NOTIFICATIONS  === */
-        // para todos os requests
-        $app->hook('workflow(<<*>>).create', function() use($app) {
-
-            if ($this->notifications) {
-                $app->disableAccessControl();
-                foreach ($this->notifications as $n) {
-                    $n->delete();
-                }
-                $app->enableAccessControl();
-            }
-
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} à inscrição {$origin->number} no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
-                    }else{
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} {$origin_link} para o agente {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    ;
-                    $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    $message_to_requester = "Sua requisição para criar a ocorrência do evento {$origin_link} no espaço {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} quer relacionar o evento {$origin_link} ao projeto {$destination_link}.";
-                    $message_to_requester = "Sua requisição para associar o evento {$origin_link} ao projeto {$destination_link} foi enviada.";
-                    break;
-                default:
-                    $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
-                    break;
-            }
-
-            // message to requester user
-            $notification = new Notification;
-            $notification->user = $requester;
-            $notification->message = $message_to_requester;
-            $notification->request = $this;
-            $notification->save(true);
-
-            $notified_user_ids = array($requester->id);
-
-
-            foreach ($destination->usersWithControl as $user) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($user->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $user->id;
-
-                $notification = new Notification;
-                $notification->user = $user;
-                $notification->message = $message;
-                $notification->request = $this;
-                $notification->save(true);
-            }
-
-            if (!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)) {
-                $notification = new Notification;
-                $notification->user = $origin->ownerUser;
-                $notification->message = $message;
-                $notification->request = $this;
-                $notification->save(true);
-            }
-        });
-
-        $app->hook('workflow(<<*>>).approve:before', function() use($app) {
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                    }else{
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} aceitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} aceitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} aceitou relacionar o evento {$origin_link} ao projeto {$destination_link}.";
-                    break;
-                default:
-                    $message = "A requisição foi aprovada.";
-                    break;
-            }
-
-            $users = array();
-
-            // notifica quem fez a requisição
-            $users[] = $this->requesterUser;
-
-            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if (!$destination->ownerUser->equals($this->requesterUser))
-                    $users[] = $destination->ownerUser;
-
-                // se não é o dono da entidade de origem que está aprovando, notifica o dono
-                if (!$origin->ownerUser->equals($app->user))
-                    $users[] = $origin->ownerUser;
-            }else {
-                // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if (!$origin->ownerUser->equals($this->requesterUser))
-                    $users[] = $origin->ownerUser;
-
-                // se não é o dono da entidade de destino que está aprovando, notifica o dono
-                if (!$destination->ownerUser->equals($app->user))
-                    $users[] = $destination->ownerUser;
-            }
-
-            $notified_user_ids = array();
-
-            foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($u->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $u->id;
-
-                $notification = new Notification;
-                $notification->message = $message;
-                $notification->user = $u;
-                $notification->save(true);
-            }
-        });
-
-
-        $app->hook('workflow(<<*>>).reject:before', function() use($app) {
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->canUser('@control')){
-                        if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} cancelou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        }else{
-                            $message = "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                        }
-                    }else{
-                        if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        }else{
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                        }
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    if ($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                        $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    } else {
-                        $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
-                            "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
-                            "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
-                    break;
-                default:
-                    $message = $origin->canUser('@control') ?
-                            "A requisição foi cancelada." :
-                            "A requisição foi rejeitada.";
-                    break;
-            }
-
-            $users = array();
-
-            if (!$app->user->equals($this->requesterUser)) {
-                // notifica quem fez a requisição
-                $users[] = $this->requesterUser;
-            }
-
-            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if (!$destination->ownerUser->equals($this->requesterUser))
-                    $users[] = $destination->ownerUser;
-
-                // se não é o dono da entidade de origem que está rejeitando, notifica o dono
-                if (!$origin->ownerUser->equals($app->user))
-                    $users[] = $origin->ownerUser;
-            }else {
-                // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if (!$origin->ownerUser->equals($this->requesterUser))
-                    $users[] = $origin->ownerUser;
-
-                // se não é o dono da entidade de destino que está rejeitando, notifica o dono
-                if (!$destination->ownerUser->equals($app->user))
-                    $users[] = $destination->ownerUser;
-            }
-
-            $notified_user_ids = array();
-
-            foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($u->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $u->id;
-
-                $notification = new Notification;
-                $notification->message = $message;
-                $notification->user = $u;
-                $notification->save(true);
-            }
-        });
-
-
-        /* ---------------------- */
-
+       
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -410,7 +130,8 @@ class Theme extends MapasCulturais\Theme {
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
         		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
-        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
+        		"seal" => \MapasCulturais\Entities\Seal::getPropertiesMetadata()
         ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
@@ -424,6 +145,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
             $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+            $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
             $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
             $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
@@ -432,7 +154,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['isSearch'] = $this->isSearch();
             
             $this->jsObject['angularAppDependencies'] = [
-                'entity.module.relatedAgents', 
+                'entity.module.relatedAgents',
+            	'entity.module.relatedSeals',
                 'entity.module.changeOwner',
                 'entity.directive.editableMultiselect',
                 'entity.directive.editableSingleselect',
@@ -470,6 +193,7 @@ class Theme extends MapasCulturais\Theme {
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels(),
+            	'seal' => \MapasCulturais\Entities\Seal::getPropertiesLabels()
             );
 
             $this->jsObject['routes'] = $app->config['routes'];
@@ -480,7 +204,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -513,16 +237,16 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -786,6 +510,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
         $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
         $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+        $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
 
 
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
@@ -801,14 +526,17 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agente.png', false);
         $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-espaco.png', false);
         $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-evento.png', false);
+        $this->jsObject['assets']['pinSeal'] = $this->asset('img/pin-selo.png', false);
 
         $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agente.png', false);
         $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-evento.png', false);
         $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-espaco.png', false);
+        //$this->jsObject['assets']['pinSealGroup'] = $this->asset('img/agrupador-selo.png', false);
 
         $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agente-evento.png', false);
         $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-espaco-evento.png', false);
         $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-agente.png', false);
+        //$this->jsObject['assets']['pinSealSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-selo.png', false);
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
 
@@ -835,6 +563,7 @@ class Theme extends MapasCulturais\Theme {
             'mc.directive.mcSelect', 
             'mc.module.findEntity',
             'entity.module.relatedAgents',
+        	'entity.module.relatedSeals',
             'entity.module.changeOwner', 
             'entity.directive.editableMultiselect', 
             'entity.directive.editableSingleselect',
@@ -848,6 +577,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
@@ -935,7 +665,8 @@ class Theme extends MapasCulturais\Theme {
             'userHasControl' => $entity->canUser('@control'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
-            'object' => $entity
+            'object' => $entity,
+        		'teste' => $entity->registrationSeals
         ];
 
         if($entity->usesNested() && $entity->id){
@@ -977,6 +708,23 @@ class Theme extends MapasCulturais\Theme {
 
     function addRelatedAgentsToJs($entity) {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
+    }
+    
+    function addRelatedSealsToJs($entity) {
+    	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
+    }
+    
+    function addPermitedSealsToJs() {
+    	
+    	$app = App::i();
+    	if (!$app->user->is('guest')) {
+    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery(array(
+    				'@select' => 'id,name,status, singleUrl',
+    				'@permissions' => '@control',
+    				'@files'=>'(avatar.avatarMedium):url',
+    				'@ORDER' => 'createTimestamp DESC'
+    		));
+    	}
     }
 
     function addProjectEventsToJs(Entities\Project $entity){

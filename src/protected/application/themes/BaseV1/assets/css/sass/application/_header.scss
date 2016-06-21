@@ -270,7 +270,7 @@ body.action-search {
 #entities-menu-project {
     &.active, &:hover {
         border-top-color: $brand-project;
-        color: $brand-event;
+        color: $brand-project;
         a {
             color: $brand-project;
         }
@@ -278,6 +278,22 @@ body.action-search {
     &.active {
         &:after {
             @include arrow(up, $caret-width-base, $brand-project);
+        }
+    }
+}
+
+//** Seals
+#entities-menu-seal {
+    &.active, &:hover {
+        border-top-color: $brand-seal;
+        color: $brand-seal;
+        a {
+            color: $brand-seal;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-seal);
         }
     }
 }

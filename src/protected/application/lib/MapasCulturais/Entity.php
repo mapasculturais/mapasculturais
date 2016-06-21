@@ -608,7 +608,7 @@ abstract class Entity implements \JsonSerializable{
 
         if($this->usesMetadata()){
             foreach($this->metadata as $meta_key => $meta_value)
-                $result[$meta_key] = $meta_value;
+                $result[$meta_key] = $this->$meta_key;
         }
 
         if($controller_id = $this->getControllerId()){

@@ -204,6 +204,7 @@ trait EntityAgentRelation {
     }
 
     function setRelatedAgentControl($agent, $control){
+    	// canUserCreateAgentRelationWithControl
         if($control)
             $this->checkPermission('createAgentRelationWithControl');
         else
