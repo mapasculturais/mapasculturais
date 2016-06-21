@@ -1,5 +1,5 @@
 <?php
-$this->layout = 'panel'
+$this->layout = 'panel';
 ?>
 <div class="panel-main-content">
 
@@ -62,6 +62,21 @@ $this->layout = 'panel'
                     <div class="clearfix">
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="Ver meus projetos"><?php echo $count->projects; ?></a>
                         <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="Adicionar projetos"></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+            <div>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Selos</span>
+                        <div class="icon icon-seal alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'seals') ?>" title="Ver meus selos"><?php echo $count->seals; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('seal', 'create'); ?>" title="Adicionar selos"></a>
                     </div>
                 </div>
             </div>

@@ -34,10 +34,11 @@ class Panel extends \MapasCulturais\Controller {
         
         $count = new \stdClass();
 
-        $count->spaces = $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->agents = $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->events = $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->projects = $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->spaces		= $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->seals		= $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
     }
@@ -131,8 +132,6 @@ class Panel extends \MapasCulturais\Controller {
 
         $enabled = $controller->apiQuery($query);
         $meta = $controller->lastQueryMetadata;
-//        var_dump($meta);
-//        die();
         $draft   = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
         $trashed = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
 
@@ -197,6 +196,24 @@ class Panel extends \MapasCulturais\Controller {
         $user = $this->_getUser();
 
         $this->render('projects', ['user' => $user]);
+    }
+    
+    /**
+     * Render the seal list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/seals'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'seals');
+     * </code>
+     *
+     */
+    function GET_seals(){
+    	$this->requireAuthentication();
+    	$user = $this->_getUser();
+    
+    	$this->render('seals', ['user' => $user]);
     }
 
     /**

@@ -98,7 +98,10 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar space">
-    <?php $this->part('verified', array('entity' => $entity)); ?>
+  <!-- Related Seals BEGIN -->
+    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+    <!-- Related Seals END -->
+    
     <div class="widget">
         <h3>Status</h3>
         <?php if($this->isEditable()): ?>
@@ -150,6 +153,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <?php endif; ?>
         </div>
     <?php endif; ?>
+    
     <!-- Downloads BEGIN -->
     <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->

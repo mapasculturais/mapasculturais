@@ -160,6 +160,15 @@
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
                     <?php endif; ?>
+                   
+                   <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.seals','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'seals') ?>"><?php $this->dict('entities: My Seals') ?></a>
+                            <a class="add"href="<?php echo $app->createUrl('seal', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
+                    <?php endif; ?>
                         
                     <?php if($app->isEnabled('projects')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
@@ -175,6 +184,7 @@
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
+                    
                         
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->

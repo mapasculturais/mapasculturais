@@ -15,6 +15,14 @@
         margin-right: .75rem;
         background-size: cover;
     }
+    .avatar-seal {
+        float: left;
+        width: 6rem;
+        height: 6rem;
+        margin-right: .75rem;
+        background-size: cover;
+    }
+    
     &:before {
         left: 50%;
         margin-left: -8px;
@@ -119,6 +127,18 @@ body.action-single {
         color: $brand-project;
     }
 }
+
+.sidebar.seal {
+    border-top-color: $brand-seal;
+    &:before {
+        border-top-color: $brand-seal !important;
+    }
+    .widget-list-item > a {
+        color: $brand-seal;
+    }
+}
+
+
 .sidebar.registration {
     @extend .sidebar.project;
 }

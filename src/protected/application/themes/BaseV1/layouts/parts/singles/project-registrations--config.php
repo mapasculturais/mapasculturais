@@ -18,6 +18,8 @@
 
         <?php $this->part('singles/project-registrations--agent-relations', ['entity' => $entity]) ?>
         
+        <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>
+        
         <?php $this->part('singles/project-registrations--fields', ['entity' => $entity]) ?>
         
     <?php endif; ?>
