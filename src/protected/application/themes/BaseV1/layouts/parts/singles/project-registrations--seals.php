@@ -28,6 +28,7 @@
 		                <div class="descricao-do-selo">
 		                    <h1><a href="{{seals[getArrIndexBySealId(registrationSeals[0].owner)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals[0].owner)].name}}</a></h1>
 		                </div>
+		                <a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-owner', $event)" title="Editar {{seals[getArrIndexBySealId(registrationSeals[0].owner)].name}}">Trocar selo</a>
 	            	</div>
 				</div>
 			</div>                        
