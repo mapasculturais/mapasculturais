@@ -122,6 +122,8 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
         
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
         
         $this->jsObject['EntitiesDescription'] = [
@@ -641,6 +643,18 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
+//        eval(\Psy\sh());
+        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+        }
+    }
+    protected function _getAdvancedFilters(){
+        return [
+            'space' => [],
+            'agent' => [],
+            'event' => [],
+            'project' => []
+        ];
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){
@@ -652,7 +666,8 @@ class Theme extends MapasCulturais\Theme {
             'userHasControl' => $entity->canUser('@control'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
-            'object' => $entity
+            'object' => $entity,
+        		'teste' => $entity->registrationSeals
         ];
 
         if($entity->usesNested() && $entity->id){

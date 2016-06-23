@@ -13,6 +13,7 @@
     background-image: url(../img/unverified-seal.png);
     background-repeat: no-repeat;
     background-position: center;
+    background-size: contain;
     &.inactive {
         opacity: .2;
     }
