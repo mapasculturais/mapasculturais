@@ -252,7 +252,7 @@ class Plugin extends \MapasCulturais\Plugin{
             $previous_phase = self::getPreviousPhase($target_project);
             
             $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
-                if($item->status === Entities\Registration::STATUS_APPROVED || $item->status === Entities\Registration::STATUS_WAITLIST){
+                if($item->status === Entities\Registration::STATUS_APPROVED){
                     return $item;
                 }
             });
