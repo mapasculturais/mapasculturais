@@ -101,7 +101,7 @@ class Panel extends \MapasCulturais\Controller {
 
         $app = App::i();
 
-        $user_filter = 'EQ(' . $app->user->id . ')';
+        $user_filter = 'EQ(' . $user->id . ')';
 
         $query = [
             '@select' => $entityFields,

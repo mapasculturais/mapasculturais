@@ -48,20 +48,6 @@ class ProjectMeta extends \MapasCulturais\Entity {
      */
     protected $owner;
     
-    function setValue($value) {
-    	$def = $this->owner->getRegisteredMetadata($this->key);
-    	if($this->key == "registrationSeals") {
-    		die(var_dump(get_class($def), $def->unserialize));
-    	}
-    	if(is_callable($def->serialize)){
-    		die('hgfhgfhgf');
-    		$cb = $def->serialize;
-    		$value = $cb($value);
-    	}
-    	
-    	$this->value = $value;
-    }
-
     function canUser($action, $userOrAgent = null) {
         return $this->owner->canUser($action, $userOrAgent);
     }

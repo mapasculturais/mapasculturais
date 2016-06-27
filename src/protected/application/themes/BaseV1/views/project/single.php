@@ -25,11 +25,6 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
-/*
- * Seals available to relate to request agents.
- */
-$this->addPermitedSealsToJs();
-
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -86,7 +81,6 @@ $this->addPermitedSealsToJs();
 	<!-- Related Seals BEGIN -->
 	<?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
-
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>

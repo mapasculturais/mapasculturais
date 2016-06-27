@@ -121,13 +121,14 @@ class Event extends EntityController {
                 $space_query_data['@select'] .= ',id';
             }
         }
+        
         $space_controller = $app->controller('space');
         $spaces = $space_controller->apiQuery($space_query_data);
+
         $spaces_by_id = [];
         foreach($spaces as $space){
             $spaces_by_id[$space['id']] = $space;
         }
-        
         
         // filter events
         
@@ -147,72 +148,78 @@ class Event extends EntityController {
             }
         }
         
-        $event_ids = implode(',',$event_ids);
-        if(isset($event_query_data['id'])){
-            $event_query_id = $event_query_data['id'];
-            $event_query_data['id'] = "AND({$event_query_id},IN({$event_ids}))";
-        }else{
-            $event_query_data['id'] = "IN({$event_ids})";
-        }
-        if(isset($event_query_data['@select'])){
-            $props = explode(',', $event_query_data['@select']);
-            if(array_search('id', $props) === false){
-                $event_query_data['@select'] .= ',id';
-            }
-        }
-        $event_controller = $app->controller('event');
+        if($event_ids){
 
-        $events = $event_controller->apiQuery($event_query_data);
-        
-        $events_by_id = [];
-        foreach($events as $event){
-            $events_by_id[$event['id']] = $event;
-        }
-        
-        $result = [];
-        
-        foreach($_result as $i => $occ){
-            
-            $space_id = $occ['space_id'];
-            $event_id = $occ['event_id'];
-            
-            if(!isset($events_by_id[$event_id]))
-                continue;
-            
-            
-            unset($occ['space_id']);
-            
-            if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
-                unset($occ['event']);
-                
-                $space = $spaces_by_id[$space_id];
-                $event = $events_by_id[$event_id];
-                $occ['rule'] = json_decode($occ['rule']);
-                
-                $occ['space'] = $space;
-            
-                $item = array_merge($event, $occ);
-                
-                
-                $result[] = $item;
+            $event_ids = implode(',',$event_ids);
+
+            if(isset($event_query_data['id'])){
+                $event_query_id = $event_query_data['id'];
+                $event_query_data['id'] = "AND({$event_query_id},IN({$event_ids}))";
+            }else{
+                $event_query_data['id'] = "IN({$event_ids})";
             }
-        }
-        
-        // pagination
-        
-        $offset = isset($this->getData['@offset']) ? $this->getData['@offset'] : null;
-        $limit = isset($this->getData['@limit']) ? $this->getData['@limit'] : null;
-        $page = isset($this->getData['@page']) ? $this->getData['@page'] : null;
-        
-        if($page && $limit){
-            $offset = (($page - 1) * $limit);
-            $result = array_slice($result, $offset, $limit);
-        } else if($offset && $limit){
-            $result = array_slice($result, $offset, $limit);
-        } else if ($offset) {
-            $result = array_slice($result, $offset);
-        } else if ($limit) {
-            $result = array_slice($result, 0, $limit);
+            if(isset($event_query_data['@select'])){
+                $props = explode(',', $event_query_data['@select']);
+                if(array_search('id', $props) === false){
+                    $event_query_data['@select'] .= ',id';
+                }
+            }
+            $event_controller = $app->controller('event');
+
+            $events = $event_controller->apiQuery($event_query_data);
+
+            $events_by_id = [];
+            foreach($events as $event){
+                $events_by_id[$event['id']] = $event;
+            }
+
+            $result = [];
+
+            foreach($_result as $i => $occ){
+
+                $space_id = $occ['space_id'];
+                $event_id = $occ['event_id'];
+
+                if(!isset($events_by_id[$event_id]))
+                    continue;
+
+
+                unset($occ['space_id']);
+
+                if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
+                    unset($occ['event']);
+
+                    $space = $spaces_by_id[$space_id];
+                    $event = $events_by_id[$event_id];
+                    $occ['rule'] = json_decode($occ['rule']);
+
+                    $occ['space'] = $space;
+
+                    $item = array_merge($event, $occ);
+
+
+                    $result[] = $item;
+                }
+            }
+
+            // pagination
+
+            $offset = isset($this->getData['@offset']) ? $this->getData['@offset'] : null;
+            $limit = isset($this->getData['@limit']) ? $this->getData['@limit'] : null;
+            $page = isset($this->getData['@page']) ? $this->getData['@page'] : null;
+
+            if($page && $limit){
+                $offset = (($page - 1) * $limit);
+                $result = array_slice($result, $offset, $limit);
+            } else if($offset && $limit){
+                $result = array_slice($result, $offset, $limit);
+            } else if ($offset) {
+                $result = array_slice($result, $offset);
+            } else if ($limit) {
+                $result = array_slice($result, 0, $limit);
+            }
+        } else {
+            $result = [];
         }
         
         // @TODO: set headers to 

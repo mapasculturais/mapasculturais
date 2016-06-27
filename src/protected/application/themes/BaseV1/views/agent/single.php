@@ -90,10 +90,6 @@ $this->includeAngularEntityAssets($entity);
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label">Email Privado:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="Email Privado" data-emptytext="Insira um email que não será exibido publicamente"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if($this->isEditable() || $entity->emailPublico): ?>
-                    <p><span class="label">Email:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="Email Público" data-emptytext="Insira um email que será exibido publicamente"><?php echo $entity->emailPublico; ?></span></p>
-                    <?php endif; ?>
-
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                     <p><span class="label">Telefone Público:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Telefone Público" data-emptytext="Insira um telefone que será exibido publicamente"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>

@@ -101,6 +101,10 @@ trait EntityMetadata{
     function __metadata__set($name, $value){
 
         if($def = $this->getRegisteredMetadata($name)){
+            if(is_callable($def->serialize)){
+                $cb = $def->serialize;
+                $value = $cb($value);
+            }
             $this->setMetadata($name, $value);
             return true;
         }

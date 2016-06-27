@@ -16,8 +16,7 @@ use MapasCulturais\App;
  */
 class Seal extends \MapasCulturais\Entity
 {
-    use Traits\EntityTypes,
-        Traits\EntityMetadata, 
+    use Traits\EntityMetadata, 
     	Traits\EntityOwnerAgent,
         Traits\EntityMetadata,
         Traits\EntityFiles,
@@ -60,13 +59,6 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\SequenceGenerator(sequenceName="seal_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="smallint", nullable=true)
-     */
-    protected $_type;
 
     /**
      * @var string

@@ -834,6 +834,8 @@
         for(var i in MapasCulturais.allowedSeals)
             $scope.seals.push(MapasCulturais.allowedSeals[i]);
         
+        $scope.registrationSeals = [];
+        
         $scope.showCreateDialog = {};
         
         $scope.isEditable = MapasCulturais.isEditable;
@@ -859,6 +861,7 @@
         $scope.entity = MapasCulturais.entity.object;
         
         $scope.setSeal = function(agent, entity){
+        	var sealRelated = {};
             var _scope = this.$parent;
             console.log(agent, entity);
             
@@ -867,8 +870,10 @@
         	} 
             
             $scope.entity.registrationSeals[agent] =  entity.id;
-            jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
+            sealRelated = $scope.entity.registrationSeals;
+            jQuery("#registrationSeals").editable('setValue',sealRelated);
             
+            $scope.registrationSeals.push(sealRelated);
             EditBox.close('set-seal-' + agent);
         };
         
@@ -881,6 +886,19 @@
         
         $scope.removeSeal = function(entity){
         	delete $scope.entity.registrationSeals.$entity;
+        	var Found = 0;
+        	for(var Found in $scope.seals){
+                if($scope.seals[Found].id == sealId) {
+                    return Found;
+                }
+            }
+        	
+        };
+        
+        $scope.deleteRelation = function(relation){
+            RelatedSealsService.remove(relation.seal.id).error(function(){
+                relations = oldRelations;
+            });
         };
     }]);
 })(angular);

@@ -59,10 +59,10 @@ Agora faça o clone do repositório.
 $ git clone https://github.com/hacklabr/mapasculturais.git
 ```
 
-E alterne para o branch stable. Se for uma instalação de teste, você pode pular esta etapa.
+E alterne para o branch v2. Se for uma instalação de teste, você pode pular esta etapa.
 ```BASH
 $ cd mapasculturais
-$ git checkout stable
+$ git checkout v2
 ```
 
 Agora vamos instalar as dependências de PHP utilizando o Composer.

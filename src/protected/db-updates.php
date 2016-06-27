@@ -133,5 +133,4 @@ return [
         $conn->executeQuery('ALTER TABLE project_meta ALTER COLUMN key TYPE varchar(128)');
         $conn->executeQuery('ALTER TABLE user_meta ALTER COLUMN key TYPE varchar(128)');
     }
-
 ];

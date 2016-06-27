@@ -1,5 +1,9 @@
 <div id="registration-attachments" class="registration-fieldset">
+<<<<<<< HEAD
     <h4>6. Anexos</h4>
+=======
+    <h4>5. Anexos</h4>
+>>>>>>> master
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Você pode pedir para os proponentes enviarem anexos para se inscrever no seu projeto. Para cada anexo, você pode fornecer um modelo, que o proponente poderá baixar, preencher, e fazer o upload novamente.</p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
     <div ng-controller="RegistrationFileConfigurationsController">
