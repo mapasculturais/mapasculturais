@@ -841,10 +841,11 @@
         $scope.data = {};
         
         $scope.avatarUrl = function(url){
-            if(url)
+            if(url) {
                 return url;
-            else
+            } else {
                 return MapasCulturais.assets.avatarSeal;
+            }
         };
         
         $scope.closeNewSealEditBox = function(){
@@ -869,19 +870,17 @@
             jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
             
             EditBox.close('set-seal-' + agent);
-//            
-//            RelatedSealsService.create(entity.id).success(function(data){
-//                $scope.showCreateDialog = false;
-//                _scope.$parent.searchText = 'Mary, vocÊ está aqui!';
-//                _scope.$parent.result = [];
-//                EditBox.close($scope.getCreateSealRelationEditBoxId());
-//            });
         };
         
-        $scope.deleteRelation = function(relation){
-            RelatedSealsService.remove(relation.seal.id).error(function(){
-                relations = oldRelations;
-            });
+        $scope.getArrIndexBySealId = function(sealId) {
+        	for(var found in $scope.seals) {
+                if($scope.seals[found].id == sealId)
+                	return found;      	
+        	};
+        };
+        
+        $scope.removeSeal = function(entity){
+        	delete $scope.entity.registrationSeals.$entity;
         };
     }]);
 })(angular);

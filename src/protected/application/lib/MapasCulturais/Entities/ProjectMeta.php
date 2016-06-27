@@ -47,6 +47,20 @@ class ProjectMeta extends \MapasCulturais\Entity {
      * })
      */
     protected $owner;
+    
+    function setValue($value) {
+    	$def = $this->owner->getRegisteredMetadata($this->key);
+    	if($this->key == "registrationSeals") {
+    		die(var_dump(get_class($def), $def->unserialize));
+    	}
+    	if(is_callable($def->serialize)){
+    		die('hgfhgfhgf');
+    		$cb = $def->serialize;
+    		$value = $cb($value);
+    	}
+    	
+    	$this->value = $value;
+    }
 
     function canUser($action, $userOrAgent = null) {
         return $this->owner->canUser($action, $userOrAgent);
@@ -72,6 +86,7 @@ class ProjectMeta extends \MapasCulturais\Entity {
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
+    	die(var_dump($this->value));
         App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').update:before', $args);
     }
     /** @ORM\PostUpdate */

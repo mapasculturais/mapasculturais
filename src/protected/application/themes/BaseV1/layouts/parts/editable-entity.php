@@ -34,4 +34,5 @@ $params = [
     <?php else: ?>
         <?php $this->part('singles/control--view-buttons', $params) ?>
     <?php endif; ?>
+    </div>
 </div>

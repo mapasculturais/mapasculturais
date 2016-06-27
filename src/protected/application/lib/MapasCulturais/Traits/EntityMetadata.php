@@ -81,8 +81,14 @@ trait EntityMetadata{
      * @return mixed The metadata value.
      */
     function __metadata__get($name){
-        if($this->getRegisteredMetadata($name)){
-            return $this->getMetadata($name);
+        if($def = $this->getRegisteredMetadata($name)){
+            $value = $this->getMetadata($name);
+            
+            if(is_callable($def->unserialize)){
+                $cb = $def->unserialize;
+                $value = $cb($value);
+            }
+            return $value;
         }
 
     }
@@ -94,7 +100,7 @@ trait EntityMetadata{
      */
     function __metadata__set($name, $value){
 
-        if($this->getRegisteredMetadata($name)){
+        if($def = $this->getRegisteredMetadata($name)){
             $this->setMetadata($name, $value);
             return true;
         }
@@ -247,7 +253,7 @@ trait EntityMetadata{
      * @param mixed the value of the metadata.
      */
     function setMetadata($meta_key, $value){
-
+    		
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
 
