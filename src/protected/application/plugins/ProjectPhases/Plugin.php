@@ -235,10 +235,6 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
-        $app->hook('view.partial(footer):after', function($asd, &$html){
-            $html .= 'RAFAEL';
-        });
-        
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(project.importLastPhaseRegistrations)', function() use($app) {
             $target_project = self::getRequestedProject();
