@@ -1,4 +1,4 @@
-<?php if($this->isEditable() && $entity->canUser('modifyParent')): ?>
+<?php if(!isset($disable_editable) && $this->isEditable() && $entity->canUser('modifyParent')): ?> 
     <?php if($child_entity_request): $par = $child_entity_request->destination; ?>
         <a href="<?php echo $par->singleUrl ?>"><?php echo $par->name ?></a>
     <?php else:?>

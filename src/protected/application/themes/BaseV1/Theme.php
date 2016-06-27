@@ -402,6 +402,8 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
         
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+        
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
         
         $this->jsObject['EntitiesDescription'] = [
@@ -1023,7 +1025,12 @@ class Theme extends MapasCulturais\Theme {
         
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
-        $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+        
+        if($entity->canUser('@control')){
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();    
+        } else {
+            $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+        }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
         $this->jsObject['projectRegistrationsEnabled'] = App::i()->config['app.enableProjectRegistration'];

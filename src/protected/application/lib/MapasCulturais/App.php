@@ -134,6 +134,8 @@ class App extends \Slim\Slim{
 
     protected $_accessControlEnabled = true;
     protected $_workflowEnabled = true;
+    
+    protected $_plugins = [];
 
     /**
      * Initializes the application instance.
@@ -184,7 +186,6 @@ class App extends \Slim\Slim{
         $this->_cache->setNamespace($config['app.cache.namespace']);
 
 
-
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
@@ -192,8 +193,16 @@ class App extends \Slim\Slim{
                 require_once $path;
                 return true;
             }
-
-            foreach($config['namespaces'] as $namespace => $base_dir){
+            
+            $namespaces = $config['namespaces'];
+            
+            foreach($config['plugins'] as $plugin){
+                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
+                
+                $namespaces[$plugin['namespace']] = $dir;
+            }
+            
+            foreach($namespaces as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
 
@@ -205,7 +214,6 @@ class App extends \Slim\Slim{
                     }
                 }
             }
-
         });
 
         // extende a config with theme config files
@@ -245,6 +253,18 @@ class App extends \Slim\Slim{
             'view' => new $theme_class($config['themes.assetManager']),
             'mode' => $this->_config['app.mode']
         ]);
+        
+        foreach($config['plugins'] as $slug => $plugin){
+            $_namespace = $plugin['namespace'];
+            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+            $plugin_class_name = "$_namespace\\$_class";
+            
+            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+            
+            $slug = is_numeric($slug) ? $_namespace : $slug;
+            
+            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+        }
 
         $config = $this->_config;
 
@@ -825,6 +845,10 @@ class App extends \Slim\Slim{
         }
 
         $this->view->register();
+        
+        foreach($this->_plugins as $plugin){
+            $plugin->register();
+        }
         
         $this->applyHookBoundTo($this, 'app.register',[&$this->_register]);
     }
