@@ -235,6 +235,29 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
+        // adiciona o botão de importar inscrições da fase anterior
+        $app->hook('view.partial(singles/project-registrations--tables--manager):before', function(){
+            $project = $this->controller->requestedEntity;
+        
+            if($project->isProjectPhase){
+                $this->part('import-last-phase-button', ['entity' => $project]);
+            }
+        });
+        
+        // adiciona na ficha de inscrição das fases o link para a inscrição anterior
+        $app->hook('view.partial(singles/registration-<<edit|single>>--header):before', function() use($app){
+            $registration = $this->controller->requestedEntity;
+            if($prev_id = $registration->previousPhaseRegistrationId){
+                $previous_phase_registration = $app->repo('Registration')->find($prev_id);
+                $this->part('previous-phase-registration-link', ['previous_phase_registration' => $previous_phase_registration, 'registration' => $registration]);
+            }
+            
+            if($next_id = $registration->nextPhaseRegistrationId){
+                $next_phase_registration = $app->repo('Registration')->find($next_id);
+                $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+            }
+        });
+
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(project.importLastPhaseRegistrations)', function() use($app) {
             $target_project = self::getRequestedProject();

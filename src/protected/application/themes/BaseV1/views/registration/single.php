@@ -61,7 +61,7 @@ $this->includeAngularEntityAssets($entity);
     <div class="registration-fieldset clearfix">
         <h4>Número da Inscrição</h4>
         <div class="registration-id alignleft">
-            <?php if($action !== 'create'): ?><?php echo $entity->number ?><?php endif; ?>
+            <?php echo $entity->number ?>
         </div>
         <div class="alignright">
             <?php if($project->publishedRegistrations): ?>
