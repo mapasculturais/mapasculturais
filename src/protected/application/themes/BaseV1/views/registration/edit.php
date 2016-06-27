@@ -26,37 +26,8 @@ $_params = [
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content registration" ng-controller="ProjectController">
-    <header class="main-content-header">
-        <div
-            <?php if($header = $project->getFile('header')): ?>
-                class="header-image"
-                style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
-            <?php endif; ?>
-        >
-        </div>
-        <!--.header-image-->
-        <div class="header-content">
-        <?php if($avatar = $project->avatar): ?>
-            <div class="avatar com-imagem">
-                <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
-        <?php else: ?>
-            <div class="avatar">
-                <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
-        <?php endif; ?>
-            <!-- pro responsivo!!! -->
-            <?php if($project->isVerified): ?>
-                <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
-            <?php endif; ?>
-            </div>
-            <!--.avatar-->
-            <div class="entity-type registration-type">
-                <div class="icon icon-project"></div>
-                <a><?php echo $project->type->name; ?></a>
-            </div>
-            <!--.entity-type-->
-            <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
-        </div>
-    </header>
+    <?php $this->part('singles/registration--header', $_params); ?>
+    
     <article>
         <?php $this->applyTemplateHook('form','begin'); ?>
         
@@ -73,7 +44,5 @@ $_params = [
         <?php $this->applyTemplateHook('form','end'); ?>
     </article>
 </article>
-<div class="sidebar-left sidebar registration">
-</div>
-<div class="sidebar registration sidebar-right">
-</div>
+<?php $this->part('singles/registration--sidebar--left', $_params) ?>
+<?php $this->part('singles/registration--sidebar--right', $_params) ?>

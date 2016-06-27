@@ -1,0 +1,1 @@
+<div class="alert warning">Este formulário de inscrição é continuação da <a href="<?= $previous_phase_registration->singleUrl ?>">inscrição de número <?= $previous_phase_registration->number ?></a>.</div>
