@@ -664,8 +664,7 @@ class Theme extends MapasCulturais\Theme {
             'userHasControl' => $entity->canUser('@control'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
-            'object' => $entity,
-        		'teste' => $entity->registrationSeals
+            'object' => $entity
         ];
 
         if($entity->usesNested() && $entity->id){

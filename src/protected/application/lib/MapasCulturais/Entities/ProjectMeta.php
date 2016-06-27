@@ -72,7 +72,6 @@ class ProjectMeta extends \MapasCulturais\Entity {
 
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
-    	die(var_dump($this->value));
         App::i()->applyHookBoundTo($this, 'entity(project).meta(' . $this->key . ').update:before', $args);
     }
     /** @ORM\PostUpdate */

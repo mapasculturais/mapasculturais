@@ -863,12 +863,10 @@
         $scope.setSeal = function(agent, entity){
         	var sealRelated = {};
             var _scope = this.$parent;
-            console.log(agent, entity);
             
-            if(typeof $scope.entity.registrationSeals !== "object") {
+            if(!angular.isObject($scope.entity.registrationSeals)) {
             	$scope.entity.registrationSeals = {};
         	} 
-            
             $scope.entity.registrationSeals[agent] =  entity.id;
             sealRelated = $scope.entity.registrationSeals;
             jQuery("#registrationSeals").editable('setValue',sealRelated);
@@ -885,14 +883,7 @@
         };
         
         $scope.removeSeal = function(entity){
-        	delete $scope.entity.registrationSeals.$entity;
-        	var Found = 0;
-        	for(var Found in $scope.seals){
-                if($scope.seals[Found].id == sealId) {
-                    return Found;
-                }
-            }
-        	
+        	delete $scope.entity.registrationSeals[entity];
         };
         
         $scope.deleteRelation = function(relation){
