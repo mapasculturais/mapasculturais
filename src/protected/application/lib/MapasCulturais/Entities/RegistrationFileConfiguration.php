@@ -64,6 +64,13 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $required = false;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="categories", type="array", nullable=true)
+     */
+    protected $categories = [];
+
+    /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
@@ -79,6 +86,15 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
 //        $this->owner = $this->repo()->find('project', $id);
         $this->owner = App::i()->repo('Project')->find($id);
     }
+    
+    public function setCategories($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->categories = $value;
+    }
 
     public function jsonSerialize() {
         return [
@@ -88,7 +104,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'description' => $this->description,
             'required' => $this->required,
             'template' => $this->getFile('registrationFileTemplate'),
-            'groupName' => $this->fileGroupName
+            'groupName' => $this->fileGroupName,
+            'categories' => $this->categories
         ];
     }
 
@@ -106,33 +123,6 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
 
     protected function canUserCreate($user){
         return $this->_canUser($user);
-    }
-
-    /** @ORM\PrePersist */
-    public function _prePersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:before', $args);
-    }
-    /** @ORM\PostPersist */
-    public function _postPersist($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:after', $args);
-    }
-
-    /** @ORM\PreRemove */
-    public function _preRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').remove:before', $args);
-    }
-    /** @ORM\PostRemove */
-    public function _postRemove($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').remove:after', $args);
-    }
-
-    /** @ORM\PreUpdate */
-    public function _preUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').update:before', $args);
-    }
-    /** @ORM\PostUpdate */
-    public function _postUpdate($args = null){
-        App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').update:after', $args);
     }
 
     //============================================================= //

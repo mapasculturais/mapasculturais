@@ -33,6 +33,11 @@
             <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+        
+        <div ng-repeat="entity in ['project']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-projects-->
