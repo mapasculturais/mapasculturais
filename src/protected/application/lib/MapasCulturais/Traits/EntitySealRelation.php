@@ -72,7 +72,6 @@ trait EntitySealRelation {
 
     }
 
-
     function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true){
         $relation_class = $this->getSealRelationEntityClassName();
         $relation = new $relation_class;

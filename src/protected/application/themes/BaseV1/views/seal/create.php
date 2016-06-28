@@ -67,6 +67,11 @@ $this->includeAngularEntityAssets($entity);
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
             </div>
             <!--.ficha-spcultura-->
+            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+                <h3>Descrição</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <?php endif; ?>
+            <!--.descricao-->
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>

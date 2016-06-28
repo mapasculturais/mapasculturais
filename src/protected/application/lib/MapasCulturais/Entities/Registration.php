@@ -250,7 +250,6 @@ class Registration extends \MapasCulturais\Entity
         foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
-
             $definitions[$groupName]->use = $meta_val;
 
             if($meta_val === 'dontUse'){
@@ -308,6 +307,11 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
+        
+		if($status === self::STATUS_APPROVED) {
+			$this->setAgentsSealRelation();
+		}
+		
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
@@ -315,6 +319,47 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    function setAgentsSealRelation() {
+    	/*
+    	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
+    	 */
+    	$projectMetadataSeals = $this->project->getRegisteredMetadata()['registrationSeals'];
+    	
+    	echo "owner 3:";
+    	echo(is_array($projectMetadataSeals));
+    	/*foreach($this->project->getRegisteredMetadata() as $k => $m) {
+    	 echo "chave: ". $k. "  ";
+    	 }*/
+    	die();
+    	
+    	if($projectMetadataSeals['owner']) {
+    		$relation_class = $this->owner->getSealRelationEntityClassName();
+    		$relation = new $relation_class;
+    		
+	    	$sealOwner			= $projectMetadataSeals['owner']? App::i()->repo('Seal')->find($projectMetadataSeals['owner']):null;
+	        $relation->sea		= $sealOwner;
+	        $relation->owner	= $this->owner;
+	    	$relation->save(true);
+    	}
+        
+    	$sealInstitutions	= $projectMetadataSeals['institution']? App::i()->repo('Seal')->find($projectMetadataSeals['institution']):null;
+    	$sealCollective		= $projectMetadataSeals['collective']? App::i()->repo('Seal')->find($projectMetadataSeals['collective']):null;
+    	
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        	if ($groupName == 'instituicao' && $projectMetadataSeals['institution']) {
+        		$agent = clone $relatedAgents[0];
+        		$relation->seal = $sealInstitutions;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	} elseif ($groupName == 'coletivo' && $projectMetadataSeals['collective']) {
+        		$agent = clone $relatedAgents[0];
+        		$relation->seal = $sealCollective;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	}
+        }
+    }
+    
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');

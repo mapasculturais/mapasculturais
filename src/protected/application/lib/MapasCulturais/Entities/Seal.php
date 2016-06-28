@@ -4,7 +4,6 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
-use MapasCulturais\App;
 
 /**
  * Seal
@@ -29,26 +28,15 @@ class Seal extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
-    /*
-     * A definir [kco]
-     *
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do agente é obrigatório'
+            'required' => 'O nome do selo é obrigatório'
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ]
     ];
-
-    protected function validateLocation(){
-        if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
-            return true;
-        }else{
-            return false;
-        }
-    }*/
 
     /**
      * @var integer
