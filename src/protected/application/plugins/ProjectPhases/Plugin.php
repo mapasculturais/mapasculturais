@@ -3,7 +3,8 @@ namespace ProjectPhases;
 
 use MapasCulturais\App,
     MapasCulturais\Entities,
-    MapasCulturais\Definitions;
+    MapasCulturais\Definitions,
+    MapasCulturais\Exceptions;
 
 
 class Plugin extends \MapasCulturais\Plugin{
@@ -306,13 +307,6 @@ class Plugin extends \MapasCulturais\Plugin{
             $this->finish($new_registrations);
         });
         
-        // links para próxima fase 
-        $app->hook("view.partial(singles/registration-edit--header).after", function(&$params){
-            $registration = $this->controller->requestedEntity;
-            
-            var_dump($registration); die;
-        });
-        
         // desliga a edição do campo principal de data quando vendo uma fase
         $app->hook('view.partial(singles/project-about--registration-dates).params', function(&$params){
             $project = self::getRequestedProject();
@@ -383,6 +377,20 @@ class Plugin extends \MapasCulturais\Plugin{
             
         });
         
+        // remove form de fazer inscrição das fases
+        $app->hook('view.partial(singles/project-registrations--form).params', function(&$data, &$template){
+            $project = self::getRequestedProject();
+            
+            if(!$project){
+                return;
+            }
+            
+            if($project->isProjectPhase){
+                echo '<br>';
+                $template = 'empty';
+            }
+        });
+        
         // remove opção de desativar inscrições online nas fases
         $app->hook('view.partial(singles/project-about--online-registration-button).params', function(&$data, &$template){ 
             $project = self::getRequestedProject();
@@ -441,6 +449,14 @@ class Plugin extends \MapasCulturais\Plugin{
         $app->hook('entity(Project).canUser(view)', function($user, &$result){
             if($this->isProjectPhase && $this->status === -1){
                 $result = true;
+            }
+        });
+        
+        $app->hook('POST(registration.index):before', function() use($app) {
+            $project = $app->repo('Project')->find($this->data['projectId']);
+            
+            if($project->isProjectPhase){
+                throw new Exceptions\PermissionDenied($app->user, $project, 'register');
             }
         });
     }

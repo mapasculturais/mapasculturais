@@ -64,6 +64,7 @@
                         ownerId: params.owner.id,
                         category: params.category
                     };
+                    
                     return $http.post(this.getUrl(), data).
                             success(function (data, status) {
                                 $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
