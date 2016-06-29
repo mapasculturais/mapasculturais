@@ -320,6 +320,9 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function setAgentsSealRelation() {
+    	$app = App::i();
+    	$app->disableAccessControl();
+    	
     	/*
     	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
     	 */
@@ -327,7 +330,7 @@ class Registration extends \MapasCulturais\Entity
     	//eval(\Psy\sh());
     	//die;
     	
-    	/*if(isset($projectMetadataSeals->owner)) {
+    	if(isset($projectMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
     		
@@ -335,26 +338,27 @@ class Registration extends \MapasCulturais\Entity
 	        $relation->seal		= $sealOwner;
 	        $relation->owner	= $this->owner;
 	    	$relation->save(true);
-    	}*/
+    	}
         
     	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
     	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
     	
         foreach($this->relatedAgents as $groupName => $relatedAgents){
-        	echo "grupo: " . $groupName;
-        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution)) {
-        		$agent = clone $relatedAgents[0];
+        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
         		$relation->seal = $sealInstitutions;
         		$relation->owner = $agent;
         		$relation->save(true);
-        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective)) {
-        		$agent = clone $relatedAgents[0];
+        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective) && is_object($sealCollective)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
         		$relation->seal = $sealCollective;
         		$relation->owner = $agent;
         		$relation->save(true);
         	}
         }
-        //eval(\Psy\sh());
+        $app->enableAccessControl();
     }
     
     function setStatusToDraft(){
