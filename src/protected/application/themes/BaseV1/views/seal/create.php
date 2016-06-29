@@ -60,7 +60,11 @@ $this->includeAngularEntityAssets($entity);
 				
 					<p><span class="label">Validade:</span>
 					<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span> 
-					<span class="js-editable" data-edit="timeUnit" data-original-title="Periodicidade" data-emptytext="Selecione a periodicidade da validade do selo"><?php echo $entity->timeUnit; ?></span></p>
+					
+					<span class="js-editable" data-edit="periodicidade" data-original-title="Periodicidade" 
+						data-emptytext="Selecione a periodicidade da validade do selo"><?php echo $entity->periodicidade; ?>
+					</span>
+					</p>
 					
 					<?php $this->applyTemplateHook('tab-about-service','end'); ?>
 				</div>

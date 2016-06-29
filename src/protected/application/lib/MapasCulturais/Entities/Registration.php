@@ -323,41 +323,38 @@ class Registration extends \MapasCulturais\Entity
     	/*
     	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
     	 */
-    	$projectMetadataSeals = $this->project->getRegisteredMetadata()['registrationSeals'];
+    	$projectMetadataSeals = $this->project->registrationSeals;
+    	//eval(\Psy\sh());
+    	//die;
     	
-    	echo "owner 3:";
-    	echo(is_array($projectMetadataSeals));
-    	/*foreach($this->project->getRegisteredMetadata() as $k => $m) {
-    	 echo "chave: ". $k. "  ";
-    	 }*/
-    	die();
-    	
-    	if($projectMetadataSeals['owner']) {
+    	/*if(isset($projectMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
     		
-	    	$sealOwner			= $projectMetadataSeals['owner']? App::i()->repo('Seal')->find($projectMetadataSeals['owner']):null;
-	        $relation->sea		= $sealOwner;
+	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
+	        $relation->seal		= $sealOwner;
 	        $relation->owner	= $this->owner;
 	    	$relation->save(true);
-    	}
+    	}*/
         
-    	$sealInstitutions	= $projectMetadataSeals['institution']? App::i()->repo('Seal')->find($projectMetadataSeals['institution']):null;
-    	$sealCollective		= $projectMetadataSeals['collective']? App::i()->repo('Seal')->find($projectMetadataSeals['collective']):null;
+    	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
+    	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
     	
         foreach($this->relatedAgents as $groupName => $relatedAgents){
-        	if ($groupName == 'instituicao' && $projectMetadataSeals['institution']) {
+        	echo "grupo: " . $groupName;
+        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution)) {
         		$agent = clone $relatedAgents[0];
         		$relation->seal = $sealInstitutions;
         		$relation->owner = $agent;
         		$relation->save(true);
-        	} elseif ($groupName == 'coletivo' && $projectMetadataSeals['collective']) {
+        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective)) {
         		$agent = clone $relatedAgents[0];
         		$relation->seal = $sealCollective;
         		$relation->owner = $agent;
         		$relation->save(true);
         	}
         }
+        //eval(\Psy\sh());
     }
     
     function setStatusToDraft(){

@@ -9,7 +9,18 @@ return array(
     			'validations' => array(
     				"v::url()" => "A url informada é inválida."
     			)
-    	)
+    	),
+    		'periodicidade' => array(
+    				'label' => 'Periodiciade',
+    				'type' => 'select',
+    				'options' => array(
+    						0 => 'Infinita',
+    						1 => 'Dias',
+    						2 => 'Semanas',
+    						3 => 'Meses',
+    						4 => 'Anos'
+    				)				
+    		),
     ),
     'items' => array(
 		0 => array( 'name' => 'Infinita' ),
