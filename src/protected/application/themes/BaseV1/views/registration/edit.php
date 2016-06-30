@@ -103,51 +103,76 @@ $this->includeAngularEntityAssets($entity);
             </li>
         </ul>
     </div>
+ 	
  	<!-- BEGIN Seals -->
-	<div class="registration-fieldset">
-		<h4>Selos Certificadores</h4>
-		<p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
-		<ul class="registration-list">
-            <li  class="registration-list-item registration-edit-mode">
-				<div class="registration-label">Agentes</div>
-				<div class="clearfix">
-					<span>
-						<img src="" />
-					</span>
-					<div>
-						<a href="">Teste</a>
+	<div id="registration-seals" class="registration-fieldset">
+		<h4>5. Selos Certificadores</h4>
+		<p class="registration-help">Selos certificadores que serão atribuídos aos agentes da inscrição quando a mesma for aprovada.</p>
+		<ul class="registration-list" ng-controller="RelatedSealsController">
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Agente responsável</span> <span class="registration-help">(Selos atribuídos a agentes)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+								<div ng-if="entity.registrationSeals.owner" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.owner)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.owner)].name}}</a></h1>
+					                </div>
+				            	</div>
+				            	<span ng-if="!entity.registrationSeals.owner">Não informado</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</li>
-			<li  class="registration-list-item registration-edit-mode">
-				<div class="registration-label">Espaços </div>
-				<div class="clearfix">
-					<img class="registration-agent-avatar" />
-					<div>
-						<a href="">Teste</a>
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Instituição responsável</span> <span class="registration-help">(Selos atribuídos a instituições)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+								<div ng-if="entity.registrationSeals.institution" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.institution)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.institution)].name}}</a></h1>
+					                </div>
+				            	</div>
+							</div>
+							<span ng-if="!entity.registrationSeals.institution">Não informado</span>
+						</div>                        
 					</div>
 				</div>
 			</li>
-			<li  class="registration-list-item registration-edit-mode">
-				<div class="registration-label">Projetos </div>
-				<div class="clearfix">
-					<img class="registration-agent-avatar" />
-					<div>
-						<a href="">Teste</a>
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Coletivo</span> <span class="registration-help">(Selos atribuídos a agentes coletivos)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+				            	<div ng-if="entity.registrationSeals.collective" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.collective)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.collective)].name}}</a></h1>
+					                </div>
+				            	</div>
+							</div>
+							<span ng-if="!entity.registrationSeals.collective">Não informado</span>
+						</div>                        
 					</div>
 				</div>
 			</li>
-			<li  class="registration-list-item registration-edit-mode">
-				<div class="registration-label">Eventos </div>
-				<div class="clearfix">
-					<img class="registration-agent-avatar" />
-					<div>
-						<a href="">Teste</a>
-					</div>
-				</div>
-			</li>
-        </ul>
+		</ul>
 	</div>
+	<!-- END Seals -->
+ 	
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos (documentos necessários)</h4>

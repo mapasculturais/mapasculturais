@@ -77,13 +77,6 @@ class Seal extends \MapasCulturais\Entity
     protected $validPeriod;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="time_unit", type="smallint", nullable=false)
-     */
-    protected $timeUnit;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)

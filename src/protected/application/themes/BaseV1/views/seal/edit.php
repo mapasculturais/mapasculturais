@@ -57,7 +57,15 @@ $this->includeAngularEntityAssets($entity);
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
-                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+
+					<p>
+						<span class="label">Validade:</span>
+						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
+						Meses. 
+					</p>
+
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 

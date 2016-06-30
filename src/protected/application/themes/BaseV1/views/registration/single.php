@@ -110,13 +110,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     
-    <!-- BEGIN Seals -->
-    <div class="registration-fieldset">
-        <h4>Selos Certificadores</h4>
-        <p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
-        
-    </div>
-    <! END Seals -->
+    <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>
     
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">

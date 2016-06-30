@@ -56,9 +56,11 @@ $this->includeAngularEntityAssets($entity);
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
-                    <?php if($this->isEditable()): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label">Nome:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="Nome Selo" data-emptytext="Insira o nome do selo"><?php echo $entity->nomeCompleto; ?></span></p>
-                    <?php endif; ?>
+					<p>
+						<span class="label">Validade:</span>
+						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
+						Meses. 
+					</p>
 
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
