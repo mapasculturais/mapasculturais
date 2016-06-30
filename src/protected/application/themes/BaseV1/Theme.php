@@ -6,6 +6,7 @@ use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
+use Respect\Validation\length;
 
 class Theme extends MapasCulturais\Theme {
 
@@ -712,16 +713,24 @@ class Theme extends MapasCulturais\Theme {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
     
-    function addPermitedSealsToJs() {
+    function addSealsToJs($onlyPermited = true,$sealId = array()) {
+    	$query = [];
+    	$query['@select'] = 'id,name,status, singleUrl';    	
+    	
+    	if($onlyPermited) {
+    		$query['@permissions'] = '@control';
+    	}
+    	$sealId = implode(',',array_unique($sealId));
+    	 
+    	if(count($sealId) > 0) {
+    		$query['id'] = 'IN(' .$sealId . ')';
+    	}    	
+    	$query['@files'] = '(avatar.avatarMedium):url';
+    	$query['@ORDER'] = 'createTimestamp DESC';
     	
     	$app = App::i();
     	if (!$app->user->is('guest')) {
-    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery(array(
-    				'@select' => 'id,name,status, singleUrl',
-    				'@permissions' => '@control',
-    				'@files'=>'(avatar.avatarMedium):url',
-    				'@ORDER' => 'createTimestamp DESC'
-    		));
+    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
     	}
     }
 

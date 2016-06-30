@@ -2,7 +2,7 @@
 if($this->controller->action === 'create')
     return;
 
-$this->addPermitedSealsToJs();
+//$this->addSealsToJs(true);
 $this->addRelatedSealsToJs($entity);
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedSealsController">

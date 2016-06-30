@@ -110,7 +110,7 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     
-    <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>
+    <?php /*$this->part('singles/project-registrations--seals', ['entity' => $entity])*/ ?>
     
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">

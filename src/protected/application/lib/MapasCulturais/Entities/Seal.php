@@ -142,26 +142,6 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $__agentRelations;
     
-
-    protected function canUserCreate($user){
-        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
-
-        if($can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
-    }
-
-    protected function canUserModify($user){
-        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
-        if($this->_projectChanged && $can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
-    }
-    
     protected function canUserPublish($user){
         if($user->is('guest')){
             return false;
