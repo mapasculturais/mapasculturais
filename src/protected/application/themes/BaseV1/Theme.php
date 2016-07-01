@@ -720,12 +720,14 @@ class Theme extends MapasCulturais\Theme {
     	if($onlyPermited) {
     		$query['@permissions'] = '@control';
     	}
-    	$sealId = implode(',',array_unique($sealId));
-    	 
-    	if(count($sealId) > 0) {
-    		$query['id'] = 'IN(' .$sealId . ')';
-    	}    	
     	$query['@files'] = '(avatar.avatarMedium):url';
+
+    	$sealId = implode(',',array_unique($sealId));
+    	
+    	if(count($sealId) > 0 && !empty($sealId)) {
+    		$query['id'] = 'IN(' .$sealId . ')';
+    	}
+    	
     	$query['@ORDER'] = 'createTimestamp DESC';
     	
     	$app = App::i();

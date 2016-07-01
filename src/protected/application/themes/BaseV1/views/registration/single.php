@@ -14,6 +14,12 @@ $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
 
+$owner 			= isset($project->registrationSeals->owner)?$project->registrationSeals->owner:'';
+$institution	= isset($project->registrationSeals->institution)?$project->registrationSeals->institution:'';
+$collective		= isset($project->registrationSeals->collective)?$project->registrationSeals->collective:'';
+
+$this->addSealsToJs(false,[$owner,$institution,$collective]);
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -110,7 +116,74 @@ $this->includeAngularEntityAssets($entity);
         </ul>
     </div>
     
-    <?php /*$this->part('singles/project-registrations--seals', ['entity' => $entity])*/ ?>
+    <!-- BEGIN Seals -->
+	<div id="registration-seals" class="registration-fieldset">
+		<h4>5. Selos Certificadores</h4>
+		<p class="registration-help">Selos certificadores que serão atribuídos aos agentes da inscrição quando a mesma for aprovada.</p>
+		<ul class="registration-list" ng-controller="RelatedSealsController">
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Agente responsável</span> <span class="registration-help">(Selos atribuídos a agentes)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+								<div ng-if="<?php echo $owner;?>" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $owner;?>)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(<?php echo $owner;?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $owner;?>)].name}}</a></h1>
+					                </div>
+				            	</div>
+				            	<span ng-if="!<?php echo $owner;?>">Não informado</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Instituição responsável</span> <span class="registration-help">(Selos atribuídos a instituições)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+								<div ng-if="<?php echo $institution;?>" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $institution;?>)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(<?php echo $institution;?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $institution;?>)].name}}</a></h1>
+					                </div>
+				            	</div>
+							</div>
+							<span ng-if="!<?php echo $institution;?>">Não informado</span>
+						</div>                        
+					</div>
+				</div>
+			</li>
+			<li class="registration-list-item registration-edit-mode">
+				<div class="registration-related-agent-configuration">
+					<p>
+						<span class="label">Coletivo Amado</span> <span class="registration-help">(Selos atribuídos a agentes coletivos)</span><br>
+					</p>
+					<div class="selos-relacionados">
+						<div class="widget">
+							<div class="selos clearfix">
+				            	<div ng-if="<?php echo $collective;?>" class="avatar-seal-registration ng-scope">
+									<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $collective;?>)]['@files:avatar.avatarMedium'].url)}}">
+					                <div class="descricao-do-selo">
+					                    <h1><a href="{{seals[getArrIndexBySealId(<?php echo $collective;?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $collective;?>)].name}}</a></h1>
+					                </div>
+				            	</div>
+							</div>
+							<span ng-if="!<?php echo $collective;?>">Não informado</span>
+						</div>                        
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!-- END Seals -->
     
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">

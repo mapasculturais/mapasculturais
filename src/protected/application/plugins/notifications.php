@@ -26,6 +26,7 @@
 
             $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
+            $destination_type = strtolower($destination->entityType);
 
             $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
@@ -59,8 +60,8 @@
                     $message_to_requester = "Sua requisição para associar o evento {$origin_link} ao projeto {$destination_link} foi enviada.";
                     break;
 				case "MapasCulturais\Entities\RequestSealRelation":
-					$message = "{$profile_link} quer relacionar o selo {$destination_link} ao {$origin_type} {$origin_link}.";
-					$message_to_requester = "Sua requisição para relacionar o selo {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
+					$message = "{$profile_link} quer relacionar o selo {$origin_type} {$origin_link} ao {$destination_type} {$destination_link}.";
+					$message_to_requester = "Sua requisição para relacionar o selo {$origin_type} {$origin_link} ao {$origin_type} {$origin_link} foi enviada.";
 					break;
                 default:
                     $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";

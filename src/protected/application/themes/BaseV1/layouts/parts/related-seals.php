@@ -1,8 +1,6 @@
 <?php
-if($this->controller->action === 'create')
-    return;
 
-//$this->addSealsToJs(true);
+$this->addSealsToJs(true);
 $this->addRelatedSealsToJs($entity);
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedSealsController">
