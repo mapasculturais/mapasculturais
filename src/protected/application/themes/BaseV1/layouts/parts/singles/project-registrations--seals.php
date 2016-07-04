@@ -2,7 +2,7 @@
 <div id="registration-seals" class="registration-fieldset">
 	<h4>5. Selos Certificadores</h4>
 	<p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
-	<div class="registration-related-agent-configuration" ng-controller="RelatedSealsController">
+	<div class="registration-related-agent-configuration" ng-controller="SealsController">
 		<p>
 			<span class="label">Agente responsável</span> <span class="registration-help">(Selos atribuídos a agentes)</span><br>
 		</p>

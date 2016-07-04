@@ -826,7 +826,7 @@
             };
         }]);
     
-    module.controller('RelatedSealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
+    module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
         $scope.editbox = EditBox;
         
         $scope.seals = [];

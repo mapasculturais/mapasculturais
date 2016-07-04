@@ -113,7 +113,7 @@ $this->addSealsToJs(false,[$owner,$institution,$collective]);
 	<div id="registration-seals" class="registration-fieldset">
 		<h4>5. Selos Certificadores</h4>
 		<p class="registration-help">Selos certificadores que serão atribuídos aos agentes da inscrição quando a mesma for aprovada.</p>
-		<ul class="registration-list" ng-controller="RelatedSealsController">
+		<ul class="registration-list" ng-controller="SealsController">
 			<li class="registration-list-item registration-edit-mode">
 				<div class="registration-related-agent-configuration">
 					<p>
