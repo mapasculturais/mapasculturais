@@ -5,7 +5,10 @@ export PG_PASS="${PG_PASS:-mapasculturais}";
 export PG_USER="${PG_USER:-mapasculturais}";
 export PG_HOST="${PG_HOST:-postgis}";
 
-cp src/protected/application/conf/config.template.php src/protected/application/conf/config.php
+if ! [ -f "src/protected/application/conf/config.php" ];
+then
+    cp src/protected/application/conf/config.template.php src/protected/application/conf/config.php
+fi
 
 doctrine_conf="'doctrine.database'=>[";
 doctrine_conf="$doctrine_conf 'dbname'=>'$PG_DB',";
