@@ -60,6 +60,17 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
+* 
+### Ambientes de desenvolvimento e teste
+Estes ambientes possuem integração contínua com os branches e temas atuais. Para maiores detalhes, ver [Guia do desenvolvedor](doc/developer-guide.md). 
+
+* http://master.map.as
+* http://rc.map.as
+* http://stable.map.as
+
+Para acessar os temas, use a url com nome do tema ou instalação. Ex.: 
+
+* http://museus.minc.stable.map.as
 
 ### Stories & Tests
 
