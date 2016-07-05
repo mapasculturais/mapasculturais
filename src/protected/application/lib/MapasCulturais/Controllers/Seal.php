@@ -115,5 +115,11 @@ class Seal extends EntityController {
     	$rel = $app->repo('SealRelation')->find($id);
     	
     	die($rel->dump());
+    	
+    	$this->requireAuthentication();
+    	$user = $this->_getUser();
+    	
+    	$this->render('sealrelation', ['user' => $user]);
+    	
     }
 }

@@ -13,8 +13,7 @@ $this->addEntityToJs($entity);
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
-echo("Mary por aqui!");
-var_dump($project->registration);die;
+
 $owner 			= isset($project->registrationSeals->owner)?$project->registrationSeals->owner:'';
 $institution	= isset($project->registrationSeals->institution)?$project->registrationSeals->institution:'';
 $collective		= isset($project->registrationSeals->collective)?$project->registrationSeals->collective:'';
@@ -162,7 +161,7 @@ $this->addSealsToJs(false,[$owner,$institution,$collective]);
 							<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $collective;?>)]['@files:avatar.avatarMedium'].url)}}" class="registration-agent-avatar">
 			                <div>
 			                    <a href="{{seals[getArrIndexBySealId(<?php echo $collective;?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $collective;?>)].name}}</a>
-			                    <span ng-if="!<?php echo $collective;?>">Não informado</span>
+			                    <span ng-if="'<?php echo $collective;?>' == ''">Não informado</span>
 			                </div>
 		            	</div>
 					</div>

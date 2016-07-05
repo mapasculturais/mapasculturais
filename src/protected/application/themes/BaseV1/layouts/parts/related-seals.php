@@ -9,7 +9,8 @@ $this->addRelatedSealsToJs($entity);
             <div class="avatar-seal ng-scope" ng-repeat="relation in relations" ng-class="{pending: relation.status < 0}" ng-click="deleteRelation(relation,relation.seal.id)">
 				<img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
                 <div class="descricao-do-selo">
-                    <h1><a href="{{relation.seal.singleUrl}}" class="ng-binding">{{relation.seal.name}}</a></h1>
+                	<?php $idRelation =  '{{relation.id}}';?>
+                    <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation])?>" class="ng-binding">{{relation.seal.name}}</a></h1>
                 </div>
             </div>
         </div>
