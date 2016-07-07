@@ -37,4 +37,75 @@ Ex:
 2. Como camadas na visualização do mapa
 ---------------------------------------
 
-Incluir documentação
+
+**0. Tenha os arquivos de formas**
+Você necessitará tem, se possível no ambiente em que deseja fazer a importação, os arquivos de formas (shapefiles). Eles devem vir em um diretório com os seguintes arquivos:
+
+NOME-DO-ARQUIVO.shp
+NOME-DO-ARQUIVO.shx
+NOME-DO-ARQUIVO.dbf
+
+
+**1. Verifique se PostGis está respondendo requisições.**
+
+Execute os seguintes comandos:
+```
+# su postgres
+$ psql -U postgres -d mapas -c "SELECT postgis_version()"
+```
+
+Você verá uma mensagem como essa:
+
+```
+            postgis_version
+---------------------------------------
+ 2.1 USE_GEOS=1 USE_PROJ=1 USE_STATS=1
+(1 row)
+```
+
+**2 - Converta os arquivos de formato shape (.shp) para formato base de dados (.sql)**
+
+Exemplo de conversão:
+
+```
+shp2pgsql -W LATIN1 -I -s 4326 mapasculturais/shapefiles/BAIRRO_POP.shp BAIRRO-TEMPORARIO > bairro-shapefiles.sql
+```
+obs: é importante colocar um nome temporário para não sobreescrever alguma tabela da base.
+
+**3 - Insira o arquivo `.sql` gerado em uma nova tabela.**
+
+O arquivo .sql gerado tem comandos para criação de uma nova tabela com nome designado e inserção de registros. Rode esse comando para criar e inserir registros na tabela mapas:
+
+```
+$ psql -U mapas -d mapas -a -f /caminho/para/arquivo/bairro-shapefiles.sql
+```
+
+**4 - Popule a tabela geo_division na base do mapas**
+
+Na base de dados do mapas, há uma tabela geo_division com os seguintes campos:
+
+---------
+id                  - serial - PK
+parente_id          - integer
+type                - character varying (32)
+cod                 - character varying (32)
+name                - character varying (32)
+geom                - geometry
+
+---------
+
+É necessário preencher os campos `type`, `cod`, `name` e `geom` com os valores que foram importados na tabela temporária, onde:
+
+type: Nome da hierarquia que está sendo importada, registrada na configuração "app.geoDivisionsHierarchy"
+cod: Código de identificação, importado na tabela temprária do shapefiles
+name: Nome de exibição, importado na tabela temprária do shapefiles
+geom: Polígono do contorno, importado na tabela temprária do shapefiles
+
+Após identificar na tabela temporária quais são os campos correspondentes na tabela geo_division, você pode colocar os dados utilizando `INSERT` e `SELECT` e apagar a tabela temporária.
+
+O comando deve ser parecido com isso:
+
+```
+psql -d mapas -c "insert into geo_division (type, cod, name, geom) (select 'bairro', id_bairro_, nome_bairr, geom from bairro_temp)"
+psql -d mapas -c "drop table if exists bairro_temp"
+```
