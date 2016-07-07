@@ -106,6 +106,6 @@ Após identificar na tabela temporária quais são os campos correspondentes na 
 O comando deve ser parecido com isso:
 
 ```
-psql -d mapeamentoculturalbh.pbh.gov.br -c "insert into geo_division (type, cod, name, geom) (select 'bairro', id_bairro_, nome_bairr, geom from bairro_temp)"
-psql -d mapeamentoculturalbh.pbh.gov.br -c "drop table if exists bairro_temp"
+psql -d mapas -c "insert into geo_division (type, cod, name, geom) (select 'bairro', id_bairro_, nome_bairr, geom from bairro_temp)"
+psql -d mapas -c "drop table if exists bairro_temp"
 ```
