@@ -11,6 +11,7 @@
                     'terms': '=',
                     'allowOther': '@',
                     'allowOtherText': '@',
+                    'otherValue': '=',
                 },
                 link: function ($scope, element, attribute) {
                     function sanitize(term){
@@ -29,10 +30,8 @@
                     };
 
                     $scope.clickOther = function(){
-                        if(sanitize($scope.data.value) === '' || $scope.terms[sanitize($scope.data.value)]){
-                            $scope.data.value = '';
-                            $scope.data.showOther = true;
-                        }
+                        $scope.data.value = $scope.data.otherValue || '';
+                        $scope.data.showOther = true;
                     };
 
                     if($scope.data.value && !$scope.terms[sanitize($scope.data.value)]){
@@ -43,7 +42,9 @@
                         $scope.data.showOther = false;
                     };
 
-                    $scope.$watch('data.value', function(a,b){ 
+                    $scope.$watch('data.value', function(a,b){
+                        if ($scope.data.showOther)
+                            $scope.data.otherValue = $scope.value;
                         $scope.value = $scope.data.value;
                     });
                 }
