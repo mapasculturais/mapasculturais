@@ -238,6 +238,10 @@ class Plugin extends \MapasCulturais\Plugin{
         
         // adiciona o botão de importar inscrições da fase anterior
         $app->hook('view.partial(singles/project-registrations--tables--manager):before', function(){
+            if($this->controller->action === 'create'){
+                return;
+            }
+            
             $project = $this->controller->requestedEntity;
         
             if($project->isProjectPhase){
