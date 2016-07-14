@@ -37,6 +37,8 @@ _2. O deploy e customização do tema do Id da Cultura não será abordado neste
 
 ### Configurações para autenticação via LC no config.php
 
+Para usar a autenticação do Mapas com Login Cidadão, esteja atento os seguintes parâmetros que devem ser inseridos no arquivo de configurações da aplicação (este arquivo está em /mapasculturais/src/protected/application/conf/config.php): 
+
 ```
 
         'auth.provider' => 'OpauthLoginCidadao',
