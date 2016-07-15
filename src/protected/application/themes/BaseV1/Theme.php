@@ -628,6 +628,12 @@ class Theme extends MapasCulturais\Theme {
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
             $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
         }
+        
+        if($app->user->is('superAdmin') || $app->user->is('admin')) {
+        	$this->jsObject['allowedFields'] = true;
+        } else {
+        	$this->jsObject['allowedFields'] = false;        	
+        }
     }
     protected function _getAdvancedFilters(){
         return [
