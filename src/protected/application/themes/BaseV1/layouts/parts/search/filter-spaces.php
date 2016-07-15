@@ -4,7 +4,7 @@
         <?php $this->dict('entities: Spaces') ?>
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="showSearch()">
+    <div class="simple-filters" ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-espaco">Palavra-chave</label>
             <input ng-model="data.space.keyword" class="search-field" type="text" name="palavra-chave-espaco" placeholder="Buscar <?php $this->dict('entities: spaces') ?>" />
@@ -43,10 +43,16 @@
             <span class="label show-label" ng-click="data.space.acessibilidade = !data.space.acessibilidade">Acessibilidade</span>
         </div>
         <!--.filter-->
+        
         <div class="filter verified-filter search-filter--verified">
             <a class="hltip btn btn-verified" ng-class="{'selected':data.space.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+        
+        <div ng-repeat="entity in ['space']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-spaces-->

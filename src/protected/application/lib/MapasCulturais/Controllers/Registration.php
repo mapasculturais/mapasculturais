@@ -15,7 +15,8 @@ use MapasCulturais\Entities;
  */
 class Registration extends EntityController {
     use Traits\ControllerUploads,
-        Traits\ControllerAgentRelation;
+        Traits\ControllerAgentRelation,
+    	Traits\ControllerSealRelation;
 
     function __construct() {
         $app = App::i();

@@ -312,8 +312,6 @@
             });
         };
 
-
-
         $scope.eventFilterTimeout = null;
 
         $scope.filterEvents = function(){
@@ -827,4 +825,78 @@
                     });
             };
         }]);
+    
+    module.controller('RelatedSealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
+        $scope.editbox = EditBox;
+        
+        $scope.seals = [];
+        
+        for(var i in MapasCulturais.allowedSeals)
+            $scope.seals.push(MapasCulturais.allowedSeals[i]);
+        
+        $scope.registrationSeals = [];
+        
+        $scope.showCreateDialog = {};
+        
+        $scope.isEditable = MapasCulturais.isEditable;
+        
+        $scope.data = {};
+        
+        $scope.avatarUrl = function(url){
+            if(url)
+                return url;
+            else
+                return MapasCulturais.assets.avatarSeal;
+        };
+        
+        $scope.closeNewSealEditBox = function(){
+            EditBox.close('new-related-seal');
+        };
+        
+        $scope.getCreateSealRelationEditBoxId = function(){
+            return 'add-related-seal';
+        };
+        
+        $scope.entity = MapasCulturais.entity.object;
+        
+        $scope.setSeal = function(agent, entity){
+        	var sealRelated = {};
+            var _scope = this.$parent;
+            console.log(agent, entity);
+            
+            if(typeof $scope.entity.registrationSeals !== "object") {
+            	$scope.entity.registrationSeals = {};
+        	} 
+            
+            $scope.entity.registrationSeals[agent] =  entity.id;
+            sealRelated = $scope.entity.registrationSeals;
+            jQuery("#registrationSeals").editable('setValue',sealRelated);
+            
+            $scope.registrationSeals.push(sealRelated);
+            EditBox.close('set-seal-' + agent);
+//            
+//            RelatedSealsService.create(entity.id).success(function(data){
+//                $scope.showCreateDialog = false;
+//                _scope.$parent.searchText = 'Mary, vocÊ está aqui!';
+//                _scope.$parent.result = [];
+//                EditBox.close($scope.getCreateSealRelationEditBoxId());
+//            });
+        };
+        
+        $scope.getArrIndexBySealId = function(sealId) {
+        	var Found = 0;
+        	for(var Found in $scope.seals){
+                if($scope.seals[Found].id == sealId) {
+                    return Found;
+                }
+            }
+        	
+        };
+        
+        $scope.deleteRelation = function(relation){
+            RelatedSealsService.remove(relation.seal.id).error(function(){
+                relations = oldRelations;
+            });
+        };
+    }]);
 })(angular);

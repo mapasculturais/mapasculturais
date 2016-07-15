@@ -60,14 +60,18 @@
             keyword: '',
             areas: [],
             type: null,
-            isVerified: false
+            isVerified: false,
+            showAdvancedFilters:false,
+            advancedFilters: {}
         },
         space: {
             keyword: '',
             areas: [],
             types: [],
             acessibilidade: false,
-            isVerified: false
+            isVerified: false,
+            showAdvancedFilters:false,
+            advancedFilters: {}
         },
         event: {
             keyword: '',
@@ -75,7 +79,9 @@
             from: moment().format('YYYY-MM-DD'),
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
             classificacaoEtaria: [],
-            isVerified: false
+            isVerified: false,
+            showAdvancedFilters:false,
+            advancedFilters: {}
         },
         project: {
             keyword: '',
@@ -83,9 +89,22 @@
             types: [],
             isVerified: false,
             // registration open
-            ropen: false
+            ropen: false,
+            showAdvancedFilters:false,
+            advancedFilters: {}
         }
     };
+    
+    // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
+    ['space', 'agent', 'event', 'project'].forEach(function(entity){
+        MapasCulturais.advancedFilters[entity].forEach(function(filter){
+            if(filter.isArray){
+                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+            } else {
+                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+            }
+        });
+    });
 
     var diffFilter = function (input) {
         return _diffFilter(input, skeletonData);
@@ -159,6 +178,9 @@
                 project: 1
             };
         }
+        
+        $scope.advancedFilters = MapasCulturais.advancedFilters;
+        
         $rootScope.resetPagination();
 
         $scope.assetsUrl = MapasCulturais.assets;
@@ -196,7 +218,11 @@
                 return $scope.data.global.enabled[entity];
             else
                 return $scope.data.global.filterEntity === entity;
-        }
+        };
+        
+        $scope.hasAdvancedFilters = function(entity){
+            return MapasCulturais.advancedFilters[entity].length > 0;
+        };
 
         $scope.hasFilter = function() {
             var ctx = {has: false};

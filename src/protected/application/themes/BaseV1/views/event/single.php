@@ -339,7 +339,10 @@ $this->includeMapAssets();
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">
-    <?php $this->part('verified', array('entity' => $entity)); ?>
+	<!-- Related Seals BEGIN -->
+    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+    <!-- Related Seals END -->
+    
     <?php if($this->isEditable()): ?>
         <div class="widget">
             <h3>Projeto</h3>

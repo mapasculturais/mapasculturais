@@ -103,6 +103,51 @@ $this->includeAngularEntityAssets($entity);
             </li>
         </ul>
     </div>
+ 	<!-- BEGIN Seals -->
+	<div class="registration-fieldset">
+		<h4>Selos Certificadores</h4>
+		<p class="registration-help">Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.</p>
+		<ul class="registration-list">
+            <li  class="registration-list-item registration-edit-mode">
+				<div class="registration-label">Agentes</div>
+				<div class="clearfix">
+					<span>
+						<img src="" />
+					</span>
+					<div>
+						<a href="">Teste</a>
+					</div>
+				</div>
+			</li>
+			<li  class="registration-list-item registration-edit-mode">
+				<div class="registration-label">Espaços </div>
+				<div class="clearfix">
+					<img class="registration-agent-avatar" />
+					<div>
+						<a href="">Teste</a>
+					</div>
+				</div>
+			</li>
+			<li  class="registration-list-item registration-edit-mode">
+				<div class="registration-label">Projetos </div>
+				<div class="clearfix">
+					<img class="registration-agent-avatar" />
+					<div>
+						<a href="">Teste</a>
+					</div>
+				</div>
+			</li>
+			<li  class="registration-list-item registration-edit-mode">
+				<div class="registration-label">Eventos </div>
+				<div class="clearfix">
+					<img class="registration-agent-avatar" />
+					<div>
+						<a href="">Teste</a>
+					</div>
+				</div>
+			</li>
+        </ul>
+	</div>
     <!-- anexos -->
     <div ng-if="data.entity.registrationFileConfigurations.length > 0" id="registration-attachments" class="registration-fieldset">
         <h4>Anexos (documentos necessários)</h4>

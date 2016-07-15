@@ -24,6 +24,7 @@ use MapasCulturais\App;
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventAgentRelation",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentAgentRelation",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceAgentRelation",
+        "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealAgentRelation",
         "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationAgentRelation"
    })
  */

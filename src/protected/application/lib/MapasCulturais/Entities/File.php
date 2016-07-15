@@ -30,6 +30,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
    })
@@ -329,10 +330,15 @@ abstract class File extends \MapasCulturais\Entity
             return $transformed;
         }
 
-        if(!file_exists($this->getPath()))
+        $path = $this->getPath();
+        if(!file_exists($path) 
+            || !is_writable($path)
+            || !is_writable(dirname($path))
+            || filesize($path) == 0) {
             return $this;
+        }
 
-        $new_image = \WideImage\WideImage::load($this->getPath());
+        $new_image = \WideImage\WideImage::load($path);
 
         eval('$new_image = $new_image->' . $wideimage_operations . ';');
 
