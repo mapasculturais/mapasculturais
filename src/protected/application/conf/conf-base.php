@@ -49,7 +49,6 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-	'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -146,21 +145,6 @@ return array(
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
     ),
-
-    /* ============ ENTITY PROPERTIES SEALS ============= */
-    'app.entityPropertiesSeals' => array(
-        '@default' => array(
-            'id' => 'Id',
-            'name' => 'Nome',
-            'createTimestamp' => 'Data de Criação',
-            'shortDescription' => 'Descrição Curta',
-            'longDescription' => 'Descrição Longa',
-            'status' => 'Status'
-        ),
-
-//        'MapasCulturais\Entities\Agent' => array()
-    ),
-
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
@@ -275,7 +259,6 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
-        	'selo'  	=> array('seal',	'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -284,8 +267,7 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscricao' => array('registration', 'view'),
-        	'certificado' => array('relatedSeal','single'),
+            'inscricao' => array('registration', 'view')
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -296,7 +278,6 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
-        	'selos'      	 => 'seal',
             'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration',
         ),
@@ -308,7 +289,6 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-        	'selos'      	=> 'seals',
             'inscricoes'    => 'registrations'
         ),
 
@@ -320,7 +300,6 @@ return array(
                 'event'         => 'Evento',    'events'        => 'Eventos',
                 'agent'         => 'Agente',    'agents'        => 'Agentes',
                 'space'         => 'Espaço',    'spaces'        => 'Espaços',
-        		'seal'       	=> 'Selo',   	'seals'      	=> 'Selos',
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
                 'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',

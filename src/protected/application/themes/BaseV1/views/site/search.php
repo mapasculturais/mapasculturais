@@ -11,7 +11,6 @@ $this->addTaxonoyTermsToJs('linguagem');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Space');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Project');
-$this->addEntityTypesToJs('MapasCulturais\Entities\Seal');
 
 $this->includeSearchAssets();
 
@@ -45,10 +44,6 @@ $this->includeMapAssets();
                 
             <?php if($app->isEnabled('agents')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
-            <?php endif; ?>
-            
-            <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
-                <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} selos"></a>
             <?php endif; ?>
             
         </div>
@@ -292,31 +287,6 @@ $this->includeMapAssets();
                                 <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-        <header id="label-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'seal'">
-            <h1><span class="icon icon-seal"></span> Selos</h1>
-            <a class="btn btn-accent add" href="<?php echo $app->createUrl('seal', 'create'); ?>">Adicionar selo</a>
-        </header>
-
-        <div id="lista-dos-selos" class="lista selo" infinite-scroll="data.global.filterEntity === 'label' && addMore('seal')" ng-show="data.global.filterEntity === 'seal'">
-            <article class="objeto clearfix" ng-repeat="label in seals" id="label-result-{{seal.id}}">
-                <h1><a href="{{seal.singleUrl}}">{{seal.name}}</a></h1>
-                <div class="objeto-content clearfix">
-                    <a href="{{seal.singleUrl}}" class="js-single-url">
-                        <img class="objeto-thumb" ng-src="{{agent['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--seal')}}">
-                    </a>
-                    <p class="objeto-resumo">{{agent.shortDescription}}</p>
-                    <div class="objeto-meta">
-                        <div><span class="label">Tipo:</span> <a ng-click="data.seal.type=seal.type.id">{{seal.type.name}}</a></div>
-                        <!-- div>
-                            <span class="label">Área de atuação:</span>
-                            <span ng-repeat="area in agent.terms.area">
-                                <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
-                            </span>
-                        </div-->
                     </div>
                 </div>
             </article>

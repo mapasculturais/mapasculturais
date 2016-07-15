@@ -63,11 +63,6 @@ article.project, article.registration {
     }
 }
 
-article.seal {
-    .header-image {
-        background-color: $brand-seal;
-    }
-}
 .header-content {
     position: relative;
     margin-top: 3.75rem;
@@ -118,10 +113,6 @@ article.seal {
     .space-type {
         color: $brand-space;
     }
-    .seal-type {
-        color: $brand-seal;
-    }
-
     > h2 {
         margin-bottom: 0;
     }

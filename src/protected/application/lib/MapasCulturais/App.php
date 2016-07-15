@@ -507,13 +507,6 @@ class App extends \Slim\Slim{
         }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
         
-        if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
-            $seal_types = include $theme_seal_types;
-        } else {
-            $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
-        }
-        $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
-
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
@@ -531,7 +524,6 @@ class App extends \Slim\Slim{
 
         $this->registerController('event',   'MapasCulturais\Controllers\Event');
         $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
-        $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
         
@@ -590,11 +582,6 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('project', $file_groups['gallery']);
         $this->registerFileGroup('project', $file_groups['rules']);
         
-        $this->registerFileGroup('seal', $file_groups['downloads']);
-        $this->registerFileGroup('seal', $file_groups['header']);
-        $this->registerFileGroup('seal', $file_groups['avatar']);
-        $this->registerFileGroup('seal', $file_groups['gallery']);
-
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
@@ -660,9 +647,6 @@ class App extends \Slim\Slim{
         $this->registerMetaListGroup('project', $metalist_groups['links']);
         $this->registerMetaListGroup('project', $metalist_groups['videos']);
         
-        $this->registerMetaListGroup('seal', $metalist_groups['links']);
-        $this->registerMetaListGroup('seal', $metalist_groups['videos']);
-
         // register space types and spaces metadata
         foreach($space_types['items'] as $group_name => $group_config){
             $entity_class = 'MapasCulturais\Entities\Space';
@@ -748,24 +732,6 @@ class App extends \Slim\Slim{
 
             // add projects metadata definition to project type
             foreach($projects_meta as $meta_key => $meta_config)
-                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
-                    $type_config['metadata'][$meta_key] = $meta_config;
-
-            foreach($type_config['metadata'] as $meta_key => $meta_config){
-                $metadata = new Definitions\Metadata($meta_key, $meta_config);
-                $this->registerMetadata($metadata, $entity_class, $type_id);
-            }
-        }
-        
-        // register seal time unit types
-		$entity_class = 'MapasCulturais\Entities\Seal';
-        
-        foreach($seal_types['items'] as $type_id => $type_config){
-        	$type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
-        	$this->registerEntityType($type);
-        	
-        	// add projects metadata definition to project type
-            foreach($seals_meta as $meta_key => $meta_config)
                 if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
                     $type_config['metadata'][$meta_key] = $meta_config;
 

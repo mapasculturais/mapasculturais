@@ -19,8 +19,8 @@ class Registration extends \MapasCulturais\Entity
     use Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
-        Traits\EntityAgentRelation,
-    	Traits\EntitySealRelation;
+        Traits\EntityAgentRelation;
+
 
     const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;

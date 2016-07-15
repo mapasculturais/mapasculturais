@@ -25,7 +25,6 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
-        Traits\EntitySealRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,

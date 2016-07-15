@@ -28,7 +28,6 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
-        Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,

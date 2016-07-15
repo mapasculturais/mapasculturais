@@ -16,7 +16,6 @@ class Agent extends EntityController {
         Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
-        Traits\ControllerSealRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
