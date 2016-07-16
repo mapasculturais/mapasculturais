@@ -94,9 +94,11 @@
             advancedFilters: {}
         }
     };
-    
+
+    var entities = ['space', 'event', 'agent', 'project'];
+
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
-    ['space', 'agent', 'event', 'project'].forEach(function(entity){
+    entities.forEach(function(entity){
         MapasCulturais.advancedFilters[entity].forEach(function(filter){
             if(filter.isArray){
                 skeletonData[entity].advancedFilters[filter.filter.param] = [];
@@ -157,13 +159,13 @@
     };
 
     var app = angular.module('search.app', [
-        'ng-mapasculturais', 
-        'rison', 
-        'infinite-scroll', 
-        'ui.date', 
-        'search.service.find', 
-        'search.service.findOne', 
-        'search.controller.map', 
+        'ng-mapasculturais',
+        'rison',
+        'infinite-scroll',
+        'ui.date',
+        'search.service.find',
+        'search.service.findOne',
+        'search.controller.map',
         'search.controller.spatial',
         'mc.module.notifications']);
 
@@ -178,9 +180,9 @@
                 project: 1
             };
         }
-        
+
         $scope.advancedFilters = MapasCulturais.advancedFilters;
-        
+
         $rootScope.resetPagination();
 
         $scope.assetsUrl = MapasCulturais.assets;
@@ -219,7 +221,7 @@
             else
                 return $scope.data.global.filterEntity === entity;
         };
-        
+
         $scope.hasAdvancedFilters = function(entity){
             return MapasCulturais.advancedFilters[entity].length > 0;
         };
@@ -273,10 +275,20 @@
             }
         };
 
+        $scope.defaultTab = function(){
+            for(var i = 0; length(entities) - 1; i++){
+                if ($scope.data.global.enabled[entities[i]]){
+                    tabClick(entities[i]);
+                    return;
+                }
+            }
+
+        };
+
         $scope.parseHash = function(){
             var newValue = $location.hash();
             if(newValue === '') {
-                $scope.tabClick('agent');
+                $scope.defaultTab();
                 return;
             }
 
@@ -342,7 +354,7 @@
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 
         if($location.hash() === '') {
-            $scope.tabClick('agent');
+            $scope.defaultTab();
         } else {
             $scope.parseHash();
         }
@@ -450,7 +462,7 @@
             if(!/^[0-9]{4}(\-[0-9]{2}){2}$/.test($scope.data.event.from)){
                 $scope.data.event.from = moment($scope.data.event.from).format('YYYY-MM-DD');
             }
-            
+
             if(new Date($scope.data.event.from) > new Date($scope.data.event.to)){
                 $scope.data.event.to = $scope.data.event.from;
             }
@@ -460,7 +472,7 @@
             if(!/^[0-9]{4}(\-[0-9]{2}){2}$/.test($scope.data.event.to)){
                 $scope.data.event.to = moment($scope.data.event.to).format('YYYY-MM-DD');
             }
-            
+
             if(new Date($scope.data.event.to) < new Date($scope.data.event.from)){
                 $scope.data.event.from = $scope.data.event.to;
             }
@@ -498,19 +510,19 @@
 
             return from !== to ? 'de ' + from + ' a ' + to : from;
         };
-        
+
         $scope.collapsedFilters = true;
-        
+
         $scope.toggleAdvancedFilters = function(){
-            
+
             $scope.collapsedFilters = !$scope.collapsedFilters;
             setTimeout(function(){
                 window.adjustHeader();
             }, 10);
         };
-        
+
         $scope.showSearch = function(){
-            
+
             if (document.body.clientWidth > 768) {
                 return true;
             } else {
