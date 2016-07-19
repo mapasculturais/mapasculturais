@@ -11,7 +11,7 @@ use MapasCulturais\Entities;
  *
  * By default this controller is registered with the id 'seal'.
  *
- *  @property-read \MapasCulturais\Entities\Project $requestedEntity The Requested Entity
+ *  @property-read \MapasCulturais\Entities\Seal $requestedEntity The Requested Entity
  *
  */
 class Seal extends EntityController {
@@ -114,12 +114,10 @@ class Seal extends EntityController {
     	
     	$rel = $app->repo('SealRelation')->find($id);
     	
-    	die($rel->dump());
-    	
     	$this->requireAuthentication();
     	$user = $this->_getUser();
     	
-    	$this->render('sealrelation', ['user' => $user]);
+    	$this->render('sealrelation', ['relation' => $rel]);
     	
     }
 }

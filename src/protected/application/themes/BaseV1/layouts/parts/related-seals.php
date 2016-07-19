@@ -10,7 +10,7 @@ $this->addRelatedSealsToJs($entity);
 				<img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
                 <div class="descricao-do-selo">
                 	<?php $idRelation =  '{{relation.id}}';?>
-                    <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation])?>" class="ng-binding">{{relation.seal.name}}</a></h1>
+                    <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
                 </div>
             </div>
         </div>
