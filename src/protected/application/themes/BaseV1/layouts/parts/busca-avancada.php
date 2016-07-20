@@ -1,10 +1,24 @@
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
-    <?php $this->part('search/filter-projects') ?>
-    <?php $this->part('search/filter-events') ?>
-    <?php $this->part('search/filter-agents') ?>
-    <?php $this->part('search/filter-spaces') ?>
-    
-    
+    <?php if($app->isEnabled('events')): ?>
+        <?php $this->part('search/filter', ['display_name' => 'Eventos', 'entity_name' => 'event']); ?>
+    <?php endif; ?>
+    <?php if($app->isEnabled('spaces')): ?>
+        <?php
+            ob_start();
+            $this->dict('entities: Spaces');
+            $show_name =  ob_get_clean();
+            $this->part('search/filter', ['display_name' => $show_name, 'entity_name' => 'space']);
+            // $this->part('search/filter-spaces');
+        ?>
+    <?php endif; ?>
+    <?php if($app->isEnabled('agents')): ?>
+        <?php
+            $this->part('search/filter', ['display_name' => 'Agentes', 'entity_name' => 'agent']);
+        ?>
+    <?php endif; ?>
+    <?php if($app->isEnabled('projects')): ?>
+        <?php $this->part('search/filter', ['display_name' => 'Projetos', 'entity_name' => 'project']); ?>
+    <?php endif; ?>
 
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
