@@ -627,6 +627,7 @@ class Theme extends MapasCulturais\Theme {
         }
 //        eval(\Psy\sh());
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+            $this->jsObject['simpleFilters'] = $this-> _getSimpleFilters();
             $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
         }
 
@@ -636,14 +637,14 @@ class Theme extends MapasCulturais\Theme {
         	$this->jsObject['allowedFields'] = false;
         }
     }
-    protected function _getAdvancedFilters(){
+
+    protected function _getSimpleFilters(){
         $tax = App::i()->getRegisteredTaxonomyBySlug('area');
         $area_options = [];
         foreach ($tax->restrictedTerms as $v)
             $area_options[] = ['value' => $v, 'label' => $v];
         return [
-            'space' => [],
-            'agent' => [
+            'space' => [
                 [
                     'fieldType' => 'checklist',
                     'isInline' => true,
@@ -658,6 +659,17 @@ class Theme extends MapasCulturais\Theme {
                     'options' => $area_options,
                 ],
             ],
+            'agent' => [],
+            'event' => [],
+            'project' => []
+        ];
+    }
+
+    protected function _getAdvancedFilters(){
+
+        return [
+            'space' => [],
+            'agent' => [],
             'event' => [],
             'project' => []
         ];
