@@ -223,7 +223,9 @@
         };
 
         $scope.hasAdvancedFilters = function(entity){
-            return MapasCulturais.advancedFilters[entity].length > 0;
+            return MapasCulturais.advancedFilters[entity].filter(function(v){
+                return !v.isInline;
+            }).length > 0;
         };
 
         $scope.hasFilter = function() {
