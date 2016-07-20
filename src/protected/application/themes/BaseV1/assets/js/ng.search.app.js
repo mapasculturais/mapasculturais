@@ -62,6 +62,7 @@
             type: null,
             isVerified: false,
             showAdvancedFilters:false,
+            simpleFilters:{},
             advancedFilters: {}
         },
         space: {
@@ -71,6 +72,7 @@
             acessibilidade: false,
             isVerified: false,
             showAdvancedFilters:false,
+            simpleFilters:{},
             advancedFilters: {}
         },
         event: {
@@ -81,6 +83,7 @@
             classificacaoEtaria: [],
             isVerified: false,
             showAdvancedFilters:false,
+            simpleFilters:{},
             advancedFilters: {}
         },
         project: {
@@ -91,6 +94,7 @@
             // registration open
             ropen: false,
             showAdvancedFilters:false,
+            simpleFilters:{},
             advancedFilters: {}
         }
     };
