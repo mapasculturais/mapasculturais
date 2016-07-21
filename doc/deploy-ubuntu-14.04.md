@@ -169,7 +169,7 @@ server {
 
 Crie o linkpara habilitar o virtual host
 ```BASH
-ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
+@ ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
 ```
 
 #### Criando pool do php-fpm
