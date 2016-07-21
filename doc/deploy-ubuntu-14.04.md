@@ -167,9 +167,14 @@ server {
 }
 ```
 
-Crie o linkpara habilitar o virtual host
+Crie o link para habilitar o virtual host
 ```BASH
 @ ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
+```
+
+Remover o arquivo default da pasta /etc/nginx/sites-available/
+```BASH
+@ rm /etc/nginx/sites-available/default
 ```
 
 #### Criando pool do php-fpm
