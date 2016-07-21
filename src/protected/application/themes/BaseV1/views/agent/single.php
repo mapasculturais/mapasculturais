@@ -147,17 +147,15 @@ $this->includeAngularEntityAssets($entity);
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-
-    <?php if(count($entity->spaces) > 0): ?>
-    <div class="widget">
-        <h3><?php $this->dict('entities: Spaces of the agent') ?></h3>
-        <ul class="widget-list js-slimScroll">
-            <?php foreach($entity->spaces as $space): ?>
-            <li class="widget-list-item"><a href="<?php echo $app->createUrl('space', 'single', array('id' => $space->id)) ?>"><span><?php echo $space->name; ?></span></a></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-    <?php endif; ?>
+    
+    <!-- Children BEGIN -->
+        <?php $this->part('singles/list-entities.php', array('entities'=>$entity->spaces, 'title' => 'entities: Spaces of the agent')); ?>
+    <!-- Children END -->
+    
+    <!-- Children BEGIN -->
+        <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
+    <!-- Children END -->
+    
     <!--
     <div class="widget">
         <h3>Projetos do agente</h3>
