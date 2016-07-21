@@ -48,6 +48,7 @@ class Theme extends MapasCulturais\Theme {
             
             'entities: Spaces of the agent'=> 'Espaços do agente',
             'entities: Space Description'=> 'Descrição do Espaço',
+            'entities: Agent children'=> 'Agentes',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
             
