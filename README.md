@@ -54,7 +54,7 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
 - [PostgreSQL >= 9.3](http://www.postgresql.org/)
 - [Postgis >= 2.1](http://postgis.net)
   - [PostgreSQL-Postgis-Scripts](http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1)
-- [Node.JS >= 0.10](https://nodejs.org/en/)
+- [Node.JS >= 4.x](https://nodejs.org/en/)
   - [NPM](https://www.npmjs.com/)
   - [UglifyJS](https://www.npmjs.com/package/uglify-js)
   - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
