@@ -24,7 +24,12 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 * http://museus.cultura.gov.br
 
 ## Sobre a aplicação
-Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.  
+Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
+
+## Projetos correlatos
+
+* [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
+* [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
 
 ### Documentação 
 Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
