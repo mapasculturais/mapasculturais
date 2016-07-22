@@ -1,4 +1,4 @@
-Esta documentação trata da ativação do tema no "config.php" da aplicação e de algumas configurações básicas para parametrização de um tema já existente. 
+Esta documentação trata da ativação do tema no *config.php* da aplicação e de algumas configurações básicas para parametrização de um tema já existente. 
 
 ## Temas conhecidos:
 * https://github.com/institutotim/mapasculturaisThemeMapaNasNuvensDF
