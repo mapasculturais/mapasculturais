@@ -1,4 +1,14 @@
-# Ativando um novo tema
+Esta documentação trata da ativação do tema no *config.php* da aplicação e de algumas configurações básicas para parametrização de um tema já existente. 
+
+## Temas conhecidos:
+* https://github.com/institutotim/mapasculturaisThemeMapaNasNuvensDF
+* https://github.com/institutotim/mapasculturaisThemeSaoJose
+* https://github.com/institutotim/mapasculturaisThemeMatoGrosso
+* https://github.com/institutotim/mapasculturaisThemeBH
+* https://github.com/institutotim/mapasculturaisThemeEstadoSP
+* https://github.com/institutotim/mapasculturaisThemeSantoAndre
+
+## Ativando um novo tema
 
 Os arquivos de tema da aplicação ficam em:
 
@@ -28,7 +38,7 @@ Para algo como isso:
 ```
 Repare que, além de retirar os comentários e inserir os namespaces, acrescentamos, nas linhas acima, o caminho absoluto do tema concatenando uma variável global de caminho (THEMES_PATH) com o nome do diretório onde está o tema customizado ('SantoAndre').
 
-# Parametrizando foco do mapa e zoom
+## Parametrizando foco do mapa e zoom
 
 Ainda no arquivo do configuracoes da aplicacao (config.php), voce pode encontrar parametros para latitude, longitude e zoom do mapa. 
 
