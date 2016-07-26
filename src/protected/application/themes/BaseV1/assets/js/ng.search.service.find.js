@@ -178,16 +178,22 @@
                     searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
 
+                // console.log(entityData);
+                // console.log(entityData.filters);
 
-
-                console.log(entityData);
-                console.log(entityData.filters);
                 entityData.filters.forEach(function(v){
                     var search_value = entityData.filters[v.filter.param].map(function(e){
                         return MapasCulturais.taxonomyTerms[v.filter.param][e];
                     });
                     searchData['term:'+v.filter.param] = v.filter.value.replace(/\{val\}/g, val, search_value);
                 });
+
+                // for (filter in entityData.{
+                //     var search_value = entityData.filters[v.filter.param].map(function(e){
+                //         return MapasCulturais.taxonomyTerms[v.filter.param][e];
+                //     });
+                //     searchData['term:'+v.filter.param] = v.filter.value.replace(/\{val\}/g, val, search_value);
+                // });
 
 
                 if(entityData.areas && entityData.areas.length){

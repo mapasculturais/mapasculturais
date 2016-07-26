@@ -650,7 +650,7 @@ class Theme extends MapasCulturais\Theme {
                 $modified_filters[$key] = [];
                 foreach ($filters[$key] as $field) {
                     $mod_field = array_merge($skeleton_field, $field);
-                    if (!isset($mod_field['metadata'])){
+                    if (!isset($mod_field['isMetadata'])){
                         if (!isset($mod_field['options'])){
                             $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
                             $mod_field['options'] = [];
@@ -676,13 +676,45 @@ class Theme extends MapasCulturais\Theme {
         return [
             'space' => [
                 [
-                    'label'=> 'Áreas',
-                    'placeholder' => 'Selecione as Áreas',
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
                     'filter' => [
                         'param' => 'area',
                         'value' => 'IN({val})'
                     ],
                 ],
+                [
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'isMetadata' => true,
+                    'filter' => [
+                        'param' => 'acessibilidade',
+                        'value' => 'EQ(Sim)'
+                    ],
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Selecione os tipos',
+                    'isMetadata' => true,
+                    'filter' => [
+                        'param' => 'types',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results',),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox',
+                    // 'btnClass' => 'btn-verified',
+                    'isArray' => false,
+                    'isMetadata' => true,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
             ],
             'agent' => [],
             'event' => [],
