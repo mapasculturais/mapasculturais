@@ -631,7 +631,8 @@ class Theme extends MapasCulturais\Theme {
                 'fieldType' => 'checklist',
                 'isInline' => true,
                 'isArray' => true,
-                'isMetadata' => false,
+                // 'isMetadata' => false,
+                'type' => 'metadata', //metadata, term or entitytype
                 'label' => '',
                 'placeholder' => '',
                 'filter' => [
@@ -650,14 +651,27 @@ class Theme extends MapasCulturais\Theme {
                 $modified_filters[$key] = [];
                 foreach ($filters[$key] as $field) {
                     $mod_field = array_merge($skeleton_field, $field);
-                    if (!isset($mod_field['isMetadata'])){
-                        if (!isset($mod_field['options'])){
-                            $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
-                            $mod_field['options'] = [];
-                            foreach ($tax->restrictedTerms as $v)
-                                $mod_field['options'][] = ['value' => $v, 'label' => $v];
+                    if ($mod_field['isArray']){
+                        $mod_field['options'] = [];
+                        switch ($mod_field['type']) {
+                            case 'metadata':
+                                $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($data->config['options'] as $meta_key => $value)
+                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                break;
+                            case 'entitytype':
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($types as $type_key => $type_val)
+                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val];
+                                break;
+                            case 'term':
+                                $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
+                                foreach ($tax->restrictedTerms as $v)
+                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+
+                                $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
+                                break;
                         }
-                        $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
                     }
                     $modified_filters[$key][] = $mod_field;
                 }
@@ -678,38 +692,36 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label'=> 'Área de Atuação',
                     'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
                     'filter' => [
                         'param' => 'area',
                         'value' => 'IN({val})'
                     ],
                 ],
                 [
-                    'label' => 'Acessibilidade',
-                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
-                    'fieldType' => 'checkbox',
-                    'isArray' => false,
-                    'isMetadata' => true,
-                    'filter' => [
-                        'param' => 'acessibilidade',
-                        'value' => 'EQ(Sim)'
-                    ],
-                ],
-                [
                     'label' => 'Tipos',
                     'placeholder' => 'Selecione os tipos',
-                    'isMetadata' => true,
+                    'type' => 'entitytype',
                     'filter' => [
                         'param' => 'types',
                         'value' => 'IN({val})'
                     ]
                 ],
                 [
-                    'label' => $this->dict('search: verified results',),
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'acessibilidade',
+                        'value' => 'EQ(Sim)'
+                    ],
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
                     'placeholder' => 'Exibir somente resultados Verificados',
                     'fieldType' => 'checkbox',
-                    // 'btnClass' => 'btn-verified',
                     'isArray' => false,
-                    'isMetadata' => true,
                     'filter' => [
                         'param' => 'isVerified',
                         'value' => 'EQ(true)'

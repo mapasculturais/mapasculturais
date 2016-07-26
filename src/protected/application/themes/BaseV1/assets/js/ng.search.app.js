@@ -100,6 +100,7 @@
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
         MapasCulturais.filters[entity].forEach(function(filter){
+            console.log(filter);
             if(filter.isArray){
                 skeletonData[entity].filters[filter.filter.param] = [];
             } else {
