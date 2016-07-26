@@ -627,8 +627,42 @@ class Theme extends MapasCulturais\Theme {
         }
 //        eval(\Psy\sh());
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
-            $this->jsObject['simpleFilters'] = $this-> _getSimpleFilters();
-            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+            $skeleton_field = [
+                'fieldType' => 'checklist',
+                'isInline' => true,
+                'isArray' => true,
+                'isMetadata' => false,
+                'label' => '',
+                'placeholder' => '',
+                'filter' => [
+                    'param' => '',
+                    'value' => 'IN({val})'
+                ]
+            ];
+
+            // $normal_filters = [];
+            // $metadata_filters = [];
+            $filters = $this->_getFilters();
+            $modified_filters = [];
+
+            foreach ($filters as $key => $value) {
+                $modified_filters[] = $key;
+                $modified_filters[$key] = [];
+                foreach ($filters[$key] as $field) {
+                    $mod_field = array_merge($skeleton_field, $field);
+                    if (!isset($mod_field['metadata'])){
+                        if (!isset($mod_field['options'])){
+                            $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
+                            $mod_field['options'] = [];
+                            foreach ($tax->restrictedTerms as $v)
+                                $mod_field['options'][] = ['value' => $v, 'label' => $v];
+                        }
+                        $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
+                    }
+                    $modified_filters[$key][] = $mod_field;
+                }
+            }
+            $this->jsObject['filters'] = $modified_filters;
         }
 
         if($app->user->is('superAdmin') || $app->user->is('admin')) {
@@ -638,37 +672,18 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    protected function _getSimpleFilters(){
-        $tax = App::i()->getRegisteredTaxonomyBySlug('area');
-        $area_options = [];
-        foreach ($tax->restrictedTerms as $v)
-            $area_options[] = ['value' => $v, 'label' => $v];
+    protected function _getFilters(){
         return [
             'space' => [
                 [
-                    'fieldType' => 'checklist',
-                    'isInline' => true,
-                    'isArray' => true,
-                    'label' => 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> 'Áreas',
+                    'placeholder' => 'Selecione as Áreas',
                     'filter' => [
                         'param' => 'area',
                         'value' => 'IN({val})'
                     ],
-                    'parseValue' => ['join'],
-                    'options' => $area_options,
                 ],
             ],
-            'agent' => [],
-            'event' => [],
-            'project' => []
-        ];
-    }
-
-    protected function _getAdvancedFilters(){
-
-        return [
-            'space' => [],
             'agent' => [],
             'event' => [],
             'project' => []

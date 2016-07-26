@@ -2,7 +2,7 @@
 
 <div ng-show="data[entity].showAdvancedFilters" class="advanced-filters" >
     <div><strong> Filtros Avançados </strong></div>
-    <div ng-repeat="filter in advancedFilters[entity]">
+    <div ng-repeat="filter in filters[entity]">
         <div ng-if="!filter.isInline" class="advanced-filter">
             <?php $this->part('search/filter-field') ?>
         </div>
