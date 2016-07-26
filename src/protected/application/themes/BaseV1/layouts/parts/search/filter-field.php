@@ -1,4 +1,4 @@
-<div ng-if="filter.fieldType === 'checkbox'" class="hltip" title="{{filter.placeholder}}" ng-switch on="filter.btnClass">
+<div ng-if="filter.fieldType === 'checkbox'" class="hltip" title="{{filter.placeholder}}">
     <span
         class="icon icon-check"
         ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]"
@@ -10,7 +10,7 @@
     <span class="label">{{filter.label}}</span>
     <input ng-model="data[entity].filters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
 </div>
-<div ng-if="filter.fieldType === 'checklist'" >
+<div ng-if="filter.fieldType === 'checklist'">
     <span class="label">{{filter.label}}</span>
     <div class="dropdown">
         <div class="placeholder">{{filter.placeholder}}</div>
