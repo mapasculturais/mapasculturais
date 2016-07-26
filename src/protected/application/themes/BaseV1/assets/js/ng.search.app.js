@@ -208,10 +208,6 @@
             }
         };
 
-        $scope.toggleVerified = function (entity) {
-                $scope.data[entity].isVerified = !$scope.data[entity].isVerified;
-        };
-
         $scope.showInfobox = function (){
             return $scope.collapsedFilters && $scope.data.global.openEntity.id>0 && $scope.data.global.viewMode==='map' && $scope.data.global.enabled[$scope.data.global.openEntity.type];
         };
