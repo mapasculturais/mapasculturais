@@ -62,8 +62,7 @@
             type: null,
             isVerified: false,
             showAdvancedFilters:false,
-            simpleFilters:{},
-            advancedFilters: {}
+            filters: {}
         },
         space: {
             keyword: '',
@@ -72,8 +71,7 @@
             acessibilidade: false,
             isVerified: false,
             showAdvancedFilters:false,
-            simpleFilters:{},
-            advancedFilters: {}
+            filters: {}
         },
         event: {
             keyword: '',
@@ -83,8 +81,7 @@
             classificacaoEtaria: [],
             isVerified: false,
             showAdvancedFilters:false,
-            simpleFilters:{},
-            advancedFilters: {}
+            filters: {}
         },
         project: {
             keyword: '',
@@ -94,8 +91,7 @@
             // registration open
             ropen: false,
             showAdvancedFilters:false,
-            simpleFilters:{},
-            advancedFilters: {}
+            filters: {}
         }
     };
 
@@ -103,11 +99,11 @@
 
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
-        MapasCulturais.advancedFilters[entity].forEach(function(filter){
+        MapasCulturais.filters[entity].forEach(function(filter){
             if(filter.isArray){
-                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+                skeletonData[entity].filters[filter.filter.param] = [];
             } else {
-                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+                skeletonData[entity].filters[filter.filter.param] = null;
             }
         });
     });
@@ -185,7 +181,7 @@
             };
         }
 
-        $scope.advancedFilters = MapasCulturais.advancedFilters;
+        $scope.filters = MapasCulturais.filters;
 
         $rootScope.resetPagination();
 
@@ -227,7 +223,7 @@
         };
 
         $scope.hasAdvancedFilters = function(entity){
-            return MapasCulturais.advancedFilters[entity].filter(function(v){
+            return MapasCulturais.filters[entity].filter(function(v){
                 return !v.isInline;
             }).length > 0;
         };
