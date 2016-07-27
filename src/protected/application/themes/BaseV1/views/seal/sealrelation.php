@@ -16,10 +16,21 @@ $this->includeAngularEntityAssets($relation);
 $entity = $relation->seal;
 
 ?>
-<article class="main-content label">
+<article class="main-content seal">
     <header class="main-content-header">
-        <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+    <?php
+    	if ($header = $entity->getFile('header')){
+		    $style = "background-image: url({$header->transform('header')->url});";
+		} else {
+		    $style = "";
+		} ?>
+
+        <?php $this->applyTemplateHook('header-image','before'); ?>
+		<div class="header-image js-imagem-do-header" style="<?php echo $style ?>">        
+			<a class="btn btn-default edit js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>">Imprimir Certificado</a>
+		</div>
+		<?php $this->applyTemplateHook('header-image','after'); ?>
+		        
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
         
         <div class="header-content">
@@ -55,7 +66,7 @@ $entity = $relation->seal;
             </div>
             <!--.ficha-spcultura-->
 
-            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+            <?php if ( $entity->longDescription ): ?>
                 <h3>Descrição</h3>
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
@@ -67,10 +78,19 @@ $entity = $relation->seal;
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
-    <!-- Entidade Relacionada -->
-  	<?php $entity = $relation->owner; ?>
-    
+	
+	<br>
+	<br>
+	
+	<br>
+	<br>
+	
+	<br>
+	<br>
+	
+	<!-- Entidade Relacionada -->
+	<?php $entity = $relation->owner;?>
+  	
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
         
@@ -109,7 +129,7 @@ $entity = $relation->seal;
             </div>
             <!--.ficha-spcultura-->
 
-            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+            <?php if ( $entity->longDescription ): ?>
                 <h3>Descrição</h3>
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>

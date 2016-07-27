@@ -120,4 +120,17 @@ class Seal extends EntityController {
     	$this->render('sealrelation', ['relation' => $rel]);
     	
     }
+    
+    function GET_printSealRelation(){
+    	$app = App::i();
+    	 
+    	$id = $this->data['id'];
+    	$rel = $app->repo('SealRelation')->find($id);
+    	 
+    	$this->requireAuthentication();
+    	$user = $this->_getUser();
+    	
+    	echo $this->render('printsealrelation', ['relation' => $rel]);
+    	 
+    }
 }
