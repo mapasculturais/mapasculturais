@@ -2,7 +2,6 @@
 <ul class="abas clearfix">
     <?php $this->applyTemplateHook('tabs','begin'); ?>
     <li class="active"><a href="#sobre">Sobre</a></li>
-    <li><a href="#agenda">Agenda</a></li>
 
     <li ng-if="data.projectRegistrationsEnabled"><a href="#inscricoes">Inscrições</a></li>
     <?php if($entity->publishedRegistrations): ?>
@@ -14,6 +13,6 @@
     <?php if(!$entity->isNew()): ?>
         <li ng-if="data.entity.userHasControl && data.entity.events.length" ><a href="#eventos">Status dos eventos</a></li>
     <?php endif; ?>
-    <?php $this->applyTemplateHook('tabs','before'); ?>
+    <?php $this->applyTemplateHook('tabs','end'); ?>
 </ul>
 <?php $this->applyTemplateHook('tabs','after'); ?>

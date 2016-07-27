@@ -63,11 +63,6 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         
         <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
         
-        <div id="agenda" class="aba-content">
-            <?php $this->part('agenda', array('entity' => $entity)); ?>
-        </div>
-        <!-- #agenda -->
-        
         <?php $this->part('singles/project-registrations', ['entity' => $entity]) ?>
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>

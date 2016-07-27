@@ -181,7 +181,6 @@ class Plugin extends \MapasCulturais\Plugin{
     function _init () {
         $app = App::i();
         
-        $app->view->enqueueScript('app', 'plugin-project-phases', 'js/project-phases.js', ['mapasculturais']);
         $app->view->enqueueStyle('app', 'plugin-project-phases', 'css/project-phases.css');
         
         // action para criar uma nova fase no projeto

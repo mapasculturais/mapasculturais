@@ -46,7 +46,6 @@ $this->includeAngularEntityAssets($entity);
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
-        <li><a href="#agenda">Agenda</a></li>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -127,10 +126,6 @@ $this->includeAngularEntityAssets($entity);
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-        <div id="agenda" class="aba-content">
-            <?php $this->part('agenda', array('entity' => $entity)); ?>
-        </div>
-        <!-- #agenda -->
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
