@@ -38,14 +38,15 @@ $this->includeMapAssets();
             <?php if($app->isEnabled('events')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-event" ng-class="{active: data.global.enabled.event}" ng-click="data.global.enabled.event = !data.global.enabled.event" title="{{(data.global.enabled.event) && 'Ocultar' || 'Mostrar'}} eventos"></a>
             <?php endif; ?>
-                
+
             <?php if($app->isEnabled('spaces')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-space" ng-class="{active: data.global.enabled.space}" ng-click="data.global.enabled.space = !data.global.enabled.space" title="{{(data.global.enabled.space) && 'Ocultar' || 'Mostrar'}} <?php $this->dict('entities: spaces') ?>"></a>
             <?php endif; ?>
-                
+
             <?php if($app->isEnabled('agents')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
             <?php endif; ?>
+
             
             <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} selos"></a>
@@ -83,6 +84,8 @@ $this->includeMapAssets();
                 </a>
                 <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
                 <div class="objeto-meta">
+                    <?php $this->applyTemplateHook('space-infobox-new-fields-before','begin'); ?>
+                    <?php $this->applyTemplateHook('space-infobox-new-fields-before','end'); ?>
                     <div><span class="label">Tipo:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, openEntity.space.type.name))">{{openEntity.space.type.name}}</a></div>
                     <div>
                         <span class="label">Área de atuação:</span>
@@ -124,6 +127,8 @@ $this->includeMapAssets();
                         </li>
                     </ul>
                     <div class="objeto-meta">
+                        <?php $this->applyTemplateHook('event-infobox-new-fields-before','begin'); ?>
+                        <?php $this->applyTemplateHook('event-infobox-new-fields-before','end'); ?>
                         <div ng-if="event.project.name">
                             <span class="label">Projeto:</span>
                             <a href="{{event.project.singleUrl}}">{{event.project.name}}</a>
@@ -231,7 +236,7 @@ $this->includeMapAssets();
         </header>
 
         <div id="lista-dos-eventos" class="lista event" infinite-scroll="data.global.filterEntity === 'event' && addMore('event')" ng-show="data.global.filterEntity === 'event'">
-        
+
             <article class="objeto clearfix" ng-repeat="event in events">
                 <h1>
                     <a href="{{event.singleUrl}}">
@@ -270,7 +275,7 @@ $this->includeMapAssets();
                 </div>
             </article>
         </div>
-    	
+
     	<header id="agent-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'agent'">
             <h1><span class="icon icon-agent"></span> Agentes</h1>
             <a class="btn btn-accent add" href="<?php echo $app->createUrl('agent', 'create'); ?>">Adicionar agente</a>
