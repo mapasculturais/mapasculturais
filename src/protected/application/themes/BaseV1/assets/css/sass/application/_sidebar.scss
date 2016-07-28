@@ -31,7 +31,7 @@
     }
 }
 .sidebar-left {
-    overflow: hidden;
+    //overflow: hidden;
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
         float: right;
