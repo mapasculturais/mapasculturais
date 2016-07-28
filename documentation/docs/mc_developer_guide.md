@@ -30,7 +30,7 @@ O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcio
 - [Cache]()
 - [Outputs da API]()
 - [Exceções]()
-- [Busca Por Palavra-chave](developer-guide/keywords.md)
+- [Busca Por Palavra-chave](mc_developer_keywords.md)
 
 ## Branches e desenvolvimento
 
@@ -211,7 +211,7 @@ Por enquanto ainda não utilizamos um gerenciador de pacotes para as bibliotecas
 
 
 #### theme.php
-Este arquivo fica na pasta raíz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](api.md).
+Este arquivo fica na pasta raíz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](mc_config_api.md).
 
 #### Estrutura de pastas do tema
 dentro da pasta raíz do tema

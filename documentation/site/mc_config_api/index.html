@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <title>API - Mapas Culturais</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "API";
+    var mkdocs_page_input_path = "mc_config_api.md";
+    var mkdocs_page_url = "/mc_config_api/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Mapas Culturais</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Sobre o Mapas Culturais</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Instalação</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_deploy/">Deploy com Ubuntu 14.04 ou Debian 8</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_deploy_theme/">Ativação do tema</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_deploy_shapefiles/">Inserção de Shapefiles</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Configurações</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_config_authentication/">Autenticação</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">API</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#documentacao-da-api">Documentacao da API</a></li>
+                
+                    <li><a class="toctree-l4" href="#action-find">Action find</a></li>
+                
+                    <li><a class="toctree-l4" href="#operadores">Operadores</a></li>
+                
+                    <li><a class="toctree-l4" href="#exemplos-de-uso">Exemplos de uso.</a></li>
+                
+                    <li><a class="toctree-l4" href="#action-describe">Action describe</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Guia do desenvolvedor</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_developer_guide/">Guia do desenvolvedor</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_developer_docker_enviroment/">Docker Enviroment</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_developer_theme/">Criação de novo tema</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_developer_entities/">Entidades</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../mc_developer_keywords/">Palavras-chave</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Mapas Culturais</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Configurações &raquo;</li>
+        
+      
+    
+    <li>API</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="documentacao-da-api">Documentacao da API</h1>
+<p><em>Para tornar mais fácil a leitura dos exemplos será utilizada a função getJSON do jQuery.</em></p>
+<h2 id="action-find">Action find</h2>
+<p>Parâmetros
+O Método find aceita os seguintes parâmetros:</p>
+<ul>
+<li><strong>@select</strong> - usado para selecionar as propriedades da entidade que serão retornadas pela api. Você pode retornar propriedades de entidades relacionadas. <em>ex:( @select: id,name,owner.name,owner.singleUrl)</em></li>
+<li><strong>@order</strong> - usado para definir em que ordem o resultado será retornado. <em>ex:( @order: name ASC, id DESC)</em></li>
+<li><strong>@limit</strong> - usado para definir o número máximo de entidades que serão retornadas. <em>ex:( @limit: 10)</em></li>
+<li><strong>@page</strong> - usado em paginações em conjunto com o @limit. <em>ex:( @limit:10, @page: 2)</em></li>
+<li><strong>@or</strong> - se usado a api usará o operador lógico OR para criar a query. <em>ex:( @or:1)</em></li>
+<li><strong>@type</strong> - usado para definir o tipo de documento a ser gerado com o resultado da busca. <em>ex:( @type: html; ou @type: json; ou @type: xml)</em></li>
+<li><strong>@files</strong> - indica que é para retornar os arquivos anexos. <em>ex:( @files=(avatar.avatarSmall,header):name,url - retorna o nome e url do thumbnail de tamanho avatarSmall da imagem avatar e a imagem header original)</em></li>
+</ul>
+<h2 id="operadores">Operadores</h2>
+<p>Para filtrar os resultados o método find aceita os seguintes operadores em qualquer das propriedades e metadados das entidades:</p>
+<ul>
+<li><strong>EQ</strong> (igual) <em>ex:( id: EQ (10) - seleciona a entidade de id igual a 10)</em></li>
+<li><strong>GT</strong> (maior que) <em>ex:( id: GT (10) - seleciona todas as entidades com id maior a 10)</em></li>
+<li><strong>GTE</strong> (maior ou igual) <em>ex:( id: GTE (10) - seleciona todas as entidades com id maior ou igual a 10)</em></li>
+<li><strong>LT</strong> (menor que) <em>ex:( id: LT (10) - seleciona todas as entidades com id menor a 10)</em></li>
+<li><strong>LTE</strong> (menor ou igual) <em>ex:( id: LTE (10) - seleciona todas as entidades com id menor ou igual a 10)</em></li>
+<li><strong>NULL</strong> (nao definido) <em>ex:( age: null() - seleciona todas as entidades com idade não definida)</em></li>
+<li><strong>IN</strong> (en) <em>ex:( id: IN (10,18,33) - seleciona as entidades de id 10, 18 e 33)</em></li>
+<li><strong>BET</strong> (entre) <em>ex:( id: BET (100,200) - seleciona as entidades de id entre 100 e 200)</em></li>
+<li><strong>LIKE</strong> <em>ex:( name: LIKE (fael) - seleciona as entidades com nome LIKE '<em>fael</em>' (ver operador LIKE do sql))</em></li>
+<li><strong>ILIKE</strong> (LIKE ignorando maiúsculas e minúsculas) <em>ex:( name: ILIKE (rafael*) seleciona as entidades com o nome começando com Rafael, rafael, RAFAEL, etc.)</em></li>
+<li><strong>OR</strong> (operador lógico OU) <em>ex:( id: OR (BET (100,200), BET (300,400), IN (10,19,33)) - seleciona as entidades com id entre 100 e 200, entre 300 e 400 ou de id 10,19 ou 33)</em></li>
+<li><strong>AND</strong> (operador lógico AND) <em>ex:( name: AND (ILIKE ('Rafael%'), ILIKE ('*Freitas')) - seleciona as entidades com nome começando com Rafael e terminando com Freitas (por exemplo: Rafael Freitas, Rafael Chaves Freitas, RafaelFreitas))</em></li>
+<li><strong>GEONEAR</strong> <em>ex:( _geoLocation: GEONEAR (-46.6475415229797, -23.5413271705055, 700) - seleciona as entidades que estão no máximo há 700 metros do ponto de latitude -23.5413271705055 e longitude -46.6475415229797)</em></li>
+</ul>
+<h2 id="exemplos-de-uso">Exemplos de uso.</h2>
+<ul>
+<li><strong>retornando o nome do espaço de id 10</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/space/find',
+  {
+    '@select': 'name', 
+    'id': 'eq(10)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id, nome e email dos agentes com email do google</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, email', 
+    'email': 'like(*gmail.com)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome do espaços e nomes do agentes que publicaram os espaços </strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/space/find',
+  {
+    '@select': 'id, name, owner.name',
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com email do google ou do yahoo</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name', 
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  }, 
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id, nome dos agentes com com id entre 100 e 200, exceto o de id 150</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name', 
+    'id': 'AND(BET(100,200), !EQ(150))'
+  }, 
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com com id entre 100 e 200, exceto o de id 150 e que tenham email do google ordenado pela data de criação do agente</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'createTimestamp ASC',
+    'id': 'AND(BET(100,200), !EQ(150))',
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com com id entre 100 e 200, exceto o de id 150 OU que tenham email do google ordenado pelo nome descendentemente</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'name DESC',
+    '@or': 1,
+    'id': 'AND(BET(100,200), !EQ(150))',
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando a segunda página de 10 agentes ordenado pelo nome</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, files',
+    '@order': 'name ASC',
+    '@limit': 10,
+    '@page': 2
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando a segunda página de 10 agentes ordenado pelo nome com a url do avatar, url do thumbnail do avatar e todos os downloads</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'name ASC',
+    '@limit': 10,
+    '@page': 2,
+    '@files': '(avatar,avatar.avatarSmall,downloads):url'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando as entidades próximas a latitude -23.5413271705055 e longitude -46.6475415229797</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    '_geoLocation': 'GEONEAR(-46.6475415229797,-23.5413271705055,700)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<h3 id="filtrando-por-relacionamentos">Filtrando por relacionamentos</h3>
+<ul>
+<li><strong>Selecionando todos os espaços do agente de id 1</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    'owner': 'EQ(@Agent:1)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>Selecionando todos os eventos do projeto de id 4</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/event/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    'project': 'EQ(@Project:4)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<h2 id="action-describe">Action describe</h2>
+<p>Retorna a descrição de entidade.</p>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/event/describe',
+  function (response){ console.log(response); });
+
+// output:
+{
+   &quot;id&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;integer&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;location&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;point&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;name&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:255
+   },
+   &quot;shortDescription&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;longDescription&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;createTimestamp&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;datetime&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;status&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;smallint&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;_type&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;smallint&quot;,
+      &quot;length&quot;:null,
+      &quot;@select&quot;:&quot;type&quot;
+   },
+   &quot;isVerified&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;boolean&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;parent&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Space&quot;,
+      &quot;isOwningSide&quot;:true
+   },
+   &quot;children&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Space&quot;,
+      &quot;isOwningSide&quot;:false
+   },
+   &quot;owner&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Agent&quot;,
+      &quot;isOwningSide&quot;:true
+   },
+   &quot;emailPublico&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Email Público&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;emailPrivado&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Email Privado&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefonePublico&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone Público&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefone1&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone 1&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefone2&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone 2&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;acessibilidade&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;select&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;options&quot;:{
+         &quot;&quot;:&quot;Não Informado&quot;,
+         &quot;Sim&quot;:&quot;Sim&quot;,
+         &quot;Não&quot;:&quot;Não&quot;
+      },
+      &quot;label&quot;:&quot;Acessibilidade&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;capacidade&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Capacidade&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;endereco&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Endereço&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;horario&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Horário de funcionamento&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;criterios&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Critérios de uso do espaço&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;site&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Site&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;facebook&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Facebook&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;twitter&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Twitter&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;googleplus&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Google+&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_regiao&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Região&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_subprefeitura&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Subprefeitura&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_distrito&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Distrito&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   }
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../mc_developer_guide/" class="btn btn-neutral float-right" title="Guia do desenvolvedor">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../mc_config_authentication/" class="btn btn-neutral" title="Autenticação"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../mc_config_authentication/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../mc_developer_guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
