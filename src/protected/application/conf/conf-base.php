@@ -44,7 +44,7 @@ return array(
     'app.offline' => false,
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
-    
+
     'app.enabled.agents'   => true,
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
@@ -79,6 +79,10 @@ return array(
     'maps.zoom.max' => 18,
     'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
+
+    'cep.endpoint'      => 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s',
+    'cep.token_header'  => 'Authorization: Token token="%s"',
+    // 'cep.token'         => '[token]',
 
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais
@@ -188,7 +192,7 @@ return array(
     /* ==================== CACHE ================== */
     'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
-    
+
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
 
@@ -266,7 +270,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-             'james-bond'                => array('agent', 'single', array('id' => 7)),
+            'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
