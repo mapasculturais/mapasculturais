@@ -1,10 +1,12 @@
 # Customização do tema do Mapas Culturais
-Este documento trata de uma customização simples do tema base do Mapas Culturais para novas instações, e se restringe a customização das cores, imagens, textos e configuração do posicionamento inicial dos mapas. Este é o nível de customização utilizado nos diversos temas do repositório, como por exemplo os temas de Blumenau (blumenaumaiscultura.com.br), Ceará (mapa.cultura.ce.gov.br), Sobral (cultura.sobral.ce.gov.br) e SaoJose (lugaresdacultura.org.br).
+Este documento trata de uma customização simples do tema base do Mapas Culturais para novas instalações, e se restringe a customização das cores, imagens, textos e configuração do posicionamento inicial dos mapas. Este é o nível de customização utilizado nos diversos temas do repositório, como por exemplo os temas de Blumenau (blumenaumaiscultura.com.br), Ceará (mapa.cultura.ce.gov.br), Sobral (cultura.sobral.ce.gov.br) e SaoJose (lugaresdacultura.org.br).
 
 Neste documento será feito um tema de exemplo para uma _Secretaria Municipal de Cultura_ cuja sigla é _**SECONDO**_, de uma cidade fictícia chamada _**Macondo**_. O nome do site será _**Macondo Cultural**_.
 
 #### Índice
-- [Criando o tema](#criandootema)
+
+- [Estrutura do Tema](#estrutura-do-tema)
+- [Criando o tema](#criando-o-tema)
     - [Estílos](#estílos)
         - [Definição das variáveis SASS](#definição-das-variáveis-sass)
         - [Sobrescrevendo estilos](#sobrescrevendo-estilos)
@@ -19,7 +21,20 @@ Neste documento será feito um tema de exemplo para uma _Secretaria Municipal de
     - [Configurações fixas do tema](#configurações-fixas-do-tema)
         - [Configurando os mapas](#configurando-os-mapas)
         - [Divisões geográficas](#divisões-geográficas)
+- [Criando um repositório do tema no Github](#criando-um-repositório-do-tema-no-github)
+    - [Criando o repositório](#criando-o-repositório)
+    - [Publicando alterações](#publicando-alterações)
+    - [Clonando e atualizando a partir do repositório](#clonando-e-atualizando-a-partir-do-repositório)
 - [Estrutura de arquivos do tema BaseV1](#estrutura-de-arquivos-do-tema-basev1)
+
+## Estrutura do Tema
+O tema padrão que do mapas é o tema `BaseV1`, localizado na pasta `src/protected/application/themes`, e esse tema contém todos os templates, imagens, estilos e scripts que são usados para renderizar as páginas (Ex: Mapa, Painel, Home..).
+
+É possível estender o tema criando uma pasta, de modo que todos os arquivos que forem adicionados no tema "filho" irão sobrescrever os arquivos originais do tema `BaseV1`, isso inclui os templates, imagens, estilos e scripts. A estrutura completa está na seção [Estrutura de arquivos do tema BaseV1](#estrutura-de-arquivos-do-tema-basev1).
+
+> **IMPORTANTE:** É necessário tomar cuidado ao sobrescrever os arquivos, já que posteriormente os arquivos do tema `BaseV1` podem ser alterados (incluindo uma nova funcionalidade, por exemplo) e isso não afetará o tema estendido.
+
+Antes de decidir sobrescrever um arquivo, é indicado que verificar se não é possível efetuar a alteração desejada utilizando `hooks`, que pode ser consultado na documentação [*Guia do Desenvolvedor*](../developer-guide.md)
 
 ## Criando o tema
 O primeiro passo é copiar o template de tema, disponível na pasta _src/protected/application/themes/**TemplateV1**_, para a pasta do novo tema: _src/protected/application/themes/**Macondo**_ ¹.
@@ -35,7 +50,7 @@ namespace Macondo;
 ```
 @import "../../../../BaseV1/assets/css/sass/main";
 ```
-### Estílos
+### Estilos
 O tema _BaseV1_ do Mapas Culturais utiliza uma _extensão da linguagem CSS_ chamada [SASS](http://sass-lang.com/), e é através desta que são feitas as personalizações dos estilos do tema.
 
 A personalização das cores, fontes e estilos é feita de duas maneiras: definindo os valores das variáveis utilizadas nos diversos arquivos sass (.scss) e, nos casos em que a definição das variáveis não é suficiente, sobrescrevendo as classes/estilos CSS.
@@ -140,7 +155,7 @@ abaixo configuramos alguns textos de acordo com nossa instalação fictícia:
             'search: verified' => "SECONDO"
 ```
 ### Páginas "Sobre" e "Como Usar"
-Os textos das páginas *Sobre* (ver em mapasculturais/src/protected/application/themes/BaseV1/pages/sobre.md) e *Como Usar* (Ver em mapasculturais/src/protected/application/themes/BaseV1/pages/como-usar.md) são pensados para serem genéricos e utilizam dos textos definidos [acima](#textos).
+Os textos das páginas [Sobre](../../src/protected/application/themes/BaseV1/pages/sobre.md) e [Como Usar]((../../src/protected/application/themes/BaseV1/pages/como-usar.md)) são pensados para serem genéricos e utilizam dos textos definidos [acima](#textos).
 
 Caso os textos fornecidos pelo tema BaseV1 não supra as necessidades, basta criar os arquivos na pasta **pages** do tema filho e escrever, utilizando as linguagens Markdown ou HTML para formatação, os novos textos.
 
@@ -178,10 +193,71 @@ As divisões geográficas configuradas devem ser as mesmas que foram importadas 
     ],
 ```
 
+## Criando um repositório do tema no Github
+É recomendado que ao criar o tema ou efetuar alterações no tema, as alterações estejam em um repositório git para posteriormente seja possível clonar o tema de qualquer lugar, seja para utilizar em um servidor em produção ou para utilizar um ambiente de desenvolvimento.
+
+### Criando o repositório
+Para criar o repositório é necessário seguir os seguintes passos:
+- Criar uma conta no [Github](github.com)
+- No menu superior direito apertar a opção **New Repository**
+- Preencher a caixa de texto **Repository name** com o nome do repositório (recomendável utilizar o mesmo nome escolhido na pasta do tema, para que ao clonar o repositório o nome fique correto)
+- Apertar o botão **Create repository**
+- Executar os seguintes comandos após criar o repositório (alterando **Macondo** para o nome do seu repositório/tema):
+```
+$ echo "# Macondo" >> README.md
+$ git init
+$ git add --all
+$ git commit -m "first commit"
+$ git remote add origin https://github.com/[endereco_github]/Macondo.git
+$ git push -u origin master
+```
+
+### Publicando alterações
+Dentro da pasta do tema, se alguma alteração for feita em qualquer arquivo será possível ver os arquivos que foram alterados utilizando o comando `git status`, mostrando os arquivos modificados. Ao alterar arquivos o resultado deve ser parecido com isso:
+```
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Theme.php
+	modified:   conf-base.php
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+Neste exemplo, houveram alterações nos arquivos *Theme.php* e no arquivo *conf-base.php*. Para publicar esse arquivos é necessário utilizar os comandos 
+- `git add [nome_do_arquivo]`
+- `git commit -m "[mensagem_com_descricao_da_alteracao]"`
+- `git push`
+ 
+Como no exemplo, para publicar os arquivos *Theme.php* e *conf-base.php* os comando seriam assim:
+```
+$git add Theme.php
+$git add conf-base.php
+$git commit -m "Alterações de configurações do Tema"
+$git push
+```
+
+### Clonando e atualizando a partir do repositório
+Após as alterações estarem publicadas em um repositório do Github, podemos obter o código publicado com o comando `git clone https://github.com/[endereco_github]/Macondo`, isso irá criar uma pasta chamada **Macondo** onde o comando foi executado. Preferencialmente executado da pasta `themes` da instalação do mapas:
+
+```
+$ cd src/protected/application/themes
+$ git clone https://github.com/[endereco_github]/Macondo
+```
+
+Se alguma alteração for efetuada no repositório do Github e for necessário atualizar o tema localmente, pode se utilizar o comando `git pull` para atualizar o código localmente.
+
+> **IMPORTANTE:** Ao utilizar o comando `git pull` verificar se não existem arquivos locais que foram alterados e podem ser sobrescritar ou gerar algum conflito.
+
+Para mais detalhes sobre como utilizar o git, é recomendável a leitura da documentação e artigos úteis:
+- https://git-scm.com/book/pt-br/v1/Primeiros-passos-No%C3%A7%C3%B5es-B%C3%A1sicas-de-Git
+- http://rogerdudler.github.io/git-guide/index.pt_BR.html
 
 ## Estrutura de arquivos do tema BaseV1
-- *BaseV1* (ver src/protected/application/themes/BaseV1/)
-    - *db-updates.php* (ver src/protected/application/themes/BaseV1/db-updates.php) _scripts para atualização de banco que afetam todos os temas filhos._
+- [BaseV1/](../../src/protected/application/themes/BaseV1/)
+    - [db-updates.php](../../src/protected/application/themes/BaseV1/db-updates.php) _scripts para atualização de banco que afetam todos os temas filhos._
     - [Theme.php](../../src/protected/application/themes/BaseV1/Theme.php) _classe **MapasCulturais\Themes\BaseV1\Theme**. Todos os temas filhos estendem esta classe._
     - [assets/](../../src/protected/application/themes/BaseV1/assets/) _pasta onde ficam os arquivos estáticos_
         - [css/](../../src/protected/application/themes/BaseV1/assets/css/)
@@ -269,10 +345,10 @@ As divisões geográficas configuradas devem ser as mesmas que foram importadas 
             - [widget-areas.php](../../src/protected/application/themes/BaseV1/layouts/parts/widget-areas.php)
             - [widget-tags.php](../../src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php)
     - [pages/](../../src/protected/application/themes/BaseV1/pages/)
-        - *como-usar.md*(Ver em src/protected/application/themes/BaseV1/pages/como-usar.md)
-        - *_left.md* (ver src/protected/application/themes/BaseV1/pages/_left.md)
-        - *_right.md*(ver src/protected/application/themes/BaseV1/pages/_right.md)
-        - *sobre.md* (ver src/protected/application/themes/BaseV1/pages/sobre.md)
+        - [como-usar.md](../../src/protected/application/themes/BaseV1/pages/como-usar.md)
+        - [_left.md](../../src/protected/application/themes/BaseV1/pages/_left.md)
+        - [_right.md](../../src/protected/application/themes/BaseV1/pages/_right.md)
+        - [sobre.md](../../src/protected/application/themes/BaseV1/pages/sobre.md)
     - [views/](../../src/protected/application/themes/BaseV1/views/)
         - [agent/](../../src/protected/application/themes/BaseV1/views/agent/)
             - [create.php](../../src/protected/application/themes/BaseV1/views/agents/create.php) -> single.php
@@ -319,4 +395,3 @@ As divisões geográficas configuradas devem ser as mesmas que foram importadas 
             - [create.php](../../src/protected/application/themes/BaseV1/views/space/create.php) -> single.php
             - [edit.php](../../src/protected/application/themes/BaseV1/views/space/edit.php) -> single.php
             - [single.php](../../src/protected/application/themes/BaseV1/views/space/single.php)
-
