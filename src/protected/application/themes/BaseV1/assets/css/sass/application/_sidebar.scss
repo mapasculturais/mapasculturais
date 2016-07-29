@@ -23,7 +23,18 @@
         margin-bottom: .75rem;
         background-size: cover;
     }
-
+    .botoes {
+         position: absolute;
+         top: -12px;
+         right: -6px;
+         a {
+             background-color: #fff;
+             border-radius: 100%;
+             &:before {
+                 line-height: 180%;
+             }
+         }
+     }
     &:before {
         left: 50%;
         margin-left: -8px;

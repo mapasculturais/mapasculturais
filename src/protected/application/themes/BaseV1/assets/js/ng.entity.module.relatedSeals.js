@@ -126,8 +126,8 @@
 								var sealFound = false;
 								$scope.editbox = EditBox;
 						        
+								$scope.canRelateSeal = MapasCulturais.canRelateSeal;
 						        $scope.seals = [];
-						        
 						        $scope.relations = MapasCulturais.entity.sealRelations;
 						        
 						        for(var i in MapasCulturais.allowedSeals) {

@@ -4,7 +4,7 @@ $this->addRelatedSealsToJs($entity);
 ?>
 <div class="selos-add" ng-controller="RelatedSealsController">
     <div ng-if="relations.length > 0 || seals.length > 0" class="widget">
-    	<h3 text-align="left" vertical-align="bottom">Selos Aplicados <div ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="Adicionar selo relacionado"></div></h3>
+    	<h3 text-align="left" vertical-align="bottom">Selos Aplicados <div ng-if="canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="Adicionar selo relacionado"></div></h3>
     	<edit-box id="sealsAvailable" position="right" title="Adicionar selo relacionado" cancel-label="Fechar" close-on-cancel='true'>
     		<div ng-if="seals.length > 0" class="widget">
 		    	<h3>Selos Disponíveis</h3>
@@ -21,7 +21,7 @@ $this->addRelatedSealsToJs($entity);
         <div class="selos clearfix">
             <div class="avatar-seal ng-scope" ng-repeat="relation in relations" ng-class="{pending: relation.status < 0}">
             	<img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
-				<a href="#" ng-click="editbox.open('sealsAvailable', $event)" class="btn btn-default delete item hltip" title="Remover selo" ng-click="deleteRelation(relation,relation.seal.id)"></a>
+            	<div class="botoes" ng-if="canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="deleteRelation(relation,relation.seal.id)"></a></div>
                 <div class="descricao-do-selo">
                 	<?php $idRelation =  '{{relation.id}}';?>
                     <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
