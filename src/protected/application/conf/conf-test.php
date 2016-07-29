@@ -23,9 +23,13 @@ return array_merge($config,
 
         'doctrine.database' => array(
             'dbname'    => 'mapasculturais_test',
+<<<<<<< HEAD
             'user'      => 'mapasculturais_test',
             'password'  => 'mapasculturais_test',
             'host'      => 'localhost',
+=======
+            'user'      => 'mapasculturais',
+>>>>>>> 2b830e8... Update conf-test.php
         ),
 
         'userIds' => array(
