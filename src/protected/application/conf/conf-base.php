@@ -155,6 +155,8 @@ return array(
             'createTimestamp' => 'Data de Criação',
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
+        	'certificateText' => 'Conteúdo da Impressão do Certificado',
+        	'validPeriod'	=> 'Período de Validade',
             'status' => 'Status'
         ),
 

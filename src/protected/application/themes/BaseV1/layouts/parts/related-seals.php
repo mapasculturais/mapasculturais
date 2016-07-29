@@ -1,5 +1,5 @@
 <?php
-$this->addSealsToJs(true);
+$this->addSealsToJs(true,array(),$entity);
 $this->addRelatedSealsToJs($entity);
 ?>
 <div class="selos-add" ng-controller="RelatedSealsController">

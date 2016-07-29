@@ -77,6 +77,18 @@ $this->includeAngularEntityAssets($entity);
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Agente" data-emptytext="Insira uma descrição do agente" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
             <!--.descricao-->
+            
+            <?php if ( $this->isEditable() || $entity->certificateText ): ?>
+                <h3>Conteúdo da Impressão</h3>
+                <p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
+                [sealName]: Nome do selo aplicado<br>
+                [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
+                [entityName]: Nome da entidade (Teatro Municipal)<br>
+                [dateIni]: Data de Início da Validade do selo aplicado<br>
+                [dateFin]: Data de Fim da Validade do selo aplicado</p>
+                <span class="descricao js-editable" data-edit="certificateText" data-original-title="Conteúdo da Impressão do Certificado" data-emptytext="Insira o conteúdo da impressão do certificado do selo." ><?php echo $this->isEditable() ? $entity->certificateText: nl2br($entity->certificateText); ?></span>
+            <?php endif; ?>
+            <!--.conteúdo da impressão do certificado do selo-->
         </div>
         <!-- #sobre -->
         

@@ -235,6 +235,13 @@ $.getJSON(
       "type":"text",
       "length":null
    },
+   "certificateText":{
+      "isMetadata":false,
+      "isEntityRelation":false,
+      "required":false,
+      "type":"text",
+      "length":null
+   },
    "createTimestamp":{
       "isMetadata":false,
       "isEntityRelation":false,

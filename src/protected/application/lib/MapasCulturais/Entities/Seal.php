@@ -70,6 +70,13 @@ class Seal extends \MapasCulturais\Entity
     protected $longDescription;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="certificate_text", type="text", nullable=true)
+     */
+    protected $certificateText;
+    
+    /**
      * @var integer
      *
      * @ORM\Column(name="valid_period", type="smallint", nullable=false)

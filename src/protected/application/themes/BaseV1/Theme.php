@@ -713,7 +713,7 @@ class Theme extends MapasCulturais\Theme {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
     
-    function addSealsToJs($onlyPermited = true,$sealId = array()) {
+    function addSealsToJs($onlyPermited = true,$sealId = array(),$entity) {
     	$query = [];
     	$query['@select'] = 'id,name,status, singleUrl';    	
     	
@@ -735,7 +735,7 @@ class Theme extends MapasCulturais\Theme {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
     	}
     	
-    	if($app->user->is('admin') || $app->user->is('superAdmin')) {
+    	if($app->user->is('admin') || $app->user->is('superAdmin') || $entity->canUser('@control')) {
     		$this->jsObject['canRelateSeal'] = true;
     	} else {
     		$this->jsObject['canRelateSeal'] = false;
