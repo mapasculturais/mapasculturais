@@ -27,15 +27,16 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.  
 
 ### Documentação 
-Toda documentação da aplicação está na pasta [doc](doc). Principais referências: 
-- [Deploy](doc/deploy-ubuntu-14.04.md)
-- [API](doc/api.md)
-- [Guia do desenvolvedor](doc/developer-guide.md)
-- [Criando um tema personalizado](doc/developer-guide/themes.md)
-- [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
+Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
+- [Deploy](documentation/docs/mc_deploy.md)
+- [API](documentation/docs/mc_config_api.md)
+- [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
+- [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
+- [Desenvolver um novo tema](documentation/docs/mc_developer_theme.md)
+- [Importação de arquivos de dados geoespaciais (Shapefiles)](documentation/docs/mc_deploy_shapefiles.md)
 
-### Requisitos para Instalação
-Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](doc/deploy-ubuntu-14.04.md) ou [guia do desenvolvedor](doc/developer-guide.md). 
+### [Software] Requisitos para Instalação
+Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](documentation/docs/mc_deploy.md) ou [guia do desenvolvedor](documentation/docs/mc_developer_guide.md). 
 
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
