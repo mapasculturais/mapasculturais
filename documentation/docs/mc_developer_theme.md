@@ -154,7 +154,7 @@ abaixo configuramos alguns textos de acordo com nossa instalação fictícia:
             'search: verified' => "SECONDO"
 ```
 ### Páginas "Sobre" e "Como Usar"
-Os textos das páginas *Sobre* (ver em mapasculturais/src/protected/application/themes/BaseV1/pages/sobre.md) e *Como Usar* (Ver em mapasculturais/src/protected/application/themes/BaseV1/pages/como-usar.md) são pensados para serem genéricos e utilizam dos textos definidos [acima](#textos).
+Os textos das páginas [Sobre](../../src/protected/application/themes/BaseV1/pages/sobre.md) e [Como Usar]((../../src/protected/application/themes/BaseV1/pages/como-usar.md)) são pensados para serem genéricos e utilizam dos textos definidos [acima](#textos).
 
 Caso os textos fornecidos pelo tema BaseV1 não supra as necessidades, basta criar os arquivos na pasta **pages** do tema filho e escrever, utilizando as linguagens Markdown ou HTML para formatação, os novos textos.
 
@@ -255,8 +255,8 @@ Para mais detalhes sobre como utilizar o git, é recomendável a leitura da docu
 - http://rogerdudler.github.io/git-guide/index.pt_BR.html
 
 ## Estrutura de arquivos do tema BaseV1
-- *BaseV1* (ver src/protected/application/themes/BaseV1/)
-    - *db-updates.php* (ver src/protected/application/themes/BaseV1/db-updates.php) _scripts para atualização de banco que afetam todos os temas filhos._
+- [BaseV1/](../../src/protected/application/themes/BaseV1/)
+    - [db-updates.php](../../src/protected/application/themes/BaseV1/db-updates.php) _scripts para atualização de banco que afetam todos os temas filhos._
     - [Theme.php](../../src/protected/application/themes/BaseV1/Theme.php) _classe **MapasCulturais\Themes\BaseV1\Theme**. Todos os temas filhos estendem esta classe._
     - [assets/](../../src/protected/application/themes/BaseV1/assets/) _pasta onde ficam os arquivos estáticos_
         - [css/](../../src/protected/application/themes/BaseV1/assets/css/)
@@ -343,10 +343,10 @@ Para mais detalhes sobre como utilizar o git, é recomendável a leitura da docu
             - [widget-areas.php](../../src/protected/application/themes/BaseV1/layouts/parts/widget-areas.php)
             - [widget-tags.php](../../src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php)
     - [pages/](../../src/protected/application/themes/BaseV1/pages/)
-        - *como-usar.md*(Ver em src/protected/application/themes/BaseV1/pages/como-usar.md)
-        - *_left.md* (ver src/protected/application/themes/BaseV1/pages/_left.md)
-        - *_right.md*(ver src/protected/application/themes/BaseV1/pages/_right.md)
-        - *sobre.md* (ver src/protected/application/themes/BaseV1/pages/sobre.md)
+        - [como-usar.md](../../src/protected/application/themes/BaseV1/pages/como-usar.md)
+        - [_left.md](../../src/protected/application/themes/BaseV1/pages/_left.md)
+        - [_right.md](../../src/protected/application/themes/BaseV1/pages/_right.md)
+        - [sobre.md](../../src/protected/application/themes/BaseV1/pages/sobre.md)
     - [views/](../../src/protected/application/themes/BaseV1/views/)
         - [agent/](../../src/protected/application/themes/BaseV1/views/agent/)
             - [create.php](../../src/protected/application/themes/BaseV1/views/agents/create.php) -> single.php
