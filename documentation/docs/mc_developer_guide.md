@@ -1,5 +1,5 @@
 # Mapas Culturais > Guia do Desenvolvedor
-======================================
+----
 
 O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.
 
@@ -36,26 +36,30 @@ O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcio
 
 Atualmente a aplicação possui 4 branches principais: **Master**, **RC**, **v2** e **v1**. A saber:
 
-- **Branch Master**: 
+**Branch Master**: 
+
   - Branch utilizado para desenvolvimento;
   - Tudo que existe de novo está nesse branch;
   - Atenção: para desenvolvimento de novas features, o desenvolvedor deve criar um branch novo a partir da versão v2 (stable) e não do master;
 
-- **Branch RC** (release candidate): 
+**Branch RC** (release candidate): 
+
   - Branch utilizado para um conjunto estável de novas funcionalidades;
   - Após um conjunto novo de funcionalidades nessa branch, a branch vira no novo stable;
 
-- **Branch v2**: 
+**Branch v2**:
+
   - Atual stable da aplicação;
   - Novas instalações devem ser feitas usando esse branch;
   - Branches novos para novas funcionalidades devem partir desse branch;
   -  Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e depois gerarem merge no **Branch v2**, no **Branch RC** e no **Branch Master**. Caso seja um bugfix estrutural ou de segurança que impacte todas as versões, deve gerar merge no **Branch v1** também. 
 
-- **Branch v1**: 
+**Branch v1**: 
+
   - Antigo stable da aplicação;
   - Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e voltar para esse mesmo branch (uma vez o branch do bug finalizado, deve haver um merge para para o v1 novamente); 
 
-![Alt text](img/2016_05_19_branches.png)
+![Alt text](images/2016_05_19_branches.png)
 
 ## Requisitos
 
