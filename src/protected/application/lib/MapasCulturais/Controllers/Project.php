@@ -58,17 +58,22 @@ class Project extends EntityController {
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
+        
 
         if(!key_exists('id', $this->urlData))
             $app->pass();
 
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
+        
 
         if(!$entity)
             $app->pass();
 
+        
         $entity->checkPermission('@control');
 
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+        
         $response = $app->response();
         //$response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';
