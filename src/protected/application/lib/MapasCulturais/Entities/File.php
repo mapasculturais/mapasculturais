@@ -330,10 +330,15 @@ abstract class File extends \MapasCulturais\Entity
             return $transformed;
         }
 
-        if(!file_exists($this->getPath()))
+        $path = $this->getPath();
+        if(!file_exists($path) 
+            || !is_writable($path)
+            || !is_writable(dirname($path))
+            || filesize($path) == 0) {
             return $this;
+        }
 
-        $new_image = \WideImage\WideImage::load($this->getPath());
+        $new_image = \WideImage\WideImage::load($path);
 
         eval('$new_image = $new_image->' . $wideimage_operations . ';');
 

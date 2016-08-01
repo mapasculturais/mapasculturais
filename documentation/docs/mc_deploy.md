@@ -1,124 +1,131 @@
 # Mapas Culturais > Deploy
 
-Neste guia faremos o deploy do Mapas Culturais utilizando o nginx + php-fpm num sistema Ubuntu 14.04 Server recem instalado somente com o OpenSSH Server. O Banco de dados e a aplicação rodarão no mesmo servidor e usuário.
+Neste guia faremos o deploy do Mapas Culturais utilizando o nginx + php-fpm em um sistema Ubuntu 14.04 Server recém instalado somente com o OpenSSH Server. O Banco de dados e a aplicação rodarão no mesmo servidor e usuário.
 
 Não abordaremos as configurações de autenticação, seja com ID da Cultura, seja com Login Cidadão. Ao final do guia teremos a aplicação rodando com o método de autenticação Fake.
 
-As linhas que começam com **$** são executadas com o usuário criado para rodar a aplicação e as linhas que começam com **@** são executadas com o usuário *root*.
+As linhas que começam com **mapas@server$** são executadas com o usuário criado para rodar a aplicação e as linhas que começam com **root@server#** são executadas com o usuário *root*.
 
 ### 1. Instalando os pacotes necessários para o funcionamento do sistema
-Primeiro instalamos os pacotes via apt
+
 ```BASH
-# dependências diversas
-@ apt-get install git curl nodejs npm ruby
+// Atualize os repositórios de referência de sua máquina
+root@server# apt-get update
 
-# postgresql e postgis
-@ apt-get install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
+// Instale as dependências diversas
+root@server# apt-get install git curl npm ruby
 
-# php, php-fpm e extensões do php utiliazdas no sistema
-@ apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm
+// Instale a versão stable mais nova do nodejs
+root@server# curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+root@server# sudo apt-get install -y nodejs
 
-# nginx
-@ apt-get install nginx
-```
-Instalando o gerenciador de dependências do PHP Composer
-```BASH
-@ curl -sS https://getcomposer.org/installer | php
-@ mv composer.phar /usr/local/bin/composer.phar
+// Instale o postgresql e postgis
+root@server# apt-get install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
+
+// Instale o php, php-fpm e extensões do php utilizadas no sistema
+root@server# apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm
+
+// Instale o nginx
+root@server# apt-get install nginx
+
+// Instale o gerenciador de dependências do PHP Composer
+root@server# curl -sS https://getcomposer.org/installer | php
+root@server# mv composer.phar /usr/local/bin/composer.phar
 ```
 
 No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executáel deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
 ```BASH
-@ update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+root@server# update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 ```
 
 Instalando os minificadores de código Javascript e CSS: uglify-js, uglifycss e autoprefixer
 ```BASH
-@ npm install -g uglify-js uglifycss autoprefixer
+root@server# npm install -g uglify-js uglifycss autoprefixer
 ```
 
 Instalando o SASS, utilizado para compilar os arquivos CSS
 ```BASH
-@ gem install sass
+root@server# gem install sass
 ```
 
 ### 2. Clonando o repositório
 
 Primeiro vamos criar o usuário que rodará a aplicação e que será proprietário do banco de dados, definindo sua home para */srv* e colocando-o no grupo *www-data*.
 ```BASH
-@ useradd -G www-data -d /srv/mapas -m mapas
+root@server# useradd -G www-data -d /srv/mapas -m mapas
 ```
 
 Vamos clonar o repositório usando o usuário criando, então precisamos primeiro "logar" com este usuário.
 ```BASH
-@ su - mapas
+root@server# su - mapas
 ```
 
 Agora faça o clone do repositório.
 ```BASH
-$ git clone https://github.com/hacklabr/mapasculturais.git
+mapas@server$ git clone https://github.com/hacklabr/mapasculturais.git
 ```
 
 E alterne para o branch v2. Se for uma instalação de teste, você pode pular esta etapa.
 ```BASH
-$ cd mapasculturais
-$ git checkout v2
+mapas@server$ cd mapasculturais
+mapas@server$ git checkout v2
 ```
 
 Agora vamos instalar as dependências de PHP utilizando o Composer.
 ```BASH
-$ cd src/protected/
-$ composer.phar install
+mapas@server$ cd ~/mapasculturais/src/protected/
+mapas@server$ composer.phar install
 ```
 
 ### 3. Criando banco de dados
 Vamos voltar ao usuário *root* para criar o banco de dados.
 ```BASH
-$ exit
+root@server# exit
+mapas@server$ 
 ```
 
 Primeiro vamos criar o usuário no banco de dados com o mesno nome do usuário do sistema
 ```BASH
-@ sudo -u postgres psql -c "CREATE USER mapas"
+root@server# sudo -u postgres psql -c "CREATE USER mapas"
 ```
 
 Agora vamos criar a base de dados para a aplicação com o mesmo nome do usuário
 ```BASH
-@ sudo -u postgres createdb --owner mapas mapas
+root@server# sudo -u postgres createdb --owner mapas mapas
 ```
 
 Criar as extensões necessárias no banco
 ```BASH
-@ sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
-@ sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
+root@server# sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
+root@server# sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
 ```
 
 Volte a "logar" com o usuário criado e importar o esquema da base de dados
 ```BASH
-@ su - mapas
-$ psql -f mapasculturais/db/schema.sql
+root@server# su - mapas
+mapas@server$ psql -f mapasculturais/db/schema.sql
 ```
 
 ### 4. Configurando a aplicação
 #### Configuração do Mapas Culturais
 Primeiro crie um arquivo de configuração copiando o arquivo de template de configuração. Este arquivo está preparado para funcionar com este guia, utilizando o método de autenticação Fake.
 ```BASH
-$ cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
+mapas@server$ cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
 ```
 
 #### Criando as pastas necessárias
 Como root, crie a pasta para os arquivos de log:
 ```BASH
 $ exit
-@ mkdir /var/log/mapasculturais
-@ chown mapas:www-data /var/log/mapasculturais
+root@server# mkdir /var/log/mapasculturais
+root@server# chown mapas:www-data /var/log/mapasculturais
 ```
 
 Com o usuário criado, crie a pasta para os assets e para os uploads:
 ```BASH
-@ su - mapas
-$ mkdir mapasculturais/src/assets
-$ mkdir mapasculturais/src/files
+root@server# su - mapas
+mapas@server$ mkdir mapasculturais/src/assets
+mapas@server$ mkdir mapasculturais/src/files
 ```
 
 #### Configuração do nginx
@@ -167,13 +174,19 @@ server {
 }
 ```
 
-Crie o linkpara habilitar o virtual host
+Crie o link para habilitar o virtual host
 ```BASH
-ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
+root@server# ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
+```
+
+Remover o arquivo default da pasta /etc/nginx/sites-available/
+```BASH
+root@server# rm /etc/nginx/sites-available/default
 ```
 
 #### Criando pool do php-fpm
 Crie o arquivo **/etc/php5/fpm/pool.d/mapas.conf** com o conteúdo abaixo:
+
 ```
 [mapas]
 listen = /var/run/php5-fpm-meu.dominio.gov.br.sock
@@ -199,15 +212,15 @@ php_admin_value[display_errors] = 'stderr'
 ### 5. Concluindo 
 Para finalizar, precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 ```BASH
-@ su - mapas
-$ psql -f mapasculturais/db/initial-data.sql
-$ ./mapasculturais/scripts/deploy.sh
+root@server# su - mapas
+mapas@server$ psql -f mapasculturais/db/initial-data.sql
+mapas@server$ ./mapasculturais/scripts/deploy.sh
 ```
 
 Reinicie os serviços do **nginx** e **php-fpm**
 ```BASH
-@ service nginx restart
-@ service php5-fpm restart
+root@server# service nginx restart
+root@server# service php5-fpm restart
 ```
 
 ### 6. Pós-instalação - Criando super admin
@@ -232,7 +245,7 @@ Quando executar essa linha você vai pegar o id.
   
 5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.
 
-select * from role;
+  $ mapas => select * from role;
 
 ### 7. Pós-instalação - Processo de autenticação
 
@@ -282,9 +295,3 @@ Os pontos positivos relativos aos aspectos de implementação de uma instalaçã
 * Menor controle técnico de customização de layout e features. A posse/soberania destas customização é do Ministério da Cultura e este deve ser acionado se necessário; 
 * Para implementação, é necessário acionar equipe do Minc/DTI para criar uma entrada de origem do sistema, uma vez que os administradores são membros do DTI. No entanto esse processo é rápido e deve acontecer apenas uma vez, no inicio da instalação ou em momento esporádico de eventual manutenção do sistema. 
 **Fonte:** http://id.cultura.gov.br/login
-
-
-
-
-
-

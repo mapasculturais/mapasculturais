@@ -39,7 +39,7 @@
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
                 
-                var entityQueryData = data2searchData(activeEntity, data.agent);
+                var entityQueryData = data2searchData(activeEntity, data[activeEntity]);
                 if(!angular.equals(entityQueryData, lastQueries[activeEntity]) || !compareEnabledEntities){
                     lastQueries[activeEntity] = angular.copy(entityQueryData);
                     callApi(activeEntity, entityQueryData);
@@ -238,33 +238,31 @@
                     searchData.registrationTo   = 'GTE(' + today + ')';
                 }
                 
-                            // adiciona os filtros avancados ao sData
-//            console.log("chegou aqui");
-            Object.keys(data[entity].advancedFilters).forEach(function(key){
-                var val = data[entity].advancedFilters[key];
-                var filter = MapasCulturais.advancedFilters[entity].find(function(filter){
-                    if(filter.filter.param === key){
-                        return filter;
-                    }
-                })
-                
-                if(filter.parseValue && filter.parseValue.length > 0){
-                    filter.parseValue.forEach(function(parser){
-                        switch(parser){
-                            case 'join':
-                                val = val.join(',');
-                            break;
+                Object.keys(data[entity].advancedFilters).forEach(function(key){
+                    var val = data[entity].advancedFilters[key];
+                    var filter = MapasCulturais.advancedFilters[entity].find(function(filter){
+                        if(filter.filter.param === key){
+                            return filter;
                         }
-                    });
-                }
-                
-                if(val){
-                    var parsed = filter.filter.value.replace(/\{val\}/g, val);
-                    searchData[key] = parsed;
-                }
-            });
+                    })
 
+                    if(filter.parseValue && filter.parseValue.length > 0){
+                        filter.parseValue.forEach(function(parser){
+                            switch(parser){
+                                case 'join':
+                                    val = val.join(',');
+                                break;
+                            }
+                        });
+                    }
 
+                    if(val){
+                        var parsed = filter.filter.value.replace(/\{val\}/g, val);
+                        searchData[key] = parsed;
+                    }
+                });
+
+                console.log(entity, searchData, entityData);
                 return searchData;
             }
 

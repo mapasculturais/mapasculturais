@@ -24,19 +24,26 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 * http://museus.cultura.gov.br
 
 ## Sobre a aplicação
-Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.  
+Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
+
+## Projetos correlatos
+
+* [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
+* [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
 
 ### Documentação 
-Toda documentação da aplicação está na pasta [doc](doc). Principais referências: 
-- [Deploy](doc/deploy-ubuntu-14.04.md)
-- [API](doc/api.md)
-- [Guia do desenvolvedor](doc/developer-guide.md)
-- [Criando um tema personalizado](doc/developer-guide/themes.md)
-- [Importação de arquivos de dados geoespaciais (Shapefiles)](doc/shapefiles.md)
+Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
+- [Deploy](documentation/docs/mc_deploy.md)
+- [API](documentation/docs/mc_config_api.md)
+- [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
+- [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
+- [Desenvolver um novo tema](documentation/docs/mc_developer_theme.md)
+- [Importação de arquivos de dados geoespaciais (Shapefiles)](documentation/docs/mc_deploy_shapefiles.md)
 
-### Requisitos para Instalação
-Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](doc/deploy-ubuntu-14.04.md) ou [guia do desenvolvedor](doc/developer-guide.md). 
+### [Software] Requisitos para Instalação
+Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](documentation/docs/mc_deploy.md) ou [guia do desenvolvedor](documentation/docs/mc_developer_guide.md). 
 
+- [Ubuntu Server >= 14.04](http://www.ubuntu.com) ou [Debian Server >= 8](https://www.debian.org.)
 - [PHP >= 5.4](http://php.net)
   - [php5-gd](http://php.net/manual/pt_BR/book.image.php)
   - [php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)
@@ -48,17 +55,55 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
 - [PostgreSQL >= 9.3](http://www.postgresql.org/)
 - [Postgis >= 2.1](http://postgis.net)
   - [PostgreSQL-Postgis-Scripts](http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1)
-- [Node.JS >= 0.10](https://nodejs.org/en/)
+- [Node.JS >= 4.x](https://nodejs.org/en/)
   - [NPM](https://www.npmjs.com/)
   - [UglifyJS](https://www.npmjs.com/package/uglify-js)
   - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
 - [Ruby] (https://www.ruby-lang.org/pt)
   - [Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)
 
+### [Hardware] Requisitos para instalação
+
+Para instalações de pequeno/medio porte nas quais o número de entidades, isto é, número de agentes, espaços, projetos e evento,giram em torno de 2000 ativos, recomenda-se o mínimo de recursos para um servidor (aplicação + base de dados):
+
+* 2 cores de CPU;
+* 2gb de RAM;
+* 50mbit de rede;
+
+Desejável:
+
+*  4 cores de CPU;
+* 4gb de RAM;
+* 100mbit de rede;
+
+Para instalações em cidades de grande porte onde o número de entidades, isto é, número de agentes, espaços, projetos e evento, giram em torno de dezenas de milhares de ativos de cada, recomenda-se o mínimo de recursos para um servidor:
+
+* 4 cores de CPU
+* 4gb de RAM
+* 100mbit de rede
+
+Recomendado:
+* 8 cores de CPU
+* 8gb de RAM
+* 500mbit de rede
+
+Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
+
 ### Canais de comunicação
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
+* 
+### Ambientes de desenvolvimento e teste
+Estes ambientes possuem integração contínua com os branches e temas atuais. Para maiores detalhes, ver [Guia do desenvolvedor](doc/developer-guide.md). 
+
+* http://master.map.as
+* http://rc.map.as
+* http://stable.map.as
+
+Para acessar os temas, use a url com nome do tema ou instalação. Ex.: 
+
+* http://museus.minc.stable.map.as
 
 ### Stories & Tests
 
