@@ -1,4 +1,5 @@
 <?php
+
 namespace OriginSite;
 
 use MapasCulturais\App,
@@ -6,52 +7,61 @@ use MapasCulturais\App,
     MapasCulturais\Definitions,
     MapasCulturais\Exceptions;
 
-
 class Plugin extends \MapasCulturais\Plugin {
+    
     public function _init() {
-        $site_id = $this->_config['siteId'];
+        $app = App::i();
         
-        if(is_callable($site_id)){
+        $plugin = $this;
+        
+        $site_id = $this->_config['siteId'];
+
+        if (is_callable($site_id)) {
             $site_id = $site_id();
         }
-        
-        
+
+
+        $app->hook('entity(<<*>>).insert:before', function() use ($app, $site_id, $plugin) {
+            $classes = $plugin->getEntitiesClasses();
+            
+            $this->origin_site = $site_id;
+        });
     }
-    
+
     public function register() {
         $app = App::i();
         
-        $metadata = [
-            'MapasCulturais\Entities\Event' => [
-                'origin_site' => [
-                    'label' => $app->txt('Origin Site')
-                ],
-            ],
-
-            'MapasCulturais\Entities\Project' => [
-                'origin_site' => [
-                    'label' => $app->txt('Origin Site')
-                ],
-            ],
-
-            'MapasCulturais\Entities\Space' => [
-                'origin_site' => [
-                    'label' => $app->txt('Origin Site')
-                ],
-            ],
-
-            'MapasCulturais\Entities\Agent' => [
-                'origin_site' => [
-                    'label' => $app->txt('Origin Site')
-                ],
-            ]
-        ];
+        $metadata = [];
         
-        foreach($metadata as $entity_class => $metas){
-            foreach($metas as $key => $cfg){
-                $def = new \MapasCulturais\Definitions\Metadata($key, $cfg);
-                $app->registerMetadata($def, $entity_class);
+        foreach($this->getEntitiesClasses() as $class){
+            
+            $def = new \MapasCulturais\Definitions\Metadata('origin_site', [
+                'label' => $app->txt('Origin Site')
+            ]);
+            
+            $app->registerMetadata($def, $class);
+            
+        }
+    }
+    
+    public function getEntitiesClasses(){
+        $app = App::i();
+        
+        $controllers = $app->getRegisteredControllers(true);
+        $entities_classes = [];
+        
+        foreach($controllers as $id => $controller) {
+            if($controller instanceof \MapasCulturais\Controllers\EntityController){
+                $controller = $app->controller($id);
+                
+                $entity_class = $controller->entityClassName;
+                
+                if($entity_class::usesMetadata()){
+                    $entities_classes[] = $entity_class;
+                }
             }
         }
+        
+        return $entities_classes;
     }
 }

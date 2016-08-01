@@ -1467,6 +1467,17 @@ class App extends \Slim\Slim{
         $this->_register['controllers_default_actions'][$id] = $default_action;
         $this->_register['controllers_view_dirs'][$id] = $view_dir ? $view_dir : $id;
     }
+    
+    public function getRegisteredControllers($return_controller_object = false){
+        $controllers = $this->_register['controllers'];
+        if($return_controller_object){
+            foreach($controllers as $id => $class){
+                $controllers[$id] = $class::i();
+            }
+        }
+        
+        return $controllers;
+    }
 
     /**
      * Returns the controller object with the given id.
