@@ -178,114 +178,43 @@
                     searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
 
-                // console.log(entityData);
-                // console.log(entityData.filters);
-
-                entityData.filters.forEach(function(v){
-                    var search_value = entityData.filters[v.filter.param].map(function(e){
-                        return MapasCulturais.taxonomyTerms[v.filter.param][e];
-                    });
-                    searchData['term:'+v.filter.param] = v.filter.value.replace(/\{val\}/g, val, search_value);
-                });
-
-                // for (filter in entityData.{
-                //     var search_value = entityData.filters[v.filter.param].map(function(e){
-                //         return MapasCulturais.taxonomyTerms[v.filter.param][e];
-                //     });
-                //     searchData['term:'+v.filter.param] = v.filter.value.replace(/\{val\}/g, val, search_value);
-                // });
-
-
-                if(entityData.areas && entityData.areas.length){
-                    var selectedAreas = entityData.areas.map(function(e){
-                        return MapasCulturais.taxonomyTerms.area[e];
-                    });
-                    selectedAreas = selectedAreas.map(function(e){ return e.replace(',','\,'); });
-                    searchData['term:area'] = 'IN(' + selectedAreas  + ')';
+                for (var search_filter in entityData.filters){
+                    if(entityData.filters[search_filter]){
+                        var filter = MapasCulturais.filters[entity].filter(function(f){
+                            return f['filter'].param === search_filter;
+                        })[0];
+                        if (entityData.filters[search_filter].length){
+                            if (filter.type === 'term'){
+                                // console.log(entityData.filters[search_filter]);
+                                var search_value = entityData.filters[search_filter].map(function(e){
+                                    // console.log(MapasCulturais.taxonomyTerms[filter.filter.param], e);
+                                    return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
+                                });
+                                searchData['term:'+filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
+                            } else if (filter.type==='entitytype'){
+                                // var search_value = entityData.filters[search_filter].map(function(e){
+                                //     return MapasCulturais.entityTypes[entity][e];
+                                // });
+                                searchData[filter.filter.param] = filter.filter.value.replace(/\{val\}/g,
+                                    entityData.filters[search_filter].join(','));
+                            }
+                        }
+                        // console.log(search_value);
+                        console.log(searchData);
+                    }
                 }
 
-
-                if(entityData.linguagens && entityData.linguagens.length){
-                    var selectedLinguagens = entityData.linguagens.map(function(e){
-                        return MapasCulturais.taxonomyTerms.linguagem[e];
-                    });
-                    selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
-
-                    searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
-                }
-
-                if(entityData.type){
-                    searchData.type = 'EQ(' + entityData.type + ')';
-                }
-
-                if(entityData.types && entityData.types.length){
-                    searchData.type = 'IN(' + entityData.types + ')';
-                }
-
-                if(entityData.classificacaoEtaria && entityData.classificacaoEtaria.length){
-                    var selectedClassificacoesEtarias = entityData.classificacaoEtaria.map(function(e){
-                        return MapasCulturais.classificacoesEtarias[e];
-                    });
-                    searchData.classificacaoEtaria = 'IN(' + selectedClassificacoesEtarias + ')';
-                }
-
-                if(entityData.acessibilidade){
-                    searchData.acessibilidade = 'EQ(Sim)';
-                }
-
-                if(entityData.isVerified){
-                    searchData.isVerified = 'EQ(true)';
-                }
                 if(data.global.locationFilters.enabled !== null){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
-
-                // if(entityData.from)
-                //     searchData['@from'] = moment(entityData.from).format('YYYY-MM-DD');
-
-                // if(entityData.to)
-                //     searchData['@to'] = moment(entityData.to).format('YYYY-MM-DD');
-
-                // project registration is open?
-                if(entityData.ropen){
-                    var today = moment().format('YYYY-MM-DD');
-                    searchData.registrationFrom = 'LTE(' + today + ')';
-                    searchData.registrationTo   = 'GTE(' + today + ')';
-                }
-
-                // Object.keys(data[entity].metadataFilters).forEach(function(key){
-                //     var val = data[entity].metadataFilters[key];
-                //     var filter = MapasCulturais.metadataFilters[entity].find(function(filter){
-                //         if(filter.filter.param === key){
-                //             return filter;
-                //         }
-                //     })
-
-                //     if(filter.parseValue && filter.parseValue.length > 0){
-                //         filter.parseValue.forEach(function(parser){
-                //             switch(parser){
-                //                 case 'join':
-                //                     val = val.join(',');
-                //                 break;
-                //             }
-                //         });
-                //     }
-
-                //     if(val){
-                //         var parsed = filter.filter.value.replace(/\{val\}/g, val);
-                //         searchData[key] = parsed;
-                //     }
-                // });
-
-                console.log(entity, searchData, entityData);
+                // console.log(searchData);
                 return searchData;
             }
 
             function apiFind(entity, searchData, page, action) {
-
 
                 if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);

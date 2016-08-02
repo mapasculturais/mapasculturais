@@ -100,7 +100,7 @@
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
         MapasCulturais.filters[entity].forEach(function(filter){
-            console.log(filter);
+            // console.log(filter);
             if(filter.isArray){
                 skeletonData[entity].filters[filter.filter.param] = [];
             } else {
@@ -342,13 +342,13 @@
 
         $scope.data = angular.copy(skeletonData);
 
-        $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
-        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
-        $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
         MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
-        $scope.types = MapasCulturais.entityTypes;
-        $scope.location = $location;
+        // $scope.types = MapasCulturais.entityTypes;
+        // $scope.location = $location;
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 

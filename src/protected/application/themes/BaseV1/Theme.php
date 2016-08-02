@@ -662,7 +662,8 @@ class Theme extends MapasCulturais\Theme {
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($types as $type_key => $type_val)
-                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val];
+                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
                                 $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);

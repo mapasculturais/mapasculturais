@@ -1,8 +1,5 @@
 <div ng-if="filter.fieldType === 'checkbox'" class="hltip" title="{{filter.placeholder}}">
-    <span
-        class="icon icon-check"
-        ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]"
-        ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"></span>
+    <span class="icon icon-check" ng-class="{'selected':data[entity].filters[filter.filter.param]}" ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]"></span>
     <span class="label show-label"
             ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]">{{filter.label}}</span>
 </div>
@@ -16,7 +13,7 @@
         <div class="placeholder">{{filter.placeholder}}</div>
         <div class="submenu-dropdown">
             <ul class="filter-list">
-                <li style="white-space: nowrap" ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
+                <li ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
                 ng-click="toggleSelection(data[entity].filters[filter.filter.param], option.value)">
                     <span>{{option.label}}</span>
                 </li>

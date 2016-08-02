@@ -14,7 +14,7 @@
                     placeholder="Buscar <?php echo strtolower($display_name); ?>" />
         </form>
         <span ng-repeat="entity in ['<?php echo $entity_name; ?>']">
-            <div ng-repeat-start="filter in filters['<?php echo $entity_name ?>']" ng-if="filter.isInline" class="filter">
+            <div ng-repeat-start="filter in filters['<?php echo $entity_name ?>']" ng-if="filter.isInline" class="filter search-filter--{{filter.filter.param}}">
                 <?php $this->part('search/filter-field') ?>
             </div>
             <span ng-repeat-end></span>
