@@ -189,7 +189,7 @@
                                 var search_value = entityData.filters[search_filter].map(function(e){
                                     // console.log(MapasCulturais.taxonomyTerms[filter.filter.param], e);
                                     return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
-                                });
+                                });src/protected/application/themes/BaseV1/assets/js/ng.search.service.find.js
                                 searchData['term:'+filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
                             } else if (filter.type==='entitytype'){
                                 // var search_value = entityData.filters[search_filter].map(function(e){
@@ -215,6 +215,7 @@
             }
 
             function apiFind(entity, searchData, page, action) {
+
 
                 if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
