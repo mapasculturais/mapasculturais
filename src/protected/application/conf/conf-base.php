@@ -243,6 +243,11 @@ return array(
     'plugins.enabled' => array(
 
     ),
+    'plugins' => [
+        'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+        'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+        //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
+    ],
 
     //
     'routes' => array(

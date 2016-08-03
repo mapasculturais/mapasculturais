@@ -94,6 +94,17 @@
             advancedFilters: {}
         }
     };
+    
+    // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
+    ['space', 'agent', 'event', 'project'].forEach(function(entity){
+        MapasCulturais.advancedFilters[entity].forEach(function(filter){
+            if(filter.isArray){
+                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+            } else {
+                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+            }
+        });
+    });
 
     var entities = ['space', 'event', 'agent', 'project'];
 
@@ -180,7 +191,7 @@
                 project: 1
             };
         }
-
+        
         $scope.advancedFilters = MapasCulturais.advancedFilters;
 
         $rootScope.resetPagination();
@@ -221,7 +232,7 @@
             else
                 return $scope.data.global.filterEntity === entity;
         };
-
+        
         $scope.hasAdvancedFilters = function(entity){
             return MapasCulturais.advancedFilters[entity].length > 0;
         };

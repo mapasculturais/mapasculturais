@@ -43,6 +43,11 @@ $_properties = $app->config['registration.propertiesToExport'];
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
+                
+            <?php foreach($entity->registrationFieldConfigurations as $field): ?>
+                <th><?php echo $field->title; ?></th>
+            <?php endforeach; ?>
+            
             <th>Arquivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
@@ -61,6 +66,10 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
                 <?php endif; ?>
+                    
+                <?php foreach($entity->registrationFieldConfigurations as $field): $field_name = $field->getFieldName(); ?>
+                    <th><?php echo $r->$field_name; ?></th>
+                <?php endforeach; ?>
 
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
