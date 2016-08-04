@@ -136,6 +136,7 @@
             }
 
             function countAndRemoveResultsNotInMap(entity, results){
+                console.log(results);
                 results[entity].forEach(function(item, index) {
                     if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
                         $rootScope.resultsNotInMap[entity]++;
@@ -177,7 +178,6 @@
                 if(entityData.keyword){
                     searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
-
                 for (var search_filter in entityData.filters){
                     if(entityData.filters[search_filter]){
                         var filter = MapasCulturais.filters[entity].filter(function(f){
@@ -185,22 +185,18 @@
                         })[0];
                         if (entityData.filters[search_filter].length){
                             if (filter.type === 'term'){
-                                // console.log(entityData.filters[search_filter]);
                                 var search_value = entityData.filters[search_filter].map(function(e){
-                                    // console.log(MapasCulturais.taxonomyTerms[filter.filter.param], e);
                                     return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
-                                });src/protected/application/themes/BaseV1/assets/js/ng.search.service.find.js
+                                });
                                 searchData['term:'+filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
-                            } else if (filter.type==='entitytype'){
-                                // var search_value = entityData.filters[search_filter].map(function(e){
-                                //     return MapasCulturais.entityTypes[entity][e];
-                                // });
-                                searchData[filter.filter.param] = filter.filter.value.replace(/\{val\}/g,
-                                    entityData.filters[search_filter].join(','));
-                            }
+                            } else
+                                if (filter.type==='entitytype'){
+                                    searchData[filter.filter.param] = filter.filter.value.replace(/\{val\}/g,
+                                        entityData.filters[search_filter].join(','));
+                                }
+                        } else if (!filter.isArray) {
+                            searchData[filter.filter.param] = filter.filter.value;
                         }
-                        // console.log(search_value);
-                        console.log(searchData);
                     }
                 }
 
@@ -210,7 +206,7 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
-                // console.log(searchData);
+                console.log(searchData);
                 return searchData;
             }
 
@@ -219,7 +215,6 @@
 
                 if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
-                    console.log(entity , searchData, MapasCulturais.searchFilters);
                 }
 
                 var selectData = 'id,singleUrl,name,type,shortDescription,terms';
@@ -281,6 +276,7 @@
 
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
 
+                console.log(entity, action, querystring, data);
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 

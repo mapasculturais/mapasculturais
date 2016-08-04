@@ -704,7 +704,7 @@ class Theme extends MapasCulturais\Theme {
                     'placeholder' => 'Selecione os tipos',
                     'type' => 'entitytype',
                     'filter' => [
-                        'param' => 'types',
+                        'param' => 'type',
                         'value' => 'IN({val})'
                     ]
                 ],
