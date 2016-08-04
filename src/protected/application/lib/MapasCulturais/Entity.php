@@ -260,13 +260,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        $use_cache = false; //$app->config['app.usePermissionsCache'];
-        $cache_id = "{$this}->{$user}->$action";
-
-        if($use_cache & $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
-        }
-
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -280,9 +273,7 @@ abstract class Entity implements \JsonSerializable{
             $result = $this->genericPermissionVerification($user);
         }
 
-        if($use_cache){
-            $app->cache->save($cache_id, $result, $app->config['app.permissionsCache.lifetime']);
-        }
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         return $result;
     }
@@ -313,12 +304,12 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $label = '';
 
-        $class = get_called_class();
+        $prop_labels = $app->config['app.entityPropertiesLabels'];
 
-        if(isset($app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name];
-        }elseif(isset($app->config['app.entityPropertiesLabels']['@default'][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels']['@default'][$property_name];
+        if(isset($prop_labels [self::getClassName()][$property_name])){
+            $label = $prop_labels[self::getClassName()][$property_name];
+        }elseif(isset($prop_labels ['@default'][$property_name])){
+            $label = $prop_labels ['@default'][$property_name];
         }
 
         return $label;

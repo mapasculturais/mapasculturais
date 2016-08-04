@@ -108,6 +108,19 @@
         });
     });
 
+    var entities = ['space', 'event', 'agent', 'project'];
+
+    // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
+    entities.forEach(function(entity){
+        MapasCulturais.advancedFilters[entity].forEach(function(filter){
+            if(filter.isArray){
+                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+            } else {
+                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+            }
+        });
+    });
+
     var diffFilter = function (input) {
         return _diffFilter(input, skeletonData);
     };

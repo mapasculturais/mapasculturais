@@ -188,7 +188,15 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    'app.cache' => function_exists('apcu_add') ? 
+        new \Doctrine\Common\Cache\ApcuCache() : 
+        ( 
+            function_exists('apc_add') ? 
+                new \Doctrine\Common\Cache\ApcCache() :
+                new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
+                
+        ),
+    
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
     
     'app.useRegisteredAutoloadCache' => true,
@@ -261,6 +269,11 @@ return array(
     'plugins.enabled' => array(
 
     ),
+    'plugins' => [
+        'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+        'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+        //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
+    ],
 
     //
     'routes' => array(
@@ -286,8 +299,10 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
+
             'inscricao' => array('registration', 'view'),
-        	'certificado' => array('relatedSeal','single'),
+            'certificado' => array('relatedSeal','single'),
+
         ),
         'controllers' => array(
             'painel'         => 'panel',
