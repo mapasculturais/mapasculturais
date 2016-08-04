@@ -146,6 +146,23 @@ return array(
         )
     ),
 
+    /* ============ ENTITY PROPERTIES LABELS ============= */
+    'app.entityPropertiesLabels' => array(
+        '@default' => array(
+            'id' => 'Id',
+            'name' => 'Nome',
+            'createTimestamp' => 'Data de Criação',
+            'shortDescription' => 'Descrição Curta',
+            'longDescription' => 'Descrição Longa',
+            'status' => 'Status',
+            'location' => 'Coordenada Geográfica',
+            '_type' => 'Tipo'
+        ),
+
+//        'MapasCulturais\Entities\Agent' => array()
+    ),
+
+
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
     'notifications.interval' => 60,

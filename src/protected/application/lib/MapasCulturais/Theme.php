@@ -247,15 +247,9 @@ abstract class Theme extends \Slim\View {
         // render the template
         $__templatePath = $this->resolveFilename('views', $__template_filename);
 
-<<<<<<< HEAD
-        if(strtolower(substr($__templatePath, -4)) !== '.php')
-                $__templatePath .= '.php';
-=======
         if(!$__templatePath){
             throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
         }
->>>>>>> rc
-
 
         $__template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $__templatePath);
 
@@ -303,15 +297,6 @@ abstract class Theme extends \Slim\View {
      */
     public function partialRender($__template, $__data = [], $_is_part = false){
         $app = App::i();
-<<<<<<< HEAD
-        if(strtolower(substr($__template, -4)) === '.php'){
-            $__template_filename = $__template;
-            $__template = substr($__template, 0, -4);
-        } else {
-            $__template_filename = $__template . '.php';
-        }
-=======
->>>>>>> rc
         
         if($__data instanceof \Slim\Helper\Set){
             $_data = $__data;
@@ -320,15 +305,7 @@ abstract class Theme extends \Slim\View {
             foreach($_data->keys() as $k){
                 $__data[$k] = $_data->get($k);
             }
-<<<<<<< HEAD
-        }
-        
-        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data]);
-        
-        if(is_array($__data)){
-            extract($__data);
-        }
-=======
+
         }
         
         $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data, &$__template]);
@@ -340,36 +317,26 @@ abstract class Theme extends \Slim\View {
             $__template_filename = $__template . '.php';
         }
         
-        
         if(is_array($__data)){
             extract($__data);
         }
->>>>>>> rc
 
         // render the template
         if($_is_part){
             $__templatePath = $this->resolveFilename('layouts', 'parts/' . $__template_filename);
         }else{
             $__templatePath = $this->resolveFilename('views', $__template_filename);
-<<<<<<< HEAD
-=======
+
         }
         
         if(!$__templatePath){
             throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
->>>>>>> rc
+
         }
 
         $__template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $__templatePath),0,-4);
 
-<<<<<<< HEAD
-        if(strtolower(substr($__templatePath, -4)) !== '.php' && strtolower(substr($__templatePath, -5)) !== '.html')
-                $__templatePath .= '.php';
 
-        $__template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $__templatePath),0,-4);
-
-=======
->>>>>>> rc
         $app->applyHookBoundTo($this, 'view.partial(' . $__template . '):before', ['template' => $__template]);
 
         ob_start(function($output){
