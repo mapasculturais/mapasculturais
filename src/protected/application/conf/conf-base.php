@@ -49,7 +49,7 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-	'app.enabled.seals'   => true,
+    'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -148,20 +148,21 @@ return array(
     ),
 
     /* ============ ENTITY PROPERTIES SEALS ============= */
-    'app.entityPropertiesSeals' => array(
+    'app.entityPropertiesLabels' => array(
         '@default' => array(
             'id' => 'Id',
             'name' => 'Nome',
             'createTimestamp' => 'Data de Criação',
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
-        	'certificateText' => 'Conteúdo da Impressão do Certificado',
-        	'validPeriod'	=> 'Período de Validade',
+            'certificateText' => 'Conteúdo da Impressão do Certificado',
+            'validPeriod'	=> 'Período de Validade',
             'status' => 'Status'
         ),
 
 //        'MapasCulturais\Entities\Agent' => array()
     ),
+    
 
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
