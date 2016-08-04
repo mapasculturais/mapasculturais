@@ -187,7 +187,15 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    'app.cache' => function_exists('apcu_add') ? 
+        new \Doctrine\Common\Cache\ApcuCache() : 
+        ( 
+            function_exists('apc_add') ? 
+                new \Doctrine\Common\Cache\ApcCache() :
+                new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
+                
+        ),
+    
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
     
     'app.useRegisteredAutoloadCache' => true,
