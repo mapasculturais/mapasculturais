@@ -651,8 +651,10 @@ class Theme extends MapasCulturais\Theme {
                 $modified_filters[$key] = [];
                 foreach ($filters[$key] as $field) {
                     $mod_field = array_merge($skeleton_field, $field);
-                    if ($mod_field['isArray']){
+                    if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
                         $mod_field['options'] = [];
+                        if ($mod_field['fieldType'] == 'singleselect')
+                            $mod_field['options'][] = ['value' => null, 'label' => $mod_field['placeholder']];
                         switch ($mod_field['type']) {
                             case 'metadata':
                                 $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
@@ -729,8 +731,88 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ]
             ],
-            'agent' => [],
-            'event' => [],
+            'agent' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ],
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Todos',
+                    'fieldType' => 'singleselect',
+                    'type' => 'entitytype',
+                    // 'isArray' => false,
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'EQ({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'event' => [
+                // [
+                //     'label' => 'De',
+                //     'fieldType' => 'date',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'filter' => [
+                //         'param' => '@from',
+                //         'value' => 'LTE({val})'
+                //     ]
+                // ],
+                // [
+                //     'label' => 'a',
+                //     'fieldType' => 'date',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'type' => 'term',
+                //     'filter' => [
+                //         'param' => '@to',
+                //         'value' => 'GTE({val})'
+                //     ]
+                // ],
+                [
+                    'label' => 'Linguagem',
+                    'placeholder' => 'Selecione as linguagens',
+                    'fieldType' => 'checklist',
+                    'filter' => [
+                        'param' => 'linguagem',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Classificação',
+                    'placeholder' => 'Selecione a classificação',
+                    'filter' => [
+                        'param' => 'classificacaoEtaria',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
             'project' => []
         ];
     }

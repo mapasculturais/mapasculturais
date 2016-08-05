@@ -188,8 +188,33 @@
 
         $scope.assetsUrl = MapasCulturais.assets;
 
-        $scope.getName = function(valores, id){
-            return valores.filter(function(e){if(e.id === id) return true;})[0].name;
+        $scope.getFilter = function (filter_key){
+            return MapasCulturais.filters[$scope.data.global.filterEntity].filter(function(f){
+                return f['filter'].param === filter_key;
+            })[0];
+        };
+
+        $scope.getFilterLabel = function(filter_key){
+            return $scope.getFilter(filter_key).label;
+        };
+
+        $scope.getFilterOptionLabel = function(filter_key, filter_value){
+            console.log(filter_key, filter_value);
+            return $scope.getFilter(filter_key).options.filter(function(option){
+                    return option.value === filter_value;
+                })[0].label;
+        };
+
+        // $scope.setFilterSingleSelect = function(array, val){
+        //     console.log(array, val);
+        //     if (array.length)
+        //         array.splice(1,1);
+        //     if (val);
+        //         array=val;
+        // };
+
+        $scope.getName = function(valores, id, key = 'id'){
+            return valores.filter(function(e){if(e[key] === id) return true;})[0].name;
         };
 
         $scope.getId = function(valores, name){
@@ -232,9 +257,7 @@
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
 
-            return ctx.has ||
-                   $scope.data.global.isVerified ||
-                   $scope.data.global.locationFilters.enabled !== null;
+            return ctx.has || $scope.data.global.locationFilters.enabled !== null;
         };
 
         $scope.cleanAllFilters = function () {
