@@ -38,3 +38,27 @@
         </div>
     </div>
 </div>
+
+<div ng-if="filter.fieldType === 'date'">
+    <label  class="show-label">{{filter.label}}</label>
+    <input  class="data"
+            ng-model="data[entity].filters[filter.filter.param]"
+            ui-date="dateOptions"
+            ui-date-format="yy-mm-dd"
+            placeholder="{{filter.placeholder}}" />
+</div>
+
+<div ng-if="filter.fieldType === 'dateFromTo'">
+    <label  class="show-label">{{filter.label[0]}}</label>
+    <input  class="data"
+            ng-model="data[entity].filters[filter.filter.param[0]]"
+            ui-date="dateOptions"
+            ui-date-format="yy-mm-dd"
+            placeholder="{{filter.placeholder}}" />
+    <label  class="show-label" for="data-de-inicio">{{filter.label[1]}}</label>
+    <input  class="data"
+            ng-model="data[entity].filters[filter.filter.param[1]]"
+            ui-date="dateOptions"
+            ui-date-format="yy-mm-dd"
+            placeholder="{{filter.placeholder}}" />
+</div>

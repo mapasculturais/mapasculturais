@@ -631,6 +631,7 @@ class Theme extends MapasCulturais\Theme {
                 'fieldType' => 'checklist',
                 'isInline' => true,
                 'isArray' => true,
+                'prefix' => '',
                 // 'isMetadata' => false,
                 'type' => 'metadata', //metadata, term or entitytype
                 'label' => '',
@@ -764,31 +765,22 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ],
             'event' => [
-                // [
-                //     'label' => 'De',
-                //     'fieldType' => 'date',
-                //     'placeholder' => '00/00/0000',
-                //     'isArray' => false,
-                //     'filter' => [
-                //         'param' => '@from',
-                //         'value' => 'LTE({val})'
-                //     ]
-                // ],
-                // [
-                //     'label' => 'a',
-                //     'fieldType' => 'date',
-                //     'placeholder' => '00/00/0000',
-                //     'isArray' => false,
-                //     'type' => 'term',
-                //     'filter' => [
-                //         'param' => '@to',
-                //         'value' => 'GTE({val})'
-                //     ]
-                // ],
+                [
+                    'label' => ['De', 'a'],
+                    'fieldType' => 'dateFromTo',
+                    'placeholder' => '00/00/0000',
+                    'isArray' => false,
+                    'prefix' => '@',
+                    'filter' => [
+                        'param' => ['from', 'to'],
+                        'value' => ['LTE({val})', 'GTE({val})']
+                    ]
+                ],
                 [
                     'label' => 'Linguagem',
                     'placeholder' => 'Selecione as linguagens',
                     'fieldType' => 'checklist',
+                    'type' => 'term',
                     'filter' => [
                         'param' => 'linguagem',
                         'value' => 'IN({val})'

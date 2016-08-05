@@ -91,9 +91,14 @@
                     {{getFilterOptionLabel(filter_k, value)}}
                 </a>
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
-                    ng-if="!getFilter(filter_k).isArray && filter_v"
+                    ng-if="!getFilter(filter_k).isArray && !getFilter(filter_k).type === 'dateFromTo' && filter_v"
                     ng-click="data[data.global.filterEntity].filters[filter_k] = !data[data.global.filterEntity].filters[filter_k]">
                     {{getFilterLabel(filter_k)}}
+                </a>
+                <a  class="tag-selected tag-{{data.global.filterEntity}}"
+                    ng-if="getFilter(filter_k).type === 'dateFromTo'"
+                    ng-click="data[data.global.filterEntity].filters[filter_k] = !data[data.global.filterEntity].filters[filter_k]">
+                    {{getFilterFromTo(filter_k)}}
                 </a>
             </span>
 

@@ -199,19 +199,16 @@
         };
 
         $scope.getFilterOptionLabel = function(filter_key, filter_value){
-            console.log(filter_key, filter_value);
             return $scope.getFilter(filter_key).options.filter(function(option){
                     return option.value === filter_value;
                 })[0].label;
         };
 
-        // $scope.setFilterSingleSelect = function(array, val){
-        //     console.log(array, val);
-        //     if (array.length)
-        //         array.splice(1,1);
-        //     if (val);
-        //         array=val;
-        // };
+        $scope.getFilterSelectedFromTo = function(filter_key){
+            var filter = $scope.getFilter(filter_key),
+                search = data[data.global.filterEntity].filters[filter_key];
+            return [filter.label[0], search[0], filter.label[1], search[1]].join(' ');
+        };
 
         $scope.getName = function(valores, id, key = 'id'){
             return valores.filter(function(e){if(e[key] === id) return true;})[0].name;
