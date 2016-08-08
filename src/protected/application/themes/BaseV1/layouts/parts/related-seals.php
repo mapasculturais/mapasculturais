@@ -1,4 +1,7 @@
 <?php
+if(!$app->isEnabled('seals'))
+	return;
+
 $this->addSealsToJs(true,array(),$entity);
 $this->addRelatedSealsToJs($entity);
 ?>

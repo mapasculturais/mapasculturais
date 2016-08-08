@@ -49,7 +49,7 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-    'app.enabled.seals'   => true,
+    'app.enabled.seals'   => false,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
