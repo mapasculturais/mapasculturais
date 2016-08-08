@@ -1,5 +1,6 @@
 <div id="registration-attachments" class="registration-fieldset">
-    <h4>5. Campos</h4>
+
+    <h4>6. Campos</h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help">Configure aqui os campos do formulário de inscrição.</p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help">A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto. </p>
     <div ng-controller="RegistrationConfigurationsController">
@@ -59,8 +60,8 @@
                         <span ng-if="field.description" class="attachment-description">
                             Descrição: {{field.description}}
                         </span>
-                    </div>
-                    <!-- edit-box to edit attachment -->
+                </div>
+                <!-- edit-box to edit attachment -->
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-field-{{field.id}}" position="left" title="Editar Campo" cancel-label="Cancelar" submit-label="Salvar" close-on-cancel='true' on-cancel="cancelFieldConfigurationEditBox" on-submit="editFieldConfiguration" index="{{$index}}" spinner-condition="data.fieldSpinner">
                         <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
                         <input type="text" ng-model="field.title" placeholder="Nome do campo"/>
@@ -76,7 +77,7 @@
                                                     return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> Todas </label>
                             <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
                         </p>
-                    </edit-box>                                    
+            </edit-box>
 
                     <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
                         <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="editar campo"></a>
@@ -115,35 +116,35 @@
                     <div class="file-{{field.template.id}}" ng-if="field.template">
                         <span ng-if="data.entity.canUserModifyRegistrationFields" class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);">{{field.template.name}}</span>
                         <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(field.id, $index)" title="Excluir modelo"></a>
-                    </div>
-                    <p ng-if="!data.entity.canUserModifyRegistrationFields">
+            </div>
+            <p ng-if="!data.entity.canUserModifyRegistrationFields">
                         <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
-                    </p>
-                    <!-- edit-box to upload attachments -->
+            </p>
+            <!-- edit-box to upload attachments -->
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-template-{{field.id}}" position="top" title="Enviar modelo" cancel-label="Cancelar" submit-label="Enviar modelo" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                         <p ng-if="field.template">
                             <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
-                        </p>
+                </p>
                         <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(field.id)}}" enctype="multipart/form-data">
-                            <div class="alert danger hidden"></div>
-                            <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
-                            <input type="file" name="{{uploadFileGroup}}" />
+                    <div class="alert danger hidden"></div>
+                    <p class="form-help">Tamanho máximo do arquivo: {{maxUploadSizeFormatted}}</p>
+                    <input type="file" name="{{uploadFileGroup}}" />
 
-                            <div class="js-ajax-upload-progress">
-                                <div class="progress">
-                                    <div class="bar"></div >
-                                    <div class="percent">0%</div >
-                                </div>
-                            </div>
+                    <div class="js-ajax-upload-progress">
+                        <div class="progress">
+                            <div class="bar"></div >
+                            <div class="percent">0%</div >
+                        </div>
+                    </div>
 
-                        </form>
-                    </edit-box>
-                    <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
+                </form>
+            </edit-box>
+            <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
                         <a ng-click="openFileConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="editar anexo"></a>
                         <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="enviar modelo" ></a>
                         <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="excluir anexo"></a>
                     </div>
-                </div>
+            </div>
             </li>
         </ul>
     </div>

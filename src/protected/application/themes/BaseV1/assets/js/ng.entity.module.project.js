@@ -166,43 +166,43 @@
     module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
         return function (controllerId){
             var url = new UrlService(controllerId);
-            return {
-                getUrl: function(action, id){
-                    return url.create(action, id);
-                },
-                create: function(data){
-                    var deferred = $q.defer();
+        return {
+            getUrl: function(action, id){
+                return url.create(action, id);
+            },
+            create: function(data){
+                var deferred = $q.defer();
 
-                    $http.post(this.getUrl(), data)
-                        .success(
-                            function(response){
-                                deferred.resolve(response);
-                            }
-                        );
-                    return deferred.promise;
-                },
-                edit: function(data){
-                    var deferred = $q.defer();
+                $http.post(this.getUrl(), data)
+                    .success(
+                        function(response){
+                            deferred.resolve(response);
+                        }
+                    );
+                return deferred.promise;
+            },
+            edit: function(data){
+                var deferred = $q.defer();
 
-                    $http.post(url.create('single', data.id), data)
-                        .success(
-                            function(response){
-                                deferred.resolve(response);
-                            }
-                        );
-                    return deferred.promise;
-                },
-                delete: function(id){
-                    var deferred = $q.defer();
-                    $http.get(url.create('delete', id))
-                        .success(
-                            function(response){
-                                deferred.resolve(response);
-                            }
-                        );
-                    return deferred.promise;
-                }
-            };
+                $http.post(url.create('single', data.id), data)
+                    .success(
+                        function(response){
+                            deferred.resolve(response);
+                        }
+                    );
+                return deferred.promise;
+            },
+            delete: function(id){
+                var deferred = $q.defer();
+                $http.get(url.create('delete', id))
+                    .success(
+                        function(response){
+                            deferred.resolve(response);
+                        }
+                    );
+                return deferred.promise;
+            }
+        };
         };
     }]);
 
@@ -217,7 +217,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.getUploadUrl = function (ownerId){
             return fileService.getUrl('upload', ownerId);
         };
-        
+
         var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
         
         var fieldTypesBySlug = {};
@@ -239,7 +239,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             required: false,
             categories: []
         };
-        
+
         var fieldConfigurationSkeleton = {
             ownerId: MapasCulturais.entity.id,
             fieldType: null,
@@ -282,7 +282,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldTypesBySlug: fieldTypesBySlug,
             categories: []
         };
-        
+
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
         
         
@@ -305,7 +305,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             });
         }
-        
+
         sortFields();
         
         function validationErrors(response){
@@ -386,7 +386,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         // Files
         $scope.fileConfigurationBackups = [];
-        
+
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
             fileService.create($scope.data.newFileConfiguration).then(function(response){
@@ -758,7 +758,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }, 700);
            });
         };
-        
+
         $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
         
         
@@ -863,13 +863,13 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 publishedRegistrationStatus: 10,
 
                 propLabels : [],
-                
+
                 
                 fields: RegistrationService.getFields(),
 
                 relationApiQuery: {}
             }, MapasCulturais);
-            
+
             for(var name in MapasCulturais.labels.agent){
                 var label = MapasCulturais.labels.agent[name];
                 $scope.data.propLabels.push({
@@ -1148,5 +1148,72 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                         alert('erro');
                     });
             };
+        }]);
+    
+    module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
+        $scope.editbox = EditBox;
+        
+        $scope.seals = [];
+        
+        for(var i in MapasCulturais.allowedSeals)
+            $scope.seals.push(MapasCulturais.allowedSeals[i]);
+        
+        $scope.registrationSeals = [];
+        
+        $scope.showCreateDialog = {};
+        
+        $scope.isEditable = MapasCulturais.isEditable;
+        
+        $scope.data = {};
+        
+        $scope.avatarUrl = function(url){
+            if(url) {
+                return url;
+            } else {
+                return MapasCulturais.assets.avatarSeal;
+            }
+        };
+        
+        $scope.closeNewSealEditBox = function(){
+            EditBox.close('new-related-seal');
+        };
+        
+        $scope.getCreateSealRelationEditBoxId = function(){
+            return 'add-related-seal';
+        };
+        
+        $scope.entity = MapasCulturais.entity.object;
+        
+        $scope.setSeal = function(agent, entity){
+        	var sealRelated = {};
+            var _scope = this.$parent;
+            
+            if(!angular.isObject($scope.entity.registrationSeals)) {
+            	$scope.entity.registrationSeals = {};
+        	} 
+            $scope.entity.registrationSeals[agent] =  entity.id;
+            sealRelated = $scope.entity.registrationSeals;
+            jQuery("#registrationSeals").editable('setValue',sealRelated);
+            
+            $scope.registrationSeals.push(sealRelated);
+            EditBox.close('set-seal-' + agent);
+        };
+        
+        $scope.getArrIndexBySealId = function(sealId) {
+        	for(var found in $scope.seals) {
+                if($scope.seals[found].id == sealId)
+                	return found;      	
+        	};
+        };
+        
+        $scope.removeSeal = function(entity){
+        	delete $scope.entity.registrationSeals[entity];
+        };
+        
+        $scope.deleteRelation = function(relation){
+            RelatedSealsService.remove(relation.seal.id).error(function(){
+                relations = oldRelations;
+            });
+        };
     }]);
 })(angular);

@@ -47,6 +47,13 @@
         font-size: $font-size-base;
     }
 }
+.delete.item {
+	content: $unicode-delete;
+	background: transparent;
+	background-color: transparent;
+	border: none;
+}
+
 .add:before {
     content: $unicode-add-button;
 }

@@ -87,7 +87,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -96,6 +96,11 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar space">
+
+    <!-- Related Seals BEGIN -->
+    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+    <!-- Related Seals END -->
+
     <div class="widget">
         <h3>Status</h3>
         <?php if($this->isEditable()): ?>

@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
@@ -112,6 +113,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
+       // $this->seals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
 
@@ -359,7 +361,29 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
-   
+    
+    public function getSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
+    }
+    function getEnabledSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ENABLED, '=');
+    }
+    function getDraftSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DRAFT, '=');
+    }
+    function getTrashedSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_TRASH, '=');
+    }
+    function getDisabledSeals(){
+    	$this->checkPermission('modify');
+    
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
+    }
+
     function getNotifications($status = null){
         if(is_null($status)){
             $status_operator =  '>';

@@ -15,6 +15,26 @@
         margin-right: .75rem;
         background-size: cover;
     }
+    .avatar-seal {
+        float: left;
+        width: 5rem;
+        height: 5rem;
+        margin-right: .75rem;
+        margin-bottom: .75rem;
+        background-size: cover;
+    }
+    .botoes {
+         position: absolute;
+         top: -12px;
+         right: -6px;
+         a {
+             background-color: #fff;
+             border-radius: 100%;
+             &:before {
+                 line-height: 180%;
+             }
+         }
+     }
     &:before {
         left: 50%;
         margin-left: -8px;
@@ -22,7 +42,7 @@
     }
 }
 .sidebar-left {
-    overflow: hidden;
+    //overflow: hidden;
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
         float: right;
@@ -119,6 +139,17 @@ body.action-single {
         color: $brand-project;
     }
 }
+
+.sidebar.seal {
+    border-top-color: $brand-seal;
+    &:before {
+        border-top-color: $brand-seal !important;
+    }
+    .widget-list-item > a {
+        color: $brand-seal;
+    }
+}
+
 
 .sidebar.registration {
     @extend .sidebar.project;

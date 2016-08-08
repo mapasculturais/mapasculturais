@@ -70,7 +70,7 @@ Após a instalação da ferramenta, no arquivo mapasculturais/src/protected/appl
     'slim.debug' => false,
     'maps.includeGoogleLayers' => true,
 ```
-Alterando a chave app.mode para development você terá saídas para o modo de desenvolvimento da aplicação. Alterando também a chave slim.debug para true, você poderá ver as saídas de debug da aplicação. Essas duas modificações são extremamente uteis para identificar erros desconhecidos ou ainda para testar saídas e vericar resultados.
+Alterando a chave app.mode para development você terá saídas para o modo de desenvolvimento da aplicação. Alterando também a chave slim.debug para true, você poderá ver as saídas de debug da aplicação. Essas duas modificações são extremamente uteis para identificar erros desconhecidos ou ainda para testar saídas e vericar resultados. 
 
 Alterando a diretiva useAssetsUrlCache, para o desenvolvimento, principalmente em correções e customização de css, o ideal é que esteja configurado como ```true``` para sempre atualizar o conteúdo da pasta assets.
 Em ambiente de produção, esta diretiva deve sempre estar com o conteúdo ```false``` para não onerar o desempenho do servidor:

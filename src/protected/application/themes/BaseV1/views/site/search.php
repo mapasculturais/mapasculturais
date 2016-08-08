@@ -11,6 +11,7 @@ $this->addTaxonoyTermsToJs('linguagem');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Space');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Project');
+$this->addEntityTypesToJs('MapasCulturais\Entities\Seal');
 
 $this->includeSearchAssets();
 
@@ -46,6 +47,11 @@ $this->includeMapAssets();
                 <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} agentes"></a>
             <?php endif; ?>
 
+            
+            <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+                <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} selos"></a>
+            <?php endif; ?>
+            
         </div>
     </div>
 

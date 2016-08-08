@@ -24,7 +24,8 @@ use MapasCulturais\App;
         "EventOccurrence"   = "\MapasCulturais\Entities\RequestEventOccurrence",
         "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
         "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
-        "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation"
+        "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation",
+        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation"
    })
  * @ORM\HasLifecycleCallbacks
  */

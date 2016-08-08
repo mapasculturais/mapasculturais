@@ -22,6 +22,7 @@ $_params = [
     'action' => $action
 ];
 
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -36,6 +37,8 @@ $_params = [
         <?php $this->part('singles/registration-single--categories', $_params) ?>
         
         <?php $this->part('singles/registration-single--agents', $_params) ?>
+        
+        <?php $this->part('singles/registration-single--seals', $_params) ?>
         
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 

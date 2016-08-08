@@ -227,7 +227,7 @@
             else
                 return $scope.data.global.filterEntity === entity;
         };
-        
+
         $scope.hasAdvancedFilters = function(entity){
             return MapasCulturais.filters[entity].filter(function(v){
                 return !v.isInline;
@@ -349,13 +349,8 @@
 
         $scope.data = angular.copy(skeletonData);
 
-        // $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
-        // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
-        // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
         MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
-        // $scope.types = MapasCulturais.entityTypes;
-        // $scope.location = $location;
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 
