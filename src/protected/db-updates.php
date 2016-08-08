@@ -149,6 +149,13 @@ return [
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER required DROP DEFAULT;");
         $conn->executeQuery("COMMENT ON COLUMN registration_file_configuration.categories IS '(DC2Type:array)';");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+    
+    'verified seal migration' => function () use($conn){
+	    $conn->executeQuery("INSERT INTO seal VALUES(1,'Selo Mapas','Descrição curta Selo Mapas','Descrição longa Selo Mapas',CURRENT_TIMESTAMP,0,1,0);");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Agent', id, CURRENT_TIMESTAMP, 1 FROM agent WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Space', id, CURRENT_TIMESTAMP, 1 FROM space WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Project', id, CURRENT_TIMESTAMP, 1 FROM project WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Event', id, CURRENT_TIMESTAMP, 1 FROM event WHERE is_verified = 't';");	    
     }
-
 ];
