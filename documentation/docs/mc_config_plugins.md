@@ -12,14 +12,14 @@ plugins => array(
 e sendo possível customizar plugins seguindo a estrutura de pastas na pasta do tema se necessário:
 
 ```
-plugins\
-  AgendaSingles\
-                assets\
-                        js\
+\plugins
+  \AgendaSingles
+                \assets
+                        \js
                             agenda-singles.js
-                        css\
-                layouts\
-                        parts\
+                        \css
+                \layouts
+                        \parts
                             agenda-singles.php
                             agenda-singles--content.php
                             agenda-singles--header.php
