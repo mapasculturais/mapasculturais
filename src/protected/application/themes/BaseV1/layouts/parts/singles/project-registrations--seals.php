@@ -1,3 +1,7 @@
+<?php 
+if(!$app->isEnabled('seals'))
+	return;
+?>
 <!-- BEGIN Seals -->
 <div id="registration-seals" class="registration-fieldset">
 	<h4>5. Selos Certificadores</h4>
