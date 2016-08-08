@@ -12,7 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
- * @property-read \MapasCulturais\Entities\Seal[] $seals Active Events
+ * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
