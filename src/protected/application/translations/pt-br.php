@@ -19,8 +19,8 @@ return array(
     'This agent is required.' => 'Este agente é obrigatório.',
     'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
     'This agent must be of type "%s".' => 'Este agente deve ser do tipo "%s".',
-    'The field "%s" is required.' => 'Este agente precisa ter o campo "%s" preenchido.',
-    'The fields %s are required.' => 'Este agente precisa ter os campos %s preenchidos.',
+    'The field "%s" is required.' => 'O campo "%s" é obrigatório.',
+    'The fields %s are required.' => 'Os campos "%s" são obrigatórios.',
     'The field "%s" of the agent "%s" is required.' => 'O campo "%s" do agente "%s" é obrigatório.',
     'The file "%s" is required.' => 'O arquivo "%s" é obrigatório.',
 
@@ -53,5 +53,16 @@ return array(
     'Use relation %s' => 'Usar relação %s',
     "Required" => 'Obrigatório',
     "Facultative" => 'Facultativo',
-    "Don't use" => 'Não usar'
+    "Don't use" => 'Não usar',
+    
+    // registration field types
+    'Check Boxes Field' => 'Seleção múltipla (checkboxes)',
+    'Radio Buttons Field' => 'Seleção única (radio)',
+    'Select Field' => 'Seleção única (select)',
+    'Email Field' => 'Campo de email',
+    'URL Field' => 'Campo de URL (link)',
+    'Text Field' => 'Campo de texto simples',
+    'Textarea Field' => 'Campo de texto (textarea)',
+    'Date Field' => 'Campo de data',
+    
 );

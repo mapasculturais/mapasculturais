@@ -89,7 +89,6 @@
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
         MapasCulturais.filters[entity].forEach(function(filter){
-            // console.log(filter);
             if(filter.isArray){
                 skeletonData[entity].filters[filter.filter.param] = [];
             } else {
@@ -215,6 +214,10 @@
             }
         };
 
+        $scope.toggleVerified = function (entity) {
+                $scope.data[entity].isVerified = !$scope.data[entity].isVerified;
+        };
+
         $scope.showInfobox = function (){
             return $scope.collapsedFilters && $scope.data.global.openEntity.id>0 && $scope.data.global.viewMode==='map' && $scope.data.global.enabled[$scope.data.global.openEntity.type];
         };
@@ -224,7 +227,7 @@
             else
                 return $scope.data.global.filterEntity === entity;
         };
-
+        
         $scope.hasAdvancedFilters = function(entity){
             return MapasCulturais.filters[entity].filter(function(v){
                 return !v.isInline;

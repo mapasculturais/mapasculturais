@@ -182,6 +182,13 @@ class Project extends \MapasCulturais\Entity
     public $registrationFileConfigurations;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
+     *
+     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
+     */
+    public $registrationFieldConfigurations;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
@@ -221,6 +228,14 @@ class Project extends \MapasCulturais\Entity
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
+    
+    function getAllRegistrations(){
+        // ============ IMPORTANTE =============//
+        // @TODO implementar findSentByProject no repositório de inscrições
+        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+
+        return $registrations;
+    }
 
     /**
      * Returns sent registrations
@@ -228,9 +243,8 @@ class Project extends \MapasCulturais\Entity
      * @return \MapasCulturais\Entities\Registration[]
      */
     function getSentRegistrations(){
-        // ============ IMPORTANTE =============//
-        // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+        $registrations = $this->getAllRegistrations();
+        
         $result = [];
         foreach($registrations as $re){
             if($re->status > 0)

@@ -146,6 +146,23 @@ return array(
         )
     ),
 
+    /* ============ ENTITY PROPERTIES LABELS ============= */
+    'app.entityPropertiesLabels' => array(
+        '@default' => array(
+            'id' => 'Id',
+            'name' => 'Nome',
+            'createTimestamp' => 'Data de Criação',
+            'shortDescription' => 'Descrição Curta',
+            'longDescription' => 'Descrição Longa',
+            'status' => 'Status',
+            'location' => 'Coordenada Geográfica',
+            '_type' => 'Tipo'
+        ),
+
+//        'MapasCulturais\Entities\Agent' => array()
+    ),
+
+
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
     'notifications.interval' => 60,
@@ -170,7 +187,15 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => new \Doctrine\Common\Cache\ApcCache(),
+    'app.cache' => function_exists('apcu_add') ? 
+        new \Doctrine\Common\Cache\ApcuCache() : 
+        ( 
+            function_exists('apc_add') ? 
+                new \Doctrine\Common\Cache\ApcCache() :
+                new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
+                
+        ),
+    
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
     
     'app.useRegisteredAutoloadCache' => true,
@@ -243,6 +268,11 @@ return array(
     'plugins.enabled' => array(
 
     ),
+    'plugins' => [
+        'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+        'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+        //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
+    ],
 
     //
     'routes' => array(

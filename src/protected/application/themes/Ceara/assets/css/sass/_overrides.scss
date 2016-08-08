@@ -1,0 +1,44 @@
+//
+// Overrides
+// --------------------------------------------------
+//## Style rules that overrides the default theme's ones.
+//## To make it easy to maintain and to avoid cascading problems,
+//## just before the new rules, document the name of the Sass partial
+//## where the original styles leave, group them per folder and keep
+//## them in the same order as the original styles are imported to the main.scss.
+
+//
+// application/
+// --------------------------------------------------
+
+//
+// Home
+//
+#nav-developers,
+#home-developers {
+    background: $brand-devs;
+}
+//
+// Header
+//
+#main-header {
+    #header-nav-row {
+        @media screen and (min-width: $screen-sm-min) {
+            background: url(/assets/img/bg-top.png) no-repeat left bottom #FFFFFF;
+        }
+    }
+}
+#brand-logo {
+    a {
+        img {
+            @media screen and (min-width: $screen-tablet) {
+                margin-top: 12px;
+            }
+        }
+    }
+}
+#about-nav {
+    @media screen and (min-width: $screen-tablet) {
+        padding: 1.5rem;
+    }
+}
