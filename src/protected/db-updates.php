@@ -152,7 +152,7 @@ return [
     },
     
     'verified seal migration' => function () use($conn){
-	    $conn->executeQuery("INSERT INTO seal VALUES(1,1,'Selo Mapas','Descrição curta Selo Mapas','Descrição longa Selo Mapas',CURRENT_TIMESTAMP,0,1,0);");
+	    $conn->executeQuery("INSERT INTO seal VALUES(1,1,'Selo Mapas','Descrição curta Selo Mapas','Descrição longa Selo Mapas',0,CURRENT_TIMESTAMP,1);");
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Agent', id, CURRENT_TIMESTAMP, 1 FROM agent WHERE is_verified = 't';");
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Space', id, CURRENT_TIMESTAMP, 1 FROM space WHERE is_verified = 't';");
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, 'MapasCulturais\Entities\Project', id, CURRENT_TIMESTAMP, 1 FROM project WHERE is_verified = 't';");
