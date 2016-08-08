@@ -32,7 +32,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
-            
+
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
@@ -45,20 +45,20 @@ class Theme extends MapasCulturais\Theme {
 
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
-            
-            
+
+
             'entities: Spaces of the agent'=> 'Espaços do agente',
             'entities: Space Description'=> 'Descrição do Espaço',
             'entities: Agent children'=> 'Agentes',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
-        		
+
         	'entities: My Seals'=> 'Meus Selos',
         	'entities: My seals'=> 'Meus selos',
-            
+
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
-            
+
             'entities: Space' => 'Espaço',
             'entities: Spaces' => 'Espaços',
             'entities: space' => 'espaço',
@@ -66,7 +66,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: parent space' => 'espaço pai',
             'entities: a space' => 'um espaço',
             'entities: the space' => 'o espaço',
-            'entities: of the space' => 'do espaço',            
+            'entities: of the space' => 'do espaço',
             'entities: In this space' => 'Neste espaço',
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
@@ -98,12 +98,16 @@ class Theme extends MapasCulturais\Theme {
     function getSearchProjectsUrl(){
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
     }
-    
+
+    function getSearchSealsUrl(){
+    	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
+    }
+
     protected function _init() {
         $app = App::i();
 
 
-       
+
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -119,11 +123,11 @@ class Theme extends MapasCulturais\Theme {
                 <?php
             endif;
         });
-        
+
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
-        
+
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
-        
+
         $this->jsObject['EntitiesDescription'] = [
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
@@ -150,7 +154,7 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
-            
+
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents',
             	'entity.module.relatedSeals',
@@ -162,7 +166,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
                 'mc.directive.mcSelect',
-                'mc.module.notifications', 
+                'mc.module.notifications',
                 'mc.module.findEntity',
 
                 'ngSanitize',
@@ -290,6 +294,26 @@ class Theme extends MapasCulturais\Theme {
                 $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
+        });
+
+        $app->hook("GET(site.cep)", function() use($app){
+            if(isset($app->config['cep.token'])){
+                $cep = $app->request->get('num');
+                // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
+                $url = sprintf($app->config['cep.endpoint'], $cep);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                if (isset($app->config['cep.token_header']) && !empty($app->config['cep.token_header'])) {
+                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
+                }
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $output = curl_exec($ch);
+                echo $output;
+            }
+            else{
+                $app->halt(403, 'No token for CEP');
+            }
         });
     }
 
@@ -552,20 +576,20 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
-            'mapasculturais', 
-            'ng-mapasculturais', 
-            'mc.directive.multiselect', 
+            'mapasculturais',
+            'ng-mapasculturais',
+            'mc.directive.multiselect',
             'mc.directive.singleselect',
-            'mc.directive.editBox', 
-            'mc.directive.mcSelect', 
+            'mc.directive.editBox',
+            'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
         	'entity.module.relatedSeals',
-            'entity.module.changeOwner', 
-            'entity.directive.editableMultiselect', 
+            'entity.module.changeOwner',
+            'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
-        
+
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
@@ -711,28 +735,13 @@ class Theme extends MapasCulturais\Theme {
     function addRelatedAgentsToJs($entity) {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
-    
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
-    
-    function addSealsToJs($onlyPermited = true,$sealId = array(),$entity) {
-    	$query = [];
-    	$query['@select'] = 'id,name,status, singleUrl';    	
-    	
-    	if($onlyPermited) {
-    		$query['@permissions'] = '@control';
-    	}
-    	$query['@files'] = '(avatar.avatarMedium):url';
 
-    	$sealId = implode(',',array_unique($sealId));
-    	
-    	if(count($sealId) > 0 && !empty($sealId)) {
-    		$query['id'] = 'IN(' .$sealId . ')';
-    	}
-    	
-    	$query['@ORDER'] = 'createTimestamp DESC';
-    	
+    function addPermitedSealsToJs() {
+
     	$app = App::i();
     	if (!$app->user->is('guest')) {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
@@ -846,7 +855,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
 
         $cache_id = __METHOD__ . ':' . $entity_class;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
@@ -860,7 +869,7 @@ class Theme extends MapasCulturais\Theme {
                 'isVerified' => 'EQ(true)',
                 '@select' => 'id'
             ));
-            
+
         }else{
 
             $entities = $controller->apiQuery([
@@ -918,9 +927,9 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $controller = $app->getControllerByEntity($class);
-        
+
         $q = ['@count'=>1];
-        
+
         if($verified === true){
             $q['isVerified'] = 'EQ(true)';
         }
