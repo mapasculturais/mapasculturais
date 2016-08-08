@@ -26,6 +26,7 @@ define('PROTECTED_PATH', BASE_PATH . 'protected/');
 define('APPLICATION_PATH', PROTECTED_PATH . 'application/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
+define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
 
  // Prepare a mock environment
 \Slim\Environment::mock(array_merge(array(
