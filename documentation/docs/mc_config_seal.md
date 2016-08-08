@@ -1,4 +1,4 @@
-##Configuração dos selos no ambiente do mapas culturais.
+##Selos no ambiente do mapas culturais.
 
 Os selos certificadores do mapas culturais é uma forma de reconhecer determinadas entidades no sistema Mapas Culturais por um agente, que pode ser do tipo responsável e/ou coletivo.
 
