@@ -57,16 +57,33 @@ $this->includeAngularEntityAssets($entity);
             <?php $this->applyTemplateHook('tab-about-service','before'); ?>
 				<div class="servico">
 					<?php $this->applyTemplateHook('tab-about-service','begin'); ?>
-				
-					<p><span class="label">Validade:</span>
-					<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span> 
-					<span class="js-editable" data-edit="timeUnit" data-original-title="Periodicidade" data-emptytext="Selecione a periodicidade da validade do selo"><?php echo $entity->timeUnit; ?></span></p>
-					
+					<p>
+						<span class="label">Validade:</span>
+						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
+						Meses. 
+					</p>
 					<?php $this->applyTemplateHook('tab-about-service','end'); ?>
 				</div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
             </div>
             <!--.ficha-spcultura-->
+            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+                <h3>Descrição</h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+            <?php endif; ?>
+            <!--.descricao-->
+            
+            <?php if ( $this->isEditable() || $entity->certificateText ): ?>
+                <h3>Conteúdo da Impressão</h3>
+                <p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
+                [sealName]: Nome do selo aplicado<br>
+                [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
+                [entityName]: Nome da entidade (Teatro Municipal)<br>
+                [dateIni]: Data de Início da Validade do selo aplicado<br>
+                [dateFin]: Data de Fim da Validade do selo aplicado</p>
+                <span class="descricao js-editable" data-edit="certificateText" data-original-title="Conteúdo da Impressão do Certificado" data-emptytext="Insira o conteúdo da impressão do certificado do selo." ><?php echo $this->isEditable() ? $entity->certificateText: nl2br($entity->certificateText); ?></span>
+            <?php endif; ?>
+            <!--.conteúdo da impressão do certificado do selo-->
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>

@@ -1,4 +1,21 @@
 $(function() {
+    function setAgendaCount(){
+        var count = $('#agenda-count-hidden').val() || 'Nenhum';
+        $('#agenda-count').text(count);
+        $('#agenda-count-plural').css('display', count == 1 || count == 'Nenhum' ? 'none' : 'inline');
+    }
+    
+    function submit(){
+        $('img.spinner').show();
+        var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.entity.id;
+
+        $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
+            $('#agenda-content').html(result);
+            setAgendaCount();
+            $('img.spinner').hide();
+        });
+    };
+        
     $('.js-agenda-singles-dates').each(function() {
         var fieldSelector = '#' + $(this).attr('id');
         var altFieldSelector = $(this).data('alt-field') ? $(this).data('alt-field') : fieldSelector.replace('-visible', '');
@@ -16,22 +33,12 @@ $(function() {
             }
         });
 
-        $(this).on('change', function(){
-            $('img.spinner').show();
-            var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.entity.id;
-            
-            $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
-                $('#agenda-content').html(result);
-                setAgendaCount();
-                $('img.spinner').hide();
-            });
-        });
+        $(this).on('change', submit);
     });
+    
+    $('#tab-sobre').parent().after($('#tab-agenda').parent());
 
-    function setAgendaCount(){
-        var count = $('#agenda-count-hidden').val() || 'Nenhum';
-        $('#agenda-count').text(count);
-        $('#agenda-count-plural').css('display', count == 1 || count == 'Nenhum' ? 'none' : 'inline');
-    }
+
     setAgendaCount();
+    submit();
 });

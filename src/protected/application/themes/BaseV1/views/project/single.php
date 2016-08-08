@@ -63,11 +63,6 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         
         <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
         
-        <div id="agenda" class="aba-content">
-            <?php $this->part('agenda', array('entity' => $entity)); ?>
-        </div>
-        <!-- #agenda -->
-        
         <?php $this->part('singles/project-registrations', ['entity' => $entity]) ?>
         
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
@@ -78,8 +73,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar project">
-	<!-- Related Seals BEGIN -->
-	<?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+    <!-- Related Seals BEGIN -->
+    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>

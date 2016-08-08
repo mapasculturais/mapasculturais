@@ -15,22 +15,28 @@
             display: none;
             position: absolute;
             z-index: $z-index-descricao-do-selo;
-            top: 6.5rem;
-            right: -.75rem;
-            width: 200px;
-            padding: $padding-base;
-            font-size: $font-size-smaller;
+            top: 5.5rem;
+            width: 100px;
+            padding: 0.5rem;
             background: #fff;
             border-radius: $border-radius-base;
             box-shadow: $box-shadow-dropdown;
             &:before {
                 @include arrow(up, $caret-width-base, #fff);
-                right: $padding-large;
+                left: $padding-large;
             }
             h1 {
-                font-size: $font-size-base;
+                color: #444;
+                font-family: $font-stack-base;
+                font-size: .75rem;
+                font-weight: bold;
                 line-height: $line-height-base;
                 margin-bottom: 0;
+                text-align: center;
+                a {
+                    color: #444;
+                    font-weight: bold;
+                }
             }
             .btn {
                 margin-top: $line-height-half;

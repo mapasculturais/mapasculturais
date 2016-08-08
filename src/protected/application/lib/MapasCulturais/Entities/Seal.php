@@ -4,7 +4,6 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
-use MapasCulturais\App;
 
 /**
  * Seal
@@ -29,26 +28,15 @@ class Seal extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
-    /*
-     * A definir [kco]
-     *
     protected static $validations = [
         'name' => [
-            'required' => 'O nome do agente é obrigatório'
+            'required' => 'O nome do selo é obrigatório'
         ],
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ]
     ];
-
-    protected function validateLocation(){
-        if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
-            return true;
-        }else{
-            return false;
-        }
-    }*/
 
     /**
      * @var integer
@@ -82,19 +70,19 @@ class Seal extends \MapasCulturais\Entity
     protected $longDescription;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="certificate_text", type="text", nullable=true)
+     */
+    protected $certificateText;
+    
+    /**
      * @var integer
      *
      * @ORM\Column(name="valid_period", type="smallint", nullable=false)
      */
     protected $validPeriod;
     
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="time_unit", type="smallint", nullable=false)
-     */
-    protected $timeUnit;
-
     /**
      * @var \DateTime
      *
@@ -160,26 +148,6 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
      */
     protected $__agentRelations;
-    
-
-    protected function canUserCreate($user){
-        $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
-
-        if($can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
-    }
-
-    protected function canUserModify($user){
-        $can = $this->_canUser($user, 'modify'); // this is a method of Trait\EntityOwnerAgent
-        if($this->_projectChanged && $can && $this->project){
-            return $this->project->userHasControl($user);
-        }else{
-            return $can;
-        }
-    }
     
     protected function canUserPublish($user){
         if($user->is('guest')){

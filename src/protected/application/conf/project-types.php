@@ -50,11 +50,12 @@ return array(
             )
         ),
     	
-		'registrationSeals' => array(
-			'label' => 'Selos',
-			'serialize' => function($value) { return json_encode($value); },
-			'unserialize' => function($value) { return json_decode($value); }
-		),
+        'registrationSeals' => array(
+                'label' => 'Selos',
+                'serialize' => function($value) { return json_encode($value); },
+                'unserialize' => function($value) { return json_decode($value); }
+        ),
+
     ),
     'items' => array(
         1 =>  array( 'name' => "Festival"),

@@ -1,7 +1,6 @@
 (function (angular) {
     "use strict";
-
-    var module = angular.module('entity.module.project', ['ngSanitize']);
+    var module = angular.module('entity.module.project', ['ngSanitize', 'checklist-model']);
 
     module.config(['$httpProvider', function ($httpProvider) {
             $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -51,7 +50,7 @@
 
 
 
-    module.factory('RegistrationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+    module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
             var url = new UrlService('registration');
 
             return {
@@ -65,6 +64,7 @@
                         ownerId: params.owner.id,
                         category: params.category
                     };
+                    
                     return $http.post(this.getUrl(), data).
                             success(function (data, status) {
                                 $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
@@ -94,13 +94,78 @@
                             error(function(data, status){
                                 $rootScope.$emit('error', {message: "Cannot send project registration", data: data, status: status});
                             });
+                },
+                
+                save: function () {
+                    jQuery('a.js-submit-button').click();
+                },
+                
+                getFields: function () {
+                    var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
+
+                    var fieldTypesBySlug = {};
+
+                    fieldTypes.forEach(function (e) {
+                        fieldTypesBySlug[e.slug] = e;
+                    });
+
+                    function processFieldConfiguration(field) {
+                        if(typeof field.fieldOptions === 'string'){
+                            field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
+                        }
+
+                        return field;
+                    }
+
+                    function processFileConfiguration(file) {
+                        file.fieldType = 'file';
+                        file.categories = file.categories || [];
+                        return file;
+                    }
+
+                    var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
+                    var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
+
+
+                    var fields = _files.concat(_fields);
+
+                    fields.sort(function(a,b){
+                        if(a.title > b.title){
+                            return 1;
+                        } else if(a.title < b.title){
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+
+                    return fields;
+                },
+                
+                getSelectedCategory: function(){
+                    return $q(function(resolve){
+                        var interval = setInterval(function(){
+                            var $editable = jQuery('.js-editable-registrationCategory');
+                        
+                            if($editable.length){
+                                var editable = $editable.data('editable');
+                                if(editable){
+                                    clearInterval(interval);
+                                    resolve(editable.value);
+                                }
+                            }else{
+                                resolve(MapasCulturais.entity.object.category);
+                            }
+                        },50)
+                    });
                 }
 
             };
         }]);
 
-    module.factory('RegistrationFileConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
-        var url = new UrlService('registrationfileconfiguration');
+    module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
+        return function (controllerId){
+            var url = new UrlService(controllerId);
         return {
             getUrl: function(action, id){
                 return url.create(action, id);
@@ -138,32 +203,99 @@
                 return deferred.promise;
             }
         };
-
+        };
     }]);
-    module.controller('RegistrationFileConfigurationsController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http) {
+
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
+        var fileService = RegistrationConfigurationService('registrationfileconfiguration');
+        var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
+        
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.maxUploadSize = MapasCulturais.maxUploadSize;
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
         $scope.uploadFileGroup = 'registrationFileTemplate';
         $scope.getUploadUrl = function (ownerId){
-            return RegistrationFileConfigurationService.getUrl('upload', ownerId);
+            return fileService.getUrl('upload', ownerId);
         };
 
+        var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
+        
+        var fieldTypesBySlug = {};
+        
+        fieldTypes.forEach(function(e){
+            fieldTypesBySlug[e.slug] = e;
+        });
+        
+        fieldTypes.unshift({
+            slug: null,
+            name: 'Selecione o tipo de campo',
+            disabled: true
+        });
+        
         var fileConfigurationSkeleton = {
             ownerId: MapasCulturais.entity.id,
             title: null,
             description: null,
-            required: false
+            required: false,
+            categories: []
         };
 
+        var fieldConfigurationSkeleton = {
+            ownerId: MapasCulturais.entity.id,
+            fieldType: null,
+            fieldOptions: null,
+            title: null,
+            description: null,
+            required: false,
+            categories: []
+        };
+        
+        function processFieldConfiguration(field){
+            if(field.fieldOptions instanceof Array){
+                field.fieldOptions = field.fieldOptions.join("\n");
+            }
+            return field;
+        }
+        
+        function processFileConfiguration(file){
+            file.fieldType = 'file';
+            file.categories = file.categories || [];
+            return file;
+        }
+        
+        var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
+        var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
+        
+        // @TODO: USAR A FUNCAO getFields
+        var fields = _files.concat(_fields);
+        
         $scope.data = {
-            fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
+            fieldSpinner: false,
+            uploadSpinner: false,
+            
+            fields: fields,
             newFileConfiguration: angular.copy(fileConfigurationSkeleton),
-            entity: $scope.$parent.data.entity
+            newFieldConfiguration: angular.copy(fieldConfigurationSkeleton),
+            entity: $scope.$parent.data.entity,
+            fieldTypes: fieldTypes,
+            fieldsWithOptions: fieldTypes.filter(function(e) { if(e.requireValuesConfiguration) return e; }).map(function(e) { return e.slug; } ),
+            fieldTypesBySlug: fieldTypesBySlug,
+            categories: []
         };
 
-        function sortFiles(){
-            $scope.data.fileConfigurations.sort(function(a,b){
+        $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
+        
+        
+        $interval(function(){
+            $scope.data.categories = jQuery('#registration-categories .js-categories-values').text().split("\n");
+        },1000);
+        
+        $scope.allCategories = function(model){
+            return model.categories.length === 0;
+        }
+
+        function sortFields(){
+            $scope.data.fields.sort(function(a,b){
                 if(a.title > b.title){
                     return 1;
                 } else if(a.title < b.title){
@@ -174,13 +306,98 @@
             });
         }
 
+        sortFields();
+        
+        function validationErrors(response){
+            Object.keys(response.data).forEach(function(prop){
+                Object.keys(response.data[prop]).forEach(function(error){
+                    MapasCulturais.Messages.error(response.data[prop][error]);
+                });
+            });
+        }
+        
+        // Fields
+        $scope.fieldConfigurationBackups = [];
+        
+        $scope.createFieldConfiguration = function(){
+            $scope.data.fieldSpinner = true;
+            fieldService.create($scope.data.newFieldConfiguration).then(function(response){
+                $scope.data.fieldSpinner = false;
+                
+                if (response.error) {
+                    validationErrors(response);
+                    
+                } else {
+                    $scope.data.fields.push(response);
+                    sortFields();
+                    EditBox.close('editbox-registration-fields');
+                    $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
+                    MapasCulturais.Messages.success('Campo criado.');
+                }
+            });
+        };
+
+        $scope.removeFieldConfiguration = function (id, $index) {
+            if(confirm('Deseja remover este campo?')){
+                fieldService.delete(id).then(function(response){
+                    if(!response.error){
+                        $scope.data.fields.splice($index, 1);
+                        MapasCulturais.Messages.alert('Campo removido.');
+                    }
+                });
+            }
+        };
+
+        $scope.editFieldConfiguration = function(attrs) {
+            var model = $scope.data.fields[attrs.index],
+                data = {
+                    id: model.id,
+                    title: model.title,
+                    fieldType: model.fieldType,
+                    fieldOptions: model.fieldOptions,
+                    description: model.description,
+                    required: model.required,
+                    categories: model.categories.length ? model.categories : '',
+                    
+                };
+            $scope.data.fieldSpinner = true;
+            fieldService.edit(data).then(function(response){
+                $scope.data.fieldSpinner = false;
+                if (response.error) {
+                    validationErrors(response);
+                    
+                } else {
+                    sortFields();
+                    EditBox.close('editbox-registration-field-'+data.id);
+                    MapasCulturais.Messages.success('Alterações Salvas.');
+                }
+            });
+        };
+
+        $scope.cancelFieldConfigurationEditBox = function(attrs){
+            $scope.data.fields[attrs.index] = $scope.fieldConfigurationBackups[attrs.index];
+            delete $scope.fieldConfigurationBackups[attrs.index];
+        };
+
+        $scope.openFieldConfigurationEditBox = function(id, index, event){
+            $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
+            EditBox.open('editbox-registration-field-'+id, event);
+        };
+
+        // Files
         $scope.fileConfigurationBackups = [];
 
         $scope.createFileConfiguration = function(){
-            RegistrationFileConfigurationService.create($scope.data.newFileConfiguration).then(function(response){
-                if(!response.error){
-                    $scope.data.fileConfigurations.push(response);
-                    sortFiles();
+            $scope.data.uploadSpinner = true;
+            fileService.create($scope.data.newFileConfiguration).then(function(response){
+                $scope.data.uploadSpinner = false;
+                if (response.error) {
+                    validationErrors(response);
+                    
+                } else {
+                    response = processFileConfiguration(response);
+                    $scope.data.fields.push(response);
+                    sortFields();
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
                     MapasCulturais.Messages.success('Anexo criado.');
@@ -190,9 +407,9 @@
 
         $scope.removeFileConfiguration = function (id, $index) {
             if(confirm('Deseja remover este anexo?')){
-                RegistrationFileConfigurationService.delete(id).then(function(response){
+                fileService.delete(id).then(function(response){
                     if(!response.error){
-                        $scope.data.fileConfigurations.splice($index, 1);
+                        $scope.data.fields.splice($index, 1);
                         MapasCulturais.Messages.alert('Anexo removido.');
                     }
                 });
@@ -200,17 +417,23 @@
         };
 
         $scope.editFileConfiguration = function(attrs) {
-            var model = $scope.data.fileConfigurations[attrs.index],
+            $scope.data.uploadSpinner = true;
+            var model = $scope.data.fields[attrs.index],
                 data = {
                     id: model.id,
                     title: model.title,
                     description: model.description,
                     required: model.required,
-                    template: model.template
+                    template: model.template,
+                    categories: model.categories.length ? model.categories : '',
                 };
-            RegistrationFileConfigurationService.edit(data).then(function(response){
-                if(!response.error){
-                    sortFiles();
+            fileService.edit(data).then(function(response){
+                $scope.data.uploadSpinner = false;
+                if (response.error) {
+                    validationErrors(response);
+                    
+                } else {
+                    sortFields();
                     EditBox.close('editbox-registration-files-'+data.id);
                     MapasCulturais.Messages.success('Alterações Salvas.');
                 }
@@ -222,12 +445,12 @@
         };
 
         $scope.cancelFileConfigurationEditBox = function(attrs){
-            $scope.data.fileConfigurations[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
+            $scope.data.fields[attrs.index] = $scope.fileConfigurationBackups[attrs.index];
             delete $scope.fileConfigurationBackups[attrs.index];
         };
 
         $scope.openFileConfigurationEditBox = function(id, index, event){
-            $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fileConfigurations[index]);
+            $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
             EditBox.open('editbox-registration-files-'+id, event);
         };
 
@@ -239,8 +462,8 @@
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
             if(confirm('Deseja remover este modelo?')){
-                $http.get($scope.data.fileConfigurations[$index].template.deleteUrl).success(function(response){
-                    delete $scope.data.fileConfigurations[$index].template;
+                $http.get($scope.data.fields[$index].template.deleteUrl).success(function(response){
+                    delete $scope.data.fields[$index].template;
                     MapasCulturais.Messages.alert('Modelo removido.');
                 });
             }
@@ -261,7 +484,7 @@
             });
 
             $form.on('ajaxForm.success', function(evt, response){
-                $scope.data.fileConfigurations[index].template = response[$scope.uploadFileGroup];
+                $scope.data.fields[index].template = response[$scope.uploadFileGroup];
                 $scope.$apply();
                 setTimeout(function(){
                     EditBox.close('editbox-registration-files-template-'+id, event);
@@ -431,13 +654,15 @@
     }]);
 
 
-    module.controller('RegistrationFilesController', ['$scope', '$rootScope', '$timeout', 'RegistrationFileConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationFileConfigurationService, EditBox, $http, UrlService) {
+    module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
         var registrationsUrl = new UrlService('registration');
 
         $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
 
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
+        $scope.entity = MapasCulturais.entity.object;
+        
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -446,6 +671,49 @@
             item.file = MapasCulturais.entity.registrationFiles[item.groupName];
         });
 
+        
+        $scope.data.fields = RegistrationService.getFields();
+        
+        var fieldsByName = {};
+        $scope.data.fields.forEach(function(e){
+            fieldsByName[e.fieldName] = e;
+        });
+        
+        function initEditables(){
+            jQuery('.js-editable-field').each(function(){
+                var field = fieldsByName[this.id];
+                if(field.fieldOptions){
+                    var cfg = {};
+                    cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+
+                    jQuery(this).editable(cfg);
+                } else {
+                    jQuery(this).editable();
+                }
+                
+                if(!jQuery(this).data('editable-init')){
+                    jQuery(this).data('editable-init', true);
+                    jQuery(this).on('save', function(){
+                        setTimeout(function(){
+                            RegistrationService.save();
+                        });
+                    });
+                }
+
+            });
+        }
+        
+        $rootScope.$on('repeatDone:registration-fields', function(){
+            // só para esperar a renderização
+            $timeout(function(){
+                initEditables();
+            });
+        });
+        
+        $scope.showField = function (field) {
+
+        }
+        
         $scope.sendFile = function(attrs){
             var $form = $('#' + attrs.id + ' form');
             $form.submit();
@@ -464,8 +732,8 @@
 
         $scope.removeFile = function (id, $index) {
             if(confirm('Deseja remover este anexo?')){
-                $http.get($scope.data.fileConfigurations[$index].file.deleteUrl).success(function(response){
-                    delete $scope.data.fileConfigurations[$index].file;
+                $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
+                    delete $scope.data.fields[$index].file;
                 });
             }
         };
@@ -483,12 +751,63 @@
             });
 
             $form.on('ajaxForm.success', function(evt, response){
-                $scope.data.fileConfigurations[index].file = response[$scope.data.fileConfigurations[index].groupName];
+                $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
                 $scope.$apply();
                 setTimeout(function(){
                     EditBox.close('editbox-file-'+id, event);
                 }, 700);
            });
+        };
+
+        $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
+        
+        
+        if($scope.useCategories){
+            
+            RegistrationService.getSelectedCategory().then(function(value){
+                $scope.selectedCategory = value;
+                $interval(function(){
+                    
+                    RegistrationService.getSelectedCategory().then(function(selectedCategory) { 
+                        if($scope.selectedCategory !== selectedCategory){
+                            $scope.selectedCategory = selectedCategory;
+                            RegistrationService.save();
+                        }
+                    });
+                },50);
+            });
+            
+            $scope.$watch('selectedCategory', function(){
+                $timeout(function(){
+                    initEditables();
+                });
+            });
+
+        }
+        
+        $scope.showFieldForCategory = function(field){
+            if (!$scope.useCategories){
+                return true;
+            } else {
+                return field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
+            }
+        };
+        
+        
+        
+        $scope.printField = function(field, value){
+            
+            if (field.fieldType === 'date') {
+                return moment(value).format('DD-MM-YYYY');
+            } else if (field.fieldType === 'url'){
+                return '<a href="' + value + '">' + value + '</a>';
+            } else if (field.fieldType === 'email'){
+                return '<a href="mailto:' + value + '">' + value + '</a>';
+            } else if (value instanceof Array) {
+                return value.join(', ');
+            } else {
+                return value;
+            }
         };
 
     }]);
@@ -545,6 +864,9 @@
 
                 propLabels : [],
 
+                
+                fields: RegistrationService.getFields(),
+
                 relationApiQuery: {}
             }, MapasCulturais);
 
@@ -567,6 +889,7 @@
                 $scope.data.relationApiQuery.owner = {'@permissions': '@control', 'type': 'EQ(1)'};
             }
             $scope.fns = {};
+
 
             $scope.hideStatusInfo = function(){
                 jQuery('#status-info').slideUp('fast');
@@ -679,6 +1002,8 @@
                     $('#submitButton').trigger('click');
                 });
                 EditBox.close('editbox-select-registration-owner');
+                
+                RegistrationService.save();
             };
 
             $scope.setRegistrationAgent = function(entity, attrs){
@@ -738,7 +1063,6 @@
                 EditBox.open('edibox-upload-rules', event);
                 initAjaxUploader('edibox-upload-rules');
             };
-
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){
@@ -826,7 +1150,7 @@
             };
         }]);
     
-    module.controller('RelatedSealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
+    module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
         $scope.editbox = EditBox;
         
         $scope.seals = [];
@@ -843,10 +1167,11 @@
         $scope.data = {};
         
         $scope.avatarUrl = function(url){
-            if(url)
+            if(url) {
                 return url;
-            else
+            } else {
                 return MapasCulturais.assets.avatarSeal;
+            }
         };
         
         $scope.closeNewSealEditBox = function(){
@@ -862,35 +1187,27 @@
         $scope.setSeal = function(agent, entity){
         	var sealRelated = {};
             var _scope = this.$parent;
-            console.log(agent, entity);
             
-            if(typeof $scope.entity.registrationSeals !== "object") {
+            if(!angular.isObject($scope.entity.registrationSeals)) {
             	$scope.entity.registrationSeals = {};
         	} 
-            
             $scope.entity.registrationSeals[agent] =  entity.id;
             sealRelated = $scope.entity.registrationSeals;
             jQuery("#registrationSeals").editable('setValue',sealRelated);
             
             $scope.registrationSeals.push(sealRelated);
             EditBox.close('set-seal-' + agent);
-//            
-//            RelatedSealsService.create(entity.id).success(function(data){
-//                $scope.showCreateDialog = false;
-//                _scope.$parent.searchText = 'Mary, vocÊ está aqui!';
-//                _scope.$parent.result = [];
-//                EditBox.close($scope.getCreateSealRelationEditBoxId());
-//            });
         };
         
         $scope.getArrIndexBySealId = function(sealId) {
-        	var Found = 0;
-        	for(var Found in $scope.seals){
-                if($scope.seals[Found].id == sealId) {
-                    return Found;
-                }
-            }
-        	
+        	for(var found in $scope.seals) {
+                if($scope.seals[found].id == sealId)
+                	return found;      	
+        	};
+        };
+        
+        $scope.removeSeal = function(entity){
+        	delete $scope.entity.registrationSeals[entity];
         };
         
         $scope.deleteRelation = function(relation){

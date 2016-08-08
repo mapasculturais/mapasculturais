@@ -8,9 +8,9 @@
         
     <?php $this->part('singles/project-registrations--user-registrations', ['entity' => $entity]) ?>
     
-    <?php $this->part('singles/project-registrations--intro', ['entity' => $entity]) ?>
+    <?php $this->part('singles/project-registrations--intro', ['entity' => $entity]); ?>
         
-    <?php $this->part('singles/project-registrations--rules', ['entity' => $entity]) ?>
+    <?php $this->part('singles/project-registrations--rules', ['entity' => $entity]); ?>
     
     <?php if ($this->isEditable()): ?>
         

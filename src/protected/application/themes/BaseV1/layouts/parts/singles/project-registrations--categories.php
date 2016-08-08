@@ -23,7 +23,8 @@ if ($can_edit) {
     </p>
     <p>
         <span class="label">Opções</span><br>
-        <span class="<?php echo $ditable_class ?>" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $registration_categories; ?></span>
+
+        <span class="<?php echo $ditable_class ?> js-categories-values" data-edit="registrationCategories" data-type="textarea" data-original-title="Opções de inscrição (coloque uma opção por linha)" data-emptytext="Insira as opções de inscrição"><?php echo $registration_categories; ?></span>
     </p>
 </div>
 <!-- #registration-categories -->

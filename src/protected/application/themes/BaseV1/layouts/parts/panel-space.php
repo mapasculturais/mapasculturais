@@ -8,7 +8,9 @@
 	<div class="objeto-meta">
                 <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
                 <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
+                <?php if($entity->type): ?>
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
+                <?php endif; ?>
 		<div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms->area)?></div>
 		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
 		<div><span class="label">Acessibilidade:</span> <?php echo $entity->acessibilidade ? $entity->acessibilidade : 'Não informado' ?></div>

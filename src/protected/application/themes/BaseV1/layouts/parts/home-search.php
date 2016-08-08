@@ -27,6 +27,7 @@
                         <?php if($app->isEnabled('seals')): ?>
                             <li tabindex="5" id="seals-filter" data-entity="seal"><span class="icon icon-seal"></span> Selos</li>
                         <?php endif; ?>
+
                     </ul>
                 </div>
             </div>
