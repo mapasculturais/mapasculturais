@@ -400,7 +400,9 @@ class App extends \Slim\Slim{
 
         // run plugins
         foreach($config['plugins.enabled'] as $plugin){
-            include PLUGINS_PATH.$plugin.'.php';
+            if(file_exists(PLUGINS_PATH.$plugin.'.php')){
+                include PLUGINS_PATH.$plugin.'.php';
+            }
         }
         // ===================================== //
 
