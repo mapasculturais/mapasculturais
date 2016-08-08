@@ -4,10 +4,18 @@
             ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]">{{filter.label}}</span>
 </div>
 
+<div ng-if="filter.fieldType === 'checkbox-verified'">
+    <a  class="hltip btn btn-verified"
+        ng-class="{'selected':data[entity].filters[filter.filter.param]}"
+        title="{{filter.placeholder}}"
+        ng-click="data[entity].filters[filter.filter.param] = !data[entity].filters[filter.filter.param]">{{filter.label}}</a>
+</div>
+
 <div ng-if="filter.fieldType === 'text'">
     <span class="label">{{filter.label}}</span>
     <input ng-model="data[entity].filters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
 </div>
+
 
 <div ng-if="filter.fieldType === 'checklist'">
     <span class="label">{{filter.label}}</span>
@@ -48,17 +56,22 @@
             placeholder="{{filter.placeholder}}" />
 </div>
 
-<div ng-if="filter.fieldType === 'dateFromTo'">
-    <label  class="show-label">{{filter.label[0]}}</label>
-    <input  class="data"
-            ng-model="data[entity].filters[filter.filter.param[0]]"
-            ui-date="dateOptions"
-            ui-date-format="yy-mm-dd"
-            placeholder="{{filter.placeholder}}" />
-    <label  class="show-label" for="data-de-inicio">{{filter.label[1]}}</label>
-    <input  class="data"
-            ng-model="data[entity].filters[filter.filter.param[1]]"
-            ui-date="dateOptions"
-            ui-date-format="yy-mm-dd"
-            placeholder="{{filter.placeholder}}" />
+<div ng-if="filter.fieldType === 'custom.project.ropen'">
+    <span class="icon icon-check" ng-class="{'selected': data.project.ropen}" ng-click="data.project.ropen = !data.project.ropen"></span>
+    <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">{{filter.label}}</span>
 </div>
+
+<!-- <div ng-if="filter.fieldType === 'dateFromTo'">
+    <label  class="show-label">{{filter.label.split('/')[0]}}</label>
+    <input  class="data"
+            ng-model="data[entity].filters[filter.filter.param]"
+            ui-date="dateOptions"
+            ui-date-format="yy-mm-dd"
+            placeholder="{{filter.placeholder}}" />
+    <label  class="show-label" for="data-de-inicio">{{filter.label.split('/')[1]}}</label>
+    <input  class="data"
+            ng-model="data[entity].filters[filter.filter.param]"
+            ui-date="dateOptions"
+            ui-date-format="yy-mm-dd"
+            placeholder="{{filter.placeholder}}" />
+</div> -->

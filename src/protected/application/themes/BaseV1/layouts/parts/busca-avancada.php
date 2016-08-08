@@ -83,6 +83,7 @@
                 ng-if="data[data.global.filterEntity].keyword !== ''"
                 ng-click="data[data.global.filterEntity].keyword = ''">{{ data[data.global.filterEntity].keyword}}
             </a>
+            <a class="tag-selected tag-event" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
             <span   ng-repeat="(filter_k, filter_v) in data[data.global.filterEntity].filters">
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
                     ng-repeat="value in filter_v"
@@ -91,14 +92,9 @@
                     {{getFilterOptionLabel(filter_k, value)}}
                 </a>
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
-                    ng-if="!getFilter(filter_k).isArray && !getFilter(filter_k).type === 'dateFromTo' && filter_v"
+                    ng-if="!getFilter(filter_k).isArray && filter_v"
                     ng-click="data[data.global.filterEntity].filters[filter_k] = !data[data.global.filterEntity].filters[filter_k]">
-                    {{getFilterLabel(filter_k)}}
-                </a>
-                <a  class="tag-selected tag-{{data.global.filterEntity}}"
-                    ng-if="getFilter(filter_k).type === 'dateFromTo'"
-                    ng-click="data[data.global.filterEntity].filters[filter_k] = !data[data.global.filterEntity].filters[filter_k]">
-                    {{getFilterFromTo(filter_k)}}
+                    {{getFilterTag(filter_k)}}
                 </a>
             </span>
 

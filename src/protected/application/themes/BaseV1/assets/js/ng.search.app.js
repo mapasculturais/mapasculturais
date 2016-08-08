@@ -58,28 +58,18 @@
         },
         agent: {
             keyword: '',
-            areas: [],
-            type: null,
-            isVerified: false,
             showAdvancedFilters:false,
             filters: {}
         },
         space: {
             keyword: '',
-            areas: [],
-            types: [],
-            acessibilidade: false,
-            isVerified: false,
             showAdvancedFilters:false,
             filters: {}
         },
         event: {
             keyword: '',
-            linguagens: [],
             from: moment().format('YYYY-MM-DD'),
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
-            classificacaoEtaria: [],
-            isVerified: false,
             showAdvancedFilters:false,
             filters: {}
         },
@@ -88,7 +78,6 @@
             linguagens: [],
             types: [],
             isVerified: false,
-            // registration open
             ropen: false,
             showAdvancedFilters:false,
             filters: {}
@@ -194,20 +183,15 @@
             })[0];
         };
 
-        $scope.getFilterLabel = function(filter_key){
-            return $scope.getFilter(filter_key).label;
+        $scope.getFilterTag = function(filter_key){
+            var filter = $scope.getFilter(filter_key);
+            return filter.tag || filter.label;
         };
 
         $scope.getFilterOptionLabel = function(filter_key, filter_value){
             return $scope.getFilter(filter_key).options.filter(function(option){
                     return option.value === filter_value;
                 })[0].label;
-        };
-
-        $scope.getFilterSelectedFromTo = function(filter_key){
-            var filter = $scope.getFilter(filter_key),
-                search = data[data.global.filterEntity].filters[filter_key];
-            return [filter.label[0], search[0], filter.label[1], search[1]].join(' ');
         };
 
         $scope.getName = function(valores, id, key = 'id'){

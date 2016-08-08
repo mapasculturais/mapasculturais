@@ -13,12 +13,20 @@
                     name="palavra-chave-<?php echo strtolower($entity_name); ?>"
                     placeholder="Buscar <?php echo strtolower($display_name); ?>" />
         </form>
+        <?php if($entity_name === 'event'): ?>
+            <div class="filter search-filter--date">
+                <label class="show-label" for="data-de-inicio">De</label>
+                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" /> <label class="show-label">a</label>
+                <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" />
+            </div>
+        <?php endif; ?>
         <span ng-repeat="entity in ['<?php echo $entity_name; ?>']">
-            <div ng-repeat-start="filter in filters['<?php echo $entity_name ?>']" ng-if="filter.isInline" class="filter search-filter--{{filter.filter.param}}">
+            <div ng-repeat-start="filter in filters['<?php echo $entity_name ?>']" ng-if="filter.isInline" class="filter search-filter--{{filter.filter.param.toLowerCase()}} {{filter.addClass}}">
                 <?php $this->part('search/filter-field') ?>
             </div>
             <span ng-repeat-end></span>
         </span>
+
         <div ng-repeat="entity in ['<?php echo $entity_name; ?>']" class="show-advanced-filters">
             <?php $this->part('search/advanced-filters') ?>
         </div>

@@ -632,8 +632,7 @@ class Theme extends MapasCulturais\Theme {
                 'isInline' => true,
                 'isArray' => true,
                 'prefix' => '',
-                // 'isMetadata' => false,
-                'type' => 'metadata', //metadata, term or entitytype
+                'type' => 'metadata',
                 'label' => '',
                 'placeholder' => '',
                 'filter' => [
@@ -652,6 +651,7 @@ class Theme extends MapasCulturais\Theme {
                 $modified_filters[$key] = [];
                 foreach ($filters[$key] as $field) {
                     $mod_field = array_merge($skeleton_field, $field);
+
                     if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
                         $mod_field['options'] = [];
                         if ($mod_field['fieldType'] == 'singleselect')
@@ -700,7 +700,7 @@ class Theme extends MapasCulturais\Theme {
                     'filter' => [
                         'param' => 'area',
                         'value' => 'IN({val})'
-                    ],
+                    ]
                 ],
                 [
                     'label' => 'Tipos',
@@ -723,8 +723,10 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
                     'placeholder' => 'Exibir somente resultados Verificados',
-                    'fieldType' => 'checkbox',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
                         'param' => 'isVerified',
@@ -755,8 +757,10 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
                     'placeholder' => 'Exibir somente resultados Verificados',
-                    'fieldType' => 'checkbox',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
                         'param' => 'isVerified',
@@ -765,17 +769,18 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ],
             'event' => [
-                [
-                    'label' => ['De', 'a'],
-                    'fieldType' => 'dateFromTo',
-                    'placeholder' => '00/00/0000',
-                    'isArray' => false,
-                    'prefix' => '@',
-                    'filter' => [
-                        'param' => ['from', 'to'],
-                        'value' => ['LTE({val})', 'GTE({val})']
-                    ]
-                ],
+                // TODO: Apply filter FromTo from configuration, removing from template "filter-field.php"
+                // [
+                //     'label' => ['De', 'a'],
+                //     'fieldType' => 'dateFromTo',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'prefix' => '@',
+                //     'filter' => [
+                //         'param' => ['from', 'to'],
+                //         'value' => ['LTE({val})', 'GTE({val})']
+                //     ]
+                // ],
                 [
                     'label' => 'Linguagem',
                     'placeholder' => 'Selecione as linguagens',
@@ -796,16 +801,44 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
                     'placeholder' => 'Exibir somente resultados Verificados',
-                    'fieldType' => 'checkbox',
+                    'fieldType' => 'checkbox-verified',
                     'isArray' => false,
+                    'addClass' => 'verified-filter',
                     'filter' => [
                         'param' => 'isVerified',
                         'value' => 'EQ(true)'
                     ]
                 ]
             ],
-            'project' => []
+            'project' => [
+                [
+                    'label' => 'Tipo',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Inscrições Abertas',
+                    'fieldType' => 'custom.project.ropen'
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ]
         ];
     }
 
