@@ -1,12 +1,12 @@
 Esta documentação trata da ativação do tema no *config.php* da aplicação e de algumas configurações básicas para parametrização de um tema já existente. 
 
-## Temas conhecidos:
-* https://github.com/institutotim/mapasculturaisThemeMapaNasNuvensDF
-* https://github.com/institutotim/mapasculturaisThemeSaoJose
-* https://github.com/institutotim/mapasculturaisThemeMatoGrosso
-* https://github.com/institutotim/mapasculturaisThemeBH
-* https://github.com/institutotim/mapasculturaisThemeEstadoSP
-* https://github.com/institutotim/mapasculturaisThemeSantoAndre
+## Temas conhecidos
+* [Mapa nas Nuvens - Distrito Federal](https://github.com/institutotim/mapasculturaisThemeMapaNasNuvensDF)
+* [Tema São José dos Campos](https://github.com/institutotim/mapasculturaisThemeSaoJose)
+* [Tema Mato Grosso](https://github.com/institutotim/mapasculturaisThemeMatoGrosso)
+* [Tema Belo Horizonte](https://github.com/institutotim/mapasculturaisThemeBH)
+* [Tema Estado da Cultura - Estado de São Paulo](https://github.com/institutotim/mapasculturaisThemeEstadoSP)
+* [Tema Santo André](https://github.com/institutotim/mapasculturaisThemeSantoAndre)
 
 ## Ativando um novo tema
 
@@ -15,6 +15,7 @@ Os arquivos de tema da aplicação ficam em:
 ```
 /mapasculturais/src/protected/application/themes
 ```
+
 Lá estão os temas válidos da aplicação. Certifique-se de ter um tema desejavel neste diretorio para que seja ativado. 
 
 Para ativar o tema edite o arquivo config.php. Este arquivo estende o arquivo conf-base.php. Já o arquivo conf-template.php é apenas um exemplo que pode ser usado para elaborar um novo config.php
@@ -22,7 +23,9 @@ Para ativar o tema edite o arquivo config.php. Este arquivo estende o arquivo co
 ```
 $ vi mapasculturais/src/protected/application/conf/config.php
 ```
+
 Edite as linhas abaixo:
+
 ```
 /* configure e descomente as linhas abaixo para habilitar um tema personalizado */
   // 'namespaces' => array_merge( $config['namespaces'], ['SEU-NAME-SPACE' => 'CAMINHO-DO-TEMPLATE']),
@@ -43,24 +46,25 @@ Repare que, além de retirar os comentários e inserir os namespaces, acrescenta
 Ainda no arquivo do configuracoes da aplicacao (config.php), voce pode encontrar parametros para latitude, longitude e zoom do mapa. 
 
 Veja: 
+
 ```
 $ vi mapasculturais/src/protected/application/conf/config.php
 ```
-Busque e altere as linhas abaixo. 
+Busque e altere as linhas abaixo.
 
 ```
-  // latitude, longitude
-  'maps.center' => [-23.666380211046917, -46.52915954589844],
-  
-  // zoom do mapa
-  'maps.zoom.default' => 12,
+// latitude, longitude
+'maps.center' => [-23.666380211046917, -46.52915954589844],
+
+// zoom do mapa
+'maps.zoom.default' => 12,
 ```
 
 Rode o script de deploy com o usuario da aplicação. 
 
-## Colocando em modo homologação, produção ou desenvolvimento
+## Modo Homologação, Produção ou Desenvolvimento
 
-Após a instalação da ferramenta, no arquivo mapasculturais/src/protected/application/conf/config.php, encontrei essas linhas: 
+Após a instalação da ferramenta, no arquivo mapasculturais/src/protected/application/conf/config.php, encontre essas linhas: 
 
 ```
     // development, staging, production
