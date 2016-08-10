@@ -665,21 +665,218 @@ class Theme extends MapasCulturais\Theme {
         }
 //        eval(\Psy\sh());
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
-            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+            $skeleton_field = [
+                'fieldType' => 'checklist',
+                'isInline' => true,
+                'isArray' => true,
+                'prefix' => '',
+                'type' => 'metadata',
+                'label' => '',
+                'placeholder' => '',
+                'filter' => [
+                    'param' => '',
+                    'value' => 'IN({val})'
+                ]
+            ];
+
+            // $normal_filters = [];
+            // $metadata_filters = [];
+            $filters = $this->_getFilters();
+            $modified_filters = [];
+
+            foreach ($filters as $key => $value) {
+                $modified_filters[] = $key;
+                $modified_filters[$key] = [];
+                foreach ($filters[$key] as $field) {
+                    $mod_field = array_merge($skeleton_field, $field);
+
+                    if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
+                        $mod_field['options'] = [];
+                        if ($mod_field['fieldType'] == 'singleselect')
+                            $mod_field['options'][] = ['value' => null, 'label' => $mod_field['placeholder']];
+                        switch ($mod_field['type']) {
+                            case 'metadata':
+                                $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($data->config['options'] as $meta_key => $value)
+                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                break;
+                            case 'entitytype':
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($types as $type_key => $type_val)
+                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
+                                break;
+                            case 'term':
+                                $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
+                                foreach ($tax->restrictedTerms as $v)
+                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+
+                                $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
+                                break;
+                        }
+                    }
+                    $modified_filters[$key][] = $mod_field;
+                }
+            }
+            $this->jsObject['filters'] = $modified_filters;
         }
-        
+
         if($app->user->is('admin')) {
         	$this->jsObject['allowedFields'] = true;
         } else {
-        	$this->jsObject['allowedFields'] = false;        	
+        	$this->jsObject['allowedFields'] = false;
         }
     }
-    protected function _getAdvancedFilters(){
+
+    protected function _getFilters(){
         return [
-            'space' => [],
-            'agent' => [],
-            'event' => [],
-            'project' => []
+            'space' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'acessibilidade',
+                        'value' => 'EQ(Sim)'
+                    ],
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'agent' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ],
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Todos',
+                    'fieldType' => 'singleselect',
+                    'type' => 'entitytype',
+                    // 'isArray' => false,
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'EQ({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'event' => [
+                // TODO: Apply filter FromTo from configuration, removing from template "filter-field.php"
+                // [
+                //     'label' => ['De', 'a'],
+                //     'fieldType' => 'dateFromTo',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'prefix' => '@',
+                //     'filter' => [
+                //         'param' => ['from', 'to'],
+                //         'value' => ['LTE({val})', 'GTE({val})']
+                //     ]
+                // ],
+                [
+                    'label' => 'Linguagem',
+                    'placeholder' => 'Selecione as linguagens',
+                    'fieldType' => 'checklist',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'linguagem',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Classificação',
+                    'placeholder' => 'Selecione a classificação',
+                    'filter' => [
+                        'param' => 'classificacaoEtaria',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'isArray' => false,
+                    'addClass' => 'verified-filter',
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'project' => [
+                [
+                    'label' => 'Tipo',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Inscrições Abertas',
+                    'fieldType' => 'custom.project.ropen'
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -746,7 +943,7 @@ class Theme extends MapasCulturais\Theme {
     	if (!$app->user->is('guest')) {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
     	}
-    	
+
     	if($app->user->is('admin') || $app->user->is('superAdmin') || $entity->canUser('@control')) {
     		$this->jsObject['canRelateSeal'] = true;
     	} else {
@@ -774,11 +971,11 @@ class Theme extends MapasCulturais\Theme {
 
     function addProjectToJs(Entities\Project $entity){
         $app = App::i();
-        
+
         $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
-        
+
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
             if($a->title > $b->title){
                 return 1;
@@ -788,21 +985,21 @@ class Theme extends MapasCulturais\Theme {
                 return 0;
             }
         });
-        
+
         $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
-        
-        
+
+
         usort($field_types, function ($a,$b){
             return strcmp($a->name, $b->name);
         });
-        
+
         $this->jsObject['registrationFieldTypes'] = $field_types;
-        
+
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
-        
+
         if($entity->canUser('@control')){
-            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();    
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
         } else {
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         }
