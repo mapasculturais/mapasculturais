@@ -31,7 +31,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
-            
+
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
@@ -44,17 +44,17 @@ class Theme extends MapasCulturais\Theme {
 
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
-            
-            
+
+
             'entities: Spaces of the agent'=> 'Espaços do agente',
             'entities: Space Description'=> 'Descrição do Espaço',
             'entities: Agent children'=> 'Agentes',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
-            
+
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
-            
+
             'entities: Space' => 'Espaço',
             'entities: Spaces' => 'Espaços',
             'entities: space' => 'espaço',
@@ -62,7 +62,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: parent space' => 'espaço pai',
             'entities: a space' => 'um espaço',
             'entities: the space' => 'o espaço',
-            'entities: of the space' => 'do espaço',            
+            'entities: of the space' => 'do espaço',
             'entities: In this space' => 'Neste espaço',
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
@@ -94,12 +94,12 @@ class Theme extends MapasCulturais\Theme {
     function getSearchProjectsUrl(){
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
     }
-    
+
     protected function _init() {
         $app = App::i();
 
 
-       
+
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -115,11 +115,11 @@ class Theme extends MapasCulturais\Theme {
                 <?php
             endif;
         });
-        
+
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
-        
+
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
-        
+
         $this->jsObject['EntitiesDescription'] = [
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
@@ -144,7 +144,7 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
-            
+
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents',
                 'entity.module.changeOwner',
@@ -155,7 +155,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
                 'mc.directive.mcSelect',
-                'mc.module.notifications', 
+                'mc.module.notifications',
                 'mc.module.findEntity',
 
                 'ngSanitize',
@@ -540,19 +540,19 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
-            'mapasculturais', 
-            'ng-mapasculturais', 
-            'mc.directive.multiselect', 
+            'mapasculturais',
+            'ng-mapasculturais',
+            'mc.directive.multiselect',
             'mc.directive.singleselect',
-            'mc.directive.editBox', 
-            'mc.directive.mcSelect', 
+            'mc.directive.editBox',
+            'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
-            'entity.module.changeOwner', 
-            'entity.directive.editableMultiselect', 
+            'entity.module.changeOwner',
+            'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
-        
+
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
@@ -627,21 +627,218 @@ class Theme extends MapasCulturais\Theme {
         }
 //        eval(\Psy\sh());
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
-            $this->jsObject['advancedFilters'] = $this->_getAdvancedFilters();
+            $skeleton_field = [
+                'fieldType' => 'checklist',
+                'isInline' => true,
+                'isArray' => true,
+                'prefix' => '',
+                'type' => 'metadata',
+                'label' => '',
+                'placeholder' => '',
+                'filter' => [
+                    'param' => '',
+                    'value' => 'IN({val})'
+                ]
+            ];
+
+            // $normal_filters = [];
+            // $metadata_filters = [];
+            $filters = $this->_getFilters();
+            $modified_filters = [];
+
+            foreach ($filters as $key => $value) {
+                $modified_filters[] = $key;
+                $modified_filters[$key] = [];
+                foreach ($filters[$key] as $field) {
+                    $mod_field = array_merge($skeleton_field, $field);
+
+                    if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
+                        $mod_field['options'] = [];
+                        if ($mod_field['fieldType'] == 'singleselect')
+                            $mod_field['options'][] = ['value' => null, 'label' => $mod_field['placeholder']];
+                        switch ($mod_field['type']) {
+                            case 'metadata':
+                                $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($data->config['options'] as $meta_key => $value)
+                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                break;
+                            case 'entitytype':
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($types as $type_key => $type_val)
+                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
+                                break;
+                            case 'term':
+                                $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
+                                foreach ($tax->restrictedTerms as $v)
+                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+
+                                $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
+                                break;
+                        }
+                    }
+                    $modified_filters[$key][] = $mod_field;
+                }
+            }
+            $this->jsObject['filters'] = $modified_filters;
         }
         
         if($app->user->is('admin')) {
         	$this->jsObject['allowedFields'] = true;
         } else {
-        	$this->jsObject['allowedFields'] = false;        	
+        	$this->jsObject['allowedFields'] = false;
         }
     }
-    protected function _getAdvancedFilters(){
+
+    protected function _getFilters(){
         return [
-            'space' => [],
-            'agent' => [],
-            'event' => [],
-            'project' => []
+            'space' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'acessibilidade',
+                        'value' => 'EQ(Sim)'
+                    ],
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'agent' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ],
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Todos',
+                    'fieldType' => 'singleselect',
+                    'type' => 'entitytype',
+                    // 'isArray' => false,
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'EQ({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'event' => [
+                // TODO: Apply filter FromTo from configuration, removing from template "filter-field.php"
+                // [
+                //     'label' => ['De', 'a'],
+                //     'fieldType' => 'dateFromTo',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'prefix' => '@',
+                //     'filter' => [
+                //         'param' => ['from', 'to'],
+                //         'value' => ['LTE({val})', 'GTE({val})']
+                //     ]
+                // ],
+                [
+                    'label' => 'Linguagem',
+                    'placeholder' => 'Selecione as linguagens',
+                    'fieldType' => 'checklist',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'linguagem',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Classificação',
+                    'placeholder' => 'Selecione a classificação',
+                    'filter' => [
+                        'param' => 'classificacaoEtaria',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'isArray' => false,
+                    'addClass' => 'verified-filter',
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ],
+            'project' => [
+                [
+                    'label' => 'Tipo',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Inscrições Abertas',
+                    'fieldType' => 'custom.project.ropen'
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'isVerified',
+                        'value' => 'EQ(true)'
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -697,7 +894,7 @@ class Theme extends MapasCulturais\Theme {
     function addRelatedAgentsToJs($entity) {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
-    
+
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
 
@@ -799,7 +996,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
 
         $cache_id = __METHOD__ . ':' . $entity_class;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
@@ -813,7 +1010,7 @@ class Theme extends MapasCulturais\Theme {
                 'isVerified' => 'EQ(true)',
                 '@select' => 'id'
             ));
-            
+
         }else{
 
             $entities = $controller->apiQuery([
@@ -871,9 +1068,9 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $controller = $app->getControllerByEntity($class);
-        
+
         $q = ['@count'=>1];
-        
+
         if($verified === true){
             $q['isVerified'] = 'EQ(true)';
         }

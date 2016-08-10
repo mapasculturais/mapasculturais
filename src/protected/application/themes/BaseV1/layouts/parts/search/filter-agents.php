@@ -42,7 +42,7 @@
             <a class="hltip btn btn-verified" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
-        
+
         <div ng-repeat="entity in ['agent']" class="show-advanced-filters ">
             <?php $this->part('search/advanced-filters') ?>
         </div>
