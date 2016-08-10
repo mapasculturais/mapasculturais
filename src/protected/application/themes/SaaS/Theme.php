@@ -16,6 +16,8 @@ class Theme extends BaseV1\Theme{
     public function __construct(\MapasCulturais\AssetManager $asset_manager) {
         parent::__construct($asset_manager);
         
+        $app = App::i();
+        
         self::$config = $app->config['sass'];
         
         $this->filters = self::$config['filters'];
