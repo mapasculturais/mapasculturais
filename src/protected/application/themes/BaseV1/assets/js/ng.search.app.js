@@ -58,63 +58,41 @@
         },
         agent: {
             keyword: '',
-            areas: [],
-            type: null,
-            isVerified: false,
             showAdvancedFilters:false,
-            advancedFilters: {}
+            filters: {}
         },
         space: {
             keyword: '',
-            areas: [],
-            types: [],
-            acessibilidade: false,
-            isVerified: false,
             showAdvancedFilters:false,
-            advancedFilters: {}
+            filters: {}
         },
         event: {
             keyword: '',
-            linguagens: [],
             from: moment().format('YYYY-MM-DD'),
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
-            classificacaoEtaria: [],
-            isVerified: false,
             showAdvancedFilters:false,
-            advancedFilters: {}
+            filters: {}
         },
         project: {
             keyword: '',
             linguagens: [],
             types: [],
             isVerified: false,
-            // registration open
             ropen: false,
             showAdvancedFilters:false,
-            advancedFilters: {}
+            filters: {}
         }
     };
-    
-    // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
-    ['space', 'agent', 'event', 'project'].forEach(function(entity){
-        MapasCulturais.advancedFilters[entity].forEach(function(filter){
-            if(filter.isArray){
-                skeletonData[entity].advancedFilters[filter.filter.param] = [];
-            } else {
-                skeletonData[entity].advancedFilters[filter.filter.param] = null;
-            }
-        });
-    });
 
     var entities = ['space', 'event', 'agent', 'project'];
 
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
-        MapasCulturais.advancedFilters[entity].forEach(function(filter){
+        MapasCulturais.filters[entity].forEach(function(filter){
             if(filter.isArray){
-                skeletonData[entity].advancedFilters[filter.filter.param] = [];
+                skeletonData[entity].filters[filter.filter.param] = [];
             } else {
-                skeletonData[entity].advancedFilters[filter.filter.param] = null;
+                skeletonData[entity].filters[filter.filter.param] = null;
             }
         });
     });
@@ -191,15 +169,32 @@
                 project: 1
             };
         }
-        
-        $scope.advancedFilters = MapasCulturais.advancedFilters;
+
+        $scope.filters = MapasCulturais.filters;
 
         $rootScope.resetPagination();
 
         $scope.assetsUrl = MapasCulturais.assets;
 
-        $scope.getName = function(valores, id){
-            return valores.filter(function(e){if(e.id === id) return true;})[0].name;
+        $scope.getFilter = function (filter_key){
+            return MapasCulturais.filters[$scope.data.global.filterEntity].filter(function(f){
+                return f['filter'].param === filter_key;
+            })[0];
+        };
+
+        $scope.getFilterTag = function(filter_key){
+            var filter = $scope.getFilter(filter_key);
+            return filter.tag || filter.label;
+        };
+
+        $scope.getFilterOptionLabel = function(filter_key, filter_value){
+            return $scope.getFilter(filter_key).options.filter(function(option){
+                    return option.value === filter_value;
+                })[0].label;
+        };
+
+        $scope.getName = function(valores, id, key = 'id'){
+            return valores.filter(function(e){if(e[key] === id) return true;})[0].name;
         };
 
         $scope.getId = function(valores, name){
@@ -234,7 +229,9 @@
         };
         
         $scope.hasAdvancedFilters = function(entity){
-            return MapasCulturais.advancedFilters[entity].length > 0;
+            return MapasCulturais.filters[entity].filter(function(v){
+                return !v.isInline;
+            }).length > 0;
         };
 
         $scope.hasFilter = function() {
@@ -244,9 +241,7 @@
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
 
-            return ctx.has ||
-                   $scope.data.global.isVerified ||
-                   $scope.data.global.locationFilters.enabled !== null;
+            return ctx.has || $scope.data.global.locationFilters.enabled !== null;
         };
 
         $scope.cleanAllFilters = function () {
@@ -354,13 +349,13 @@
 
         $scope.data = angular.copy(skeletonData);
 
-        $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
-        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
-        $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
         MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
-        $scope.types = MapasCulturais.entityTypes;
-        $scope.location = $location;
+        // $scope.types = MapasCulturais.entityTypes;
+        // $scope.location = $location;
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 

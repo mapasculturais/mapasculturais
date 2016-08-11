@@ -38,7 +38,7 @@
             var activeEntity = data.global.filterEntity;
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
-                
+
                 var entityQueryData = data2searchData(activeEntity, data[activeEntity]);
                 if(!angular.equals(entityQueryData, lastQueries[activeEntity]) || !compareEnabledEntities){
                     lastQueries[activeEntity] = angular.copy(entityQueryData);
@@ -46,10 +46,10 @@
                 }else{
                     results[activeEntity] = $rootScope.lastResult[activeEntity];
                 }
-                
+
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
-                
+
                 var listQueryData = data2searchData(activeEntity, data[activeEntity]);
 
                 if(activeEntity !== lastQueries.listedEntity)
@@ -83,7 +83,7 @@
                     }
 
                 }
-                
+
                 $rootScope.searchArgs[data.global.viewMode][entity] = sData;
 
 
@@ -113,7 +113,7 @@
                 numRequests++;
                 activeRequests++;
                 $rootScope.spinnerCount++;
-                
+
                 apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
                     var metadata = JSON.parse(header('API-Metadata'));
                     numSuccessRequests++;
@@ -136,6 +136,7 @@
             }
 
             function countAndRemoveResultsNotInMap(entity, results){
+                // console.log(results);
                 results[entity].forEach(function(item, index) {
                     if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
                         $rootScope.resultsNotInMap[entity]++;
@@ -175,105 +176,57 @@
                 var searchData = {};
 
                 if(entityData.keyword){
-
                     searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
+                for (var search_filter in entityData.filters){
 
-                if(entityData.areas && entityData.areas.length){
-                    var selectedAreas = entityData.areas.map(function(e){
-                        return MapasCulturais.taxonomyTerms.area[e];
-                    });
-                    selectedAreas = selectedAreas.map(function(e){ return e.replace(',','\,'); });
-                    searchData['term:area'] = 'IN(' + selectedAreas  + ')';
+                    if(entityData.from)
+                        searchData['@from'] = moment(entityData.from).format('YYYY-MM-DD');
+                    if(entityData.to)
+                        searchData['@to'] = moment(entityData.to).format('YYYY-MM-DD');
+
+                    if(entityData.ropen){
+                        var today = moment().format('YYYY-MM-DD');
+                        searchData.registrationFrom = 'LTE(' + today + ')';
+                        searchData.registrationTo   = 'GTE(' + today + ')';
+                    }
+
+                    if(entityData.filters[search_filter]){
+                        var filter = MapasCulturais.filters[entity].filter(function(f){
+                            return f.filter.param === search_filter;
+                        })[0];
+                        if (entityData.filters[search_filter].length){
+                            if (filter.type === 'term'){
+                                var search_value = entityData.filters[search_filter].map(function(e){
+                                    return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
+                                })
+;                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
+                            } else
+                                if (filter.type==='entitytype')
+                                    searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
+                        } else if (!filter.isArray) {
+                            searchData[filter.prefix + filter.filter.param] = filter.filter.value;
+                        }
+                    }
                 }
 
-                if(entityData.linguagens && entityData.linguagens.length){
-                    var selectedLinguagens = entityData.linguagens.map(function(e){
-                        return MapasCulturais.taxonomyTerms.linguagem[e];
-                    });
-                    selectedLinguagens = selectedLinguagens.map(function(e){ return e.replace(',','\\,'); });
-
-                    searchData['term:linguagem'] = 'IN(' + selectedLinguagens + ')';
-                }
-
-                if(entityData.type){
-                    searchData.type = 'EQ(' + entityData.type + ')';
-                }
-
-                if(entityData.types && entityData.types.length){
-                    searchData.type = 'IN(' + entityData.types + ')';
-                }
-
-                if(entityData.classificacaoEtaria && entityData.classificacaoEtaria.length){
-                    var selectedClassificacoesEtarias = entityData.classificacaoEtaria.map(function(e){
-                        return MapasCulturais.classificacoesEtarias[e];
-                    });
-                    searchData.classificacaoEtaria = 'IN(' + selectedClassificacoesEtarias + ')';
-                }
-
-                if(entityData.acessibilidade){
-                    searchData.acessibilidade = 'EQ(Sim)';
-                }
-
-                if(entityData.isVerified){
-                    searchData.isVerified = 'EQ(true)';
-                }
                 if(data.global.locationFilters.enabled !== null){
                     var type = data.global.locationFilters.enabled;
                     var center = data.global.locationFilters[type].center;
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
-
-                if(entityData.from)
-                    searchData['@from'] = moment(entityData.from).format('YYYY-MM-DD');
-
-                if(entityData.to)
-                    searchData['@to'] = moment(entityData.to).format('YYYY-MM-DD');
-
-                // project registration is open?
-                if(entityData.ropen){
-                    var today = moment().format('YYYY-MM-DD');
-                    searchData.registrationFrom = 'LTE(' + today + ')';
-                    searchData.registrationTo   = 'GTE(' + today + ')';
-                }
-                
-                Object.keys(data[entity].advancedFilters).forEach(function(key){
-                    var val = data[entity].advancedFilters[key];
-                    var filter = MapasCulturais.advancedFilters[entity].find(function(filter){
-                        if(filter.filter.param === key){
-                            return filter;
-                        }
-                    })
-
-                    if(filter.parseValue && filter.parseValue.length > 0){
-                        filter.parseValue.forEach(function(parser){
-                            switch(parser){
-                                case 'join':
-                                    val = val.join(',');
-                                break;
-                            }
-                        });
-                    }
-
-                    if(val){
-                        var parsed = filter.filter.value.replace(/\{val\}/g, val);
-                        searchData[key] = parsed;
-                    }
-                });
-
-                console.log(entity, searchData, entityData);
+                // console.log(searchData);
                 return searchData;
             }
 
             function apiFind(entity, searchData, page, action) {
-                
-                
+
+
                 if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
-                    console.log(entity , searchData, MapasCulturais.searchFilters);
                 }
-                
+
                 var selectData = 'id,singleUrl,name,type,shortDescription,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
                 var exportEntity = entity;
@@ -316,7 +269,7 @@
                 		selectData += "," + prop;
                 	}
                 })
-                
+
                 var queryString_apiExport = '@select='+selectData;
 
                 //removes type column from event export
@@ -330,9 +283,10 @@
                     if(att != '@select' && att!='@page' && att!='@limit')
                         queryString_apiExport += "&"+att+"="+searchData[att];
                 }
-                
+
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
 
+                // console.log(entity, action, querystring, data);
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 
