@@ -35,7 +35,11 @@ class Seal extends \MapasCulturais\Entity
         'shortDescription' => [
             'required' => 'A descrição curta é obrigatória',
             'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ]
+        ],
+    	'validPeriod' => [
+    		'strlen(trim($value))' => 'Validade do selo é obrigatório.',
+    		'$this->validatePeriod($value)' => 'Preencha um período de validade válido.'
+    	]
     ];
 
     /**
@@ -177,6 +181,15 @@ class Seal extends \MapasCulturais\Entity
         }
         
         return false;
+    }
+    
+    function validatePeriod($value) {
+    	if (!is_numeric($value)) {
+    		return false;
+    	} elseif ($value < 0) {
+    		return false;
+    	}
+    	return true;
     }
     
     //============================================================= //
