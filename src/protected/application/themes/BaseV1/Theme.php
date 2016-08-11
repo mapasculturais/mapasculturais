@@ -679,11 +679,12 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ];
 
-            // $normal_filters = [];
-            // $metadata_filters = [];
             $filters = $this->_getFilters();
             $modified_filters = [];
 
+            $sanitize_filter_value = function($val){
+                return str_replace(',', '\\,', $val);
+            };
             foreach ($filters as $key => $value) {
                 $modified_filters[] = $key;
                 $modified_filters[$key] = [];
@@ -698,18 +699,18 @@ class Theme extends MapasCulturais\Theme {
                             case 'metadata':
                                 $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($data->config['options'] as $meta_key => $value)
-                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($types as $type_key => $type_val)
-                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
                                 $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
                                 foreach ($tax->restrictedTerms as $v)
-                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($v), 'label' => $v];
 
                                 $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
                                 break;
