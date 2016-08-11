@@ -260,7 +260,7 @@
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
                 Object.keys(Description).forEach(function(prop) {
-                	if (!Description[prop].isEntityRelation && (MapasCulturais.allowedFields || !Description[prop].private)) {
+                	if (!Description[prop].isEntityRelation && (MapasCulturais.allowedFields || (!MapasCulturais.allowedFields && Description[prop].private))) {
                 		if (Description[prop]['@select']) {
                 			prop = Description[prop]['@select'];
                 		}
