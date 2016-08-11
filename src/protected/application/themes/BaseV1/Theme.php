@@ -641,11 +641,12 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ];
 
-            // $normal_filters = [];
-            // $metadata_filters = [];
             $filters = $this->_getFilters();
             $modified_filters = [];
 
+            $sanitize_filter_value = function($val){
+                return str_replace(',', '\\,', $val);
+            };
             foreach ($filters as $key => $value) {
                 $modified_filters[] = $key;
                 $modified_filters[$key] = [];
@@ -660,18 +661,18 @@ class Theme extends MapasCulturais\Theme {
                             case 'metadata':
                                 $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($data->config['options'] as $meta_key => $value)
-                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($types as $type_key => $type_val)
-                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
                                 $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
                                 foreach ($tax->restrictedTerms as $v)
-                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($v), 'label' => $v];
 
                                 $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
                                 break;
@@ -682,7 +683,7 @@ class Theme extends MapasCulturais\Theme {
             }
             $this->jsObject['filters'] = $modified_filters;
         }
-        
+
         if($app->user->is('admin')) {
         	$this->jsObject['allowedFields'] = true;
         } else {
@@ -915,11 +916,11 @@ class Theme extends MapasCulturais\Theme {
 
     function addProjectToJs(Entities\Project $entity){
         $app = App::i();
-        
+
         $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
-        
+
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
             if($a->title > $b->title){
                 return 1;
@@ -929,21 +930,21 @@ class Theme extends MapasCulturais\Theme {
                 return 0;
             }
         });
-        
+
         $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
-        
-        
+
+
         usort($field_types, function ($a,$b){
             return strcmp($a->name, $b->name);
         });
-        
+
         $this->jsObject['registrationFieldTypes'] = $field_types;
-        
+
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
-        
+
         if($entity->canUser('@control')){
-            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();    
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
         } else {
             $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         }
