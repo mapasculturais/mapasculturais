@@ -136,7 +136,6 @@
             }
 
             function countAndRemoveResultsNotInMap(entity, results){
-                // console.log(results);
                 results[entity].forEach(function(item, index) {
                     if (!item.location || (item.location.latitude == 0 && item.location.longitude == 0)) {
                         $rootScope.resultsNotInMap[entity]++;
@@ -178,6 +177,7 @@
                 if(entityData.keyword){
                     searchData['@keyword'] = entityData.keyword.replace(/ /g,'%25');
                 }
+
                 for (var search_filter in entityData.filters){
 
                     if(entityData.from)
@@ -202,8 +202,7 @@
                                 })
 ;                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
                             } else
-                                if (filter.type==='entitytype')
-                                    searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
+                                searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
                         } else if (!filter.isArray) {
                             searchData[filter.prefix + filter.filter.param] = filter.filter.value;
                         }
@@ -216,7 +215,6 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
-                // console.log(searchData);
                 return searchData;
             }
 
@@ -286,7 +284,6 @@
 
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
 
-                // console.log(entity, action, querystring, data);
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 
