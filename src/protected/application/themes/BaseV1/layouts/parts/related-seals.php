@@ -5,6 +5,7 @@ if(!$app->isEnabled('seals'))
 $this->addSealsToJs(true,array(),$entity);
 $this->addRelatedSealsToJs($entity);
 ?>
+
 <?php if($this->controller->action == 'create'): ?>
 	<div class="widget">
 		<p class="alert info">Para relacionar o selo ao <?php echo $entity->entityType;?>, primeiro é preciso salvar.<span class="close"></span></p>
