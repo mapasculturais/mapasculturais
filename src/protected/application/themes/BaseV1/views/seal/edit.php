@@ -62,7 +62,7 @@ $this->includeAngularEntityAssets($entity);
 					<p>
 						<span class="label">Validade:</span>
 						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
-						Meses. 
+						Meses.<p class="registration-help">(Informar 0 (zero) para validade infinita.)</p> 
 					</p>
 
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
