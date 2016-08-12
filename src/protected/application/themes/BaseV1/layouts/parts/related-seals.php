@@ -5,6 +5,11 @@ if(!$app->isEnabled('seals'))
 $this->addSealsToJs(true,array(),$entity);
 $this->addRelatedSealsToJs($entity);
 ?>
+<?php if($this->controller->action == 'create'): ?>
+	<div class="widget">
+		<p class="alert info">Para relacionar o selo ao <?php echo $entity->entityType;?>, primeiro é preciso salvar.<span class="close"></span></p>
+	</div>
+<?php endif; ?>
 <div class="selos-add" ng-controller="RelatedSealsController">
     <div ng-if="relations.length > 0 || seals.length > 0" class="widget">
     	<h3 text-align="left" vertical-align="bottom">Selos Aplicados <div ng-if="canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="Adicionar selo relacionado"></div></h3>
