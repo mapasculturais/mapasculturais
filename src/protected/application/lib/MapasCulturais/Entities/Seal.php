@@ -37,7 +37,7 @@ class Seal extends \MapasCulturais\Entity
             'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
         ],
     	'validPeriod' => [
-    		'strlen(trim($value))' => 'Validade do selo é obrigatório.',
+    		'strlen(trim($value)) == 0' => 'Validade do selo é obrigatório.',
     		'$this->validatePeriod($value)' => 'Preencha um período de validade válido.'
     	]
     ];
