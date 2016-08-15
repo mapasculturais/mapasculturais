@@ -6,8 +6,8 @@ $em = $app->em;
 $conn = $em->getConnection();
 
 return [
-    
-    
+
+
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -16,7 +16,7 @@ return [
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;");
-        
+
         $conn->executeQuery("
             CREATE OR REPLACE FUNCTION pseudo_random_id_generator() returns int AS $$
                 DECLARE
@@ -41,7 +41,7 @@ return [
                 END;
             $$ LANGUAGE plpgsql strict immutable;");
     },
-    
+
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
         $conn->executeQuery("UPDATE agent_meta SET value='Mulher' WHERE key='genero' AND value='Feminino'");
@@ -52,10 +52,10 @@ return [
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id = parent_id");
 
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id IN (SELECT profile_id FROM usr)");
-        
+
         return false; // executa todas as vezes só para garantir...
     },
-            
+
     'create table user apps' => function() use ($conn) {
 
         $conn->executeQuery("CREATE TABLE user_app (
@@ -72,10 +72,10 @@ return [
         $conn->executeQuery("ALTER TABLE ONLY user_app ADD CONSTRAINT usr_user_app_fk FOREIGN KEY (user_id) REFERENCES usr(id);");
 
     },
-            
-                        
+
+
     'create table user_meta' => function() use ($conn) {
-        
+
         if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'user_meta';")){
             echo "TABLE user_meta ALREADY EXISTS";
             return true;
@@ -101,8 +101,8 @@ return [
         $conn->executeQuery("CREATE INDEX user_meta_owner_key_value_index ON user_meta USING btree (object_id, key, value);");
         $conn->executeQuery("ALTER TABLE ONLY user_meta ADD CONSTRAINT usr_user_meta_fk FOREIGN KEY (object_id) REFERENCES usr(id);");
     },
-            
-            
+
+
     'resize entity meta key columns' => function() use($conn) {
         $conn->executeQuery('ALTER TABLE space_meta ALTER COLUMN key TYPE varchar(128)');
         $conn->executeQuery('ALTER TABLE agent_meta ALTER COLUMN key TYPE varchar(128)');
@@ -120,7 +120,7 @@ return [
         $conn->executeQuery("CREATE SEQUENCE registration_field_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         $conn->executeQuery("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB1166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
-            
+
     'alter table registration_file_configuration add categories' => function () use($conn){
         $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT registration_meta_project_fk;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD categories TEXT DEFAULT NULL;");
@@ -129,6 +129,11 @@ return [
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER required DROP DEFAULT;");
         $conn->executeQuery("COMMENT ON COLUMN registration_file_configuration.categories IS '(DC2Type:array)';");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+    'create saas tables' => function () use($conn) {
+      $conn->executeQuery("CREATE TABLE saas (id INT NOT NULL, name VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status SMALLINT NOT NULL, PRIMARY KEY(id));");
+      $conn->executeQuery("CREATE SEQUENCE saas_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
     }
 
 ];
