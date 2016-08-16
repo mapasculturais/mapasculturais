@@ -133,7 +133,8 @@ class Theme extends MapasCulturais\Theme {
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
         		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
-        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
+            "saas" => \MapasCulturais\Entities\SaaS::getPropertiesMetadata()
         ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
@@ -192,6 +193,7 @@ class Theme extends MapasCulturais\Theme {
                 'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
+                'saas' => \MapasCulturais\Entities\SaaS::getPropertiesLabels(),
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels()
             );
 
@@ -236,16 +238,16 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|saas>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|saas>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|saas>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -425,7 +427,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-draw', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw-src.js', array('leaflet'));
 
         // Google Maps API only needed in site/search and space, agent and event singles
-        if(preg_match('#site|space|agent|event#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
+        if(preg_match('#site|space|agent|event|saas#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
             $this->enqueueScript('vendor', 'google-maps-api', '//maps.google.com/maps/api/js?v=3.2&sensor=false');
         }
 

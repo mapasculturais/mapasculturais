@@ -31,7 +31,7 @@
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('saas')): ?>
+        <?php if($app->isEnabled('saas') /*&& $app->user->is('superAdmin')*/ ): ?>
             <?php $this->applyTemplateHook('nav.panel.saas','before'); ?>
             <li><a <?php if($this->template == 'panel/saas') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'saas') ?>"><span class="icon icon-saas"></span> <?php $this->dict('entities: My SaaS') ?></a></li>
             <?php $this->applyTemplateHook('nav.panel.saas','after'); ?>

@@ -291,6 +291,7 @@ return array(
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
             'saas'  	  => array('saas',	  'single'),
+            'inst'  	  => array('saas',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -311,8 +312,8 @@ return array(
             'arquivos'       => 'file',
             'projetos'       => 'project',
             'inscricoes'     => 'registration',
+            'saass'          => 'saas',
             'anexos'         => 'registrationfileconfiguration',
-            'saas'           => 'saas'
         ),
         'actions' => array(
             'lista'         => 'list',

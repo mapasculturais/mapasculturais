@@ -35,7 +35,7 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.events','after'); ?>
         <?php endif; ?>
-            
+
         <?php if($app->isEnabled('spaces')): ?>
             <?php $this->applyTemplateHook('nav.main.spaces','before'); ?>
             <li id="entities-menu-space" ng-class="{'active':data.global.filterEntity === 'space'}" ng-click="tabClick('space')">
@@ -46,7 +46,7 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.spaces','after'); ?>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('agents')): ?>
             <?php $this->applyTemplateHook('nav.main.agents','before'); ?>
             <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
@@ -57,7 +57,7 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.agents','after'); ?>
         <?php endif; ?>
-            
+
         <?php if($app->isEnabled('projects')): ?>
             <?php $this->applyTemplateHook('nav.main.projects','before'); ?>
             <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
@@ -68,6 +68,7 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
         <?php endif; ?>
+
     </ul>
     <!--.menu.entities-menu-->
     <ul class="menu session-menu clearfix">
@@ -118,7 +119,7 @@
             </li>
             <!--.notifications-->
             <?php $this->applyTemplateHook('nav.main.notifications','after'); ?>
-            
+
             <?php $this->applyTemplateHook('nav.main.user','before'); ?>
             <li class="user">
                 <a href="#" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
@@ -142,7 +143,7 @@
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
                     <?php endif; ?>
-                        
+
                     <?php if($app->isEnabled('agents')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
                         <li>
@@ -151,7 +152,7 @@
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
                     <?php endif; ?>
-                        
+
                     <?php if($app->isEnabled('spaces')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.spaces','before'); ?>
                         <li>
@@ -160,7 +161,7 @@
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
                     <?php endif; ?>
-                   
+
                     <?php if($app->isEnabled('projects')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
                         <li>
@@ -168,15 +169,15 @@
                             <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
-                        
+
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
                         <li>
                             <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
-                    
-                        
+
+
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->
                     <li>

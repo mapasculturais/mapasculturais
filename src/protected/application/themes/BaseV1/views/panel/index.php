@@ -21,7 +21,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('agents')): ?>
             <div>
                 <div>
@@ -36,7 +36,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('spaces')): ?>
             <div>
                 <div>
@@ -51,7 +51,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('projects')): ?>
             <div>
                 <div>
@@ -66,7 +66,22 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
+        <?php if($app->isEnabled('saas')): ?>
+            <div>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">SaaS</span>
+                        <div class="icon icon-saas alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'saas') ?>" title="Ver meus saas"><?php echo $count->saas; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('saas', 'create'); ?>" title="Adicionar saas"></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
     </section>
     <?php if($app->user->notifications): ?>
     <section id="activities">
