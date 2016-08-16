@@ -154,6 +154,11 @@ h1 .icon {
         content: $unicode-agent;
     }
 }
+.icon-saas {
+    &:before {
+        content: $unicode-saas;
+    }
+}
 .icon-help {
     &:before {
         content: $unicode-help;

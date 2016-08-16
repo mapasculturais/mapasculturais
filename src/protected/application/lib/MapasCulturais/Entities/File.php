@@ -31,7 +31,8 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
-        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
+        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
+        "MapasCulturais\Entities\SaaS"                          = "\MapasCulturais\Entities\SaaSFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -288,7 +289,7 @@ abstract class File extends \MapasCulturais\Entity
             $app->enableAccessControl();
             $result = $transformed;
         }
-        
+
         return $result;
     }
 
@@ -330,7 +331,7 @@ abstract class File extends \MapasCulturais\Entity
         }
 
         $path = $this->getPath();
-        if(!file_exists($path) 
+        if(!file_exists($path)
             || !is_writable($path)
             || !is_writable(dirname($path))
             || filesize($path) == 0) {

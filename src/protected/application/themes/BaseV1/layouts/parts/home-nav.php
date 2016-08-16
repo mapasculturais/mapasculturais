@@ -5,35 +5,35 @@
             <a class="icon icon-home" href="#home-intro"></a>
             <span class="nav-title">Introdução</span>
         </li>
-        
+
         <?php if($app->isEnabled('events')): ?>
             <li id="nav-events">
                 <a class="icon icon-event" href="#home-events"></a>
                 <span class="nav-title">Eventos</span>
             </li>
         <?php endif; ?>
-            
+
         <?php if($app->isEnabled('agents')): ?>
             <li id="nav-agents">
                 <a class="icon icon-agent" href="#home-agents"></a>
                 <span class="nav-title">Agentes</span>
             </li>
         <?php endif; ?>
-            
+
         <?php if($app->isEnabled('spaces')): ?>
             <li id="nav-spaces">
                 <a class="icon icon-space" href="#home-spaces"></a>
                 <span class="nav-title"><?php $this->dict('entities: Spaces') ?></span>
             </li>
         <?php endif; ?>
-            
+
         <?php if($app->isEnabled('projects')): ?>
             <li id="nav-projects">
                 <a class="icon icon-project" href="#home-projects"></a>
                 <span class="nav-title">Projetos</span>
             </li>
         <?php endif; ?>
-            
+
         <li id="nav-developers">
             <a class="icon icon-developers" href="#home-developers"></a>
             <span class="nav-title">Desenvolvedores</span>

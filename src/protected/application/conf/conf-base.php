@@ -44,11 +44,12 @@ return array(
     'app.offline' => false,
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
-    
+
     'app.enabled.agents'   => true,
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
+    'app.enabled.saas'     => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -187,17 +188,17 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => function_exists('apcu_add') ? 
-        new \Doctrine\Common\Cache\ApcuCache() : 
-        ( 
-            function_exists('apc_add') ? 
+    'app.cache' => function_exists('apcu_add') ?
+        new \Doctrine\Common\Cache\ApcuCache() :
+        (
+            function_exists('apc_add') ?
                 new \Doctrine\Common\Cache\ApcCache() :
                 new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
-                
+
         ),
-    
+
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
-    
+
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
 
@@ -289,6 +290,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
+            'saas'  	  => array('saas',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -310,6 +312,7 @@ return array(
             'projetos'       => 'project',
             'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration',
+            'saas'           => 'saas'
         ),
         'actions' => array(
             'lista'         => 'list',
@@ -319,7 +322,8 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-            'inscricoes'    => 'registrations'
+            'inscricoes'    => 'registrations',
+            'saas'          => 'saas'
         ),
 
         'readableNames' => array(
@@ -333,6 +337,7 @@ return array(
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
                 'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',
+                'saas'          => 'SaaS',
             //actions
                 'list'          => 'Listando',
                 'index'         => 'Índice',

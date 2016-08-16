@@ -100,6 +100,12 @@
     }
 }
 
+.saas {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-saas;
+    }
+}
+
 //== Entity Item in List View Mode
 //
 //## Styles for entities when in list view mode.

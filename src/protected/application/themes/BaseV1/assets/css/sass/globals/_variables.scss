@@ -20,6 +20,7 @@ $brand-event: #b3b921 !default;
 $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
+$brand-saas:  #cc0033 !default;
 $brand-developer: #9966cc !default;
 
 $brand-info: #40b4b4 !default;
@@ -129,6 +130,12 @@ $unicode-add-button:            "\e050" !default;
 // .icon-agent on _icons.scss file
 // .btn-map-agent on _maps.scss file
 $unicode-agent:                 "\e08a" !default;
+
+//** SaaS icon
+// used on:
+// .icon-saas on _icons.scss file
+// .btn-map-saas on _maps.scss file
+$unicode-saas:                  "\e0df" !default;
 
 //** API icon
 // used on:
@@ -411,7 +418,8 @@ $form-fields-height:                   2rem !default;
 //
 
 $z-index-descricao-do-agente:    800 !default;
-$z-index-descricao-do-selo:		1000 !default;
+$z-index-descricao-do-selo:		  1000 !default;
+$z-index-descricao-do-saas:    15000 !default;
 $z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;

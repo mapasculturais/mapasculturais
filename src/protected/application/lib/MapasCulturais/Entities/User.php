@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * @property-read \MapasCulturais\Entities\SaaS[] $saas Active SaaS
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
@@ -22,7 +23,7 @@ use MapasCulturais\App;
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     const STATUS_ENABLED = 1;
-    
+
     use \MapasCulturais\Traits\EntityMetadata;
 
 
@@ -91,7 +92,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -101,7 +102,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * })
      */
     protected $profile;
-    
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
@@ -219,7 +220,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
-        
+
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -250,7 +251,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 		    		e.name,
 		    		e.createTimestamp ASC ";
     	}
-    	
+
 		$query = App::i()->em->createQuery($dql);
         $query->setParameter('user', $this);
         $query->setParameter('status', $status);
@@ -359,7 +360,29 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
-   
+
+    public function getSaaS(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS');
+    }
+    function getEnabledSaaS(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ENABLED, '=');
+    }
+    function getDraftSaaS(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_DRAFT, '=');
+    }
+    function getTrashedSaaS(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_TRASH, '=');
+    }
+    function getDisabledSaaS(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_DISABLED, '=');
+    }
+
     function getNotifications($status = null){
         if(is_null($status)){
             $status_operator =  '>';

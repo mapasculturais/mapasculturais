@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\SaaS;
 
 /**
  * User Panel Controller
@@ -31,13 +32,14 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
 
         $app = App::i();
-        
+
         $count = new \stdClass();
 
         $count->spaces		= $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->saas      = $app->controller('saas')->apiQuery(['@count'=>1]);
 
         $this->render('index', ['count'=>$count]);
     }
@@ -95,7 +97,7 @@ class Panel extends \MapasCulturais\Controller {
 
     protected function renderList($viewName, $entityName, $entityFields){
         $this->requireAuthentication();
-        
+
         $user = $this->_getUser();
 
         $app = App::i();
@@ -196,7 +198,7 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('projects', ['user' => $user]);
     }
-    
+
     /**
      * Render the project list of the user panel.
      *
@@ -232,5 +234,23 @@ class Panel extends \MapasCulturais\Controller {
         $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
         $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
         $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
+    }
+
+    /**
+     * Render the saas list of the user panel (Only SuperAdmin panel).
+     *
+     * This method requires authentication and renders the template 'panel/saas'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'registrations');
+     * </code>
+     *
+     */
+    function GET_saas(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+
+        $this->render('saas', ['user' => $user]);
     }
 }

@@ -62,6 +62,11 @@ article.project, article.registration {
         background-color: $brand-project;
     }
 }
+article.saas {
+    .header-image {
+        background-color: $brand-saas;
+    }
+}
 
 .header-content {
     position: relative;

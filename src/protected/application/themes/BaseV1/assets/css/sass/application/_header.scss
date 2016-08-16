@@ -282,6 +282,21 @@ body.action-search {
     }
 }
 
+//** SaaS
+#entities-menu-saas {
+    &.active, &:hover {
+        border-top-color: $brand-saas;
+        color: $brand-saas;
+        a {
+            color: $brand-saas;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-saas);
+        }
+    }
+}
 //** Session Menu
 .session-menu {
     @media screen and (max-width: $screen-xs-max) {

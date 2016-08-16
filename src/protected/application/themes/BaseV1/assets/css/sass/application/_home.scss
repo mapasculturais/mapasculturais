@@ -90,6 +90,9 @@
 #nav-projects {
     background: $brand-project;
 }
+#nav-saas {
+    background: $brand-saas;
+}
 #nav-developers {
     background: $brand-developer;
 }
@@ -398,6 +401,13 @@
     background: $brand-project;
     .abas li.active {
         border-bottom-color: $brand-project;
+    }
+}
+//** SaaS section
+#home-saas {
+    background: $brand-saas;
+    .abas li.active {
+        border-bottom-color: $brand-saas;
     }
 }
 //** Developers section

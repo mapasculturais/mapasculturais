@@ -6,17 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 
 /**
- * Seal
+ * SaaS
+ * @property-read \MapasCulturais\Entities\Agent $owner The owner of this saas
  *
  * @ORM\Table(name="saas")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\SaaS")
  * @ORM\HasLifecycleCallbacks
  */
-class Seal extends \MapasCulturais\Entity
+class SaaS extends \MapasCulturais\Entity
 {
-    use Traits\EntityMetadata,
-        Traits\EntityFiles,
+    use Traits\EntityFiles,
+        Traits\EntityMetadata,
+        Traits\EntityMetaLists,
+        Traits\EntityGeoLocation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft;
@@ -51,6 +54,34 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_ENABLED;
+
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     */
+    protected $owner;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="agent_id", type="integer", nullable=false)
+     */
+    protected $_ownerId;
+
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     */
+    protected $__metadata;
+
+    /**
+     * @var \MapasCulturais\Entities\SaaSFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__files;
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
