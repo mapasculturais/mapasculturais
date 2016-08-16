@@ -171,16 +171,30 @@ class Theme extends MapasCulturais\Theme {
                 'ngSanitize',
             ];
 
-            $this->jsObject['mapsDefaults'] = array(
-                'zoomMax' => $app->config['maps.zoom.max'],
-                'zoomMin' => $app->config['maps.zoom.min'],
-                'zoomDefault' => $app->config['maps.zoom.default'],
-                'zoomPrecise' => $app->config['maps.zoom.precise'],
-                'zoomApproximate' => $app->config['maps.zoom.approximate'],
-                'includeGoogleLayers' => $app->config['maps.includeGoogleLayers'],
-                'latitude' => $app->config['maps.center'][0],
-                'longitude' => $app->config['maps.center'][1]
-            );
+            $mapConfigs = [ 'zoomMax'             => 'maps.zoom.max',
+                            'zoomMin'             => 'maps.zoom.min',
+                            'zoomDefault'         => 'maps.zoom.default',
+                            'zoomPrecise'         => 'maps.zoom.precise',
+                            'zoomApproximate'     => 'maps.zoom.approximate',
+                            //'includeGoogleLayers' => 'maps.includeGoogleLayers'
+                          ];
+
+            foreach ($mapConfigs as $cfg => $jsCfg) {
+              if($app->isEnabled('saas') && isset($jsCfg,$app->config['saas'])) {
+                $this->jsObject['mapsDefaults'][$cfg] = $app->config['saas'][$jsCfg];
+              } else {
+                $this->jsObject['mapsDefaults'][$cfg] = $app->config[$jsCfg];
+              }
+            }
+            $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
+
+            if($app->isEnabled('saas') && in_array('latitude',$app->config['saas'])) {
+              $this->jsObject['mapsDefaults']['latitude'] = $app->config['saas']['maps.center'][0];
+              $this->jsObject['mapsDefaults']['longitude'] = $app->config['saas']['maps.center'][1];
+            } else {
+              $this->jsObject['mapsDefaults']['latitude'] = $app->config['maps.center'][0];
+              $this->jsObject['mapsDefaults']['longitude'] = $app->config['maps.center'][1];
+            }
 
             $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
             $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];

@@ -419,7 +419,11 @@ class App extends \Slim\Slim{
     }
 
     function isEnabled($entity){
-        return $this->_config['app.enabled.' . $entity];
+        if(in_array('app.enabled.saas', $this->_config) && in_array('saas', $this->_config) && in_array('app.enabled.' . $entity,$this->_config['saas']) && $entity <> 'saas') {
+          return $this->_config['saas']['app.enabled.' . $entity];
+        } else {
+          return $this->_config['app.enabled.' . $entity];
+        }
     }
 
     function enableAccessControl(){
