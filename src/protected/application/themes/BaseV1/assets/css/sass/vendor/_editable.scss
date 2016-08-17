@@ -62,7 +62,8 @@ a.editable-click:hover {
   height: 1rem;
   background: transparent;
   text-align: center;
-  line-height: 1.75rem; }
+  line-height: 1.75rem;
+  cursor: pointer; }
 
 .selos-add .editable:after {
   content: "";
@@ -71,8 +72,8 @@ a.editable-click:hover {
 
 .selos-add .editable:hover:after {
   color: #333; }
-  
-  
+
+
 /*nos grupos relacionados*/
 .selos-relacionados .editable {
     width: 3rem;
