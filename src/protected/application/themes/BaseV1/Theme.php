@@ -207,7 +207,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event|seal>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal|saas>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -938,20 +938,34 @@ class Theme extends MapasCulturais\Theme {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
 
-    function addPermitedSealsToJs() {
+    function addSealsToJs($onlyPermited = true,$sealId = array()) {
+        	$query = [];
+        	$query['@select'] = 'id,name,status, singleUrl';
 
-    	$app = App::i();
-    	if (!$app->user->is('guest')) {
-    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-    	}
+        	if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
+        	$query['@files'] = '(avatar.avatarMedium):url';
+        	$sealId = implode(',',array_unique($sealId));
 
-    	if($app->user->is('admin') || $app->user->is('superAdmin') || $entity->canUser('@control')) {
-    		$this->jsObject['canRelateSeal'] = true;
-    	} else {
-    		$this->jsObject['canRelateSeal'] = false;
-    	}
-    }
+        	if(count($sealId) > 0 && !empty($sealId)) {
+        		$query['id'] = 'IN(' .$sealId . ')';
+        	}
 
+        	$query['@ORDER'] = 'createTimestamp DESC';
+
+        	$app = App::i();
+        	if (!$app->user->is('guest')) {
+        		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
+        	}
+
+        	if($app->user->is('admin') || $app->user->is('superAdmin')) {
+        		$this->jsObject['canRelateSeal'] = true;
+        	} else {
+        		$this->jsObject['canRelateSeal'] = false;
+        	}
+        }
+        
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
 
