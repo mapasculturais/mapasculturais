@@ -104,23 +104,23 @@ return [
 
     'create seal tables' => function() use ($conn) {
 
-        if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'seal';")){
+        /*if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'seal';")){
             echo "TABLE seal ALREADY EXISTS";
             return true;
-        }
+        }*/
 
         $conn->executeQuery("CREATE SEQUENCE seal_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        $conn->executeQuery("CREATE SEQUENCE seal_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         $conn->executeQuery("CREATE TABLE seal (id INT NOT NULL, agent_id INT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, valid_period SMALLINT NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status SMALLINT NOT NULL, certificate_text TEXT DEFAULT NULL, PRIMARY KEY(id));");
         $conn->executeQuery("CREATE INDEX IDX_2E30AE303414710B ON seal (agent_id);");
         $conn->executeQuery("CREATE TABLE seal_meta (id INT NOT NULL, object_id INT DEFAULT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
         $conn->executeQuery("CREATE UNIQUE INDEX UNIQ_A92E5E22232D562B ON seal_meta (object_id);");
-        $conn->executeQuery("CREATE TABLE seal_relation (id INT NOT NULL, seal_id INT DEFAULT NULL, object_id INT NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, agent_id INTEGER NOT NULL, PRIMARY KEY(id));");
         $conn->executeQuery("CREATE INDEX IDX_487AF65154778145 ON seal_relation (seal_id);");
         $conn->executeQuery("CREATE INDEX IDX_487AF651232D562B ON seal_relation (object_id);");
         $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE303414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF65154778145 FOREIGN KEY (seal_id) REFERENCES seal (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE TABLE seal_relation (id INT NOT NULL, seal_id INT DEFAULT NULL, object_id INT NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, agent_id INTEGER NOT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE SEQUENCE seal_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("ALTER TABLE ONLY seal_relation ADD CONSTRAINT seal_relation_fk FOREIGN KEY (seal_id) REFERENCES seal(id);");
 
     },
 
@@ -157,11 +157,5 @@ return [
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Space' FROM space WHERE is_verified = 't';");
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Project' FROM project WHERE is_verified = 't';");
  	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Event' FROM event WHERE is_verified = 't';");
-    },
-
-    'create seal relation table' => function () use($conn) {
-      $conn->executeQuery("CREATE TABLE seal_relation (id INT NOT NULL, seal_id INT DEFAULT NULL, object_id INT NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, agent_id INTEGER NOT NULL, PRIMARY KEY(id));");
-      $conn->executeQuery("CREATE SEQUENCE seal_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-      $conn->executeQuery("ALTER TABLE ONLY seal_relation ADD CONSTRAINT seal_relation_fk FOREIGN KEY (seal_id) REFERENCES seal(id);");
     }
 ];
