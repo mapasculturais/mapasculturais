@@ -79,6 +79,7 @@ $this->includeAngularEntityAssets($entity);
                 [sealName]: Nome do selo aplicado<br>
 								[sealShortDescription]: Descrição curta do selo aplicado</br>
 								[sealOwner]: Agente que aplicou o selo</br>
+								[sealRelationLink]: Link de autencidade do selo aplicado</br>
                 [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
                 [entityName]: Nome da entidade (Teatro Municipal)<br>
                 [dateIni]: Data de Início da Validade do selo aplicado<br>
