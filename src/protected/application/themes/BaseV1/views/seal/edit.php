@@ -83,6 +83,7 @@ $this->includeAngularEntityAssets($entity);
                 <p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
                 [sealName]: Nome do selo aplicado<br>
                 [sealShortDescription]: Descrição curta do selo aplicado</br>
+                [sealOwner]: Agente que aplicou o selo</br>
                 [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
                 [entityName]: Nome da entidade (Teatro Municipal)<br>
                 [dateIni]: Data de Início da Validade do selo aplicado<br>

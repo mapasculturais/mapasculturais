@@ -28,17 +28,17 @@ trait EntitySealRelation {
         $relation_class = $this->getSealRelationEntityClassName();
         if(!class_exists($relation_class))
             return [];
-        
+
         $statuses = $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED];
         $seal_statuses = [Seal::STATUS_ENABLED, Seal::STATUS_INVITED, Seal::STATUS_RELATED];
         $relations = [];
-        
+
         $__relations = $this->_sealRelations;
-        
+
         if(is_null($__relations)){
             $__relations = App::i()->repo($this->getSealRelationEntityClassName())->findBy(['owner' => $this]);
         }
-        
+
         foreach($__relations as $ar){
             if(in_array($ar->status, $statuses) && in_array($ar->seal->status, $seal_statuses)){
                 $relations[] = $ar;
@@ -73,10 +73,12 @@ trait EntitySealRelation {
     }
 
     function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true){
+        $app = App::i();
         $relation_class = $this->getSealRelationEntityClassName();
         $relation = new $relation_class;
         $relation->seal = $seal;
         $relation->owner = $this;
+        $relation->agent = $app->user->profile;
 
         if($save)
             $relation->save($flush);
@@ -92,7 +94,7 @@ trait EntitySealRelation {
         if($relation){
             $relation->delete($flush);
         }
-        
+
         $this->refresh();
     }
 

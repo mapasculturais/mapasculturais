@@ -70,6 +70,16 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     protected $seal;
 
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * })
+     */
+    protected $agent;
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');
@@ -77,15 +87,15 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         return $result;
     }
-    
+
     protected function canUserRemove($user){
     	if($user->is('guest'))
     		return false;
-    
+
 		if($user->is('admin') || $this->seal->canUser("@control"))
 			return true;
-    
-		return false;	
+
+		return false;
     }
 
     public function save($flush = false) {
@@ -94,17 +104,17 @@ abstract class SealRelation extends \MapasCulturais\Entity
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
                throw $e;
-    
+
 	    	$app = App::i();
 	    	$app->disableAccessControl();
 	    	$this->status = self::STATUS_PENDING;
 	    	parent::save($flush);
 	    	$app->enableAccessControl();
-	    
+
 	    	$request = new RequestSealRelation;
 	    	$request->setSealRelation($this);
 	    	$request->save(true);
-    
+
 			throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
         }
     }

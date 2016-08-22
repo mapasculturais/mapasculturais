@@ -13,6 +13,7 @@ $dateFin = $dateFin->format("d/m/Y");
 $mensagem = $relation->seal->certificateText;
 $mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
 $mensagem = str_replace("[sealName]",$relation->seal->name,$mensagem);
+$mensagem = str_replace("[sealOwner]",$relation->seal->agent->name,$mensagem);
 $mensagem = str_replace("[sealShortDescription]",$relation->seal->shortDescription,$mensagem);
 $mensagem = str_replace("[entityDefinition]",$relation->owner->entityType,$mensagem);
 $mensagem = str_replace("[entityName]",$relation->owner->name,$mensagem);
