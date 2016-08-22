@@ -15,7 +15,7 @@ use MapasCulturais\Entities;
  *
  */
 class Seal extends EntityController {
-    use	 
+    use
     	Traits\ControllerUploads,
     	Traits\ControllerTypes,
         Traits\ControllerMetaLists,
@@ -24,7 +24,7 @@ class Seal extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft,
         Traits\ControllerAPI;
- 
+
 	/**
 	 * Creates a new Seal
 	 *
@@ -37,13 +37,13 @@ class Seal extends EntityController {
 	 */
 	function POST_index(){
 		$app = App::i();
-	
+
 		$app->hook('entity(seal).insert:before', function() use($app){
 			$this->owner = $app->user->profile;
 		});
 			parent::POST_index();
 	}
-        
+
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();
         $app = App::i();
@@ -106,31 +106,28 @@ class Seal extends EntityController {
             $app->redirect($app->request()->getReferer());
         }
     }
-    
+
     function GET_sealRelation(){
     	$app = App::i();
-    	
+
     	$id = $this->data['id'];
-    	
+
     	$rel = $app->repo('SealRelation')->find($id);
-    	
-    	$this->requireAuthentication();
-    	$user = $this->_getUser();
-    	
+
     	$this->render('sealrelation', ['relation' => $rel]);
-    	
+
     }
-    
+
     function GET_printSealRelation(){
     	$app = App::i();
-    	 
+
     	$id = $this->data['id'];
     	$rel = $app->repo('SealRelation')->find($id);
-    	 
+
     	$this->requireAuthentication();
     	$user = $this->_getUser();
-    	
+
     	echo $this->render('printsealrelation', ['relation' => $rel]);
-    	 
+
     }
 }
