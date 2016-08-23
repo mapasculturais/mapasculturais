@@ -15,7 +15,7 @@ use MapasCulturais\Traits;
  */
 class Seal extends \MapasCulturais\Entity
 {
-    use Traits\EntityMetadata, 
+    use Traits\EntityMetadata,
     	Traits\EntityOwnerAgent,
         Traits\EntityMetadata,
         Traits\EntityFiles,
@@ -29,16 +29,15 @@ class Seal extends \MapasCulturais\Entity
     const STATUS_INVITED = -2;
 
     protected static $validations = [
-        'name' => [
-            'required' => 'O nome do selo é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
+      'name' => [
+        'required' => 'O nome do selo é obrigatório'
+      ],
+      'shortDescription' => [
+        'required' => 'A descrição curta é obrigatória',
+        'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+      ],
     	'validPeriod' => [
-    		'strlen(trim($value)) == 0' => 'Validade do selo é obrigatório.',
-    		'$this->validatePeriod($value)' => 'Preencha um período de validade válido.'
+    		'v::allOf(v::positive(),v::intVal())' => 'Validade do selo é obrigatória.'
     	]
     ];
 
@@ -72,21 +71,21 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="long_description", type="text", nullable=true)
      */
     protected $longDescription;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="certificate_text", type="text", nullable=true)
      */
     protected $certificateText;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="valid_period", type="smallint", nullable=false)
      */
     protected $validPeriod;
-    
+
     /**
      * @var \DateTime
      *
@@ -110,7 +109,7 @@ class Seal extends \MapasCulturais\Entity
      * })
      */
     protected $agent;
-    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -130,13 +129,13 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
     protected $_seals = [];
-    
+
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
-    
+
     /**
      * @var \MapasCulturais\Entities\SealFile[] Files
      *
@@ -144,7 +143,7 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
      */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations
      *
@@ -152,37 +151,37 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
      */
     protected $__agentRelations;
-    
+
     protected function canUserPublish($user){
         if($user->is('guest')){
             return false;
         }
-        
+
         if($user->is('admin')){
             return true;
         }
-        
+
         if($this->canUser('@control', $user)){
             return true;
         }
-        
+
         if($this->project && $this->project->canUser('@control', $user)){
             return true;
         }
-        
+
         return false;
     }
-    
+
     protected function canUserView($user){
         if($this->status === self::STATUS_ENABLED){
             return true;
         }else if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
         }
-        
+
         return false;
     }
-    
+
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
     		return false;
@@ -191,7 +190,7 @@ class Seal extends \MapasCulturais\Entity
     	}
     	return true;
     }
-    
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
