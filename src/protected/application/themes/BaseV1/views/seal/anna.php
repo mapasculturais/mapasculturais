@@ -1,4 +1,4 @@
-<header class="saas-header">
+<header class="main-content-header saas-header">
 	<div class="header-content saas-header-content">
 	</div>
 </header>
