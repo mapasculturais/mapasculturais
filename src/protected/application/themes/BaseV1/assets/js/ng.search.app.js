@@ -193,10 +193,6 @@
                 })[0].label;
         };
 
-        $scope.getName = function(valores, id, key = 'id'){
-            return valores.filter(function(e){if(e[key] === id) return true;})[0].name;
-        };
-
         $scope.getId = function(valores, name){
             return valores.filter(function(e){if(e.name === name) return true;})[0].id;
         };
@@ -349,8 +345,13 @@
 
         $scope.data = angular.copy(skeletonData);
 
+        // $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
         MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
+        // $scope.types = MapasCulturais.entityTypes;
+        // $scope.location = $location;
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 
