@@ -193,10 +193,6 @@
                 })[0].label;
         };
 
-        $scope.getName = function(valores, id, key = 'id'){
-            return valores.filter(function(e){if(e[key] === id) return true;})[0].name;
-        };
-
         $scope.getId = function(valores, name){
             return valores.filter(function(e){if(e.name === name) return true;})[0].id;
         };
