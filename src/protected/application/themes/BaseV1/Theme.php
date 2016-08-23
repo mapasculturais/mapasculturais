@@ -67,6 +67,9 @@ class Theme extends MapasCulturais\Theme {
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
+            
+            'entities: Children spaces' => 'Subespaços',
+            'entities: Add child space' => 'Adicionar subespaço',
 
             'entities: space found' => 'espaço encontrado',
             'entities: spaces found' => 'espaços encontrados',
