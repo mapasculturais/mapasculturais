@@ -194,7 +194,7 @@ class Metadata extends \MapasCulturais\Definition{
      * @return bool true if there is no metadata with the same value, false otherwise.
      */
     protected function validateUniqueValue(\MapasCulturais\Entity $owner, $value){
-        $app = App::i();
+        $app = \MapasCulturais\App::i();
 
         $owner_class = $owner->className;
 
