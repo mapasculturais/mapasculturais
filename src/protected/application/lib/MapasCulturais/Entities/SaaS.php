@@ -71,6 +71,27 @@ class SaaS extends \MapasCulturais\Entity
     protected $_ownerId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=false)
+     */
+    protected $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=50, nullable=false)
+     */
+    protected $slug;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="namespace", type="string", length=50, nullable=false)
+     */
+    protected $namespace;
+
+    /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
      */
     protected $__metadata;
