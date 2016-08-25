@@ -4,13 +4,27 @@
  */
 return array(
     'metadata' => array(
-      'URL' => array(
+        'URL' => array(
           'label' => 'URL',
           'type' => 'text',
           'validations'=> array(
               'v::url()' => 'A URL informada é inválida.'
           )
-      )
+        ),
+
+        'teste' => array(
+            'label' => 'Teste',
+            'validations' => array(
+                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
+            )
+        ),
+        'teste2' => array(
+            'label' => 'Teste aqui',
+            'validations' => array(
+                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
+            )
+        )
+
     )
     /* EXEMPLOS DE METADADOS:
 
