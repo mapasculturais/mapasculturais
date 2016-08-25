@@ -78,7 +78,11 @@ class Theme extends MapasCulturais\Theme {
             'entities: agent found' => 'agente encontrado',
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados'
+            'entities: project found' => 'projetos encontrados',
+            
+            'taxonomies:area: name' => 'Área de Atuação',
+            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
+            'taxonomies:area: select' => 'Selecione as áreas',
         );
     }
 
@@ -698,8 +702,8 @@ class Theme extends MapasCulturais\Theme {
         return [
             'space' => [
                 [
-                    'label'=> 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> $this->dict('taxonomies:area: name', false),
+                    'placeholder' => $this->dict('taxonomies:area: select', false),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
