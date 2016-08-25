@@ -1,6 +1,16 @@
 .selos {
     .avatar-seal {
         position: relative;
+        &.modal {
+            display: inline-block;
+            margin-right: 10px;
+            width: 22%;
+            text-align: center;
+            vertical-align: top;
+            &:nth-child(4n) {
+                margin-right: 0;
+            }
+        }
         &:hover {
             .descricao-do-selo {
                 display: block;
@@ -10,6 +20,14 @@
             img {
                 opacity: .3;
             }
+        }
+        img {
+            cursor: pointer;
+        }
+        h3 {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.2;
         }
         .descricao-do-selo {
             display: none;
@@ -42,5 +60,10 @@
                 margin-top: $line-height-half;
             }
         }
+    }
+
+    .widget {
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 }

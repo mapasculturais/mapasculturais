@@ -18,7 +18,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-owner' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
@@ -48,7 +48,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-institution' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('institution', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('institution', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
@@ -78,7 +78,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-collective' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('collective', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('collective', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
