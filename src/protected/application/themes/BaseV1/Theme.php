@@ -23,7 +23,7 @@ class Theme extends MapasCulturais\Theme {
     static function getThemeFolder() {
         return __DIR__;
     }
-hasControl
+
     protected static function _getTexts(){
         return array(
             'site: name' => App::i()->config['app.siteName'],
@@ -71,7 +71,7 @@ hasControl
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
-            
+
             'entities: Children spaces' => 'Subespaços',
             'entities: Add child space' => 'Adicionar subespaço',
 
@@ -83,7 +83,7 @@ hasControl
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
-            
+
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
             'taxonomies:area: select' => 'Selecione as áreas',
@@ -653,7 +653,7 @@ hasControl
     }
 
     protected function _populateJsObject() {
-        $app = App::i();allowed
+        $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
 
