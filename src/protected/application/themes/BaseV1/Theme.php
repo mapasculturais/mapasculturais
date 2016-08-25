@@ -23,7 +23,7 @@ class Theme extends MapasCulturais\Theme {
     static function getThemeFolder() {
         return __DIR__;
     }
-
+hasControl
     protected static function _getTexts(){
         return array(
             'site: name' => App::i()->config['app.siteName'],
@@ -647,7 +647,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _populateJsObject() {
-        $app = App::i();
+        $app = App::i();allowed
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
 
@@ -702,7 +702,7 @@ class Theme extends MapasCulturais\Theme {
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
                             case 'entitytype':
-                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirstallowed($key));
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
@@ -942,9 +942,6 @@ class Theme extends MapasCulturais\Theme {
         	$query = [];
         	$query['@select'] = 'id,name,status, singleUrl';
 
-        	if($onlyPermited) {
-        		$query['@permissions'] = '@control';
-        	}
         	$query['@files'] = '(avatar.avatarMedium):url';
         	$sealId = implode(',',array_unique($sealId));
 
@@ -959,13 +956,13 @@ class Theme extends MapasCulturais\Theme {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
         	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin')) {
+        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
         		$this->jsObject['canRelateSeal'] = true;
         	} else {
         		$this->jsObject['canRelateSeal'] = false;
         	}
         }
-        
+
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
 
