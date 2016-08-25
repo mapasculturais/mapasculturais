@@ -82,7 +82,7 @@ return array(
 
     'cep.endpoint'      => 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s',
     'cep.token_header'  => 'Authorization: Token token="%s"',
-    // 'cep.token'         => '[token]',
+    'cep.token'         => '',
 
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais
