@@ -87,6 +87,9 @@ abstract class Controller{
 
 
     protected $action = null;
+    
+    protected $method = null;
+    
     // =================== GETTERS ================== //
 
     /**
@@ -236,6 +239,8 @@ abstract class Controller{
         $this->action = $action_name;
 
         $method = strtoupper($method);
+        
+        $this->method = $method;
 
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";

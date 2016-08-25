@@ -11,9 +11,9 @@
         </form>
         <!--.filter-->
         <div class="filter search-filter--area">
-            <span class="label">Área de Atuação</span>
+            <span class="label"><?php $this->dict('taxonomies:area: name') ?></span>
             <div class="dropdown">
-                <div class="placeholder">Selecione as áreas</div>
+                <div class="placeholder"><?php $this->dict('taxonomies:area: select') ?></div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list">
                         <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.space.areas, area.id)}" ng-click="toggleSelection(data.space.areas, area.id)">

@@ -71,6 +71,9 @@ hasControl
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
+            
+            'entities: Children spaces' => 'Subespaços',
+            'entities: Add child space' => 'Adicionar subespaço',
 
             'entities: space found' => 'espaço encontrado',
             'entities: spaces found' => 'espaços encontrados',
@@ -79,7 +82,11 @@ hasControl
             'entities: agent found' => 'agente encontrado',
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados'
+            'entities: project found' => 'projetos encontrados',
+            
+            'taxonomies:area: name' => 'Área de Atuação',
+            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
+            'taxonomies:area: select' => 'Selecione as áreas',
         );
     }
 
@@ -296,22 +303,21 @@ hasControl
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
 
-        $app->hook("GET(site.cep)", function() use($app){
-            if(isset($app->config['cep.token'])){
+        $app->hook("GET(site.cep)", function() use($app) {
+            if ($app->config['cep.token']) {
                 $cep = $app->request->get('num');
                 // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
                 $url = sprintf($app->config['cep.endpoint'], $cep);
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
-                if (isset($app->config['cep.token_header']) && !empty($app->config['cep.token_header'])) {
+                if ($app->config['cep.token_header']) {
                     // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
                 }
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $output = curl_exec($ch);
                 echo $output;
-            }
-            else{
+            } else {
                 $app->halt(403, 'No token for CEP');
             }
         });
@@ -733,8 +739,8 @@ hasControl
         return [
             'space' => [
                 [
-                    'label'=> 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> $this->dict('taxonomies:area: name', false),
+                    'placeholder' => $this->dict('taxonomies:area: select', false),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
