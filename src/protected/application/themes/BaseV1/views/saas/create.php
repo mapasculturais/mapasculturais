@@ -25,6 +25,20 @@
 			</p>
 		<?php endif; ?>
 
+		<?php if($this->isEditable() || $entity->namespace): ?>
+			<p>
+				<span class="label">Namespace:</span>
+				<span class="setup-name js-editable" data-edit="namespace" data-original-title="Namespace" data-emptytext="Digite um namespace"><?php echo $entity->namespace; ?></span>
+			</p>
+		<?php endif; ?>
+
+		<?php if($this->isEditable() || $entity->slug): ?>
+			<p>
+				<span class="label">Slug:</span>
+				<span class="setup-name js-editable" data-edit="slug" data-original-title="Slug" data-emptytext="Digite um slug"><?php echo $entity->namespace; ?></span>
+			</p>
+		<?php endif; ?>
+
 	    <?php if($this->isEditable() || $entity->URL): ?>
 		    <p>
 		    	<span class="label">URL: </span>
