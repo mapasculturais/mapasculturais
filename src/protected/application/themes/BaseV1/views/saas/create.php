@@ -49,7 +49,7 @@
 	    <?php if($this->isEditable() || $entity->entidades_habilitadas): ?>
 		    <p>
 		        <span class="label">Entidades Habilitadas: </span>
-		        <editable-multiselect entity-property="entidades_habilitadas" empty-label="Selecione" allow-other="true" box-title="Entidades habilitadas:"></editable-multiselect>
+		        <editable-multiselect entity-property="entidades_habilitadas" empty-label="Selecione" allow-other="false" box-title="Entidades habilitadas:"></editable-multiselect>
 		    </p>
 	    <?php endif; ?>
 

@@ -15,8 +15,7 @@ return array(
         'entidades_habilitadas' => array(
             'label' => 'Entidades Habilitadas',
             'type' => 'multiselect',
-            'allowOther' => true,
-            'allowOtherText' => 'Outros',
+            'allowOther' => false,
             'options' => array(
                 'Agentes',
                 'Espaços',
@@ -54,6 +53,14 @@ return array(
         ),
         'filtro4' => array(
             'label' => 'Filtro 4',
+            'type' => 'text'
+        ),
+        'texto_boasvindas' => array(
+            'label' => 'Texto boas vindas',
+            'type' => 'text'
+        ),
+        'texto_sobre' => array(
+            'label' => 'Texto sobre',
             'type' => 'text'
         )
 
