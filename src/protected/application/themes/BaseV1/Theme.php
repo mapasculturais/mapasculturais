@@ -178,13 +178,18 @@ class Theme extends MapasCulturais\Theme {
                             'zoomApproximate'     => 'maps.zoom.approximate',
                             //'includeGoogleLayers' => 'maps.includeGoogleLayers'
                           ];
-
+            $cfgValue = "";
             foreach ($mapConfigs as $cfg => $jsCfg) {
               if($app->isEnabled('saas') && isset($jsCfg,$app->config['saas'])) {
-                $this->jsObject['mapsDefaults'][$cfg] = $app->config['saas'][$jsCfg];
+                if(isset($app->config['saas'][$jsCfg])) {
+                  $cfgValue = $app->config['saas'][$jsCfg];
+                } else {
+                  $cfgValue = $app->config[$jsCfg];
+                }
               } else {
-                $this->jsObject['mapsDefaults'][$cfg] = $app->config[$jsCfg];
+                $cfgValue = $app->config[$jsCfg];
               }
+                $this->jsObject['mapsDefaults'][$cfg] = $cfgValue;
             }
             $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
 
