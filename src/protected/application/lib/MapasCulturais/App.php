@@ -534,6 +534,14 @@ class App extends \Slim\Slim{
         }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
+        // get types and metadata configurations
+        if ($theme_saas_types = $this->view->resolveFilename('','saas-types.php')) {
+            $saas_types = include $theme_saas_types;
+        } else {
+            $saas_types = include APPLICATION_PATH.'/conf/saas-types.php';
+        }
+        $saas_meta = key_exists('metadata', $saas_types) && is_array($saas_types['metadata']) ? $saas_types['metadata'] : [];
+
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
@@ -825,6 +833,15 @@ class App extends \Slim\Slim{
                 $metadata = new Definitions\Metadata($meta_key, $meta_config);
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
+        }
+
+        // register SaaS types and SaaS metadata
+        $entity_class = 'MapasCulturais\Entities\SaaS';
+
+        // add saas metadata definition to event type
+        foreach($saas_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
         }
 
         // register taxonomies

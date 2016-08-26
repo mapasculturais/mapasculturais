@@ -16,7 +16,8 @@ use MapasCulturais\Traits;
  */
 class SaaS extends \MapasCulturais\Entity
 {
-    use Traits\EntityFiles,
+    use Traits\EntityOwnerAgent,
+        Traits\EntityFiles,
         Traits\EntityMetadata,
         Traits\EntityMetaLists,
         Traits\EntityGeoLocation,
