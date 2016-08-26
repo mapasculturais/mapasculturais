@@ -43,6 +43,18 @@ return array(
         'filtro1' => array(
             'label' => 'Filtro 1',
             'type' => 'text'
+        ),
+        'filtro2' => array(
+            'label' => 'Filtro 2',
+            'type' => 'text'
+        ),
+        'filtro3' => array(
+            'label' => 'Filtro 3',
+            'type' => 'text'
+        ),
+        'filtro4' => array(
+            'label' => 'Filtro 4',
+            'type' => 'text'
         )
 
     )
