@@ -12,17 +12,37 @@ return array(
           )
         ),
 
-        'teste' => array(
-            'label' => 'Teste',
-            'validations' => array(
-                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
+        'entidades_habilitadas' => array(
+            'label' => 'Entidades Habilitadas',
+            'type' => 'multiselect',
+            'allowOther' => true,
+            'allowOtherText' => 'Outros',
+            'options' => array(
+                'Agentes',
+                'Espaços',
+                'Projetos',
+                'Eventos'
             )
         ),
-        'teste2' => array(
-            'label' => 'Teste aqui',
-            'validations' => array(
-                "v::intVal()->positive()" => "A capacidade deve ser um número positivo."
-            )
+        'cor_agentes' => array(
+            'label' => 'Cor: Agente',
+            'type' => 'text'
+        ),
+        'cor_espacos' => array(
+            'label' => 'Cor: Espaços',
+            'type' => 'text'
+        ),
+        'cor_projetos' => array(
+            'label' => 'Cor: Projetos',
+            'type' => 'text'
+        ),
+        'cor_eventos' => array(
+            'label' => 'Cor: Eventos',
+            'type' => 'text'
+        ),
+        'filtro1' => array(
+            'label' => 'Filtro 1',
+            'type' => 'text'
         )
 
     )
