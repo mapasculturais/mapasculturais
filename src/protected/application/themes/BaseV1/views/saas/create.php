@@ -72,7 +72,7 @@
 	            <?php $this->ajaxUploader ($entity, 'logo', 'image-src', 'div.logo img.js-logo-img', '', 'logoBig'); ?>
 	        </div>
 	    <?php endif; ?>
-			
+
     	<p>
     		<span class="label">Cores: </span>
     		<span class="js-editable inline" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_agentes; ?></span>
@@ -114,4 +114,31 @@
 	        <span class="js-editable" data-edit="filtro4" data-original-title="Filtro 4" data-emptytext="Filtro 4"><?php echo $entity->filtro4; ?></span>
 
 	    </p>
+			<p>
+				<?php $this->applyTemplateHook('logo','before'); ?>
+				<div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
+					<img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
+	        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
+	        <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
+	            <?php $this->ajaxUploader($entity, 'logo', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+	        </div>
+					<!-- pro responsivo!!! -->
+				</div>
+				<!--.logo-->
+				<?php $this->applyTemplateHook('logo','after'); ?>
+			</p>
+
+			<p>
+				<?php $this->applyTemplateHook('background','before'); ?>
+				<div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
+					<img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
+	        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#">Editar</a>
+	        <div id="editbox-change-avatar" class="js-editbox mc-right" title="Editar avatar">
+	            <?php $this->ajaxUploader($entity, 'logo', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+	        </div>
+					<!-- pro responsivo!!! -->
+				</div>
+				<!--.logo-->
+				<?php $this->applyTemplateHook('background','after'); ?>
+			</p>
 	</div>
