@@ -678,6 +678,10 @@ class App extends \Slim\Slim{
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
+        $this->registerFileGroup('saas',$file_groups['header']);
+        $this->registerFileGroup('saas',$file_groups['avatar']);
+        //$this->registerFileGroup('saas',);
+
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
             $this->registerImageTransformation($name, $transformation);

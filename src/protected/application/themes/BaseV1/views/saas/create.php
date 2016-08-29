@@ -11,12 +11,25 @@
 
 	$this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
 ?>
-
-<header class="saas-header">
-	<div class="header-content saas-header-content">
-	</div>
-</header>
 <article class="main-content saas-container">
+  <header class="main-content-header">
+      <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
+	</header>
+
+	<!--.header-image-->
+	<div class="header-content">
+			<?php $this->applyTemplateHook('header-content','begin'); ?>
+			<?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--space.png']); ?>
+			<?php $this->applyTemplateHook('header-content','end'); ?>
+	</div>
+	<!--.header-content-->
+	<?php $this->applyTemplateHook('header-content','after'); ?>
+
+	<!--.main-content-header-->
+	<?php $this->applyTemplateHook('header','after'); ?>
+
+	<?php $this->applyTemplateHook('tabs','before'); ?>
+
 	<div class="saas-infos">
 		<?php if($this->isEditable() || $entity->nome_instalacao): ?>
 			<p>
@@ -59,7 +72,7 @@
 	            <?php $this->ajaxUploader ($entity, 'logo', 'image-src', 'div.logo img.js-logo-img', '', 'logoBig'); ?>
 	        </div>
 	    <?php endif; ?>
-
+			
     	<p>
     		<span class="label">Cores: </span>
     		<span class="js-editable inline" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_agentes; ?></span>
