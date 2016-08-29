@@ -28,7 +28,7 @@ $entity = $relation->seal;
     <?php $this->applyTemplateHook('header-image','before'); ?>
 			<div class="header-image js-imagem-do-header" style="<?php echo $style ?>">
 				<?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))) {?>
-					<a class="btn btn-default edit js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>">Imprimir Certificado</a>
+					<a class="btn btn-default js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>">Imprimir Certificado</a>
 				<?php } ?>
 			</div>
 		<?php $this->applyTemplateHook('header-image','after'); ?>
