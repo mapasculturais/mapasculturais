@@ -1,10 +1,16 @@
 /* =Editable
 -------------------------------------------------------------- */
 .editable {
-    word-wrap: break-word;
+    display: inline-block;
     padding: 0 3px;
     border-radius: $border-radius-base;
     vertical-align: top;
+}
+
+p > .editable {
+    @extend .editable;
+    word-wrap: break-word;
+    display: initial;
 }
 
 .js-editable {
