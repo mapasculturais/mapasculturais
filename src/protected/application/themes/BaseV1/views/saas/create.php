@@ -29,7 +29,7 @@
 	<?php $this->applyTemplateHook('header','after'); ?>
 
 	<?php $this->applyTemplateHook('tabs','before'); ?>
-
+	<br>
 	<div class="saas-infos">
 		<?php if($this->isEditable() || $entity->nome_instalacao): ?>
 			<p>
@@ -64,13 +64,6 @@
 		        <span class="label">Entidades Habilitadas: </span>
 		        <editable-multiselect entity-property="entidades_habilitadas" empty-label="Selecione" allow-other="false" box-title="Entidades habilitadas:"></editable-multiselect>
 		    </p>
-	    <?php endif; ?>
-
-	    <?php if($this->isEditable()): ?>
-	        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-logo" href="#">Editar</a>
-	        <div id="editbox-change-logo" class="js-editbox mc-right" title="Inlcuir logo">
-	            <?php $this->ajaxUploader ($entity, 'logo', 'image-src', 'div.logo img.js-logo-img', '', 'logoBig'); ?>
-	        </div>
 	    <?php endif; ?>
 
     	<p>
@@ -112,9 +105,9 @@
 	        <span class="js-editable" data-edit="filtro3" data-original-title="Filtro 3" data-emptytext="Filtro 3"><?php echo $entity->filtro3; ?></span>
 	        <br />
 	        <span class="js-editable" data-edit="filtro4" data-original-title="Filtro 4" data-emptytext="Filtro 4"><?php echo $entity->filtro4; ?></span>
-
 	    </p>
 			<p>
+				<span class="label">Logo: (Deve ter as dimensões de 140x60px com extensões .png/.jpg) </span>
 				<?php $this->applyTemplateHook('logo','before'); ?>
 				<div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
 					<img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
@@ -127,8 +120,16 @@
 				<!--.logo-->
 				<?php $this->applyTemplateHook('logo','after'); ?>
 			</p>
-
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 			<p>
+				<span class="label">Background: (Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
 				<?php $this->applyTemplateHook('background','before'); ?>
 				<div class="avatar <?php if($entity->avatar): ?>com-imagem<?php endif; ?>">
 					<img class="js-avatar-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />

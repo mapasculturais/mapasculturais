@@ -22,3 +22,4 @@ _apigen.phar
 .composer/
 .bash_history
 SaaS/*
+src/protected/composer.lock
