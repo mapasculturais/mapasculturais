@@ -24,7 +24,7 @@ return array(
             )
         ),
         'cor_agentes' => array(
-            'label' => 'Cor: Agente',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
             'type' => 'text'
         ),
         'cor_espacos' => array(

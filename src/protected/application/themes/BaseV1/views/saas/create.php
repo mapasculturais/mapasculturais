@@ -68,10 +68,10 @@
 
     	<p>
     		<span class="label">Cores: </span>
-    		<span class="js-editable inline" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_agentes; ?></span>
-    		<span class="js-editable inline" data-edit="cor_espacos" data-original-title="Espaços" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_espacos; ?></span>
-    		<span class="js-editable inline" data-edit="cor_projetos" data-original-title="Projetos" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_projetos; ?></span>
-    		<span class="js-editable inline" data-edit="cor_eventos" data-original-title="Eventos" data-emptytext="Ex.: #FF1212"><?php echo $entity->cor_eventos; ?></span>
+    		<span class="js-editable inline" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Agentes"><?php echo $entity->cor_agentes; ?></span>
+    		<span class="js-editable inline" data-edit="cor_espacos" data-original-title="Espaços" data-emptytext="Espaços"><?php echo $entity->cor_espacos; ?></span>
+    		<span class="js-editable inline" data-edit="cor_projetos" data-original-title="Projetos" data-emptytext="Projetos"><?php echo $entity->cor_projetos; ?></span>
+    		<span class="js-editable inline" data-edit="cor_eventos" data-original-title="Eventos" data-emptytext="Eventos"><?php echo $entity->cor_eventos; ?></span>
     	</p>
 
 	    <?php if($this->isEditable() || $entity->texto_boasvindas): ?>
