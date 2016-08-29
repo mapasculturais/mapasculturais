@@ -1,11 +1,16 @@
 /* =Editable
 -------------------------------------------------------------- */
 .editable {
-    display: inline-block;
+    word-wrap: break-word;
     padding: 0 3px;
     border-radius: $border-radius-base;
     vertical-align: top;
 }
+
+.js-editable {
+    word-wrap: break-word;
+}
+
 .editable:hover {
     background-color: $gray-light;
 }
