@@ -290,8 +290,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
-            'saas'  	  => array('saas',	  'single'),
-            'inst'  	  => array('saas',	  'single'),
+            'instalacao'  	  => array('saas',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -312,7 +311,7 @@ return array(
             'arquivos'       => 'file',
             'projetos'       => 'project',
             'inscricoes'     => 'registration',
-            'saass'          => 'saas',
+            'instalacoes'    => 'saas',
             'anexos'         => 'registrationfileconfiguration',
         ),
         'actions' => array(

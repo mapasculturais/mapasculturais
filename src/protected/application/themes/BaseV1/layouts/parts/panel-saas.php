@@ -11,10 +11,7 @@
                 <?php if($entity->type): ?>
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
                 <?php endif; ?>
-		<div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $entity->terms->area)?></div>
-		<div><span class="label">Local:</span> <?php echo $entity->endereco?></div>
-		<div><span class="label">Acessibilidade:</span> <?php echo $entity->acessibilidade ? $entity->acessibilidade : 'Não informado' ?></div>
-		<div><span class="label">Data de Criação:</span> <?php echo (new DateTime($entity->createTimestamp->date))->format('d/m/Y H:i:s'); ?></div>
+		<div><span class="label">Data de Criação:</span> <?php /*echo (new DateTime($entity->createTimestamp->date))->format('d/m/Y H:i:s');*/ ?></div>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>

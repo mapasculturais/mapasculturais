@@ -6,6 +6,9 @@ return array(
     'avatarBig' => 'cropCenter(240,240)',
     'avatarEvent' => 'cropCenter(410,320)',
 
+    'logo' => 'cropCenter(240,240)',
+    'background' => 'cropCenter(240,240)',
+
     'viradaSmall' => 'cropCenter(357,268)',
     'viradaBig' => 'cropCenter(1455,970)',
 

@@ -28,8 +28,14 @@ class SaaS extends \MapasCulturais\Entity
 
     protected static $validations = [
         'name' => [
-            'required' => 'O nome da instalação é obrigatória'
-        ]
+            'required' => 'O nome da instalação é obrigatório'
+        ],
+        'namespace' => [
+            'required' => 'O namespace da instalação é obrigatório'
+        ],
+        'slug' => [
+            'required' => 'O slug da instalação é obrigatório'
+        ],
     ];
     /**
      * @var integer
@@ -114,6 +120,15 @@ class SaaS extends \MapasCulturais\Entity
     public function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+
+    protected $_logo;
+    
+    function getLogo(){
+        if(!$this->_logo)
+            $this->_logo = $this->getFile('logo');
+
+        return $this->_logo;
     }
 
     //============================================================= //

@@ -652,7 +652,8 @@ class App extends \Slim\Slim{
             'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', false),
             'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], 'The uploaded file is not a valid document.', true),
             'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
-            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true)
+            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
+            'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], 'The uploades file is not a valid image.',true)
         ];
 
         // register file groups
@@ -682,6 +683,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('saas',$file_groups['header']);
         $this->registerFileGroup('saas',$file_groups['avatar']);
         $this->registerFileGroup('saas',$file_groups['logo']);
+        $this->registerFileGroup('saas',$file_groups['background']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
