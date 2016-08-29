@@ -24,9 +24,10 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected static function _getTexts(){
+        $app = App::i();
         return array(
-            'site: name' => App::i()->config['app.siteName'],
-            'site: description' => App::i()->config['app.siteDescription'],
+            'site: name' => isset($app->config['saas']['app.siteName'])? $app->config['saas']['app.siteName'] : $app->config['app.siteName'],
+            'site: description' => isset($app->config['saas']['app.siteDescription'])? $app->config['saas']['app.siteDescription'] : $app->config['app.siteDescription'],
             'site: in the region' => 'na região',
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
@@ -106,9 +107,6 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
-
-
-
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -125,7 +123,7 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
 
-        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+        $this->jsObject['notificationsInterval'] = isset($app->config['saas']['notifications.interval'])? $app->config['saas']['notifications.interval'] : $app->config['notifications.interval'];
 
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
 
@@ -176,7 +174,7 @@ class Theme extends MapasCulturais\Theme {
                             'zoomDefault'         => 'maps.zoom.default',
                             'zoomPrecise'         => 'maps.zoom.precise',
                             'zoomApproximate'     => 'maps.zoom.approximate',
-                            //'includeGoogleLayers' => 'maps.includeGoogleLayers'
+                            'includeGoogleLayers' => 'maps.includeGoogleLayers'
                           ];
             $cfgValue = "";
             foreach ($mapConfigs as $cfg => $jsCfg) {
@@ -189,23 +187,15 @@ class Theme extends MapasCulturais\Theme {
               } else {
                 $cfgValue = $app->config[$jsCfg];
               }
-                $this->jsObject['mapsDefaults'][$cfg] = $cfgValue;
+              $this->jsObject['mapsDefaults'][$cfg] = $cfgValue;
             }
-            $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
+            $this->jsObject['mapsDefaults']['latitude']     = isset($app->config['saas']['maps.center'][0])? $app->config['saas']['maps.center'][0]:$app->config['maps.center'][0];
+            $this->jsObject['mapsDefaults']['longitude']    = isset($app->config['saas']['maps.center'][1])? $app->config['saas']['maps.center'][1]: $app->config['maps.center'][1];
 
-            if($app->isEnabled('saas') && in_array('latitude',$app->config['saas'])) {
-              $this->jsObject['mapsDefaults']['latitude'] = $app->config['saas']['maps.center'][0];
-              $this->jsObject['mapsDefaults']['longitude'] = $app->config['saas']['maps.center'][1];
-            } else {
-              $this->jsObject['mapsDefaults']['latitude'] = $app->config['maps.center'][0];
-              $this->jsObject['mapsDefaults']['longitude'] = $app->config['maps.center'][1];
-            }
-
-            $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
-            $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
-            $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
-
-            $this->jsObject['mapGeometryFieldQuery'] = $app->config['maps.geometryFieldQuery'];
+            $this->jsObject['mapMaxClusterRadius']          = isset($app->config['saas']['maps.maxClusterRadius'])?           $app->config['saas']['maps.maxClusterRadius']:          $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier']= isset($app->config['saas']['maps.spiderfyDistanceMultiplier'])? $app->config['saas']['maps.spiderfyDistanceMultiplier']:$app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements']        = isset($app->config['saas']['maps.maxClusterElements'])?         $app->config['saas']['maps.maxClusterElements']:        $app->config['maps.maxClusterElements'];
+            $this->jsObject['mapGeometryFieldQuery']        = isset($app->config['saas']['maps.geometryFieldQuery'])?         $app->config['saas']['maps.geometryFieldQuery']:        $app->config['maps.geometryFieldQuery'];
 
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
@@ -216,7 +206,7 @@ class Theme extends MapasCulturais\Theme {
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels()
             );
 
-            $this->jsObject['routes'] = $app->config['routes'];
+            $this->jsObject['routes'] = isset($app->config['saas']['routes'])? $app->config['saas']['routes']:$app->config['routes'];
 
             $this->addDocumentMetas();
             $this->includeVendorAssets();
@@ -275,7 +265,6 @@ class Theme extends MapasCulturais\Theme {
             $this->type = 1;
         });
 
-
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
@@ -316,7 +305,8 @@ class Theme extends MapasCulturais\Theme {
 
     function register() {
         $app = App::i();
-        foreach ($app->config['app.geoDivisionsHierarchy'] as $slug => $name) {
+        $geoDivisionsHierarchyCfg = isset($app->config['saas']['app.geoDivisionsHierarchy'])? $app->config['saas']['app.geoDivisionsHierarchy']: $app->config['app.geoDivisionsHierarchy'];
+        foreach ($geoDivisionsHierarchyCfg as $slug => $name) {
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
@@ -334,7 +324,6 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $this->printStyles('vendor');
-        //$this->printStyles('fonts');
         $this->printStyles('app');
 
         $app->applyHook('mapasculturais.styles');
@@ -402,7 +391,6 @@ class Theme extends MapasCulturais\Theme {
         $versions = $this->_libVersions;
 
         $this->enqueueStyle('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/css/jquery-editable.css", array('select2'));
-//        $this->enqueueStyle('vendor', 'x-editable-tip', "vendor/x-editable-{$versions['x-editable']}/css/tip-yellowsimple.css", array('x-editable'));
 
         $this->enqueueScript('vendor', 'mustache', 'vendor/mustache.js');
 
@@ -438,7 +426,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-fullscreen', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.js', array('leaflet'));
 
         //Leaflet Label Plugin
-        //$app->enqueueStyle( 'vendor', 'leaflet-label',           'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-label/leaflet.label.css',       array('leaflet'));
         $this->enqueueScript('vendor', 'leaflet-label', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.label-master/dist/leaflet.label-src.js', array('leaflet'));
 
         //Leaflet Draw
@@ -471,13 +458,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
         $this->enqueueScript('vendor', 'angular-ui-sortable', '/vendor/ui-sortable/sortable.js', array('jquery-ui', 'angular'));
         $this->enqueueScript('vendor', 'angular-checklist-model', '/vendor/checklist-model/checklist-model.js', array('jquery-ui', 'angular'));
-
     }
 
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
-
-        //$this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
@@ -487,11 +471,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
 
-
-
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
-
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
@@ -555,7 +536,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
 
-        $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
+        $this->jsObject['geoDivisionsHierarchy'] = isset($app->config['saas']['app.geoDivisionsHierarchy'])? $app->config['saas']['app.geoDivisionsHierarchy'] : $app->config['app.geoDivisionsHierarchy'];
 
         $this->enqueueScript('app', 'map', 'js/map.js');
     }
@@ -666,6 +647,7 @@ class Theme extends MapasCulturais\Theme {
         	$this->jsObject['allowedFields'] = false;
         }
     }
+
     protected function _getAdvancedFilters(){
         return [
             'space' => [],
@@ -735,7 +717,6 @@ class Theme extends MapasCulturais\Theme {
 
         $ids[] = $entity->id;
 
-
         $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
 
         $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
@@ -764,7 +745,6 @@ class Theme extends MapasCulturais\Theme {
         });
 
         $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
-
 
         usort($field_types, function ($a,$b){
             return strcmp($a->name, $b->name);
@@ -818,7 +798,6 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }
     }
-
 
     /**
     * Returns a verified entity
