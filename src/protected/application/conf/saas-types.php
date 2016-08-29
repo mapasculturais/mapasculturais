@@ -15,7 +15,6 @@ return array(
         'entidades_habilitadas' => array(
             'label' => 'Entidades Habilitadas',
             'type' => 'multiselect',
-            'allowOther' => false,
             'options' => array(
                 'Agentes',
                 'Espaços',
