@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
+use MapasCulturais\App;
 
 /**
  * SaaS
@@ -25,6 +26,11 @@ class SaaS extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft;
 
+    protected static $validations = [
+        'name' => [
+            'required' => 'O nome da instalação é obrigatória'
+        ]
+    ];
     /**
      * @var integer
      *
@@ -104,6 +110,11 @@ class SaaS extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+
+    public function __construct() {
+        $this->owner = App::i()->user->profile;
+        parent::__construct();
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
