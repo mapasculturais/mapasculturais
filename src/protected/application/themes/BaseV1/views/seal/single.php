@@ -58,8 +58,20 @@ $this->includeAngularEntityAssets($entity);
 
 					<p>
 						<span class="label">Validade:</span>
-						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
-						Meses.
+						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo">
+            <?php
+              if($this->isEditable() || $entity->validPeriod > 0){
+                echo $entity->validPeriod;
+              } else {
+                echo "Selo sem prazo de Validade";
+              }
+            ?>
+
+            </span><?php if($entity->validPeriod > 0) echo $entity->validPeriod > 1 ? 'Meses':'Mês' ?>
+
+            <?php if ($this->isEditable()): ?>
+              <p class="registration-help">(Informar 0 (zero) para validade infinita.)</p>
+            <?php endif; ?>
 					</p>
 
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
@@ -68,15 +80,15 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.ficha-spcultura-->
 
-      <?php if(!empty($entity->longDescription)) {?>
+      <?php if($this->isEditable() || $entity->longDescription) {?>
   			<p>
   				<h3>Descrição</h3>
-  				<span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo nl2br($entity->longDescription); ?></span>
+  				<span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
   				<!--.descricao-->
   			</p>
       <?php } ?>
 
-      <?php if(!empty($entity->certificateText)) {?>
+      <?php if($this->isEditable()) {?>
   			<p>
   				<h3>Conteúdo da Impressão</h3>
             <p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
