@@ -708,7 +708,7 @@ class Theme extends MapasCulturais\Theme {
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
                             case 'entitytype':
-                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirstallowed($key));
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
