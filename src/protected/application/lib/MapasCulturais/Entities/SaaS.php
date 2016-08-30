@@ -123,12 +123,21 @@ class SaaS extends \MapasCulturais\Entity
     }
 
     protected $_logo;
-    
+
     function getLogo(){
         if(!$this->_logo)
             $this->_logo = $this->getFile('logo');
 
         return $this->_logo;
+    }
+
+    protected $_background;
+
+    function getBackground(){
+        if(!$this->_background)
+            $this->_background = $this->getFile('background');
+
+        return $this->_background;
     }
 
     //============================================================= //

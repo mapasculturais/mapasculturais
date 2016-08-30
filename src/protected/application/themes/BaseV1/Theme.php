@@ -260,6 +260,10 @@ class Theme extends MapasCulturais\Theme {
             $this->transform('logo');
         });
 
+        $app->hook('entity(<<saas>>).file(background).insert:after', function() {
+            $this->transform('background');
+        });
+
         $app->hook('entity(<<agent|space|event|project|saas>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
