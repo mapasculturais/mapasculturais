@@ -112,7 +112,7 @@ class SaaS extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SaaSFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;

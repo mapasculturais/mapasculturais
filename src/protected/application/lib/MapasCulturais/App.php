@@ -1580,7 +1580,6 @@ class App extends \Slim\Slim{
             $entity = '\MapasCulturais\Entities\\' . $entity;
 
         $controller_class = preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $entity);
-
         return $this->getControllerByClass($controller_class);
     }
 

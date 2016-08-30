@@ -65,6 +65,12 @@ return array(
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
     )),
 
+    'themes.brand-space'    => '#e83f96',
+    'themes.brand-project'  => '#cc0033',
+    'themes.brand-event'    => '#b3b921',
+    'themes.brand-saas'     => '#ff5545',
+    'themes.brand-agent'    => '#1dabc6',
+
 //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
     'maps.maxClusterRadius' => 40,
