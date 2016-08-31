@@ -123,7 +123,7 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
 
-        $this->jsObject['notificationsInterval'] = isset($app->config['saas']['notifications.interval'])? $app->config['saas']['notifications.interval'] : $app->config['notifications.interval'];
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
         $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
 
@@ -182,10 +182,10 @@ class Theme extends MapasCulturais\Theme {
               );
             };
 
-            $this->jsObject['mapMaxClusterRadius']          = isset($app->config['saas']['maps.maxClusterRadius'])?           $app->config['saas']['maps.maxClusterRadius']:          $app->config['maps.maxClusterRadius'];
-            $this->jsObject['mapSpiderfyDistanceMultiplier']= isset($app->config['saas']['maps.spiderfyDistanceMultiplier'])? $app->config['saas']['maps.spiderfyDistanceMultiplier']:$app->config['maps.spiderfyDistanceMultiplier'];
-            $this->jsObject['mapMaxClusterElements']        = isset($app->config['saas']['maps.maxClusterElements'])?         $app->config['saas']['maps.maxClusterElements']:        $app->config['maps.maxClusterElements'];
-            $this->jsObject['mapGeometryFieldQuery']        = isset($app->config['saas']['maps.geometryFieldQuery'])?         $app->config['saas']['maps.geometryFieldQuery']:        $app->config['maps.geometryFieldQuery'];
+            $this->jsObject['mapMaxClusterRadius']          = $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier']= $app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements']        = $app->config['maps.maxClusterElements'];
+            $this->jsObject['mapGeometryFieldQuery']        = $app->config['maps.geometryFieldQuery'];
 
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
@@ -196,7 +196,7 @@ class Theme extends MapasCulturais\Theme {
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels()
             );
 
-            $this->jsObject['routes'] = isset($app->config['saas']['routes'])? $app->config['saas']['routes']:$app->config['routes'];
+            $this->jsObject['routes'] = $app->config['routes'];
 
             $this->addDocumentMetas();
             $this->includeVendorAssets();
@@ -303,7 +303,7 @@ class Theme extends MapasCulturais\Theme {
 
     function register() {
         $app = App::i();
-        $geoDivisionsHierarchyCfg = isset($app->config['saas']['app.geoDivisionsHierarchy'])? $app->config['saas']['app.geoDivisionsHierarchy']: $app->config['app.geoDivisionsHierarchy'];
+        $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
         foreach ($geoDivisionsHierarchyCfg as $slug => $name) {
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
@@ -534,7 +534,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
 
-        $this->jsObject['geoDivisionsHierarchy'] = isset($app->config['saas']['app.geoDivisionsHierarchy'])? $app->config['saas']['app.geoDivisionsHierarchy'] : $app->config['app.geoDivisionsHierarchy'];
+        $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
 
         $this->enqueueScript('app', 'map', 'js/map.js');
     }
