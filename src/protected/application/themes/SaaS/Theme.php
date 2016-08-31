@@ -56,7 +56,7 @@ class Theme extends BaseV1\Theme{
 
         //$this->filters = self::$config['filters'];
 
-        $domain = @$_SERVER['HTTP_HOST'];
+        $domain = $app->config['app.cache.namespace'];
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }

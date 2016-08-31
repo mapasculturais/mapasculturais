@@ -52,7 +52,7 @@
 			</p>
 		<?php endif; ?>
 
-	    <?php if($this->isEditable() || $entity->URL): ?>
+	    <?php if($this->isEditable() || $entity->url): ?>
 		    <p>
 		    	<span class="label">URL: </span>
 		    	<span class="js-editable" data-edit="url" data-original-title="URL" data-emptytext="Ex: .mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
