@@ -30,6 +30,7 @@
 
 	<?php $this->applyTemplateHook('tabs','before'); ?>
 	<br>
+
 	<div class="saas-infos">
 		<?php if($this->isEditable() || $entity->nome_instalacao): ?>
 			<p>
@@ -88,17 +89,19 @@
 		    </p>
 	    <?php endif; ?>
 
-	    <div class="map">
-        	<div id="single-map-container" class="js-map" data-lat="<?php //echo $lat?>" data-lng="<?php //echo $lng?>"></div>
-        	<input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php //echo '[' . $lng . ',' . $lat . ']'; ?>"/>
-        	<span class="js-editable" data-edit="lat" data-original-title="Latitude" data-emptytext="Digite a latitude"><?php //echo $entity->$lat; ?></span>
-        	<span class="js-editable" data-edit="lng" data-original-title="Longitude" data-emptytext="Digite a longitude"><?php //echo $entity->$lng; ?></span>
-					<span class="js-editable" data-edit="zoom_default" data-original-title="Zoom Padrão" data-emptytext="Zoom padrão do mapa"><?php echo $entity->zoom_default;?></span>
-					<span class="js-editable" data-edit="zoom_approximate" data-original-title="Zoom Aproximado" data-emptytext="Zoom aproximado do mapa"><?php echo $entity->zoom_approximate;?></span>
-					<span class="js-editable" data-edit="zoom_precise" data-original-title="Zoom Preciso" data-emptytext="Zoom preciso do mapa"><?php echo $entity->zoom_precise;?></span>
-					<span class="js-editable" data-edit="zoom_min" data-original-title="Zoom Mínimo" data-emptytext="Zoom mínimo do mapa"><?php echo $entity->zoom_min;?></span>
-					<span class="js-editable" data-edit="zoom_max" data-original-title="Zoom Máximo" data-emptytext="Zoom máximo do mapa"><?php echo $entity->zoom_max;?></span>
-    	</div>
+	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
+		    <p>
+		        <span class="label">Latitude: </span>
+		        <span class="js-editable" data-edit="latitude" data-original-title="Latitude" data-emptytext="Ex.: 40.7143528"><?php echo $entity->latitude; ?></span>		    </p>
+	    <?php endif; ?>
+
+	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
+		    <p>
+		        <span class="label">Longitude: </span>
+		        <span class="js-editable" data-edit="longitude" data-original-title="longitude" data-emptytext="Ex.: 41 24.2028"><?php echo $entity->longitude; ?></span>		    </p>
+	    <?php endif; ?>
+
+        <p class="tip">Para saber como obter coordenadas de latitude e longitude, visite: <a href="https://support.google.com/maps/answer/18539?hl=pt-BR" title="Página de suporte do Google Maps" target="_blank">Ajuda Google Maps.</a></p>
 
 	    <p>
 	        <span class="label">Filtros: </span>
