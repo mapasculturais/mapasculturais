@@ -21,6 +21,20 @@
 			<?php $this->applyTemplateHook('header-content','begin'); ?>
 			<?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--space.png']); ?>
 			<?php $this->applyTemplateHook('header-content','end'); ?>
+
+			<?php if($this->isEditable() || $entity->nome_instalacao): ?>
+				<p>
+					<span class="setup-name js-editable" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
+				</p>
+			<?php endif; ?>
+
+			<?php if($this->isEditable() || $entity->namespace): ?>
+					<span class="js-editable header-field" data-edit="namespace" data-original-title="Digite um namespace" data-emptytext="Namespace"><?php echo $entity->namespace; ?></span>
+			<?php endif; ?>
+			<br />
+			<?php if($this->isEditable() || $entity->slug): ?>
+					<span class="js-editable header-field" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->namespace; ?></span>
+			<?php endif; ?>
 	</div>
 	<!--.header-content-->
 	<?php $this->applyTemplateHook('header-content','after'); ?>
@@ -32,27 +46,6 @@
 	<br>
 
 	<div class="saas-infos">
-		<?php if($this->isEditable() || $entity->nome_instalacao): ?>
-			<p>
-				<span class="label">Nome da instalação:</span>
-				<span class="setup-name js-editable" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Ex.: Mapa Cultural Santos"><?php echo $entity->name; ?></span>
-			</p>
-		<?php endif; ?>
-
-		<?php if($this->isEditable() || $entity->namespace): ?>
-			<p>
-				<span class="label">Namespace:</span>
-				<span class="setup-name js-editable" data-edit="namespace" data-original-title="Namespace" data-emptytext="Digite um namespace"><?php echo $entity->namespace; ?></span>
-			</p>
-		<?php endif; ?>
-
-		<?php if($this->isEditable() || $entity->slug): ?>
-			<p>
-				<span class="label">Slug:</span>
-				<span class="setup-name js-editable" data-edit="slug" data-original-title="Slug" data-emptytext="Digite um slug"><?php echo $entity->namespace; ?></span>
-			</p>
-		<?php endif; ?>
-
 	    <?php if($this->isEditable() || $entity->URL): ?>
 		    <p>
 		    	<span class="label">URL: </span>
@@ -81,6 +74,8 @@
 		        <span class="js-editable" data-edit="texto_boasvindas" data-original-title="Text de boas vindas" data-emptytext="Escreva um texto de boas vindas de até x caracteres..."><?php echo $entity->texto_boasvindas; ?></span>
 		    </p>
 	    <?php endif; ?>
+
+	    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
 
 	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
 		    <p>
@@ -115,7 +110,7 @@
 	        <span class="js-editable" data-edit="filtro4" data-original-title="Filtro 4" data-emptytext="Filtro 4"><?php echo $entity->filtro4; ?></span>
 	    </p>
 			<p>
-				<span class="label">Logo: (Deve ter as dimensões de 140x60px com extensões .png/.jpg) </span>
+				<span class="label">Logo: <span class="tip">Deve ter as dimensões de 140x60px com extensões <strong>.png/.jpg</strong></span></span>
 				<?php $this->applyTemplateHook('logo','before'); ?>
 				<div class="logo <?php if($entity->logo): ?>com-imagem<?php endif; ?>">
 					<?php if($entity->logo): ?>
@@ -139,7 +134,7 @@
 			<br>
 			<br>
 			<p>
-				<span class="label">Background: (Deve ter as dimensões de 1200x630px com extensões .png/.jpg) </span>
+				<span class="label">Background: <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span></span>
 				<?php $this->applyTemplateHook('background','before'); ?>
 				<div class="background <?php if($entity->background): ?>com-imagem<?php endif; ?>">
 					<?php if($entity->background): ?>

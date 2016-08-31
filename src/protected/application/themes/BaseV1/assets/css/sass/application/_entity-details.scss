@@ -47,3 +47,23 @@
         color: #143d65;
     }
 }
+
+.logo, .background {
+    position: relative;
+}
+
+.btn.edit {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5rem;
+}
+
+.setup-name {
+    font-family: "aleo", serif;
+    font-size: 29px;
+}
+
+.header-field {
+    color: #e83f96 !important;
+}
