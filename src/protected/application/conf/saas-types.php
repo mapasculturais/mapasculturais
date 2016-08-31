@@ -89,6 +89,9 @@ return array(
         'longitude' => array(
             'label' => 'Longitude',
             'type' => 'text'
+        ),
+        'filtro_localizacao' => array(
+             
         )
     )
     /* EXEMPLOS DE METADADOS:
