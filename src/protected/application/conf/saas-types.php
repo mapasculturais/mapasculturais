@@ -19,7 +19,8 @@ return array(
                 'Agentes',
                 'Espaços',
                 'Projetos',
-                'Eventos'
+                'Eventos',
+                'Selos'
             )
         ),
         'cor_agentes' => array(
@@ -36,6 +37,10 @@ return array(
         ),
         'cor_eventos' => array(
             'label' => 'Cor: Eventos',
+            'type' => 'text'
+        ),
+        'cor_selos' => array(
+            'label' => 'Cor: Selos',
             'type' => 'text'
         ),
         'filtro1' => array(
@@ -89,9 +94,6 @@ return array(
         'longitude' => array(
             'label' => 'Longitude',
             'type' => 'text'
-        ),
-        'filtro_localizacao' => array(
-             
         )
     )
     /* EXEMPLOS DE METADADOS:

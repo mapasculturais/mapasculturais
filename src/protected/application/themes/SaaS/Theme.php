@@ -56,7 +56,7 @@ class Theme extends BaseV1\Theme{
 
         //$this->filters = self::$config['filters'];
 
-        $domain = @$_SERVER['HTTP_HOST'];
+        $domain = $app->config['app.cache.namespace'];
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
@@ -86,8 +86,8 @@ class Theme extends BaseV1\Theme{
         $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->saasCfg->zoom_precise;
         $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->saasCfg->zoom_approximate;
         $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-        $this->jsObject['mapsDefaults']['latitude']         = $app->config['maps.center'][0];
-        $this->jsObject['mapsDefaults']['longitude']        = $app->config['maps.center'][1];
+        $this->jsObject['mapsDefaults']['latitude']         = $this->saasCfg->latitude;
+        $this->jsObject['mapsDefaults']['longitude']        = $this->saasCfg->longitude;
 
         $cache_id = $this->saasCfg->id . ' - _variables.scss';
 
@@ -110,7 +110,7 @@ class Theme extends BaseV1\Theme{
             $variables_scss .= "\$brand-project: " . (isset($this->saasCfg->cor_projetos) && !empty($this->saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
             $variables_scss .= "\$brand-event:   " . (isset($this->saasCfg->cor_eventos)  && !empty($this->saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
             $variables_scss .= "\$brand-space:   " . (isset($this->saasCfg->cor_espacos)  && !empty($this->saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
-            //$variables_scss .= "\$brand-seal:   " . (isset($this->saasCfg->cor_selos)     && !empty($this->saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
+            $variables_scss .= "\$brand-seal:   " . (isset($this->saasCfg->cor_selos)     && !empty($this->saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
             $variables_scss .= "\$brand-saas:    " . (isset($this->saasCfg->cor_saas)     && !empty($this->saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {

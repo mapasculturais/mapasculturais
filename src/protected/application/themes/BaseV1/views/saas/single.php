@@ -66,6 +66,7 @@
     		<span class="js-editable inline" data-edit="cor_espacos" data-original-title="Espaços" data-emptytext="Espaços"><?php echo $entity->cor_espacos; ?></span>
     		<span class="js-editable inline" data-edit="cor_projetos" data-original-title="Projetos" data-emptytext="Projetos"><?php echo $entity->cor_projetos; ?></span>
     		<span class="js-editable inline" data-edit="cor_eventos" data-original-title="Eventos" data-emptytext="Eventos"><?php echo $entity->cor_eventos; ?></span>
+				<span class="js-editable inline" data-edit="cor_selos" data-original-title="Selos" data-emptytext="Selos"><?php echo $entity->cor_selos; ?></span>
     	</p>
 
 	    <?php if($this->isEditable() || $entity->texto_boasvindas): ?>
@@ -84,19 +85,52 @@
 		    </p>
 	    <?php endif; ?>
 
-	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
+	    <?php if($this->isEditable() || $entity->latitude): ?>
 		    <p>
 		        <span class="label">Latitude: </span>
 		        <span class="js-editable" data-edit="latitude" data-original-title="Latitude" data-emptytext="Ex.: 40.7143528"><?php echo $entity->latitude; ?></span>		    </p>
 	    <?php endif; ?>
 
-	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
+	    <?php if($this->isEditable() || $entity->longitude): ?>
 		    <p>
 		        <span class="label">Longitude: </span>
 		        <span class="js-editable" data-edit="longitude" data-original-title="longitude" data-emptytext="Ex.: 41 24.2028"><?php echo $entity->longitude; ?></span>		    </p>
 	    <?php endif; ?>
+			<p class="tip">Para saber como obter coordenadas de latitude e longitude, visite: <a href="https://support.google.com/maps/answer/18539?hl=pt-BR" title="Página de suporte do Google Maps" target="_blank">Ajuda Google Maps.</a></p>
+			<?php if($this->isEditable() || $entity->zoom_default): ?>
+		    <p>
+					<span class="label">Zoom Padrão: </span>
+					<span class="js-editable" data-edit="zoom_default" data-original-title="Zoom Padrão" data-emptytext="Zoom padrão do mapa"><?php echo $entity->zoom_default;?></span>
+				</p>
+			<?php endif;?>
 
-        <p class="tip">Para saber como obter coordenadas de latitude e longitude, visite: <a href="https://support.google.com/maps/answer/18539?hl=pt-BR" title="Página de suporte do Google Maps" target="_blank">Ajuda Google Maps.</a></p>
+			<?php if($this->isEditable() || $entity->zoom_approximate): ?>
+		    <p>
+					<span class="label">Zoom Aproximado: </span>
+					<span class="js-editable" data-edit="zoom_approximate" data-original-title="Zoom Aproximado" data-emptytext="Zoom aproximado do mapa"><?php echo $entity->zoom_approximate;?></span>
+				</p>
+			<?php endif;?>
+
+			<?php if($this->isEditable() || $entity->zoom_precise): ?>
+		    <p>
+					<span class="label">Zoom Preciso: </span>
+					<span class="js-editable" data-edit="zoom_precise" data-original-title="Zoom Preciso" data-emptytext="Zoom preciso do mapa"><?php echo $entity->zoom_precise;?></span>
+				</p>
+			<?php endif;?>
+
+			<?php if($this->isEditable() || $entity->zoom_min): ?>
+		    <p>
+					<span class="label">Zoom Mínimo: </span>
+					<span class="js-editable" data-edit="zoom_min" data-original-title="Zoom Mínimo" data-emptytext="Zoom mínimo do mapa"><?php echo $entity->zoom_min;?></span>
+				</p>
+			<?php endif;?>
+
+			<?php if($this->isEditable() || $entity->zoom_max): ?>
+		    <p>
+					<span class="label">Zoom Máximo: </span>
+					<span class="js-editable" data-edit="zoom_max" data-original-title="Zoom Máximo" data-emptytext="Zoom máximo do mapa"><?php echo $entity->zoom_max;?></span>
+				</p>
+			<?php endif;?>
 
 	    <p>
 	        <span class="label">Filtros: </span>

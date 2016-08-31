@@ -69,6 +69,7 @@ return array(
     'themes.brand-project'  => '#cc0033',
     'themes.brand-event'    => '#b3b921',
     'themes.brand-saas'     => '#ff5545',
+    'themes.brand-seal'     => '#ff5545',
     'themes.brand-agent'    => '#1dabc6',
 
 //    'maps.center' => array(-23.54894, -46.63882), // são paulo
