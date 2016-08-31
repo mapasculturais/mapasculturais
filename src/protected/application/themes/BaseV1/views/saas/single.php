@@ -76,7 +76,7 @@
 		    </p>
 	    <?php endif; ?>
 
-	    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+	    <?php /*$this->part('widget-tags', array('entity'=>$entity)); */ ?>
 
 	    <?php if($this->isEditable() || $entity->texto_sobre): ?>
 		    <p>
