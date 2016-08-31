@@ -81,6 +81,14 @@ return array(
         'zoom_max' => array(
             'label' => 'Zoom Máximo',
             'type' => 'text'
+        ),
+        'latitude' => array(
+            'label' => 'Latitude',
+            'type' => 'text'
+        ),
+        'longitude' => array(
+            'label' => 'Longitude',
+            'type' => 'text'
         )
     )
     /* EXEMPLOS DE METADADOS:
