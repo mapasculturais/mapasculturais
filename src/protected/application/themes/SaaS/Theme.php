@@ -20,14 +20,7 @@ class Theme extends BaseV1\Theme{
     }
 
     protected static function _getTexts(){
-        $app = App::i();
-
-        $domain = @$_SERVER['HTTP_HOST'];
-        if(($pos = strpos($domain, ':')) !== false){
-            $domain = substr($domain, 0, $pos);
-        }
-
-        $dict = $app->repo('SaaS')->findOneBy(['url' => "http://$domain"]);
+        $dict = self::$saasCfg;
 
         return [
           'site: name' => $dict->name,
@@ -68,17 +61,22 @@ class Theme extends BaseV1\Theme{
             $domain = substr($domain, 0, $pos);
         }
 
-        $this->saasCfg = $app->repo('SaaS')->findOneBy(['url' => "http://$domain"]);
-        //echo "entro aqui logo mais";
+        self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => "http://$domain"]);
         //$this->saasCfg->dump();
-        $cfgValue = $this->saasCfgValues;
 
-      //  echo "entidades";
-        //$this->saasCfg->dump();die;
-        if(isset($this->saasCfg->entidades_habilitadas->Espacos)) {
-          echo "ok, Espaços habilitados";
-          var_dump($this->saasCfg);die;
+        $entidades = explode(';', $this->saasCfg->entidades_habilitadas);
+        if(in_array('Agentes', $entidades)){
+          $app->config['app.enabled.agents'] = true;
+        } elseif (in_array('Projetos', $entidades)) {
+          $app->config['app.enabled.projects'] = true;
+        } elseif (in_array('Espacos', $entidades)) {
+          $app->config['app.enabled.spaces'] = true;
+        } elseif (in_array('Eventos', $entidades)) {
+          $app->config['app.enabled.events'] = true;
+        } elseif (in_array('Selos', $entidades)) {
+          $app->config['app.enabled.seals'] = true;
         }
+
         $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;
         $this->addPath($this->saasPass);
 
@@ -91,16 +89,28 @@ class Theme extends BaseV1\Theme{
         $this->jsObject['mapsDefaults']['latitude']         = $app->config['maps.center'][0];
         $this->jsObject['mapsDefaults']['longitude']        = $app->config['maps.center'][1];
 
-        if($app->isEnabled('saas') && !$app->cache->contains('_variables.css')){
+        $cache_id = $this->saasCfg->id . ' - _variables.scss';
+
+        if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
+            $backgroundimage = $this->saasCfg->background->url;
             $variables_scss = "";
             $main_scss = '// Child theme main
 @import "variables";
-@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";';
+@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+
+.header-image {
+  background-image: url(' . $backgroundimage . ');
+}
+#home-watermark {
+  background-image: url(' . $backgroundimage . ');
+}
+';
 
             $variables_scss .= "\$brand-agent:   " . (isset($this->saasCfg->cor_agentes)  && !empty($this->saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
             $variables_scss .= "\$brand-project: " . (isset($this->saasCfg->cor_projetos) && !empty($this->saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
             $variables_scss .= "\$brand-event:   " . (isset($this->saasCfg->cor_eventos)  && !empty($this->saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
             $variables_scss .= "\$brand-space:   " . (isset($this->saasCfg->cor_espacos)  && !empty($this->saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
+            //$variables_scss .= "\$brand-seal:   " . (isset($this->saasCfg->cor_selos)     && !empty($this->saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
             $variables_scss .= "\$brand-saas:    " . (isset($this->saasCfg->cor_saas)     && !empty($this->saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
@@ -142,8 +152,7 @@ class Theme extends BaseV1\Theme{
         }
     }
 
-    protected function getSaasCfgValues() {
-      return $this->_saasCfg;
+    protected function getSaasCfg() {
+      return self::$saasCfg;
     }
-
 }

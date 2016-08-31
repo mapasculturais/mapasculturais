@@ -26,8 +26,8 @@ class Theme extends MapasCulturais\Theme {
     protected static function _getTexts(){
         $app = App::i();
         return array(
-            'site: name' => isset($app->config['saas']['app.siteName'])? $app->config['saas']['app.siteName'] : $app->config['app.siteName'],
-            'site: description' => isset($app->config['saas']['app.siteDescription'])? $app->config['saas']['app.siteDescription'] : $app->config['app.siteDescription'],
+            'site: name' => $app->config['app.siteName'],
+            'site: description' => $app->config['app.siteDescription'],
             'site: in the region' => 'na região',
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
@@ -181,10 +181,6 @@ class Theme extends MapasCulturais\Theme {
                   'longitude' => $app->config['maps.center'][1]
               );
             };
-
-            //$this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-            //$this->jsObject['mapsDefaults']['latitude']     = isset($app->config['saas']['maps.center'][0])? $app->config['saas']['maps.center'][0]:$app->config['maps.center'][0];
-            //$this->jsObject['mapsDefaults']['longitude']    = isset($app->config['saas']['maps.center'][1])? $app->config['saas']['maps.center'][1]: $app->config['maps.center'][1];
 
             $this->jsObject['mapMaxClusterRadius']          = isset($app->config['saas']['maps.maxClusterRadius'])?           $app->config['saas']['maps.maxClusterRadius']:          $app->config['maps.maxClusterRadius'];
             $this->jsObject['mapSpiderfyDistanceMultiplier']= isset($app->config['saas']['maps.spiderfyDistanceMultiplier'])? $app->config['saas']['maps.spiderfyDistanceMultiplier']:$app->config['maps.spiderfyDistanceMultiplier'];
