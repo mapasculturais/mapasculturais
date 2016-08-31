@@ -774,8 +774,8 @@ class Theme extends MapasCulturais\Theme {
                     'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
-                        'param' => 'isVerified',
-                        'value' => 'EQ(true)'
+                        'param' => '@verified',
+                        'value' => '1'
                     ]
                 ]
             ],

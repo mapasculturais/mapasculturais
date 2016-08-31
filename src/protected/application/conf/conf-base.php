@@ -30,6 +30,8 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
+    
+    'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
     'app.defaultApiOutput' => 'json',
@@ -49,7 +51,7 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-    'app.enabled.seals'   => false,
+    'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',

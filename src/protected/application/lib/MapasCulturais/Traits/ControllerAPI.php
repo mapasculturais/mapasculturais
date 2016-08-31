@@ -238,6 +238,8 @@ trait ControllerAPI{
             $page = null;
             $keyword = null;
             $permissions = null;
+            
+            $seals = [];
 
             $dqls = [];
 
@@ -289,6 +291,12 @@ trait ControllerAPI{
                     continue;
                 }elseif(strtolower($key) == '@permissions'){
                     $permissions = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@seals'){
+                    $seals = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@verified'){
+                    $seals = $app->config['app.verifiedSealsIds'];
                     continue;
                 }elseif(strtolower($key) == '@order'){
                     $order = $val;
@@ -418,6 +426,15 @@ trait ControllerAPI{
                     continue;
                 }
                 $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
+            }
+            
+            // seals joins
+            
+            if($seals){
+//                $_seals = $this->_API_find_addValueToParamList($seals);
+                $seals = implode(',', $seals);
+                $dql_joins .= "LEFT JOIN e.__sealRelations __sr";
+                $dqls[] = $this->_API_find_parseParam('__sr.seal', "IN($seals)");
             }
 
             if($order){
