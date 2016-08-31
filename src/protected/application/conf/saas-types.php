@@ -61,8 +61,27 @@ return array(
         'texto_sobre' => array(
             'label' => 'Texto sobre',
             'type' => 'text'
+        ),
+        'zoom_default' => array(
+            'label' => 'Zoom Padrão',
+            'type' => 'text'
+        ),
+        'zoom_approximate' => array(
+            'label' => 'Zoom Aproximado',
+            'type' => 'text'
+        ),
+        'zoom_precise' => array(
+            'label' => 'Zoom Preciso',
+            'type' => 'text'
+        ),
+        'zoom_min' => array(
+            'label' => 'Zoom Mínimo',
+            'type'  => 'type'
+        ),
+        'zoom_max' => array(
+            'label' => 'Zoom Máximo',
+            'type' => 'text'
         )
-
     )
     /* EXEMPLOS DE METADADOS:
 
