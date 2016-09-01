@@ -103,22 +103,23 @@ class Theme extends BaseV1\Theme{
         $cache_id = $this->saasCfg->id . ' - _variables.scss';
 
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
-            if($this->saasCfg->background){
-                $backgroundimage = $this->saasCfg->background->url;
-            }
             $variables_scss = "";
             $main_scss = '// Child theme main
 @import "variables";
 @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+';
 
+            if($this->saasCfg->background){
+                $backgroundimage = $this->saasCfg->background->url;
+                $main_scss .= "
 .header-image {
   background-image: url(' . $backgroundimage . ');
 }
 #home-watermark {
   background-image: url(' . $backgroundimage . ');
-}
-';
-
+}";
+            } 
+            
             $variables_scss .= "\$brand-agent:   " . (isset($this->saasCfg->cor_agentes)  && !empty($this->saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
             $variables_scss .= "\$brand-project: " . (isset($this->saasCfg->cor_projetos) && !empty($this->saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
             $variables_scss .= "\$brand-event:   " . (isset($this->saasCfg->cor_eventos)  && !empty($this->saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
