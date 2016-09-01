@@ -103,7 +103,9 @@ class Theme extends BaseV1\Theme{
         $cache_id = $this->saasCfg->id . ' - _variables.scss';
 
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
-            $backgroundimage = $this->saasCfg->background->url;
+            if($this->saasCfg->background){
+                $backgroundimage = $this->saasCfg->background->url;
+            }
             $variables_scss = "";
             $main_scss = '// Child theme main
 @import "variables";
