@@ -25,23 +25,21 @@ return array(
         ),
         'cor_agentes' => array(
             'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
-            'type' => 'text'
         ),
         'cor_espacos' => array(
             'label' => 'Cor: Espaços',
-            'type' => 'text'
         ),
         'cor_projetos' => array(
             'label' => 'Cor: Projetos',
-            'type' => 'text'
         ),
         'cor_eventos' => array(
             'label' => 'Cor: Eventos',
-            'type' => 'text'
         ),
         'cor_selos' => array(
             'label' => 'Cor: Selos',
-            'type' => 'text'
+              'validations' => [
+//                  "v::regex('/([0-9ABCDEFabcdef]{3}|[0-9ABCDEFabcdef]{6})/')" => 'cor inválida'
+              ]
         ),
         'filtro1' => array(
             'label' => 'Filtro 1',
@@ -69,31 +67,24 @@ return array(
         ),
         'zoom_default' => array(
             'label' => 'Zoom Padrão',
-            'type' => 'text'
         ),
         'zoom_approximate' => array(
             'label' => 'Zoom Aproximado',
-            'type' => 'text'
         ),
         'zoom_precise' => array(
             'label' => 'Zoom Preciso',
-            'type' => 'text'
         ),
         'zoom_min' => array(
             'label' => 'Zoom Mínimo',
-            'type'  => 'type'
         ),
         'zoom_max' => array(
             'label' => 'Zoom Máximo',
-            'type' => 'text'
         ),
         'latitude' => array(
             'label' => 'Latitude',
-            'type' => 'text'
         ),
         'longitude' => array(
             'label' => 'Longitude',
-            'type' => 'text'
         )
     )
     /* EXEMPLOS DE METADADOS:

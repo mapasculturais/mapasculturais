@@ -107,6 +107,13 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
+             
+        $app->hook('entity(SaaS).save:before', function(){
+            if(preg_match('#^https?:\/\/#', $this->url)){
+                $this->url = preg_replace('#^(https?:\/\/)#', '', $this->url);
+            }
+        });
+        
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->

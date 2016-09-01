@@ -61,7 +61,7 @@ class Theme extends BaseV1\Theme{
             $domain = substr($domain, 0, $pos);
         }
 
-        self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => "http://$domain"]);
+        self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => $domain]);
         //$this->saasCfg->dump();
 
         $entidades = explode(';', $this->saasCfg->entidades_habilitadas);
