@@ -57,6 +57,8 @@ class Theme extends BaseV1\Theme{
         //$this->filters = self::$config['filters'];
 
         $domain = $app->config['app.cache.namespace'];
+        
+        
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
@@ -65,16 +67,25 @@ class Theme extends BaseV1\Theme{
         //$this->saasCfg->dump();
 
         $entidades = explode(';', $this->saasCfg->entidades_habilitadas);
-        if(in_array('Agentes', $entidades)){
-          $app->config['app.enabled.agents'] = true;
-        } elseif (in_array('Projetos', $entidades)) {
-          $app->config['app.enabled.projects'] = true;
-        } elseif (in_array('Espacos', $entidades)) {
-          $app->config['app.enabled.spaces'] = true;
-        } elseif (in_array('Eventos', $entidades)) {
-          $app->config['app.enabled.events'] = true;
-        } elseif (in_array('Selos', $entidades)) {
-          $app->config['app.enabled.seals'] = true;
+        if(!in_array('Agentes', $entidades)){
+        
+          $app->_config['app.enabled.agents'] = false;
+        } 
+        
+        if (!in_array('Projetos', $entidades)) {
+          $app->_config['app.enabled.projects'] = false;
+        } 
+        
+        if (!in_array('Espacos', $entidades)) {
+          $app->_config['app.enabled.spaces'] = false;  
+        } 
+        
+        if (!in_array('Eventos', $entidades)) {
+          $app->_config['app.enabled.events'] = false;  
+        } 
+        
+        if (!in_array('Selos', $entidades)) {
+          $app->_config['app.enabled.seals'] = false;
         }
 
         $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;

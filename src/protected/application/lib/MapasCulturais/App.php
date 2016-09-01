@@ -95,7 +95,7 @@ class App extends \Slim\Slim{
      * App Configuration.
      * @var array
      */
-    protected $_config = [];
+    public $_config = [];
 
     /**
      * The Application Registry.
