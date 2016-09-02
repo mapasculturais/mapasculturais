@@ -28,9 +28,9 @@
 				</p>
 			<?php endif; ?>
 
-			<?php if($this->isEditable() || $entity->namespace): ?>
-					<span class="js-editable header-field" data-edit="namespace" data-original-title="Digite um namespace" data-emptytext="Namespace"><?php echo $entity->namespace; ?></span>
-			<?php endif; ?>
+			<?php /*if($this->isEditable() || $entity->namespace):*/ ?>
+					<!--span class="js-editable header-field" data-edit="namespace" data-original-title="Digite um namespace" data-emptytext="Namespace"><?php echo $entity->namespace; ?></span-->
+			<?php /*endif; */ ?>
 			<br />
 			<?php if($this->isEditable() || $entity->slug): ?>
 					<span class="js-editable header-field" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->namespace; ?></span>

@@ -20,13 +20,20 @@ class Theme extends BaseV1\Theme{
     }
 
     protected static function _getTexts(){
-        $dict = self::$saasCfg;
+      $app = App::i();
+      $domain = $app->config['app.cache.namespace'];
 
-        return [
-          'site: name' => $dict->name,
-          'site: description' => $dict->texto_sobre,
-          'home: welcome' => $dict->texto_boasvindas
-        ];
+      if(($pos = strpos($domain, ':')) !== false){
+          $domain = substr($domain, 0, $pos);
+      }
+
+      $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+
+      return [
+        'site: name' => $dict->name,
+        'site: description' => $dict->texto_sobre,
+        'home: welcome' => $dict->texto_boasvindas
+      ];
         //            'site: description' => App::i()->config['app.siteDescription'],
         //            'site: in the region' => 'na região',
         //            'site: of the region' => 'da região',
@@ -57,8 +64,7 @@ class Theme extends BaseV1\Theme{
         //$this->filters = self::$config['filters'];
 
         $domain = $app->config['app.cache.namespace'];
-        
-        
+
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
@@ -68,22 +74,22 @@ class Theme extends BaseV1\Theme{
 
         $entidades = explode(';', $this->saasCfg->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
-        
+
           $app->_config['app.enabled.agents'] = false;
-        } 
-        
+        }
+
         if (!in_array('Projetos', $entidades)) {
           $app->_config['app.enabled.projects'] = false;
-        } 
-        
+        }
+
         if (!in_array('Espacos', $entidades)) {
-          $app->_config['app.enabled.spaces'] = false;  
-        } 
-        
+          $app->_config['app.enabled.spaces'] = false;
+        }
+
         if (!in_array('Eventos', $entidades)) {
-          $app->_config['app.enabled.events'] = false;  
-        } 
-        
+          $app->_config['app.enabled.events'] = false;
+        }
+
         if (!in_array('Selos', $entidades)) {
           $app->_config['app.enabled.seals'] = false;
         }
@@ -118,8 +124,8 @@ class Theme extends BaseV1\Theme{
 #home-watermark {
   background-image: url(' . $backgroundimage . ');
 }";
-            } 
-            
+            }
+
             $variables_scss .= "\$brand-agent:   " . (isset($this->saasCfg->cor_agentes)  && !empty($this->saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
             $variables_scss .= "\$brand-project: " . (isset($this->saasCfg->cor_projetos) && !empty($this->saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
             $variables_scss .= "\$brand-event:   " . (isset($this->saasCfg->cor_eventos)  && !empty($this->saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
