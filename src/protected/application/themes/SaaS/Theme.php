@@ -60,6 +60,7 @@ class Theme extends BaseV1\Theme{
 
     function _init() {
         $app = App::i();
+        $saasCfg = '';
 
         //$this->filters = self::$config['filters'];
 
@@ -70,9 +71,10 @@ class Theme extends BaseV1\Theme{
         }
 
         self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $saasCfg = self::$saasCfg;
         //$this->saasCfg->dump();
 
-        $entidades = explode(';', $this->saasCfg->entidades_habilitadas);
+        $entidades = explode(';', $saasCfg->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
 
           $app->_config['app.enabled.agents'] = false;
@@ -97,16 +99,16 @@ class Theme extends BaseV1\Theme{
         $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;
         $this->addPath($this->saasPass);
 
-        $this->jsObject['mapsDefaults']['zoomMax']          = $this->saasCfg->zoom_max;
-        $this->jsObject['mapsDefaults']['zoomMin']          = $this->saasCfg->zoom_min;
-        $this->jsObject['mapsDefaults']['zoomDefault']      = $this->saasCfg->zoom_default;
-        $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->saasCfg->zoom_precise;
-        $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->saasCfg->zoom_approximate;
+        $this->jsObject['mapsDefaults']['zoomMax']          = $saasCfg->zoom_max;
+        $this->jsObject['mapsDefaults']['zoomMin']          = $saasCfg->zoom_min;
+        $this->jsObject['mapsDefaults']['zoomDefault']      = $saasCfg->zoom_default;
+        $this->jsObject['mapsDefaults']['zoomPrecise']      = $saasCfg->zoom_precise;
+        $this->jsObject['mapsDefaults']['zoomApproximate']  = $saasCfg->zoom_approximate;
         $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-        $this->jsObject['mapsDefaults']['latitude']         = $this->saasCfg->latitude;
-        $this->jsObject['mapsDefaults']['longitude']        = $this->saasCfg->longitude;
+        $this->jsObject['mapsDefaults']['latitude']         = $saasCfg->latitude;
+        $this->jsObject['mapsDefaults']['longitude']        = $saasCfg->longitude;
 
-        $cache_id = $this->saasCfg->id . ' - _variables.scss';
+        $cache_id = $saasCfg->id . ' - _variables.scss';
 
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
             $variables_scss = "";
@@ -116,7 +118,7 @@ class Theme extends BaseV1\Theme{
 ';
 
             if($this->saasCfg->background){
-                $backgroundimage = $this->saasCfg->background->url;
+                $backgroundimage = $saasCfg->background->url;
                 $main_scss .= "
 .header-image {
   background-image: url(' . $backgroundimage . ');
@@ -126,12 +128,12 @@ class Theme extends BaseV1\Theme{
 }";
             }
 
-            $variables_scss .= "\$brand-agent:   " . (isset($this->saasCfg->cor_agentes)  && !empty($this->saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
-            $variables_scss .= "\$brand-project: " . (isset($this->saasCfg->cor_projetos) && !empty($this->saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-            $variables_scss .= "\$brand-event:   " . (isset($this->saasCfg->cor_eventos)  && !empty($this->saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
-            $variables_scss .= "\$brand-space:   " . (isset($this->saasCfg->cor_espacos)  && !empty($this->saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
-            $variables_scss .= "\$brand-seal:   " . (isset($this->saasCfg->cor_selos)     && !empty($this->saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
-            $variables_scss .= "\$brand-saas:    " . (isset($this->saasCfg->cor_saas)     && !empty($this->saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
+            $variables_scss .= "\$brand-agent:   " . (isset($saasCfg->cor_agentes)  && !empty($saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
+            $variables_scss .= "\$brand-project: " . (isset($saasCfg->cor_projetos) && !empty($saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
+            $variables_scss .= "\$brand-event:   " . (isset($saasCfg->cor_eventos)  && !empty($saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
+            $variables_scss .= "\$brand-space:   " . (isset($saasCfg->cor_espacos)  && !empty($saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
+            $variables_scss .= "\$brand-seal:   " . (isset($saasCfg->cor_selos)     && !empty($saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
+            $variables_scss .= "\$brand-saas:    " . (isset($saasCfg->cor_saas)     && !empty($saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
               mkdir($this->saasPass . '/assets/css/sass/',0755,true);
