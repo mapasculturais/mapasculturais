@@ -68,7 +68,7 @@ jQuery(function(){
         if (possibleSize > 20) {
             editable.input.$input.attr('size', possibleSize);
         }
-            
+
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
@@ -316,8 +316,49 @@ MapasCulturais.Editables = {
                     config.datepicker = { weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
                     config.clear = 'Limpar';
-
                     break;
+
+                case 'multiselect':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";",";"],
+                        separator:'; '
+                    };
+
+
+                    if(entity[field_name].options)
+                        select2_option.tags = Object.keys(entity[field_name].options);
+
+                    select2_option.createSearchChoice = function() { return null; };
+
+
+                    config.type= 'select2';
+                    config.select2 = select2_option;
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
+                break;
+
+                case 'tag':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";",";"],
+                        separator:'; '
+                    };
+
+
+                    if(entity[field_name].options)
+                        select2_option.tags = Object.keys(entity[field_name].options);
+
+
+                    config.type= 'select2';
+                    config.select2 = select2_option;
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
+                break;
 
                 case 'boolean':
                     config.type = 'checklist';

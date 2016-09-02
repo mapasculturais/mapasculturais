@@ -41,9 +41,14 @@ return array(
 //                  "v::regex('/([0-9ABCDEFabcdef]{3}|[0-9ABCDEFabcdef]{6})/')" => 'cor inválida'
               ]
         ),
-        'filtro1' => array(
-            'label' => 'Filtro 1',
-            'type' => 'text'
+        'filtro_uf' => array(
+            'label' => 'Estado',
+            'type' => 'multiselect',
+            'options' => array(
+                'SP',
+                'SC',
+                'PR'
+            )
         ),
         'filtro2' => array(
             'label' => 'Filtro 2',
@@ -85,7 +90,11 @@ return array(
         ),
         'longitude' => array(
             'label' => 'Longitude',
-        )
+        ),
+        'filtro' => array(
+            'label' => 'Filtros',
+            'type' => 'text'
+        ),
     )
     /* EXEMPLOS DE METADADOS:
 
