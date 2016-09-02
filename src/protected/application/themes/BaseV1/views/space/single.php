@@ -76,12 +76,14 @@ $this->entity = $entity;
                 <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]); ?>
             </div>
 
+            <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
             <?php $this->part('singles/space-extra-info', ['entity' => $entity]) ?>
+            <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
             <?php $this->part('video-gallery.php', ['entity' => $entity]); ?>
-            
+
             <?php $this->part('gallery.php', ['entity' => $entity]); ?>
-            
+
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
@@ -95,11 +97,11 @@ $this->entity = $entity;
 </article>
 <div class="sidebar-left sidebar space">
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
-    
+
     <?php $this->part('widget-areas', ['entity' => $entity]); ?>
-    
+
     <?php $this->part('widget-tags', ['entity' => $entity]); ?>
-    
+
     <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
 </div>
 <div class="sidebar space sidebar-right">
@@ -108,13 +110,13 @@ $this->entity = $entity;
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
-    
+
     <?php $this->part('related-agents', ['entity' => $entity]); ?>
-    
+
     <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
-    
+
     <?php $this->part('downloads', ['entity' => $entity]); ?>
-    
+
     <?php $this->part('link-list', ['entity' => $entity]); ?>
-    
+
 </div>
