@@ -142,6 +142,7 @@ class Theme extends BaseV1\Theme{
             file_put_contents($this->saasPass . '/assets/css/sass/_variables.scss', $variables_scss);
             file_put_contents($this->saasPass . '/assets/css/sass/main.scss', $main_scss);
 
+            putenv('LC_ALL=en_US.UTF-8');
             exec("sass " . $this->saasPass . '/assets/css/sass/main.scss ' . $this->saasPass . '/assets/css/main.css');
         }
 
