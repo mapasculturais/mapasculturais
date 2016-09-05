@@ -67,7 +67,7 @@ $this->layout = 'panel';
             </div>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('saas')): ?>
+        <?php if($app->isEnabled('saas') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
             <div>
                 <div>
                     <div class="clearfix">

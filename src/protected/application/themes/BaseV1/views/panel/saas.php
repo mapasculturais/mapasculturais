@@ -1,5 +1,9 @@
 <?php
-$this->layout = 'panel'
+$this->layout = 'panel';
+
+if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
+	$e = new Exceptions\TemplateNotFound("Template $__template_filename not found");
+}
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
