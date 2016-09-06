@@ -1,0 +1,10 @@
+.logo {
+    width: 145px;
+    height: 145px;
+    position: relative;
+    .btn.edit {
+        position: absolute;
+        right: .5rem;
+        bottom: .5rem;
+    }
+}
