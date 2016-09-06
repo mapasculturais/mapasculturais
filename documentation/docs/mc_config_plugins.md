@@ -8,3 +8,10 @@ plugins => array(
   'AgendaSingles' => ['namespace' => 'AgendaSingles']
 );
 ```
+
+### Notificações
+Para habilitar as notificações do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
+
+``
+plugins => array("notifications");
+``
