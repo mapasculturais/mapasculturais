@@ -114,7 +114,11 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar seal">
-
+    <?php if($this->controller->action == 'create'): ?>
+        <div class="widget">
+            <p class="alert info">Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
+        </div>
+    <?php endif; ?>
 </div>
 <div class="sidebar seal sidebar-right">
 
@@ -124,7 +128,7 @@ $this->includeAngularEntityAssets($entity);
 
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
+            <p class="alert info">Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
