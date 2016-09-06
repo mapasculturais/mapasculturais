@@ -432,7 +432,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
             if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              $app->log->debug("Agente: " . $agent->id . " Data da última atualização: " . $lastUpdateDate->format("d/m/Y"));
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -445,7 +444,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
             if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              $app->log->debug("Projeto: " . $project->id . " Data da última atualização: " . $lastUpdateDate->format("d/m/Y"));
               // message to user about old project registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -458,7 +456,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $lastUpdateDate = $event->updateTimestamp ? $event->updateTimestamp: $event->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
             if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              $app->log->debug("Evento: " . $event->id . " Data da última atualização: " . $lastUpdateDate->format("d/m/Y"));
               // message to user about old event registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -471,7 +468,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
             if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              $app->log->debug("Agente: " . $space->id . " Data da última atualização: " . $lastUpdateDate->format("d/m/Y"));
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -484,7 +480,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
             if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              $app->log->debug("Selo: " . $seal->id . " Data da última atualização: " . $lastUpdateDate->format("d/m/Y"));
               // message to user about old seal registrations
               $notification = new Notification;
               $notification->user = $app->user;
