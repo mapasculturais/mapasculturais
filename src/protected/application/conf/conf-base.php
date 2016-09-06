@@ -166,19 +166,19 @@ return array(
 
 //        'MapasCulturais\Entities\Agent' => array()
     ),
-    
-
 
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
-    'notifications.interval' => 60,
+    'notifications.interval'        => 60,  // seconds
+    'notifications.entities.update' => 90,  // days
+    'notifications.user.access'     => 90,  // days
 
     /* ==================== LOG ================== */
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
     //'slim.log.writer' => new \Custom\Log\Writer(),
 
     'slim.log.level' => \Slim\Log::NOTICE,
-    'slim.log.enabled' => true,
+    'slim.log.enabled' => false,
 
     'app.log.path' => realpath(BASE_PATH . '..') . '/logs/',
 
@@ -193,15 +193,15 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => function_exists('apcu_add') ? 
-        new \Doctrine\Common\Cache\ApcuCache() : 
-        ( 
-            function_exists('apc_add') ? 
+    'app.cache' => function_exists('apcu_add') ?
+        new \Doctrine\Common\Cache\ApcuCache() :
+        (
+            function_exists('apc_add') ?
                 new \Doctrine\Common\Cache\ApcCache() :
                 new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
-                
+
         ),
-    
+
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
 
     'app.useRegisteredAutoloadCache' => true,
@@ -295,7 +295,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
-        	'selo'  	=> array('seal',	'single'),
+        	  'selo'     	=> array('seal',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -318,7 +318,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
-        	'selos'      	 => 'seal',
+            'selos'          => 'seal',
             'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration',
         ),
@@ -330,7 +330,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-        	'selos'      	=> 'seals',
+            'selos'         => 'seals',
             'inscricoes'    => 'registrations'
         ),
 
@@ -342,7 +342,7 @@ return array(
                 'event'         => 'Evento',    'events'        => 'Eventos',
                 'agent'         => 'Agente',    'agents'        => 'Agentes',
                 'space'         => 'Espaço',    'spaces'        => 'Espaços',
-        		'seal'       	=> 'Selo',   	'seals'      	=> 'Selos',
+                'seal'          => 'Selo',      'seals'         => 'Selos',
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
                 'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',

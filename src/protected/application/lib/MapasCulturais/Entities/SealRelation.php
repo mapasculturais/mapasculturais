@@ -77,15 +77,15 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         return $result;
     }
-    
+
     protected function canUserRemove($user){
     	if($user->is('guest'))
     		return false;
-    
-		if($user->is('admin') || $this->seal->canUser("@control"))
+
+		if($user->is('admin') || $user->is('superAdmin') || $this->seal->canUser("@control"))
 			return true;
-    
-		return false;	
+
+		return false;
     }
 
     public function save($flush = false) {
@@ -94,17 +94,17 @@ abstract class SealRelation extends \MapasCulturais\Entity
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
                throw $e;
-    
+
 	    	$app = App::i();
 	    	$app->disableAccessControl();
 	    	$this->status = self::STATUS_PENDING;
 	    	parent::save($flush);
 	    	$app->enableAccessControl();
-	    
+
 	    	$request = new RequestSealRelation;
 	    	$request->setSealRelation($this);
 	    	$request->save(true);
-    
+
 			throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
         }
     }

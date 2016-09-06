@@ -106,8 +106,6 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
-
-
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -237,6 +235,10 @@ class Theme extends MapasCulturais\Theme {
                 $metakey = 'geo' . ucfirst($div['type']);
                 $this->$metakey = $div['name'];
             }
+        });
+
+        $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
+          $this->updateTimestamp = new \DateTime;
         });
 
         // sempre que insere uma imagem cria o avatarSmall

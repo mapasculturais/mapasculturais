@@ -89,6 +89,12 @@ class Project extends \MapasCulturais\Entity
      */
     protected $longDescription;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
 
     /**
      * @var \DateTime
@@ -208,7 +214,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
      *
@@ -216,7 +222,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__agentRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
@@ -245,7 +251,7 @@ class Project extends \MapasCulturais\Entity
      */
     function getSentRegistrations(){
         $registrations = $this->getAllRegistrations();
-        
+
         $result = [];
         foreach($registrations as $re){
             if($re->status > 0)

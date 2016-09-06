@@ -149,7 +149,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
      *
@@ -166,18 +166,25 @@ class Event extends \MapasCulturais\Entity
     */
     protected $__termRelations;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
+
     private $_newProject = false;
 
     function publish($flush = false){
         $this->checkPermission('publish');
-        
+
         $app = App::i();
-        
+
         $app->disableAccessControl();
-        
+
         $this->status = self::STATUS_ENABLED;
         $this->save($flush);
-        
+
         $app->enableAccessControl();
     }
 
@@ -382,34 +389,34 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
-    
+
     protected function canUserPublish($user){
         if($user->is('guest')){
             return false;
         }
-        
+
         if($user->is('admin')){
             return true;
         }
-        
+
         if($this->canUser('@control', $user)){
             return true;
         }
-        
+
         if($this->project && $this->project->canUser('@control', $user)){
             return true;
         }
-        
+
         return false;
     }
-    
+
     protected function canUserView($user){
         if($this->status === self::STATUS_ENABLED){
             return true;
         }else if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
         }
-        
+
         return false;
     }
 

@@ -182,7 +182,7 @@ class Space extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\SpaceAgentRelation[] Agent Relations
      *
@@ -198,6 +198,13 @@ class Space extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
