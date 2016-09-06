@@ -130,17 +130,6 @@
                 </p>
             <?php endif;?>
 
-        <p>
-            <span class="label">Filtros: </span>
-            <br />
-            <span class="js-editable" data-edit="filtro1" data-original-title="Filtro 1" data-emptytext="Filtro 1"><?php echo $entity->filtro1; ?></span>
-            <br />
-            <span class="js-editable" data-edit="filtro2" data-original-title="Filtro 2" data-emptytext="Filtro 2"><?php echo $entity->filtro2; ?></span>
-            <br />
-            <span class="js-editable" data-edit="filtro3" data-original-title="Filtro 3" data-emptytext="Filtro 3"><?php echo $entity->filtro3; ?></span>
-            <br />
-            <span class="js-editable" data-edit="filtro4" data-original-title="Filtro 4" data-emptytext="Filtro 4"><?php echo $entity->filtro4; ?></span>
-        </p>
             <p>
                 <span class="label">Logo: <span class="tip">Deve ter as dimensões de 140x60px com extensões <strong>.png/.jpg</strong></span></span>
                 <?php $this->applyTemplateHook('logo','before'); ?>
