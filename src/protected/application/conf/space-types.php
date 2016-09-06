@@ -15,7 +15,8 @@ return array(
             'label' => 'Email Privado',
             'validations' => array(
                 'v::email()' => 'O email privado não é um email válido.'
-            )
+            ),
+        	'private' => true
         ),
 
         'telefonePublico' => array(
@@ -31,7 +32,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
-            )
+            ),
+        	'private' => true
         ),
 
 
@@ -40,7 +42,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.'
-            )
+            ),
+        	'private' => true
         ),
 
         /*

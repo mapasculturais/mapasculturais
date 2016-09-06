@@ -30,6 +30,8 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
+    
+    'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
     'app.defaultApiOutput' => 'json',
@@ -49,7 +51,7 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-    'app.enabled.seals'   => false,
+    'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -82,7 +84,7 @@ return array(
 
     'cep.endpoint'      => 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s',
     'cep.token_header'  => 'Authorization: Token token="%s"',
-    // 'cep.token'         => '[token]',
+    'cep.token'         => '',
 
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais

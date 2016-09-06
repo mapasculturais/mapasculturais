@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(!$app->isEnabled('seals'))
 	return;
 ?>
@@ -18,7 +18,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-owner' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
@@ -28,7 +28,7 @@ if(!$app->isEnabled('seals'))
 					<div ng-if="entity.registrationSeals.owner" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.owner)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.owner)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-owner', $event)" title="Editar {{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}">Trocar selo</a>
@@ -36,7 +36,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 	            	</div>
 				</div>
-			</div>                        
+			</div>
 		</div>
 		<p>
 			<span class="label">Instituição responsável</span> <span class="registration-help">(Selos atribuídos a instituições)</span><br>
@@ -48,7 +48,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-institution' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('institution', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('institution', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
@@ -58,7 +58,7 @@ if(!$app->isEnabled('seals'))
 					<div ng-if="entity.registrationSeals.institution" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.institution)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.institution)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-institution', $event)" title="Editar {{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}">Trocar selo</a>
@@ -66,7 +66,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 	            	</div>
 				</div>
-			</div>                        
+			</div>
 		</div>
 		<p>
 			<span class="label">Coletivo</span> <span class="registration-help">(Selos atribuídos a agentes coletivos)</span><br>
@@ -78,7 +78,7 @@ if(!$app->isEnabled('seals'))
 					<edit-box id='set-seal-collective' cancel-label="Cancelar" close-on-cancel='true'>
 			            <div ng-if="seals.length > 0" class="widget">
 					        <div class="selos clearfix">
-					            <div ng-if="!sealRelated(seal)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('collective', seal)">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('collective', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
 									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
 					            </div>
@@ -88,7 +88,7 @@ if(!$app->isEnabled('seals'))
 	            	<div ng-if="entity.registrationSeals.collective" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.collective)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(registrationSeals.collective)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-collective', $event)" title="Editar {{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}">Trocar selo</a>
@@ -96,7 +96,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 	            	</div>
 				</div>
-			</div>                        
+			</div>
 		</div>
 	</div>
 </div>

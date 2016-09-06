@@ -29,13 +29,16 @@ class Seal extends \MapasCulturais\Entity
     const STATUS_INVITED = -2;
 
     protected static $validations = [
-        'name' => [
-            'required' => 'O nome do selo é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ]
+      'name' => [
+        'required' => 'O nome do selo é obrigatório'
+      ],
+      'shortDescription' => [
+        'required' => 'A descrição curta é obrigatória',
+        'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
+      ],
+    	'validPeriod' => [
+    		'v::allOf(v::positive(),v::intVal())' => 'Validade do selo é obrigatória.'
+    	]
     ];
 
     /**
@@ -186,6 +189,18 @@ class Seal extends \MapasCulturais\Entity
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    function validatePeriod($value) {
+    	if (!is_numeric($value)) {
+    		return false;
+    	} elseif ($value < 0) {
+    		return false;
+    	}
+    	return true;
+    }
+
+>>>>>>> master
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

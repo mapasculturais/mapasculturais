@@ -18,8 +18,10 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
+$this->entity = $entity;
+
 ?>
-<?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
+<?php $this->part('editable-entity', ['entity' => $entity, 'action' => $action]);  ?>
 
 <article class="main-content space">
     <header class="main-content-header">
@@ -74,16 +76,14 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]); ?>
             </div>
 
+            <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
             <?php $this->part('singles/space-extra-info', ['entity' => $entity]) ?>
+            <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
-            <!-- Video Gallery BEGIN -->
-            <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
-            <!-- Video Gallery END -->
+            <?php $this->part('video-gallery.php', ['entity' => $entity]); ?>
 
-            <!-- Image Gallery BEGIN -->
-            <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
-            <!-- Image Gallery END -->
-            
+            <?php $this->part('gallery.php', ['entity' => $entity]); ?>
+
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
@@ -93,71 +93,32 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
-    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+    <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
 </article>
 <div class="sidebar-left sidebar space">
-
-    <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    <!-- Related Seals END -->
 
-    <div class="widget">
-        <h3>Status</h3>
-        <?php if($this->isEditable()): ?>
-            <div id="editable-space-status" class="js-editable" data-edit="public" data-type="select" data-value="<?php echo $entity->public ? '1' : '0' ?>"  data-source="[{value: 0, text: 'Publicação restrita - requer autorização para criar eventos'},{value: 1, text:'Publicação livre - qualquer pessoa pode criar eventos'}]">
-                <?php if ($entity->public) : ?>
-                    <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
-                    <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
-                <?php else: ?>
-                    <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
-                    <p class="venue-status-definition">Requer autorização para criar eventos.</p>
-                <?php endif; ?>
-            </div>
-        <?php else: ?>
-            <?php if ($entity->public) : ?>
-                <div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div>
-                <p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>
-            <?php else: ?>
-                <div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div>
-                <p class="venue-status-definition">Requer autorização para criar eventos.</p>
-            <?php endif; ?>
-        <?php endif; ?>
-    </div>
-    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+    <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
+
+    <?php $this->part('widget-areas', ['entity' => $entity]); ?>
+
+    <?php $this->part('widget-tags', ['entity' => $entity]); ?>
+
+    <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
 </div>
 <div class="sidebar space sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o espaço.<span class="close"></span></p>
+            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
-    <!-- Related Agents BEGIN -->
-    <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Agents END -->
-    <?php if($this->controller->action !== 'create'): ?>
-        <div class="widget">
-            <?php if($entity->children && $entity->children->count()): ?>
-            <h3>Sub-espaços</h3>
-            <ul class="js-slimScroll widget-list">
-                <?php foreach($entity->children as $space): ?>
-                <li class="widget-list-item"><a href="<?php echo $space->singleUrl; ?>"><?php echo $space->name; ?></a></li>
-                <?php endforeach; ?>
-            </ul>
-            <?php endif; ?>
 
-            <?php if($entity->id && $entity->canUser('createChild')): ?>
-            <a class="btn btn-default add" href="<?php echo $app->createUrl('space','create', array('parentId' => $entity->id)) ?>">Adicionar sub-espaço</a>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
-    
-    <!-- Downloads BEGIN -->
-    <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
-    <!-- Downloads END -->
+    <?php $this->part('related-agents', ['entity' => $entity]); ?>
 
-    <!-- Link List BEGIN -->
-    <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
-    <!-- Link List END -->
+    <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
+
+    <?php $this->part('downloads', ['entity' => $entity]); ?>
+
+    <?php $this->part('link-list', ['entity' => $entity]); ?>
+
 </div>

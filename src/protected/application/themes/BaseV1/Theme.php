@@ -72,6 +72,9 @@ class Theme extends MapasCulturais\Theme {
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
 
+            'entities: Children spaces' => 'Subespaços',
+            'entities: Add child space' => 'Adicionar subespaço',
+
             'entities: space found' => 'espaço encontrado',
             'entities: spaces found' => 'espaços encontrados',
             'entities: event found' => 'evento encontrado',
@@ -79,7 +82,11 @@ class Theme extends MapasCulturais\Theme {
             'entities: agent found' => 'agente encontrado',
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados'
+            'entities: project found' => 'projetos encontrados',
+
+            'taxonomies:area: name' => 'Área de Atuação',
+            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
+            'taxonomies:area: select' => 'Selecione as áreas',
         );
     }
 
@@ -205,7 +212,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event|seal>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal|saas>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -298,22 +305,21 @@ class Theme extends MapasCulturais\Theme {
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
 
-        $app->hook("GET(site.cep)", function() use($app){
-            if(isset($app->config['cep.token'])){
+        $app->hook("GET(site.cep)", function() use($app) {
+            if ($app->config['cep.token']) {
                 $cep = $app->request->get('num');
                 // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
                 $url = sprintf($app->config['cep.endpoint'], $cep);
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
-                if (isset($app->config['cep.token_header']) && !empty($app->config['cep.token_header'])) {
+                if ($app->config['cep.token_header']) {
                     // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
                 }
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $output = curl_exec($ch);
                 echo $output;
-            }
-            else{
+            } else {
                 $app->halt(403, 'No token for CEP');
             }
         });
@@ -681,11 +687,12 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ];
 
-            // $normal_filters = [];
-            // $metadata_filters = [];
             $filters = $this->_getFilters();
             $modified_filters = [];
 
+            $sanitize_filter_value = function($val){
+                return str_replace(',', '\\,', $val);
+            };
             foreach ($filters as $key => $value) {
                 $modified_filters[] = $key;
                 $modified_filters[$key] = [];
@@ -700,18 +707,18 @@ class Theme extends MapasCulturais\Theme {
                             case 'metadata':
                                 $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($data->config['options'] as $meta_key => $value)
-                                    $mod_field['options'][] = ['value' => $meta_key, 'label' => $value];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
                                 foreach ($types as $type_key => $type_val)
-                                    $mod_field['options'][] = ['value' => $type_key, 'label' => $type_val->name];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
                                 $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
                                 foreach ($tax->restrictedTerms as $v)
-                                    $mod_field['options'][] = ['value' => $v, 'label' => $v];
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($v), 'label' => $v];
 
                                 $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
                                 break;
@@ -734,8 +741,8 @@ class Theme extends MapasCulturais\Theme {
         return [
             'space' => [
                 [
-                    'label'=> 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> $this->dict('taxonomies:area: name', false),
+                    'placeholder' => $this->dict('taxonomies:area: select', false),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
@@ -769,8 +776,8 @@ class Theme extends MapasCulturais\Theme {
                     'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
-                        'param' => 'isVerified',
-                        'value' => 'EQ(true)'
+                        'param' => '@verified',
+                        'value' => '1'
                     ]
                 ]
             ],
@@ -939,19 +946,30 @@ class Theme extends MapasCulturais\Theme {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
 
-    function addPermitedSealsToJs() {
+    function addSealsToJs($onlyPermited = true,$sealId = array()) {
+        	$query = [];
+        	$query['@select'] = 'id,name,status, singleUrl';
 
-    	$app = App::i();
-    	if (!$app->user->is('guest')) {
-    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-    	}
+        	$query['@files'] = '(avatar.avatarMedium):url';
+        	$sealId = implode(',',array_unique($sealId));
 
-    	if($app->user->is('admin') || $app->user->is('superAdmin') || $entity->canUser('@control')) {
-    		$this->jsObject['canRelateSeal'] = true;
-    	} else {
-    		$this->jsObject['canRelateSeal'] = false;
-    	}
-    }
+        	if(count($sealId) > 0 && !empty($sealId)) {
+        		$query['id'] = 'IN(' .$sealId . ')';
+        	}
+
+        	$query['@ORDER'] = 'createTimestamp DESC';
+
+        	$app = App::i();
+        	if (!$app->user->is('guest')) {
+        		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
+        	}
+
+        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
+        		$this->jsObject['canRelateSeal'] = true;
+        	} else {
+        		$this->jsObject['canRelateSeal'] = false;
+        	}
+        }
 
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();

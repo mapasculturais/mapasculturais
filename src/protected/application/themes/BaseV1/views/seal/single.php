@@ -19,16 +19,16 @@ $this->includeAngularEntityAssets($entity);
 <article class="main-content label">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--seal.png']); ?>
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -36,7 +36,7 @@ $this->includeAngularEntityAssets($entity);
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
-    
+
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
@@ -44,7 +44,7 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
-    
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
@@ -58,8 +58,20 @@ $this->includeAngularEntityAssets($entity);
 
 					<p>
 						<span class="label">Validade:</span>
-						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo"><?php echo $entity->validPeriod;?></span>
-						Meses. 
+						<span class="js-editable" data-edit="validPeriod" data-original-title="Periodo" data-emptytext="Informe o período de duração da validade do selo">
+            <?php
+              if($this->isEditable() || $entity->validPeriod > 0){
+                echo $entity->validPeriod;
+              } else {
+                echo "Selo sem prazo de Validade";
+              }
+            ?>
+
+            </span><?php if($entity->validPeriod > 0) echo $entity->validPeriod > 1 ? 'Meses':'Mês' ?>
+
+            <?php if ($this->isEditable()): ?>
+              <p class="registration-help">(Informar 0 (zero) para validade infinita.)</p>
+            <?php endif; ?>
 					</p>
 
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
@@ -68,43 +80,48 @@ $this->includeAngularEntityAssets($entity);
             </div>
             <!--.ficha-spcultura-->
 
-			<p>
-				<h3>Descrição</h3>
-				<span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo nl2br($entity->longDescription); ?></span>
-				<!--.descricao-->
-			</p>
-			
-			<p>
-				<h3>Conteúdo da Impressão</h3>
-				<p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
-                [sealName]: Nome do selo aplicado<br>
-                [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
-                [entityName]: Nome da entidade (Teatro Municipal)<br>
-                [dateIni]: Data de Início da Validade do selo aplicado<br>
-                [dateFin]: Data de Fim da Validade do selo aplicado</p>
-				<span class="descricao js-editable" data-edit="certificateText" data-original-title="Conteúdo da Impressão do Certificado" data-emptytext="Insira o conteúdo da impressão do certificado do selo." ><?php echo nl2br($entity->certificateText); ?></span>
-	            <!--.conteúdo da impressão do certificado do selo-->
-			</p>
+      <?php if($this->isEditable() || $entity->longDescription) {?>
+  			<p>
+  				<h3>Descrição</h3>
+  				<span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+  				<!--.descricao-->
+  			</p>
+      <?php } ?>
 
-        </div>
-        <!-- #sobre -->
-        
-        <?php $this->applyTemplateHook('tabs-content','end'); ?>
+      <?php if($this->isEditable()) {?>
+  			<p>
+  				<h3>Conteúdo da Impressão</h3>
+            <p class="registration-help">Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar as seguintes palavras chaves para obter informações das entidades relacionadas com o selo no texto abaixo.<br>
+            [sealName]: Nome do selo aplicado<br>
+            [sealShortDescription]: Descrição curta do selo aplicado</br>
+            [sealOwner]: Agente que aplicou o selo</br>
+            [sealRelationLink]: Link de autencidade do selo aplicado</br>
+            [entityDefinition]: Descrição da entidade (Agente/Projeto/Espaço/Evento)<br>
+            [entityName]: Nome da entidade (Teatro Municipal)<br>
+            [dateIni]: Data de Início da Validade do selo aplicado<br>
+            [dateFin]: Data de Fim da Validade do selo aplicado</p>
+  				<span class="descricao js-editable" data-edit="certificateText" data-original-title="Conteúdo da Impressão do Certificado" data-emptytext="Insira o conteúdo da impressão do certificado do selo." ><?php echo nl2br($entity->certificateText); ?></span>
+  	      <!--.conteúdo da impressão do certificado do selo-->
+  			</p>
+      <?php }?>
+      </div>
+      <!-- #sobre -->
+      <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar seal">
 
 </div>
 <div class="sidebar seal sidebar-right">
-	
+
 	<!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-    
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
@@ -114,7 +131,7 @@ $this->includeAngularEntityAssets($entity);
 	<!-- Downloads BEGIN -->
         <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
-    
+
     <!-- Link List BEGIN -->
         <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->

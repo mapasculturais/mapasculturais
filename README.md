@@ -1,4 +1,4 @@
- Mapas Culturais
+# Mapas Culturais
 
 Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturais, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados.
 
@@ -30,6 +30,8 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 
 * [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
 * [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
+* [Mapas SDK](https://github.com/centroculturalsp/MapasSDK)
+
 
 ### Documentação 
 Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
@@ -93,17 +95,31 @@ Vale lembrar que os requisitos de hardware podem variar de acordo com a latênci
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
-* 
+ 
+
 ### Ambientes de desenvolvimento e teste
 Estes ambientes possuem integração contínua com os branches e temas atuais. Para maiores detalhes, ver [Guia do desenvolvedor](doc/developer-guide.md). 
 
-* http://master.map.as
-* http://rc.map.as
-* http://stable.map.as
+As urls de testes functionam da seguinte maneira:
 
-Para acessar os temas, use a url com nome do tema ou instalação. Ex.: 
+* http://nomedacidade.uf.ambiente.map.as e
+* http://uf.ambiente.map.as
 
-* http://museus.minc.stable.map.as
+Os ambientes possíveis são **stable**, **rc** e **master**, onde:
+
+stable: É a última versão de produção que está disponibilizada do software
+rc: Sigla de **Release Candidate**, onde as features (funcionalidades) são homologadas antes de irem para a versão **stable**
+master: Ambiente de desenvolvimento, em constante evolução antes de ter pacotes de features para irem para a versão **rc**
+
+Exemplos:
+* http://saopaulo.sp.stable.map.as
+* http://blumenau.sc.rc.map.as
+* http://santoandre.sp.master.map.as
+* http://ce.rc.map.as
+* http://rs.stable.map.as
+* http://df.master.map.as
+* http://museus.minc.rc.map.as (minc)
+* http://bibliotecas.minc.stable.map.as (minc)
 
 ### Stories & Tests
 

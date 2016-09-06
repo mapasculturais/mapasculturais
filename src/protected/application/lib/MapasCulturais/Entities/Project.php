@@ -231,6 +231,15 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
+    
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);

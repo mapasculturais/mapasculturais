@@ -70,6 +70,16 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     protected $seal;
 
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * })
+     */
+    protected $agent;
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');

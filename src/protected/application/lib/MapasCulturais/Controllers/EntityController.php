@@ -25,6 +25,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
      */
     protected $entityClassName;
 
+    
+    protected $_requestedEntity = false;
 
 
     /**
@@ -70,10 +72,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @return \MapasCulturais\Entity|null
      */
     public function getRequestedEntity(){
-        if(!key_exists('id', $this->urlData))
-            return null;
-
-        return $this->repository->find($this->urlData['id']);
+        if ($this->_requestedEntity !== false) {
+            return $this->_requestedEntity;
+        }
+        
+        if (key_exists('id', $this->urlData)) {
+            $this->_requestedEntity = $this->repository->find($this->urlData['id']);
+        } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
+            $this->_requestedEntity = $this->newEntity;
+        } else {
+            $this->_requestedEntity = null;
+        }
+        
+        return $this->_requestedEntity;
     }
 
     /**
@@ -185,8 +196,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
     function POST_index(){
         $this->requireAuthentication();
 
-        $entity = $this->newEntity;
-
+        $entity = $this->getRequestedEntity();
+        
         foreach($this->data as $field=>$value){
             $entity->$field = $value;
         }
@@ -212,8 +223,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
     function GET_create(){
         $this->requireAuthentication();
 
-        $entity = $this->newEntity;
-
+        $entity = $this->getRequestedEntity();
+        
         $class = $this->entityClassName;
 
         $entity->status = $class::STATUS_DRAFT;
