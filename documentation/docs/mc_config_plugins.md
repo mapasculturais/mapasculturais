@@ -27,7 +27,7 @@ Existem as notificações ao usuário após longo período de ausência de acess
 ```
 'notifications.user.access'     => 90,  // days
 ```
-E as notificações de entidades sem atualização, defininido em dias:
+E as notificações de entidades sem atualização, definido em dias:
 ```
 'notifications.entities.update' => 90,  // days
 ```
