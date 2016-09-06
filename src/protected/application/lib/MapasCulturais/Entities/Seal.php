@@ -189,8 +189,6 @@ class Seal extends \MapasCulturais\Entity
         return false;
     }
 
-<<<<<<< HEAD
-=======
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
     		return false;
@@ -200,7 +198,6 @@ class Seal extends \MapasCulturais\Entity
     	return true;
     }
 
->>>>>>> master
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
