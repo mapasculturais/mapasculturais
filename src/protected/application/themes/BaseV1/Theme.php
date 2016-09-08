@@ -107,13 +107,17 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
-             
-        $app->hook('entity(SaaS).save:before', function(){
+
+        $app->hook('entity(SaaS).save:before', function() use($app){
             if(preg_match('#^https?:\/\/#', $this->url)){
                 $this->url = preg_replace('#^(https?:\/\/)#', '', $this->url);
             }
+            $cache_id = $this->controller->requestedEntity->id . ' - _variables.scss';
+            $app->log->debug("Id Saas que será apagado do cache: " . $cache_id);
+            $app->log->debug("Cache encontrado? " . ($app->cache->fetch($cache_id)? "Sim" : "Não"));
+            $app->cache->delete($cache_id);
         });
-        
+
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->

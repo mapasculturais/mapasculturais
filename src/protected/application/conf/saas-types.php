@@ -27,13 +27,13 @@ return array(
             'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_espacos' => array(
-            'label' => 'Cor: Espaços',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_projetos' => array(
-            'label' => 'Cor: Projetos',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_eventos' => array(
-            'label' => 'Cor: Eventos',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_selos' => array(
             'label' => 'Cor: Selos',

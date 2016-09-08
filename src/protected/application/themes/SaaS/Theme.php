@@ -109,8 +109,11 @@ class Theme extends BaseV1\Theme{
         $this->jsObject['mapsDefaults']['longitude']        = $saasCfg->longitude;
 
         $cache_id = $saasCfg->id . ' - _variables.scss';
-
+        $app->log->debug("Id SaaS: " . $cache_id);
+        $app->log->debug("Cache Ok? " . ($app->cache->contains($cache_id)? "Não":"Sim"));
+        $app->log->debug("Cache encontrado? " . ($app->cache->fetch($cache_id)? "Sim" : "Não"));
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
+            $app->log->debug("Entrou aqui mlk.");
             $variables_scss = "";
             $main_scss = '// Child theme main
 @import "variables";
@@ -128,12 +131,12 @@ class Theme extends BaseV1\Theme{
 }";
             }
 
-            $variables_scss .= "\$brand-agent:   " . (isset($saasCfg->cor_agentes)  && !empty($saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
-            $variables_scss .= "\$brand-project: " . (isset($saasCfg->cor_projetos) && !empty($saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-            $variables_scss .= "\$brand-event:   " . (isset($saasCfg->cor_eventos)  && !empty($saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
-            $variables_scss .= "\$brand-space:   " . (isset($saasCfg->cor_espacos)  && !empty($saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
-            $variables_scss .= "\$brand-seal:   " . (isset($saasCfg->cor_selos)     && !empty($saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
-            $variables_scss .= "\$brand-saas:    " . (isset($saasCfg->cor_saas)     && !empty($saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
+            $variables_scss .= "\$brand-agent:   " . ($saasCfg->cor_agentes?  $saasCfg->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
+            $variables_scss .= "\$brand-project: " . ($saasCfg->cor_projetos? $saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
+            $variables_scss .= "\$brand-event:   " . ($saasCfg->cor_eventos?  $saasCfg->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
+            $variables_scss .= "\$brand-space:   " . ($saasCfg->cor_espacos?  $saasCfg->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
+            $variables_scss .= "\$brand-seal:    " . ($saasCfg->cor_selos?    $saasCfg->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
+            $variables_scss .= "\$brand-saas:    " . ($saasCfg->cor_saas?     $saasCfg->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
               mkdir($this->saasPass . '/assets/css/sass/',0755,true);
