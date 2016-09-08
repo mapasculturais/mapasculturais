@@ -83,6 +83,16 @@ class Theme extends MapasCulturais\Theme {
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
             'taxonomies:area: select' => 'Selecione as áreas',
+            
+            'error:403: title' => 'Permissão negada',
+            'error:403: message' => 'Você não tem permissão para executar esta ação.',
+            
+            'error:404: title' => 'Página não encontrada.',
+            'error:404: message' => '',
+            
+            'error:500: title' => 'Um erro inesperado aconteceu',
+            'error:500: message' => '',
+            
         );
     }
 
