@@ -8,11 +8,11 @@ $this->addRelatedSealsToJs($entity);
 
 <?php if($this->controller->action == 'create'): ?>
 	<div class="widget">
-		<p class="alert info">Para relacionar o selo ao <?php echo $entity->entityType;?>, primeiro é preciso salvar.<span class="close"></span></p>
+		<p class="alert info">Para relacionar o selo ao <?php echo $entity->entityType;?>, primeiro é preciso salvar o registro.<span class="close"></span></p>
 	</div>
 <?php else: ?>
     <div class="selos-add" ng-controller="RelatedSealsController">
-        <div ng-if="relations.length > 0 || seals.length > 0" class="widget">
+        <div ng-if="isEditable && (relations.length > 0 || seals.length > 0)" class="widget">
             <h3 text-align="left" vertical-align="bottom">Selos Aplicados <div ng-if="isEditable && canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="Adicionar selo relacionado"></div></h3>
             <edit-box id="sealsAvailable" position="right" title="Adicionar selo relacionado" cancel-label="Fechar" close-on-cancel='true'>
                 <div ng-if="seals.length > 0" class="widget">
