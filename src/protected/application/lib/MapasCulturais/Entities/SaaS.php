@@ -30,9 +30,6 @@ class SaaS extends \MapasCulturais\Entity
         'name' => [
             'required' => 'O nome da instalação é obrigatório'
         ],
-        /*'namespace' => [
-            'required' => 'O namespace da instalação é obrigatório'
-        ],*/
         'slug' => [
             'required' => 'O slug da instalação é obrigatório'
         ],

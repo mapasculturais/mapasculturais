@@ -45,9 +45,37 @@ return array(
             'label' => 'Estado',
             'type' => 'multiselect',
             'options' => array(
-                'SP',
+                "'AC'",
+                'AL',
+                'AM',
+                'AP',
+                'BA',
+                'CE',
+                'DF',
+                'ES',
+                'GO',
+                'MA',
+                'MG',
+                'MS',
+                'MT',
+                'PA',
+                'PB',
+                'PE',
+                'PI',
+                'PR',
+                'RJ',
+                'RN',
+                'RO',
+                'RR',
+                'RS',
                 'SC',
-                'PR'
+                'SE',
+                'SP',
+                'TO',
+                'OUT'
+            ),
+            'validations' => array(
+                "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
             )
         ),
         'filtro_espaco' => array(
@@ -194,10 +222,6 @@ return array(
         ),
         'longitude' => array(
             'label' => 'Longitude',
-        ),
-        'filtro' => array(
-            'label' => 'Filtros',
-            'type' => 'text'
         ),
     )
     /* EXEMPLOS DE METADADOS:
