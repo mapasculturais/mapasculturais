@@ -223,6 +223,34 @@ return array(
         'longitude' => array(
             'label' => 'Longitude',
         ),
+        'filtro' => array(
+            'label' => 'Filtros',
+            'type' => 'text'
+        ),
+        'titulo' => array(
+            'label' => 'Título',
+            'type' => 'text'
+        ),
+        'titulo_projetos' => array(
+            'label' => 'Título da entidade',
+            'type' => 'text'
+        ),
+        'titulo_eventos' => array(
+            'label' => 'Título da entidade',
+            'type' => 'text'
+        ),
+        'titulo_agentes' => array(
+            'label' => 'Título da entidade',
+            'type' => 'text'
+        ),
+        'titulo_espacos' => array(
+            'label' => 'Título da entidade',
+            'type' => 'text'
+        ),
+        'titulo_selos' => array(
+            'label' => 'Título da entidade',
+            'type' => 'text'
+        )
     )
     /* EXEMPLOS DE METADADOS:
 
