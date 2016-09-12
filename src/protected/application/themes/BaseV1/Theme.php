@@ -86,6 +86,11 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados'
+
+            'entities: Agents'    => 'Agentes',
+            'entities: Projects'  => 'Projetos',
+            'entities: Events'    => 'Eventos',
+            'entities: Seals'     => 'Selos'
         );
     }
 
