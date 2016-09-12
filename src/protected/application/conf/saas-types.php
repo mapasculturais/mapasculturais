@@ -228,28 +228,22 @@ return array(
             'type' => 'text'
         ),
         'titulo' => array(
-            'label' => 'Título',
-            'type' => 'text'
+            'label' => 'Título'
         ),
         'titulo_projetos' => array(
-            'label' => 'Título da entidade',
-            'type' => 'text'
+            'label' => 'Título da entidade'
         ),
         'titulo_eventos' => array(
-            'label' => 'Título da entidade',
-            'type' => 'text'
+            'label' => 'Título da entidade'
         ),
         'titulo_agentes' => array(
-            'label' => 'Título da entidade',
-            'type' => 'text'
+            'label' => 'Título da entidade'
         ),
         'titulo_espacos' => array(
-            'label' => 'Título da entidade',
-            'type' => 'text'
+            'label' => 'Título da entidade'
         ),
         'titulo_selos' => array(
-            'label' => 'Título da entidade',
-            'type' => 'text'
+            'label' => 'Título da entidade'
         )
     )
     /* EXEMPLOS DE METADADOS:

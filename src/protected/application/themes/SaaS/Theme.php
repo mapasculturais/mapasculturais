@@ -30,28 +30,16 @@ class Theme extends BaseV1\Theme{
       $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
 
       return [
-        'site: name' => $dict->name,
+        'site: name'        => $dict->name,
         'site: description' => $dict->texto_sobre,
-        'home: welcome' => $dict->texto_boasvindas
+        'home: title'       => $dict->titulo,
+        'home: welcome'     => $dict->texto_boasvindas,
+        'entities: Spaces'  => $dict->titulo_espacos,
+        'entities: Projects'=> $dict->titulo_projetos,
+        'entities: Events'  => $dict->titulo_eventos,
+        'entities: Agents'  => $dict->titulo_agentes,
+        'entities: Seals'   => $dict->titulo_selos
       ];
-        //            'site: description' => App::i()->config['app.siteDescription'],
-        //            'site: in the region' => 'na região',
-        //            'site: of the region' => 'da região',
-        //            'site: owner' => 'Secretaria',
-        //            'site: by the site owner' => 'pela Secretaria',
-        //
-        //            'home: title' => "Bem-vind@!",
-        //            'home: abbreviation' => "MC",
-        //            'home: colabore' => "Colabore com o Mapas Culturais",
-        //            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
-        //            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
-        //            'home: $this->_saasCfgagents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
-        //            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
-        //            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
-        //            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
-        //
-        //            'search: verified results' => 'Resultados Verificados',
-        //            'search: verified' => "Verificados"
     }
 
     static function getThemeFolder() {
@@ -72,7 +60,6 @@ class Theme extends BaseV1\Theme{
 
         self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => $domain]);
         $saasCfg = self::$saasCfg;
-        //$this->saasCfg->dump();
 
         $entidades = explode(';', $saasCfg->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
@@ -84,7 +71,7 @@ class Theme extends BaseV1\Theme{
           $app->_config['app.enabled.projects'] = false;
         }
 
-        if (!in_array('Espacos', $entidades)) {
+        if (!in_array('Espaços', $entidades)) {
           $app->_config['app.enabled.spaces'] = false;
         }
 
@@ -157,6 +144,7 @@ class Theme extends BaseV1\Theme{
         foreach($this->filters as $controller => $entity_filters){
 
             $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters){
+                //
 
                 foreach($entity_filters as $key => $val){
                     if(!isset($qdata[$key])){
