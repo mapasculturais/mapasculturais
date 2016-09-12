@@ -185,7 +185,7 @@ class Theme extends MapasCulturais\Theme {
                 'ngSanitize',
             ];
 
-            if(!$app->isEnabled('saas')) {
+            if(!$app->isEnabled('saas') || $app->config['themes.active'] <> 'MapasCulturais\Themes\SaaS') {
               $this->jsObject['mapsDefaults'] = array(
                   'zoomMax' => $app->config['maps.zoom.max'],
                   'zoomMin' => $app->config['maps.zoom.min'],
