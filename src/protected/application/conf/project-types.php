@@ -24,6 +24,20 @@ return array(
             )
         ),
 
+        'approvedLimit' => array(
+            'label' => 'Número máximo de inscrições por agente responsável',
+            'validations' => array(
+                "v::intVal()" => "O número máximo de vagas deve ser um número inteiro"
+            )
+        ),
+
+        'registrationLimit' => array(
+            'label' => 'Limitar número de registros em:',
+            'validations' => array(
+                "v::intVal()" => "O número máximo de registros deve ser um número inteiro"
+            )
+        ),
+
         'site' => array(
             'label' => 'Site',
             'validations' => array(
@@ -85,7 +99,7 @@ return array(
         32 => array( 'name' => "Parada e Desfile Festivo"),
         33 => array( 'name' => "Parada e Desfile Político"),
         34 => array( 'name' => "Parada e Desfile de Ações Afirmativas"),
-        
+
     )
     /* EXEMPLOS DE METADADOS:
 
