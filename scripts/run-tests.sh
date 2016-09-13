@@ -39,6 +39,7 @@ fi
 
 cd scripts/
 ./compile-sass.sh localhost conf-test.php
+./db-update.sh localhost 1 conf-test.php
 
 cd ../src/
 
