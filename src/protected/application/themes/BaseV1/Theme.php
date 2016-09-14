@@ -777,7 +777,7 @@ class Theme extends MapasCulturais\Theme {
                     'isArray' => false,
                     'filter' => [
                         'param' => '@verified',
-                        'value' => '1'
+                        'value' => 'IN(1)'
                     ]
                 ]
             ],
@@ -810,8 +810,8 @@ class Theme extends MapasCulturais\Theme {
                     'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
-                        'param' => 'isVerified',
-                        'value' => 'EQ(true)'
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
                     ]
                 ]
             ],
@@ -854,8 +854,8 @@ class Theme extends MapasCulturais\Theme {
                     'isArray' => false,
                     'addClass' => 'verified-filter',
                     'filter' => [
-                        'param' => 'isVerified',
-                        'value' => 'EQ(true)'
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
                     ]
                 ]
             ],
@@ -881,8 +881,8 @@ class Theme extends MapasCulturais\Theme {
                     'addClass' => 'verified-filter',
                     'isArray' => false,
                     'filter' => [
-                        'param' => 'isVerified',
-                        'value' => 'EQ(true)'
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
                     ]
                 ]
             ]
