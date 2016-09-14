@@ -13,7 +13,7 @@
 
 <div ng-if="filter.fieldType === 'text'">
     <span class="label">{{filter.label}}</span>
-    <input ng-model="data[entity].filters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
+    <input class="search-field" ng-model="data[entity].filters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
 </div>
 
 
