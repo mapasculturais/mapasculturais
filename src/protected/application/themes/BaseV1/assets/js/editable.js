@@ -34,6 +34,15 @@ jQuery(function(){
     //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
+        if ($(this).hasClass('js-editablemask')) {
+            var mask = $(this).data('mask');
+            editable.input.$input.mask(mask, {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(mask, options) ;
+               }
+            });
+        }
+        
         if ($(this).hasClass('js-mask-phone')) {
             var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:

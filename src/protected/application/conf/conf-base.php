@@ -87,6 +87,10 @@ return array(
     'maps.zoom.min' => 5,
     'maps.includeGoogleLayers' => false,
 
+    'cep.endpoint'      => 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s',
+    'cep.token_header'  => 'Authorization: Token token="%s"',
+    'cep.token'         => '',
+
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais
         'regiao'        => 'Região',        // metadata: geoRegiao
