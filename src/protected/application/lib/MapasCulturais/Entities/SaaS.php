@@ -137,6 +137,15 @@ class SaaS extends \MapasCulturais\Entity
         return $this->_background;
     }
 
+    protected $_institute;
+
+    function getInstitute(){
+        if(!$this->_institute)
+            $this->_institute = $this->getFile('institute');
+
+        return $this->_institute;
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

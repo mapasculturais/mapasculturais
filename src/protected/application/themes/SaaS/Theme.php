@@ -20,26 +20,26 @@ class Theme extends BaseV1\Theme{
     }
 
     protected static function _getTexts(){
-      $app = App::i();
-      $domain = $app->config['app.cache.namespace'];
+        $app = App::i();
+        $domain = $app->config['app.cache.namespace'];
 
-      if(($pos = strpos($domain, ':')) !== false){
-          $domain = substr($domain, 0, $pos);
-      }
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
 
-      $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
 
-      return [
-        'site: name'        => $dict->name,
-        'site: description' => $dict->texto_sobre,
-        'home: title'       => $dict->titulo,
-        'home: welcome'     => $dict->texto_boasvindas,
-        'entities: Spaces'  => $dict->titulo_espacos,
-        'entities: Projects'=> $dict->titulo_projetos,
-        'entities: Events'  => $dict->titulo_eventos,
-        'entities: Agents'  => $dict->titulo_agentes,
-        'entities: Seals'   => $dict->titulo_selos
-      ];
+        return [
+            'site: name'        => $dict->name,
+            'site: description' => $dict->texto_sobre,
+            'home: title'       => $dict->titulo,
+            'home: welcome'     => $dict->texto_boasvindas,
+            'entities: Spaces'  => $dict->titulo_espacos,
+            'entities: Projects'=> $dict->titulo_projetos,
+            'entities: Events'  => $dict->titulo_eventos,
+            'entities: Agents'  => $dict->titulo_agentes,
+            'entities: Seals'   => $dict->titulo_selos
+        ];
     }
 
     static function getThemeFolder() {
@@ -64,23 +64,23 @@ class Theme extends BaseV1\Theme{
         $entidades = explode(';', $saasCfg->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
 
-          $app->_config['app.enabled.agents'] = false;
+            $app->_config['app.enabled.agents'] = false;
         }
 
         if (!in_array('Projetos', $entidades)) {
-          $app->_config['app.enabled.projects'] = false;
+            $app->_config['app.enabled.projects'] = false;
         }
 
         if (!in_array('Espaços', $entidades)) {
-          $app->_config['app.enabled.spaces'] = false;
+            $app->_config['app.enabled.spaces'] = false;
         }
 
         if (!in_array('Eventos', $entidades)) {
-          $app->_config['app.enabled.events'] = false;
+            $app->_config['app.enabled.events'] = false;
         }
 
         if (!in_array('Selos', $entidades)) {
-          $app->_config['app.enabled.seals'] = false;
+            $app->_config['app.enabled.seals'] = false;
         }
 
         $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;
@@ -103,19 +103,19 @@ class Theme extends BaseV1\Theme{
             $app->log->debug("Entrou aqui mlk.");
             $variables_scss = "";
             $main_scss = '// Child theme main
-@import "variables";
-@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
-';
+            @import "variables";
+            @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+            ';
 
             if($this->saasCfg->background){
                 $backgroundimage = $saasCfg->background->url;
                 $main_scss .= "
-.header-image {
-  background-image: url(' . $backgroundimage . ');
-}
-#home-watermark {
-  background-image: url(' . $backgroundimage . ');
-}";
+                .header-image {
+                    background-image: url(' . $backgroundimage . ');
+                }
+                #home-watermark {
+                    background-image: url(' . $backgroundimage . ');
+                }";
             }
 
             $variables_scss .= "\$brand-agent:   " . ($saasCfg->cor_agentes?  $saasCfg->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
@@ -126,7 +126,7 @@ class Theme extends BaseV1\Theme{
             $variables_scss .= "\$brand-saas:    " . ($saasCfg->cor_saas?     $saasCfg->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
-              mkdir($this->saasPass . '/assets/css/sass/',0755,true);
+                mkdir($this->saasPass . '/assets/css/sass/',0755,true);
             }
 
             file_put_contents($this->saasPass . '/assets/css/sass/_variables.scss', $variables_scss);
@@ -141,11 +141,42 @@ class Theme extends BaseV1\Theme{
             $this->_publishAssets();
         });
 
+        $saas_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\SaaS");
+        foreach($saas_meta as $k => $v) {
+            $meta_name = $k;
+
+            $pos_meta_filter      = strpos($meta_name,"filtro_");
+            $pos_meta_controller  = 0;
+            $controller           = "";
+            $pos_meta_type        = 0;
+            $meta_type            = "";
+
+            if($pos_meta_filter === 0) {
+                $meta_name = substr($meta_name,strpos($meta_name,"_")+1);
+                $pos_meta_controller = strpos($meta_name,"_");
+                if($pos_meta_controller > 0) {
+                    $controller = substr($meta_name,0,$pos_meta_controller);
+                    $meta_name = substr($meta_name,$pos_meta_controller+1);
+                    $pos_meta_type = strpos($meta_name,"_");
+                    if($pos_meta_type > 0) {
+                        $meta_type = substr($meta_name,0,$pos_meta_type);
+                        $meta_name = substr($meta_name,$pos_meta_type+1);
+                        if($this->saasCfg->$k) {
+                            $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
+                            $meta_cont = $this->saasCfg->$k;
+                            $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
+                            $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
+                            $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
+                        }
+                    }
+                }
+            }
+        }
+
         foreach($this->filters as $controller => $entity_filters){
+            $app->log->debug("controller: " . $controller);
 
-            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters){
-                //
-
+            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters,$app){
                 foreach($entity_filters as $key => $val){
                     if(!isset($qdata[$key])){
                         $qdata[$key] = $val;
@@ -160,13 +191,13 @@ class Theme extends BaseV1\Theme{
 
     protected function _publishAssets() {
         if($this->saasCfg->getLogo()) {
-          $this->jsObject['assets']['logo-instituicao'] = $this->saasCfg->logo->url;
+            $this->jsObject['assets']['logo-instituicao'] = $this->saasCfg->logo->url;
         } else {
-          $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
+            $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
         }
     }
 
     protected function getSaasCfg() {
-      return self::$saasCfg;
+        return self::$saasCfg;
     }
 }

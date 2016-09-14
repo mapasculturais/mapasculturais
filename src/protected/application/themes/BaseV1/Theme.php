@@ -93,7 +93,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: Agents'    => 'Agentes',
             'entities: Projects'  => 'Projetos',
             'entities: Events'    => 'Eventos',
-            'entities: Seals'     => 'Selos'
+            'entities: Seals'     => 'Selos',
 
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
