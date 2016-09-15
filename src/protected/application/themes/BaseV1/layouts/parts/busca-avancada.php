@@ -86,13 +86,19 @@
             <a class="tag-selected tag-event" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
             <span   ng-repeat="(filter_k, filter_v) in data[data.global.filterEntity].filters">
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
+                    ng-if="getFilter(filter_k).fieldType === 'text' && filter_v"
+                    ng-click="data[data.global.filterEntity].filters[filter_k] = ''"
+                >{{data[data.global.filterEntity].filters[filter_k]}}
+                </a>
+                <a  class="tag-selected tag-{{data.global.filterEntity}}"
+                    ng-if="getFilter(filter_k).isArray"
                     ng-repeat="value in filter_v"
                     ng-click="toggleSelection(filter_v, value)"
                     >
                     {{getFilterOptionLabel(filter_k, value)}}
                 </a>
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
-                    ng-if="!getFilter(filter_k).isArray && filter_v"
+                    ng-if="!getFilter(filter_k).isArray && getFilter(filter_k).fieldType !== 'text' && filter_v"
                     ng-click="data[data.global.filterEntity].filters[filter_k] = !data[data.global.filterEntity].filters[filter_k]">
                     {{getFilterTag(filter_k)}}
                 </a>
