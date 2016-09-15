@@ -135,7 +135,7 @@ $this->includeMapAssets();
                 <?php endif; ?>
                 <p>
                     <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                        <span class="label">Descrição Curta:</span><br>
+                        <span class="label required">Descrição Curta:</span><br>
                         <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
@@ -153,7 +153,7 @@ $this->includeMapAssets();
                             $entity->classificacaoEtaria = 'Livre';
                         }
                         ?>
-                        <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
+                        <p><span class="label required">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->site): ?>
