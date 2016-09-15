@@ -10,7 +10,7 @@
 
     <?php if($this->isEditable() || $entity->texto_sobre): ?>
         <p>
-            <span class="label">Texto "sobre": </span>
+            <span class="label required">Texto "sobre": </span>
             <span class="js-editable" data-edit="texto_sobre" data-original-title="Text sobre" data-emptytext="Escreva um texto e descrição de até x caracteres..."><?php echo $entity->texto_sobre; ?></span>
         </p>
     <?php endif; ?>
