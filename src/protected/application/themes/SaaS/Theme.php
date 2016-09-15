@@ -20,38 +20,26 @@ class Theme extends BaseV1\Theme{
     }
 
     protected static function _getTexts(){
-      $app = App::i();
-      $domain = $app->config['app.cache.namespace'];
+        $app = App::i();
+        $domain = $app->config['app.cache.namespace'];
 
-      if(($pos = strpos($domain, ':')) !== false){
-          $domain = substr($domain, 0, $pos);
-      }
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
 
-      $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
 
-      return [
-        'site: name' => $dict->name,
-        'site: description' => $dict->texto_sobre,
-        'home: welcome' => $dict->texto_boasvindas
-      ];
-        //            'site: description' => App::i()->config['app.siteDescription'],
-        //            'site: in the region' => 'na região',
-        //            'site: of the region' => 'da região',
-        //            'site: owner' => 'Secretaria',
-        //            'site: by the site owner' => 'pela Secretaria',
-        //
-        //            'home: title' => "Bem-vind@!",
-        //            'home: abbreviation' => "MC",
-        //            'home: colabore' => "Colabore com o Mapas Culturais",
-        //            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
-        //            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
-        //            'home: $this->_saasCfgagents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
-        //            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
-        //            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
-        //            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
-        //
-        //            'search: verified results' => 'Resultados Verificados',
-        //            'search: verified' => "Verificados"
+        return [
+            'site: name'        => $dict->name,
+            'site: description' => $dict->texto_sobre,
+            'home: title'       => $dict->titulo,
+            'home: welcome'     => $dict->texto_boasvindas,
+            'entities: Spaces'  => $dict->titulo_espacos,
+            'entities: Projects'=> $dict->titulo_projetos,
+            'entities: Events'  => $dict->titulo_eventos,
+            'entities: Agents'  => $dict->titulo_agentes,
+            'entities: Seals'   => $dict->titulo_selos
+        ];
     }
 
     static function getThemeFolder() {
@@ -72,28 +60,27 @@ class Theme extends BaseV1\Theme{
 
         self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => $domain]);
         $saasCfg = self::$saasCfg;
-        //$this->saasCfg->dump();
 
         $entidades = explode(';', $saasCfg->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
 
-          $app->_config['app.enabled.agents'] = false;
+            $app->_config['app.enabled.agents'] = false;
         }
 
         if (!in_array('Projetos', $entidades)) {
-          $app->_config['app.enabled.projects'] = false;
+            $app->_config['app.enabled.projects'] = false;
         }
 
-        if (!in_array('Espacos', $entidades)) {
-          $app->_config['app.enabled.spaces'] = false;
+        if (!in_array('Espaços', $entidades)) {
+            $app->_config['app.enabled.spaces'] = false;
         }
 
         if (!in_array('Eventos', $entidades)) {
-          $app->_config['app.enabled.events'] = false;
+            $app->_config['app.enabled.events'] = false;
         }
 
         if (!in_array('Selos', $entidades)) {
-          $app->_config['app.enabled.seals'] = false;
+            $app->_config['app.enabled.seals'] = false;
         }
 
         $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;
@@ -109,34 +96,37 @@ class Theme extends BaseV1\Theme{
         $this->jsObject['mapsDefaults']['longitude']        = $saasCfg->longitude;
 
         $cache_id = $saasCfg->id . ' - _variables.scss';
-
+        $app->log->debug("Id SaaS: " . $cache_id);
+        $app->log->debug("Cache Ok? " . ($app->cache->contains($cache_id)? "Não":"Sim"));
+        $app->log->debug("Cache encontrado? " . ($app->cache->fetch($cache_id)? "Sim" : "Não"));
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
+            $app->log->debug("Entrou aqui mlk.");
             $variables_scss = "";
             $main_scss = '// Child theme main
-@import "variables";
-@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
-';
+            @import "variables";
+            @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+            ';
 
             if($this->saasCfg->background){
                 $backgroundimage = $saasCfg->background->url;
                 $main_scss .= "
-.header-image {
-  background-image: url(' . $backgroundimage . ');
-}
-#home-watermark {
-  background-image: url(' . $backgroundimage . ');
-}";
+                .header-image {
+                    background-image: url(' . $backgroundimage . ');
+                }
+                #home-watermark {
+                    background-image: url(' . $backgroundimage . ');
+                }";
             }
 
-            $variables_scss .= "\$brand-agent:   " . (isset($saasCfg->cor_agentes)  && !empty($saasCfg->cor_agentes)? $saasCfg->cor_agentes: $app->config['themes.brand-agent']) . " !default;\n";
-            $variables_scss .= "\$brand-project: " . (isset($saasCfg->cor_projetos) && !empty($saasCfg->cor_projetos)?$saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-            $variables_scss .= "\$brand-event:   " . (isset($saasCfg->cor_eventos)  && !empty($saasCfg->cor_eventos)? $saasCfg->cor_eventos: $app->config['themes.brand-event']) . " !default;\n";
-            $variables_scss .= "\$brand-space:   " . (isset($saasCfg->cor_espacos)  && !empty($saasCfg->cor_espacos)? $saasCfg->cor_espacos: $app->config['themes.brand-space']) . " !default;\n";
-            $variables_scss .= "\$brand-seal:   " . (isset($saasCfg->cor_selos)     && !empty($saasCfg->cor_selos)?   $saasCfg->cor_selos: $app->config['themes.brand-seal']) . " !default;\n";
-            $variables_scss .= "\$brand-saas:    " . (isset($saasCfg->cor_saas)     && !empty($saasCfg->cor_saas)?    $saasCfg->cor_agentes: $app->config['themes.brand-saas']) . " !default;\n";
+            $variables_scss .= "\$brand-agent:   " . ($saasCfg->cor_agentes?  $saasCfg->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
+            $variables_scss .= "\$brand-project: " . ($saasCfg->cor_projetos? $saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
+            $variables_scss .= "\$brand-event:   " . ($saasCfg->cor_eventos?  $saasCfg->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
+            $variables_scss .= "\$brand-space:   " . ($saasCfg->cor_espacos?  $saasCfg->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
+            $variables_scss .= "\$brand-seal:    " . ($saasCfg->cor_selos?    $saasCfg->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
+            $variables_scss .= "\$brand-saas:    " . ($saasCfg->cor_saas?     $saasCfg->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
-              mkdir($this->saasPass . '/assets/css/sass/',0755,true);
+                mkdir($this->saasPass . '/assets/css/sass/',0755,true);
             }
 
             file_put_contents($this->saasPass . '/assets/css/sass/_variables.scss', $variables_scss);
@@ -151,10 +141,42 @@ class Theme extends BaseV1\Theme{
             $this->_publishAssets();
         });
 
+        $saas_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\SaaS");
+        foreach($saas_meta as $k => $v) {
+            $meta_name = $k;
+
+            $pos_meta_filter      = strpos($meta_name,"filtro_");
+            $pos_meta_controller  = 0;
+            $controller           = "";
+            $pos_meta_type        = 0;
+            $meta_type            = "";
+
+            if($pos_meta_filter === 0) {
+                $meta_name = substr($meta_name,strpos($meta_name,"_")+1);
+                $pos_meta_controller = strpos($meta_name,"_");
+                if($pos_meta_controller > 0) {
+                    $controller = substr($meta_name,0,$pos_meta_controller);
+                    $meta_name = substr($meta_name,$pos_meta_controller+1);
+                    $pos_meta_type = strpos($meta_name,"_");
+                    if($pos_meta_type > 0) {
+                        $meta_type = substr($meta_name,0,$pos_meta_type);
+                        $meta_name = substr($meta_name,$pos_meta_type+1);
+                        if($this->saasCfg->$k) {
+                            $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
+                            $meta_cont = $this->saasCfg->$k;
+                            $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
+                            $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
+                            $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
+                        }
+                    }
+                }
+            }
+        }
+
         foreach($this->filters as $controller => $entity_filters){
+            $app->log->debug("controller: " . $controller);
 
-            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters){
-
+            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters,$app){
                 foreach($entity_filters as $key => $val){
                     if(!isset($qdata[$key])){
                         $qdata[$key] = $val;
@@ -169,13 +191,13 @@ class Theme extends BaseV1\Theme{
 
     protected function _publishAssets() {
         if($this->saasCfg->getLogo()) {
-          $this->jsObject['assets']['logo-instituicao'] = $this->saasCfg->logo->url;
+            $this->jsObject['assets']['logo-instituicao'] = $this->saasCfg->logo->url;
         } else {
-          $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
+            $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
         }
     }
 
     protected function getSaasCfg() {
-      return self::$saasCfg;
+        return self::$saasCfg;
     }
 }

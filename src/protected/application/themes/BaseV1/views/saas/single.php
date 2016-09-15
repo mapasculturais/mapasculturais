@@ -63,3 +63,10 @@
         </div>
         <?php $this->applyTemplateHook('tabs-content','after'); ?>
     </div>
+    <div class="sidebar-right">
+        <?php if($this->controller->action == 'create'): ?>
+            <div class="widget">
+                <p class="alert info">Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
+            </div>
+        <?php endif; ?>
+    </div>

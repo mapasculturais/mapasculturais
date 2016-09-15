@@ -27,13 +27,13 @@ return array(
             'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_espacos' => array(
-            'label' => 'Cor: Espaços',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_projetos' => array(
-            'label' => 'Cor: Projetos',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_eventos' => array(
-            'label' => 'Cor: Eventos',
+            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
         ),
         'cor_selos' => array(
             'label' => 'Cor: Selos',
@@ -44,11 +44,41 @@ return array(
         'filtro_uf' => array(
             'label' => 'Estado',
             'type' => 'multiselect',
+            'allowOther' => true,
+            'allowOtherText' => 'Outros',
             'options' => array(
-                'SP',
-                'SC',
-                'PR'
+              'AC'=>'Acre',
+              'AL'=>'Alagoas',
+              'AP'=>'Amapá',
+              'AM'=>'Amazonas',
+              'BA'=>'Bahia',
+              'CE'=>'Ceará',
+              'DF'=>'Distrito Federal',
+              'ES'=>'Espírito Santo',
+              'GO'=>'Goiás',
+              'MA'=>'Maranhão',
+              'MT'=>'Mato Grosso',
+              'MS'=>'Mato Grosso do Sul',
+              'MG'=>'Minas Gerais',
+              'PA'=>'Pará',
+              'PB'=>'Paraíba',
+              'PR'=>'Paraná',
+              'PE'=>'Pernambuco',
+              'PI'=>'Piauí',
+              'RJ'=>'Rio de Janeiro',
+              'RN'=>'Rio Grande do Norte',
+              'RS'=>'Rio Grande do Sul',
+              'RO'=>'Rondônia',
+              'RR'=>'Roraima',
+              'SC'=>'Santa Catarina',
+              'SP'=>'São Paulo',
+              'SE'=>'Sergipe',
+              'TO'=>'Tocantins'
             )
+            /*,
+            'validations' => array(
+                "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
+            )*/
         ),
         'filtro_espaco' => array(
             'label' => 'Tipo de espaço',
@@ -108,7 +138,7 @@ return array(
                 'Videolocadora'
             )
         ),
-        'filtro_area_atuacao' => array(
+        'filtro_area_atuacao_espaco' => array(
             'label' => 'Área de atuação',
             'type' => 'multiselect',
             'options' => array(
@@ -166,6 +196,89 @@ return array(
                 'Turismo'
             )
         ),
+        'filtro_area_atuacao_agente' => array(
+            'label' => 'Área de atuação',
+            'type' => 'multiselect',
+            'options' => array(
+                'Antropologia',
+                'Arqueologia',
+                'Arquitetura*Urbanismo',
+                'Arquivo',
+                'Arte Digital',
+                'Arte de Rua',
+                'Artes Visuais',
+                'Artesanato',
+                'Audiovisual',
+                'Cinema',
+                'Circo',
+                'Comunicação',
+                'Cultura Cigana',
+                'Cultura Digital',
+                'Cultura Estrangeira (imigrantes)',
+                'Cultura Indígena',
+                'Cultura LGBT',
+                'Cultura Negra',
+                'Cultura Popular',
+                'Dança',
+                'Design',
+                'Direito Autoral',
+                'Economia Criativa',
+                'Educação',
+                'Esporte',
+                'Filosofia',
+                'Fotografia',
+                'Gastronomia',
+                'Gestão Cultural',
+                'História',
+                'Jogos Eletrônicos',
+                'Jornalismo',
+                'Leitura',
+                'Literatura',
+                'Livro',
+                'Meio Ambiente',
+                'Moda',
+                'Museu',
+                'Mídias Sociais',
+                'Música',
+                'Novas Mídias',
+                'Outros',
+                'Patrimônio Imaterial',
+                'Patrimônio Material',
+                'Pesquisa',
+                'Produção Cultural',
+                'Rádio',
+                'Saúde',
+                'Sociologia',
+                'Teatro',
+                'Televisão',
+                'Turismo'
+            )
+        ),
+        'filtro_linguagem' => array(
+            'label' => 'Linguagem',
+            'type' => 'multiselect',
+            'options' => array(
+                  'Artes Circenses',
+                  'Artes Integradas',
+                  'Artes Visuais',
+                  'Audiovisual',
+                  'Cinema',
+                  'Cultura Digital',
+                  'Cultura Indígena',
+                  'Cultura Tradicional',
+                  'Curso ou Oficina',
+                  'Dança',
+                  'Exposição',
+                  'Hip Hop',
+                  'Livro e Literatura',
+                  'Música Popular',
+                  'Música Erudita',
+                  'Palestra, Debate ou Encontro',
+                  'Rádio',
+                  'Teatro',
+                  'Outros'
+            )
+        ),
         'texto_boasvindas' => array(
             'label' => 'Texto boas vindas',
             'type' => 'text'
@@ -199,6 +312,24 @@ return array(
             'label' => 'Filtros',
             'type' => 'text'
         ),
+        'titulo' => array(
+            'label' => 'Título'
+        ),
+        'titulo_projetos' => array(
+            'label' => 'Título da entidade'
+        ),
+        'titulo_eventos' => array(
+            'label' => 'Título da entidade'
+        ),
+        'titulo_agentes' => array(
+            'label' => 'Título da entidade'
+        ),
+        'titulo_espacos' => array(
+            'label' => 'Título da entidade'
+        ),
+        'titulo_selos' => array(
+            'label' => 'Título da entidade'
+        )
     )
     /* EXEMPLOS DE METADADOS:
 

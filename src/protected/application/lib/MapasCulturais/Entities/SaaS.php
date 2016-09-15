@@ -30,9 +30,6 @@ class SaaS extends \MapasCulturais\Entity
         'name' => [
             'required' => 'O nome da instalação é obrigatório'
         ],
-        /*'namespace' => [
-            'required' => 'O namespace da instalação é obrigatório'
-        ],*/
         'slug' => [
             'required' => 'O slug da instalação é obrigatório'
         ],
@@ -138,6 +135,15 @@ class SaaS extends \MapasCulturais\Entity
             $this->_background = $this->getFile('background');
 
         return $this->_background;
+    }
+
+    protected $_institute;
+
+    function getInstitute(){
+        if(!$this->_institute)
+            $this->_institute = $this->getFile('institute');
+
+        return $this->_institute;
     }
 
     //============================================================= //

@@ -48,4 +48,29 @@
 
         <?php $this->applyTemplateHook('background','after'); ?>
     </div>
+
+    <div class="institute">
+        <h3 class="label">
+            Logo da Instituição: <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+        </h3>
+
+        <?php $this->applyTemplateHook('institute','before'); ?>
+
+        <div class="institute <?php if($entity->institute): ?>com-imagem<?php endif; ?>">
+            <?php if($entity->institute): ?>
+                <img class="js-institute-img" src="<?php echo $entity->institute->transform('institute')->url; ?>" />
+            <?php else: ?>
+                <img class="js-institute-img" src="<?php $this->asset('img/avatar--space.png'); ?>" />
+            <?php endif; ?>
+
+            <?php if($this->isEditable()): ?>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-institute" href="#">Editar</a>
+                <div id="editbox-change-institute" class="js-editbox mc-right" title="Editar Logo Instituição">
+                    <?php $this->ajaxUploader($entity, 'institute', 'image-src', 'div.institute img.js-institute-img', '', 'institute'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php $this->applyTemplateHook('institute','after'); ?>
+    </div>
 </div>

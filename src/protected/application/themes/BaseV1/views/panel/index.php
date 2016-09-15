@@ -11,7 +11,7 @@ $this->layout = 'panel';
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Eventos</span>
+                        <span class="alignleft"><?php $this->dict('entities: Events') ?></span>
                         <div class="icon icon-event alignright"></div>
                     </div>
                     <div class="clearfix">
@@ -26,7 +26,7 @@ $this->layout = 'panel';
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Agentes</span>
+                        <span class="alignleft"><?php $this->dict('entities: Agents') ?></span>
                         <div class="icon icon-agent alignright"></div>
                     </div>
                     <div class="clearfix">
@@ -56,7 +56,7 @@ $this->layout = 'panel';
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Projetos</span>
+                        <span class="alignleft"><?php $this->dict('entities: Projects') ?></span>
                         <div class="icon icon-project alignright"></div>
                     </div>
                     <div class="clearfix">

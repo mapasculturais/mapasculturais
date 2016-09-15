@@ -13,9 +13,11 @@
         </p>
     <?php endif; ?>
 
-    <p class="tip">
-        Para saber como obter coordenadas de latitude e longitude, visite: <a href="https://support.google.com/maps/answer/18539?hl=pt-BR" title="Página de suporte do Google Maps" target="_blank">Ajuda Google Maps.</a>
-    </p>
+    <?php if($this->isEditable()): ?>
+        <p class="tip">
+            Para saber como obter coordenadas de latitude e longitude, visite: <a href="https://support.google.com/maps/answer/18539?hl=pt-BR" title="Página de suporte do Google Maps" target="_blank">Ajuda Google Maps.</a>
+        </p>
+    <?php endif;?>
 
     <?php if($this->isEditable() || $entity->zoom_default): ?>
         <p>

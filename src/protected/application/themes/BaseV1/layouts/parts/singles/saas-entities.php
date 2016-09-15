@@ -6,6 +6,41 @@
         </p>
     <?php endif; ?>
 
+    <?php if($this->isEditable() || $entity->titulo_projetos): ?>
+        <p>
+            <span class="label">Título: Projetos </span>
+            <span class="js-editable" data-edit="titulo_projetos" data-original-title="Título" data-emptytext="Título da entidade: Projetos"><?php echo $entity->titulo_projetos; ?></span>
+        </p>
+    <?php endif; ?>
+
+    <?php if($this->isEditable() || $entity->titulo_eventos): ?>
+        <p>
+            <span class="label">Título: Eventos </span>
+            <span class="js-editable" data-edit="titulo_eventos" data-original-title="Título" data-emptytext="Título da entidade: eventos"><?php echo $entity->titulo_eventos; ?></span>
+        </p>
+    <?php endif; ?>
+
+    <?php if($this->isEditable() || $entity->titulo_agentes): ?>
+        <p>
+            <span class="label">Título: Agentes </span>
+            <span class="js-editable" data-edit="titulo_agentes" data-original-title="Título" data-emptytext="Título da entidade: Agentes"><?php echo $entity->titulo_agentes; ?></span>
+        </p>
+    <?php endif; ?>
+
+    <?php if($this->isEditable() || $entity->titulo_espacos): ?>
+        <p>
+            <span class="label">Título: Espaços </span>
+            <span class="js-editable" data-edit="titulo_espacos" data-original-title="Título" data-emptytext="Título da entidade: Espacos"><?php echo $entity->titulo_espacos; ?></span>
+        </p>
+    <?php endif; ?>
+
+    <?php if($this->isEditable() || $entity->titulo_selos): ?>
+        <p>
+            <span class="label">Título: Selos </span>
+            <span class="js-editable" data-edit="titulo_selos" data-original-title="Título" data-emptytext="Título da entidade: Selos"><?php echo $entity->titulo_selos; ?></span>
+        </p>
+    <?php endif; ?>
+
     <p>
         <span class="label">Cores: </span>
         <span class="js-editable inline" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Agentes"><?php echo $entity->cor_agentes; ?></span>

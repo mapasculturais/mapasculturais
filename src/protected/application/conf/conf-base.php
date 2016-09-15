@@ -72,7 +72,7 @@ return array(
     'themes.brand-seal'     => '#ff5545',
     'themes.brand-agent'    => '#1dabc6',
 
-//    'maps.center' => array(-23.54894, -46.63882), // são paulo
+    //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
     'maps.maxClusterRadius' => 40,
     'maps.spiderfyDistanceMultiplier' => 1.3,
@@ -167,7 +167,7 @@ return array(
             '_type' => 'Tipo'
         ),
 
-//        'MapasCulturais\Entities\Agent' => array()
+        //        'MapasCulturais\Entities\Agent' => array()
     ),
 
 
@@ -198,11 +198,11 @@ return array(
     'app.cache' => function_exists('apcu_add') ?
         new \Doctrine\Common\Cache\ApcuCache() :
         (
-            function_exists('apc_add') ?
-                new \Doctrine\Common\Cache\ApcCache() :
-                new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
+        function_exists('apc_add') ?
+        new \Doctrine\Common\Cache\ApcCache() :
+        new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
 
-        ),
+    ),
 
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
 
@@ -238,8 +238,8 @@ return array(
     'storage.driver' => '\MapasCulturais\Storage\FileSystem',
 
     'storage.config' => array(
-        'dir' => realpath(__DIR__ . '/../themes/active/files/'),
-        'baseUrl' => '/public/files/'
+    'dir' => realpath(__DIR__ . '/../themes/active/files/'),
+    'baseUrl' => '/public/files/'
     ),
     */
 
@@ -288,7 +288,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-             'james-bond'                => array('agent', 'single', array('id' => 7)),
+            'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
@@ -335,23 +335,23 @@ return array(
 
         'readableNames' => array(
             //controllers
-                'panel'         => 'Painel',
-                'auth'          => 'Autenticação',
-                'site'          => 'Site',
-                'event'         => 'Evento',    'events'        => 'Eventos',
-                'agent'         => 'Agente',    'agents'        => 'Agentes',
-                'space'         => 'Espaço',    'spaces'        => 'Espaços',
-                'project'       => 'Projeto',   'projects'      => 'Projetos',
-                'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
-                'file'          => 'Arquivo',   'files'         => 'Arquivos',
-                'saas'          => 'SaaS',
+            'panel'         => 'Painel',
+            'auth'          => 'Autenticação',
+            'site'          => 'Site',
+            'event'         => 'Evento',    'events'        => 'Eventos',
+            'agent'         => 'Agente',    'agents'        => 'Agentes',
+            'space'         => 'Espaço',    'spaces'        => 'Espaços',
+            'project'       => 'Projeto',   'projects'      => 'Projetos',
+            'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
+            'file'          => 'Arquivo',   'files'         => 'Arquivos',
+            'saas'          => 'SaaS',
             //actions
-                'list'          => 'Listando',
-                'index'         => 'Índice',
-                'delete'        => 'Apagando',
-                'edit'          => 'Editando',
-                'create'        => 'Criando novo',
-                'search'        => 'Busca'
+            'list'          => 'Listando',
+            'index'         => 'Índice',
+            'delete'        => 'Apagando',
+            'edit'          => 'Editando',
+            'create'        => 'Criando novo',
+            'search'        => 'Busca'
         )
     )
 );

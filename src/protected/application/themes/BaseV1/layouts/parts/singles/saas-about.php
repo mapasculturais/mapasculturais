@@ -1,4 +1,11 @@
 <div id="sobre" class="aba-content">
+    <?php if($this->isEditable() || $entity->titulo): ?>
+        <p>
+            <span class="label">Título: </span>
+            <span class="js-editable" data-edit="titulo" data-original-title="Título" data-emptytext="Escreva título da página inicial"><?php echo $entity->titulo; ?></span>
+        </p>
+    <?php endif; ?>
+
     <?php if($this->isEditable() || $entity->texto_boasvindas): ?>
         <p>
             <span class="label">Texto de boas vindas: </span>
