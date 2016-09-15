@@ -1,7 +1,7 @@
 <div id="imagens" class="aba-content">
-    <div class="logo">
+    <div class="logo-container">
         <h3 class="label">
-            Logo: <span class="tip">Deve ter as dimensões de 140x60px com extensões <strong>.png/.jpg</strong></span>
+            Logo:
         </h3>
 
         <?php $this->applyTemplateHook('logo','before'); ?>
@@ -21,12 +21,14 @@
             <?php endif; ?>
         </div>
 
+        <span class="tip">Deve ter as dimensões de 140x60px com extensões <strong>.png/.jpg</strong></span>
+
         <?php $this->applyTemplateHook('logo','after'); ?>
     </div>
 
-    <div class="background">
+    <div class="background-container">
         <h3 class="label">
-            Background: <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+            Background:
         </h3>
 
         <?php $this->applyTemplateHook('background','before'); ?>
@@ -46,12 +48,14 @@
             <?php endif; ?>
         </div>
 
+        <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+
         <?php $this->applyTemplateHook('background','after'); ?>
     </div>
 
-    <div class="institute">
+    <div class="institute-container">
         <h3 class="label">
-            Logo da Instituição: <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+            Logo da Instituição:
         </h3>
 
         <?php $this->applyTemplateHook('institute','before'); ?>
@@ -70,6 +74,8 @@
                 </div>
             <?php endif; ?>
         </div>
+
+        <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
 
         <?php $this->applyTemplateHook('institute','after'); ?>
     </div>

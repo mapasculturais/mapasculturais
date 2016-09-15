@@ -1,10 +1,22 @@
-.logo {
-    width: 145px;
-    height: 145px;
+.logo-container,
+.background-container,
+.institute-container {
+	width: 33.3%;
+	float: left;
+	text-align: center;
+
+	.label {
+		font-size: 1rem;
+		font-family: "Open Sans", sans-serif;
+	}
+}
+
+.logo,
+.institute,
+.background {
     position: relative;
     .btn.edit {
         position: absolute;
-        right: .5rem;
-        bottom: .5rem;
+        left: 20px;
     }
 }
