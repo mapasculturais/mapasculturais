@@ -3,9 +3,8 @@ $this->layout = 'panel';
 ?>
 <div class="panel-main-content">
 
-    <p class="highlighted-message">
-        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php $this->dict('site: name'); ?>!
-    </p>
+    <?php $this->part('panel/highlighted-message') ?>
+    
     <section id="user-stats" class="clearfix">
         <?php if($app->isEnabled('events')): ?>
             <div>
@@ -21,7 +20,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('agents')): ?>
             <div>
                 <div>
@@ -36,7 +35,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('spaces')): ?>
             <div>
                 <div>
@@ -51,7 +50,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('projects')): ?>
             <div>
                 <div>
@@ -66,7 +65,7 @@ $this->layout = 'panel';
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
             <div>
                 <div>
