@@ -54,6 +54,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DRAFT = 0;
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
+    const STATUS_ARCHIVED = -2;
 
     /**
      * array of validation definition
@@ -112,6 +113,10 @@ abstract class Entity implements \JsonSerializable{
 
     function isNew(){
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
+    }
+
+    function isArchived(){
+        return $this->status === self::STATUS_ARCHIVED;
     }
 
     function simplify($properties = 'id,name'){
@@ -251,12 +256,12 @@ abstract class Entity implements \JsonSerializable{
         if(!$app->isAccessControlEnabled()){
             return true;
         }
-        
+
         if(is_null($userOrAgent)){
             $user = $app->user;
         } else if($userOrAgent instanceof UserInterface) {
             $user = $userOrAgent;
-        } else { 
+        } else {
             $user = $userOrAgent->getOwnerUser();
         }
 
@@ -272,7 +277,7 @@ abstract class Entity implements \JsonSerializable{
         }elseif($action != '@control'){
             $result = $this->genericPermissionVerification($user);
         }
-        
+
         $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         return $result;
@@ -305,7 +310,7 @@ abstract class Entity implements \JsonSerializable{
         $label = '';
 
         $prop_labels = $app->config['app.entityPropertiesLabels'];
-        
+
         if(isset($prop_labels [self::getClassName()][$property_name])){
             $label = $prop_labels[self::getClassName()][$property_name];
         }elseif(isset($prop_labels ['@default'][$property_name])){
@@ -455,7 +460,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+    return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
 
     /**
@@ -465,7 +470,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
-
 
         $requests = [];
 

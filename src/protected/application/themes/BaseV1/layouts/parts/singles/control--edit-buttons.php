@@ -9,12 +9,12 @@
         <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="Salvar e publicar este <?php echo strtolower($entity->getEntityType()) ?>.">Publicar</a>
 
     <?php else: ?>
-        <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
+        <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>"><?php echo $entity->isArchived() ? 'Desarquivar' : 'Arquivar'; ?></a>
+        <a class="btn btn-primary js-submit-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>">Salvar</a>
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>
     <a class="btn btn-primary js-submit-button">Salvar</a>
-
 <?php else: ?>
     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
 <?php endif; ?>

@@ -221,38 +221,38 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
 
-    	if ($entityClassName::usesTaxonomies()) {
-    		$dql = "
-	    		SELECT
-	    			e, m, tr
-	    		FROM
-	    			$entityClassName e
-	    			JOIN e.owner a
-	    			LEFT JOIN e.__metadata m
-	    			LEFT JOIN e.__termRelations tr
-	    		WHERE
-	    			e.status $status_operator :status AND
-	    			a.user = :user
-	    		ORDER BY
-	    			e.name,
-	    			e.createTimestamp ASC ";
-    	} else {
-    		$dql = "
-    			SELECT
-   		 			e, m
-    			FROM
-    				$entityClassName e
-		    		JOIN e.owner a
-		    		LEFT JOIN e.__metadata m
-	    		WHERE
-		    		e.status $status_operator :status AND
-		    		a.user = :user
-	    		ORDER BY
-		    		e.name,
-		    		e.createTimestamp ASC ";
-    	}
+        if ($entityClassName::usesTaxonomies()) {
+            $dql = "
+                SELECT
+                    e, m, tr
+                FROM
+                    $entityClassName e
+                    JOIN e.owner a
+                    LEFT JOIN e.__metadata m
+                    LEFT JOIN e.__termRelations tr
+                WHERE
+                    e.status $status_operator :status AND
+                    a.user = :user
+                ORDER BY
+                    e.name,
+                    e.createTimestamp ASC ";
+        } else {
+            $dql = "
+                SELECT
+                        e, m
+                FROM
+                    $entityClassName e
+                    JOIN e.owner a
+                    LEFT JOIN e.__metadata m
+                WHERE
+                    e.status $status_operator :status AND
+                    a.user = :user
+                ORDER BY
+                    e.name,
+                    e.createTimestamp ASC ";
+        }
 
-		$query = App::i()->em->createQuery($dql);
+        $query = App::i()->em->createQuery($dql);
         $query->setParameter('user', $this);
         $query->setParameter('status', $status);
 
@@ -293,6 +293,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
+    function getArchivedAgents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Agents', Agent::STATUS_ARCHIVED);
+    }
+
     public function getSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }
@@ -313,6 +319,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
+    }
+
+    function getArchivedSpaces(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED);
     }
 
 
@@ -338,6 +350,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
 
+    function getArchivedEvents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED);
+    }
+
 
     public function getProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
@@ -361,6 +379,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
 
+    function getArchivedProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED);
+    }
+
     public function getSaaS(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS');
     }
@@ -381,6 +405,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_DISABLED, '=');
+    }
+    function getArchivedSaaS(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ARCHIVED);
     }
 
     function getNotifications($status = null){
