@@ -34,6 +34,15 @@ jQuery(function(){
     //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
+        if ($(this).hasClass('js-editablemask')) {
+            var mask = $(this).data('mask');
+            editable.input.$input.mask(mask, {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(mask, options) ;
+               }
+            });
+        }
+        
         if ($(this).hasClass('js-mask-phone')) {
             var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:
@@ -967,11 +976,11 @@ $(function(){
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
         cep = cep.replace('-','');
-        $.getJSON('http://cep.correiocontrol.com.br/'+cep+'.json',function(r){
+        $.getJSON('/site/cep?num='+cep, function(r){
             $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
             $('#En_Bairro').editable('setValue', r.bairro);
-            $('#En_Municipio').editable('setValue', r.localidade);
-            $('#En_Estado').editable('setValue', r.uf);
+            $('#En_Municipio').editable('setValue', r.cidade);
+            $('#En_Estado').editable('setValue', r.estado);
             concatena_enderco();
         });
 

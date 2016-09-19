@@ -40,7 +40,7 @@
                     </td>
                     <td class="registration-status-col">
                         <?php if ($registration->status > 0): ?>
-                            Enviada em <?php echo $registration->sentTimestamp->format('d/m/Y à\s H:i'); ?>.
+                            Enviada em <?php echo $registration->sentTimestamp ? $registration->sentTimestamp->format('d/m/Y à\s H:i'): ''; ?>.
                         <?php else: ?>
                             Não enviada.<br>
                             <a class="btn btn-small btn-primary" href="<?php echo $registration->singleUrl ?>">Editar e enviar</a>

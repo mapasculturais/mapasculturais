@@ -1,5 +1,6 @@
- 	Padronização dos SHAPEFILEs para uso na plataforma Mapas Culturais
-==================================================================
+# Mapas Culturais > Deploy > Shapefiles
+----
+
 Os SHAPEFILEs devem, preferencialmente:
 
 - Estar no sistema de coordenadas WGS84 (EPSG 4326), que é o sistem de coordenadas usado pelo Sistema de Posicionamento Global (GPS) e pelos Mapas Culturais. É possível converter de praticamente qualquer outro sistema de coordenadas para o WGS84usando o Quantum GIS;
@@ -8,13 +9,11 @@ Os SHAPEFILEs devem, preferencialmente:
 
 Referência: http://suite.opengeo.org/opengeo-docs/dataadmin/pgGettingStarted/shp2pgsql.html
 
-Utilizando os Shapefiles na aplicação
-=====================================
+## Utilizando shapefiles na aplicação
 
-Os shapefiles podem ser usados para duas finalidades
+Os shapefiles podem ser usados para duas finalidades:
 
-1. Como referência para gerar metadados para as entidades salvas
--------------------------------------------------------------
+#### 1. Como referência para gerar metadados para as entidades salvas
 
 Cada vez que uma entidade é salva, a aplicação faz uma consulta na base de dados geográfica para saber dentro de quais polígonos aquela entidade está. Ao salvar um espaço, por exemplo, a aplicação pode automaticamente deduzir que ele está na subprefeitura da Sé, no município de São Paulo e no estado de São Paulo, e salvar esses três metadados diretamente na entidade.
 
@@ -34,11 +33,11 @@ Ex:
 
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
 
-2. Como adicionar camadas na visualização do mapa
----------------------------------------
+#### 2. Como adicionar camadas na visualização do mapa
 
 
 **0. Tenha os arquivos de formas**
+
 Você necessitará tem, se possível no ambiente em que deseja fazer a importação, os arquivos de formas (shapefiles). Eles devem vir em um diretório com os seguintes arquivos:
 
 NOME-DO-ARQUIVO.shp

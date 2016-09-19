@@ -21,6 +21,7 @@ $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
 $brand-saas:  #cc0033 !default;
+$brand-seal: #cc0033 !default;
 $brand-developer: #9966cc !default;
 
 $brand-info: #40b4b4 !default;
@@ -136,6 +137,12 @@ $unicode-agent:                 "\e08a" !default;
 // .icon-saas on _icons.scss file
 // .btn-map-saas on _maps.scss file
 $unicode-saas:                  "\e0df" !default;
+
+//** Seal icon
+// used on:
+// .icon-seal on _icons.scss file
+// .btn-map-seal on _maps.scss file
+$unicode-seal:                 "\e078" !default;
 
 //** API icon
 // used on:
@@ -425,7 +432,7 @@ $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;
 $z-index-leaflet:               1300 !default;
 $z-index-editable-entity:       1400 !default;
-$z-index-infobox:               1500 !default;
+$z-index-infobox:               15000 !default;
 $z-index-main-header:           1700 !default;
 $z-index-submenu-dropdown:      1800 !default;
 $z-index-tip:                   1900 !default;

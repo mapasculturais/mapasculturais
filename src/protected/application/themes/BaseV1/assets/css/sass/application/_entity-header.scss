@@ -67,6 +67,11 @@ article.saas {
         background-color: $brand-saas;
     }
 }
+article.seal {
+    .header-image {
+        background-color: $brand-seal;
+    }
+}
 
 .header-content {
     position: relative;
@@ -121,6 +126,10 @@ article.saas {
     .saas-type {
         color: $brand-saas;
     }
+    .seal-type {
+        color: $brand-seal;
+    }
+
     > h2 {
         margin-bottom: 0;
     }

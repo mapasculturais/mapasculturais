@@ -293,7 +293,22 @@ body.action-search {
     }
     &.active {
         &:after {
-            @include arrow(up, $caret-width-base, $brand-saas);
+            @include arrow(up, $caret-width-base, $brand-saas)
+        }
+    }
+}
+//** Seals
+#entities-menu-seal {
+    &.active, &:hover {
+        border-top-color: $brand-seal;
+        color: $brand-seal;
+        a {
+            color: $brand-seal;
+        }
+    }
+    .active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-seal);
         }
     }
 }

@@ -187,4 +187,12 @@
             background-color: $brand-saas;
         }
     }
+    .btn-map-seal {
+        &:before {
+            content: $unicode-seal;
+        }
+        &.active, &:hover {
+            background-color: $brand-seal;
+        }
+    }
 }

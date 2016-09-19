@@ -3,9 +3,8 @@ $this->layout = 'panel';
 ?>
 <div class="panel-main-content">
 
-    <p class="highlighted-message">
-        Olá, <strong><?php echo $app->user->profile->name ?></strong>, bem-vindo ao painel do <?php $this->dict('site: name'); ?>!
-    </p>
+    <?php $this->part('panel/highlighted-message') ?>
+
     <section id="user-stats" class="clearfix">
         <?php if($app->isEnabled('events')): ?>
             <div>
@@ -77,6 +76,20 @@ $this->layout = 'panel';
                     <div class="clearfix">
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'saas') ?>" title="Ver meus saas"><?php echo $count->saas; ?></a>
                         <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('saas', 'create'); ?>" title="Adicionar saas"></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+            <div>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Selos</span>
+                        <div class="icon icon-seal alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'seals') ?>" title="Ver meus selos"><?php echo $count->seals; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('seal', 'create'); ?>" title="Adicionar selos"></a>
                     </div>
                 </div>
             </div>

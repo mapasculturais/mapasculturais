@@ -87,7 +87,7 @@ $this->entity = $entity;
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -96,6 +96,8 @@ $this->entity = $entity;
     <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
 </article>
 <div class="sidebar-left sidebar space">
+    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
 
     <?php $this->part('widget-areas', ['entity' => $entity]); ?>

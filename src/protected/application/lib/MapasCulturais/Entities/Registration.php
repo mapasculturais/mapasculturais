@@ -19,7 +19,8 @@ class Registration extends \MapasCulturais\Entity
     use Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
-        Traits\EntityAgentRelation;
+        Traits\EntityAgentRelation,
+    	Traits\EntitySealRelation;
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
@@ -258,7 +259,6 @@ class Registration extends \MapasCulturais\Entity
         foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
-
             $definitions[$groupName]->use = $meta_val;
 
             if($meta_val === 'dontUse'){
@@ -325,10 +325,57 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
+
+		if($status === self::STATUS_APPROVED) {
+			$this->setAgentsSealRelation();
+		}
+
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
         $this->save(true);
+        $app->enableAccessControl();
+    }
+
+    function setAgentsSealRelation() {
+    	$app = App::i();
+    	$app->disableAccessControl();
+
+    	/*
+    	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
+    	 */
+    	$projectMetadataSeals = $this->project->registrationSeals;
+    	//eval(\Psy\sh());
+    	//die;
+
+    	if(isset($projectMetadataSeals->owner)) {
+    		$relation_class = $this->owner->getSealRelationEntityClassName();
+    		$relation = new $relation_class;
+
+	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
+	        $relation->seal		= $sealOwner;
+	        $relation->owner	= $this->owner;
+	    	$relation->save(true);
+    	}
+
+    	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
+    	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
+
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealInstitutions;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective) && is_object($sealCollective)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealCollective;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	}
+        }
         $app->enableAccessControl();
     }
 

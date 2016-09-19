@@ -47,7 +47,7 @@ class ProjectMeta extends \MapasCulturais\Entity {
      * })
      */
     protected $owner;
-
+    
     function canUser($action, $userOrAgent = null) {
         return $this->owner->canUser($action, $userOrAgent);
     }
