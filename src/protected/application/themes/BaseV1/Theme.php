@@ -83,7 +83,6 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
-
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
             'taxonomies:area: select' => 'Selecione as áreas',
@@ -323,6 +322,10 @@ class Theme extends MapasCulturais\Theme {
                 $app->halt(403, 'No token for CEP');
             }
         });
+<<<<<<< HEAD
+=======
+
+>>>>>>> rc
     }
 
     function register() {
