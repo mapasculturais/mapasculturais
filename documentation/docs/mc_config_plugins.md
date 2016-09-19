@@ -8,6 +8,17 @@ plugins => array(
   'AgendaSingles' => ['namespace' => 'AgendaSingles']
 );
 ```
+### Site de Origem
+Este plugin efetua o registro do site de origem de todas entidades da instalação Mapas Culturais quando inseridas ou atualizadas. É criado um metadado na entidade chamado ```site``` e o conteúdo informado na configuração é gravado na tabela de metadados da entidade gravada. A configuração é feita da seguinte forma:
+
+```
+plugins => array(
+  'OriginSite' => [
+                  'namespace' => 'OriginSite',
+                  'config'    => ['siteId' => 'http://url.da.instalacao.com.br']
+  ]
+);
+```
 
 ### Notificações
 As notificações têm o propósito de comunicar ou solicitar aprovação de relacionamento entre entidades no sistema.
