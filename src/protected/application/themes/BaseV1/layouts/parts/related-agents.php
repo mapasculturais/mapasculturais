@@ -25,7 +25,7 @@ $this->addRelatedAgentsToJs($entity);
                     <div class="alert warning" ng-if="relation.status < 0">Aguardando confirmação.</div>
                     <div class="objeto-meta">
                         <div ng-if="relation.agent.terms.area">
-                            <span class="label">área de atuação:</span>
+                            <span class="label"><?php echo strtolower($this->dict('taxonomies:area: name', true)) ?>:</span>
                             <span ng-repeat="area in relation.agent.terms.area">{{area}}<span ng-if="!$last && area">, </span></span>
                         </div>
                         <div><span class="label">tipo:</span> {{relation.agent.type.name}}</div>
