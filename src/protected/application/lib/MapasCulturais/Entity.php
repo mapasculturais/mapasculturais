@@ -272,7 +272,7 @@ abstract class Entity implements \JsonSerializable{
         }elseif($action != '@control'){
             $result = $this->genericPermissionVerification($user);
         }
-        
+
         $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         return $result;
@@ -305,7 +305,7 @@ abstract class Entity implements \JsonSerializable{
         $label = '';
 
         $prop_labels = $app->config['app.entityPropertiesLabels'];
-        
+
         if(isset($prop_labels [self::getClassName()][$property_name])){
             $label = $prop_labels[self::getClassName()][$property_name];
         }elseif(isset($prop_labels ['@default'][$property_name])){

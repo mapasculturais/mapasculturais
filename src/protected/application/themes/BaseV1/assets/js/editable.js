@@ -77,7 +77,7 @@ jQuery(function(){
         if (possibleSize > 20) {
             editable.input.$input.attr('size', possibleSize);
         }
-            
+
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
@@ -928,11 +928,11 @@ $(function(){
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
         cep = cep.replace('-','');
-        $.getJSON('http://cep.correiocontrol.com.br/'+cep+'.json',function(r){
+        $.getJSON('/site/cep?num='+cep, function(r){
             $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
             $('#En_Bairro').editable('setValue', r.bairro);
-            $('#En_Municipio').editable('setValue', r.localidade);
-            $('#En_Estado').editable('setValue', r.uf);
+            $('#En_Municipio').editable('setValue', r.cidade);
+            $('#En_Estado').editable('setValue', r.estado);
             concatena_enderco();
         });
 

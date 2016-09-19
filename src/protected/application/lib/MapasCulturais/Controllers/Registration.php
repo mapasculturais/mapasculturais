@@ -15,7 +15,8 @@ use MapasCulturais\Entities;
  */
 class Registration extends EntityController {
     use Traits\ControllerUploads,
-        Traits\ControllerAgentRelation;
+        Traits\ControllerAgentRelation,
+    	Traits\ControllerSealRelation;
 
     function __construct() {
         $app = App::i();
@@ -91,7 +92,7 @@ class Registration extends EntityController {
             $tmpFile['name'] = $this->name;
             $this->tmpFile = $tmpFile;
         });
-        
+
         
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
@@ -109,7 +110,7 @@ class Registration extends EntityController {
 
         parent::__construct();
     }
-    
+
     function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){
         
         $app = App::i();
@@ -156,7 +157,7 @@ class Registration extends EntityController {
 
         return $project;
     }
-    
+
     function GET_create(){
         $this->requireAuthentication();
 

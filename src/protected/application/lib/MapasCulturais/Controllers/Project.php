@@ -17,6 +17,7 @@ class Project extends EntityController {
         Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
+        Traits\ControllerSealRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
@@ -58,7 +59,7 @@ class Project extends EntityController {
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
-        
+
 
         if(!key_exists('id', $this->urlData))
             $app->pass();

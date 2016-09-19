@@ -25,6 +25,7 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
+        Traits\EntitySealRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
@@ -181,7 +182,7 @@ class Space extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\SpaceAgentRelation[] Agent Relations
      *
@@ -197,6 +198,22 @@ class Space extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
+    
+
+    /**
+     * @var \MapasCulturais\Entities\SpaceSealRelation[] SpaceSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

@@ -282,6 +282,21 @@ body.action-search {
     }
 }
 
+//** Seals
+#entities-menu-seal {
+    &.active, &:hover {
+        border-top-color: $brand-seal;
+        color: $brand-seal;
+        a {
+            color: $brand-seal;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-seal);
+        }
+    }
+}
 //** Session Menu
 .session-menu {
     @media screen and (max-width: $screen-xs-max) {

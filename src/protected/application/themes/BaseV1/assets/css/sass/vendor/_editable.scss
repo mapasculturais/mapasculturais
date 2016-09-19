@@ -6,6 +6,17 @@
     border-radius: $border-radius-base;
     vertical-align: top;
 }
+
+p > .editable {
+    @extend .editable;
+    word-wrap: break-word;
+    display: initial;
+}
+
+.js-editable {
+    word-wrap: break-word;
+}
+
 .editable:hover {
     background-color: $gray-light;
 }
@@ -55,6 +66,24 @@ a.editable-click:hover {
 .agentes-relacionados .editable:hover:after {
     color: $gray-darker;
 }
+
+/*nos grupos relacionados*/
+.selos-add .editable {
+  width: 1rem;
+  height: 1rem;
+  background: transparent;
+  text-align: center;
+  line-height: 1.75rem;
+  cursor: pointer; }
+
+.selos-add .editable:after {
+  content: "";
+  color: #666;
+  margin-left: 0; }
+
+.selos-add .editable:hover:after {
+  color: #333; }
+
 
 /*nos grupos relacionados*/
 .selos-relacionados .editable {
@@ -113,7 +142,8 @@ div.ficha-spcultura .editable-buttons-bottom {
     float: left;
 }
 .input-shortDescription,
-.input-longDescription {
+.input-longDescription,
+.input-certificateText {
     width: 871px;
 }
 .label.space-search {

@@ -223,7 +223,7 @@
             else
                 return $scope.data.global.filterEntity === entity;
         };
-        
+
         $scope.hasAdvancedFilters = function(entity){
             return MapasCulturais.filters[entity].filter(function(v){
                 return !v.isInline;

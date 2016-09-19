@@ -38,6 +38,7 @@ class Panel extends \MapasCulturais\Controller {
         $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->seals		= $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
     }
@@ -197,6 +198,24 @@ class Panel extends \MapasCulturais\Controller {
         $this->render('projects', ['user' => $user]);
     }
     
+    /**
+     * Render the seal list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/seals'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'seals');
+     * </code>
+     *
+     */
+    function GET_seals(){
+    	$this->requireAuthentication();
+    	$user = $this->_getUser();
+    
+    	$this->render('seals', ['user' => $user]);
+    }
+
     /**
      * Render the project list of the user panel.
      *

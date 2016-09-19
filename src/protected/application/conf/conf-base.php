@@ -30,6 +30,8 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
+    
+    'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
     'app.defaultApiOutput' => 'json',
@@ -44,11 +46,12 @@ return array(
     'app.offline' => false,
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
-    
+
     'app.enabled.agents'   => true,
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
+    'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -150,7 +153,7 @@ return array(
         )
     ),
 
-    /* ============ ENTITY PROPERTIES LABELS ============= */
+    /* ============ ENTITY PROPERTIES SEALS ============= */
     'app.entityPropertiesLabels' => array(
         '@default' => array(
             'id' => 'Id',
@@ -158,25 +161,26 @@ return array(
             'createTimestamp' => 'Data de Criação',
             'shortDescription' => 'Descrição Curta',
             'longDescription' => 'Descrição Longa',
-            'status' => 'Status',
-            'location' => 'Coordenada Geográfica',
-            '_type' => 'Tipo'
+            'certificateText' => 'Conteúdo da Impressão do Certificado',
+            'validPeriod'	=> 'Período de Validade',
+            'status' => 'Status'
         ),
 
 //        'MapasCulturais\Entities\Agent' => array()
     ),
 
-
     // 'app.projectRegistrationAgentRelationGroupName' => "Inscrições",
 
-    'notifications.interval' => 60,
+    'notifications.interval'        => 60,  // seconds
+    'notifications.entities.update' => 90,  // days
+    'notifications.user.access'     => 90,  // days
 
     /* ==================== LOG ================== */
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")
     //'slim.log.writer' => new \Custom\Log\Writer(),
 
     'slim.log.level' => \Slim\Log::NOTICE,
-    'slim.log.enabled' => true,
+    'slim.log.enabled' => false,
 
     'app.log.path' => realpath(BASE_PATH . '..') . '/logs/',
 
@@ -191,17 +195,17 @@ return array(
     'app.log.assets' => false,
 
     /* ==================== CACHE ================== */
-    'app.cache' => function_exists('apcu_add') ? 
-        new \Doctrine\Common\Cache\ApcuCache() : 
-        ( 
-            function_exists('apc_add') ? 
+    'app.cache' => function_exists('apcu_add') ?
+        new \Doctrine\Common\Cache\ApcuCache() :
+        (
+            function_exists('apc_add') ?
                 new \Doctrine\Common\Cache\ApcCache() :
                 new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
-                
+
         ),
-    
+
     'app.cache.namespace' => @$_SERVER['HTTP_HOST'],
-    
+
     'app.useRegisteredAutoloadCache' => true,
     'app.registeredAutoloadCache.lifetime' => 0,
 
@@ -284,7 +288,7 @@ return array(
         'default_action_name' => 'index',
         'shortcuts' => array(
             // exemplos de shortcut adicionando parametros
-             'james-bond'                => array('agent', 'single', array('id' => 7)),
+            'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
 
@@ -293,6 +297,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
+        	  'selo'     	=> array('seal',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),
@@ -301,7 +306,10 @@ return array(
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
             'rejeitar-notificacao' => array('notification', 'reject'),
-            'inscricao' => array('registration', 'view')
+
+            'inscricao' => array('registration', 'view'),
+            'certificado' => array('relatedSeal','single'),
+
         ),
         'controllers' => array(
             'painel'         => 'panel',
@@ -312,6 +320,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
+            'selos'          => 'seal',
             'inscricoes'     => 'registration',
             'anexos'         => 'registrationfileconfiguration',
         ),
@@ -323,6 +332,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'selos'         => 'seals',
             'inscricoes'    => 'registrations'
         ),
 
@@ -334,6 +344,7 @@ return array(
                 'event'         => 'Evento',    'events'        => 'Eventos',
                 'agent'         => 'Agente',    'agents'        => 'Agentes',
                 'space'         => 'Espaço',    'spaces'        => 'Espaços',
+                'seal'          => 'Selo',      'seals'         => 'Selos',
                 'project'       => 'Projeto',   'projects'      => 'Projetos',
                 'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
                 'file'          => 'Arquivo',   'files'         => 'Arquivos',

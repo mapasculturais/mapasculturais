@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
@@ -22,7 +23,7 @@ use MapasCulturais\App;
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     const STATUS_ENABLED = 1;
-    
+
     use \MapasCulturais\Traits\EntityMetadata;
 
 
@@ -91,7 +92,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
-    
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -101,7 +102,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * })
      */
     protected $profile;
-    
+
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
@@ -112,6 +113,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
+       // $this->seals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
 
@@ -219,7 +221,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
-        
+
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -250,7 +252,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 		    		e.name,
 		    		e.createTimestamp ASC ";
     	}
-    	
+
 		$query = App::i()->em->createQuery($dql);
         $query->setParameter('user', $this);
         $query->setParameter('status', $status);
@@ -359,7 +361,29 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
-   
+
+    public function getSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
+    }
+    function getEnabledSeals(){
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ENABLED, '=');
+    }
+    function getDraftSeals(){
+    	$this->checkPermission('modify');
+
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DRAFT, '=');
+    }
+    function getTrashedSeals(){
+    	$this->checkPermission('modify');
+
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_TRASH, '=');
+    }
+    function getDisabledSeals(){
+    	$this->checkPermission('modify');
+
+    	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
+    }
+
     function getNotifications($status = null){
         if(is_null($status)){
             $status_operator =  '>';
@@ -387,6 +411,83 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $entityList = $query->getResult();
         return $entityList;
 
+    }
+
+    function getEntitiesNotifications($app) {
+      if($app->config['notifications.user.access'] > 0) {
+        $now = new \DateTime;
+        $interval = date_diff($app->user->lastLoginTimestamp, $now);
+        if($interval->format('%a') >= $app->config['notifications.user.access']) {
+          // message to user about last access system
+          $notification = new Notification;
+          $notification->user = $app->user;
+          $notification->message = "Seu último acesso foi em <b>" . $app->user->lastLoginTimestamp->format('d/m/Y') . "</b>, atualize suas informações se necessário.";
+          $notification->save(true);
+        }
+      }
+
+      if($app->config['notifications.entities.update'] > 0) {
+          $now = new \DateTime;
+          foreach($this->agents as $agent) {
+            $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+              // message to user about old agent registrations
+              $notification = new Notification;
+              $notification->user = $app->user;
+              $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+              $notification->save(true);
+            }
+          }
+
+          foreach($this->projects as $project) {
+            $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+              // message to user about old project registrations
+              $notification = new Notification;
+              $notification->user = $app->user;
+              $notification->message = "O projeto <b>" . $project->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+              $notification->save(true);
+            }
+          }
+
+          foreach($this->events as $event) {
+            $lastUpdateDate = $event->updateTimestamp ? $event->updateTimestamp: $event->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+              // message to user about old event registrations
+              $notification = new Notification;
+              $notification->user = $app->user;
+              $notification->message = "O Evento <b>" . $event->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+              $notification->save(true);
+            }
+          }
+
+          foreach($this->spaces as $space) {
+            $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+              // message to user about old space registrations
+              $notification = new Notification;
+              $notification->user = $app->user;
+              $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+              $notification->save(true);
+            }
+          }
+
+          foreach($this->seals as $seal) {
+            $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+              // message to user about old seal registrations
+              $notification = new Notification;
+              $notification->user = $app->user;
+              $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+              $notification->save(true);
+            }
+          }
+      }
     }
 
     //============================================================= //

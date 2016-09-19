@@ -179,4 +179,12 @@
             background-color: $brand-space;
         }
     }
+    .btn-map-seal {
+        &:before {
+            content: $unicode-seal;
+        }
+        &.active, &:hover {
+            background-color: $brand-seal;
+        }
+    }
 }
