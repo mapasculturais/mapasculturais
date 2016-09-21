@@ -16,24 +16,26 @@ $this->includeMapAssets();
 
 $this->includeAngularEntityAssets($entity);
 
+$this->part('singles/breadcrumb', ['entity' => $entity]);
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content agent">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?>
-            
+
             <?php $this->part('singles/type', ['entity' => $entity]) ?>
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -41,7 +43,7 @@ $this->includeAngularEntityAssets($entity);
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
-    
+
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
@@ -49,7 +51,7 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
-    
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
@@ -122,20 +124,20 @@ $this->includeAngularEntityAssets($entity);
             <!-- Image Gallery BEGIN -->
                 <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
             <!-- Image Gallery END -->
-            
+
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar agent">
-	<!-- Related Seals BEGIN -->
+    <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
 
@@ -157,11 +159,11 @@ $this->includeAngularEntityAssets($entity);
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->spaces, 'title' => 'entities: Spaces of the agent')); ?>
     <!-- Children END -->
-    
+
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
     <!-- Children END -->
-    
+
     <!--
     <div class="widget">
         <h3>Projetos do agente</h3>

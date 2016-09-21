@@ -25,27 +25,29 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
+$this->part('singles/breadcrumb', ['entity' => $entity]);
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content project" ng-controller="ProjectController">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <!--.header-image-->
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
-            
+
             <?php $this->part('singles/type', ['entity' => $entity]) ?>
-            
+
             <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -55,21 +57,21 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->applyTemplateHook('header','after'); ?>
 
     <?php $this->part('singles/project-tabs', ['entity' => $entity]) ?>
-    
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
-        
+
         <?php $this->part('singles/project-events', ['entity' => $entity]) ?>
-        
+
         <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
-        
+
         <?php $this->part('singles/project-registrations', ['entity' => $entity]) ?>
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar project">
@@ -88,11 +90,11 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
-    
+
     <!-- Projects BEGIN -->
     <?php $this->part('singles/widget-projects', ['entity' => $entity, 'projects' => $entity->children->toArray()]); ?>
     <!-- Projects END -->
-    
+
     <!-- Downloads BEGIN -->
     <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
