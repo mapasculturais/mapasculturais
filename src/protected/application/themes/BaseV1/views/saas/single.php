@@ -62,6 +62,8 @@
             <?php $this->applyTemplateHook('tabs-content','end'); ?>
         </div>
         <?php $this->applyTemplateHook('tabs-content','after'); ?>
+
+        <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
     </div>
 </article>
 
