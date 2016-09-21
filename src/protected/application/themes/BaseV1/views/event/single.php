@@ -24,7 +24,7 @@ $this->includeAngularEntityAssets($entity);
 
 $this->includeMapAssets();
 
-$this->part('singles/breadcrumb');
+$this->part('singles/breadcrumb', ['entity' => $entity]);
 
 ?>
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
