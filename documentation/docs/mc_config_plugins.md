@@ -3,16 +3,16 @@
 A definição de novos plugins no sistema Mapas Culturais mudou estruturalmente, funcionando na estrutura abaixo:
 
 ```
-plugins => array(
+'plugins' => array(
   'ProjectPhases' => ['namespace' => 'ProjectPhases'],
   'AgendaSingles' => ['namespace' => 'AgendaSingles']
-);
+)
 ```
 ### Site de Origem
 Este plugin efetua o registro do site de origem de todas entidades da instalação Mapas Culturais quando inseridas ou atualizadas. É criado um metadado na entidade chamado ```site``` e o conteúdo informado na configuração é gravado na tabela de metadados da entidade gravada. A configuração é feita da seguinte forma:
 
 ```
-plugins => array(
+'plugins' => array(
   'OriginSite' => [
                   'namespace' => 'OriginSite',
                   'config'    => ['siteId' => 'http://url.da.instalacao.com.br']
