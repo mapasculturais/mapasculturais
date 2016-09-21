@@ -20,7 +20,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
 $this->entity = $entity;
 
-$this->part('singles/breadcrumb', ['entity' => $entity]);
+$this->part('singles/breadcrumb');
 
 ?>
 <?php $this->part('editable-entity', ['entity' => $entity, 'action' => $action]);  ?>

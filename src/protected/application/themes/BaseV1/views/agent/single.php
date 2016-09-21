@@ -16,7 +16,7 @@ $this->includeMapAssets();
 
 $this->includeAngularEntityAssets($entity);
 
-$this->part('singles/breadcrumb', ['entity' => $entity]);
+$this->part('singles/breadcrumb');
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
