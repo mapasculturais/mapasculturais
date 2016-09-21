@@ -25,7 +25,7 @@ As notificações têm o propósito de comunicar ou solicitar aprovação de rel
 Para habilitar as notificações do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
 
 ```
-plugins => array("notifications");
+'plugins' => array("notifications");
 ```
 
 É possível configurar o tempo de intervalo de verificação de novas notificações informando o período em segundos na diretiva abixo na configuração da instalação:
