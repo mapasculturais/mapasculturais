@@ -3,16 +3,16 @@
 A definição de novos plugins no sistema Mapas Culturais mudou estruturalmente, funcionando na estrutura abaixo:
 
 ```
-plugins => array(
+'plugins' => array(
   'ProjectPhases' => ['namespace' => 'ProjectPhases'],
   'AgendaSingles' => ['namespace' => 'AgendaSingles']
-);
+)
 ```
 ### Site de Origem
 Este plugin efetua o registro do site de origem de todas entidades da instalação Mapas Culturais quando inseridas ou atualizadas. É criado um metadado na entidade chamado ```site``` e o conteúdo informado na configuração é gravado na tabela de metadados da entidade gravada. A configuração é feita da seguinte forma:
 
 ```
-plugins => array(
+'plugins' => array(
   'OriginSite' => [
                   'namespace' => 'OriginSite',
                   'config'    => ['siteId' => 'http://url.da.instalacao.com.br']
@@ -25,7 +25,7 @@ As notificações têm o propósito de comunicar ou solicitar aprovação de rel
 Para habilitar as notificações do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
 
 ```
-plugins => array("notifications");
+'plugins' => array("notifications");
 ```
 
 É possível configurar o tempo de intervalo de verificação de novas notificações informando o período em segundos na diretiva abixo na configuração da instalação:
