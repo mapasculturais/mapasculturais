@@ -196,7 +196,7 @@
                             return f.filter.param === search_filter;
                         })[0];
                         if (!filter.isArray) {
-                            searchData[filter.prefix + filter.filter.param] = filter.filter.value;
+                            searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter]);
                         } else if (entityData.filters[search_filter].length){
                             if (filter.type === 'term'){
                                 var search_value = entityData.filters[search_filter].map(function(e){
@@ -215,6 +215,7 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
+                console.log(searchData);
                 return searchData;
             }
 
