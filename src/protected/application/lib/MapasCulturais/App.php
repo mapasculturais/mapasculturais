@@ -658,7 +658,7 @@ class App extends \Slim\Slim{
             'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
             'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], 'The uploades file is not a valid image.',true),
-            'institute'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
+            'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
         ];
 
         // register file groups
