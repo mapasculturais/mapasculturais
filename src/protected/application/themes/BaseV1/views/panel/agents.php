@@ -1,7 +1,7 @@
 <?php
 $this->layout = 'panel'
 ?>
-<?php $this->part('singles/breadcrumb'); ?>
+<?php $this->part('singles/breadcrumb', ['entity' => $app->entity]); ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2>Meus agentes</h2>

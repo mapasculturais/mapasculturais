@@ -1,20 +1,18 @@
 <?php
     //espaço, projetos
-
     $br = [];
     $curr = $entity;
     $br[] = $curr;
 
-    if($entity->parent){
+    if(isset($entity->parent)){
         while($curr->parent){
             $curr = $curr->parent;
             $br[] = $curr;
         }
-    }
-
-    while(!$curr->equals($curr->owner)){
-        $curr = $curr->owner;
-        $br[] = $curr;
+        while(!$curr->equals($curr->owner)){
+            $curr = $curr->owner;
+            $br[] = $curr;
+        }
     }
 
     $br = array_reverse($br);
