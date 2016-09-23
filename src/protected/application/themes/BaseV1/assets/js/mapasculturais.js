@@ -141,6 +141,15 @@ $(function(){
             }
         };
     }
+    
+    
+    // confirm
+    
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+    
 
 });
 

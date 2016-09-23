@@ -1350,8 +1350,13 @@ class App extends \Slim\Slim{
 
     }
 
-    public function getRoleName($role){
+    public function getRoles() {
         $roles = include APPLICATION_PATH . 'conf/roles.php';
+        return $roles;
+    }
+
+    public function getRoleName($role){
+        $roles = $this->getRoles();
         return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
     }
 

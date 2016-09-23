@@ -19,4 +19,14 @@ class User extends \MapasCulturais\Repository{
         $user = $user_query->getOneOrNullResult();
         return $user;
     }
+    
+    public function getByRole($role) {
+        $user_query = $this->_em->createQuery('SELECT u FROM MapasCulturais\Entities\User u 
+            JOIN u.roles r WITH r.name =:role');
+        
+        $user_query->setParameter('role', $role);
+        $users = $user_query->getResult();
+        return $users;
+
+    }
 }
