@@ -10,7 +10,7 @@
 
     <?php else: ?>
         <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>"><?php echo $entity->isArchived() ? 'Desarquivar' : 'Arquivar'; ?></a>
-        <a class="btn btn-primary js-submit-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>">Salvar</a>
+        <a class="btn btn-primary js-submit-button" data-status="<?php echo $entity->isArchived() ? $status_archived : $status_enabled; ?>">Salvar</a>
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>
