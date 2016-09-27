@@ -42,7 +42,7 @@ jQuery(function(){
                }
             });
         }
-        
+
         if ($(this).hasClass('js-mask-phone')) {
             var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:
@@ -633,14 +633,6 @@ MapasCulturais.Editables = {
                     }
                 }
             });
-
-            if($(event.target).hasClass('js-archive-button')) {
-                $(this).attr('data-status', 1).html("Desarquivar");
-                $(this).removeClass('js-archive-button').addClass('js-unarchive-button');
-            }else if($(event.target).hasClass('js-unarchive-button')){
-                $(this).attr('data-status', -2).html("Arquivar");
-                $(this).removeClass('js-unarchive-button').addClass('js-archive-button');
-            }
         });
 
     }
