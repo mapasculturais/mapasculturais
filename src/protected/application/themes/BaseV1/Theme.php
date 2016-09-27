@@ -358,10 +358,6 @@ class Theme extends MapasCulturais\Theme {
                 $app->halt(403, 'No token for CEP');
             }
         });
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     }
 
     function register() {
