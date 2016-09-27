@@ -1,4 +1,7 @@
 <?php
+if(!$app->isEnabled('seals'))
+	return;
+    
 $owner = isset($project->registrationSeals->owner) ? $project->registrationSeals->owner : '';
 $institution = isset($project->registrationSeals->institution) ? $project->registrationSeals->institution : '';
 $collective = isset($project->registrationSeals->collective) ? $project->registrationSeals->collective : '';
@@ -43,7 +46,7 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
                             <span ng-if="!<?php echo $institution; ?>">Não informado</span>
                         </div>
                     </div>
-                </div>                        
+                </div>
             </div>
         </li>
         <li class="registration-list-item registration-edit-mode">

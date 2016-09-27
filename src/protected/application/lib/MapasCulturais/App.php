@@ -1405,6 +1405,7 @@ class App extends \Slim\Slim{
     function getRegistrationAgentsDefinitions(){
         $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
         foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
+            App::i()->log->debug($groupName);
             $definitions[$groupName] = $def;
         }
         return $definitions;

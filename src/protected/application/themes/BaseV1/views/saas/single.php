@@ -1,15 +1,18 @@
 <?php
-    $action = preg_replace("#^(\w+/)#", "", $this->template);
-    $this->bodyProperties['ng-app'] = "entity.app";
-    $this->bodyProperties['ng-controller'] = "EntityController";
+$action = preg_replace("#^(\w+/)#", "", $this->template);
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
 
-    $this->addEntityToJs($entity);
+$this->addEntityToJs($entity);
 
-    $this->includeAngularEntityAssets($entity);
+$this->includeAngularEntityAssets($entity);
 
-    $this->includeMapAssets();
+$this->includeMapAssets();
 
-    $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
+$this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
+
+$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+
 ?>
 <article class="main-content saas-container">
   <header class="main-content-header">
@@ -24,18 +27,18 @@
 
             <?php if($this->isEditable() || $entity->nome_instalacao): ?>
                 <p>
-                    <span class="setup-name js-editable" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
+                    <span class="setup-name js-editable <?php echo ($entity->isPropertyRequired($entity,"nome_instalacao") && $editEntity? 'required': '');?>" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
                 </p>
             <?php endif; ?>
 
             <br />
             <?php if($this->isEditable() || $entity->slug): ?>
-                    <span class="js-editable header-field" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
+                    <span class="js-editable header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
             <?php endif; ?>
 
             <?php if($this->isEditable() || $entity->url): ?>
                 <p>
-                    <span class="js-editable" data-edit="url" data-original-title="URL" data-emptytext="Ex: .mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"url") && $editEntity? 'required': '');?>" data-edit="url" data-original-title="URL" data-emptytext="Ex: .mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
                 </p>
             <?php endif; ?>
     </div>

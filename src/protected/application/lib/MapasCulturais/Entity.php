@@ -395,6 +395,32 @@ abstract class Entity implements \JsonSerializable{
         return $data_array;
     }
 
+    public function isPropertyRequired($entity,$property) {
+        $app = App::i();
+        $return = false;
+
+        $__class = get_called_class();
+        $class = $__class::getClassName();
+
+        $metadata = $class::getPropertiesMetadata();
+        if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
+            $app->log->debug("Primeiro: ");
+            $app->log->debug($property);
+            $return = $metadata[$property]['required'];
+            $app->log->debug($return);
+        }
+
+        $v = $class::$validations;
+        if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
+            $app->log->debug("Segundo: ");
+            $return = true;
+            $app->log->debug($property);
+            $app->log->debug($return);
+        }
+
+        return $return;
+    }
+
     /**
      * Returns this entity as an array.
      *
