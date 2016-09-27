@@ -93,7 +93,6 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
-
             'entities: Agents'    => 'Agentes',
             'entities: Projects'  => 'Projetos',
             'entities: Events'    => 'Eventos',
@@ -359,7 +358,10 @@ class Theme extends MapasCulturais\Theme {
                 $app->halt(403, 'No token for CEP');
             }
         });
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     }
 
     function register() {

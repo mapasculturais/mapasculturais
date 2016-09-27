@@ -195,7 +195,9 @@
                         var filter = MapasCulturais.filters[entity].filter(function(f){
                             return f.filter.param === search_filter;
                         })[0];
-                        if (entityData.filters[search_filter].length){
+                        if (!filter.isArray) {
+                            searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter]);
+                        } else if (entityData.filters[search_filter].length){
                             if (filter.type === 'term'){
                                 var search_value = entityData.filters[search_filter].map(function(e){
                                     return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
@@ -203,8 +205,6 @@
 ;                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
                             } else
                                 searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
-                        } else if (!filter.isArray) {
-                            searchData[filter.prefix + filter.filter.param] = filter.filter.value;
                         }
                     }
                 }
@@ -215,6 +215,7 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
+                console.log(searchData);
                 return searchData;
             }
 

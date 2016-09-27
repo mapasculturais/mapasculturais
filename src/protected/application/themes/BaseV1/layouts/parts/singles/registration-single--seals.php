@@ -1,7 +1,7 @@
 <?php
 if(!$app->isEnabled('seals'))
 	return;
-    
+
 $owner = isset($project->registrationSeals->owner) ? $project->registrationSeals->owner : '';
 $institution = isset($project->registrationSeals->institution) ? $project->registrationSeals->institution : '';
 $collective = isset($project->registrationSeals->collective) ? $project->registrationSeals->collective : '';
