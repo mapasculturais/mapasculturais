@@ -11,6 +11,8 @@
                 <?php if($entity->type): ?>
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
                 <?php endif; ?>
+        <div><span class="label">URL:</span> <a href="<?php echo "http://" . $entity->url;?>"><?php echo "http://" . $entity->url;?></a></div>
+        </br>
 		<div><span class="label">Data de Criação:</span> <?php echo $entity->createTimestamp->format('d/m/Y H:i:s');?></div>
 	</div>
     <div class="entity-actions">
