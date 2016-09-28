@@ -63,11 +63,7 @@ $ git pull
 Após obter o código fonte, o próximo passo é rodar o script `deploy.sh` localizado na pasta `scripts`. Esse arquivo atualiza libs e dependências da aplicação e atualiza o banco de dados com novos campos e/ou tabelas. O comando pra executar esse script (a partir da raiz da aplicação) é:
 
 ```
-<<<<<<< HEAD
 $ ./scripts/deploy.sh
-=======
-$ ./scripts.deploy.sh
->>>>>>> c16f844... Documentation for update application and checkout by release
 ```
 
 ## Reiniciando o PHP
