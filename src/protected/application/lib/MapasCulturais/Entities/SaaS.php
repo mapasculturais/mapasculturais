@@ -33,6 +33,9 @@ class SaaS extends \MapasCulturais\Entity
         'slug' => [
             'required' => 'O slug da instalação é obrigatório'
         ],
+        'url' => [
+            'required' => 'A url da instalação é obrigatória'
+        ]
     ];
     /**
      * @var integer
@@ -86,6 +89,13 @@ class SaaS extends \MapasCulturais\Entity
      * @ORM\Column(name="url", type="string", length=255, nullable=false)
      */
     protected $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url_parent", type="string", length=255, nullable=false)
+     */
+    protected $url_parent;
 
     /**
      * @var string
