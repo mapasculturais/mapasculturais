@@ -50,8 +50,6 @@ class Theme extends BaseV1\Theme{
         $app = App::i();
         $saasCfg = '';
 
-        //$this->filters = self::$config['filters'];
-
         $domain = $app->config['app.cache.namespace'];
 
         if(($pos = strpos($domain, ':')) !== false){

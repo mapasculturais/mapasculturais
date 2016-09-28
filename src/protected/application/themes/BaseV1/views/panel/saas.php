@@ -7,8 +7,8 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2>Meus SaaS</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('saas', 'create') ?>">Adicionar novo saas</a>
+		<h2><?php echo $this->dict('entities: My SaaS');?></h2>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('saas', 'create') ?>"><?php echo $this->dict('entities: add new saas');?></a>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
