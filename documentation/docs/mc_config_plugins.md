@@ -29,7 +29,7 @@ Ao final, deve ser assim:
                 'AgendaSingles' => ['namespace' => 'AgendaSingles'],
                 'OriginSite' => [
                         'namespace' => 'OriginSite',
-                        'config'    => ['siteId' => 'lugaresdacultura.org.br']
+                        'config'    => ['siteId' => 'url.da.instalacao.com.br']
                                 ]
         ),
 ```
