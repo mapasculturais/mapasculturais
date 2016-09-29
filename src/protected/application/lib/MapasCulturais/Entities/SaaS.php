@@ -8,7 +8,7 @@ use MapasCulturais\App;
 
 /**
  * SaaS
- * @property-read \MapasCulturais\Entities\Agent $owner The owner of this saas
+ * @property \MapasCulturais\Entities\Agent $owner The owner of this saas
  *
  * @ORM\Table(name="saas")
  * @ORM\Entity
@@ -31,7 +31,8 @@ class SaaS extends \MapasCulturais\Entity
             'required' => 'O nome da instalação é obrigatório'
         ],
         'slug' => [
-            'required' => 'O slug da instalação é obrigatório'
+            'required' => 'O slug da instalação é obrigatório',
+            'unique' => 'Este slug já está sendo utilizado'
         ],
         'url' => [
             'required' => 'A url da instalação é obrigatória'
@@ -141,6 +142,7 @@ class SaaS extends \MapasCulturais\Entity
     protected $_background;
 
     function getBackground(){
+        
         if(!$this->_background)
             $this->_background = $this->getFile('background');
 
