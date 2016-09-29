@@ -11,7 +11,9 @@ $this->includeMapAssets();
 
 $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
 
-$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+$editEntity = $this->isEditable();
+
+$slag_editbla = $this->controller->action === 'create';
 
 ?>
 <article class="main-content saas-container">
@@ -33,7 +35,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
             <br />
             <?php if($this->isEditable() || $entity->slug): ?>
-                    <span class="js-editable header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
+                    <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
             <?php endif; ?>
 
             <?php if($this->isEditable() || $entity->url): ?>
