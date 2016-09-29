@@ -925,21 +925,41 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             };
 
+            $scope.approvedRegistrations = function(){
+                var registrations = $scope.data.entity.registrations,
+                    approved = 0;
+
+                for(var key in registrations){
+                    if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
+                        approved++;
+                    }
+                }
+
+                return approved;
+            }
+
+            // PLEASE REFACTOR ME
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
                     if(status.value === 10) {
-                        if(MapasCulturais.entity.object.approvedLimit > $scope.approvedRegistrations()) {
+                        if(MapasCulturais.entity.object.registrationLimit > $scope.approvedRegistrations()) {
                             RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                                 if(registration.status === 0){
                                     $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
                                 }
                             });
-                        } else if(MapasCulturais.entity.object.approvedLimit === 0) {
-                            MapasCulturais.Messages.error('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.');
+                        } else if(MapasCulturais.entity.object.registrationLimit === 0) {
+                            MapasCulturais.Messages.error('Você não definiu um número máximo de inscrições. Para selecionar essa inscrição, configure um número máximo de inscrições na aba Inscrições, em Agentes.');
                         } else {
-                            MapasCulturais.Messages.error('Você atingiu o limite máximo de ' + MapasCulturais.entity.object.approvedLimit + (MapasCulturais.entity.object.approvedLimit > 1 ? ' inscrições aprovadas.' : ' inscrição aprovada.'));
+                            MapasCulturais.Messages.error('Você atingiu o limite máximo de ' + MapasCulturais.entity.object.registrationLimit + (MapasCulturais.entity.object.registrationLimit > 1 ? ' inscrições.' : ' inscrição.'));
                         }
-                    });
+                    } else {
+                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
+                            if(registration.status === 0){
+                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                            }
+                        });
+                    }
                 }
             };
 
@@ -1054,10 +1074,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             $scope.register = function(){
                 var registration = $scope.data.registration;
 
-                if(registration.owner){
+                if(registration.owner && $scope.data.entity.registrations.length < MapasCulturais.entity.object.registrationLimit){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
+                }else if($scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
+                    MapasCulturais.Messages.error('O número de vagas se esgotou.');
                 }else{
                     MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
                 }
@@ -1193,7 +1215,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.entity = MapasCulturais.entity.object;
 
         $scope.setSeal = function(agent, entity){
-        	var sealRelated = {};
+            var sealRelated = {};
             var _scope = this.$parent;
 
             if(!angular.isObject($scope.entity.registrationSeals)) {
@@ -1208,14 +1230,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.getArrIndexBySealId = function(sealId) {
-        	for(var found in $scope.seals) {
+            for(var found in $scope.seals) {
                 if($scope.seals[found].id == sealId)
                 	return found;
         	};
         };
 
         $scope.removeSeal = function(entity){
-        	delete $scope.entity.registrationSeals[entity];
+            delete $scope.entity.registrationSeals[entity];
         };
 
         $scope.deleteRelation = function(relation){
