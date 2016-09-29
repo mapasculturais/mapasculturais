@@ -55,13 +55,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
 
-            'entities: SaaS Description'=> 'Descrição do SaaS',
-            'entities: My SaaS'=> 'Meus SaaS',
-            'entities: My saas'=> 'Meus Saas',
-            'entities: Saas' => 'Saas',
-            'entities: SaaS' => 'SaaS',
-            'entities: no registered saas'=> 'nenhum saas cadastrado',
-            'entities: no saas'=> 'nenhum saas',
+            'entities: SaaS Description'=> 'Descrição da Instalação SaaS',
+            'entities: My SaaS'=> 'Instalações SaaS',
+            'entities: My saas'=> 'Instalações SaaS',
+            'entities: Saas' => 'Instalação SaaS',
+            'entities: SaaS' => 'Instalação SaaS',
+            'entities: no registered saas'=> 'nenhuma instalação saas cadastrada',
+            'entities: no saas'=> 'nenhuma instalação saas',
+            'entities: registered saas' => 'instalações saas cadastradas',
+            'entities: add new saas' => "Adicionar nova instalação",
 
         	'entities: My Seals'=> 'Meus Selos',
         	'entities: My seals'=> 'Meus selos',
@@ -101,16 +103,16 @@ class Theme extends MapasCulturais\Theme {
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
             'taxonomies:area: select' => 'Selecione as áreas',
-            
+
             'error:403: title' => 'Permissão negada',
             'error:403: message' => 'Você não tem permissão para executar esta ação.',
-            
+
             'error:404: title' => 'Página não encontrada.',
             'error:404: message' => '',
-            
+
             'error:500: title' => 'Um erro inesperado aconteceu',
             'error:500: message' => '',
-            
+
         );
     }
 
