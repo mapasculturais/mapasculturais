@@ -168,7 +168,7 @@
                             <a href="<?php echo $app->createUrl('panel', 'seals') ?>"><?php $this->dict('entities: My Seals') ?></a>
                             <a class="add"href="<?php echo $app->createUrl('seal', 'create') ?>"></a>
                         </li>
-                        <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.seals','after'); ?>
                     <?php endif; ?>
 
                     <?php if($app->isEnabled('projects')): ?>
@@ -184,6 +184,15 @@
                             <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
+                    <?php endif; ?>
+
+                    <?php if($app->isEnabled('saas')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.saas','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'saas') ?>"><?php $this->dict('entities: My SaaS') ?></a>
+                            <a class="add"href="<?php echo $app->createUrl('saas', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.saas','after'); ?>
                     <?php endif; ?>
 
 

@@ -1,5 +1,12 @@
 <?php $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit'; ?>
 <div id="sobre" class="aba-content">
+    <?php if($this->isEditable() || $entity->url_parent): ?>
+        <p>
+            <span class="label <?php echo ($entity->isPropertyRequired($entity,"url_parent") && $editEntity? 'required': '');?>">URL pai: </span>
+            <span class="js-editable" data-edit="url_parent" data-original-title="URL pai" data-emptytext="Ex: http://mapas.cultura.gov.br"><?php echo $entity->url_parent; ?></span>
+        </p>
+    <?php endif; ?>
+
     <?php if($this->isEditable() || $entity->titulo): ?>
         <p>
             <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo") && $editEntity? 'required': '');?>">Título: </span>
