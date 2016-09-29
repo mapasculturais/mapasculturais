@@ -28,8 +28,9 @@ class Theme extends BaseV1\Theme{
         }
 
         $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
-
-        return [
+        $result = parent::_getTexts();
+        
+        $saas_texts = [
             'site: name'        => $dict->name,
             'site: description' => $dict->texto_sobre,
             'home: title'       => $dict->titulo,
@@ -40,6 +41,13 @@ class Theme extends BaseV1\Theme{
             'entities: Agents'  => $dict->titulo_agentes,
             'entities: Seals'   => $dict->titulo_selos
         ];
+        
+        foreach($saas_texts as $key => $val){
+            if($val){
+                $result[$key] = $val;
+            }
+        }
+        return $result;
     }
 
     static function getThemeFolder() {
