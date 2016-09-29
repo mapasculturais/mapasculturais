@@ -20,6 +20,20 @@ Este plugin efetua o registro do site de origem de todas entidades da instalaç�
 );
 ```
 
+Ao final, deve ser assim:
+
+```
+        'plugins.enabled' => array('endereco', 'notifications', 'em-cartaz'),
+        'plugins' => array(
+                'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+                'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+                'OriginSite' => [
+                        'namespace' => 'OriginSite',
+                        'config'    => ['siteId' => 'lugaresdacultura.org.br']
+                                ]
+        ),
+```
+
 ### Notificações
 As notificações têm o propósito de comunicar ou solicitar aprovação de relacionamento entre entidades no sistema.
 Para habilitar as notificações do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
