@@ -10,6 +10,7 @@ $this->layout = 'panel'
         <li class="active"><a href="#ativos">Ativos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
+		<li><a href="#arquivo">Arquivo</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>
@@ -38,4 +39,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($user->archivedProjects as $entity): ?>
+            <?php $this->part('panel-project', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

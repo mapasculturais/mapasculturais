@@ -222,7 +222,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
-
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -298,7 +297,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getArchivedAgents(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Agents', Agent::STATUS_ARCHIVED,'=');
+        return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
     }
 
     public function getSpaces(){
@@ -325,7 +324,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getArchivedSpaces(){
         $this->checkPermission('modify');
-
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
     }
 

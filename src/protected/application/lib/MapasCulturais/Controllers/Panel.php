@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\SaaS;
 
 /**
@@ -39,7 +40,7 @@ class Panel extends \MapasCulturais\Controller {
         $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->saas      = $app->controller('saas')->apiQuery(['@count'=>1]);
+        $count->saas        = $app->controller('saas')->apiQuery(['@count'=>1]);
         $count->seals		= $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
@@ -136,12 +137,15 @@ class Panel extends \MapasCulturais\Controller {
         $meta = $controller->lastQueryMetadata;
         $draft   = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
         $trashed = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
+        $archivedMethod = 'archived'.$entityName;
+        $archived = $app->user->$archivedMethod;
 
         $enabled = json_decode(json_encode($enabled));
         $draft   = json_decode(json_encode($draft));
         $trashed = json_decode(json_encode($trashed));
+        $archived= json_decode(json_encode($archived));
 
-        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta]);
+        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta, 'archived' => $archived]);
     }
 
     /**
@@ -157,7 +161,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_spaces(){
         $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
-                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp'];
+                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
         $this->renderList('spaces', 'space', implode(',', $fields));
@@ -176,7 +180,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_events(){
         $fields = ['name', 'type', 'status', 'terms', 'classificacaoEtaria', 'singleUrl',
-                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp'];
+                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(event)', [&$fields]);
         $this->renderList('events', 'event', implode(',', $fields));
@@ -256,7 +260,7 @@ class Panel extends \MapasCulturais\Controller {
     }
 
     /**
-     * Render the saas list of the user panel (Only SuperAdmin panel).
+     * Render the saas list of the user panel (Only SuperAdmin, Admin and Owner SaaS panel).
      *
      * This method requires authentication and renders the template 'panel/saas'
      *

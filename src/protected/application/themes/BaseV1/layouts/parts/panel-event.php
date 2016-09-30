@@ -3,7 +3,8 @@
     <div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-		<div><span class="label">Linguagens:</span> <?php echo implode(', ', $entity->terms->linguagem)?></div>
+        <?php $linguagem = isset($entity->terms->linguagem)?$entity->terms->linguagem: $entity->terms['linguagem'];?>
+		<div><span class="label">Linguagens:</span> <?php echo implode(', ', $linguagem)?></div>
 		<!--div><span class="label">Horário:</span> <time>00h00</time></div-->
 		<!--div><span class="label">Local:</span> Teatro</div-->
 		<?php if($entity->classificacaoEtaria): ?>
@@ -16,12 +17,15 @@
         <?php if($entity->status === \MapasCulturais\Entities\Event::STATUS_ENABLED): ?>
             <a class="btn btn-small btn-warning" href="<?php echo $entity->unpublishUrl; ?>">tornar rascunho</a>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->archiveUrl; ?>">arquivar</a>
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Event::STATUS_DRAFT): ?>
             <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
 
-        <?php else: ?>
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Event::STATUS_ARCHIVED): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
+        <?php elseif: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
                 <?php if($entity->canUser('destroy')): ?>
                     <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>

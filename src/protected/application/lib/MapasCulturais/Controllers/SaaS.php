@@ -21,6 +21,7 @@ class SaaS extends EntityController {
       Traits\ControllerVerifiable,
       Traits\ControllerSoftDelete,
       Traits\ControllerDraft,
+      Traits\ControllerArchive,
       Traits\ControllerAPI;
 
       /**

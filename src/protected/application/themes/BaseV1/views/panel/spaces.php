@@ -1,5 +1,6 @@
 <?php
 $this->layout = 'panel';
+$app = \MapasCulturais\App::i();
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
@@ -10,6 +11,7 @@ $this->layout = 'panel';
         <li class="active"><a href="#ativos">Ativos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
+		<li><a href="#arquivo">Arquivo</a></li>
     </ul>
     <div id="ativos">
 
@@ -41,4 +43,14 @@ $this->layout = 'panel';
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+		<?php foreach($app->user->archivedSpaces as $entity): ?>
+            <?php $this->part('panel-space', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$app->user->archivedSpaces): ?>
+            <div class="alert info">Você não possui nenhum <?php $this->dict('entities: no spaces') ?> arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

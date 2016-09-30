@@ -24,7 +24,8 @@ class SaaS extends \MapasCulturais\Entity
         Traits\EntityGeoLocation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
     protected static $validations = [
         'name' => [
@@ -142,7 +143,7 @@ class SaaS extends \MapasCulturais\Entity
     protected $_background;
 
     function getBackground(){
-        
+
         if(!$this->_background)
             $this->_background = $this->getFile('background');
 
