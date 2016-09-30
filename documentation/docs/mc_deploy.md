@@ -67,10 +67,19 @@ Agora faça o clone do repositório.
 mapas@server$ git clone https://github.com/hacklabr/mapasculturais.git
 ```
 
-E alterne para o branch v2. Se for uma instalação de teste, você pode pular esta etapa.
+
+E alterne para o branch v2 ou alguma tag de relase, disponível em https://github.com/hacklabr/mapasculturais/releases. Se for uma instalação de teste, você pode pular esta etapa.
+
+Utilizando o branch V2:
 ```BASH
 mapas@server$ cd mapasculturais
 mapas@server$ git checkout v2
+```
+
+Utilizando um release (Ex: 2.0.1):
+```BASH
+mapas@server$ cd mapasculturais
+mapas@server$ git checkout 2.0.1
 ```
 
 Agora vamos instalar as dependências de PHP utilizando o Composer.
@@ -83,7 +92,7 @@ mapas@server$ composer.phar install
 Vamos voltar ao usuário *root* para criar o banco de dados.
 ```BASH
 root@server# exit
-mapas@server$ 
+mapas@server$
 ```
 
 Primeiro vamos criar o usuário no banco de dados com o mesno nome do usuário do sistema
@@ -135,7 +144,7 @@ Precisamos criar o *virtual host* do nginx para a aplicação. Para isto crie, c
 ```
 server {
   set $site_name meu.dominio.gov.br;
-  
+
   listen *:80;
   server_name  meu.dominio.gov.br;
   access_log   /var/log/mapasculturais/nginx.access.log;
@@ -152,7 +161,7 @@ server {
       deny all;
       return 403;
   }
-  
+
   location ~* \.(js|css|png|jpg|jpeg|gif|ico|woff)$ {
           expires 1w;
           log_not_found off;
@@ -211,7 +220,7 @@ php_admin_value[session.save_path] = /tmp/
 php_admin_value[display_errors] = 'stderr'
 ```
 
-### 5. Concluindo 
+### 5. Concluindo
 Para finalizar, precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 ```BASH
 root@server# su - mapas
@@ -227,7 +236,7 @@ root@server# service php5-fpm restart
 
 ### 6. Pós-instalação > Criando super admin
 
-Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma: 
+Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma:
 
 1 - Crie um usuário pelo painel;
 
@@ -243,12 +252,12 @@ Para criar super usuários, é necessário mudar o status de um usuário já cri
 $ mapas => select id,status, email from usr where email='digite o endereço de email do usuário criado';
 ```
 
-Quando executar essa linha você vai pegar o id. 
+Quando executar essa linha você vai pegar o id.
 
-4 - Dê um insert na tabela Role. 
+4 - Dê um insert na tabela Role.
 
 ```
-$ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin'); 
+$ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin');
 ```
 
 5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.
@@ -260,7 +269,7 @@ $ mapas => select * from role;
 ### 7. Pós-instalação > Processo de autenticação
 
 
-O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao). 
+O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao).
 
 * Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
 
@@ -268,20 +277,20 @@ O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu func
 
 #### Mapas Open ID Conect
 
-Esté é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsonem a retomada da ferramenta. 
+Esté é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsonem a retomada da ferramenta.
 
 >
 Fonte:  [https://github.com/hacklabr/mapasculturais-openid](https://github.com/hacklabr/mapasculturais-openid).
 
 #### Login Cidadão > Instalação Própria
 
-O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php) 
+O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php)
 
 #### Login Cidadão > Instalação própria > Prós
 
-Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são: 
+Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são:
 * Confidencialidade dos dados e soberania: todos os dados estarão fisicamente em posse do implementador;
-* Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador; 
+* Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador;
 
 #### Login Cidadão > Instalação própria > Contras
 * Necessidade de servidor próprio e dedicado a instalação;
@@ -292,7 +301,7 @@ Os pontos positivos relativos aos aspectos de implementação de uma instalaçã
 * A aplicação não possui sistema de templates gerenciado via painel, o que gera necessidade de horas-técnicas para desenvolvimento/customização de tema no código;
 * Documentação ainda incompleta, aumentando curva de aprendizado sobre o sistema;
 >
-**Fonte:** 
+**Fonte:**
 >
 [https://github.com/redelivre/login-cidadao](https://github.com/redelivre/login-cidadao)
 >
@@ -300,11 +309,11 @@ Os pontos positivos relativos aos aspectos de implementação de uma instalaçã
 >
 [https://github.com/redelivre/login-cidadao/tree/master/doc](https://github.com/redelivre/login-cidadao/tree/master/doc)
 >
-**Documentação de operação:** 
+**Documentação de operação:**
 >
 (inexistente)
 >
-**Portal:** 
+**Portal:**
 >
 [http://logincidadao.org.br](http://logincidadao.org.br)
 
@@ -319,8 +328,8 @@ Os pontos positivos relativos aos aspectos de implementação de uma instalaçã
 
 **Contras**
 
-* Menor controle técnico de customização de layout e features. A posse/soberania destas customização é do Ministério da Cultura e este deve ser acionado se necessário; 
-* Para implementação, é necessário acionar equipe do Minc/DTI para criar uma entrada de origem do sistema, uma vez que os administradores são membros do DTI. No entanto esse processo é rápido e deve acontecer apenas uma vez, no inicio da instalação ou em momento esporádico de eventual manutenção do sistema. 
+* Menor controle técnico de customização de layout e features. A posse/soberania destas customização é do Ministério da Cultura e este deve ser acionado se necessário;
+* Para implementação, é necessário acionar equipe do Minc/DTI para criar uma entrada de origem do sistema, uma vez que os administradores são membros do DTI. No entanto esse processo é rápido e deve acontecer apenas uma vez, no inicio da instalação ou em momento esporádico de eventual manutenção do sistema.
 
 >
 **Fonte:** [http://id.cultura.gov.br](http://id.cultura.gov.br)

@@ -157,11 +157,26 @@ return [
     },
 
     'verified seal migration' => function () use($conn){
-	    $conn->executeQuery("INSERT INTO seal VALUES(1,1,'Selo Mapas','Descrição curta Selo Mapas','Descrição longa Selo Mapas',0,CURRENT_TIMESTAMP,1);");
- 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Agent' FROM agent WHERE is_verified = 't';");
- 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Space' FROM space WHERE is_verified = 't';");
- 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Project' FROM project WHERE is_verified = 't';");
- 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Event' FROM event WHERE is_verified = 't';");
+        $agent_id = $conn->fetchColumn("select profile_id
+                    from usr
+                    where id = (
+                        select min(usr_id)
+                        from role
+                        where name = 'superAdmin'
+                    )");
+	    $conn->executeQuery(
+            "INSERT INTO seal VALUES(
+                1,
+                $agent_id,
+                'Selo Mapas',
+                'Descrição curta Selo Mapas','Descrição longa Selo Mapas',0,CURRENT_TIMESTAMP,1
+            );"
+        );
+ 	    $conn->executeQuery("INSERT INTO seal_relation
+            SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Agent', $agent_id FROM agent WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Space', $agent_id FROM space WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Project', $agent_id FROM project WHERE is_verified = 't';");
+ 	    $conn->executeQuery("INSERT INTO seal_relation SELECT nextval('seal_relation_id_seq'), 1, id, CURRENT_TIMESTAMP, 1, 'MapasCulturais\Entities\Event', $agent_id FROM event WHERE is_verified = 't';");
     },
 
     'create update timestamp entities' => function () use($conn) {
