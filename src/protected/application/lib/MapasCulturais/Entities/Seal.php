@@ -23,7 +23,8 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;

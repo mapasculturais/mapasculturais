@@ -28,7 +28,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
 
 

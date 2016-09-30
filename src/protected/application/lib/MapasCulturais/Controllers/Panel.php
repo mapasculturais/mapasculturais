@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Seal;
 
 /**
  * User Panel Controller
@@ -31,7 +32,7 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
 
         $app = App::i();
-        
+
         $count = new \stdClass();
 
         $count->spaces		= $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
@@ -42,23 +43,23 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('index', ['count'=>$count]);
     }
-    
+
     function GET_listUsers(){
         $this->requireAuthentication();
 
         $app = App::i();
-        
+
         $roles = $app->getRoles();
-        
+
         if (!$app->user->is('admin')) $app->user->checkPermission('addRole'); // dispara exceção se não for admin ou sueradmin
-        
+
         $Repo = $app->repo('User');
-        
+
         $vars = array();
-        
+
         foreach ($roles as $roleSlug => $roleInfo) {
             $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
-            
+
             if ($roleSlug == 'superAdmin') {
                 $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';
             } elseif ($roleSlug == 'admin') {
@@ -66,9 +67,9 @@ class Panel extends \MapasCulturais\Controller {
             } else {
                 $roles[$roleSlug]['permissionSuffix'] = '';
             }
-            
+
         }
-        
+
         $vars['roles'] = $roles;
         $this->render('list-users', $vars);
     }
@@ -126,7 +127,7 @@ class Panel extends \MapasCulturais\Controller {
 
     protected function renderList($viewName, $entityName, $entityFields){
         $this->requireAuthentication();
-        
+
         $user = $this->_getUser();
 
         $app = App::i();
@@ -164,12 +165,15 @@ class Panel extends \MapasCulturais\Controller {
         $meta = $controller->lastQueryMetadata;
         $draft   = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_DRAFT . ')', '@permissions' => 'view']);
         $trashed = $controller->apiQuery(['@select' => $entityFields, '@files' => '(avatar.avatarSmall):url', 'user' => $user_filter, 'status' => 'EQ(' . Space::STATUS_TRASH . ')', '@permissions' => 'view']);
+        $archivedMethod = 'archived'.$entityName;
+        $archived = $app->user->$archivedMethod;
 
         $enabled = json_decode(json_encode($enabled));
         $draft   = json_decode(json_encode($draft));
         $trashed = json_decode(json_encode($trashed));
+        $archived= json_decode(json_encode($archived));
 
-        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta]);
+        $this->render($viewName, ['enabled' => $enabled, 'draft' => $draft, 'trashed' => $trashed, 'meta'=>$meta, 'archived' => $archived]);
     }
 
     /**
@@ -185,7 +189,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_spaces(){
         $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
-                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp'];
+                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
         $this->renderList('spaces', 'space', implode(',', $fields));
@@ -204,7 +208,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_events(){
         $fields = ['name', 'type', 'status', 'terms', 'classificacaoEtaria', 'singleUrl',
-                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp'];
+                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(event)', [&$fields]);
         $this->renderList('events', 'event', implode(',', $fields));
@@ -227,7 +231,7 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('projects', ['user' => $user]);
     }
-    
+
     /**
      * Render the seal list of the user panel.
      *
@@ -242,7 +246,7 @@ class Panel extends \MapasCulturais\Controller {
     function GET_seals(){
     	$this->requireAuthentication();
     	$user = $this->_getUser();
-    
+
     	$this->render('seals', ['user' => $user]);
     }
 

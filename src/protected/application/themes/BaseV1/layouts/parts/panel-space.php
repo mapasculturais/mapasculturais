@@ -23,11 +23,14 @@
 
         <?php if($entity->status === \MapasCulturais\Entities\Space::STATUS_ENABLED): ?>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->archiveUrl; ?>">arquivar</a>
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Space::STATUS_DRAFT): ?>
             <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
             <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
-
+            
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Space::STATUS_ARCHIVED): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
         <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
             <?php if($entity->canUser('destroy')): ?>

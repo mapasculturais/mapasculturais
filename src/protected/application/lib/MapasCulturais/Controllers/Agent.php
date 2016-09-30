@@ -21,6 +21,7 @@ class Agent extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
 
