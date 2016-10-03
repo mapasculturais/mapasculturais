@@ -28,7 +28,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
 
 
@@ -165,7 +166,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\EventSealRelation[] EventSealRelation

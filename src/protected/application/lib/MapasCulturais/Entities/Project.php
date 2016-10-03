@@ -28,7 +28,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
     protected static $validations = [
         'name' => [
@@ -231,7 +232,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation

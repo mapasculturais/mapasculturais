@@ -29,7 +29,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
 
     protected static $validations = [
@@ -198,7 +199,7 @@ class Space extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\SpaceSealRelation[] SpaceSealRelation

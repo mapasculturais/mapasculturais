@@ -260,7 +260,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
-
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -336,7 +335,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getArchivedAgents(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Agents', Agent::STATUS_ARCHIVED);
+        return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
     }
 
     public function getSpaces(){
@@ -363,10 +362,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getArchivedSpaces(){
         $this->checkPermission('modify');
-
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
     }
-
 
     public function getEvents(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event');
@@ -393,7 +390,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getArchivedEvents(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED,'=');
     }
 
 
@@ -422,7 +419,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getArchivedProjects(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
     }
 
     public function getSaaS(){
@@ -449,7 +446,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getArchivedSaaS(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ARCHIVED);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ARCHIVED,'=');
     }
     public function getSeals(){
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
@@ -471,6 +468,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     	$this->checkPermission('modify');
 
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
+    }
+    function getArchivedSeals(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ARCHIVED,'=');
     }
 
     function getNotifications($status = null){
@@ -503,7 +505,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getEntitiesNotifications($app) {
-      if($app->config['notifications.user.access'] > 0) {
+      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.user.access'] > 0) {
         $now = new \DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
@@ -515,12 +517,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         }
       }
 
-      if($app->config['notifications.entities.update'] > 0) {
+      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.entities.update'] > 0) {
           $now = new \DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -532,7 +534,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->projects as $project) {
             $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($project->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old project registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -544,7 +546,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->events as $event) {
             $lastUpdateDate = $event->updateTimestamp ? $event->updateTimestamp: $event->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($event->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old event registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -556,7 +558,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->spaces as $space) {
             $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -568,7 +570,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->seals as $seal) {
             $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old seal registrations
               $notification = new Notification;
               $notification->user = $app->user;

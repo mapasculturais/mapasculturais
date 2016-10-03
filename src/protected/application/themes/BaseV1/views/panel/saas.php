@@ -14,6 +14,7 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
         <li class="active"><a href="#ativos">Ativos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
+		<li><a href="#arquivo">Arquivo</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSaaS as $entity): ?>
@@ -39,6 +40,16 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
         <?php endforeach; ?>
         <?php if(!$user->trashedSaaS): ?>
             <div class="alert info">Você não possui nenhum saas na lixeira.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($user->archivedSaaS as $entity): ?>
+            <?php $this->part('panel-saas', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedSaaS): ?>
+            <div class="alert info">Você não possui nenhum saas arquivado.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

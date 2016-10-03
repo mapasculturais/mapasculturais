@@ -11,6 +11,7 @@ $this->layout = 'panel'
         <li class="active"><a href="#ativos">Ativos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
+		<li><a href="#arquivo">Arquivo</a></li>
     </ul>
     <div id="ativos">
         <?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
@@ -40,4 +41,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($app->user->archivedAgents as $entity): ?>
+            <?php $this->part('panel-agent', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedAgents): ?>
+            <div class="alert info">Você não possui nenhum agente arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

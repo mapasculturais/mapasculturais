@@ -64,7 +64,7 @@
                         ownerId: params.owner.id,
                         category: params.category
                     };
-                    
+
                     return $http.post(this.getUrl(), data).
                             success(function (data, status) {
                                 $rootScope.$emit('registration.create', {message: "Project registration was created", data: data, status: status});
@@ -95,11 +95,11 @@
                                 $rootScope.$emit('error', {message: "Cannot send project registration", data: data, status: status});
                             });
                 },
-                
+
                 save: function () {
                     jQuery('a.js-submit-button').click();
                 },
-                
+
                 getFields: function () {
                     var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
 
@@ -141,12 +141,12 @@
 
                     return fields;
                 },
-                
+
                 getSelectedCategory: function(){
                     return $q(function(resolve){
                         var interval = setInterval(function(){
                             var $editable = jQuery('.js-editable-registrationCategory');
-                        
+
                             if($editable.length){
                                 var editable = $editable.data('editable');
                                 if(editable){
@@ -209,7 +209,7 @@
 module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
         var fileService = RegistrationConfigurationService('registrationfileconfiguration');
         var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
-        
+
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.maxUploadSize = MapasCulturais.maxUploadSize;
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -219,19 +219,19 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
-        
+
         var fieldTypesBySlug = {};
-        
+
         fieldTypes.forEach(function(e){
             fieldTypesBySlug[e.slug] = e;
         });
-        
+
         fieldTypes.unshift({
             slug: null,
             name: 'Selecione o tipo de campo',
             disabled: true
         });
-        
+
         var fileConfigurationSkeleton = {
             ownerId: MapasCulturais.entity.id,
             title: null,
@@ -249,30 +249,30 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             required: false,
             categories: []
         };
-        
+
         function processFieldConfiguration(field){
             if(field.fieldOptions instanceof Array){
                 field.fieldOptions = field.fieldOptions.join("\n");
             }
             return field;
         }
-        
+
         function processFileConfiguration(file){
             file.fieldType = 'file';
             file.categories = file.categories || [];
             return file;
         }
-        
+
         var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
         var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
-        
+
         // @TODO: USAR A FUNCAO getFields
         var fields = _files.concat(_fields);
-        
+
         $scope.data = {
             fieldSpinner: false,
             uploadSpinner: false,
-            
+
             fields: fields,
             newFileConfiguration: angular.copy(fileConfigurationSkeleton),
             newFieldConfiguration: angular.copy(fieldConfigurationSkeleton),
@@ -284,12 +284,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
-        
-        
+
+
         $interval(function(){
             $scope.data.categories = jQuery('#registration-categories .js-categories-values').text().split("\n");
         },1000);
-        
+
         $scope.allCategories = function(model){
             return model.categories.length === 0;
         }
@@ -307,7 +307,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         }
 
         sortFields();
-        
+
         function validationErrors(response){
             Object.keys(response.data).forEach(function(prop){
                 Object.keys(response.data[prop]).forEach(function(error){
@@ -315,18 +315,18 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 });
             });
         }
-        
+
         // Fields
         $scope.fieldConfigurationBackups = [];
-        
+
         $scope.createFieldConfiguration = function(){
             $scope.data.fieldSpinner = true;
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
-                
+
                 if (response.error) {
                     validationErrors(response);
-                    
+
                 } else {
                     $scope.data.fields.push(response);
                     sortFields();
@@ -358,14 +358,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     description: model.description,
                     required: model.required,
                     categories: model.categories.length ? model.categories : '',
-                    
+
                 };
             $scope.data.fieldSpinner = true;
             fieldService.edit(data).then(function(response){
                 $scope.data.fieldSpinner = false;
                 if (response.error) {
                     validationErrors(response);
-                    
+
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-field-'+data.id);
@@ -393,7 +393,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
                     validationErrors(response);
-                    
+
                 } else {
                     response = processFileConfiguration(response);
                     $scope.data.fields.push(response);
@@ -431,7 +431,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
                     validationErrors(response);
-                    
+
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-files-'+data.id);
@@ -662,7 +662,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
         $scope.entity = MapasCulturais.entity.object;
-        
+
         $scope.data = {
             fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
         };
@@ -671,14 +671,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             item.file = MapasCulturais.entity.registrationFiles[item.groupName];
         });
 
-        
+
         $scope.data.fields = RegistrationService.getFields();
-        
+
         var fieldsByName = {};
         $scope.data.fields.forEach(function(e){
             fieldsByName[e.fieldName] = e;
         });
-        
+
         function initEditables(){
             jQuery('.js-editable-field').each(function(){
                 var field = fieldsByName[this.id];
@@ -690,7 +690,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 } else {
                     jQuery(this).editable();
                 }
-                
+
                 if(!jQuery(this).data('editable-init')){
                     jQuery(this).data('editable-init', true);
                     jQuery(this).on('save', function(){
@@ -702,18 +702,18 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             });
         }
-        
+
         $rootScope.$on('repeatDone:registration-fields', function(){
             // só para esperar a renderização
             $timeout(function(){
                 initEditables();
             });
         });
-        
+
         $scope.showField = function (field) {
 
         }
-        
+
         $scope.sendFile = function(attrs){
             var $form = $('#' + attrs.id + ' form');
             $form.submit();
@@ -760,15 +760,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
-        
-        
+
+
         if($scope.useCategories){
-            
+
             RegistrationService.getSelectedCategory().then(function(value){
                 $scope.selectedCategory = value;
                 $interval(function(){
-                    
-                    RegistrationService.getSelectedCategory().then(function(selectedCategory) { 
+
+                    RegistrationService.getSelectedCategory().then(function(selectedCategory) {
                         if($scope.selectedCategory !== selectedCategory){
                             $scope.selectedCategory = selectedCategory;
                             RegistrationService.save();
@@ -776,7 +776,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     });
                 },50);
             });
-            
+
             $scope.$watch('selectedCategory', function(){
                 $timeout(function(){
                     initEditables();
@@ -784,7 +784,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             });
 
         }
-        
+
         $scope.showFieldForCategory = function(field){
             if (!$scope.useCategories){
                 return true;
@@ -792,11 +792,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 return field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
             }
         };
-        
-        
-        
+
+
+
         $scope.printField = function(field, value){
-            
+
             if (field.fieldType === 'date') {
                 return moment(value).format('DD-MM-YYYY');
             } else if (field.fieldType === 'url'){
@@ -864,7 +864,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
                 propLabels : [],
 
-                
+
                 fields: RegistrationService.getFields(),
 
                 relationApiQuery: {}
@@ -925,13 +925,41 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }
             };
 
+            $scope.approvedRegistrations = function(){
+                var registrations = $scope.data.entity.registrations,
+                    approved = 0;
+
+                for(var key in registrations){
+                    if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
+                        approved++;
+                    }
+                }
+
+                return approved;
+            }
+
+            // PLEASE REFACTOR ME
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
-                    RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                        if(registration.status === 0){
-                            $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                    if(status.value === 10) {
+                        if(MapasCulturais.entity.object.approvedLimit > $scope.approvedRegistrations()) {
+                            RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
+                                if(registration.status === 0){
+                                    $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                                }
+                            });
+                        } else if(MapasCulturais.entity.object.approvedLimit === 0) {
+                            MapasCulturais.Messages.error('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.');
+                        } else {
+                            MapasCulturais.Messages.error('Você atingiu o limite máximo de ' + MapasCulturais.entity.object.approvedLimit + (MapasCulturais.entity.object.approvedLimit > 1 ? ' inscrições aprovadas.' : ' inscrição aprovada.'));
                         }
-                    });
+                    } else {
+                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
+                            if(registration.status === 0){
+                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                            }
+                        });
+                    }
                 }
             };
 
@@ -1002,7 +1030,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $('#submitButton').trigger('click');
                 });
                 EditBox.close('editbox-select-registration-owner');
-                
+
                 RegistrationService.save();
             };
 
@@ -1046,10 +1074,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             $scope.register = function(){
                 var registration = $scope.data.registration;
 
-                if(registration.owner){
+                if(registration.owner && $scope.data.entity.registrations.length < MapasCulturais.entity.object.registrationLimit){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
+                }else if($scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
+                    MapasCulturais.Messages.error('O número de vagas se esgotou.');
                 }else{
                     MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
                 }
@@ -1149,23 +1179,23 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     });
             };
         }]);
-    
+
     module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
         $scope.editbox = EditBox;
-        
+
         $scope.seals = [];
-        
+
         for(var i in MapasCulturais.allowedSeals)
             $scope.seals.push(MapasCulturais.allowedSeals[i]);
-        
+
         $scope.registrationSeals = [];
-        
+
         $scope.showCreateDialog = {};
-        
+
         $scope.isEditable = MapasCulturais.isEditable;
-        
+
         $scope.data = {};
-        
+
         $scope.avatarUrl = function(url){
             if(url) {
                 return url;
@@ -1173,43 +1203,43 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 return MapasCulturais.assets.avatarSeal;
             }
         };
-        
+
         $scope.closeNewSealEditBox = function(){
             EditBox.close('new-related-seal');
         };
-        
+
         $scope.getCreateSealRelationEditBoxId = function(){
             return 'add-related-seal';
         };
-        
+
         $scope.entity = MapasCulturais.entity.object;
-        
+
         $scope.setSeal = function(agent, entity){
-        	var sealRelated = {};
+            var sealRelated = {};
             var _scope = this.$parent;
-            
+
             if(!angular.isObject($scope.entity.registrationSeals)) {
-            	$scope.entity.registrationSeals = {};
-        	} 
+                $scope.entity.registrationSeals = {};
+            }
             $scope.entity.registrationSeals[agent] =  entity.id;
             sealRelated = $scope.entity.registrationSeals;
             jQuery("#registrationSeals").editable('setValue',sealRelated);
-            
+
             $scope.registrationSeals.push(sealRelated);
             EditBox.close('set-seal-' + agent);
         };
-        
+
         $scope.getArrIndexBySealId = function(sealId) {
-        	for(var found in $scope.seals) {
+            for(var found in $scope.seals) {
                 if($scope.seals[found].id == sealId)
-                	return found;      	
-        	};
+                    return found;
+            };
         };
-        
+
         $scope.removeSeal = function(entity){
-        	delete $scope.entity.registrationSeals[entity];
+            delete $scope.entity.registrationSeals[entity];
         };
-        
+
         $scope.deleteRelation = function(relation){
             RelatedSealsService.remove(relation.seal.id).error(function(){
                 relations = oldRelations;
