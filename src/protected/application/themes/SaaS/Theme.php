@@ -13,7 +13,7 @@ class Theme extends BaseV1\Theme{
 
     protected $saasPass;
 
-    static protected $saasCfg;
+    protected $saasInstance;
 
     public function __construct(\MapasCulturais\AssetManager $asset_manager) {
         parent::__construct($asset_manager);
@@ -27,19 +27,20 @@ class Theme extends BaseV1\Theme{
             $domain = substr($domain, 0, $pos);
         }
 
-        $dict = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $saas = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        
         $result = parent::_getTexts();
         
         $saas_texts = [
-            'site: name'        => $dict->name,
-            'site: description' => $dict->texto_sobre,
-            'home: title'       => $dict->titulo,
-            'home: welcome'     => $dict->texto_boasvindas,
-            'entities: Spaces'  => $dict->titulo_espacos,
-            'entities: Projects'=> $dict->titulo_projetos,
-            'entities: Events'  => $dict->titulo_eventos,
-            'entities: Agents'  => $dict->titulo_agentes,
-            'entities: Seals'   => $dict->titulo_selos
+            'site: name'        => $saas->name,
+            'site: description' => $saas->texto_sobre,
+            'home: title'       => $saas->titulo,
+            'home: welcome'     => $saas->texto_boasvindas,
+            'entities: Spaces'  => $saas->titulo_espacos,
+            'entities: Projects'=> $saas->titulo_projetos,
+            'entities: Events'  => $saas->titulo_eventos,
+            'entities: Agents'  => $saas->titulo_agentes,
+            'entities: Seals'   => $saas->titulo_selos
         ];
         
         foreach($saas_texts as $key => $val){
@@ -56,18 +57,16 @@ class Theme extends BaseV1\Theme{
 
     function _init() {
         $app = App::i();
-        $saasCfg = '';
-
+        
         $domain = $app->config['app.cache.namespace'];
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
 
-        self::$saasCfg = $app->repo('SaaS')->findOneBy(['url' => $domain]);
-        $saasCfg = self::$saasCfg;
-
-        $entidades = explode(';', $saasCfg->entidades_habilitadas);
+        $this->saasInstance = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        
+        $entidades = explode(';', $this->saasInstance->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
 
             $app->_config['app.enabled.agents'] = false;
@@ -89,19 +88,19 @@ class Theme extends BaseV1\Theme{
             $app->_config['app.enabled.seals'] = false;
         }
 
-        $this->saasPass = SAAS_PATH . '/' . $this->saasCfg->slug;
+        $this->saasPass = SAAS_PATH . '/' . $this->saasInstance->slug;
         $this->addPath($this->saasPass);
 
-        $this->jsObject['mapsDefaults']['zoomMax']          = $saasCfg->zoom_max;
-        $this->jsObject['mapsDefaults']['zoomMin']          = $saasCfg->zoom_min;
-        $this->jsObject['mapsDefaults']['zoomDefault']      = $saasCfg->zoom_default;
-        $this->jsObject['mapsDefaults']['zoomPrecise']      = $saasCfg->zoom_precise;
-        $this->jsObject['mapsDefaults']['zoomApproximate']  = $saasCfg->zoom_approximate;
+        $this->jsObject['mapsDefaults']['zoomMax']          = $this->saasInstance->zoom_max;
+        $this->jsObject['mapsDefaults']['zoomMin']          = $this->saasInstance->zoom_min;
+        $this->jsObject['mapsDefaults']['zoomDefault']      = $this->saasInstance->zoom_default;
+        $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->saasInstance->zoom_precise;
+        $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->saasInstance->zoom_approximate;
         $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-        $this->jsObject['mapsDefaults']['latitude']         = $saasCfg->latitude;
-        $this->jsObject['mapsDefaults']['longitude']        = $saasCfg->longitude;
+        $this->jsObject['mapsDefaults']['latitude']         = $this->saasInstance->latitude;
+        $this->jsObject['mapsDefaults']['longitude']        = $this->saasInstance->longitude;
 
-        $cache_id = $saasCfg->id . ' - _variables.scss';
+        $cache_id = $this->saasInstance->id . ' - _variables.scss';
         $app->log->debug("Id SaaS: " . $cache_id);
         $app->log->debug("Cache Ok? " . ($app->cache->contains($cache_id)? "Não":"Sim"));
         $app->log->debug("Cache encontrado? " . ($app->cache->fetch($cache_id)? "Sim" : "Não"));
@@ -113,8 +112,8 @@ class Theme extends BaseV1\Theme{
             @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
             ';
 
-            if($this->saasCfg->background){
-                $backgroundimage = $saasCfg->background->url;
+            if($this->saasInstance->background){
+                $backgroundimage = $this->saasInstance->background->url;
                 $main_scss .= "
                 .header-image {
                     background-image: url(' . $backgroundimage . ');
@@ -124,12 +123,12 @@ class Theme extends BaseV1\Theme{
                 }";
             }
 
-            $variables_scss .= "\$brand-agent:   " . ($saasCfg->cor_agentes?  $saasCfg->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
-            $variables_scss .= "\$brand-project: " . ($saasCfg->cor_projetos? $saasCfg->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-            $variables_scss .= "\$brand-event:   " . ($saasCfg->cor_eventos?  $saasCfg->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
-            $variables_scss .= "\$brand-space:   " . ($saasCfg->cor_espacos?  $saasCfg->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
-            $variables_scss .= "\$brand-seal:    " . ($saasCfg->cor_selos?    $saasCfg->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
-            $variables_scss .= "\$brand-saas:    " . ($saasCfg->cor_saas?     $saasCfg->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
+            $variables_scss .= "\$brand-agent:   " . ($this->saasInstance->cor_agentes?  $this->saasInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
+            $variables_scss .= "\$brand-project: " . ($this->saasInstance->cor_projetos? $this->saasInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
+            $variables_scss .= "\$brand-event:   " . ($this->saasInstance->cor_eventos?  $this->saasInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
+            $variables_scss .= "\$brand-space:   " . ($this->saasInstance->cor_espacos?  $this->saasInstance->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
+            $variables_scss .= "\$brand-seal:    " . ($this->saasInstance->cor_selos?    $this->saasInstance->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
+            $variables_scss .= "\$brand-saas:    " . ($this->saasInstance->cor_saas?     $this->saasInstance->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
 
             if(!is_dir($this->saasPass . '/assets/css/sass/')) {
                 mkdir($this->saasPass . '/assets/css/sass/',0755,true);
@@ -167,9 +166,9 @@ class Theme extends BaseV1\Theme{
                     if($pos_meta_type > 0) {
                         $meta_type = substr($meta_name,0,$pos_meta_type);
                         $meta_name = substr($meta_name,$pos_meta_type+1);
-                        if($this->saasCfg->$k) {
+                        if($this->saasInstance->$k) {
                             $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
-                            $meta_cont = $this->saasCfg->$k;
+                            $meta_cont = $this->saasInstance->$k;
                             $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
                             $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
                             $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
@@ -196,14 +195,10 @@ class Theme extends BaseV1\Theme{
     }
 
     protected function _publishAssets() {
-        if($this->saasCfg->getLogo()) {
-            $this->jsObject['assets']['logo-instituicao'] = $this->saasCfg->logo->url;
+        if($this->saasInstance->getLogo()) {
+            $this->jsObject['assets']['logo-instituicao'] = $this->saasInstance->logo->url;
         } else {
             $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
         }
-    }
-
-    protected function getSaasCfg() {
-        return self::$saasCfg;
     }
 }

@@ -1201,6 +1201,15 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
+    
+    public function getCurrentSaaSId(){
+        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de saas com o tema diferente do SaaS
+        if($this->view->saasInstance){
+            return $this->view->saasInstance->id;
+        }
+        
+        return null;
+    }
 
     public function getMaxUploadSize($useSuffix=true){
         $MB = 1024;

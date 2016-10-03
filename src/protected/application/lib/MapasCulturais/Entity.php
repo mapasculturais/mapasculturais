@@ -250,6 +250,13 @@ abstract class Entity implements \JsonSerializable{
 
         return false;
     }
+    
+    protected function authorized(){
+        $app = App::i();
+        $sid = $app->getCurrentSaaSId();
+        
+        return !(bool) $sid;
+    }
 
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
@@ -263,6 +270,10 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent;
         } else {
             $user = $userOrAgent->getOwnerUser();
+        }
+        
+        if(!$this->authorized()){
+            return false;
         }
 
         $result = false;

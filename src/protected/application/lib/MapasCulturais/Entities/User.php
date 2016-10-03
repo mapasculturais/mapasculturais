@@ -144,6 +144,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function addRole($role_name){
+        $app = App::i();
+        $saas_id = $app->getCurrentSaaSId();
+        
+        if(!is_null($saas_id)){
+            $role_name = $this->getRoleName($role_name, $saas_id);
+        }
+        
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
         else
@@ -161,11 +168,17 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function removeRole($role_name){
+        $app = App::i();
+        $saas_id = $app->getCurrentSaaSId();
+        
+        if(!is_null($saas_id)){
+            $role_name = $this->getRoleName($role_name, $saas_id);
+        }
+        
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
         else
             $this->checkPermission('removeRole');
-
 
         foreach($this->roles as $role){
             if($role->name == $role_name){
@@ -204,14 +217,39 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected function canUserRemoveRoleSuperAdmin($user){
         return $user->is('superAdmin') && $user->id != $this->id;
     }
+    
+    protected function getRoleName($role_name, $saas_id = null){
+        if(!is_null($saas_id)){
+            return "$role_name:{$saas_id}";
+        }
+        
+        return $role_name;
+    }
 
     function is($role_name){
         if($role_name == 'admin' && $this->is('superAdmin'))
             return true;
-
-        foreach($this->roles as $role)
-            if($role->name == $role_name)
+        
+        $app = App::i();
+        
+        // main site
+        foreach ($this->roles as $role) {
+            if ($role->name == $role_name) {
                 return true;
+            }
+        }
+        
+        if ($app->getCurrentSaaSId()) {
+            $saas_ids = $app->view->saasInstance->getParentIds();
+            
+            foreach ($this->roles as $role) {
+                foreach($saas_ids as $id){
+                    if ($role->name == $this->getRoleName($role_name, $id) ) {
+                        return true;
+                    }
+                }
+            }
+        }
 
         return false;
     }

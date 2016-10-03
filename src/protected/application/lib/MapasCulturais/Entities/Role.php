@@ -33,12 +33,19 @@ class Role extends \MapasCulturais\Entity{
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
      * })
      */
     protected $user;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="saas_id", type="integer", length=32, nullable=true)
+     */
+    protected $saasId;
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
