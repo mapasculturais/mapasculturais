@@ -147,10 +147,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $app = App::i();
         $saas_id = $app->getCurrentSaaSId();
         
-        if(!is_null($saas_id)){
-            $role_name = $this->getRoleName($role_name, $saas_id);
-        }
-        
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
         else
@@ -160,6 +156,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $role = new Role;
             $role->user = $this;
             $role->name = $role_name;
+            $role->saasId = $saas_id;
             $role->save(true);
             return true;
         }
@@ -171,9 +168,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $app = App::i();
         $saas_id = $app->getCurrentSaaSId();
         
-        if(!is_null($saas_id)){
-            $role_name = $this->getRoleName($role_name, $saas_id);
-        }
         
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
@@ -181,7 +175,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $this->checkPermission('removeRole');
 
         foreach($this->roles as $role){
-            if($role->name == $role_name){
+            if($role->name == $role_name && $role->saasId === $saas_id){
                 $role->delete(true);
                 return true;
             }
@@ -218,14 +212,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('superAdmin') && $user->id != $this->id;
     }
     
-    protected function getRoleName($role_name, $saas_id = null){
-        if(!is_null($saas_id)){
-            return "$role_name:{$saas_id}";
-        }
-        
-        return $role_name;
-    }
-
     function is($role_name){
         if($role_name == 'admin' && $this->is('superAdmin'))
             return true;
@@ -234,7 +220,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         
         // main site
         foreach ($this->roles as $role) {
-            if ($role->name == $role_name) {
+            if ($role->name == $role_name && $role->saasId === null) {
                 return true;
             }
         }
@@ -243,8 +229,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $saas_ids = $app->view->saasInstance->getParentIds();
             
             foreach ($this->roles as $role) {
-                foreach($saas_ids as $id){
-                    if ($role->name == $this->getRoleName($role_name, $id) ) {
+                foreach($saas_ids as $saas_id){
+                    if ($role->name == $role_name && $role->saasId === $saas_id ) {
                         return true;
                     }
                 }
