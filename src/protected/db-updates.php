@@ -187,6 +187,17 @@ return [
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
     
+    'alter table role add column saas_id' => function () use($conn) {
+    	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_user_fk;");
+    	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_unique;");
+        $conn->executeQuery("ALTER TABLE role ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE role ALTER id DROP DEFAULT;");
+        $conn->executeQuery("ALTER TABLE role ALTER usr_id DROP NOT NULL;");
+        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_57698A6AC79C849A ON role (saas_id);");
+    },
+            
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
     }

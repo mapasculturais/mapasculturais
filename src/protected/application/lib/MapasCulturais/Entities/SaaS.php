@@ -158,6 +158,23 @@ class SaaS extends \MapasCulturais\Entity
 
         return $this->_institute;
     }
+    
+    function getParentIds() {
+        $app = App::i();
+        
+        $cid = "saas-parent-ids:{$this->id}";
+        
+        if ($app->cache->contains($cid)) {
+            $ids = $app->cache->fetch($cid);
+        } else {
+            // @TODO: quando o parent estiver implementado fazer percorrer a arvore....
+            $ids = [$this->id];
+            
+            $app->cache->save($cid, $ids, 300);
+        }
+        
+        return $ids;
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
