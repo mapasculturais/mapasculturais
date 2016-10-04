@@ -58,10 +58,18 @@ class Panel extends \MapasCulturais\Controller {
         
         foreach ($roles as $roleSlug => $roleInfo) {
             $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
+            
+            if ($roleSlug == 'superAdmin') {
+                $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';
+            } elseif ($roleSlug == 'admin') {
+                $roles[$roleSlug]['permissionSuffix'] = 'Admin';
+            } else {
+                $roles[$roleSlug]['permissionSuffix'] = '';
+            }
+            
         }
         
         $vars['roles'] = $roles;
-        
         $this->render('list-users', $vars);
     }
 
