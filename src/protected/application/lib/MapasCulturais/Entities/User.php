@@ -414,7 +414,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getEntitiesNotifications($app) {
-      if($app->config['notifications.user.access'] > 0) {
+      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.user.access'] > 0) {
         $now = new \DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
@@ -426,7 +426,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         }
       }
 
-      if($app->config['notifications.entities.update'] > 0) {
+      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.entities.update'] > 0) {
           $now = new \DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;

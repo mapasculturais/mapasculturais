@@ -3,7 +3,8 @@ namespace MapasCulturais;
 
 class Definition implements \JsonSerializable{
     use \MapasCulturais\Traits\MagicGetter,
-        \MapasCulturais\Traits\MagicSetter;
+        \MapasCulturais\Traits\MagicSetter,
+        \MapasCulturais\Traits\MagicCallers;
 
     public function isDefinition(){
         return true;
