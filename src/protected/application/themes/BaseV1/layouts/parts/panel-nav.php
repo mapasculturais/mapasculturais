@@ -39,7 +39,7 @@
         
         <?php if(($app->user->is('superAdmin')  || $app->user->is('admin') )): ?>
             <?php $this->applyTemplateHook('nav.panel.listUsers','before'); ?>
-            <li><a <?php if($this->template == 'panel/listUsers') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'listUsers') ?>"><span class="icon icon-group"></span> Usuários e papéis</a></li>
+            <li><a <?php if($this->template == 'panel/list-users') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'listUsers') ?>"><span class="icon icon-group"></span> Usuários e papéis</a></li>
             <?php $this->applyTemplateHook('nav.panel.listUsers','after'); ?>
         <?php endif; ?>
             
