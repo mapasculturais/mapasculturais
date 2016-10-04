@@ -1,53 +1,56 @@
 <?php
 $this->layout = 'panel';
+$first = true;
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2>Usuários e papéis</h2>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#superadmin">Super Administradores</a></li>
-        <li><a href="#admin">Administradores</a></li>
-        <li><a href="#staff">Membros da equipe</a></li>
+        <?php foreach ($roles as $roleSlug => $role) : ?>
+            <li <?php if ($first) { $first = false; echo 'class="active"'; } ?>>
+                <a href="#<?php echo $roleSlug; ?>"><?php echo $role['pluralLabel']; ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
-    <div id="superadmin">
-        <?php foreach($superadmins as $u): ?>
-            Email: <?php echo $u->email; ?>
-            <?php if ($u->canUser('RemoveRoleSuperAdmin')): ?>
-                (remover)
+    
+    <?php foreach ($roles as $roleSlug => $role) : ?>
+    
+        <div id="<?php echo $roleSlug; ?>">
+        
+            <?php foreach(${'list_' . $roleSlug} as $u): ?>
+        
+                <article class="objeto clearfix">
+                        
+                    <h1>
+                        <a href="<?php echo $u->singleUrl; ?>">
+                            <?php echo $u->profile->name; ?>
+                        </a>
+                    </h1>
+                    
+                    
+                    
+                    <div class="entity-actions">
+                        <?php if ($u->canUser('RemoveRole' . $role['permissionSuffix'])): ?>
+                            <a class="btn btn-small btn-danger js-confirm-before-go" data-confirm-text="Você tem certeza que deseja remover este usuário da lista de <?php echo $role['pluralLabel']; ?>?" href="<?php echo $app->createUrl('agent', 'removeRole', ['id' => $u->profile->id, 'role' => $roleSlug]); ?>">
+                            remover do papel
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    
+                </article>
+                
+            <?php endforeach; ?>
+            
+            <?php if(!${'list_' . $roleSlug}): ?>
+                <div class="alert info">Não há <?php echo $role['pluralLabel']; ?></div>
             <?php endif; ?>
             
-        <?php endforeach; ?>
-        <?php if(!$superadmins): ?>
-            <div class="alert info">Não há superadministradores</div>
-        <?php endif; ?>
-    </div>
-    <div id="admin">
-        <?php foreach($admins as $u): ?>
-            Email: <?php echo $u->email; ?>
-            <?php if ($u->canUser('RemoveRoleAdmin')): ?>
-                (remover)
-            <?php endif; ?>
             
-        <?php endforeach; ?>
-        <?php if(!$admins): ?>
-            <div class="alert info">Não há administradores</div>
-        <?php endif; ?>
-    </div>
-
-    <div id="staff">
-        <?php foreach($staff as $u): ?>
-            Email: <?php echo $u->profile->name; ?>
-            <?php if ($u->canUser('RemoveRole')): ?>
-                <a class="js-confirm-before-go" data-confirm-text="Você tem certeza que deseja remover este usuário da listade membros da equipe?" href="<?php echo $app->createUrl('agent', 'removeRole', ['id' => $u->profile->id, 'role' => 'staff']); ?>">
-                (remover)
-                </a>
-            <?php endif; ?>
-            
-        <?php endforeach; ?>
-        <?php if(!$staff): ?>
-            <div class="alert info">Não há administradores</div>
-        <?php endif; ?>
-    </div>
+        </div>
+    
+    <?php endforeach; ?>
+    
+    
 
 </div>
