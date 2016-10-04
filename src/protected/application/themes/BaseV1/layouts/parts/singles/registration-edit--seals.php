@@ -8,6 +8,9 @@ $institution = isset($project->registrationSeals->institution) ? $project->regis
 $collective = isset($project->registrationSeals->collective) ? $project->registrationSeals->collective : '';
 
 $this->addSealsToJs(false, [$owner, $institution, $collective]);
+
+if(EMPTY($owner+$institution+$collective))
+	return;
 ?>
 <!-- BEGIN Seals -->
 <div id="registration-agent" class="registration-fieldset">
