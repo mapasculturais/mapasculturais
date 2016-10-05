@@ -24,6 +24,7 @@ $this->includeAngularEntityAssets($entity);
 
 $this->includeMapAssets();
 
+$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 
 ?>
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
@@ -111,7 +112,7 @@ $this->includeMapAssets();
             <?php if ($this->isEditable() || $entity->subTitle): ?>
                 <?php $this->applyTemplateHook('subtitle','before'); ?>
                 <h4 class="event-subtitle">
-                    <span class="js-editable" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"subTitle") && $editEntity? 'required': '');?>" data-edit="subTitle" data-original-title="Subtítulo" data-emptytext="Insira um subtítulo para o evento" data-tpl='<input tyle="text" maxlength="140"></textarea>'><?php echo $entity->subTitle; ?></span>
                 </h4>
                 <?php $this->applyTemplateHook('subtitle','after'); ?>
             <?php endif; ?>
@@ -135,7 +136,7 @@ $this->includeMapAssets();
                 <?php endif; ?>
                 <p>
                     <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                        <span class="label">Descrição Curta:</span><br>
+                        <span class="label <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>">Descrição Curta:</span><br>
                         <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta para o evento" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
@@ -143,7 +144,7 @@ $this->includeMapAssets();
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if ($this->isEditable() || $entity->registrationInfo): ?>
-                        <p><span class="label">Inscrições:</span><span class="js-editable" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>">Inscrições:</span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>" data-edit="registrationInfo" data-original-title="Inscrições" data-emptytext="Informações sobre as inscrições"><?php echo $entity->registrationInfo; ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
@@ -153,11 +154,11 @@ $this->includeMapAssets();
                             $entity->classificacaoEtaria = 'Livre';
                         }
                         ?>
-                        <p><span class="label">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"classificacaoEtaria") && $editEntity? 'required': '');?>">Classificação Etária: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="Classificação Etária" data-emptytext="Informe a classificação etária do evento"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->site): ?>
-                        <p><span class="label">Site:</span>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>">Site:</span>
                             <?php if ($this->isEditable()): ?>
                                 <span class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Informe o endereço do site do evento"><?php echo $entity->site; ?></span></p>
                         <?php else: ?>
@@ -166,20 +167,20 @@ $this->includeMapAssets();
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
-                        <p><span class="label">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if($this->isEditable() || $entity->traducaoLibras || $entity->traducaoLibras || $entity->descricaoSonora): ?>
+                    <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
                         <p>
                             <span>Acessibilidade:</span>
 
                             <?php if($this->isEditable() || $entity->traducaoLibras): ?>
-                                <p><span class="label">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
+                                <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"traducaoLibras") && $editEntity? 'required': '');?>">Tradução para LIBRAS: </span><span class="js-editable" data-edit="traducaoLibras" data-original-title="Tradução para LIBRAS"><?php echo $entity->traducaoLibras; ?></span></p>
                             <?php endif; ?>
 
                             <?php if($this->isEditable() || $entity->descricaoSonora): ?>
-                                <p><span class="label">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
+                                <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"descricaoSonora") && $editEntity? 'required': '');?>">Áudio Descrição: </span><span class="js-editable" data-edit="descricaoSonora" data-original-title="Descrição Sonora"><?php echo $entity->descricaoSonora; ?></span></p>
                             <?php endif; ?>
                         </p>
                     <?php endif; ?>

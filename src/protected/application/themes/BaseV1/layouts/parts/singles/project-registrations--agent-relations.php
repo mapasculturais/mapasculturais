@@ -3,6 +3,8 @@ $can_edit = $entity->canUser('modifyRegistrationFields');
 
 $ditable_class = $can_edit ? 'js-editable' : '';
 
+$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+
 ?>
 <div id="registration-agent-relations" class="registration-fieldset">
     <h4>4. Agentes</h4>
@@ -20,7 +22,7 @@ $ditable_class = $can_edit ? 'js-editable' : '';
         ?>
         <div class="registration-related-agent-configuration">
             <p>
-                <span class="label"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
+                <span class="label <?php echo ($entity->isPropertyRequired($entity,$metadata_name) && $editEntity? 'required': '');?>"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
                 <br>
                 <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="Selecione uma opção"><?php echo $option_label ?></span>
             </p>
@@ -29,7 +31,12 @@ $ditable_class = $can_edit ? 'js-editable' : '';
     <?php endforeach; ?>
 
     <p>
-        <span class="label">Número máximo de inscrições por agente responsável</span><br>
+        <span class="label <?php echo ($entity->isPropertyRequired($entity,"approvedLimit") && $editEntity? 'required': '');?>">Número de vagas</span><br>
+        <span class="<?php echo $ditable_class ?>" data-edit="approvedLimit" data-original-title="Número de vagas" data-emptytext="Insira um número total de vagas"><?php echo $entity->approvedLimit ? $entity->approvedLimit : '0'; ?></span>
+    </p>
+
+    <p>
+        <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimit") && $editEntity? 'required': '');?>">Número máximo de inscrições</span><br>
         <span class="registration-help">Zero (0) significa sem limites</span><br>
         <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições por agente responsável" data-emptytext="Insira o número máximo de inscrições por agente responsável"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
     </p>

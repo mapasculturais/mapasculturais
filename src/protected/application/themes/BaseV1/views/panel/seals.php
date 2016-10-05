@@ -10,6 +10,7 @@ $this->layout = 'panel'
         <li class="active"><a href="#ativos">Ativos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
+		<li><a href="#permitido">Liberado</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
@@ -35,4 +36,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #permitido-->
+	<div id="permitido">
+		<?php foreach($app->user->hasControlSeals as $entity): ?>
+			<?php $this->part('panel-seal', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$app->user->hasControlSeals): ?>
+			<div class="alert info">Você não possui nenhum selo liberado.</div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>
