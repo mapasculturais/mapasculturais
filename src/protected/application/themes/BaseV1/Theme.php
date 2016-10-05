@@ -25,9 +25,10 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected static function _getTexts(){
+        $app = App::i();
         return array(
-            'site: name' => App::i()->config['app.siteName'],
-            'site: description' => App::i()->config['app.siteDescription'],
+            'site: name' => $app->config['app.siteName'],
+            'site: description' => $app->config['app.siteDescription'],
             'site: in the region' => 'na região',
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
@@ -83,6 +84,11 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
+            'entities: Agents'    => 'Agentes',
+            'entities: Projects'  => 'Projetos',
+            'entities: Events'    => 'Eventos',
+            'entities: Seals'     => 'Selos',
+
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
             'taxonomies:area: select' => 'Selecione as áreas',
@@ -187,11 +193,10 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
-            $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
-            $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
-            $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
-
-            $this->jsObject['mapGeometryFieldQuery'] = $app->config['maps.geometryFieldQuery'];
+            $this->jsObject['mapMaxClusterRadius']          = $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier']= $app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements']        = $app->config['maps.maxClusterElements'];
+            $this->jsObject['mapGeometryFieldQuery']        = $app->config['maps.geometryFieldQuery'];
 
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
@@ -326,7 +331,8 @@ class Theme extends MapasCulturais\Theme {
 
     function register() {
         $app = App::i();
-        foreach ($app->config['app.geoDivisionsHierarchy'] as $slug => $name) {
+        $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
+        foreach ($geoDivisionsHierarchyCfg as $slug => $name) {
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
@@ -344,7 +350,6 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $this->printStyles('vendor');
-        //$this->printStyles('fonts');
         $this->printStyles('app');
 
         $app->applyHook('mapasculturais.styles');
@@ -412,7 +417,6 @@ class Theme extends MapasCulturais\Theme {
         $versions = $this->_libVersions;
 
         $this->enqueueStyle('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/css/jquery-editable.css", array('select2'));
-//        $this->enqueueStyle('vendor', 'x-editable-tip', "vendor/x-editable-{$versions['x-editable']}/css/tip-yellowsimple.css", array('x-editable'));
 
         $this->enqueueScript('vendor', 'mustache', 'vendor/mustache.js');
 
@@ -448,7 +452,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-fullscreen', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.js', array('leaflet'));
 
         //Leaflet Label Plugin
-        //$app->enqueueStyle( 'vendor', 'leaflet-label',           'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-label/leaflet.label.css',       array('leaflet'));
         $this->enqueueScript('vendor', 'leaflet-label', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.label-master/dist/leaflet.label-src.js', array('leaflet'));
 
         //Leaflet Draw
@@ -481,13 +484,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
         $this->enqueueScript('vendor', 'angular-ui-sortable', '/vendor/ui-sortable/sortable.js', array('jquery-ui', 'angular'));
         $this->enqueueScript('vendor', 'angular-checklist-model', '/vendor/checklist-model/checklist-model.js', array('jquery-ui', 'angular'));
-
     }
 
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
-
-        //$this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
@@ -497,11 +497,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
 
-
-
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
-
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
@@ -977,7 +974,6 @@ class Theme extends MapasCulturais\Theme {
 
         $ids[] = $entity->id;
 
-
         $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
 
         $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
@@ -1060,7 +1056,6 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }
     }
-
 
     /**
     * Returns a verified entity

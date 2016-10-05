@@ -3,7 +3,8 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 
 class Event extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryAgentRelation;
 
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
 

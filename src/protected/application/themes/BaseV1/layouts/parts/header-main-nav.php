@@ -30,7 +30,7 @@
             <li id="entities-menu-event" ng-class="{'active':data.global.filterEntity === 'event'}" ng-click="tabClick('event')">
                 <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
                     <div class="icon icon-event"></div>
-                    <div class="menu-item-label">Eventos</div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Events') ?></div>
                 </a>
             </li>
             <?php $this->applyTemplateHook('nav.main.events','after'); ?>
@@ -52,7 +52,7 @@
             <li id="entities-menu-agent" ng-class="{'active':data.global.filterEntity === 'agent'}" ng-click="tabClick('agent')">
                 <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
                     <div class="icon icon-agent"></div>
-                    <div class="menu-item-label">Agentes</div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Agents') ?></div>
                 </a>
             </li>
             <?php $this->applyTemplateHook('nav.main.agents','after'); ?>
@@ -63,7 +63,7 @@
             <li id="entities-menu-project"  ng-class="{'active':data.global.filterEntity === 'project'}" ng-click="tabClick('project')">
                 <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                     <div class="icon icon-project"></div>
-                    <div class="menu-item-label">Projetos</div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Projects') ?></div>
                 </a>
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
@@ -167,7 +167,7 @@
                             <a href="<?php echo $app->createUrl('panel', 'seals') ?>"><?php $this->dict('entities: My Seals') ?></a>
                             <a class="add"href="<?php echo $app->createUrl('seal', 'create') ?>"></a>
                         </li>
-                        <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.seals','after'); ?>
                     <?php endif; ?>
                         
                     <?php if($app->isEnabled('projects')): ?>
