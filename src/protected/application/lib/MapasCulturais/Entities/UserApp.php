@@ -17,7 +17,8 @@ use MapasCulturais\Traits;
  */
 class UserApp extends \MapasCulturais\Entity {
 
-    use Traits\EntitySoftDelete;
+    use Traits\EntitySoftDelete,
+        Traits\EntityOriginSaaS;
 
     /**
      * @var string

@@ -200,5 +200,35 @@ return [
             
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
+    },
+    
+    'ADD columns saas_id' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE space ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE space ADD CONSTRAINT FK_2972C13AC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2972C13AC79C849A ON space (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE agent ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_268B9C9DC79C849A ON agent (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE event ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_3BAE0AA7C79C849A ON event (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE project ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2FB3D0EEC79C849A ON project (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE seal ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2E30AE30C79C849A ON seal (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE registration ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_62A8A7A7C79C849A ON registration (saas_id);");
+        
+        $conn->executeQuery("ALTER TABLE user_app ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (saas_id);");
     }
 ];

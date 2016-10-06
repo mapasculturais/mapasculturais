@@ -30,6 +30,7 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityOriginSaaS,
         Traits\EntityArchive;
 
 

@@ -251,13 +251,6 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
     
-    protected function authorized(){
-        $app = App::i();
-        $sid = $app->getCurrentSaaSId();
-        
-        return !(bool) $sid;
-    }
-
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
         if(!$app->isAccessControlEnabled()){
@@ -272,7 +265,7 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
         
-        if(!$this->authorized()){
+        if($this->usesOriginSaaS() && !$this->authorizedInThisSite()){
             return false;
         }
 
@@ -415,18 +408,12 @@ abstract class Entity implements \JsonSerializable{
 
         $metadata = $class::getPropertiesMetadata();
         if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
-            $app->log->debug("Primeiro: ");
-            $app->log->debug($property);
             $return = $metadata[$property]['required'];
-            $app->log->debug($return);
         }
 
         $v = $class::$validations;
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
-            $app->log->debug("Segundo: ");
             $return = true;
-            $app->log->debug($property);
-            $app->log->debug($return);
         }
 
         return $return;
