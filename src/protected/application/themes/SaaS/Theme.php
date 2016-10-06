@@ -13,6 +13,11 @@ class Theme extends BaseV1\Theme{
 
     protected $saasPass;
 
+    /**
+     * SaaS Instance
+     * 
+     * @var \MapasCulturais\Entities\SaaS
+     */
     protected $saasInstance;
 
     public function __construct(\MapasCulturais\AssetManager $asset_manager) {
@@ -100,10 +105,8 @@ class Theme extends BaseV1\Theme{
         $this->jsObject['mapsDefaults']['latitude']         = $this->saasInstance->latitude;
         $this->jsObject['mapsDefaults']['longitude']        = $this->saasInstance->longitude;
 
-        $cache_id = $this->saasInstance->id . ' - _variables.scss';
-        $app->log->debug("Id SaaS: " . $cache_id);
-        $app->log->debug("Cache Ok? " . ($app->cache->contains($cache_id)? "Não":"Sim"));
-        $app->log->debug("Cache encontrado? " . ($app->cache->fetch($cache_id)? "Sim" : "Não"));
+        $cache_id = $this->saasInstance->getSassCacheId();
+        
         if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
             $app->log->debug("Entrou aqui mlk.");
             $variables_scss = "";
@@ -139,6 +142,8 @@ class Theme extends BaseV1\Theme{
 
             putenv('LC_ALL=en_US.UTF-8');
             exec("sass " . $this->saasPass . '/assets/css/sass/main.scss ' . $this->saasPass . '/assets/css/main.css');
+            
+            $app->cache->save($cache_id, true);
         }
 
         parent::_init();

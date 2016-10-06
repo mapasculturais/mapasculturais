@@ -175,6 +175,17 @@ class SaaS extends \MapasCulturais\Entity
         
         return $ids;
     }
+    
+    public function getSassCacheId(){
+        return "SaaS-{$this->id}:_variables.scss";
+    }
+    
+    public function save($flush = false) {
+        parent::save($flush);
+        $app = App::i();
+        
+        $app->cache->delete($this->getSassCacheId());
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
