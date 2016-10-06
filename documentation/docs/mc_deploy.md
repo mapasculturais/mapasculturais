@@ -233,8 +233,15 @@ Reinicie os serviços do **nginx** e **php-fpm**
 root@server# service nginx restart
 root@server# service php5-fpm restart
 ```
+### 6. Pós-instalação > API de CEP
 
-### 6. Pós-instalação > Criando super admin
+No arquivo de configuração da aplicação (mapasculturais/src/protected/application/conf/config.php), há possibilidade de setar um token para consulta de uma API que ajuda na geolocalização de endereço. O administrador da plataforma deve entrar no portal cep aberto (http://www.cepaberto.com), efetuar o cadastro e inserir o token no arquivo de configuração, descomentando a linha. 
+
+```
+        // 'cep.token' => '[token]',
+```
+
+### 7. Pós-instalação > Criando super admin
 
 Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma:
 
@@ -266,7 +273,7 @@ $ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin')
 $ mapas => select * from role;
 ```
 
-### 7. Pós-instalação > Processo de autenticação
+### 8. Pós-instalação > Processo de autenticação
 
 
 O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao).
