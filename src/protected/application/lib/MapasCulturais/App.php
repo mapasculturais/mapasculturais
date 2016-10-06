@@ -1123,9 +1123,6 @@ class App extends \Slim\Slim{
     function _getHookCallables($name) {
         $exclude_list = [];
         $result = [];
-//
-//        if(isset($this->_hookCache[$name]))
-//            return $this->_hookCache[$name];
 
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
@@ -1350,8 +1347,13 @@ class App extends \Slim\Slim{
 
     }
 
-    public function getRoleName($role){
+    public function getRoles() {
         $roles = include APPLICATION_PATH . 'conf/roles.php';
+        return $roles;
+    }
+
+    public function getRoleName($role){
+        $roles = $this->getRoles();
         return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
     }
 
