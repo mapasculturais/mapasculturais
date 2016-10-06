@@ -72,4 +72,35 @@ trait RepositoryAgentRelation{
         $entityList = $query->getResult();
         return $entityList;
     }
+
+    /**
+     * Returns the found agents
+     *
+     * @param int $offset
+     * @return \MapasCulturais\Agents[]
+     */
+    function findByAgentWithEntityControl($agent_relation_status = 1, $status = 1) {
+        $entityClass = $this->getClassName();
+        $app = App::i();
+
+            $dql = "
+                    SELECT
+                        a, er
+                    FROM
+                        {$entityClass}AgentRelation er
+                        JOIN er.agent a
+                    WHERE
+                        er.objectId = :id AND
+                        er.status = :ars AND
+                        er.hasControl = true ";
+        $query = $app->em->createQuery($dql);
+        // if ($app->config['app.usePermissionsCache']) {
+        //     $query->useResultCache (true, $app->config['app.permissionsCache.lifetime']);
+        // }
+        $query->setParameter('id', $app->view->controller->requestedEntity->id);
+        $query->setParameter('ars', $agent_relation_status);
+
+        $entityList = $query->getResult();
+        return $entityList;
+    }
 }

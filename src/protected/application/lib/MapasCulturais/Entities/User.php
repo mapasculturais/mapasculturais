@@ -299,6 +299,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
     }
 
+    function getAgentWithControl() {
+        $this->checkPermission('modify');
+        $app = App::i();
+        $entity = $app->view->controller->id;
+        return $app->repo($entity)->findByAgentWithEntityControl();
+    }
+
     public function getSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }

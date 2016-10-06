@@ -53,6 +53,7 @@ $this->entity = $entity;
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <li><a href="#permissao">Permissões</a></li>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -87,7 +88,9 @@ $this->entity = $entity;
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
