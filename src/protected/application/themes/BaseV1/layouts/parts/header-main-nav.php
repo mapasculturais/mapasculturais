@@ -186,13 +186,13 @@
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
 
-                    <?php if($app->isEnabled('saas')): ?>
-                        <?php $this->applyTemplateHook('nav.dropdown.saas','before'); ?>
+                    <?php if($app->isEnabled('subsite')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.subsite','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'saas') ?>"><?php $this->dict('entities: My SaaS') ?></a>
-                            <a class="add"href="<?php echo $app->createUrl('saas', 'create') ?>"></a>
+                            <a href="<?php echo $app->createUrl('panel', 'subsite') ?>"><?php $this->dict('entities: My Subsite') ?></a>
+                            <a class="add"href="<?php echo $app->createUrl('subsite', 'create') ?>"></a>
                         </li>
-                        <?php $this->applyTemplateHook('nav.dropdown.saas','after'); ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.subsite','after'); ?>
                     <?php endif; ?>
 
 

@@ -7,14 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
 /**
- * SaaSMeta
+ * SubsiteMeta
  *
- * @ORM\Table(name="saas_meta")
+ * @ORM\Table(name="subsite_meta")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class SaaSMeta extends \MapasCulturais\Entity {
+class SubsiteMeta extends \MapasCulturais\Entity {
 
     /**
      * @var integer
@@ -22,7 +22,7 @@ class SaaSMeta extends \MapasCulturais\Entity {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="saas_meta_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="subsite_meta_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
@@ -41,9 +41,9 @@ class SaaSMeta extends \MapasCulturais\Entity {
     protected $value;
 
     /**
-     * @var \MapasCulturais\Entities\SaaS
+     * @var \MapasCulturais\Entities\Subsite
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\SaaS")
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })

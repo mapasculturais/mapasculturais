@@ -265,7 +265,7 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
         
-        if($this->usesOriginSaaS() && !$this->authorizedInThisSite()){
+        if($this->usesOriginSubsite() && !$this->authorizedInThisSite()){
             return false;
         }
 

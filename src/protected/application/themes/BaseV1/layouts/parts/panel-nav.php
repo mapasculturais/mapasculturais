@@ -37,10 +37,10 @@
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('saas') && ($app->user->is('superAdmin') || $app->user->is('admin')) ): ?>
-            <?php $this->applyTemplateHook('nav.panel.saas','before'); ?>
-            <li><a <?php if($this->template == 'panel/saas') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'saas') ?>"><span class="icon icon-saas"></span> <?php $this->dict('entities: My SaaS') ?></a></li>
-            <?php $this->applyTemplateHook('nav.panel.saas','after'); ?>
+        <?php if($app->isEnabled('subsite') && ($app->user->is('superAdmin') || $app->user->is('admin')) ): ?>
+            <?php $this->applyTemplateHook('nav.panel.subsite','before'); ?>
+            <li><a <?php if($this->template == 'panel/subsite') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'subsite') ?>"><span class="icon icon-subsite"></span> <?php $this->dict('entities: My Subsite') ?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.subsite','after'); ?>
         <?php endif; ?>
 
         <?php if($app->isEnabled('apps')): ?>

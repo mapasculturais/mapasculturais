@@ -531,12 +531,12 @@ class App extends \Slim\Slim{
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
         // get types and metadata configurations
-        if ($theme_saas_types = $this->view->resolveFilename('','saas-types.php')) {
-            $saas_types = include $theme_saas_types;
+        if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
+            $subsite_types = include $theme_subsite_types;
         } else {
-            $saas_types = include APPLICATION_PATH.'/conf/saas-types.php';
+            $subsite_types = include APPLICATION_PATH.'/conf/subsite-types.php';
         }
-        $saas_meta = key_exists('metadata', $saas_types) && is_array($saas_types['metadata']) ? $saas_types['metadata'] : [];
+        $subsite_meta = key_exists('metadata', $subsite_types) && is_array($subsite_types['metadata']) ? $subsite_types['metadata'] : [];
 
         if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
             $seal_types = include $theme_seal_types;
@@ -565,7 +565,7 @@ class App extends \Slim\Slim{
         $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
-        $this->registerController('saas',    'MapasCulturais\Controllers\SaaS');
+        $this->registerController('subsite',    'MapasCulturais\Controllers\Subsite');
 
 
         $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
@@ -690,11 +690,11 @@ class App extends \Slim\Slim{
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
-        $this->registerFileGroup('saas',$file_groups['header']);
-        $this->registerFileGroup('saas',$file_groups['avatar']);
-        $this->registerFileGroup('saas',$file_groups['logo']);
-        $this->registerFileGroup('saas',$file_groups['background']);
-        $this->registerFileGroup('saas',$file_groups['institute']);
+        $this->registerFileGroup('subsite',$file_groups['header']);
+        $this->registerFileGroup('subsite',$file_groups['avatar']);
+        $this->registerFileGroup('subsite',$file_groups['logo']);
+        $this->registerFileGroup('subsite',$file_groups['background']);
+        $this->registerFileGroup('subsite',$file_groups['institute']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
@@ -856,11 +856,11 @@ class App extends \Slim\Slim{
             }
         }
 
-        // register SaaS types and SaaS metadata
-        $entity_class = 'MapasCulturais\Entities\SaaS';
+        // register Subsite types and Subsite metadata
+        $entity_class = 'MapasCulturais\Entities\Subsite';
 
-        // add saas metadata definition to event type
-        foreach($saas_meta as $meta_key => $meta_config){
+        // add subsite metadata definition to event type
+        foreach($subsite_meta as $meta_key => $meta_config){
             $metadata = new Definitions\Metadata($meta_key, $meta_config);
             $this->registerMetadata($metadata, $entity_class);
         }
@@ -1202,10 +1202,10 @@ class App extends \Slim\Slim{
      * Getters
      **********************************************/
     
-    public function getCurrentSaaSId(){
-        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de saas com o tema diferente do SaaS
-        if($this->view->saasInstance){
-            return $this->view->saasInstance->id;
+    public function getCurrentSubsiteId(){
+        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
+        if($this->view->subsiteInstance){
+            return $this->view->subsiteInstance->id;
         }
         
         return null;

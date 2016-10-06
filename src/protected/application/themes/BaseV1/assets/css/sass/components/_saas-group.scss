@@ -1,8 +1,8 @@
-.saas {
+.subsite {
     .avatar {
         position: relative;
         &:hover {
-            .descricao-do-saas {
+            .descricao-do-subsite {
                 display: block;
             }
         }
@@ -11,10 +11,10 @@
                 opacity: .3;
             }
         }
-        .descricao-do-saas {
+        .descricao-do-subsite {
             display: none;
             position: absolute;
-            z-index: $z-index-descricao-do-saas;
+            z-index: $z-index-descricao-do-subsite;
             top: 3.5rem;
             right: -.75rem;
             width: 200px;

@@ -16,7 +16,7 @@ $editEntity = $this->isEditable();
 $slag_editbla = $this->controller->action === 'create';
 
 ?>
-<article class="main-content saas-container">
+<article class="main-content subsite-container">
   <header class="main-content-header">
       <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
     </header>
@@ -53,16 +53,16 @@ $slag_editbla = $this->controller->action === 'create';
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <br>
 
-    <div class="saas-infos">
-        <?php $this->part('singles/saas-tabs', ['entity' => $entity]) ?>
+    <div class="subsite-infos">
+        <?php $this->part('singles/subsite-tabs', ['entity' => $entity]) ?>
 
         <div class="tabs-content">
             <?php $this->applyTemplateHook('tabs-content','begin'); ?>
 
-            <?php $this->part('singles/saas-about', ['entity' => $entity]) ?>
-            <?php $this->part('singles/saas-entities', ['entity' => $entity]) ?>
-            <?php $this->part('singles/saas-images', ['entity' => $entity]) ?>
-            <?php $this->part('singles/saas-map', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-about', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-entities', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-images', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-map', ['entity' => $entity]) ?>
 
             <?php $this->applyTemplateHook('tabs-content','end'); ?>
         </div>

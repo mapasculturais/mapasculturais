@@ -282,18 +282,18 @@ body.action-search {
     }
 }
 
-//** SaaS
-#entities-menu-saas {
+//** Subsite
+#entities-menu-subsite {
     &.active, &:hover {
-        border-top-color: $brand-saas;
-        color: $brand-saas;
+        border-top-color: $brand-subsite;
+        color: $brand-subsite;
         a {
-            color: $brand-saas;
+            color: $brand-subsite;
         }
     }
     &.active {
         &:after {
-            @include arrow(up, $caret-width-base, $brand-saas)
+            @include arrow(up, $caret-width-base, $brand-subsite)
         }
     }
 }

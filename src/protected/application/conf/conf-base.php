@@ -51,7 +51,7 @@ return array(
     'app.enabled.spaces'   => true,
     'app.enabled.projects' => true,
     'app.enabled.events'   => true,
-    'app.enabled.saas'     => true,
+    'app.enabled.subsite'     => true,
     'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
@@ -71,7 +71,7 @@ return array(
     'themes.brand-space'    => '#e83f96',
     'themes.brand-project'  => '#cc0033',
     'themes.brand-event'    => '#b3b921',
-    'themes.brand-saas'     => '#ff5545',
+    'themes.brand-subsite'     => '#ff5545',
     'themes.brand-seal'     => '#ff5545',
     'themes.brand-agent'    => '#1dabc6',
 
@@ -306,7 +306,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
-            'instalacao'=> array('saas',	  'single'),
+            'instalacao'=> array('subsite',	  'single'),
         	'selo'     	=> array('seal',	  'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
@@ -332,7 +332,7 @@ return array(
             'projetos'       => 'project',
             'selos'          => 'seal',
             'inscricoes'     => 'registration',
-            'instalacoes'    => 'saas',
+            'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
         ),
         'actions' => array(
@@ -343,7 +343,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-            'saas'          => 'saas',
+            'subsite'          => 'subsite',
             'selos'         => 'seals',
             'inscricoes'    => 'registrations'
         ),
@@ -360,7 +360,7 @@ return array(
             'project'       => 'Projeto',   'projects'      => 'Projetos',
             'registration'  => 'Inscrição', 'registrations' => 'Inscrições',
             'file'          => 'Arquivo',   'files'         => 'Arquivos',
-            'saas'          => 'SaaS',
+            'subsite'          => 'Subsite',
             //actions
             'list'          => 'Listando',
             'index'         => 'Índice',

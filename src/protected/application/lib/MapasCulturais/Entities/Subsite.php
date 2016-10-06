@@ -7,15 +7,15 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 /**
- * SaaS
- * @property \MapasCulturais\Entities\Agent $owner The owner of this saas
+ * Subsite
+ * @property \MapasCulturais\Entities\Agent $owner The owner of this subsite
  *
- * @ORM\Table(name="saas")
+ * @ORM\Table(name="subsite")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\SaaS")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Subsite")
  * @ORM\HasLifecycleCallbacks
  */
-class SaaS extends \MapasCulturais\Entity
+class Subsite extends \MapasCulturais\Entity
 {
     use Traits\EntityOwnerAgent,
         Traits\EntityFiles,
@@ -45,7 +45,7 @@ class SaaS extends \MapasCulturais\Entity
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="saas_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="subsite_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
@@ -114,14 +114,14 @@ class SaaS extends \MapasCulturais\Entity
     protected $namespace;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
      */
     protected $__metadata;
 
     /**
-     * @var \MapasCulturais\Entities\SaaSFile[] Files
+     * @var \MapasCulturais\Entities\SubsiteFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SaaSFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
@@ -162,7 +162,7 @@ class SaaS extends \MapasCulturais\Entity
     function getParentIds() {
         $app = App::i();
         
-        $cid = "saas-parent-ids:{$this->id}";
+        $cid = "subsite-parent-ids:{$this->id}";
         
         if ($app->cache->contains($cid)) {
             $ids = $app->cache->fetch($cid);
@@ -177,7 +177,7 @@ class SaaS extends \MapasCulturais\Entity
     }
     
     public function getSassCacheId(){
-        return "SaaS-{$this->id}:_variables.scss";
+        return "Subsite-{$this->id}:_variables.scss";
     }
     
     public function save($flush = false) {

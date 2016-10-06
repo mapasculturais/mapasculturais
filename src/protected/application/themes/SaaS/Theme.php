@@ -1,9 +1,9 @@
 <?php
-namespace SaaS;
+namespace Subsite;
 use MapasCulturais\Themes\BaseV1;
 use MapasCulturais\App;
 
-define('SAAS_PATH', realpath(BASE_PATH . '../SaaS'));
+define('SAAS_PATH', realpath(BASE_PATH . '../Subsite'));
 
 class Theme extends BaseV1\Theme{
 
@@ -11,14 +11,14 @@ class Theme extends BaseV1\Theme{
 
     static protected $config;
 
-    protected $saasPass;
+    protected $subsitePass;
 
     /**
-     * SaaS Instance
+     * Subsite Instance
      * 
-     * @var \MapasCulturais\Entities\SaaS
+     * @var \MapasCulturais\Entities\Subsite
      */
-    protected $saasInstance;
+    protected $subsiteInstance;
 
     public function __construct(\MapasCulturais\AssetManager $asset_manager) {
         parent::__construct($asset_manager);
@@ -32,23 +32,23 @@ class Theme extends BaseV1\Theme{
             $domain = substr($domain, 0, $pos);
         }
 
-        $saas = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $subsite = $app->repo('Subsite')->findOneBy(['url' => $domain]);
         
         $result = parent::_getTexts();
         
-        $saas_texts = [
-            'site: name'        => $saas->name,
-            'site: description' => $saas->texto_sobre,
-            'home: title'       => $saas->titulo,
-            'home: welcome'     => $saas->texto_boasvindas,
-            'entities: Spaces'  => $saas->titulo_espacos,
-            'entities: Projects'=> $saas->titulo_projetos,
-            'entities: Events'  => $saas->titulo_eventos,
-            'entities: Agents'  => $saas->titulo_agentes,
-            'entities: Seals'   => $saas->titulo_selos
+        $subsite_texts = [
+            'site: name'        => $subsite->name,
+            'site: description' => $subsite->texto_sobre,
+            'home: title'       => $subsite->titulo,
+            'home: welcome'     => $subsite->texto_boasvindas,
+            'entities: Spaces'  => $subsite->titulo_espacos,
+            'entities: Projects'=> $subsite->titulo_projetos,
+            'entities: Events'  => $subsite->titulo_eventos,
+            'entities: Agents'  => $subsite->titulo_agentes,
+            'entities: Seals'   => $subsite->titulo_selos
         ];
         
-        foreach($saas_texts as $key => $val){
+        foreach($subsite_texts as $key => $val){
             if($val){
                 $result[$key] = $val;
             }
@@ -69,9 +69,9 @@ class Theme extends BaseV1\Theme{
             $domain = substr($domain, 0, $pos);
         }
 
-        $this->saasInstance = $app->repo('SaaS')->findOneBy(['url' => $domain]);
+        $this->subsiteInstance = $app->repo('Subsite')->findOneBy(['url' => $domain]);
         
-        $entidades = explode(';', $this->saasInstance->entidades_habilitadas);
+        $entidades = explode(';', $this->subsiteInstance->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){
 
             $app->_config['app.enabled.agents'] = false;
@@ -93,21 +93,21 @@ class Theme extends BaseV1\Theme{
             $app->_config['app.enabled.seals'] = false;
         }
 
-        $this->saasPass = SAAS_PATH . '/' . $this->saasInstance->slug;
-        $this->addPath($this->saasPass);
+        $this->subsitePass = SAAS_PATH . '/' . $this->subsiteInstance->slug;
+        $this->addPath($this->subsitePass);
 
-        $this->jsObject['mapsDefaults']['zoomMax']          = $this->saasInstance->zoom_max;
-        $this->jsObject['mapsDefaults']['zoomMin']          = $this->saasInstance->zoom_min;
-        $this->jsObject['mapsDefaults']['zoomDefault']      = $this->saasInstance->zoom_default;
-        $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->saasInstance->zoom_precise;
-        $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->saasInstance->zoom_approximate;
+        $this->jsObject['mapsDefaults']['zoomMax']          = $this->subsiteInstance->zoom_max;
+        $this->jsObject['mapsDefaults']['zoomMin']          = $this->subsiteInstance->zoom_min;
+        $this->jsObject['mapsDefaults']['zoomDefault']      = $this->subsiteInstance->zoom_default;
+        $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->subsiteInstance->zoom_precise;
+        $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->subsiteInstance->zoom_approximate;
         $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-        $this->jsObject['mapsDefaults']['latitude']         = $this->saasInstance->latitude;
-        $this->jsObject['mapsDefaults']['longitude']        = $this->saasInstance->longitude;
+        $this->jsObject['mapsDefaults']['latitude']         = $this->subsiteInstance->latitude;
+        $this->jsObject['mapsDefaults']['longitude']        = $this->subsiteInstance->longitude;
 
-        $cache_id = $this->saasInstance->getSassCacheId();
+        $cache_id = $this->subsiteInstance->getSassCacheId();
         
-        if($app->isEnabled('saas') && !$app->cache->contains($cache_id)){
+        if($app->isEnabled('subsite') && !$app->cache->contains($cache_id)){
             $app->log->debug("Entrou aqui mlk.");
             $variables_scss = "";
             $main_scss = '// Child theme main
@@ -115,8 +115,8 @@ class Theme extends BaseV1\Theme{
             @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
             ';
 
-            if($this->saasInstance->background){
-                $backgroundimage = $this->saasInstance->background->url;
+            if($this->subsiteInstance->background){
+                $backgroundimage = $this->subsiteInstance->background->url;
                 $main_scss .= "
                 .header-image {
                     background-image: url(' . $backgroundimage . ');
@@ -126,22 +126,22 @@ class Theme extends BaseV1\Theme{
                 }";
             }
 
-            $variables_scss .= "\$brand-agent:   " . ($this->saasInstance->cor_agentes?  $this->saasInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
-            $variables_scss .= "\$brand-project: " . ($this->saasInstance->cor_projetos? $this->saasInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-            $variables_scss .= "\$brand-event:   " . ($this->saasInstance->cor_eventos?  $this->saasInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
-            $variables_scss .= "\$brand-space:   " . ($this->saasInstance->cor_espacos?  $this->saasInstance->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
-            $variables_scss .= "\$brand-seal:    " . ($this->saasInstance->cor_selos?    $this->saasInstance->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
-            $variables_scss .= "\$brand-saas:    " . ($this->saasInstance->cor_saas?     $this->saasInstance->cor_agentes:  $app->config['themes.brand-saas'])    . " !default;\n";
+            $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->cor_agentes?  $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
+            $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->cor_projetos? $this->subsiteInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
+            $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->cor_eventos?  $this->subsiteInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
+            $variables_scss .= "\$brand-space:   " . ($this->subsiteInstance->cor_espacos?  $this->subsiteInstance->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
+            $variables_scss .= "\$brand-seal:    " . ($this->subsiteInstance->cor_selos?    $this->subsiteInstance->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
+            $variables_scss .= "\$brand-subsite:    " . ($this->subsiteInstance->cor_subsite?     $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-subsite'])    . " !default;\n";
 
-            if(!is_dir($this->saasPass . '/assets/css/sass/')) {
-                mkdir($this->saasPass . '/assets/css/sass/',0755,true);
+            if(!is_dir($this->subsitePass . '/assets/css/sass/')) {
+                mkdir($this->subsitePass . '/assets/css/sass/',0755,true);
             }
 
-            file_put_contents($this->saasPass . '/assets/css/sass/_variables.scss', $variables_scss);
-            file_put_contents($this->saasPass . '/assets/css/sass/main.scss', $main_scss);
+            file_put_contents($this->subsitePass . '/assets/css/sass/_variables.scss', $variables_scss);
+            file_put_contents($this->subsitePass . '/assets/css/sass/main.scss', $main_scss);
 
             putenv('LC_ALL=en_US.UTF-8');
-            exec("sass " . $this->saasPass . '/assets/css/sass/main.scss ' . $this->saasPass . '/assets/css/main.css');
+            exec("sass " . $this->subsitePass . '/assets/css/sass/main.scss ' . $this->subsitePass . '/assets/css/main.css');
             
             $app->cache->save($cache_id, true);
         }
@@ -151,8 +151,8 @@ class Theme extends BaseV1\Theme{
             $this->_publishAssets();
         });
 
-        $saas_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\SaaS");
-        foreach($saas_meta as $k => $v) {
+        $subsite_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\Subsite");
+        foreach($subsite_meta as $k => $v) {
             $meta_name = $k;
 
             $pos_meta_filter      = strpos($meta_name,"filtro_");
@@ -171,9 +171,9 @@ class Theme extends BaseV1\Theme{
                     if($pos_meta_type > 0) {
                         $meta_type = substr($meta_name,0,$pos_meta_type);
                         $meta_name = substr($meta_name,$pos_meta_type+1);
-                        if($this->saasInstance->$k) {
+                        if($this->subsiteInstance->$k) {
                             $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
-                            $meta_cont = $this->saasInstance->$k;
+                            $meta_cont = $this->subsiteInstance->$k;
                             $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
                             $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
                             $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
@@ -200,8 +200,8 @@ class Theme extends BaseV1\Theme{
     }
 
     protected function _publishAssets() {
-        if($this->saasInstance->getLogo()) {
-            $this->jsObject['assets']['logo-instituicao'] = $this->saasInstance->logo->url;
+        if($this->subsiteInstance->getLogo()) {
+            $this->jsObject['assets']['logo-instituicao'] = $this->subsiteInstance->logo->url;
         } else {
             $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
         }

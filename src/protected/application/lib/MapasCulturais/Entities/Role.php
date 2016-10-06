@@ -43,9 +43,9 @@ class Role extends \MapasCulturais\Entity{
     /**
      * @var int
      *
-     * @ORM\Column(name="saas_id", type="integer", length=32, nullable=true)
+     * @ORM\Column(name="subsite_id", type="integer", length=32, nullable=true)
      */
-    protected $saasId;
+    protected $subsiteId;
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

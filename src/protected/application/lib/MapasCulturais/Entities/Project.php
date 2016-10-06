@@ -29,7 +29,7 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
-        Traits\EntityOriginSaaS,
+        Traits\EntityOriginSubsite,
         Traits\EntityArchive;
 
     protected static $validations = [

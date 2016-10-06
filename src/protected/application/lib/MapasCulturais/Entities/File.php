@@ -33,7 +33,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-        "MapasCulturais\Entities\SaaS"                          = "\MapasCulturais\Entities\SaaSFile"
+        "MapasCulturais\Entities\Subsite"                          = "\MapasCulturais\Entities\SubsiteFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity

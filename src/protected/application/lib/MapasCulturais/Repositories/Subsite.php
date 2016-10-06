@@ -2,6 +2,6 @@
 namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 
-class SaaS extends \MapasCulturais\Repository{
+class Subsite extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
 }

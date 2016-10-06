@@ -7,14 +7,14 @@ use MapasCulturais\Traits;
 use MapasCulturais\Entities;
 
 /**
- * SaaS Controller
+ * Subsite Controller
  *
- * By default this controller is registered with the id 'saas'.
+ * By default this controller is registered with the id 'subsite'.
  *
- *  @property-read \MapasCulturais\Entities\SaaS $requestedEntity The Requested Entity
+ *  @property-read \MapasCulturais\Entities\Subsite $requestedEntity The Requested Entity
  *
  */
-class SaaS extends EntityController {
+class Subsite extends EntityController {
     use
     	Traits\ControllerUploads,
     	Traits\ControllerTypes,
@@ -25,19 +25,19 @@ class SaaS extends EntityController {
       Traits\ControllerAPI;
 
       /**
-       * Creates a new SaaS
+       * Creates a new Subsite
        *
        * This action requires authentication and outputs the json with the new event or with an array of errors.
        *
        * <code>
        * // creates the url to this action
-       * $url = $app->createUrl('saas');
+       * $url = $app->createUrl('subsite');
        * </code>
        */
       function POST_index(){
         $app = App::i();
 
-        $app->hook('entity(saas).insert:before', function() use($app){
+        $app->hook('entity(subsite).insert:before', function() use($app){
           $this->owner = $app->user->profile;
         });
 

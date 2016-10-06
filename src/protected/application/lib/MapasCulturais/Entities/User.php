@@ -12,7 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
- * @property-read \MapasCulturais\Entities\SaaS[] $saas Active SaaS
+ * @property-read \MapasCulturais\Entities\Subsite[] $subsite Active Subsite
  * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
@@ -145,7 +145,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function addRole($role_name){
         $app = App::i();
-        $saas_id = $app->getCurrentSaaSId();
+        $subsite_id = $app->getCurrentSubsiteId();
         
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
@@ -156,7 +156,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $role = new Role;
             $role->user = $this;
             $role->name = $role_name;
-            $role->saasId = $saas_id;
+            $role->subsiteId = $subsite_id;
             $role->save(true);
             return true;
         }
@@ -166,7 +166,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function removeRole($role_name){
         $app = App::i();
-        $saas_id = $app->getCurrentSaaSId();
+        $subsite_id = $app->getCurrentSubsiteId();
         
         
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
@@ -175,7 +175,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $this->checkPermission('removeRole');
 
         foreach($this->roles as $role){
-            if($role->name == $role_name && $role->saasId === $saas_id){
+            if($role->name == $role_name && $role->subsiteId === $subsite_id){
                 $role->delete(true);
                 return true;
             }
@@ -220,17 +220,17 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         
         // main site
         foreach ($this->roles as $role) {
-            if ($role->name == $role_name && $role->saasId === null) {
+            if ($role->name == $role_name && $role->subsiteId === null) {
                 return true;
             }
         }
         
-        if ($app->getCurrentSaaSId()) {
-            $saas_ids = $app->view->saasInstance->getParentIds();
+        if ($app->getCurrentSubsiteId()) {
+            $subsite_ids = $app->view->subsiteInstance->getParentIds();
             
             foreach ($this->roles as $role) {
-                foreach($saas_ids as $saas_id){
-                    if ($role->name == $role_name && $role->saasId === $saas_id ) {
+                foreach($subsite_ids as $subsite_id){
+                    if ($role->name == $role_name && $role->subsiteId === $subsite_id ) {
                         return true;
                     }
                 }
@@ -408,31 +408,31 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
     }
 
-    public function getSaaS(){
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS');
+    public function getSubsite(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite');
     }
-    function getEnabledSaaS(){
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ENABLED, '=');
+    function getEnabledSubsite(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_ENABLED, '=');
     }
-    function getDraftSaaS(){
+    function getDraftSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_DRAFT, '=');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_DRAFT, '=');
     }
-    function getTrashedSaaS(){
+    function getTrashedSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_TRASH, '=');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_TRASH, '=');
     }
-    function getDisabledSaaS(){
+    function getDisabledSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_DISABLED, '=');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_DISABLED, '=');
     }
-    function getArchivedSaaS(){
+    function getArchivedSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\SaaS', SaaS::STATUS_ARCHIVED,'=');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_ARCHIVED,'=');
     }
     public function getSeals(){
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');

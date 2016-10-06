@@ -16,7 +16,7 @@ use MapasCulturais\Entities\Seal;
                 <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
 
-            <?php elseif ($entity->status === \MapasCulturais\Entities\SaaS::STATUS_ARCHIVED): ?>
+            <?php elseif ($entity->status === \MapasCulturais\Entities\Subsite::STATUS_ARCHIVED): ?>
                 <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
 
             <?php else: ?>

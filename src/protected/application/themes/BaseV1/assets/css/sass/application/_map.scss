@@ -179,12 +179,12 @@
             background-color: $brand-space;
         }
     }
-    .btn-map-saas {
+    .btn-map-subsite {
         &:before {
-            content: $unicode-saas;
+            content: $unicode-subsite;
         }
         &.active, &:hover {
-            background-color: $brand-saas;
+            background-color: $brand-subsite;
         }
     }
     .btn-map-seal {

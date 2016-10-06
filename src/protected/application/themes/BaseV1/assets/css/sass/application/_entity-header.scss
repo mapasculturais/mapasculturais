@@ -62,9 +62,9 @@ article.project, article.registration {
         background-color: $brand-project;
     }
 }
-article.saas {
+article.subsite {
     .header-image {
-        background-color: $brand-saas;
+        background-color: $brand-subsite;
     }
 }
 article.seal {
@@ -123,8 +123,8 @@ article.seal {
     .space-type {
         color: $brand-space;
     }
-    .saas-type {
-        color: $brand-saas;
+    .subsite-type {
+        color: $brand-subsite;
     }
     .seal-type {
         color: $brand-seal;

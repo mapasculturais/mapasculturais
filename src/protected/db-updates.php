@@ -153,7 +153,14 @@ return [
       $conn->executeQuery("CREATE SEQUENCE saas_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
       $conn->executeQuery("CREATE TABLE saas_meta ( object_id integer NOT NULL, key character varying(128) NOT NULL, value text, id integer NOT NULL);");
       $conn->executeQuery("CREATE SEQUENCE saas_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-      $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES saas(id);");
+      $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES subsite(id);");
+    },
+            
+    'rename saas tables to subsite' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE saas RENAME TO subsite");
+        $conn->executeQuery("ALTER TABLE saas_meta RENAME TO subsite_meta");
+        $conn->executeQuery("ALTER SEQUENCE saas_id_seq RENAME TO subsite_id_seq");
+        $conn->executeQuery("ALTER SEQUENCE saas_meta_id_seq RENAME TO subsite_meta_id_seq");
     },
 
     'verified seal migration' => function () use($conn){
@@ -187,48 +194,48 @@ return [
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
     
-    'alter table role add column saas_id' => function () use($conn) {
+    'alter table role add column subsite_id' => function () use($conn) {
     	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_user_fk;");
     	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_unique;");
-        $conn->executeQuery("ALTER TABLE role ADD saas_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE role ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE role ALTER id DROP DEFAULT;");
         $conn->executeQuery("ALTER TABLE role ALTER usr_id DROP NOT NULL;");
         $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_57698A6AC79C849A ON role (saas_id);");
+        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_57698A6AC79C849A ON role (subsite_id);");
     },
             
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
     },
     
-    'ADD columns saas_id' => function () use($conn) {
-        $conn->executeQuery("ALTER TABLE space ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE space ADD CONSTRAINT FK_2972C13AC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_2972C13AC79C849A ON space (saas_id);");
+    'ADD columns subsite_id' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE space ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE space ADD CONSTRAINT FK_2972C13AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2972C13AC79C849A ON space (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE agent ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_268B9C9DC79C849A ON agent (saas_id);");
+        $conn->executeQuery("ALTER TABLE agent ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_268B9C9DC79C849A ON agent (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE event ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_3BAE0AA7C79C849A ON event (saas_id);");
+        $conn->executeQuery("ALTER TABLE event ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_3BAE0AA7C79C849A ON event (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE project ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEC79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_2FB3D0EEC79C849A ON project (saas_id);");
+        $conn->executeQuery("ALTER TABLE project ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2FB3D0EEC79C849A ON project (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE seal ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_2E30AE30C79C849A ON seal (saas_id);");
+        $conn->executeQuery("ALTER TABLE seal ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2E30AE30C79C849A ON seal (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE registration ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_62A8A7A7C79C849A ON registration (saas_id);");
+        $conn->executeQuery("ALTER TABLE registration ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_62A8A7A7C79C849A ON registration (subsite_id);");
         
-        $conn->executeQuery("ALTER TABLE user_app ADD saas_id INT DEFAULT NULL;");
-        $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (saas_id) REFERENCES saas (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (saas_id);");
+        $conn->executeQuery("ALTER TABLE user_app ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (subsite_id);");
     }
 ];

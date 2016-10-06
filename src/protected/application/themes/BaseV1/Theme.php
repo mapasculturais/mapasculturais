@@ -42,7 +42,7 @@ class Theme extends MapasCulturais\Theme {
             'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
             'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
             'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
-            'home: saas' => "Reúne as instalações de Mapas Culturais que estão como SaaS.",
+            'home: subsite' => "Reúne as instalações de Mapas Culturais que estão como Subsite.",
             'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
 
             'search: verified results' => 'Resultados Verificados',
@@ -55,15 +55,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
 
-            'entities: SaaS Description'=> 'Descrição da Instalação SaaS',
-            'entities: My SaaS'=> 'Instalações SaaS',
-            'entities: My saas'=> 'Instalações SaaS',
-            'entities: Saas' => 'Instalação SaaS',
-            'entities: SaaS' => 'Instalação SaaS',
-            'entities: no registered saas'=> 'nenhuma instalação saas cadastrada',
-            'entities: no saas'=> 'nenhuma instalação saas',
-            'entities: registered saas' => 'instalações saas cadastradas',
-            'entities: add new saas' => "Adicionar nova instalação",
+            'entities: Subsite Description'=> 'Descrição da Instalação Subsite',
+            'entities: My Subsite'=> 'Instalações Subsite',
+            'entities: My subsite'=> 'Instalações Subsite',
+            'entities: Saas' => 'Instalação Subsite',
+            'entities: Subsite' => 'Instalação Subsite',
+            'entities: no registered subsite'=> 'nenhuma instalação subsite cadastrada',
+            'entities: no subsite'=> 'nenhuma instalação subsite',
+            'entities: registered subsite' => 'instalações subsite cadastradas',
+            'entities: add new subsite' => "Adicionar nova instalação",
 
         	'entities: My Seals'=> 'Meus Selos',
         	'entities: My seals'=> 'Meus selos',
@@ -165,7 +165,7 @@ class Theme extends MapasCulturais\Theme {
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
         		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
         		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
-                "saas" => \MapasCulturais\Entities\SaaS::getPropertiesMetadata(),
+                "subsite" => \MapasCulturais\Entities\Subsite::getPropertiesMetadata(),
         		"seal" => \MapasCulturais\Entities\Seal::getPropertiesMetadata()
         ];
 
@@ -205,7 +205,7 @@ class Theme extends MapasCulturais\Theme {
                 'ngSanitize',
             ];
 
-            if(!$app->isEnabled('saas') || $app->config['themes.active'] <> 'MapasCulturais\Themes\SaaS') {
+            if(!$app->isEnabled('subsite') || $app->config['themes.active'] <> 'MapasCulturais\Themes\Subsite') {
               $this->jsObject['mapsDefaults'] = array(
                   'zoomMax' => $app->config['maps.zoom.max'],
                   'zoomMin' => $app->config['maps.zoom.min'],
@@ -228,7 +228,7 @@ class Theme extends MapasCulturais\Theme {
                 'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
-                'saas' => \MapasCulturais\Entities\SaaS::getPropertiesLabels(),
+                'subsite' => \MapasCulturais\Entities\Subsite::getPropertiesLabels(),
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels(),
                 'seal' => \MapasCulturais\Entities\Seal::getPropertiesLabels()
 
@@ -242,7 +242,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event|seal|saas>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal|subsite>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -279,20 +279,20 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project|saas|seal>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|subsite|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project|saas|seal>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|subsite|seal>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
-        $app->hook('entity(<<saas>>).file(logo).insert:after', function() {
+        $app->hook('entity(<<subsite>>).file(logo).insert:after', function() {
             $this->transform('logo');
         });
 
-        $app->hook('entity(<<saas>>).file(background).insert:after', function() {
+        $app->hook('entity(<<subsite>>).file(background).insert:after', function() {
             $this->transform('background');
         });
 
@@ -492,7 +492,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-draw', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw-src.js', array('leaflet'));
 
         // Google Maps API only needed in site/search and space, agent and event singles
-        if(preg_match('#site|space|agent|event|saas#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
+        if(preg_match('#site|space|agent|event|subsite#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
             $this->enqueueScript('vendor', 'google-maps-api', '//maps.google.com/maps/api/js?v=3.2&sensor=false');
         }
 

@@ -90,8 +90,8 @@
 #nav-projects {
     background: $brand-project;
 }
-#nav-saas {
-    background: $brand-saas;
+#nav-subsite {
+    background: $brand-subsite;
 }
 #nav-seals {
     background: $brand-seal;
@@ -410,11 +410,11 @@
         border-bottom-color: $brand-project;
     }
 }
-//** SaaS section
-#home-saas {
-    background: $brand-saas;
+//** Subsite section
+#home-subsite {
+    background: $brand-subsite;
     .abas li.active {
-        border-bottom-color: $brand-saas;
+        border-bottom-color: $brand-subsite;
     }
 }
 //** Seals section

@@ -7,20 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class SaaSFile extends File {
+class SubsiteFile extends File {
 
     /**
-     * @var \MapasCulturais\Entities\SaaS
+     * @var \MapasCulturais\Entities\Subsite
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SaaS")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      */
     protected $owner;
 
     /**
-     * @var \MapasCulturais\Entities\SaaSFile
+     * @var \MapasCulturais\Entities\SubsiteFile
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SaaSFile", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })

@@ -20,7 +20,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation,
-        Traits\EntityOriginSaaS,
+        Traits\EntityOriginSubsite,
     	Traits\EntitySealRelation;
 
 

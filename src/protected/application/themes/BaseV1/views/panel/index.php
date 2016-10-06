@@ -66,16 +66,16 @@ $this->layout = 'panel';
             </div>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('saas') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+        <?php if($app->isEnabled('subsite') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">SaaS</span>
-                        <div class="icon icon-saas alignright"></div>
+                        <span class="alignleft">Subsite</span>
+                        <div class="icon icon-subsite alignright"></div>
                     </div>
                     <div class="clearfix">
-                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'saas') ?>" title="Ver meus saas"><?php echo $count->saas; ?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('saas', 'create'); ?>" title="Adicionar saas"></a>
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'subsite') ?>" title="Ver meus subsite"><?php echo $count->subsite; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('subsite', 'create'); ?>" title="Adicionar subsite"></a>
                     </div>
                 </div>
             </div>
