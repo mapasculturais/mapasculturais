@@ -3,7 +3,7 @@ namespace Subsite;
 use MapasCulturais\Themes\BaseV1;
 use MapasCulturais\App;
 
-define('SAAS_PATH', realpath(BASE_PATH . '../Subsite'));
+define('SAAS_PATH', realpath(BASE_PATH . '../SaaS'));
 
 class Theme extends BaseV1\Theme{
 
@@ -11,7 +11,7 @@ class Theme extends BaseV1\Theme{
 
     static protected $config;
 
-    protected $subsitePass;
+    protected $subsitePath;
 
     /**
      * Subsite Instance
@@ -93,8 +93,8 @@ class Theme extends BaseV1\Theme{
             $app->_config['app.enabled.seals'] = false;
         }
 
-        $this->subsitePass = SAAS_PATH . '/' . $this->subsiteInstance->slug;
-        $this->addPath($this->subsitePass);
+        $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->slug;
+        $this->addPath($this->subsitePath);
 
         $this->jsObject['mapsDefaults']['zoomMax']          = $this->subsiteInstance->zoom_max;
         $this->jsObject['mapsDefaults']['zoomMin']          = $this->subsiteInstance->zoom_min;
@@ -133,15 +133,15 @@ class Theme extends BaseV1\Theme{
             $variables_scss .= "\$brand-seal:    " . ($this->subsiteInstance->cor_selos?    $this->subsiteInstance->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
             $variables_scss .= "\$brand-subsite:    " . ($this->subsiteInstance->cor_subsite?     $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-subsite'])    . " !default;\n";
 
-            if(!is_dir($this->subsitePass . '/assets/css/sass/')) {
-                mkdir($this->subsitePass . '/assets/css/sass/',0755,true);
+            if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
+                mkdir($this->subsitePath . '/assets/css/sass/',0755,true);
             }
 
-            file_put_contents($this->subsitePass . '/assets/css/sass/_variables.scss', $variables_scss);
-            file_put_contents($this->subsitePass . '/assets/css/sass/main.scss', $main_scss);
+            file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
+            file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
 
             putenv('LC_ALL=en_US.UTF-8');
-            exec("sass " . $this->subsitePass . '/assets/css/sass/main.scss ' . $this->subsitePass . '/assets/css/main.css');
+            exec("sass " . $this->subsitePath . '/assets/css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
             
             $app->cache->save($cache_id, true);
         }
