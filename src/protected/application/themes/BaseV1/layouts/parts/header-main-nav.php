@@ -189,7 +189,7 @@
                     <?php if($app->isEnabled('subsite')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.subsite','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'subsite') ?>"><?php $this->dict('entities: My Subsite') ?></a>
+                            <a href="<?php echo $app->createUrl('panel', 'subsite') ?>"><?php $this->dict('entities: My Subsites') ?></a>
                             <a class="add"href="<?php echo $app->createUrl('subsite', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.subsite','after'); ?>

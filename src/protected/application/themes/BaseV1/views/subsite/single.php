@@ -17,10 +17,7 @@ $slag_editbla = $this->controller->action === 'create';
 
 ?>
 <article class="main-content subsite-container">
-  <header class="main-content-header">
-      <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-    </header>
-
+    
     <!--.header-image-->
     <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
@@ -33,16 +30,21 @@ $slag_editbla = $this->controller->action === 'create';
                 </p>
             <?php endif; ?>
 
-            <br />
-            <?php if($this->isEditable() || $entity->slug): ?>
-                    <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
-            <?php endif; ?>
-
-            <?php if($this->isEditable() || $entity->url): ?>
-                <p>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"url") && $editEntity? 'required': '');?>" data-edit="url" data-original-title="URL" data-emptytext="Ex: .mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
-                </p>
-            <?php endif; ?>
+            <div>
+                <span class="icon"></span><span class="label">Namespace:</span> 
+                <span class="js-editable" data-edit="namespace" data-original-title="Namespace do Tema" data-emptytext="Selecione a o namespace do tema a ser utilizado"><?php echo $entity->namespace; ?></span>
+            </div>
+            
+            <div>
+                <span class="icon"></span><span class="label">Slug:</span> 
+                <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
+            </div>
+            
+            <div>
+                <span class="icon"></span><span class="label">Domínio Principal:</span> 
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"url") && $editEntity? 'required': '');?>" data-edit="url" data-original-title="Domínio Principal" data-emptytext="Ex: mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
+            </div>
+            
     </div>
     <!--.header-content-->
     <?php $this->applyTemplateHook('header-content','after'); ?>

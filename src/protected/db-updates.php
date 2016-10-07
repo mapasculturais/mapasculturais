@@ -153,7 +153,7 @@ return [
       $conn->executeQuery("CREATE SEQUENCE saas_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
       $conn->executeQuery("CREATE TABLE saas_meta ( object_id integer NOT NULL, key character varying(128) NOT NULL, value text, id integer NOT NULL);");
       $conn->executeQuery("CREATE SEQUENCE saas_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-      $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES subsite(id);");
+      $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES saas(id);");
     },
             
     'rename saas tables to subsite' => function () use($conn) {
@@ -162,6 +162,16 @@ return [
         $conn->executeQuery("ALTER SEQUENCE saas_id_seq RENAME TO subsite_id_seq");
         $conn->executeQuery("ALTER SEQUENCE saas_meta_id_seq RENAME TO subsite_meta_id_seq");
     },
+            
+    'remove parent_url and add alias_url' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite DROP COLUMN url_parent");
+        $conn->executeQuery("ALTER TABLE subsite ADD COLUMN alias_url VARCHAR(255) DEFAULT NULL;");
+        
+        $conn->executeQuery("CREATE INDEX url_index ON subsite (url);");
+        $conn->executeQuery("CREATE INDEX alias_url_index ON subsite (alias_url);");
+
+    },
+       
 
     'verified seal migration' => function () use($conn){
         $agent_id = $conn->fetchColumn("select profile_id

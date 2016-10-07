@@ -7,7 +7,7 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2><?php echo $this->dict('entities: My Subsite');?></h2>
+		<h2><?php echo $this->dict('entities: My Subsites');?></h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('subsite', 'create') ?>"><?php echo $this->dict('entities: add new subsite');?></a>
 	</header>
     <ul class="abas clearfix clear">

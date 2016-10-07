@@ -38,6 +38,9 @@ class Theme extends BaseV1\Theme{
     function _init() {
         parent::_init();
         $app = App::i();
+        $app->hook('panel.menu:before', function() use($app) {
+            echo "TESTE";
+        });
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['assets']['logo-prefeitura'] = $this->asset('img/logo-prefeitura.png', false);
         });

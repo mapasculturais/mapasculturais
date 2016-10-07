@@ -63,7 +63,13 @@ class Theme extends BaseV1\Theme{
     function _init() {
         $app = App::i();
         
-        $domain = $app->config['app.cache.namespace'];
+        $domain = @$_SERVER['HTTP_HOST'];
+
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+//        
+//        die($domain);
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
@@ -94,6 +100,7 @@ class Theme extends BaseV1\Theme{
         }
 
         $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->slug;
+        
         $this->addPath($this->subsitePath);
 
         $this->jsObject['mapsDefaults']['zoomMax']          = $this->subsiteInstance->zoom_max;

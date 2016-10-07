@@ -10,7 +10,10 @@ use MapasCulturais\App;
  * Subsite
  * @property \MapasCulturais\Entities\Agent $owner The owner of this subsite
  *
- * @ORM\Table(name="subsite")
+ * @ORM\Table(name="subsite", indexes={
+ *  @ORM\Index(name="url_index", columns={"url"}),
+ *  @ORM\Index(name="alias_url_index", columns={"alias_url"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Subsite")
  * @ORM\HasLifecycleCallbacks
@@ -95,9 +98,9 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="url_parent", type="string", length=255, nullable=false)
+     * @ORM\Column(name="alias_url", type="string", length=255, nullable=true)
      */
-    protected $url_parent;
+    protected $aliasUrl;
 
     /**
      * @var string
@@ -111,7 +114,7 @@ class Subsite extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="namespace", type="string", length=50, nullable=false)
      */
-    protected $namespace;
+    protected $namespace = 'Subsite';
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
