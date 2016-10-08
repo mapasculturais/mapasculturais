@@ -18,21 +18,18 @@ class Theme extends BaseV1\Theme{
      * 
      * @var \MapasCulturais\Entities\Subsite
      */
-    protected $subsiteInstance;
+    protected $subsiteInstance;    
 
-    public function __construct(\MapasCulturais\AssetManager $asset_manager) {
+    public function __construct(\MapasCulturais\AssetManager $asset_manager, \MapasCulturais\Entities\Subsite $subsiteInstance) {
+        $this->subsiteInstance = $subsiteInstance;
+        
         parent::__construct($asset_manager);
     }
 
     protected static function _getTexts(){
         $app = App::i();
-        $domain = $app->config['app.cache.namespace'];
-
-        if(($pos = strpos($domain, ':')) !== false){
-            $domain = substr($domain, 0, $pos);
-        }
-
-        $subsite = $app->repo('Subsite')->findOneBy(['url' => $domain]);
+        
+        $subsite = $app->getCurrentSubsite();
         
         $result = parent::_getTexts();
         
@@ -74,8 +71,6 @@ class Theme extends BaseV1\Theme{
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
-
-        $this->subsiteInstance = $app->repo('Subsite')->findOneBy(['url' => $domain]);
         
         $entidades = explode(';', $this->subsiteInstance->entidades_habilitadas);
         if(!in_array('Agentes', $entidades)){

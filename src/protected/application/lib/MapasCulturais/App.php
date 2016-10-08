@@ -136,6 +136,8 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
+    
+    protected $_subsite = null;
 
     /**
      * Initializes the application instance.
@@ -242,44 +244,7 @@ class App extends \Slim\Slim{
 
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
-
-        $theme_class = $config['themes.active'].'\Theme';
-
-        parent::__construct([
-            'log.level' => $config['slim.log.level'],
-            'log.enabled' => $config['slim.log.enabled'],
-            'debug' => $config['slim.debug'],
-            'templates.path' => $this->_config['path.templates'],
-            'view' => new $theme_class($config['themes.assetManager']),
-            'mode' => $this->_config['app.mode']
-        ]);
-
-        foreach($config['plugins'] as $slug => $plugin){
-            $_namespace = $plugin['namespace'];
-            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-            $plugin_class_name = "$_namespace\\$_class";
-
-            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
-
-            $slug = is_numeric($slug) ? $_namespace : $slug;
-
-            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
-        }
-
-        $config = $this->_config;
-
-        // custom log writer
-        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
-            $log = $this->getLog();
-            $log->setWriter($config['slim.log.writer']);
-        }
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
-
+        
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
@@ -357,6 +322,78 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
+        
+        
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
+        
+        
+        
+        $domain = @$_SERVER['HTTP_HOST'];
+
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+//        
+//        die($domain);
+
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+
+        $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain]);
+        if(!$this->_subsite){
+            $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain]);
+        }
+        
+        if($this->_subsite){
+            $theme_class = $this->_subsite->namespace . "\Theme";
+            $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
+        } else {
+            $theme_class = $config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($config['themes.assetManager']);
+        }
+        
+
+        parent::__construct([
+            'log.level' => $config['slim.log.level'],
+            'log.enabled' => $config['slim.log.enabled'],
+            'debug' => $config['slim.debug'],
+            'templates.path' => $this->_config['path.templates'],
+            'view' => $theme_instance,
+            'mode' => $this->_config['app.mode']
+        ]);
+
+        foreach($config['plugins'] as $slug => $plugin){
+            $_namespace = $plugin['namespace'];
+            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+            $plugin_class_name = "$_namespace\\$_class";
+
+            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+
+            $slug = is_numeric($slug) ? $_namespace : $slug;
+
+            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+        }
+
+        $config = $this->_config;
+        // ===================================== //
+
+        // custom log writer
+        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
+            $log = $this->getLog();
+            $log->setWriter($config['slim.log.writer']);
+        }
+
+
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
+
+        
 
 
         // ============= STORAGE =============== //
@@ -1204,11 +1241,15 @@ class App extends \Slim\Slim{
     
     public function getCurrentSubsiteId(){
         // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
-        if($this->view->subsiteInstance){
-            return $this->view->subsiteInstance->id;
+        if($this->_subsite){
+            return $this->_subsite->id;
         }
         
         return null;
+    }
+    
+    public function getCurrentSubsite(){
+        return $this->_subsite;
     }
 
     public function getMaxUploadSize($useSuffix=true){

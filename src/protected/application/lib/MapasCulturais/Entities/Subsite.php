@@ -39,7 +39,11 @@ class Subsite extends \MapasCulturais\Entity
             'unique' => 'Este slug já está sendo utilizado'
         ],
         'url' => [
-            'required' => 'A url da instalação é obrigatória'
+            'required' => 'A url da instalação é obrigatória',
+            'unique' => 'Esta URL já está sendo utilizada'
+        ],
+        'aliasUrl' => [
+            'unique' => 'Esta URL já está sendo utilizada'
         ]
     ];
     /**

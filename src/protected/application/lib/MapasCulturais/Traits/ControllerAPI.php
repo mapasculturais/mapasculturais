@@ -497,7 +497,7 @@ trait ControllerAPI{
                 $dql_select[] = ', _owner';
                 $dql_select_joins[] = "LEFT JOIN e.owner _owner";
             }
-
+            
             $select_properties = implode(',',array_unique($select_properties));
             
             
@@ -506,7 +506,7 @@ trait ControllerAPI{
             }
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
-
+            
             $final_dql = "
                 SELECT PARTIAL
                     e.{{$select_properties}}

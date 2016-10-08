@@ -19,6 +19,10 @@ trait EntityOriginSubsite{
      */
     protected $_subsiteId;
     
+    static function usesOriginSubsite(){
+        return true;
+    }
+    
     function authorizedInThisSite() {
         $app = App::i();
         

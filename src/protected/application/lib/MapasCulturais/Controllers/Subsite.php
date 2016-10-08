@@ -44,7 +44,7 @@ class Subsite extends EntityController {
 
                             if(preg_match('#namespace +([a-z0-9\\\]+) *;#i', $content, $matches)){
                                 $namespace = $matches[1];
-                                if(!in_array($namespace, $themes)){
+                                if(!in_array($namespace, $themes) && class_exists($namespace . "\Theme")){
                                     $themes[] = $namespace;
                                 }        
                             }            
