@@ -345,7 +345,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <!-- #permissao -->
         <?php $this->part('singles/permissions') ?>
         <!-- #permissao -->
-        
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -412,6 +412,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>

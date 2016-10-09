@@ -938,6 +938,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRelatedAdminAgentsToJs($entity) {
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }

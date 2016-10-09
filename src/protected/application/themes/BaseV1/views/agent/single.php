@@ -155,6 +155,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
     <?php endif; ?>
 
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
