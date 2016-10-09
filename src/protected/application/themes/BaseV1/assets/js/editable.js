@@ -322,7 +322,7 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
+                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
                     config.clear = 'Limpar';
                     break;
@@ -330,44 +330,66 @@ MapasCulturais.Editables = {
                 case 'multiselect':
                     var select2_option = {
                         tags: [],
-                        tokenSeparators: [";",";"],
-                        separator:'; '
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
                     };
 
 
-                    if(entity[field_name].options)
-                        select2_option.tags = Object.keys(entity[field_name].options);
+                    if (entity[field_name].options) {
+                        select2_option.tags = [];
+                        Object.keys(entity[field_name].options).forEach(function (k) {
+                            select2_option.tags.push({
+                                id: k,
+                                text: entity[field_name].options[k]
+                            });
+                        });
+                    }
 
-                    select2_option.createSearchChoice = function() { return null; };
+                    // console.log(field_name, select2_option.tags);
+
+                    select2_option.createSearchChoice = function () {
+                        return null;
+                    };
 
 
-                    config.type= 'select2';
+                    config.type = 'select2';
                     config.select2 = select2_option;
+
+                    config.display = function (value, sourceData) {
+                        if (value) {
+                            var html = value.map(function (i) {
+                                return entity[field_name].options[i];
+                            }).join('; ');
+                        }
+
+                        $(this).html(html);
+
+                    }
 
                     //change the default poshytip animation speed both from 300ms to:
                     $.fn.poshytip.defaults.showAniDuration = 80;
                     $.fn.poshytip.defaults.hideAniDuration = 40;
-                break;
+                    break;
 
                 case 'tag':
                     var select2_option = {
                         tags: [],
-                        tokenSeparators: [";",";"],
-                        separator:'; '
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
                     };
 
 
-                    if(entity[field_name].options)
+                    if (entity[field_name].options)
                         select2_option.tags = Object.keys(entity[field_name].options);
 
 
-                    config.type= 'select2';
+                    config.type = 'select2';
                     config.select2 = select2_option;
 
                     //change the default poshytip animation speed both from 300ms to:
                     $.fn.poshytip.defaults.showAniDuration = 80;
                     $.fn.poshytip.defaults.hideAniDuration = 40;
-                break;
+                    break;
 
                 case 'boolean':
                     config.type = 'checklist';
@@ -488,6 +510,9 @@ MapasCulturais.Editables = {
         });
 
         $submitButton.click(function(){
+            $('.editable-empty.editable-unsaved').each(function(){
+                $(this).editable('setValue', '');
+            });
 
             var target; //Vazio
             var $button = $(this); // Retorna submitButton
@@ -521,7 +546,7 @@ MapasCulturais.Editables = {
                 $('body').append('<input type="hidden" id="fixeditable"/>');
                 $editables = $editables.add($('#fixeditable'));
             }
-
+            
             $editables.editable('submit', {
                 url: target,
                 data: { status: $button.data('status') },

@@ -66,7 +66,8 @@ $slag_editbla = $this->controller->action === 'create';
         <div class="tabs-content">
             <?php $this->applyTemplateHook('tabs-content','begin'); ?>
 
-            <?php $this->part('singles/subsite-about', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-filters', ['entity' => $entity]) ?>
+            <?php $this->part('singles/subsite-texts', ['entity' => $entity]) ?>
             <?php $this->part('singles/subsite-entities', ['entity' => $entity]) ?>
             <?php $this->part('singles/subsite-images', ['entity' => $entity]) ?>
             <?php $this->part('singles/subsite-map', ['entity' => $entity]) ?>

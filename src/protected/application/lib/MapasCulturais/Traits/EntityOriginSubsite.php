@@ -28,14 +28,7 @@ trait EntityOriginSubsite{
         
         $current_subsite_id = $app->getCurrentSubsiteId();
         
-        return is_null($current_subsite_id) || ($current_subsite_id === $this->_subsiteId);
-    }
-    
-    /** @ORM\PrePersist */
-    public function __saveCurrentSubsiteId($args = null){ 
-        $app = App::i();
-        
-        $this->_subsiteId = $app->getCurrentSubsiteId();
+        return is_null($current_subsite_id) || ($current_subsite_id === $this->_subsiteId) || $this->getOwnerUser()->id === $app->user->id;
     }
 
 }

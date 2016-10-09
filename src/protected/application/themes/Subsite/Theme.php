@@ -7,8 +7,6 @@ define('SAAS_PATH', realpath(BASE_PATH . '../SaaS'));
 
 class Theme extends BaseV1\Theme{
 
-    protected $filters = [];
-
     static protected $config;
 
     protected $subsitePath;
@@ -149,56 +147,10 @@ class Theme extends BaseV1\Theme{
         }
 
         parent::_init();
+        
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->_publishAssets();
         });
-
-        $subsite_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\Subsite");
-        foreach($subsite_meta as $k => $v) {
-            $meta_name = $k;
-
-            $pos_meta_filter      = strpos($meta_name,"filtro_");
-            $pos_meta_controller  = 0;
-            $controller           = "";
-            $pos_meta_type        = 0;
-            $meta_type            = "";
-
-            if($pos_meta_filter === 0) {
-                $meta_name = substr($meta_name,strpos($meta_name,"_")+1);
-                $pos_meta_controller = strpos($meta_name,"_");
-                if($pos_meta_controller > 0) {
-                    $controller = substr($meta_name,0,$pos_meta_controller);
-                    $meta_name = substr($meta_name,$pos_meta_controller+1);
-                    $pos_meta_type = strpos($meta_name,"_");
-                    if($pos_meta_type > 0) {
-                        $meta_type = substr($meta_name,0,$pos_meta_type);
-                        $meta_name = substr($meta_name,$pos_meta_type+1);
-                        if($this->subsiteInstance->$k) {
-                            $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
-                            $meta_cont = $this->subsiteInstance->$k;
-                            $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
-                            $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
-                            $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
-                        }
-                    }
-                }
-            }
-        }
-
-        foreach($this->filters as $controller => $entity_filters){
-            $app->log->debug("controller: " . $controller);
-
-            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters,$app){
-                foreach($entity_filters as $key => $val){
-                    if(!isset($qdata[$key])){
-                        $qdata[$key] = $val;
-                    } else {
-                        $qdata[$key] = "AND($val," . $qdata[$key] . ')';
-                    }
-                }
-
-            });
-        }
     }
 
     protected function _publishAssets() {

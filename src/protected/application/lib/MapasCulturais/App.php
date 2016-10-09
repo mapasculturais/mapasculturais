@@ -442,6 +442,12 @@ class App extends \Slim\Slim{
             }
         }
         // ===================================== //
+        
+        
+        if($this->_subsite){
+            // apply subsite filters
+            $this->_subsite->applyApiFilters();
+        }
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();

@@ -55,5 +55,4 @@
         </p>
     <?php endif;?>
 
-    <?php $this->part('subsite-filter', array('entity'=>$entity)); ?>
 </div>

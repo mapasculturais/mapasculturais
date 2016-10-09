@@ -5,6 +5,118 @@
  */
 $color_validation = "v::regex('/^#([0-9ABCDEFabcdef]{3}|[0-9ABCDEFabcdef]{6})/')";
 
+$metadata_config_estado = [
+    'label' => 'Estado',
+    'type' => 'multiselect',
+    'serialize' => function($v) {
+        return json_encode($v);
+    },
+    'unserialize' => function($v) {
+        return json_decode($v);
+    },
+    'options' => [
+        'AC' => 'Acre',
+        'AL' => 'Alagoas',
+        'AP' => 'Amapá',
+        'AM' => 'Amazonas',
+        'BA' => 'Bahia',
+        'CE' => 'Ceará',
+        'DF' => 'Distrito Federal',
+        'ES' => 'Espírito Santo',
+        'GO' => 'Goiás',
+        'MA' => 'Maranhão',
+        'MT' => 'Mato Grosso',
+        'MS' => 'Mato Grosso do Sul',
+        'MG' => 'Minas Gerais',
+        'PA' => 'Pará',
+        'PB' => 'Paraíba',
+        'PR' => 'Paraná',
+        'PE' => 'Pernambuco',
+        'PI' => 'Piauí',
+        'RJ' => 'Rio de Janeiro',
+        'RN' => 'Rio Grande do Norte',
+        'RS' => 'Rio Grande do Sul',
+        'RO' => 'Rondônia',
+        'RR' => 'Roraima',
+        'SC' => 'Santa Catarina',
+        'SP' => 'São Paulo',
+        'SE' => 'Sergipe',
+        'TO' => 'Tocantins'
+    ]
+];
+    
+$metadata_config_color = [
+    'label' => 'Cor da entidade',
+    'validations' => [
+        $color_validation => 'cor inválida'
+    ]
+];
+
+$metadata_config_area = [
+    'label' => 'Área de atuação',
+    'type' => 'multiselect',
+    'serialize' => function($v) {
+        return json_encode($v);
+    },
+    'unserialize' => function($v) {
+        return json_decode($v);
+    },
+    'options' => [
+        'Antropologia',
+        'Arqueologia',
+        'Arquitetura*Urbanismo',
+        'Arquivo',
+        'Arte Digital',
+        'Arte de Rua',
+        'Artes Visuais',
+        'Artesanato',
+        'Audiovisual',
+        'Cinema',
+        'Circo',
+        'Comunicação',
+        'Cultura Cigana',
+        'Cultura Digital',
+        'Cultura Estrangeira (imigrantes)',
+        'Cultura Indígena',
+        'Cultura LGBT',
+        'Cultura Negra',
+        'Cultura Popular',
+        'Dança',
+        'Design',
+        'Direito Autoral',
+        'Economia Criativa',
+        'Educação',
+        'Esporte',
+        'Filosofia',
+        'Fotografia',
+        'Gastronomia',
+        'Gestão Cultural',
+        'História',
+        'Jogos Eletrônicos',
+        'Jornalismo',
+        'Leitura',
+        'Literatura',
+        'Livro',
+        'Meio Ambiente',
+        'Moda',
+        'Museu',
+        'Mídias Sociais',
+        'Música',
+        'Novas Mídias',
+        'Outros',
+        'Patrimônio Imaterial',
+        'Patrimônio Material',
+        'Pesquisa',
+        'Produção Cultural',
+        'Rádio',
+        'Saúde',
+        'Sociologia',
+        'Teatro',
+        'Televisão',
+        'Turismo'
+    ]
+];
+
 return array(
     'metadata' => array(
         'URL' => array(
@@ -25,122 +137,58 @@ return array(
                 'Selos'
             )
         ),
-        'cor_agentes' => array(
-            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
-            'validations' => [
-                $color_validation => 'cor inválida'
-            ]
-        ),
-        'cor_espacos' => array(
-            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
-            'validations' => [
-                $color_validation => 'cor inválida'
-            ]
-        ),
-        'cor_projetos' => array(
-            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
-            'validations' => [
-                $color_validation => 'cor inválida'
-            ]
-        ),
-        'cor_eventos' => array(
-            'label' => 'Escolha uma cor hexadecimal. Ex: #FF1212',
-            'validations' => [
-                $color_validation => 'cor inválida'
-            ]
-        ),
-        'cor_selos' => array(
-            'label' => 'Cor: Selos',
-            'validations' => [
-                $color_validation => 'cor inválida'
-            ]
-        ),
-        'filtro_space_meta_En_Estado' => array(
-            'label' => 'Estado',
-            'type' => 'multiselect',
+        'cor_agentes' => $metadata_config_color,
+        'cor_espacos' => $metadata_config_color,
+        'cor_projetos' => $metadata_config_color,
+        'cor_eventos' => $metadata_config_color,
+        'cor_selos' => $metadata_config_color,
+        
+        'filtro_space_meta_En_Estado' => $metadata_config_estado,
+        
+        'filtro_space_meta_En_Municipio' => [
+            'label' => 'Município',
+            'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
             },
             'unserialize' => function($v) {
                 return json_decode($v);
             },
-            'options' => array(
-                'AC' => 'Acre',
-                'AL' => 'Alagoas',
-                'AP' => 'Amapá',
-                'AM' => 'Amazonas',
-                'BA' => 'Bahia',
-                'CE' => 'Ceará',
-                'DF' => 'Distrito Federal',
-                'ES' => 'Espírito Santo',
-                'GO' => 'Goiás',
-                'MA' => 'Maranhão',
-                'MT' => 'Mato Grosso',
-                'MS' => 'Mato Grosso do Sul',
-                'MG' => 'Minas Gerais',
-                'PA' => 'Pará',
-                'PB' => 'Paraíba',
-                'PR' => 'Paraná',
-                'PE' => 'Pernambuco',
-                'PI' => 'Piauí',
-                'RJ' => 'Rio de Janeiro',
-                'RN' => 'Rio Grande do Norte',
-                'RS' => 'Rio Grande do Sul',
-                'RO' => 'Rondônia',
-                'RR' => 'Roraima',
-                'SC' => 'Santa Catarina',
-                'SP' => 'São Paulo',
-                'SE' => 'Sergipe',
-                'TO' => 'Tocantins'
-            )
-        /* ,
-          'validations' => array(
-          "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
-          ) */
-        ),
-        'filtro_agent_meta_En_Estado' => array(
-            'label' => 'Estado',
-            'type' => 'multiselect',
+        ],
+        'filtro_space_meta_En_Bairro' => [
+            'label' => 'Bairro',
+            'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
             },
             'unserialize' => function($v) {
                 return json_decode($v);
             },
-            'options' => array(
-                'AC' => 'Acre',
-                'AL' => 'Alagoas',
-                'AP' => 'Amapá',
-                'AM' => 'Amazonas',
-                'BA' => 'Bahia',
-                'CE' => 'Ceará',
-                'DF' => 'Distrito Federal',
-                'ES' => 'Espírito Santo',
-                'GO' => 'Goiás',
-                'MA' => 'Maranhão',
-                'MT' => 'Mato Grosso',
-                'MS' => 'Mato Grosso do Sul',
-                'MG' => 'Minas Gerais',
-                'PA' => 'Pará',
-                'PB' => 'Paraíba',
-                'PR' => 'Paraná',
-                'PE' => 'Pernambuco',
-                'PI' => 'Piauí',
-                'RJ' => 'Rio de Janeiro',
-                'RN' => 'Rio Grande do Norte',
-                'RS' => 'Rio Grande do Sul',
-                'RO' => 'Rondônia',
-                'RR' => 'Roraima',
-                'SC' => 'Santa Catarina',
-                'SP' => 'São Paulo',
-                'SE' => 'Sergipe',
-                'TO' => 'Tocantins'
-            )
-        /* ,
-          'validations' => array(
-          "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
-          ) */
-        ),
+        ],
+        
+        'filtro_agent_meta_En_Estado' => $metadata_config_estado,
+        
+        'filtro_agent_meta_En_Municipio' => [
+            'label' => 'Município',
+            'type' => 'tag',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return json_decode($v);
+            },
+        ],
+        'filtro_agent_meta_En_Bairro' => [
+            'label' => 'Bairro',
+            'type' => 'tag',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return json_decode($v);
+            },
+        ],
+        
         'filtro_space_meta_type' => array(
             'label' => 'Tipo de espaço',
             'type' => 'multiselect',
@@ -214,134 +262,9 @@ return array(
                 103 => 'Videolocadora'
             )
         ),
-        'filtro_space_term_area' => array(
-            'label' => 'Área de atuação',
-            'type' => 'multiselect',
-            'serialize' => function($v) {
-                return json_encode($v);
-            },
-            'unserialize' => function($v) {
-                return json_decode($v);
-            },
-            'options' => array(
-                'Antropologia',
-                'Arqueologia',
-                'Arquitetura*Urbanismo',
-                'Arquivo',
-                'Arte Digital',
-                'Arte de Rua',
-                'Artes Visuais',
-                'Artesanato',
-                'Audiovisual',
-                'Cinema',
-                'Circo',
-                'Comunicação',
-                'Cultura Cigana',
-                'Cultura Digital',
-                'Cultura Estrangeira (imigrantes)',
-                'Cultura Indígena',
-                'Cultura LGBT',
-                'Cultura Negra',
-                'Cultura Popular',
-                'Dança',
-                'Design',
-                'Direito Autoral',
-                'Economia Criativa',
-                'Educação',
-                'Esporte',
-                'Filosofia',
-                'Fotografia',
-                'Gastronomia',
-                'Gestão Cultural',
-                'História',
-                'Jogos Eletrônicos',
-                'Jornalismo',
-                'Leitura',
-                'Literatura',
-                'Livro',
-                'Meio Ambiente',
-                'Moda',
-                'Museu',
-                'Mídias Sociais',
-                'Música',
-                'Novas Mídias',
-                'Outros',
-                'Patrimônio Imaterial',
-                'Patrimônio Material',
-                'Pesquisa',
-                'Produção Cultural',
-                'Rádio',
-                'Saúde',
-                'Sociologia',
-                'Teatro',
-                'Televisão',
-                'Turismo'
-            )
-        ),
-        'filtro_agent_term_area' => array(
-            'label' => 'Área de atuação',
-            'type' => 'multiselect',
-            'serialize' => function($v) {
-                return json_encode($v);
-            },
-            'unserialize' => function($v) {
-                return json_decode($v);
-            },
-            'options' => array(
-                'Antropologia',
-                'Arqueologia',
-                'Arquitetura*Urbanismo',
-                'Arquivo',
-                'Arte Digital',
-                'Arte de Rua',
-                'Artes Visuais',
-                'Artesanato',
-                'Audiovisual',
-                'Cinema',
-                'Circo',
-                'Comunicação',
-                'Cultura Cigana',
-                'Cultura Digital',
-                'Cultura Estrangeira (imigrantes)',
-                'Cultura Indígena',
-                'Cultura LGBT',
-                'Cultura Negra',
-                'Cultura Popular',
-                'Dança',
-                'Design',
-                'Direito Autoral',
-                'Economia Criativa',
-                'Educação',
-                'Esporte',
-                'Filosofia',
-                'Fotografia',
-                'Gastronomia',
-                'Gestão Cultural',
-                'História',
-                'Jogos Eletrônicos',
-                'Jornalismo',
-                'Leitura',
-                'Literatura',
-                'Livro',
-                'Meio Ambiente',
-                'Moda',
-                'Museu',
-                'Mídias Sociais',
-                'Música',
-                'Novas Mídias',
-                'Outros',
-                'Patrimônio Imaterial',
-                'Patrimônio Material',
-                'Pesquisa',
-                'Produção Cultural',
-                'Rádio',
-                'Saúde',
-                'Sociologia',
-                'Teatro',
-                'Televisão',
-                'Turismo'
-            )
-        ),
+        'filtro_space_term_area' => $metadata_config_area,
+        'filtro_agent_term_area' => $metadata_config_area,
+                    
         'filtro_event_term_linguagem' => array(
             'label' => 'Linguagem',
             'type' => 'multiselect',
@@ -425,57 +348,4 @@ return array(
             'label' => 'Título da entidade'
         )
     )
-        /* EXEMPLOS DE METADADOS:
-
-          'cnpj' => array(
-          'label' => 'CNPJ',
-          'type' => 'text',
-          'validations' => array(
-          'unique' => 'Este CNPJ já está cadastrado em nosso sistema.',
-          'v::cnpj()' => 'O CNPJ é inválido.'
-          )
-          ),
-          'cpf' => array(
-          'label' => 'CPF',
-          'type' => 'text',
-          'validations' => array(
-          'required' => 'Por favor, informe o CPF.',
-          'v::cpf()' => 'O CPF é inválido.'
-          )
-          ),
-          'radio' => array(
-          'label' => 'Um exemplo de input radio',
-          'type' => 'radio',
-          'options' => array(
-          'valor1' => 'Label do valor 1',
-          'valor2' => 'Label do valor 2',
-          ),
-          'default_value' => 'valor1'
-          ),
-          'checkboxes' => array(
-          'label' => 'Um exemplo de grupo de checkboxes',
-          'type' => 'checkboxes',
-          'options' => array(
-          'valor1' => 'Label do Primeiro checkbox',
-          'valor2' => 'Label do Primeiro checkbox'
-          ),
-          'default_value' => array(),
-          'validations' => array(
-          'v::arrayType()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
-          )
-          ),
-          'checkbox' => array(
-          'label' => 'Um exemplo de campo booleano com checkbox.',
-          'type' => 'checkbox',
-          'input_value' => 1,
-          'default_value' => 0
-          ),
-          'site' => array(
-          'label' => 'Site',
-          'type' => 'text',
-          'validations'=> array(
-          'v::url()' => 'A URL informada é inválida.'
-          )
-          )
-         */
 );

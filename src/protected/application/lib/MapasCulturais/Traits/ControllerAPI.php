@@ -467,10 +467,7 @@ trait ControllerAPI{
             $dql_where = $dql_where ? "WHERE
                     $dql_where" : "";
 
-            if(in_array('status', $entity_properties)){
-                $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
-                $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
-            }
+
 
             if($keyword){
                 $repo = $this->repo();
@@ -506,6 +503,22 @@ trait ControllerAPI{
             }
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
+            
+                
+            $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
+                
+            if($app->getCurrentSubsiteId() && $class::usesOriginSubsite()){
+                $current_subsite_id = $app->getCurrentSubsiteId();
+                
+                if($dql_where) {
+                    $dql_where = str_replace('WHERE', "WHERE $status_where AND (e._subsiteId = $current_subsite_id OR (", $dql_where);
+                    $dql_where .= '))';
+                } else {
+                    $dql_where = "WHERE e._subsiteId = $current_subsite_id AND $status_where";
+                }
+            } else {
+                $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
+            }
             
             $final_dql = "
                 SELECT PARTIAL

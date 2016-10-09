@@ -1,5 +1,5 @@
 <?php $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit'; ?>
-<div id="sobre" class="aba-content">
+<div id="texts" class="aba-content">
 
     <?php if($this->isEditable() || $entity->titulo): ?>
         <p>

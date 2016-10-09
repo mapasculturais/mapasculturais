@@ -265,7 +265,7 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
         
-        if($this->usesOriginSubsite() && !$this->authorizedInThisSite()){
+        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite()){
             return false;
         }
 
@@ -520,11 +520,18 @@ abstract class Entity implements \JsonSerializable{
         }
 
         try{
-            if($this->isNew())
+            if($this->isNew()){
                 $this->checkPermission('create');
-            else
-                $this->checkPermission('modify');
+                
 
+                if($this->usesOriginSubsite()){
+                    $this->subsite = $app->getCurrentSubsite();
+                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                }
+                
+            }else{
+                $this->checkPermission('modify');
+            }
             $app->em->persist($this);
 
             if($flush){
@@ -767,7 +774,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
-
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
     }
