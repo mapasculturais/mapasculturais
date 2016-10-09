@@ -247,13 +247,20 @@ class Subsite extends \MapasCulturais\Entity
                 $app->cache->save($cache_id, $ids, 60);
             }
             
+            $subsite_id = $app->getCurrentSubsiteId();
             
-            if($ids){
-                $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids) {
-                    $dql_where .= " AND e.id IN ($ids) ";
-                });
-            }
+            $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids, $subsite_id) {
+                if($ids){
+                    $dql_where .= " AND (e.id IN ($ids) OR e._subsiteId = {$subsite_id})";
+                } else {
+                    $dql_where .= " AND e._subsiteId = {$subsite_id}";
+                }
+            });
         }
+        
+        $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids, $subsite_id) {
+            $dql_where .= " AND e._subsiteId = {$subsite_id}";
+        });
         
         $app->em->clear();
     }
@@ -261,6 +268,18 @@ class Subsite extends \MapasCulturais\Entity
     
     public function getSassCacheId(){
         return "Subsite-{$this->id}:_variables.scss";
+    }
+    
+    protected function canUserDestroy($user) {
+        return $user->is('saasSuperAdmin');
+    }
+    
+    protected function canUserRemove($user) {
+        return $user->is('saasAdmin');
+    }
+    
+    protected function canUserModify($user) {
+        return $user->is('superAdmin');
     }
     
     public function save($flush = false) {

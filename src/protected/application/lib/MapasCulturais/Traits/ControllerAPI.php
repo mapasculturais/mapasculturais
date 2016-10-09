@@ -497,7 +497,6 @@ trait ControllerAPI{
                     $dql_where" : "";
 
 
-
             if($keyword){
                 $repo = $this->repo();
                 if($repo->usesKeyword()){

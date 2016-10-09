@@ -200,6 +200,15 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('superAdmin') && $user->id != $this->id;
     }
 
+    protected function canUserAddRoleSaasAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+
+    protected function canUserAddRoleSaasSuperAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+    
+
     protected function canUserRemoveRole($user){
         return $user->is('admin') && $user->id != $this->id;
     }
@@ -212,28 +221,39 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('superAdmin') && $user->id != $this->id;
     }
     
+    protected function canUserRemoveRoleSaasAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+
+    protected function canUserRemoveRoleSaasSuperAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+    
     function is($role_name){
-        if($role_name == 'admin' && $this->is('superAdmin'))
+        if($role_name === 'admin' && $this->is('superAdmin')){
             return true;
+        }
+        
+        if($role_name === 'superAdmin' && $this->is('saasAdmin')){
+            return true;
+        }
+        
+        if($role_name === 'saasAdmin' && $this->is('saasSuperAdmin')){
+            return true;
+        }
         
         $app = App::i();
         
-        // main site
-        foreach ($this->roles as $role) {
-            if ($role->name == $role_name && $role->subsiteId === null) {
-                return true;
-            }
+        if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
+            $subsite_id = null;
+        } else {
+            $subsite_id = $app->getCurrentSubsiteId();
         }
         
-        if ($app->getCurrentSubsiteId()) {
-            $subsite_ids = $app->view->subsiteInstance->getParentIds();
-            
-            foreach ($this->roles as $role) {
-                foreach($subsite_ids as $subsite_id){
-                    if ($role->name == $role_name && $role->subsiteId === $subsite_id ) {
-                        return true;
-                    }
-                }
+        
+        foreach ($this->roles as $role) {
+            if ($role->name == $role_name && $role->subsiteId === $subsite_id) {
+                return true;
             }
         }
 

@@ -21,7 +21,7 @@
             <?php $this->applyTemplateHook('nav.panel.spaces','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin')  || $app->user->is('admin') )): ?>
+        <?php if($app->isEnabled('seals') && $app->user->is('admin')): ?>
             <?php $this->applyTemplateHook('nav.panel.seals','before'); ?>
             <li><a <?php if($this->template == 'panel/seals') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'seals') ?>"><span class="icon icon-seal"></span> <?php $this->dict('entities: My Seals') ?></a></li>
             <?php $this->applyTemplateHook('nav.panel.seals','after'); ?>
@@ -37,7 +37,7 @@
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('subsite') && ($app->user->is('superAdmin') || $app->user->is('admin')) ): ?>
+        <?php if($app->isEnabled('subsite') && $app->user->is('saasAdmin')): ?>
             <?php $this->applyTemplateHook('nav.panel.subsite','before'); ?>
             <li><a <?php if($this->template == 'panel/subsite') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'subsite') ?>"><span class="icon icon-subsite"></span> <?php $this->dict('entities: My Subsites') ?></a></li>
             <?php $this->applyTemplateHook('nav.panel.subsite','after'); ?>

@@ -77,16 +77,9 @@ function printSubsiteFilter($property){
     <section class="filter-section">
         <header>Eventos</header>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_event_term_linguagem") && $editEntity? 'required': '');?>">Linguagem: </span>
-          <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="Linguagem" data-emptytext="Selecione o(s) tipos(s) de linguagem"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
+            <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_event_term_linguagem") && $editEntity? 'required': '');?>">Linguagem: </span>
+            <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="Linguagem" data-emptytext="Selecione o(s) tipos(s) de linguagem"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
         </p>
     </section>
-<!--        
-    <section class="filter-section">
-        <header>Projetos</header>
-
-    </section>
-        -->
-
 </div>
 
