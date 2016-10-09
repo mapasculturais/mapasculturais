@@ -14,6 +14,8 @@ trait ControllerAPI{
     private $_apiFindParamList = [];
 
     public $_lastQueryMetadata;
+    
+    protected $_subsiteEntityIds;
 
     public static function usesAPI(){
         return true;
@@ -181,7 +183,34 @@ trait ControllerAPI{
                 $this->apiErrorResponse('no data');
 
             $class = $this->entityClassName;
-
+            /*
+            if($app->getCurrentSubsiteId() && $class === 'MapasCulturais\Entities\Event'){
+                $space_ids = array_map(function($e){ return $e['id']; }, $app->controller('space')->apiQuery(['@select' => 'id']));
+                
+                if($space_ids) {
+                    
+                    $space_ids = implode(',', $space_ids);
+                    
+                    
+                    $eo_ids = array_map(function($e){ return $e['event']['id']; }, $app->controller('eventOccurrence')->apiQuery([
+                        '@select' => 'event.id', 
+                        'space' => "IN($space_ids)"
+                    ]));
+                    
+                    $app->em->clear();
+                    
+                    if($eo_ids){
+                        $qdata['id'] = 'IN(' . implode(',', $eo_ids) . ')';
+                    } else {
+                        $qdata['id'] = 'EQ(0)';
+                    }
+                } else {
+                    $qdata['id'] = 'EQ(0)';
+                }
+                
+            }
+            */
+            
             $entity_properties = array_keys($app->em->getClassMetadata($this->entityClassName)->fieldMappings);
 
             $entity_associations = $app->em->getClassMetadata($this->entityClassName)->associationMappings;
@@ -501,24 +530,11 @@ trait ControllerAPI{
             if(in_array('type', $select)){
                 $select_properties .= ',_type';
             }
+            
+            $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
+            $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
-            
-                
-            $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
-                
-            if($app->getCurrentSubsiteId() && $class::usesOriginSubsite()){
-                $current_subsite_id = $app->getCurrentSubsiteId();
-                
-                if($dql_where) {
-                    $dql_where = str_replace('WHERE', "WHERE $status_where AND (e._subsiteId = $current_subsite_id OR (", $dql_where);
-                    $dql_where .= '))';
-                } else {
-                    $dql_where = "WHERE e._subsiteId = $current_subsite_id AND $status_where";
-                }
-            } else {
-                $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
-            }
             
             $final_dql = "
                 SELECT PARTIAL
@@ -757,7 +773,8 @@ trait ControllerAPI{
     }
 
 
-    private function _API_find_parseParam($key, $expression){
+    protected function _API_find_parseParam($key, $expression){
+        
         if(is_string($expression) && !preg_match('#^[ ]*(!)?([a-z]+)[ ]*\((.*)\)$#i', $expression, $match)){
             $this->apiErrorResponse('invalid expression: '. ">>$expression<<");
         }else{
@@ -769,7 +786,7 @@ trait ControllerAPI{
 
             if($operator == 'OR' || $operator == 'AND'){
                 $expressions = $this->_API_find_parseExpression($value);
-
+                
                 foreach($expressions as $expression){
                     $sub_dql = $this->_API_find_parseParam($key, $expression);
                     $dql .= $dql ? " $operator $sub_dql" : "($sub_dql";
@@ -786,6 +803,24 @@ trait ControllerAPI{
 
                 $dql = $not ? "$key NOT IN (" : "$key IN (";
                 $dql .= implode(', ', $values) . ')';
+
+            }elseif($operator == "IIN"){
+                $values = $this->_API_find_splitParam($value);
+                
+                $values = $this->_API_find_addValueToParamList($values);
+                
+                $values = array_map(function($e) use ($key, $not) { 
+                    if($not){
+                        return "unaccent(lower($key)) != unaccent(lower($e))"; 
+                    }else{
+                        return "unaccent(lower($key)) = unaccent(lower($e))"; 
+                    }
+                } , $values);
+
+                if(count($values) < 1)
+                    $this->apiErrorResponse ('expression IN expects at last one value');
+                
+                $dql = "\n(\n\t" . ($not ? implode("\n\t AND ", $values) : implode("\n\t OR ", $values) ) . "\n)";
 
 
             }elseif($operator == "BET"){

@@ -25,7 +25,7 @@
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Event::STATUS_ARCHIVED): ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
-        <?php elseif: ?>
+        <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
                 <?php if($entity->canUser('destroy')): ?>
                     <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>

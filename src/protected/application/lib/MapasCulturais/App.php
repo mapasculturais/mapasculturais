@@ -342,11 +342,15 @@ class App extends \Slim\Slim{
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
-
-        $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain]);
-        if(!$this->_subsite){
-            $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain]);
-        }
+        try{
+            // para permitir o db update rodar para criar a tabela do subsite
+            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain]);
+            
+            if(!$this->_subsite){
+                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain]);
+            }
+        } catch ( \Doctrine\DBAL\Exception\TableNotFoundException $e) { }
+        
         
         if($this->_subsite){
             $theme_class = $this->_subsite->namespace . "\Theme";

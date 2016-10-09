@@ -1,9 +1,30 @@
 <?php
 namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
+use MapasCulturais\App;
 
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
+    
+    protected function _getCurrentSubsiteSpaceIds(){
+        $app = App::i();
+        if($subsite_id = $app->getCurrentSubsiteId()){
+            $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
+            
+            if($_api_result){
+                $space_ids = implode(',', array_map(function($e){
+                    return $e['id'];
+                }, $_api_result));
+            }else{
+                $space_ids = 0;
+            }
+            
+        } else {
+            $space_ids = "SELECT id FROM space WHERE status > 0";
+        }
+        
+        return $space_ids;
+    }
 
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
@@ -22,6 +43,11 @@ class Event extends \MapasCulturais\Repository{
 
         }else{
             $ids = '0';
+        }
+        
+        if(is_array($ids)){
+            $space_ids = $this->_getCurrentSubsiteSpaceIds();
+            $ids = array_intersect($ids, $space_ids);
         }
 
         if(is_null($date_from))
@@ -139,6 +165,8 @@ class Event extends \MapasCulturais\Repository{
 
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
+        
+        $space_ids = $this->_getCurrentSubsiteSpaceIds();
 
         $strNativeQuery = "
             SELECT
@@ -148,7 +176,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN 
                 event_occurrence eo 
                     ON eo.event_id = e.id 
-                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.space_id IN ($space_ids)
                         AND eo.status > 0
             WHERE
                 e.status > 0 AND 
@@ -159,7 +187,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM 
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
                     WHERE 
-                        space_id IN (SELECT id FROM space WHERE status > 0)
+                        space_id IN ($space_ids)
                 )
 
             $dql_limit $dql_offset
@@ -212,6 +240,8 @@ class Event extends \MapasCulturais\Repository{
 
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
+        
+        $space_ids = $this->_getCurrentSubsiteSpaceIds();
 
         $strNativeQuery = "
             SELECT
@@ -221,7 +251,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN 
                 event_occurrence eo 
                     ON eo.event_id = e.id 
-                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.space_id IN ($space_ids)
                         AND eo.status > 0
 
             WHERE
@@ -244,7 +274,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM 
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
                     WHERE 
-                        space_id IN (SELECT id FROM space WHERE status > 0)
+                        space_id IN ($space_ids)
                 )
                 
 
@@ -274,7 +304,7 @@ class Event extends \MapasCulturais\Repository{
 
 
     public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
-
+        $app = App::i();
         if(is_null($date_from))
             $date_from = date('Y-m-d');
         else if($date_from instanceof \DateTime)
@@ -307,7 +337,10 @@ class Event extends \MapasCulturais\Repository{
 
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
-
+        
+        
+        $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        
         $strNativeQuery = "
             SELECT
                 e.{$select}
@@ -316,7 +349,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN 
                 event_occurrence eo 
                     ON eo.event_id = e.id 
-                        AND eo.space_id IN (SELECT id FROM space WHERE status > 0)
+                        AND eo.space_id IN ($space_ids)
                         AND eo.status > 0
 
             WHERE
@@ -327,7 +360,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM 
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
                     WHERE 
-                        space_id IN (SELECT id FROM space WHERE status > 0)
+                        space_id IN ($space_ids)
                 )
 
             $dql_limit $dql_offset
@@ -337,7 +370,7 @@ class Event extends \MapasCulturais\Repository{
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
 
-        $app = \MapasCulturais\App::i();
+        
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 

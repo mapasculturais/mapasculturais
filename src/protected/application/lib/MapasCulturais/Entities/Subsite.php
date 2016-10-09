@@ -217,7 +217,7 @@ class Subsite extends \MapasCulturais\Entity
                             $meta_cont = $this->$k;
                             $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
                             $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
-                            $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
+                            $this->filters[$controller][$meta_name] = "IIN(" . str_replace(";",",",$meta_cont) . ")";
                         }
                     }
                 }
@@ -225,18 +225,37 @@ class Subsite extends \MapasCulturais\Entity
         }
 
         foreach($this->filters as $controller => $entity_filters){
-            $app->log->debug("controller: " . $controller);
+            $cache_id = "subsite:{$controller}:Ids";
+            
+            $ids = null;
+            
+            if($app->cache->contains($cache_id)){
+                $ids = $app->cache->fetch($cache_id);
 
-            $app->hook("API.<<*>>({$controller}).params", function(&$qdata) use($entity_filters,$app){
+            } else {
+                $subsite_qdata = ['@select' => 'id'];
+
                 foreach($entity_filters as $key => $val){
-                    if(!isset($qdata[$key])){
-                        $qdata[$key] = $val;
-                    } else {
-                        $qdata[$key] = "AND($val," . $qdata[$key] . ')';
-                    }
+                    $subsite_qdata[$key] = $val;
                 }
-            });
+
+                $ids = $app->controller($controller)->apiQuery($subsite_qdata);
+                
+                if(is_array($ids)){
+                    $ids = implode(',',array_map(function($e){ return $e['id']; }, $ids));
+                } 
+                $app->cache->save($cache_id, $ids, 60);
+            }
+            
+            
+            if($ids){
+                $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids) {
+                    $dql_where .= " AND e.id IN ($ids) ";
+                });
+            }
         }
+        
+        $app->em->clear();
     }
     
     
