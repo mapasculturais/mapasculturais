@@ -525,7 +525,6 @@ abstract class Entity implements \JsonSerializable{
                 
 
                 if($this->usesOriginSubsite()){
-                    $this->subsite = $app->getCurrentSubsite();
                     $this->_subsiteId = $app->getCurrentSubsiteId();
                 }
                 
