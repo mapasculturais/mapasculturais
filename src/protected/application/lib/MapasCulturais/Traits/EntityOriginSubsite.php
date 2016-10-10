@@ -4,12 +4,6 @@ use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
 
 trait EntityOriginSubsite{
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
-    protected $_subsiteId;
     
     static function usesOriginSubsite(){
         return true;

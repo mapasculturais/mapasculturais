@@ -216,6 +216,14 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

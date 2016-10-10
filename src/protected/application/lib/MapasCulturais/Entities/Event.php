@@ -183,6 +183,14 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     private $_newProject = false;
 
