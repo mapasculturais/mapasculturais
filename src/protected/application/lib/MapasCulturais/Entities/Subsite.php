@@ -223,6 +223,8 @@ class Subsite extends \MapasCulturais\Entity
                 }
             }
         }
+        
+        $subsite_id = $app->getCurrentSubsiteId();
 
         foreach($this->filters as $controller => $entity_filters){
             $cache_id = "subsite:{$controller}:Ids";
@@ -247,7 +249,6 @@ class Subsite extends \MapasCulturais\Entity
                 $app->cache->save($cache_id, $ids, 60);
             }
             
-            $subsite_id = $app->getCurrentSubsiteId();
             
             $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids, $subsite_id) {
                 if($ids){
@@ -258,7 +259,7 @@ class Subsite extends \MapasCulturais\Entity
             });
         }
         
-        $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids, $subsite_id) {
+        $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
             $dql_where .= " AND e._subsiteId = {$subsite_id}";
         });
         
