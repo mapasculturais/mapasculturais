@@ -339,17 +339,17 @@ class App extends \Slim\Slim{
 //        
 //        die($domain);
 
+        // para permitir o db update rodar para criar a tabela do subsite
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
         try{
-            // para permitir o db update rodar para criar a tabela do subsite
             $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain]);
             
             if(!$this->_subsite){
                 $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain]);
             }
-        } catch ( \Doctrine\DBAL\Exception\TableNotFoundException $e) { }
+        } catch ( \Exception $e) { }
         
         
         if($this->_subsite){
