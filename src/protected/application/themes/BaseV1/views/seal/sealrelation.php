@@ -40,7 +40,9 @@ $entity = $relation->seal;
 
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--seal.png']); ?>
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?>
+			<?php $this->applyTemplateHook('name','before'); ?>
+			<h2><span class="js-editable" data-edit="name" data-original-title="Nome de exibição" data-emptytext="Nome de exibição"><a href="<?php echo $app->createUrl('seal', 'single', ['id' => $entity->id])?>"><?php echo $entity->name; ?></a></span></h2>
+			<?php $this->applyTemplateHook('name','after'); ?>
 
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
