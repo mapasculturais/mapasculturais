@@ -124,7 +124,18 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
-    
+
+    <?php $this->applyTemplateHook('tabs','before'); ?>
+    <ul class="abas clearfix clear">
+        <?php $this->applyTemplateHook('tabs','begin'); ?>
+        <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
+        <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
+        <?php $this->applyTemplateHook('tabs','end'); ?>
+    </ul>
+    <?php $this->applyTemplateHook('tabs','after'); ?>
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         
