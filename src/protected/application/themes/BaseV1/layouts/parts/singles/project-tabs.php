@@ -13,8 +13,10 @@
     <?php if(!$entity->isNew()): ?>
         <li ng-if="data.entity.userHasControl && data.entity.events.length" ><a href="#eventos">Status dos eventos</a></li>
     <?php endif; ?>
-    
+
+    <?php if(!($this->controller->action === 'create')):?>
     <li><a href="#permissao">Permissões</a></li>
+    <?php endif;?>
     <?php $this->applyTemplateHook('tabs','end'); ?>
 </ul>
 <?php $this->applyTemplateHook('tabs','after'); ?>
