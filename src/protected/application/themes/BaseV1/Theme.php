@@ -950,6 +950,10 @@ class Theme extends MapasCulturais\Theme {
         	$query = [];
         	$query['@select'] = 'id,name,status, singleUrl';
 
+            if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
+
         	$query['@files'] = '(avatar.avatarMedium):url';
         	$sealId = implode(',',array_unique($sealId));
 
@@ -964,7 +968,7 @@ class Theme extends MapasCulturais\Theme {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
         	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
+        	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
         		$this->jsObject['canRelateSeal'] = true;
         	} else {
         		$this->jsObject['canRelateSeal'] = false;
