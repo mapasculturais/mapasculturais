@@ -185,5 +185,13 @@ return [
 
     'Created owner seal relation field' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN owner_id INTEGER;");
+        $agent_id = $conn->fetchColumn("select profile_id
+                    from usr
+                    where id = (
+                        select min(usr_id)
+                        from role
+                        where name = 'superAdmin'
+                    )");
+        $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
     }
 ];
