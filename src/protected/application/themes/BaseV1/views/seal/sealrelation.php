@@ -55,7 +55,7 @@ $entity = $relation->seal;
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        
+
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -75,33 +75,6 @@ $entity = $relation->seal;
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Selo" data-emptytext="Insira uma descrição do selo" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
             <!--.descricao-->
-						<?php
-						/*
-						 * Mapas Culturais entity seal atributed printing.
-						 */
-						//$entity = $relation->seal;
-						//$app = App::i();
-						$period = new DateInterval("P" . $entity->validPeriod . "M");
-						$dateIni = $relation->createTimestamp->format("d/m/Y");
-						$dateFin = $relation->createTimestamp->add($period);
-						$dateFin = $dateFin->format("d/m/Y");
-
-						$mensagem = $relation->seal->certificateText;
-						$mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
-						$mensagem = str_replace("[sealName]",$relation->seal->name,$mensagem);
-						$mensagem = str_replace("[sealOwner]",$relation->seal->agent->name,$mensagem);
-						$mensagem = str_replace("[sealShortDescription]",$relation->seal->shortDescription,$mensagem);
-						$mensagem = str_replace("[sealRelationLink]",$app->createUrl('seal','printsealrelation',[$relation->id]),$mensagem);
-						$mensagem = str_replace("[entityDefinition]",$relation->owner->entityType,$mensagem);
-						$mensagem = str_replace("[entityName]",$relation->owner->name,$mensagem);
-						$mensagem = str_replace("[dateIni]",$dateIni,$mensagem);
-						$mensagem = str_replace("[dateFin]",$dateFin,$mensagem);
-						?>
-						<p>
-							<h3>Conteúdo da Impressão</h3>
-							<span class="descricao js-editable" data-edit="certificateText" data-original-title="Conteúdo da Impressão do Certificado" data-emptytext="Insira o conteúdo da impressão do certificado do selo." ><?php echo $mensagem; ?></span>
-				            <!--.conteúdo da impressão do certificado do selo-->
-						</p>
         </div>
         <!-- #sobre -->
 
