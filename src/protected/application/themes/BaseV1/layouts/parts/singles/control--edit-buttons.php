@@ -1,5 +1,5 @@
 <!-- se estiver na página de edição e logado mostrar:-->
-<?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
+<?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration' && $entity->singleUrl != $entity->editUrl): ?>
     <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit">Sair do modo de edição</a>
 <?php endif; ?>
 
