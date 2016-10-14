@@ -6,15 +6,19 @@ use MapasCulturais\App;
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
     
-    protected function _getCurrentSubsiteSpaceIds(){
+    protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($subsite_id = $app->getCurrentSubsiteId()){
             $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
             
             if($_api_result){
-                $space_ids = implode(',', array_map(function($e){
+                $space_ids = array_map(function($e){
                     return $e['id'];
-                }, $_api_result));
+                }, $_api_result);
+            
+                if($implode){
+                    $space_ids = implode(',', $space_ids);
+                }
             }else{
                 $space_ids = 0;
             }
@@ -27,6 +31,8 @@ class Event extends \MapasCulturais\Repository{
     }
 
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
+        
+        $app = App::i();
 
         if($space instanceof \MapasCulturais\Entities\Space){
             $ids = $space->getChildrenIds();
@@ -45,9 +51,10 @@ class Event extends \MapasCulturais\Repository{
             $ids = '0';
         }
         
-        if(is_array($ids)){
-            $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        if(is_array($ids) && $app->getCurrentSubsiteId()){
+            $space_ids = $this->_getCurrentSubsiteSpaceIds(false);
             $ids = array_intersect($ids, $space_ids);
+            
         }
 
         if(is_null($date_from))
@@ -105,7 +112,6 @@ class Event extends \MapasCulturais\Repository{
 
         $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
 
-        $app = \MapasCulturais\App::i();
         if($app->config['app.useEventsCache'])
             $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
 
@@ -117,6 +123,8 @@ class Event extends \MapasCulturais\Repository{
 
 
         $result = $query->getResult();
+        
+        $app->detachRS($result);
 
         return $result;
     }
@@ -209,6 +217,8 @@ class Event extends \MapasCulturais\Repository{
 
 
         $result = $query->getResult();
+        
+        $app->detachRS($result);
 
         return $result;
     }
@@ -298,6 +308,8 @@ class Event extends \MapasCulturais\Repository{
 
 
         $result = $query->getResult();
+        
+        $app->detachRS($result);
 
         return $result;
     }
@@ -383,9 +395,9 @@ class Event extends \MapasCulturais\Repository{
             $result = array_map(function($e){ return $e['e_id']; }, $query->getScalarResult());
         }else{
             $result = $query->getResult();
+            
+            $app->detachRS($result);
         }
-
-        $this->_em->clear();
 
         return $result;
     }
