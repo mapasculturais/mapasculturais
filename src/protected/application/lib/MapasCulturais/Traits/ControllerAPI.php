@@ -164,6 +164,14 @@ trait ControllerAPI{
         else
             return (int) $default_lifetime;
     }
+    
+    
+    protected function detachApiQueryRS($rs){
+        $em = App::i()->em;
+        foreach($rs as $r){
+            $em->detach($r);
+        }
+    }
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -577,8 +585,7 @@ trait ControllerAPI{
             }
 
             $query->setParameters($this->_apiFindParamList);
-            $rs = $query->getResult();
-
+            
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
                     return;
@@ -695,6 +702,9 @@ trait ControllerAPI{
 
                 if($permissions){
                     $rs = $query->getResult();
+                    
+                    $this->detachApiQueryRS($rs);
+                    
                     $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
@@ -741,6 +751,8 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
+                    $this->detachApiQueryRS($rs);
+
 
                     $sub_queries($rs);
                 }else{
@@ -748,6 +760,8 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
+                        $this->detachApiQueryRS($rs);
+
                     }
 
                     $sub_queries($rs);
