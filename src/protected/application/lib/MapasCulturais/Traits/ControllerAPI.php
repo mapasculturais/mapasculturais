@@ -493,15 +493,16 @@ trait ControllerAPI{
             if($metadata_class)
                 $metadata_class = ", $metadata_class m";
 
-            $dql_where = $dql_where ? "WHERE
-                    $dql_where" : "";
-
 
             if($keyword){
                 $repo = $this->repo();
                 if($repo->usesKeyword()){
                     $ids = implode(',',$repo->getIdsByKeyword($keyword));
-                    $dql_where .= $ids ? " AND e.id IN($ids)" : 'AND e.id < 0';
+                    if($dql_where){
+                        $dql_where .= $ids ? " AND e.id IN($ids)" : 'AND e.id < 0';
+                    } else {
+                        $dql_where .= $ids ? "e.id IN($ids)" : 'e.id < 0';
+                    }
                 }
             }
 
@@ -531,9 +532,11 @@ trait ControllerAPI{
             }
             
             $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
-            $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "WHERE {$status_where}";
+            $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "{$status_where}";
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
+            
+            $dql_where = "WHERE $dql_where";
             
             $final_dql = "
                 SELECT PARTIAL
