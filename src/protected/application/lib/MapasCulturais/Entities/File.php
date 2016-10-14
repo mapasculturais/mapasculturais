@@ -104,7 +104,7 @@ abstract class File extends \MapasCulturais\Entity
      *          )
      * @var array
      */
-    protected $tmpFile = ['name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
+    protected $tmpFile = ['error' => '', 'name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
 
     /**
      * Creates a new file from upload
