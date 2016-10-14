@@ -141,6 +141,10 @@ class Subsite extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
+    
+    public function getEditUrl() {
+        return $this->getSingleUrl();
+    }
 
     protected $_logo;
 
@@ -262,8 +266,6 @@ class Subsite extends \MapasCulturais\Entity
         $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
             $dql_where .= " AND e._subsiteId = {$subsite_id}";
         });
-        
-        $app->em->clear();
     }
     
     
@@ -284,6 +286,8 @@ class Subsite extends \MapasCulturais\Entity
     }
     
     public function save($flush = false) {
+        $this->slug = $this->url;
+        
         parent::save($flush);
         $app = App::i();
         
