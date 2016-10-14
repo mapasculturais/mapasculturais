@@ -966,13 +966,13 @@ class Theme extends MapasCulturais\Theme {
         	$app = App::i();
         	if (!$app->user->is('guest')) {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-        	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
-        		$this->jsObject['canRelateSeal'] = true;
-        	} else {
-        		$this->jsObject['canRelateSeal'] = false;
-        	}
+            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+            		$this->jsObject['canRelateSeal'] = true;
+            	} else {
+            		$this->jsObject['canRelateSeal'] = false;
+            	}
+            }
         }
 
     function addProjectEventsToJs(Entities\Project $entity){

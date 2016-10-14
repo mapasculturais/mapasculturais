@@ -1,3 +1,8 @@
+<?php
+if($app->user->is('guest'))
+    return false;
+?>
+
 <div id="permissao" class="aba-content">
     <?php foreach($app->user->agentWithControl as $agent): ?>
         <article class="objeto clearfix">
