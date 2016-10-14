@@ -26,18 +26,18 @@ $slag_editbla = $this->controller->action === 'create';
 
             <?php if($this->isEditable() || $entity->nome_instalacao): ?>
                 <p>
-                    <span class="setup-name js-editable <?php echo ($entity->isPropertyRequired($entity,"nome_instalacao") && $editEntity? 'required': '');?>" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
+                    <span class="setup-name js-editable required" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
                 </p>
             <?php endif; ?>
 
             <div>
                 <span class="icon"></span><span class="label">Namespace:</span> 
-                <span class="js-editable" data-edit="namespace" data-original-title="Namespace do Tema" data-emptytext="Selecione a o namespace do tema a ser utilizado"><?php echo $entity->namespace; ?></span>
+                <span class="js-editable required" data-edit="namespace" data-original-title="Namespace do Tema" data-emptytext="Selecione a o namespace do tema a ser utilizado"><?php echo $entity->namespace; ?></span>
             </div>
             
             <div>
                 <span class="icon"></span><span class="label">Slug:</span> 
-                <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field <?php echo ($entity->isPropertyRequired($entity,"slug") && $editEntity? 'required': '');?>" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
+                <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
             </div>
             
             <div>
