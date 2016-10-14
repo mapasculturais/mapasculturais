@@ -97,5 +97,10 @@ class Subsite extends EntityController {
 
         parent::POST_index();
     }
+    
+    
+    function GET_single(){
+        parent::GET_edit();
+    }
 
 }
