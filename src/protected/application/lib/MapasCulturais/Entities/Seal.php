@@ -100,6 +100,16 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+   /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * })
+     */
+    protected $agent;
+
     /**
      * @var \MapasCulturais\Entities\Agent
      *
