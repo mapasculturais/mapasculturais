@@ -164,14 +164,7 @@ trait ControllerAPI{
         else
             return (int) $default_lifetime;
     }
-    
-    
-    protected function detachApiQueryRS($rs){
-        $em = App::i()->em;
-        foreach($rs as $r){
-            $em->detach($r);
-        }
-    }
+   
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -191,33 +184,6 @@ trait ControllerAPI{
                 $this->apiErrorResponse('no data');
 
             $class = $this->entityClassName;
-            /*
-            if($app->getCurrentSubsiteId() && $class === 'MapasCulturais\Entities\Event'){
-                $space_ids = array_map(function($e){ return $e['id']; }, $app->controller('space')->apiQuery(['@select' => 'id']));
-                
-                if($space_ids) {
-                    
-                    $space_ids = implode(',', $space_ids);
-                    
-                    
-                    $eo_ids = array_map(function($e){ return $e['event']['id']; }, $app->controller('eventOccurrence')->apiQuery([
-                        '@select' => 'event.id', 
-                        'space' => "IN($space_ids)"
-                    ]));
-                    
-                    $app->em->clear();
-                    
-                    if($eo_ids){
-                        $qdata['id'] = 'IN(' . implode(',', $eo_ids) . ')';
-                    } else {
-                        $qdata['id'] = 'EQ(0)';
-                    }
-                } else {
-                    $qdata['id'] = 'EQ(0)';
-                }
-                
-            }
-            */
             
             $entity_properties = array_keys($app->em->getClassMetadata($this->entityClassName)->fieldMappings);
 
@@ -703,7 +669,7 @@ trait ControllerAPI{
                 if($permissions){
                     $rs = $query->getResult();
                     
-                    $this->detachApiQueryRS($rs);
+                    $app->detachRS($rs);
                     
                     $result = [];
 
@@ -751,7 +717,7 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
-                    $this->detachApiQueryRS($rs);
+                    $app->detachRS($rs);
 
 
                     $sub_queries($rs);
@@ -760,7 +726,7 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
-                        $this->detachApiQueryRS($rs);
+                        $app->detachRS($rs);
 
                     }
 
