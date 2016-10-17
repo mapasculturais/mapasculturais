@@ -52,6 +52,7 @@ $metadata_config_color = [
     ]
 ];
 
+
 $metadata_config_area = [
     'label' => 'Área de atuação',
     'type' => 'multiselect',
@@ -62,6 +63,8 @@ $metadata_config_area = [
         return json_decode($v);
     },
     'options' => [
+        /* @TODO: incluir arquivo taxonomies.php e pegar os termos de lá */
+        
         'Antropologia',
         'Arqueologia',
         'Arquitetura*Urbanismo',
