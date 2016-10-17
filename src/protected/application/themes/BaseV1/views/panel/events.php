@@ -4,7 +4,7 @@ $this->layout = 'panel'
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2>Meus eventos</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar novo evento</a>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>"><?php _e('Adicionar novo evento'); ?></a>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
