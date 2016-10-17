@@ -37,7 +37,7 @@ class Notification extends \MapasCulturais\Entity{
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
-    protected $createTimestamp = 'now()';
+    protected $createTimestamp;
 
     /**
      * @var \DateTime
