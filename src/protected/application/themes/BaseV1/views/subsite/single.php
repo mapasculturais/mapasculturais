@@ -31,8 +31,8 @@ $slag_editbla = $this->controller->action === 'create';
             <?php endif; ?>
 
             <div>
-                <span class="icon"></span><span class="label">Namespace:</span> 
-                <span class="js-editable required" data-edit="namespace" data-original-title="Namespace do Tema" data-emptytext="Selecione a o namespace do tema a ser utilizado"><?php echo $entity->namespace; ?></span>
+                <span class="icon"></span><span class="label">Tema:</span> 
+                <span class="js-editable required" data-edit="namespace" data-original-title="Tema" data-emptytext="Selecione a o tema a ser utilizado"><?php echo $entity->namespace; ?></span>
             </div>
             
             <div>
