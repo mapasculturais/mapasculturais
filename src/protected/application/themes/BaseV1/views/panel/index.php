@@ -1,9 +1,16 @@
 <?php
 $this->layout = 'panel';
+
+$subsite = $app->getCurrentSubsite();
 ?>
 <div class="panel-main-content">
 
     <?php $this->part('panel/highlighted-message') ?>
+    <?php if($subsite && $subsite->canUser('modify')):?>
+    <p class="highlighted-message" style="margin-top:-2em;">
+        Você é administrador deste subsite. Clique <a href="<?php echo $subsite->singleUrl ?>">aqui</a> para configurar.
+    </p>
+    <?php endif; ?>
 
     <section id="user-stats" class="clearfix">
         <?php if($app->isEnabled('events')): ?>
