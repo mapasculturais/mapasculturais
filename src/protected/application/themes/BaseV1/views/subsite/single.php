@@ -36,11 +36,6 @@ $slag_editbla = $this->controller->action === 'create';
             </div>
             
             <div>
-                <span class="icon"></span><span class="label">Slug:</span> 
-                <span class="<?php if($slag_editbla): ?>js-editable <?php endif; ?>header-field" data-edit="slug" data-original-title="Digite um slug" data-emptytext="Slug"><?php echo $entity->slug; ?></span>
-            </div>
-            
-            <div>
                 <span class="icon"></span><span class="label">Domínio Principal:</span> 
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"url") && $editEntity? 'required': '');?>" data-edit="url" data-original-title="Domínio Principal" data-emptytext="Ex: mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
             </div>

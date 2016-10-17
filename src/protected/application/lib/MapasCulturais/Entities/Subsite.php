@@ -34,10 +34,6 @@ class Subsite extends \MapasCulturais\Entity
         'name' => [
             'required' => 'O nome da instalação é obrigatório'
         ],
-        'slug' => [
-            'required' => 'O slug da instalação é obrigatório',
-            'unique' => 'Este slug já está sendo utilizado'
-        ],
         'url' => [
             'required' => 'A url da instalação é obrigatória',
             'unique' => 'Esta URL já está sendo utilizada'
@@ -105,13 +101,6 @@ class Subsite extends \MapasCulturais\Entity
      * @ORM\Column(name="alias_url", type="string", length=255, nullable=true)
      */
     protected $aliasUrl;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=50, nullable=false)
-     */
-    protected $slug;
 
     /**
      * @var string
@@ -286,8 +275,6 @@ class Subsite extends \MapasCulturais\Entity
     }
     
     public function save($flush = false) {
-        $this->slug = $this->url;
-        
         parent::save($flush);
         $app = App::i();
         

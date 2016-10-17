@@ -247,5 +247,9 @@ return [
         $conn->executeQuery("ALTER TABLE user_app ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (subsite_id);");
+    },
+    
+    'remove subsite slug column' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite DROP COLUMN slug;");
     }
 ];

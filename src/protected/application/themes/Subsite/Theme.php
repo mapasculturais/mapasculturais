@@ -92,7 +92,7 @@ class Theme extends BaseV1\Theme{
             $app->_config['app.enabled.seals'] = false;
         }
 
-        $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->slug;
+        $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->url;
         
         $this->addPath($this->subsitePath);
 
