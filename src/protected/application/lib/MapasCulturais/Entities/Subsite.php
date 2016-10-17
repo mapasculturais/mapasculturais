@@ -105,6 +105,21 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var string
      *
+     * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
+     */
+    protected $verifiedSeals = [];
+    
+    function setVerifiedSeals($val) {
+        if(is_string($val)) {
+            $val = explode(';', $val);
+        }
+        
+        $this->verifiedSeals = $val;
+    }
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="namespace", type="string", length=50, nullable=false)
      */
     protected $namespace = 'Subsite';

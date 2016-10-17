@@ -251,5 +251,9 @@ return [
     
     'remove subsite slug column' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE subsite DROP COLUMN slug;");
-    }
+    },
+    
+    'add subsite verified_seals column' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite ADD verified_seals VARCHAR(512) DEFAULT '[]';");
+    },
 ];
