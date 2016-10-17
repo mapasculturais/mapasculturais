@@ -185,7 +185,10 @@ class App extends \Slim\Slim{
         }
         $this->_cache->setNamespace($config['app.cache.namespace']);
 
-
+        require('i18n/i18n.php');
+        load_default_textdomain();
+        
+        
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
