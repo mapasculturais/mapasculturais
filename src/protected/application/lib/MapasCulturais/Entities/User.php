@@ -385,6 +385,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getNotifications($status = null){
+        $app = App::i();
+        $app->em->clear('MapasCulturais\Entities\Notification');
+        
         if(is_null($status)){
             $status_operator =  '>';
             $status = '0';
