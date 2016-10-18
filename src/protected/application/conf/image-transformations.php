@@ -9,6 +9,7 @@ return array(
     'logo' => 'cropCenter(240,240)',
     'logoHeader' => 'cropCenter(140,60)',
     'background' => 'cropCenter(240,240)',
+    'institute' => 'resize(240)',
 
     'viradaSmall' => 'cropCenter(357,268)',
     'viradaBig' => 'cropCenter(1455,970)',
