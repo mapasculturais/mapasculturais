@@ -228,6 +228,10 @@ return array(
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
+    
+    'app.useSubsiteIdsCache' => true,
+    'app.subsiteIdsCache.lifetime' => 120,
+    
 
     'app.usePermissionsCache' => true,
     'app.permissionsCache.lifetime' => 120,

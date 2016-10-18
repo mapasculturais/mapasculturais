@@ -63,11 +63,19 @@ class Event extends EntityController {
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
-
+        
+        $subsite_sql = '';
+                
+        if($subsite = $app->getCurrentSubsite()){
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
+            
+            $subsite_sql = "AND space_id IN ({$space_ids})";
+        }
+        
         $query = $app->em->createNativeQuery("
             SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule
             FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
-            WHERE status > 0
+            WHERE status > 0 $subsite_sql
             ORDER BY starts_on, starts_at", $rsm);
 
         $query->setParameters([
