@@ -2057,6 +2057,19 @@ class App extends \Slim\Slim{
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
     }
+    
+    /**************
+     * Utils
+     **************/
+    
+    function getManagedEntity(Entity $entity){
+        if($entity->getEntityState() > 2){
+            $entity = App::i()->repo($entity->getClassName())->find($entity->id);
+            $entity->refresh();
+        }
+        
+        return $entity;
+    }
 
     /**************
      * GetText
