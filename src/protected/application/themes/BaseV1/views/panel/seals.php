@@ -7,10 +7,10 @@ $this->layout = 'panel'
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('seal', 'create'); ?>">Adicionar novo selo</a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
-		<li><a href="#permitido">Liberado</a></li>
+        <li class="active"><a href="#ativos">Ativos (<?php echo count($app->user->enabledSeals);?>)</a></li>
+		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlSeals);?>)</a></li>
+        <li><a href="#rascunhos">Rascunhos (<?php echo count($app->user->draftSeals);?>)</a></li>
+        <li><a href="#lixeira">Lixeira (<?php echo count($app->user->trashedSeals);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
