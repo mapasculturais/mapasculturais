@@ -63,8 +63,6 @@ class Theme extends BaseV1\Theme{
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
-//        
-//        die($domain);
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
@@ -107,25 +105,29 @@ class Theme extends BaseV1\Theme{
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
         
-        if($app->isEnabled('subsite') && !$app->cache->contains($cache_id)){
-            $app->log->debug("Entrou aqui mlk.");
+        if($app->isEnabled('subsite') && !$app->msCache->contains($cache_id)){
+            $app->cache->deleteAll();
+            
             $variables_scss = "";
             $main_scss = '// Child theme main
             @import "variables";
             @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
             ';
 
-            if($this->subsiteInstance->background){
-                $backgroundimage = $this->subsiteInstance->background->url;
+            if($institude = $this->subsiteInstance->institute){
                 $main_scss .= "
                 .header-image {
-                    background-image: url(' . $backgroundimage . ');
-                }
-                #home-watermark {
-                    background-image: url(' . $backgroundimage . ');
+                    background-image: url({$institude->url});
                 }";
             }
 
+            if($bg = $this->subsiteInstance->background){
+                $main_scss .= "
+                #home-watermark {
+                    background-image: url({$bg->url});
+                }";
+            }
+            
             $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->cor_agentes?  $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
             $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->cor_projetos? $this->subsiteInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
             $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->cor_eventos?  $this->subsiteInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
@@ -143,7 +145,7 @@ class Theme extends BaseV1\Theme{
             putenv('LC_ALL=en_US.UTF-8');
             exec("sass " . $this->subsitePath . '/assets/css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
             
-            $app->cache->save($cache_id, true);
+            $app->msCache->save($cache_id, true);
         }
 
         parent::_init();

@@ -248,8 +248,8 @@ class Subsite extends \MapasCulturais\Entity
             
             $ids = null;
             
-            if($app->cache->contains($cache_id)){
-                $ids = $app->cache->fetch($cache_id);
+            if($app->msCache->contains($cache_id)){
+                $ids = $app->msCache->fetch($cache_id);
 
             } else {
                 $subsite_qdata = ['@select' => 'id'];
@@ -263,7 +263,7 @@ class Subsite extends \MapasCulturais\Entity
                 if(is_array($ids)){
                     $ids = implode(',',array_map(function($e){ return $e['id']; }, $ids));
                 } 
-                $app->cache->save($cache_id, $ids, 60);
+                $app->msCache->save($cache_id, $ids, 60);
             }
             
             
@@ -302,7 +302,7 @@ class Subsite extends \MapasCulturais\Entity
         parent::save($flush);
         $app = App::i();
         
-        $app->cache->delete($this->getSassCacheId());
+        $app->msCache->delete($this->getSassCacheId());
     }
 
     //============================================================= //
