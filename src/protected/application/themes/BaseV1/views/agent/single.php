@@ -138,7 +138,13 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
-    <?php $this->applyTemplateHook('tabs-content','after'); ?>
+    <?php $this->applyTemplateHook('tabs-content','after');?>
+
+    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 

@@ -74,6 +74,12 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
+    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'projects','home_title' => 'entities: My Projects']); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <div class="sidebar-left sidebar project">

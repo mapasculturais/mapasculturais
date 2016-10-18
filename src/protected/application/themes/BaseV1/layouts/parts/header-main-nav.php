@@ -132,7 +132,7 @@
                 </a>
                 <ul class="submenu hidden">
                     <li>
-                        <a href="<?php echo $app->createUrl('panel'); ?>">Painel</a>
+                        <a href="<?php echo $app->createUrl('panel'); ?>"><?php echo $this->dict('site: panel');?></a>
                     </li>
                     <?php if($app->isEnabled('events')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
