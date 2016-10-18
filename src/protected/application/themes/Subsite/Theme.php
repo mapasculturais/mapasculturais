@@ -122,6 +122,8 @@ class Theme extends BaseV1\Theme{
             }
 
             if($bg = $this->subsiteInstance->background){
+                
+//                $bg = $bg->transform('backgroundFull');
                 $main_scss .= "
                 #home-watermark {
                     background-image: url({$bg->url});

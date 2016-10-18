@@ -48,7 +48,7 @@
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+        <span class="tip">Deve ter extensões .png/.jpg)</span>
 
         <?php $this->applyTemplateHook('background','after'); ?>
     </div>
@@ -75,7 +75,7 @@
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de 1200x630px com extensões .png/.jpg)</span>
+        <span class="tip">Deve ter as dimensões de 90x39px com extensões .png/.jpg)</span>
 
         <?php $this->applyTemplateHook('institute','after'); ?>
     </div>

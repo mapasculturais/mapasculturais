@@ -111,6 +111,7 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
+    
     'registration.propertiesToExport' => array(
         'id',
         'name',
