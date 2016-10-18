@@ -34,10 +34,6 @@ class Subsite extends \MapasCulturais\Entity
         'name' => [
             'required' => 'O nome da instalação é obrigatório'
         ],
-        'slug' => [
-            'required' => 'O slug da instalação é obrigatório',
-            'unique' => 'Este slug já está sendo utilizado'
-        ],
         'url' => [
             'required' => 'A url da instalação é obrigatória',
             'unique' => 'Esta URL já está sendo utilizada'
@@ -109,9 +105,17 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=50, nullable=false)
+     * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
      */
-    protected $slug;
+    protected $verifiedSeals = [];
+    
+    function setVerifiedSeals($val) {
+        if(is_string($val)) {
+            $val = explode(';', $val);
+        }
+        
+        $this->verifiedSeals = $val;
+    }
 
     /**
      * @var string
@@ -286,8 +290,6 @@ class Subsite extends \MapasCulturais\Entity
     }
     
     public function save($flush = false) {
-        $this->slug = $this->url;
-        
         parent::save($flush);
         $app = App::i();
         

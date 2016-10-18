@@ -6,9 +6,6 @@ return array(
     'saasAdmin' => array(
         'name' => 'SaaS Admin'
     ),
-    'subsiteAdmin' => array(
-        'name' => 'Subsite Admin'
-    ),
     'superAdmin' => array(
         'name' => 'Superadmin'
     ),

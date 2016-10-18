@@ -81,5 +81,13 @@ function printSubsiteFilter($property){
             <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="Linguagem" data-emptytext="Selecione o(s) tipos(s) de linguagem"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
         </p>
     </section>
+    
+    <section class="filter-section">
+        <header>Selos Verificadores</header>
+        <p>
+            <span class="label <?php echo ($entity->isPropertyRequired($entity,"verifiedSeals") && $editEntity? 'required': '');?>">Selos: </span>
+            <span class="js-editable" data-edit="verifiedSeals" data-original-title="Selos Verificadores" data-emptytext="Informe os ids dos selos verificadores separados por ponto e vírgula"><?php printSubsiteFilter($entity->verifiedSeals) ?></span>
+        </p>
+    </section>
 </div>
 

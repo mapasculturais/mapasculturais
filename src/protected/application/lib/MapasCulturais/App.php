@@ -353,6 +353,7 @@ class App extends \Slim\Slim{
         
         
         if($this->_subsite){
+            $this->_config['app.verifiedSealsIds'] = $this->_subsite->verifiedSeals;
             $theme_class = $this->_subsite->namespace . "\Theme";
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
         } else {

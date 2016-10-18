@@ -8,21 +8,8 @@ class Event extends \MapasCulturais\Repository{
     
     protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
-        if($subsite_id = $app->getCurrentSubsiteId()){
-            $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
-            
-            if($_api_result){
-                $space_ids = array_map(function($e){
-                    return $e['id'];
-                }, $_api_result);
-            
-                if($implode){
-                    $space_ids = implode(',', $space_ids);
-                }
-            }else{
-                $space_ids = 0;
-            }
-            
+        if($app->getCurrentSubsiteId()){
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
         } else {
             $space_ids = "SELECT id FROM space WHERE status > 0";
         }
