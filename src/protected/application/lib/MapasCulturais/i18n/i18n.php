@@ -351,7 +351,7 @@ function unload_textdomain( $domain ) {
 function get_translations_for_domain( $domain ) {
 	global $l10n;
 	if ( !isset( $l10n[$domain] ) ) {
-		$l10n[$domain] = new NOOP_Translations;
+		$l10n[$domain] = new \POMO\Translations\NOOPTranslations;
 	}
 	return $l10n[$domain];
 }
