@@ -14,6 +14,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read \Doctrine\ORM\EntityManager $em The Doctrine Entity Manager
  * @property-read \Slim\Log $log Slim Logger
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
+ * @property-read \Doctrine\Common\Cache\CacheProvider $mscache Multisite Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
  * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
  * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
@@ -63,6 +64,12 @@ class App extends \Slim\Slim{
      * @var \Doctrine\Common\Cache\CacheProvider
      */
     protected $_cache = null;
+
+    /**
+     * Cache Component
+     * @var \Doctrine\Common\Cache\CacheProvider
+     */
+    protected $_mscache = null;
 
     /**
      * Runtime Cache
@@ -182,10 +189,14 @@ class App extends \Slim\Slim{
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
+            $this->_mscache = clone $this->_cache;
+            
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
         $this->_cache->setNamespace($config['app.cache.namespace']);
+        $this->_mscache->setNamespace(__DIR__);
 
 
         spl_autoload_register(function($class) use ($config){
@@ -1353,6 +1364,14 @@ class App extends \Slim\Slim{
      */
     public function getCache(){
         return $this->_cache;
+    }
+
+    /**
+     * Returns the Multisite Cache Component
+     * @return \Doctrine\Common\Cache\CacheProvider
+     */
+    public function getMsCache(){
+        return $this->_mscache;
     }
 
     /**
