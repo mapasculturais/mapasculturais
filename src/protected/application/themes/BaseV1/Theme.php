@@ -33,6 +33,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
+            'site: panel' => 'Painel',
 
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
@@ -48,6 +49,14 @@ class Theme extends MapasCulturais\Theme {
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
 
+            'entities: My Projects'=> 'Meus Projetos',
+            'entities: My projects'=> 'Meus projetos',
+
+            'entities: My Events'=> 'Meus Eventos',
+            'entities: My events'=> 'Meus eventos',
+
+            'entities: My Agents'=> 'Meus Agentes',
+            'entities: My agents'=> 'Meus agentes',
 
             'entities: Spaces of the agent'=> 'Espaços do agente',
             'entities: Space Description'=> 'Descrição do Espaço',

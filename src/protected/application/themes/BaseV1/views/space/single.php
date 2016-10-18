@@ -20,8 +20,6 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
 $this->entity = $entity;
 
-//$this->part('singles/breadcrumb', ['entity' => $entity]);
-
 ?>
 <?php $this->part('editable-entity', ['entity' => $entity, 'action' => $action]);  ?>
 
@@ -94,6 +92,12 @@ $this->entity = $entity;
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'spaces','home_title' => 'entities: My Spaces']); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
     <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
 </article>
