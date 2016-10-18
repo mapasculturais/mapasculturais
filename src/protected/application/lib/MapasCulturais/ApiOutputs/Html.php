@@ -26,7 +26,8 @@ class Html extends \MapasCulturais\ApiOutput{
         'agent'=>'Agente',
         'space'=>'Espaço',
         'event'=>'Evento',
-        'project'=>'Projeto'
+        'project'=>'Projeto',
+        'seal'=>'Selo'
     ];
 
     protected function getContentType() {
