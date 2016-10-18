@@ -201,6 +201,9 @@ class Subsite extends \MapasCulturais\Entity
 
         $subsite_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\Subsite");
         
+        
+        $IN = ['type'];
+        
         foreach($subsite_meta as $k => $v) {
             $meta_name = $k;
 
@@ -220,12 +223,18 @@ class Subsite extends \MapasCulturais\Entity
                     if($pos_meta_type > 0) {
                         $meta_type = substr($meta_name,0,$pos_meta_type);
                         $meta_name = substr($meta_name,$pos_meta_type+1);
+                        
                         if($this->$k) {
                             $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
                             $meta_cont = $this->$k;
                             $meta_cont = is_array($meta_cont)? implode(',',$meta_cont): $meta_cont;
                             $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
-                            $this->filters[$controller][$meta_name] = "IIN(" . str_replace(";",",",$meta_cont) . ")";
+                            if(in_array($meta_name, $IN)){
+                                $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
+                                
+                            } else {
+                                $this->filters[$controller][$meta_name] = "IIN(" . str_replace(";",",",$meta_cont) . ")";
+                            }
                         }
                     }
                 }
