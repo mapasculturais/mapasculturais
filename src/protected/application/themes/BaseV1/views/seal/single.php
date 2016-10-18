@@ -111,6 +111,12 @@ $this->includeAngularEntityAssets($entity);
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
+    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'seals','home_title' => 'entities: My Seals']); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 </article>
 <div class="sidebar-left sidebar seal">
