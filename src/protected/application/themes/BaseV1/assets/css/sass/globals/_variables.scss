@@ -273,6 +273,11 @@ $unicode-radio-button-selected: "\5c"   !default;
 // used on .icon-search on _icons.scss
 $unicode-search:                "\55"   !default;
 
+//** Group icon
+// used on .icon-group on _icons.scss
+$unicode-group:                "\e08b"   !default;
+
+
 $unicode-show-advanced-filters:          "\54"   !default;
 
 //** Select arrow icon
@@ -418,7 +423,8 @@ $form-fields-height:                   2rem !default;
 //
 
 $z-index-descricao-do-agente:    800 !default;
-$z-index-descricao-do-selo:		1000 !default;
+$z-index-descricao-do-selo:		  1000 !default;
+$z-index-descricao-do-saas:    15000 !default;
 $z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;

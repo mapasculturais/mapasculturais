@@ -9,14 +9,14 @@
         <?php if($app->isEnabled('events')): ?>
             <li id="nav-events">
                 <a class="icon icon-event" href="#home-events"></a>
-                <span class="nav-title">Eventos</span>
+                <span class="nav-title"><?php $this->dict('entities: Events') ?></span>
             </li>
         <?php endif; ?>
             
         <?php if($app->isEnabled('agents')): ?>
             <li id="nav-agents">
                 <a class="icon icon-agent" href="#home-agents"></a>
-                <span class="nav-title">Agentes</span>
+                <span class="nav-title"><?php $this->dict('entities: Agents') ?></span>
             </li>
         <?php endif; ?>
             
@@ -30,7 +30,7 @@
         <?php if($app->isEnabled('projects')): ?>
             <li id="nav-projects">
                 <a class="icon icon-project" href="#home-projects"></a>
-                <span class="nav-title">Projetos</span>
+                <span class="nav-title"><?php $this->dict('entities: Projects') ?></span>
             </li>
         <?php endif; ?>
             

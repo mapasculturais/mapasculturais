@@ -42,6 +42,36 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('index', ['count'=>$count]);
     }
+    
+    function GET_listUsers(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+        
+        $roles = $app->getRoles();
+        
+        if (!$app->user->is('admin')) $app->user->checkPermission('addRole'); // dispara exceção se não for admin ou sueradmin
+        
+        $Repo = $app->repo('User');
+        
+        $vars = array();
+        
+        foreach ($roles as $roleSlug => $roleInfo) {
+            $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
+            
+            if ($roleSlug == 'superAdmin') {
+                $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';
+            } elseif ($roleSlug == 'admin') {
+                $roles[$roleSlug]['permissionSuffix'] = 'Admin';
+            } else {
+                $roles[$roleSlug]['permissionSuffix'] = '';
+            }
+            
+        }
+        
+        $vars['roles'] = $roles;
+        $this->render('list-users', $vars);
+    }
 
     protected function countEntity($entityName){
         $app = App::i();

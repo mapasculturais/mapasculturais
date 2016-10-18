@@ -8,6 +8,7 @@ $this->layout = 'panel'
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
+		<li><a href="#permitido">Concedidos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
@@ -33,9 +34,19 @@ $this->layout = 'panel'
         <?php foreach($user->trashedProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->trashedProjects): ?>
+        <?php if(!$app->user->trashedProjects): ?>
             <div class="alert info">Você não possui nenhum projeto na lixeira.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #permitido-->
+	<div id="permitido">
+		<?php foreach($app->user->hasControlProjects as $entity): ?>
+			<?php $this->part('panel-project', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$user->hasControlProjects): ?>
+			<div class="alert info">Você não possui nenhum projeto liberado.</div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>

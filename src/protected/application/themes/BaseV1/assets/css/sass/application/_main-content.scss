@@ -34,3 +34,11 @@
     	padding: $padding-large;
     }
 }
+
+.required {
+    &:before {
+        content: "*";
+        display: inline-block;
+        color: red;
+    }
+}

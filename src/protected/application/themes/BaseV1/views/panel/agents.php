@@ -8,6 +8,7 @@ $this->layout = 'panel'
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos">Ativos</a></li>
+		<li><a href="#permitido">Concedidos</a></li>
         <li><a href="#rascunhos">Rascunhos</a></li>
         <li><a href="#lixeira">Lixeira</a></li>
     </ul>
@@ -39,4 +40,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #permitido-->
+    <div id="permitido">
+		<?php foreach($app->user->hasControlAgents as $entity): ?>
+			<?php $this->part('panel-agent', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$app->user->hasControlAgents): ?>
+			<div class="alert info">Você não possui nenhum agente liberado.</div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>

@@ -113,7 +113,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
-       // $this->seals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
 
@@ -294,6 +293,19 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
+	function getHasControlAgents(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
+    }
+
+    function getAgentWithControl() {
+        $this->checkPermission('modify');
+        $app = App::i();
+        $entity = $app->view->controller->id;
+        return $app->repo($entity)->findByAgentWithEntityControl();
+    }
+
     public function getSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }
@@ -316,6 +328,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
     }
 
+    function getHasControlSpaces(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Space')->findByAgentRelationUser($this, true);
+    }
 
     public function getEvents(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event');
@@ -338,7 +355,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
+    function getHasControlEvents(){
+        $this->checkPermission('modify');
 
+        return App::i()->repo('Event')->findByAgentRelationUser($this, true);
+    }
 
     public function getProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
@@ -361,6 +382,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
+    function getHasControlProjects(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Project')->findByAgentRelationUser($this, true);
+    }
 
     public function getSeals(){
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
@@ -382,6 +408,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     	$this->checkPermission('modify');
 
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
+    }
+    function getHasControlSeals(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Seal')->findByAgentRelationUser($this, true);
     }
 
     function getNotifications($status = null){
@@ -434,7 +465,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -446,7 +477,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->projects as $project) {
             $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($project->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old project registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -470,7 +501,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->spaces as $space) {
             $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
@@ -482,7 +513,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->seals as $seal) {
             $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old seal registrations
               $notification = new Notification;
               $notification->user = $app->user;

@@ -53,6 +53,9 @@ $this->entity = $entity;
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
+        <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -67,7 +70,7 @@ $this->entity = $entity;
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable required" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>
@@ -87,7 +90,9 @@ $this->entity = $entity;
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -113,7 +118,13 @@ $this->entity = $entity;
         </div>
     <?php endif; ?>
 
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
+    <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents', ['entity' => $entity]); ?>
+    <!-- Related Agents END -->
 
     <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
 
