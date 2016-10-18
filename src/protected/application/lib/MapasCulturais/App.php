@@ -2181,6 +2181,15 @@ class App extends \Slim\Slim{
             $em->detach($r);
         }
     }
+    
+    function getManagedEntity(Entity $entity){
+        if($entity->getEntityState() > 2){
+            $entity = App::i()->repo($entity->getClassName())->find($entity->id);
+            $entity->refresh();
+        }
+        
+        return $entity;
+    }
 
     /**************
      * GetText
