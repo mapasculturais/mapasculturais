@@ -48,7 +48,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
         <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -177,6 +179,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>

@@ -89,6 +89,11 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+    
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->

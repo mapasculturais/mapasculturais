@@ -53,7 +53,9 @@ $this->entity = $entity;
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
         <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -116,7 +118,13 @@ $this->entity = $entity;
         </div>
     <?php endif; ?>
 
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
+    <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents', ['entity' => $entity]); ?>
+    <!-- Related Agents END -->
 
     <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
 
