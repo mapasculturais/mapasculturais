@@ -23,7 +23,7 @@ class Theme extends MapasCulturais\Theme {
     static function getThemeFolder() {
         return __DIR__;
     }
-    
+
     static function _dict() {
         $app = App::i();
         return [
@@ -58,8 +58,8 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'pela Secretaria'
             ],
             'site: panel' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Painel',
+                'description' => 'Pelo Painel conseguimos adicionar',
                 'text' => 'Painel'
             ],
             'home: title' => [
@@ -73,7 +73,7 @@ class Theme extends MapasCulturais\Theme {
                 'text' => "MC"
             ],
             'home: colabore' => [
-                'name' => '',
+                'name' => 'Colabore',
                 'description' => '',
                 'text' => "Colabore com o Mapas Culturais"
             ],
@@ -103,13 +103,13 @@ class Theme extends MapasCulturais\Theme {
                 'text' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."
             ],
             'home: subsite' => [
-                'name' => '',
+                'name' => 'Subsite',
                 'description' => '',
                 'text' => "Reúne as instalações de Mapas Culturais que estão como Subsite."
             ],
             'home: home_devs' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Devs',
+                'description' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
                 'text' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'
             ],
             'search: verified results' => [
@@ -123,58 +123,58 @@ class Theme extends MapasCulturais\Theme {
                 'text' => "Verificados"
             ],
             'entities: My Projects' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Projetos',
+                'description' => 'Buscar, selecionar e adicionar projetos',
                 'text' => 'Meus Projetos'
             ],
             'entities: My projects' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Projetos',
+                'description' => 'Nome de exibição, sobre e descrição',
                 'text' => 'Meus projetos'
             ],
             'entities: My Events' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Eventos',
+                'description' => 'Buscar, adicionar e filtrar eventos ',
                 'text' => 'Meus Eventos'
             ],
             'entities: My events' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Eventos',
+                'description' => 'Buscar eventos vizualizando pelo Mapa ou por pesquisa',
                 'text' => 'Meus eventos'
             ],
             'entities: My Agents' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Agentes',
+                'description' => 'Agentes Ativos, rascunhos e adicionar Agentes',
                 'text' => 'Meus Agentes'
             ],
             'entities: My agents' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Agentes',
+                'description' => 'Agentes Ativos, rascunhos e adicionar Agentes',
                 'text' => 'Meus agentes'
             ],
             'entities: Spaces of the agent' => [
-                'name' => '',
+                'name' => 'Espaços do agente',
                 'description' => '',
                 'text' => 'Espaços do agente'
             ],
             'entities: Space Description' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Descrição do Espaço',
+                'description' => 'Nome, sobre, descrição e critérios de uso espaço',
                 'text' => 'Descrição do Espaço'
             ],
             'entities: Agent children' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Agentes',
+                'description' => 'Buscar agentes por área ou endereço',
                 'text' => 'Agentes'
             ],
             'entities: My Spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Espaços ',
+                'description' => 'Adicionar novo, espaços ativos',
                 'text' => 'Meus Espaços'
             ],
             'entities: My spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus espaços',
+                'description' => 'Adicionar novo, espaços ativos ',
                 'text' => 'Meus espaços'
             ],
             'entities: Subsite Description' => [
@@ -183,98 +183,98 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Descrição do Subsite'
             ],
             'entities: My Subsites' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Subsites',
+                'description' => 'Adicionar novo, Subsites ativos',
                 'text' => 'Meus Subsites'
             ],
             'entities: My subsites' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus subsites',
+                'description' => 'Adicionar novo, subsites ativos',
                 'text' => 'Meus subsites'
             ],
             'entities: Subsite' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Subsite',
+                'description' => 'Agentes, Espaços, Eventos e Selos verificadores',
                 'text' => 'Subsite'
             ],
             'entities: no registered subsite' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Nenhum subsite cadastrado',
+                'description' => 'Exemplo: "Você não possui nenhum Subsite."',
                 'text' => 'nenhum subsite cadastrado'
             ],
             'entities: no subsite' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Nenhum subsite',
+                'description' => 'Exemplo: "Você não possui nenhum Subsite."',
                 'text' => 'nenhum subsite'
             ],
             'entities: registered subsite' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Subsite cadastrado',
+                'description' => 'Preencher todos os dados e clicar em Publicar',
                 'text' => 'subsite cadastrado'
             ],
             'entities: add new subsite' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Adicionar novo subsite',
+                'description' => 'Clicar em Adicionar novo Subsite',
                 'text' => "Adicionar novo subsite"
             ],
             'entities: My Seals' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Selos',
+                'description' => 'Adicionar, ativos, rascunhos ',
                 'text' => 'Meus Selos'
             ],
             'entities: My seals' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Meus Selos',
+                'description' => 'Adicionar, ativos, rascunhos',
                 'text' => 'Meus selos'
             ],
             'entities: no registered spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Nenhum espaço cadastrado',
+                'description' => 'Exemplo: "Você não possui nenhum espaço cadastrado."',
                 'text' => 'nenhum espaço cadastrado'
             ],
             'entities: no spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Nenhum espaço',
+                'description' => 'Exemplo: "Você não possui nenhum espaço cadastrado."',
                 'text' => 'nenhum espaço'
             ],
             'entities: Space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaço',
+                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
                 'text' => 'Espaço'
             ],
             'entities: Spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaços',
+                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
                 'text' => 'Espaços'
             ],
             'entities: space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaço',
+                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
                 'text' => 'espaço'
             ],
             'entities: spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaço',
+                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
                 'text' => 'espaços'
             ],
             'entities: parent space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaço pai',
+                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
                 'text' => 'espaço pai'
             ],
             'entities: a space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Um(a) espaço',
+                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
                 'text' => 'um espaço'
             ],
             'entities: the space' => [
                 'name' => '',
-                'description' => '',
+                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
                 'text' => 'o espaço'
             ],
             'entities: of the space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Do(a) espaço',
+                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
                 'text' => 'do espaço'
             ],
             'entities: In this space' => [
@@ -293,8 +293,8 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'espaços cadastrados'
             ],
             'entities: new space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Novo Espaço',
+                'description' => 'Buscar no painel pelo Meus Espaços e clicar no botão: Adicionar novo espaço',
                 'text' => 'novo espaço'
             ],
             'entities: Children spaces' => [
@@ -308,92 +308,92 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Adicionar subespaço'
             ],
             'entities: space found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaço encontrado',
+                'description' => 'Procuprar por filtro e abaixo aparece Espaços de acordo com o filtro',
                 'text' => 'espaço encontrado'
             ],
             'entities: spaces found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaços encontrado',
+                'description' => 'Procurar por filtro e abaixo aparace Espaços de acordo com o filtro',
                 'text' => 'espaços encontrados'
             ],
             'entities: event found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Evento encontrado',
+                'description' => 'Procurar por filtro e abaixo aparce o Evento de acordo com o filtro',
                 'text' => 'evento encontrado'
             ],
             'entities: events found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Eventos encontrados',
+                'description' => 'Na aba Eventos conseguimos vizualizar os Eventos conforme buscamos pelo Mapa ou campo de busca.',
                 'text' => 'eventos encontrados'
             ],
             'entities: agent found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Agente econtrado',
+                'description' => 'Na aba Agentes conseguimos localizar os Agentes por nome, área ou Estado. Podendo adicionar agentes novos ',
                 'text' => 'agente encontrado'
             ],
             'entities: agents found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Agentes encontrados',
+                'description' => 'Na aba Agentes conseguimos procurar pelo nome ou áreas. E através do mapa conseguimos vizualizar os Agentes',
                 'text' => 'agentes encontrados'
             ],
             'entities: project found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Projeto encontrado',
+                'description' => 'Na aba Projeto conseguimos procurar pelo nome ou tipos.',
                 'text' => 'projeto encontrado'
             ],
             'entities: project found' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Projetos encontrados',
+                'description' => 'Na aba Projeto conseguimos procurar pelo nome ou tipos.',
                 'text' => 'projetos encontrados'
             ],
             'entities: Agents' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Agentes',
+                'description' => 'Na aba Agentes  conseguimos vizualizar os Agentes, buscar e adicionar.',
                 'text' => 'Agentes'
             ],
             'entities: Projects' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Projetos',
+                'description' => 'Na aba de Projetos conseguimos vizualizar os Projetos e adicionar.',
                 'text' => 'Projetos'
             ],
             'entities: Events' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Eventos',
+                'description' => 'Na aba de Eventos conseguimos vizualizar os Eventos, buscar e adicionar',
                 'text' => 'Eventos'
             ],
             'entities: Seals' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Selos',
+                'description' => 'No Painel em Meus selos, conseguimos vizualizar os selos e adicionar',
                 'text' => 'Selos'
             ],
             'taxonomies:area: name' => [
-                'name' => '',
+                'name' => 'Área de Atuação',
                 'description' => '',
                 'text' => 'Área de Atuação'
             ],
             'taxonomies:area: select at least one' => [
-                'name' => '',
+                'name' => 'Selecione pelos menos uma área',
                 'description' => '',
                 'text' => 'Selecione pelo menos uma área'
             ],
             'taxonomies:area: select' => [
-                'name' => '',
+                'name' => 'Selecione as áreas',
                 'description' => '',
                 'text' => 'Selecione as áreas'
             ],
             'error:403: title' => [
-                'name' => '',
+                'name' => 'Permissão negada',
                 'description' => '',
                 'text' => 'Permissão negada'
             ],
             'error:403: message' => [
-                'name' => '',
+                'name' => 'Você não tem permissão para executar esta ação',
                 'description' => '',
                 'text' => 'Você não tem permissão para executar esta ação.'
             ],
             'error:404: title' => [
-                'name' => '',
+                'name' => 'Página não encontrada',
                 'description' => '',
                 'text' => 'Página não encontrada.'
             ],
@@ -403,7 +403,7 @@ class Theme extends MapasCulturais\Theme {
                 'text' => ''
             ],
             'error:500: title' => [
-                'name' => '',
+                'name' => 'Um erro inesperado aconteceu',
                 'description' => '',
                 'text' => 'Um erro inesperado aconteceu'
             ],
