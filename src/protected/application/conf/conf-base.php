@@ -30,7 +30,7 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
-    
+
     'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
