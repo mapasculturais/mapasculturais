@@ -34,13 +34,13 @@ class Event extends EntityController {
      * $url = $app->createUrl('agent');
      * </code>
      */
-    function POST_index(){
+    public function POST_index($data = null) {
         $app = App::i();
 
         $app->hook('entity(event).insert:before', function() use($app){
             $this->owner = $app->user->profile;
         });
-        parent::POST_index();
+        parent::POST_index($data);
     }
 
     function API_findOccurrences(){

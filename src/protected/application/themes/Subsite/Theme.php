@@ -31,17 +31,9 @@ class Theme extends BaseV1\Theme{
         
         $result = parent::_getTexts();
         
-        $subsite_texts = [
-            'site: name'        => $subsite->name,
-            'site: description' => $subsite->texto_sobre,
-            'home: title'       => $subsite->titulo,
-            'home: welcome'     => $subsite->texto_boasvindas,
-            'entities: Spaces'  => $subsite->titulo_espacos,
-            'entities: Projects'=> $subsite->titulo_projetos,
-            'entities: Events'  => $subsite->titulo_eventos,
-            'entities: Agents'  => $subsite->titulo_agentes,
-            'entities: Seals'   => $subsite->titulo_selos
-        ];
+        if(is_array($subsite->dict)){
+            $subsite_texts = $subsite->dict;
+        }
         
         foreach($subsite_texts as $key => $val){
             if($val){

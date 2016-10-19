@@ -29,6 +29,19 @@ class Subsite extends EntityController {
         
         $app = App::i();
         
+        $app->hook('PUT(subsite.single):data, POST(subsite.index):data', function(&$data){
+            $_dict = [];
+            foreach($data as $key => $val){
+                if(strpos($key, 'dict:') === 0){
+                    unset($data[$key]);
+                    $skey = str_replace('+',' ',substr($key, 5));
+                    $_dict[$skey] = $val;
+                }
+            }
+            $data['dict'] = $_dict;
+            
+        });
+        
         $app->hook('mapasculturais.head', function() use($app){
             $cache_id = "SaaS:themesNamespaces";
             $themes = [];
@@ -73,7 +86,14 @@ class Subsite extends EntityController {
             $app->view->jsObject['entity']['definition']['namespace']['optionsOrder'] = $themes_order;
             $app->view->jsObject['entity']['definition']['namespace']['isMetadata'] = true;
             
-//            die(var_dump($this->jsObject['entity']['definition']));
+            foreach($app->view->_dict() as $key => $def){
+                $key = str_replace(' ', '+', $key);
+                $app->view->jsObject['entity']['definition']["dict:" . $key] = [
+                    'type' => 'text',
+                    'isMetadata' => 'true'
+                ];
+            }
+            
             
         },1000);
     }
@@ -88,14 +108,14 @@ class Subsite extends EntityController {
      * $url = $app->createUrl('subsite');
      * </code>
      */
-    function POST_index() {
+    public function POST_index($data = null) {
         $app = App::i();
 
         $app->hook('entity(subsite).insert:before', function() use($app) {
             $this->owner = $app->user->profile;
         });
 
-        parent::POST_index();
+        parent::POST_index($data);
     }
     
     
