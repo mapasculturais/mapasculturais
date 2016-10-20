@@ -113,12 +113,12 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'
             ],
             'search: verified results' => [
-                'name' => '',
+                'name' => 'Resultados verifiados',
                 'description' => '',
                 'text' => 'Resultados Verificados'
             ],
             'search: verified' => [
-                'name' => '',
+                'name' => 'Verificados',
                 'description' => '',
                 'text' => "Verificados"
             ],
@@ -154,7 +154,7 @@ class Theme extends MapasCulturais\Theme {
             ],
             'entities: Spaces of the agent' => [
                 'name' => 'Espaços do agente',
-                'description' => '',
+                'description' => 'Conseguimos vizualizar todos os as agentes e adicionar',
                 'text' => 'Espaços do agente'
             ],
             'entities: Space Description' => [
@@ -178,8 +178,8 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Meus espaços'
             ],
             'entities: Subsite Description' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Descrição Subsite',
+                'description' => 'Nome da Instalação, Agentes, Espaços, Eventos, Selos verificadores',
                 'text' => 'Descrição do Subsite'
             ],
             'entities: My Subsites' => [
@@ -268,7 +268,7 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'um espaço'
             ],
             'entities: the space' => [
-                'name' => '',
+                'name' => 'O(a) espaço',
                 'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
                 'text' => 'o espaço'
             ],
@@ -278,18 +278,18 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'do espaço'
             ],
             'entities: In this space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Neste espaço',
+                'description' => 'Inserir uma descrição curta',
                 'text' => 'Neste espaço'
             ],
             'entities: in this space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Neste espaço',
+                'description' => 'Inserir uma descrição curta',
                 'text' => 'neste espaço'
             ],
             'entities: registered spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaços cadastrados',
+                'description' => 'Na aba espaços conseguimos cadastrar e vizualizar',
                 'text' => 'espaços cadastrados'
             ],
             'entities: new space' => [
@@ -298,13 +298,13 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'novo espaço'
             ],
             'entities: Children spaces' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Subespaços',
+                'description' => 'Criamos o Espaço principal e a partir disso podemos criar espaços filhos',
                 'text' => 'Subespaços'
             ],
             'entities: Add child space' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Espaços',
+                'description' => 'Criamos o Espaço principal e a partir disso podemos criar espaços filhos',
                 'text' => 'Adicionar subespaço'
             ],
             'entities: space found' => [
@@ -369,17 +369,17 @@ class Theme extends MapasCulturais\Theme {
             ],
             'taxonomies:area: name' => [
                 'name' => 'Área de Atuação',
-                'description' => '',
+                'description' => 'Colocar qual é a área de atuação',
                 'text' => 'Área de Atuação'
             ],
             'taxonomies:area: select at least one' => [
                 'name' => 'Selecione pelos menos uma área',
-                'description' => '',
+                'description' => 'Precisa ter pelo menos uma área selecionada',
                 'text' => 'Selecione pelo menos uma área'
             ],
             'taxonomies:area: select' => [
                 'name' => 'Selecione as áreas',
-                'description' => '',
+                'description' => 'Selecionar quantas áreas for preciso',
                 'text' => 'Selecione as áreas'
             ],
             'error:403: title' => [
@@ -398,8 +398,8 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Página não encontrada.'
             ],
             'error:404: message' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Messagem Error 404',
+                'description' => 'Messagem Error 404',
                 'text' => ''
             ],
             'error:500: title' => [
@@ -408,8 +408,8 @@ class Theme extends MapasCulturais\Theme {
                 'text' => 'Um erro inesperado aconteceu'
             ],
             'error:500: message' => [
-                'name' => '',
-                'description' => '',
+                'name' => 'Error 500',
+                'description' => 'Mensagem Error 500',
                 'text' => ''
             ],
         ];
