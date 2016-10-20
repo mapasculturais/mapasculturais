@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Autenticação - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_config_api/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_developer_guide/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#configurando-o-sistema-de-autenticacao-do-mapas-culturais">Configurando o sistema de autenticação do Mapas Culturais</a></li>
+        
+            <li><a href="#fake">Fake</a></li>
+        
+            <li><a href="#opauthopenid">OpauthOpenID</a></li>
+        
+            <li><a href="#login-cidadao-mapas-culturais-logout-inside-application">Login Cidadão &amp; Mapas Culturais &gt; Logout Inside Application</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="configurando-o-sistema-de-autenticacao-do-mapas-culturais">Configurando o sistema de autenticação do Mapas Culturais</h1>
+<p>O Mapas Culturais disponibiliza dois <em>drivers</em> de autenticação para serem utilizados em ambientes de produção/homologação (<a href="#OpauthOpenId">OpauthOpenId</a> e <a href="#OpauthLoginCidadao">OpauthLoginCidadao</a>), um para ser utilizado em ambiente de <em>desenvolvimento/homologação</em> (<a href="#Fake">Fake</a>), e outro utilizado nos testes automatizados (<a href="../../src/protected/application/lib/MapasCulturais/AuthProviders/Test.php">Test</a>).</p>
+<h2 id="fake">Fake</h2>
+<p><strong>classe</strong>: <a href="../../src/protected/application/lib/MapasCulturais/AuthProviders/Fake.php">MapasCulturais\AuthProviders\Fake</a></p>
+<p>Este método de autenticação é para ser utilizado em ambientes de desenvolvimento, teste ou homologação, quando não é necessário testar o processo de autenticação por completo. Ele simplifica o processo de autenticação/criação de usuários ao mostrar numa mesma tela uma lista dos usuários existentes no sistema e um formulário simplificado para criação de novos usuários.</p>
+<p>Para utilizar este método de autenticação você precisa colocar a linha abaixo no seu arquivo <strong>src/protected/application/conf/config.php</strong></p>
+<pre><code class="PHP">    'auth.provider' =&gt; 'Fake',
+</code></pre>
+
+<h2 id="opauthopenid">OpauthOpenID</h2>
+<p><strong>classe</strong>: <a href="../../src/protected/application/lib/MapasCulturais/AuthProviders/OpauthOpenId.php">MapasCulturais\AuthProviders\OpauthOpenId</a></p>
+<p>Este driver é implementado utilizando a biblioteca <a href="http://opauth.org/">Opauth</a> com a estratégia <a href="https://github.com/opauth/openid">OpenID</a> e pode ser utilizada para autenticar o Mapas Culturais com qualquer OpenID provider. 
+O exemplo a seguir mostra como configurar o Mapas Culturais para se autenticar com o <a href="https://github.com/hacklabr/mapasculturais-openid">Id da Cultura</a>¹ instalado no servidor que responde pelo domínio _id.map.as_². </p>
+<p><em>1. Não confundir com o <a href="../id.cultura.gov.br">IDCultura do Ministério da Cultura</a>, que é baseado no <a href="https://github.com/PROCERGS/login-cidadao/">Login Cidadão</a> abordado a <a href="#OpauthLoginCidadao">seguir</a>.</em></p>
+<p><em>2. O deploy e customização do tema do Id da Cultura não será abordado neste documento.</em></p>
+<h4 id="exemplo-de-configuracao-do-opauthopenid">Exemplo de configuração do OpauthOpenId</h4>
+<pre><code class="PHP">    'auth.provider' =&gt; 'OpauthOpenId',
+    'auth.config' =&gt; [
+        // substituir o dominio &quot;id.map.as&quot; pelo domínio do
+        'login_url' =&gt; 'http://id.map.as/openid/', 
+        'logout_url' =&gt; 'http://id.map.as/accounts/logout/', 
+        'salt' =&gt; 'UMAS STRING ALEATÓRIA', // exemplo 'fsdf#F#$T!WHS%$Y%HThw45h45h$%H45h42y45.$$234'
+        'timeout' =&gt; '24 hours' // o tempo que dura a sessão
+    ],
+</code></pre>
+
+<h2 id="login-cidadao-mapas-culturais-logout-inside-application">Login Cidadão &amp; Mapas Culturais &gt; Logout Inside Application</h2>
+<h3 id="configuracoes-para-autenticacao-via-lc-no-configphp">Configurações para autenticação via LC no config.php</h3>
+<p>Para usar a autenticação do Mapas com Login Cidadão, esteja atento os seguintes parâmetros que devem ser inseridos no arquivo de configurações da aplicação (este arquivo está em /mapasculturais/src/protected/application/conf/config.php): </p>
+<pre><code>
+        'auth.provider' =&gt; 'OpauthLoginCidadao',
+        'auth.config' =&gt; array(
+        'client_id' =&gt; 'NUMERO-DO-CLIENT-ID',
+        'client_secret' =&gt; 'HASH-DO-SECRET',
+        'auth_endpoint' =&gt; 'http://id.cultura.gov.br/oauth/v2/auth',
+        'token_endpoint' =&gt; 'http://id.cultura.gov.br/oauth/v2/token',
+        'user_info_endpoint' =&gt; 'http://id.cultura.gov.br/api/v1/person.json'
+        ),
+</code></pre>
+
+<h3 id="logout-via-login-cidadao">Logout via Login Cidadão</h3>
+<p>O [Login Cidadão] (https://github.com/redelivre/login-cidadao) possui uma feature chamada [Remote Logout] (https://github.com/PROCERGS/login-cidadao/blob/9bc9ff8220b968726682767f8c934d5562fe6a35/app/Resources/doc/en/remoteLogout.md) que permite com que usuários de uma aplicação externa (no caso o Mapas Culturais) possa fazer logout no sistema de autenticação (Login Cidadão) sem sairem do ambiente da aplicação. Em outras palavras, de dentro do Mapas, usando Remote Logout, um usuário poderia sair do Login Cidadão. No entanto essa funcionalidade ainda não foi implementada/testada para operar com Mapas Culturais. Provisoriamente, uma função javascript tem funcionado como um caminho seguro para fazer logout do Login Cidadão de dentro do Mapas. Caso o Login Cidadão seja seu único sistema de autenticação funcionando em conjunto com Mapas Culturais e você queira prover o que chamamos de Logout Inside Application, siga as instruções abaixo para implementar a saída. </p>
+<p>1 - Acesse o arquivo de header da aplicação, do template criado e ativo na instalação:</p>
+<pre><code>$ vi ~/mapasculturais/src/protected/application/themes/NAME-OF-YOUR-TEMPLATE/layouts/parts/header-main-nav.php
+</code></pre>
+
+<p>2 - Acrescente, no final deste arquivo, a seguinte função javascript:  </p>
+<pre><code>&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot;&gt;
+function logoutForce() {
+    window.open('https://NAME-OF-YOUR-URL-LOGIN-CIDADAO-HERE/logout', '_blank');
+    var oldURL = document.referrer;
+    alert(&quot;Logout efetuado com sucesso!&quot;);
+    location.reload();
+}
+&lt;/script&gt;
+</code></pre>
+
+<p>3 - No mesmo arquivo, busque a linha que gera o botão "Sair" e acrescente o evento onclick="return logoutForce(). Veja como a linha deve ficar: </p>
+<pre><code>&lt;a href=&quot;&lt;?php echo $app-&gt;createUrl('auth', 'logout'); ?&gt;&quot; onclick=&quot;return logoutForce()&quot;&gt;Sair&lt;/a&gt;
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

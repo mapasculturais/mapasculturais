@@ -17,6 +17,7 @@ class Project extends EntityController {
         Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
+        Traits\ControllerSealRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
@@ -59,16 +60,21 @@ class Project extends EntityController {
         $this->requireAuthentication();
         $app = App::i();
 
+
         if(!key_exists('id', $this->urlData))
             $app->pass();
 
-        $entity = $this->repo()->find($this->urlData['id']);
+        $entity = $this->requestedEntity;
+        
 
         if(!$entity)
             $app->pass();
 
+        
         $entity->checkPermission('@control');
 
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+        
         $response = $app->response();
         //$response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';

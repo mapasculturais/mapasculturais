@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Aplicando um tema - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_deploy/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_deploy_shapefiles/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#temas-conhecidos">Temas conhecidos</a></li>
+        
+    
+        <li class="main "><a href="#ativando-um-novo-tema">Ativando um novo tema</a></li>
+        
+    
+        <li class="main "><a href="#parametrizando-foco-do-mapa-e-zoom">Parametrizando foco do mapa e zoom</a></li>
+        
+    
+        <li class="main "><a href="#modo-homologacao-producao-ou-desenvolvimento">Modo Homologação, Produção ou Desenvolvimento</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<p>Esta documentação trata da ativação do tema no <em>config.php</em> da aplicação e de algumas configurações básicas para parametrização de um tema já existente. </p>
+<h2 id="temas-conhecidos">Temas conhecidos</h2>
+<ul>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeMapaNasNuvensDF">Mapa nas Nuvens - Distrito Federal</a></li>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeSaoJose">Tema São José dos Campos</a></li>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeMatoGrosso">Tema Mato Grosso</a></li>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeBH">Tema Belo Horizonte</a></li>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeEstadoSP">Tema Estado da Cultura - Estado de São Paulo</a></li>
+<li><a href="https://github.com/institutotim/mapasculturaisThemeSantoAndre">Tema Santo André</a></li>
+</ul>
+<h2 id="ativando-um-novo-tema">Ativando um novo tema</h2>
+<p>Os arquivos de tema da aplicação ficam em:</p>
+<pre><code>/mapasculturais/src/protected/application/themes
+</code></pre>
+
+<p>Lá estão os temas válidos da aplicação. Certifique-se de ter um tema desejavel neste diretorio para que seja ativado. </p>
+<p>Para ativar o tema edite o arquivo config.php. Este arquivo estende o arquivo conf-base.php. Já o arquivo conf-template.php é apenas um exemplo que pode ser usado para elaborar um novo config.php</p>
+<pre><code>$ vi mapasculturais/src/protected/application/conf/config.php
+</code></pre>
+
+<p>Edite as linhas abaixo:</p>
+<pre><code>/* configure e descomente as linhas abaixo para habilitar um tema personalizado */
+// 'namespaces' =&gt; array_merge( $config['namespaces'], ['SEU-NAME-SPACE' =&gt; 'CAMINHO-DO-TEMPLATE']),
+// 'themes.active' =&gt; 'SEU-NAME-SPACE',
+</code></pre>
+
+<p>Para algo como isso:</p>
+<pre><code>/* configure e descomente as linhas abaixo para habilitar um tema personalizado */
+'namespaces' =&gt; array_merge( $config['namespaces'], ['SantoAndre' =&gt; THEMES_PATH.'SantoAndre']),
+'themes.active' =&gt; 'SantoAndre',
+
+</code></pre>
+
+<p>Repare que, além de retirar os comentários e inserir os namespaces, acrescentamos, nas linhas acima, o caminho absoluto do tema concatenando uma variável global de caminho (THEMES_PATH) com o nome do diretório onde está o tema customizado ('SantoAndre').</p>
+<h2 id="parametrizando-foco-do-mapa-e-zoom">Parametrizando foco do mapa e zoom</h2>
+<p>Ainda no arquivo do configuracoes da aplicacao (config.php), voce pode encontrar parametros para latitude, longitude e zoom do mapa. </p>
+<p>Veja: </p>
+<pre><code>$ vi mapasculturais/src/protected/application/conf/config.php
+</code></pre>
+
+<p>Busque e altere as linhas abaixo.</p>
+<pre><code>// latitude, longitude
+'maps.center' =&gt; [-23.666380211046917, -46.52915954589844],
+
+// zoom do mapa
+'maps.zoom.default' =&gt; 12,
+</code></pre>
+
+<p>Rode o script de deploy com o usuario da aplicação. </p>
+<h2 id="modo-homologacao-producao-ou-desenvolvimento">Modo Homologação, Produção ou Desenvolvimento</h2>
+<p>Após a instalação da ferramenta, no arquivo mapasculturais/src/protected/application/conf/config.php, encontre essas linhas: </p>
+<pre><code>    // development, staging, production
+    'app.mode' =&gt; 'production',
+
+    'doctrine.isDev' =&gt; false,
+    'slim.debug' =&gt; false,
+    'maps.includeGoogleLayers' =&gt; true,
+</code></pre>
+
+<p>Alterando a chave app.mode para development você terá saídas para o modo de desenvolvimento da aplicação. Alterando também a chave slim.debug para true, você poderá ver as saídas de debug da aplicação. Essas duas modificações são extremamente uteis para identificar erros desconhecidos ou ainda para testar saídas e vericar resultados.</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

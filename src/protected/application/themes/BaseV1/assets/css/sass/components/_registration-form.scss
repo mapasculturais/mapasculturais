@@ -219,7 +219,31 @@ article.project .highlighted-message .btn {
         }
     }
 }
-
+.registration-seals {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    li {
+        display: inline-block;
+        margin: 0 0.5rem 0.5rem 0;
+        position: relative;
+        img {
+            max-height: 70px;
+            max-width: 70px;
+        }
+        .botoes {
+            position: absolute;
+            top: -12px;
+            right: -6px;
+            a {
+                background-color: #fff;
+                border-radius: 100%;
+                &:before {
+                    line-height: 180%;
+                }
+            }
+        }
+    }
+}
 
 .attachment-list {
 	margin: 0;
@@ -228,6 +252,7 @@ article.project .highlighted-message .btn {
         position: relative;
         padding: $padding-base 14.5rem $padding-base $padding-base;
         border-bottom: $thin-row;
+        font-size: .8em;
         .attachment-title {
             font-size: $font-size-smaller;
             font-weight: normal;
@@ -264,7 +289,24 @@ article.project .highlighted-message .btn {
             border-bottom: none;
         }
         &.registration-edit-mode {
-            padding-right: 14rem;
+            padding-right: 1em 14rem 1em 1em;
+            p {
+                margin-bottom: 0;
+            }
+        }
+        
+        &.registration-view-mode {
+            padding: .3em 1em;
+            font-size: 0.75em;
+            label {
+                font-weight: bold;
+                color:#333;
+            }
+
+            a {
+                font-weight: normal;
+                text-decoration: underline;
+            }
         }
     }
 }

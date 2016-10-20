@@ -24,6 +24,7 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
+        Traits\EntitySealRelation,
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
@@ -88,6 +89,12 @@ class Project extends \MapasCulturais\Entity
      */
     protected $longDescription;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
 
     /**
      * @var \DateTime
@@ -182,6 +189,13 @@ class Project extends \MapasCulturais\Entity
     public $registrationFileConfigurations;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
+     *
+     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
+     */
+    public $registrationFieldConfigurations;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_verified", type="boolean", nullable=false)
@@ -200,7 +214,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
      *
@@ -208,7 +222,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__agentRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
@@ -217,9 +231,26 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
+    
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
+
+    function getAllRegistrations(){
+        // ============ IMPORTANTE =============//
+        // @TODO implementar findSentByProject no repositório de inscrições
+        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+
+        return $registrations;
     }
 
     /**
@@ -228,9 +259,8 @@ class Project extends \MapasCulturais\Entity
      * @return \MapasCulturais\Entities\Registration[]
      */
     function getSentRegistrations(){
-        // ============ IMPORTANTE =============//
-        // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+        $registrations = $this->getAllRegistrations();
+
         $result = [];
         foreach($registrations as $re){
             if($re->status > 0)

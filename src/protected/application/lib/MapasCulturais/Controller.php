@@ -87,7 +87,9 @@ abstract class Controller{
 
 
     protected $action = null;
-
+    
+    protected $method = null;
+    
     // =================== GETTERS ================== //
 
     /**
@@ -237,6 +239,8 @@ abstract class Controller{
         $this->action = $action_name;
 
         $method = strtoupper($method);
+        
+        $this->method = $method;
 
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
@@ -290,7 +294,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->render($template, $data);
     }
 
@@ -305,7 +308,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->view->partial = true;
         $app->render($template, $data);
     }

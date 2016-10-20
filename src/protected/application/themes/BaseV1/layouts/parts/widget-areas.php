@@ -5,9 +5,9 @@ $areas = array_values($app->getRegisteredTaxonomy($entityClass, 'area')->restric
 sort($areas);
 ?>
 <div class="widget">
-    <h3>Área de atuação</h3>
+    <h3><?php $this->dict('taxonomies:area: name') ?></h3>
     <?php if($this->isEditable()): ?>
-        <span id="term-area" class="js-editable-taxonomy" data-original-title="Área de Atuação" data-emptytext="Selecione pelo menos uma área" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
+        <span id="term-area" class="js-editable-taxonomy" data-original-title="<?php $this->dict('taxonomies:area: name') ?>" data-emptytext="<?php $this->dict('taxonomies:area: select at least one') ?>" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>
     <?php else: ?>
         <?php
         foreach($areas as $i => $t): if(in_array($t, $entity->terms['area'])): ?>

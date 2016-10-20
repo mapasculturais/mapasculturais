@@ -25,6 +25,7 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
+        Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft;
@@ -148,7 +149,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
      *
@@ -164,19 +165,35 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
+    
+
+    /**
+     * @var \MapasCulturais\Entities\EventSealRelation[] EventSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     */
+    protected $updateTimestamp;
 
     private $_newProject = false;
 
     function publish($flush = false){
         $this->checkPermission('publish');
-        
+
         $app = App::i();
-        
+
         $app->disableAccessControl();
-        
+
         $this->status = self::STATUS_ENABLED;
         $this->save($flush);
-        
+
         $app->enableAccessControl();
     }
 
@@ -259,7 +276,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
-        $rsm->addFieldResult('e', 'rule', '_rule');
+        $rsm->addFieldResult('e', 'rule', 'rule');
 
         $dql_limit = $dql_offset = '';
 
@@ -381,34 +398,34 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
-    
+
     protected function canUserPublish($user){
         if($user->is('guest')){
             return false;
         }
-        
+
         if($user->is('admin')){
             return true;
         }
-        
+
         if($this->canUser('@control', $user)){
             return true;
         }
-        
+
         if($this->project && $this->project->canUser('@control', $user)){
             return true;
         }
-        
+
         return false;
     }
-    
+
     protected function canUserView($user){
         if($this->status === self::STATUS_ENABLED){
             return true;
         }else if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
         }
-        
+
         return false;
     }
 

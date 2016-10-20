@@ -5,7 +5,7 @@ return array_merge($config,
     [
         'app.siteName' => 'Nome do site',
         'app.siteDescription' => 'Descrição do site',
-        
+
         /* configure e descomente as linhas abaixo para habilitar um tema personalizado */
         // 'namespaces' => array_merge( $config['namespaces'], ['Name\Space\Do\Tema' => '/caminho/absoluto/para/o/tema']),
         // 'themes.active' => 'Name\Space\Do\Tema',
@@ -20,14 +20,14 @@ return array_merge($config,
             'process.css' => 'uglifycss {IN} > {OUT} ',
             'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
         ]),
-        
+
         // development, staging, production
         'app.mode' => 'production',
 
         'doctrine.isDev' => false,
         'slim.debug' => false,
         'maps.includeGoogleLayers' => true,
-        
+
         'app.geoDivisionsHierarchy' => [
             'pais' => 'País',
             'regiao' => 'Região',
@@ -41,13 +41,17 @@ return array_merge($config,
         ],
         // latitude, longitude
         'maps.center' => [-13.987376214146455, -54.38232421875],
-        
+
         // zoom do mapa
         'maps.zoom.default' => 5,
 
         'plugins.enabled' => array('agenda-singles', 'endereco'),
-        
+
         'auth.provider' => 'Fake',
+
+        // Token da API de Cep
+        // Adquirido ao fazer cadastro em http://www.cepaberto.com/
+        // 'cep.token' => '[token]',
 
         /* Modelo de configuração para usar o id da cultura */
 //        'auth.provider' => 'OpauthOpenId',
@@ -57,6 +61,16 @@ return array_merge($config,
 //            'salt' => '',
 //            'timeout' => '24 hours'
 //        ],
+
+//Modelo de autenticação para Login Cidadão
+//        'auth.provider' => 'OpauthLoginCidadao',
+//        'auth.config' => array(
+//        'client_id' => '',
+//        'client_secret' => '',
+//        'auth_endpoint' => 'https://[SUA-URL]/openid/connect/authorize',
+//        'token_endpoint' => 'https://[SUA-URL]/openid/connect/token',
+//        'user_info_endpoint' => 'https://[SUA-URL]/api/v1/person.json'
+//        ),
 
         'doctrine.database' => [
             'dbname'    => 'mapas',

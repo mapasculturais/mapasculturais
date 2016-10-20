@@ -174,7 +174,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="rule", type="text", nullable=false)
      */
-    protected $_rule;
+    protected $rule;
 
     /**
      * @var integer
@@ -268,17 +268,18 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDescription(){
-        return isset($this->rule->description) ? $this->rule->description : "";
+        return isset($this->getRule()->description) ? $this->getRule()->description : "";
     }
 
 
     function getPrice(){
-        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
+        return key_exists('price', $this->rule) ? $this->rule['price'] : '';
     }
 
     function setRule($value) {
+        
         if ($value === '') {
-            $this->_rule = '';
+            $this->rule = '';
             return;
         }
         $value = (array) $value;
@@ -306,7 +307,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->until = $value['until'] ? $value['until'] : null;
         $this->frequency = $value['frequency'];
 
-        $this->_rule = json_encode($value);
+        $this->rule = json_encode($value);
 
         if ($this->validationErrors) {
             return;
@@ -368,13 +369,13 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getRule() {
-        return json_decode($this->_rule);
+        return json_decode($this->rule);
     }
 
     function jsonSerialize() {
         return [
             'id' => $this->id,
-            'rule'=> $this->rule,
+            'rule'=> $this->getRule(),
             'startsOn' => $this->startsOn,
             'startsAt' => $this->startsAt,
             'endsOn' => $this->endsOn,
@@ -386,7 +387,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'count' =>  $this->count,
             'until' =>  $this->until,
             'spaceId' =>  $this->spaceId,
-            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location') : null,
+            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location,terms') : null,
             'event' => $this->event ? $this->event->simplify('id,name,singleUrl,shortDescription,avatar') : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
@@ -441,7 +442,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     function delete($flush = false) {
         $this->checkPermission('remove');
         // ($originType, $originId, $destinationType, $destinationId, $metadata)
-        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->rule]);
+        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->getRule()]);
         $requests = App::i()->repo('RequestEventOccurrence')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
             $r->delete($flush);

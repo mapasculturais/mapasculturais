@@ -20,7 +20,7 @@ $brand-event: #b3b921 !default;
 $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
-
+$brand-seal: #cc0033 !default;
 $brand-developer: #9966cc !default;
 
 $brand-info: #40b4b4 !default;
@@ -130,6 +130,12 @@ $unicode-add-button:            "\e050" !default;
 // .icon-agent on _icons.scss file
 // .btn-map-agent on _maps.scss file
 $unicode-agent:                 "\e08a" !default;
+
+//** Seal icon
+// used on:
+// .icon-seal on _icons.scss file
+// .btn-map-seal on _maps.scss file
+$unicode-seal:                 "\e078" !default;
 
 //** API icon
 // used on:
@@ -266,6 +272,13 @@ $unicode-radio-button-selected: "\5c"   !default;
 //** Search icon
 // used on .icon-search on _icons.scss
 $unicode-search:                "\55"   !default;
+
+//** Group icon
+// used on .icon-group on _icons.scss
+$unicode-group:                "\e08b"   !default;
+
+
+$unicode-show-advanced-filters:          "\54"   !default;
 
 //** Select arrow icon
 // used on:
@@ -410,12 +423,14 @@ $form-fields-height:                   2rem !default;
 //
 
 $z-index-descricao-do-agente:    800 !default;
+$z-index-descricao-do-selo:		  1000 !default;
+$z-index-descricao-do-saas:    15000 !default;
 $z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;
 $z-index-leaflet:               1300 !default;
 $z-index-editable-entity:       1400 !default;
-$z-index-infobox:               1500 !default;
+$z-index-infobox:               15000 !default;
 $z-index-main-header:           1700 !default;
 $z-index-submenu-dropdown:      1800 !default;
 $z-index-tip:                   1900 !default;

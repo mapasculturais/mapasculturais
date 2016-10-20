@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Criando um novo tema - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_developer_entities/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a rel="prev" >
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#customizacao-do-tema-do-mapas-culturais">Customização do tema do Mapas Culturais</a></li>
+        
+            <li><a href="#indice">Índice</a></li>
+        
+            <li><a href="#estrutura-do-tema">Estrutura do Tema</a></li>
+        
+            <li><a href="#criando-o-tema">Criando o tema</a></li>
+        
+            <li><a href="#configuracoes-fixas-do-tema">Configurações fixas do tema</a></li>
+        
+            <li><a href="#criando-um-repositorio-do-tema-no-github">Criando um repositório do tema no Github</a></li>
+        
+            <li><a href="#estrutura-de-arquivos-do-tema-basev1">Estrutura de arquivos do tema BaseV1</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="customizacao-do-tema-do-mapas-culturais">Customização do tema do Mapas Culturais</h1>
+<p>Este documento trata de uma customização simples do tema base do Mapas Culturais para novas instalações, e se restringe a customização das cores, imagens, textos e configuração do posicionamento inicial dos mapas. Este é o nível de customização utilizado nos diversos temas do repositório, como por exemplo os temas de Blumenau (blumenaumaiscultura.com.br), Ceará (mapa.cultura.ce.gov.br), Sobral (cultura.sobral.ce.gov.br) e SaoJose (lugaresdacultura.org.br).</p>
+<p>Neste documento será feito um tema de exemplo para uma <em>Secretaria Municipal de Cultura</em> cuja sigla é <em><strong>SECONDO</strong></em>, de uma cidade fictícia chamada <em><strong>Macondo</strong></em>. O nome do site será <em><strong>Macondo Cultural</strong></em>.</p>
+<h4 id="indice">Índice</h4>
+<ul>
+<li><a href="#estrutura-do-tema">Estrutura do Tema</a></li>
+<li><a href="#criando-o-tema">Criando o tema</a><ul>
+<li><a href="#estílos">Estílos</a><ul>
+<li><a href="#definição-das-variáveis-sass">Definição das variáveis SASS</a></li>
+<li><a href="#sobrescrevendo-estilos">Sobrescrevendo estilos</a></li>
+<li><a href="#compilando-os-arquivos-sass">Compilando os arquivos SASS</a></li>
+</ul>
+</li>
+<li><a href="#imagens">Imagens</a><ul>
+<li><a href="#substituindo-imagens">Substituindo imagens</a></li>
+<li><a href="#utilizando-imagens-nos-templates">Utilizando imagens nos templates</a></li>
+<li><a href="#utilizando-imagens-nos-estilos">Utilizando imagens nos estilos</a></li>
+</ul>
+</li>
+<li><a href="#substituindo-partes-dos-templates">Substituindo partes dos templates</a></li>
+<li><a href="#textos">Textos</a></li>
+<li><a href="#páginas-sobre-e-como-usar">Páginas "Sobre" e "Como Usar"</a></li>
+<li><a href="#configurações-fixas-do-tema">Configurações fixas do tema</a><ul>
+<li><a href="#configurando-os-mapas">Configurando os mapas</a></li>
+<li><a href="#divisões-geográficas">Divisões geográficas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#criando-um-repositório-do-tema-no-github">Criando um repositório do tema no Github</a><ul>
+<li><a href="#criando-o-repositório">Criando o repositório</a></li>
+<li><a href="#publicando-alterações">Publicando alterações</a></li>
+<li><a href="#clonando-e-atualizando-a-partir-do-repositório">Clonando e atualizando a partir do repositório</a></li>
+</ul>
+</li>
+<li><a href="#estrutura-de-arquivos-do-tema-basev1">Estrutura de arquivos do tema BaseV1</a></li>
+</ul>
+<h2 id="estrutura-do-tema">Estrutura do Tema</h2>
+<p>O tema padrão que do mapas é o tema <code>BaseV1</code>, localizado na pasta <code>src/protected/application/themes</code>, e esse tema contém todos os templates, imagens, estilos e scripts que são usados para renderizar as páginas (Ex: Mapa, Painel, Home..).</p>
+<p>É possível estender o tema criando uma pasta, de modo que todos os arquivos que forem adicionados no tema "filho" irão sobrescrever os arquivos originais do tema <code>BaseV1</code>, isso inclui os templates, imagens, estilos e scripts. A estrutura completa está na seção <a href="#estrutura-de-arquivos-do-tema-basev1">Estrutura de arquivos do tema BaseV1</a>.</p>
+<blockquote>
+<p><strong>IMPORTANTE:</strong> É necessário tomar cuidado ao sobrescrever os arquivos, já que posteriormente os arquivos do tema <code>BaseV1</code> podem ser alterados (incluindo uma nova funcionalidade, por exemplo) e isso não afetará o tema estendido.</p>
+</blockquote>
+<p>Antes de decidir sobrescrever um arquivo, é indicado que verificar se não é possível efetuar a alteração desejada utilizando <code>hooks</code>, que pode ser consultado na documentação <a href="../developer-guide.md"><em>Guia do Desenvolvedor</em></a></p>
+<h2 id="criando-o-tema">Criando o tema</h2>
+<p>O primeiro passo é copiar o template de tema, disponível na pasta <em>src/protected/application/themes/<strong>TemplateV1</strong></em>, para a pasta do novo tema: <em>src/protected/application/themes/<strong>Macondo</strong></em> ¹.</p>
+<p>Feito isto renomeie o <em>namespace</em> <strong>TemplateV1</strong>, na primeira linha do arquivo <strong>Theme.php</strong>, para o namespace do Tema (de preferência o mesmo nome da pasta)</p>
+<pre><code class="PHP">&lt;?php
+namespace Macondo;
+...
+</code></pre>
+
+<p>¹ A princípio o tema pode estar em qualquer pasta acessível pelo usuário que roda a aplicação, porém por <a href="http://stackoverflow.com/questions/5589067/sass-set-variable-at-compile-time">limitações do SASS</a> é necessário colocar <em>hardcoded</em> o caminho para o tema BaseV1. Por esta razão colocamos o tema dentro da pasta <em>src/protected/application/themes/</em> e importamos os arquivos SASS do tema BaseV1 utilizando a linha abaixo:</p>
+<pre><code>@import &quot;../../../../BaseV1/assets/css/sass/main&quot;;
+</code></pre>
+
+<h3 id="estilos">Estilos</h3>
+<p>O tema <em>BaseV1</em> do Mapas Culturais utiliza uma <em>extensão da linguagem CSS</em> chamada <a href="http://sass-lang.com/">SASS</a>, e é através desta que são feitas as personalizações dos estilos do tema.</p>
+<p>A personalização das cores, fontes e estilos é feita de duas maneiras: definindo os valores das variáveis utilizadas nos diversos arquivos sass (.scss) e, nos casos em que a definição das variáveis não é suficiente, sobrescrevendo as classes/estilos CSS.</p>
+<h4 id="definicao-das-variaveis-sass">Definição das variáveis SASS</h4>
+<p>A definição de novos valores para as variáveis deve ser feita no arquivo <strong>assets/css/sass/_variables.scss</strong> do tema filho, e uma lista completa das variáveis, assim como seus valores padrão, pode ser encontrada no arquivo <a href="../../../src/protected/application/themes/BaseV1/assets/css/sass/globals/_variables.scss">_variables.scss</a> do tema <em>BaseV1</em>.</p>
+<p>No exemplo abaixo são definidas as variáveis das cores principais² que são utilizadas em diversos lugares do tema¹.</p>
+<pre><code class="CSS">$brand-primary: #5064A5 !default;
+$brand-event:   #F7931D !default;
+$brand-agent:   #5FB643 !default;
+$brand-space:   #AB1F24 !default;
+$brand-project: #795099 !default;
+$brand-seal:    #795099 !default;
+$brand-devs:    #CE5AA1 !default;
+</code></pre>
+
+<p>¹ Para saber com mais precisão onde uma variável é utilizada e, por consequência, o que será afetado e onde estarão os efetitos de uma modificação, a melhor maneira é fazer uma busca pelo nome da variável (por exemplo <em>$brand-primary</em>) dentro da pasta <a href="../../../src/protected/application/themes/BaseV1/assets/css/sass/">sass</a> do tema BaseV1.</p>
+<p>² Alterar as cores dos <strong>eventos</strong>, <strong>agentes</strong> e/ou <strong>espaços</strong> implica em recriar os arquivos dos <em>pins</em> (ver os arquivos de imagens que começam com <em>pin-</em> e <em>agrupador-</em>)  utilizados nos mapas para estas entidades.</p>
+<h4 id="sobrescrevendo-estilos">Sobrescrevendo estilos</h4>
+<p>Quando a modificação que se deseja fazer é mais complexa e não é possível de fazê-la com uma simples mudança de valor de uma variável, ou a propriedade que se quer alterar não é definida por uma variável, ou ainda se a alteração deve ser num caso muito específico, como exemplo o tamanho da caixinha de edição do nome de agentes, o caminho a ser adotado é sobrescrever a classe/estilo.</p>
+<p>Este nível de personalização deve ser feito no arquivo <strong>assets/css/sass/_overrides.scss</strong> do tema filho.</p>
+<p>No exemplo abaixo mudamos a altura da imagem de <em>verificado</em> para 100px;</p>
+<pre><code class="CSS">.widget-verified {
+    height: 100px;
+}
+</code></pre>
+
+<p>Se for utilizar imagens nos estilos, como por exemplo imagens de fundo, ver a seção <a href="#utilizando-imagens-nos-estilos">Utilizando imagens nos estilos</a>.</p>
+<h4 id="compilando-os-arquivos-sass">Compilando os arquivos SASS</h4>
+<p>Durante o processo de desenvolvimento do tema, a melhor maneira de se compilar o sass é utilizando o comando <strong>sass --watch</strong> (ver <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#using_sass">documentação do sass</a>) que este recompilará o <em>.css</em> sempre que houver modificações nos arquivos <em>.css</em>.</p>
+<p>Entre pela linha de comando na pasta <strong>assets/css</strong> do tema filho e execute o seguinte comando:</p>
+<pre><code class="BASH">sass --watch sass/main.scss:main.css
+</code></pre>
+
+<h3 id="imagens">Imagens</h3>
+<h4 id="substituindo-imagens">Substituindo imagens</h4>
+<p>Qualquer imagem utilizada pelo tema <em>BaseV1</em> pode ser substituida facilmente bastando, para isto, colocar uma imagem de mesmo nome na pasta <strong>assets/img</strong> do tema filho.</p>
+<p>Por exemplo, para personalizar as imagens utilizadas como selo de que o conteúdo é verificado/oficial, basca colocar os arquivos com o brasão da instituição na pasta <strong>assets/img</strong>, obviamente respeitando os tamanhos e proporções (largura e altura).</p>
+<pre><code>assets/img/unverified-seal.png
+assets/img/verified-icon.png
+assets/img/verified-seal.png
+assets/img/verified-seal-small.png
+</code></pre>
+
+<h4 id="utilizando-imagens-nos-templates">Utilizando imagens nos templates</h4>
+<p>Para utilizar uma nova imagem no tema filho, primeiro coloque o arquivo da imagem na pasta <strong>assets/img</strong> e em seguida chame o arquivo da seguinte forma no template, utilizando a função <strong>asset</strong> do tema:</p>
+<pre><code class="HTML+PHP">&lt;img src=&quot;&lt;?php $this-&gt;asset('img/nome-da-imagem.png'); ?&gt;&quot; &gt;
+</code></pre>
+
+<h4 id="utilizando-imagens-nos-estilos">Utilizando imagens nos estilos</h4>
+<p>Para utilizar uma imagem nos estilos é necessário <em>pedir</em> para a aplicação <em>publicar</em> esta imagem antes de utilizá-la. Para tal basta chamar, no método <strong>_publishAssets</strong> do arquivo <strong>Theme.php</strong> do tema filho, a função <strong>asset</strong> do tema passando <em>false</em> como segundo parâmtro, que indicando que não é para imprimir a url do asset publicado.</p>
+<p>exemplos:</p>
+<pre><code class="PHP">    protected function _publishAssets() {
+        // somente publica o asset
+        $this-&gt;asset('img/imagem-de-fundo.png', false);
+
+        // publica e coloca a url do asset publicado no objeto MapasCulturais.assets para o js
+        $this-&gt;jsObject['assets']['logo-instituicao'] = $this-&gt;asset('img/logo-instituicao.png', false);
+    }
+</code></pre>
+
+<h3 id="substituindo-partes-dos-templates">Substituindo <em>partes</em> dos templates</h3>
+<p>Da mesma forma como acontece com as imagens, quaquer arquivo <strong>.php</strong> das pastas <strong>views</strong> e <strong>layouts</strong> pode ser substituido facilmente, bastando para isto, que seja criado um arquivo com o mesmo nome no tema filho.</p>
+<p>Os três arquivos mais comumente substituídos, e que já são incluídos no template de tema <em>TemplateV1</em>, são os seguintes:</p>
+<pre><code>layouts/parts/editable-entity-logo.php  // logo que aparece na barrinha cinza da edição de entidades
+layouts/parts/header-about-nav.php      // menu da direita do header
+layouts/parts/header-logo.php           // logo do site, a esquerda do header
+</code></pre>
+
+<h3 id="textos">Textos</h3>
+<p>Os textos utilizados na home e em alguns outros lugares do site, como nos textos das <a href="#páginas-sobre-e-como-usar">páginas "Sobre" e "Como Usar"</a>, são definidos no método <strong>_getTexts</strong> arquivo <strong>Theme.php</strong>. O template de tema <em>TemplateV1</em> contém todos os textos <em>configuráveis</em> comentados com os valores padrão.</p>
+<p>abaixo configuramos alguns textos de acordo com nossa instalação fictícia:</p>
+<pre><code class="PHP">            'site: name' =&gt; 'Macondo Cultural',
+            'site: in the region' =&gt; 'na cidade de Macondo',
+            'site: of the region' =&gt; 'da cidade de Macondo',
+            'site: owner' =&gt; 'Secretaria Municipal de Cultura de Macondo',
+            'site: by the site owner' =&gt; 'pela Secretaria Municipal de Cultura de Macondo',
+
+            'home: abbreviation' =&gt; &quot;SECONDO&quot;,
+            'home: colabore' =&gt; &quot;Colabore com o Macondo Cultural&quot;,
+
+            'search: verified results' =&gt; 'Resultados da SECONDO',
+            'search: verified' =&gt; &quot;SECONDO&quot;
+</code></pre>
+
+<h3 id="paginas-sobre-e-como-usar">Páginas "Sobre" e "Como Usar"</h3>
+<p>Os textos das páginas <a href="../../src/protected/application/themes/BaseV1/pages/sobre.md">Sobre</a> e <a href="../(../../src/protected/application/themes/BaseV1/pages/como-usar.md)">Como Usar</a> são pensados para serem genéricos e utilizam dos textos definidos <a href="#textos">acima</a>.</p>
+<p>Caso os textos fornecidos pelo tema BaseV1 não supra as necessidades, basta criar os arquivos na pasta <strong>pages</strong> do tema filho e escrever, utilizando as linguagens Markdown ou HTML para formatação, os novos textos.</p>
+<h2 id="configuracoes-fixas-do-tema">Configurações fixas do tema</h2>
+<h3 id="configurando-os-mapas">Configurando os mapas</h3>
+<p>O primeiro passo para configurar¹ o mapas da busca e das páginas de criação de agentes e espaços, é conseguir os valores exatos da latitude, longitude e zoom.</p>
+<p>A maneira mais simples de se fazer isto é através da própria página de busca, posicionando e definindo o zoom do mapa exatamente como ele deve se encontrar quando um usuário entrar na busca, e copiando os valores que aparecem na URL como no exemplo abaixo:</p>
+<pre><code>/busca/##(global:(enabled:(agent:!t),filterEntity:agent,map:(center:(lat:10.590252550882942,lng:-74.18719768524169),zoom:15)))
+latitude:  10.590252550882942
+longitude: -74.18719768524169
+zoom:      15
+</code></pre>
+
+<p>Após obter os valores, defina no arquivo <strong>conf-base.php</strong> do tema filho os valores das chaves <strong>'maps.center'</strong> e <strong>'maps.zoom.default'</strong> com os valores obtidos.</p>
+<pre><code class="PHP">    // latitude,longitude do centro do mapa da busca e do mapa da criação de agentes e espaços
+    'maps.center' =&gt; [10.590252550882942, -74.18719768524169],
+
+    // zoom padrão do mapa da busca
+    'maps.zoom.default' =&gt; 15,
+</code></pre>
+
+<p>¹ Há mais opções de configurações dos mapas que não serão abordadas neste documento mas que estão comentadas com os valores padrão no arquivo <strong>conf-base.php</strong> do TemplateV1.</p>
+<h3 id="divisoes-geograficas">Divisões geográficas</h3>
+<p>As divisões geográficas configuradas devem ser as mesmas que foram importadas pelos shapefiles. No nosso exemplo usaremos somente <em>zona</em> e <em>bairro</em>.</p>
+<pre><code class="PHP">    'app.geoDivisionsHierarchy' =&gt; [
+        'zona'          =&gt; 'Zona',
+        'bairro'        =&gt; 'Bairro'
+    ],
+</code></pre>
+
+<h2 id="criando-um-repositorio-do-tema-no-github">Criando um repositório do tema no Github</h2>
+<p>É recomendado que ao criar o tema ou efetuar alterações no tema, as alterações estejam em um repositório git para posteriormente seja possível clonar o tema de qualquer lugar, seja para utilizar em um servidor em produção ou para utilizar um ambiente de desenvolvimento.</p>
+<h3 id="criando-o-repositorio">Criando o repositório</h3>
+<p>Para criar o repositório é necessário seguir os seguintes passos:
+- Criar uma conta no <a href="../github.com">Github</a>
+- No menu superior direito apertar a opção <strong>New Repository</strong>
+- Preencher a caixa de texto <strong>Repository name</strong> com o nome do repositório (recomendável utilizar o mesmo nome escolhido na pasta do tema, para que ao clonar o repositório o nome fique correto)
+- Apertar o botão <strong>Create repository</strong>
+- Executar os seguintes comandos após criar o repositório (alterando <strong>Macondo</strong> para o nome do seu repositório/tema):</p>
+<pre><code>$ echo &quot;# Macondo&quot; &gt;&gt; README.md
+$ git init
+$ git add --all
+$ git commit -m &quot;first commit&quot;
+$ git remote add origin https://github.com/[endereco_github]/Macondo.git
+$ git push -u origin master
+</code></pre>
+
+<h3 id="publicando-alteracoes">Publicando alterações</h3>
+<p>Dentro da pasta do tema, se alguma alteração for feita em qualquer arquivo será possível ver os arquivos que foram alterados utilizando o comando <code>git status</code>, mostrando os arquivos modificados. Ao alterar arquivos o resultado deve ser parecido com isso:</p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+
+    modified:   Theme.php
+    modified:   conf-base.php
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre>
+
+<p>Neste exemplo, houveram alterações nos arquivos <em>Theme.php</em> e no arquivo <em>conf-base.php</em>. Para publicar esse arquivos é necessário utilizar os comandos 
+- <code>git add [nome_do_arquivo]</code>
+- <code>git commit -m "[mensagem_com_descricao_da_alteracao]"</code>
+- <code>git push</code></p>
+<p>Como no exemplo, para publicar os arquivos <em>Theme.php</em> e <em>conf-base.php</em> os comando seriam assim:</p>
+<pre><code>$git add Theme.php
+$git add conf-base.php
+$git commit -m &quot;Alterações de configurações do Tema&quot;
+$git push
+</code></pre>
+
+<h3 id="clonando-e-atualizando-a-partir-do-repositorio">Clonando e atualizando a partir do repositório</h3>
+<p>Após as alterações estarem publicadas em um repositório do Github, podemos obter o código publicado com o comando <code>git clone https://github.com/[endereco_github]/Macondo</code>, isso irá criar uma pasta chamada <strong>Macondo</strong> onde o comando foi executado. Preferencialmente executado da pasta <code>themes</code> da instalação do mapas:</p>
+<pre><code>$ cd src/protected/application/themes
+$ git clone https://github.com/[endereco_github]/Macondo
+</code></pre>
+
+<p>Se alguma alteração for efetuada no repositório do Github e for necessário atualizar o tema localmente, pode se utilizar o comando <code>git pull</code> para atualizar o código localmente.</p>
+<blockquote>
+<p><strong>IMPORTANTE:</strong> Ao utilizar o comando <code>git pull</code> verificar se não existem arquivos locais que foram alterados e podem ser sobrescritar ou gerar algum conflito.</p>
+</blockquote>
+<p>Para mais detalhes sobre como utilizar o git, é recomendável a leitura da documentação e artigos úteis:
+- https://git-scm.com/book/pt-br/v1/Primeiros-passos-No%C3%A7%C3%B5es-B%C3%A1sicas-de-Git
+- http://rogerdudler.github.io/git-guide/index.pt_BR.html</p>
+<h2 id="estrutura-de-arquivos-do-tema-basev1">Estrutura de arquivos do tema BaseV1</h2>
+<ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/">BaseV1/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/db-updates.php">db-updates.php</a> <em>scripts para atualização de banco que afetam todos os temas filhos.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/Theme.php">Theme.php</a> <em>classe <strong>MapasCulturais\Themes\BaseV1\Theme</strong>. Todos os temas filhos estendem esta classe.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/">assets/</a> <em>pasta onde ficam os arquivos estáticos</em><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/css/">css/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/css/sass/">sass/</a> <em>arquivos fonte .scss (<a href="#compilando-os-arquivos-sass">precisam ser compilados</a>).</em></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/fonts/">fonts/</a> <em>as fontes utilizadas no tema BaseV1.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/">img/</a> <em>as imagens utilizadas no tema BaseV1.</em><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-agente.png">agrupador-agente.png</a> <em>pin para grupo de <strong>agentes</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-combinado-agente-evento.png">agrupador-combinado-agente-evento.png</a> <em>pin para grupo de <strong>agentes e eventos</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-combinado-espaco-agente.png">agrupador-combinado-espaco-agente.png</a> <em>pin para grupo de <strong>agentes e espaços</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-combinado-espaco-evento.png">agrupador-combinado-espaco-evento.png</a> <em>pin para grupo de <strong>espaços e eventos</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-combinado.png">agrupador-combinado.png</a> <em>pin para grupo de <strong>agentes, espaços e eventos</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-espaco.png">agrupador-espaco.png</a> <em>pin para grupo de <strong>espaços</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/agrupador-evento.png">agrupador-evento.png</a> <em>pin para grupo de <strong>eventos</strong> no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/avatar--agent.png">avatar--agent.png</a> <em>avatar padrão do agente - imagem que aparece como avatar do agente quando o usuário não subiu nunhuma imagem.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/avatar--event.png">avatar--event.png</a> <em>avatar padrão do evento - imagem que aparece como avatar do evento quando o usuário não subiu nunhuma imagem.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/avatar--project.png">avatar--project.png</a> <em>avatar padrão do projeto - imagem que aparece como avatar do projeto quando o usuário não subiu nunhuma imagem.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/avatar--space.png">avatar--space.png</a> <em>avatar padrão do espaço - imagem que aparece como avatar do espaço quando o usuário não subiu nunhuma imagem.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/favicon-32.ico">favicon-32.ico</a> <em>favicon de 32px.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/favicon.ico">favicon.ico</a> <em>favicon de 16px.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/fundo.png">fundo.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/icon-circulo.png">icon-circulo.png</a> <em>ícone do botão de selecionar uma área do mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/icon-fullscreen.png">icon-fullscreen.png</a> <em>ícone do botão fullscreen dos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/icon-localizacao.png">icon-localizacao.png</a> <em>ícone do botão que centraliza o mapa baseado na localização do usuário.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/icon-zoom-in.png">icon-zoom-in.png</a> <em>ícone do botão de zoom + dos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/icon-zoom-out.png">icon-zoom-out.png</a> <em>ícone do botão de zoom - dos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/instituto-tim-white.png">instituto-tim-white.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/layers.png">layers.png</a> <em>ícone do botão para selecionar as camadas para serem exibidas no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/marca-da-org.png">marca-da-org.png</a>  <em>logotipo da marca da organização.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/marker-icon.png">marker-icon.png</a> <em>pin que exibe a localização do usuário no mapa da busca.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/pin-agente.png">pin-agente.png</a> <em>pin do agente (não agrupado) nos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/pin-espaco.png">pin-espaco.png</a> <em>pin do espaço (não agrupado) nos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/pin-evento.png">pin-evento.png</a> <em>pin do evento (não agrupado) nos mapas.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/pin-sombra.png">pin-sombra.png</a> <em>sombra dos pins.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/setinhas-editable.png">setinhas-editable.png</a> <em>setinhas utilizadas nas caixas de edição dos campos das entidades.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/share.png">share.png</a> <em>imagem padrão utilizada nos compartilhamentos (facebook, google+, etc.) quando não há outra imagem a ser utilizada, como por exemplo o avatar da entidade.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/spinner_192.gif">spinner_192.gif</a> <em>spinner que é utilizado no carregamento dos vídeos das entidades.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/spinner-black.gif">spinner-black.gif</a> <em>spinner que é utilizado em diversas partes do tema quando o fundo é claro.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/spinner.gif">spinner.gif</a> <em>spinner que é utilizado em diversas partes do tema quando o fundo é escuro.</em></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/tim.png">tim.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/unverified-seal.png">unverified-seal.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/verified-icon.png">verified-icon.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/verified-seal.png">verified-seal.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/verified-seal-small.png">verified-seal-small.png</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/img/tour/">tour/</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/js/">js/</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/assets/vendor/">vendor/</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/">layouts/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/default.php">default.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/search.php">search.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/panel.php">panel.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/">parts/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/agenda-content.php">agenda-content.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/agenda-header.php">agenda-header.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/agenda.php">agenda.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php">ajax-uploader.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php">busca-avancada.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/downloads.php">downloads.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/editable-entity-logo.php">editable-entity-logo.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/editable-entity.php">editable-entity.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php">entity-parent.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/entity-status.php">entity-status.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/footer.php">footer.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/gallery.php">gallery.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/header-about-nav.php">header-about-nav.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/header-logo.php">header-logo.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php">header-main-nav.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/header.php">header.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/link-list.php">link-list.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/metalist-form-template.php">metalist-form-template.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/owner.php">owner.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php">panel-agent.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-app.php">panel-app.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php">panel-em-cartaz.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-event.php">panel-event.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php">panel-nav.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-project.php">panel-project.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-registration.php">panel-registration.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-space.php">panel-space.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php">panel-seal.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php">redes-sociais.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/related-agents.php">related-agents.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/templates.php">templates.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/verified.php">verified.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php">video-gallery.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/widget-areas.php">widget-areas.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php">widget-tags.php</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/pages/">pages/</a><ul>
+<li><a href="../../src/protected/application/themes/BaseV1/pages/como-usar.md">como-usar.md</a></li>
+<li><a href="../../src/protected/application/themes/BaseV1/pages/_left.md">_left.md</a></li>
+<li><a href="../../src/protected/application/themes/BaseV1/pages/_right.md">_right.md</a></li>
+<li><a href="../../src/protected/application/themes/BaseV1/pages/sobre.md">sobre.md</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/">views/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/agent/">agent/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/agents/create.php">create.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/agents/edit.php">edit.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/agents/single.php">single.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/app/">app/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/app/create.php">create.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/app/edit.php">edit.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/app/single.php">single.php</a> -&gt; edit.php</li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/auth/">auth/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/auth/fake-authentication.php">fake-authentication.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/event/">event/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/event/create.php">create.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/event/edit.php">edit.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/event/single.php">single.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/generic/">generic/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/generic/edit.php">edit.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/generic/list.php">list.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/">panel/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/agents.php">agents.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/apps.php">apps.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/em-panel/cartaz.php">em-cartaz.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/events.php">events.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/generic.php">generic.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/index.php">index.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/projects.php">projects.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/registrations.php">registrations.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/require-authentication.php">require-authentication.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/panel/spaces.php">spaces.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/project/">project/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/project/create.php">create.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/project/edit.php">edit.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/project/report.php">report.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/project/single.php">single.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/registration/">registration/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/registration/edit.php">edit.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/registration/single.php">single.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/site/">site/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/site/index.php">index.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/site/page.php">page.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/site/permission-denied.php">permission-denied.php</a></li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/site/search.php">search.php</a></li>
+</ul>
+</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/space/">space/</a><ul>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/space/create.php">create.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/space/edit.php">edit.php</a> -&gt; single.php</li>
+<li><a href="../../../src/protected/application/themes/BaseV1/views/space/single.php">single.php</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

@@ -6,6 +6,17 @@
     border-radius: $border-radius-base;
     vertical-align: top;
 }
+
+p > .editable {
+    @extend .editable;
+    word-wrap: break-word;
+    display: initial;
+}
+
+.js-editable {
+    word-wrap: break-word;
+}
+
 .editable:hover {
     background-color: $gray-light;
 }
@@ -56,6 +67,41 @@ a.editable-click:hover {
     color: $gray-darker;
 }
 
+/*nos grupos relacionados*/
+.selos-add .editable {
+  width: 1rem;
+  height: 1rem;
+  background: transparent;
+  text-align: center;
+  line-height: 1.75rem;
+  cursor: pointer; }
+
+.selos-add .editable:after {
+  content: "";
+  color: #666;
+  margin-left: 0; }
+
+.selos-add .editable:hover:after {
+  color: #333; }
+
+
+/*nos grupos relacionados*/
+.selos-relacionados .editable {
+    width: 3rem;
+    height: 3rem;
+    background: #d8d8d8;
+    text-align: center;
+    line-height: 3rem;
+}
+.selos-relacionados .editable:after {
+    content: $unicode-add-button;
+    color: $gray-dark;
+    margin-left: 0;
+}
+.selos-relacionados .editable:hover:after {
+    color: $gray-darker;
+}
+
 /* balãozinho*/
 .tip-yellowsimple {
     z-index: $z-index-tip;
@@ -96,7 +142,8 @@ div.ficha-spcultura .editable-buttons-bottom {
     float: left;
 }
 .input-shortDescription,
-.input-longDescription {
+.input-longDescription,
+.input-certificateText {
     width: 871px;
 }
 .label.space-search {

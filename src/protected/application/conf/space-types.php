@@ -15,7 +15,8 @@ return array(
             'label' => 'Email Privado',
             'validations' => array(
                 'v::email()' => 'O email privado não é um email válido.'
-            )
+            ),
+        	'private' => true
         ),
 
         'telefonePublico' => array(
@@ -31,7 +32,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
-            )
+            ),
+        	'private' => true
         ),
 
 
@@ -40,7 +42,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.'
-            )
+            ),
+        	'private' => true
         ),
 
         /*
@@ -287,7 +290,7 @@ return array(
                 121 => array( 'name' => 'Sala de dança' ),
                 122 => array( 'name' => 'Gafieira' ),
                 123 => array( 'name' => 'Espaço para apresentação de dança' ),
-                126=> array( 'name' => 'Centro cultural itinerante' ),
+                126 => array( 'name' => 'Centro cultural itinerante' ),
                 127 => array( 'name' => 'Trio elétrico' ),
                 128 => array( 'name' => 'Clube social' ),
                 129 => array( 'name' => 'Centro de tradições' ),
@@ -298,6 +301,8 @@ return array(
                 133 => array( 'name' => 'Coreto' ),
                 134 => array( 'name' => 'Ginásio Poliesportivo' ),
                 135 => array( 'name' => 'Sala de Leitura' ),
+                
+                199 => array( 'name' => 'Outros Equipamentos Culturais' ), // adicionado na importação dos dados do Ceará para receber as endidades do tipo "equipamento"
             )
         ),
 
@@ -397,6 +402,10 @@ return array(
                 205 => array( 'name' => 'Sitio Histórico' ),
                 206 => array( 'name' => 'Documentação' ),
                 207 => array( 'name' => 'Coleções' ),
+                
+                210 => array( 'name' => 'Bens culturais de natureza imaterial' ), // adicionado na importação dos dados do Ceará para receber as endidades do tipo "patrimonio-imaterial"
+                
+                299 => array( 'name' => 'Outros' ) // adicionado na importação dos dados do Ceará para receber as endidades do tipo "post"
             )
         ),
 

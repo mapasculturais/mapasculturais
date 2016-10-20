@@ -7,9 +7,10 @@ $this->layout = 'panel'
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create') ?>">Adicionar novo projeto</a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
+        <li class="active"><a href="#ativos">Ativos (<?php echo count($user->enabledProjects); ?>)</a></li>
+		<li><a href="#permitido">Concedidos (<?php echo count($user->hasControlProjects); ?>)</a></li>
+        <li><a href="#rascunhos">Rascunhos (<?php echo count($user->draftProjects); ?>)</a></li>
+        <li><a href="#lixeira">Lixeira (<?php echo count($user->trashedProjects); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>
@@ -33,9 +34,19 @@ $this->layout = 'panel'
         <?php foreach($user->trashedProjects as $entity): ?>
             <?php $this->part('panel-project', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->trashedProjects): ?>
+        <?php if(!$app->user->trashedProjects): ?>
             <div class="alert info">Você não possui nenhum projeto na lixeira.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #permitido-->
+	<div id="permitido">
+		<?php foreach($app->user->hasControlProjects as $entity): ?>
+			<?php $this->part('panel-project', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$user->hasControlProjects): ?>
+			<div class="alert info">Você não possui nenhum projeto liberado.</div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>

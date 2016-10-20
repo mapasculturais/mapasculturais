@@ -251,20 +251,13 @@ abstract class Entity implements \JsonSerializable{
         if(!$app->isAccessControlEnabled()){
             return true;
         }
-        
+
         if(is_null($userOrAgent)){
             $user = $app->user;
         } else if($userOrAgent instanceof UserInterface) {
             $user = $userOrAgent;
-        } else { 
+        } else {
             $user = $userOrAgent->getOwnerUser();
-        }
-
-        $use_cache = false; //$app->config['app.usePermissionsCache'];
-        $cache_id = "{$this}->{$user}->$action";
-
-        if($use_cache & $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
         }
 
         $result = false;
@@ -280,9 +273,7 @@ abstract class Entity implements \JsonSerializable{
             $result = $this->genericPermissionVerification($user);
         }
 
-        if($use_cache){
-            $app->cache->save($cache_id, $result, $app->config['app.permissionsCache.lifetime']);
-        }
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         return $result;
     }
@@ -313,12 +304,12 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $label = '';
 
-        $class = get_called_class();
+        $prop_labels = $app->config['app.entityPropertiesLabels'];
 
-        if(isset($app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name];
-        }elseif(isset($app->config['app.entityPropertiesLabels']['@default'][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels']['@default'][$property_name];
+        if(isset($prop_labels [self::getClassName()][$property_name])){
+            $label = $prop_labels[self::getClassName()][$property_name];
+        }elseif(isset($prop_labels ['@default'][$property_name])){
+            $label = $prop_labels ['@default'][$property_name];
         }
 
         return $label;
@@ -399,6 +390,26 @@ abstract class Entity implements \JsonSerializable{
         return $data_array;
     }
 
+    public function isPropertyRequired($entity,$property) {
+        $app = App::i();
+        $return = false;
+
+        $__class = get_called_class();
+        $class = $__class::getClassName();
+
+        $metadata = $class::getPropertiesMetadata();
+        if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
+            $return = $metadata[$property]['required'];
+        }
+
+        $v = $class::$validations;
+        if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
+            $return = true;
+        }
+
+        return $return;
+    }
+
     /**
      * Returns this entity as an array.
      *
@@ -466,6 +477,10 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
 	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
+    
+    function getEntityState() {
+        return App::i()->em->getUnitOfWork()->getEntityState($this);
+    }
 
     /**
      * Persist the Entity optionally flushing
@@ -474,7 +489,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
-
 
         $requests = [];
 
@@ -608,7 +622,7 @@ abstract class Entity implements \JsonSerializable{
 
         if($this->usesMetadata()){
             foreach($this->metadata as $meta_key => $meta_value)
-                $result[$meta_key] = $meta_value;
+                $result[$meta_key] = $this->$meta_key;
         }
 
         if($controller_id = $this->getControllerId()){
@@ -683,7 +697,11 @@ abstract class Entity implements \JsonSerializable{
 
 
                 if($validation == 'required'){
-                    $ok = (bool) $this->$property;
+                    if (is_string($this->$property)) {
+                        $ok = (bool) trim($this->$property);
+                    } else {
+                        $ok = (bool) $this->$property;
+                    }
 
                 }elseif($validation == 'unique'){
                     $ok = $this->validateUniquePropertyValue($property);

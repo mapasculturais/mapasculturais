@@ -30,6 +30,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
    })
@@ -172,7 +173,7 @@ abstract class File extends \MapasCulturais\Entity
 
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
-            throw new \MapasCulturais\Exfilesceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
         parent::save($flush);
     }
@@ -308,7 +309,7 @@ abstract class File extends \MapasCulturais\Entity
 
         $transformation_group_name = 'img:' . $transformation_name;
 
-        $owner = $this->owner;
+        $owner = App::i()->getManagedEntity($this->owner);        
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
@@ -329,10 +330,15 @@ abstract class File extends \MapasCulturais\Entity
             return $transformed;
         }
 
-        if(!file_exists($this->getPath()))
+        $path = $this->getPath();
+        if(!file_exists($path) 
+            || !is_writable($path)
+            || !is_writable(dirname($path))
+            || filesize($path) == 0) {
             return $this;
+        }
 
-        $new_image = \WideImage\WideImage::load($this->getPath());
+        $new_image = \WideImage\WideImage::load($path);
 
         eval('$new_image = $new_image->' . $wideimage_operations . ';');
 

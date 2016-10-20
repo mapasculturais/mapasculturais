@@ -77,6 +77,10 @@ class Metadata extends \MapasCulturais\Definition{
      * @var array
      */
     protected $config = [];
+    
+    protected $serialize = null;
+    
+    protected $unserialize = null;
 
     /**
      * Creates a new Metadata Definition.
@@ -115,6 +119,9 @@ class Metadata extends \MapasCulturais\Definition{
         $this->is_unique = key_exists('validations', $config) && key_exists('unique', $config['validations']);
 
         $this->private = key_exists('private', $config) ? $config['private'] : false;
+        
+        $this->serialize = key_exists('serialize', $config) ? $config['serialize'] : null;
+        $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
 
         if($this->is_unique) {
             $this->is_unique_error_message = $config['validations']['unique'];
@@ -187,7 +194,7 @@ class Metadata extends \MapasCulturais\Definition{
      * @return bool true if there is no metadata with the same value, false otherwise.
      */
     protected function validateUniqueValue(\MapasCulturais\Entity $owner, $value){
-        $app = App::i();
+        $app = \MapasCulturais\App::i();
 
         $owner_class = $owner->className;
 

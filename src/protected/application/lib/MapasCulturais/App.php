@@ -122,7 +122,8 @@ class App extends \Slim\Slim{
             ],
             'api_outputs' => [],
             'image_transformations' => [],
-            'registration_agent_relations' => []
+            'registration_agent_relations' => [],
+            'registration_fields' => []
         ];
 
     protected $_registerLocked = true;
@@ -133,6 +134,8 @@ class App extends \Slim\Slim{
 
     protected $_accessControlEnabled = true;
     protected $_workflowEnabled = true;
+
+    protected $_plugins = [];
 
     /**
      * Initializes the application instance.
@@ -183,7 +186,6 @@ class App extends \Slim\Slim{
         $this->_cache->setNamespace($config['app.cache.namespace']);
 
 
-
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
@@ -192,7 +194,15 @@ class App extends \Slim\Slim{
                 return true;
             }
 
-            foreach($config['namespaces'] as $namespace => $base_dir){
+            $namespaces = $config['namespaces'];
+            
+            foreach($config['plugins'] as $plugin){
+                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
+                
+                $namespaces[$plugin['namespace']] = $dir;
+            }
+            
+            foreach($namespaces as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
 
@@ -204,7 +214,6 @@ class App extends \Slim\Slim{
                     }
                 }
             }
-
         });
 
         // extende a config with theme config files
@@ -245,6 +254,18 @@ class App extends \Slim\Slim{
             'mode' => $this->_config['app.mode']
         ]);
 
+        foreach($config['plugins'] as $slug => $plugin){
+            $_namespace = $plugin['namespace'];
+            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+            $plugin_class_name = "$_namespace\\$_class";
+            
+            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+            
+            $slug = is_numeric($slug) ? $_namespace : $slug;
+            
+            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+        }
+
         $config = $this->_config;
 
         // custom log writer
@@ -262,9 +283,6 @@ class App extends \Slim\Slim{
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
         $doctrine_config = Setup::createConfiguration($config['doctrine.isDev']);
-
-        $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
-        $classLoader->register();
 
         $driver = new AnnotationDriver(new AnnotationReader());
 
@@ -382,7 +400,9 @@ class App extends \Slim\Slim{
 
         // run plugins
         foreach($config['plugins.enabled'] as $plugin){
-            include PLUGINS_PATH.$plugin.'.php';
+            if(file_exists(PLUGINS_PATH.$plugin.'.php')){
+                include PLUGINS_PATH.$plugin.'.php';
+            }
         }
         // ===================================== //
 
@@ -399,7 +419,7 @@ class App extends \Slim\Slim{
     }
     
     function isEnabled($entity){
-        return $this->config['app.enabled.' . $entity];
+        return $this->_config['app.enabled.' . $entity];
     }
 
     function enableAccessControl(){
@@ -426,7 +446,7 @@ class App extends \Slim\Slim{
         return $this->_workflowEnabled;
     }
 
-    protected function _dbUpdates(){
+    function _dbUpdates(){
         $this->disableAccessControl();
 
         $executed_updates = [];
@@ -474,23 +494,48 @@ class App extends \Slim\Slim{
     private $_registered = false;
 
     public function register(){
+        //        phpdbg_break_next();
+
         if($this->_registered)
             return;
 
         $this->_registered = true;
-
+        
         // get types and metadata configurations
-        $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        if ($theme_space_types = $this->view->resolveFilename('','space-types.php')) {
+            $space_types = include $theme_space_types;
+        } else {
+            $space_types = include APPLICATION_PATH.'/conf/space-types.php';
+        }
         $space_meta = key_exists('metadata', $space_types) && is_array($space_types['metadata']) ? $space_types['metadata'] : [];
 
-        $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        if ($theme_agent_types = $this->view->resolveFilename('','agent-types.php')) {
+            $agent_types = include $theme_agent_types;
+        } else {
+            $agent_types = include APPLICATION_PATH.'/conf/agent-types.php';
+        }
         $agents_meta = key_exists('metadata', $agent_types) && is_array($agent_types['metadata']) ? $agent_types['metadata'] : [];
 
-        $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        if ($theme_event_types = $this->view->resolveFilename('','event-types.php')) {
+            $event_types = include $theme_event_types;
+        } else {
+            $event_types = include APPLICATION_PATH.'/conf/event-types.php';
+        }
         $event_meta = key_exists('metadata', $event_types) && is_array($event_types['metadata']) ? $event_types['metadata'] : [];
 
-        $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        if ($theme_project_types = $this->view->resolveFilename('','project-types.php')) {
+            $project_types = include $theme_project_types;
+        } else {
+            $project_types = include APPLICATION_PATH.'/conf/project-types.php';
+        }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
+        
+        if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
+            $seal_types = include $theme_seal_types;
+        } else {
+            $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
+        }
+        $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
 
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
@@ -509,13 +554,16 @@ class App extends \Slim\Slim{
 
         $this->registerController('event',   'MapasCulturais\Controllers\Event');
         $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
+        $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
+        
 
         $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
 
         $this->registerController('registration',                   'MapasCulturais\Controllers\Registration');
         $this->registerController('registrationFileConfiguration',  'MapasCulturais\Controllers\RegistrationFileConfiguration');
+        $this->registerController('registrationFieldConfiguration', 'MapasCulturais\Controllers\RegistrationFieldConfiguration');
 
         $this->registerController('term',           'MapasCulturais\Controllers\Term');
         $this->registerController('file',           'MapasCulturais\Controllers\File');
@@ -529,6 +577,63 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
+
+        // register registration field types
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'textarea',
+            'name' => $this->txt('Textarea Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'text',
+            'name' => $this->txt('Text Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'date',
+            'name' => $this->txt('Date Field')
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'url',
+            'name' => $this->txt('URL Field'),
+            'validations' => [
+                'v::url()' => $this->txt('The value is not a valid URL')
+            ]
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'email',
+            'name' => $this->txt('Email Field'),
+            'validations' => [
+                'v::email()' => $this->txt('The value is not a valid email')
+            ]
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'select',
+            'name' => $this->txt('Select Field'),
+            'requireValuesConfiguration' => true
+        ]));
+        
+//        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+//            'slug' => 'radio',
+//            'name' => $this->txt('Radio Buttons Field'),
+//            'requireValuesConfiguration' => true
+//        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'checkboxes',
+            'name' => $this->txt('Check Boxes Field'),
+            'requireValuesConfiguration' => true,
+            'serialize' => function (array $value) {
+                return json_encode($value);
+            },
+            'unserialize' => function ($value) {
+                return json_decode($value);
+            }
+        ]));
 
         /**
          * @todo melhores mensagens de erro
@@ -559,12 +664,17 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('event', $file_groups['avatar']);
         $this->registerFileGroup('event', $file_groups['downloads']);
         $this->registerFileGroup('event', $file_groups['gallery']);
-
+        
         $this->registerFileGroup('project', $file_groups['header']);
         $this->registerFileGroup('project', $file_groups['avatar']);
         $this->registerFileGroup('project', $file_groups['downloads']);
         $this->registerFileGroup('project', $file_groups['gallery']);
         $this->registerFileGroup('project', $file_groups['rules']);
+        
+        $this->registerFileGroup('seal', $file_groups['downloads']);
+        $this->registerFileGroup('seal', $file_groups['header']);
+        $this->registerFileGroup('seal', $file_groups['avatar']);
+        $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
@@ -575,7 +685,7 @@ class App extends \Slim\Slim{
 
         // registration agent relations
 
-        foreach($this->config['registration.agentRelations'] as $config){
+        foreach($this->_config['registration.agentRelations'] as $config){
             $def = new Definitions\RegistrationAgentRelation($config);
             $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
 
@@ -630,6 +740,9 @@ class App extends \Slim\Slim{
 
         $this->registerMetaListGroup('project', $metalist_groups['links']);
         $this->registerMetaListGroup('project', $metalist_groups['videos']);
+        
+        $this->registerMetaListGroup('seal', $metalist_groups['links']);
+        $this->registerMetaListGroup('seal', $metalist_groups['videos']);
 
         // register space types and spaces metadata
         foreach($space_types['items'] as $group_name => $group_config){
@@ -724,9 +837,31 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
+        
+        // register seal time unit types
+		$entity_class = 'MapasCulturais\Entities\Seal';
+        
+        foreach($seal_types['items'] as $type_id => $type_config){
+        	$type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+        	$this->registerEntityType($type);
+        	
+        	// add projects metadata definition to project type
+            foreach($seals_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
 
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
+        }
+        
         // register taxonomies
-        $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        if ($theme_taxonomies = $this->view->resolveFilename('','taxonomies.php')) {
+            $taxonomies = include $theme_taxonomies;
+        } else {
+            $taxonomies = include APPLICATION_PATH . '/conf/taxonomies.php';
+        }
 
         foreach($taxonomies as $taxonomy_id => $taxonomy_definition){
             $taxonomy_slug = $taxonomy_definition['slug'];
@@ -745,6 +880,10 @@ class App extends \Slim\Slim{
 
         $this->view->register();
         
+        foreach($this->_plugins as $plugin){
+            $plugin->register();
+        }
+        
         $this->applyHookBoundTo($this, 'app.register',[&$this->_register]);
     }
 
@@ -752,7 +891,7 @@ class App extends \Slim\Slim{
 
     function getRegisteredGeoDivisions(){
         $result = [];
-        foreach($this->config['app.geoDivisionsHierarchy'] as $key => $name) {
+        foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $name) {
             $d = new \stdClass();
             $d->key = $key;
             $d->name = $name;
@@ -948,7 +1087,7 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->config['app.log.hook'])
+        if ($this->_config['app.log.hook'])
             $this->log->debug('APPLY HOOK >> ' . $name);
 
         $callables = $this->_getHookCallables($name);
@@ -970,7 +1109,7 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->config['app.log.hook'])
+        if ($this->_config['app.log.hook'])
             $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
 
         $callables = $this->_getHookCallables($name);
@@ -984,9 +1123,6 @@ class App extends \Slim\Slim{
     function _getHookCallables($name) {
         $exclude_list = [];
         $result = [];
-//
-//        if(isset($this->_hookCache[$name]))
-//            return $this->_hookCache[$name];
 
         foreach ($this->_excludeHooks as $hook => $callables) {
             if (preg_match($hook, $name))
@@ -1152,7 +1288,7 @@ class App extends \Slim\Slim{
      * @return string the base url
      */
     public function getBaseUrl(){
-        return $this->config['base.url'];
+        return $this->_config['base.url'];
     }
 
     /**
@@ -1160,7 +1296,7 @@ class App extends \Slim\Slim{
      * @return string the asset url
      */
     public function getAssetUrl(){
-        return isset($this->config['base.assetUrl']) ? $this->config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
+        return isset($this->_config['base.assetUrl']) ? $this->_config['base.assetUrl'] : $this->getBaseUrl() . 'assets/';
     }
 
     /**
@@ -1211,8 +1347,13 @@ class App extends \Slim\Slim{
 
     }
 
-    public function getRoleName($role){
+    public function getRoles() {
         $roles = include APPLICATION_PATH . 'conf/roles.php';
+        return $roles;
+    }
+
+    public function getRoleName($role){
+        $roles = $this->getRoles();
         return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
     }
 
@@ -1361,6 +1502,17 @@ class App extends \Slim\Slim{
         $this->_register['controllers'][$id] = $controller_class_name;
         $this->_register['controllers_default_actions'][$id] = $default_action;
         $this->_register['controllers_view_dirs'][$id] = $view_dir ? $view_dir : $id;
+    }
+
+    public function getRegisteredControllers($return_controller_object = false){
+        $controllers = $this->_register['controllers'];
+        if($return_controller_object){
+            foreach($controllers as $id => $class){
+                $controllers[$id] = $class::i();
+            }
+        }
+        
+        return $controllers;
     }
 
     /**
@@ -1641,6 +1793,22 @@ class App extends \Slim\Slim{
         return @$this->_register['entity_types'][$entity];
     }
 
+    function registerRegistrationFieldType(Definitions\RegistrationFieldType $registration_field){
+        $this->_register['registration_fields'][$registration_field->slug] = $registration_field;
+    }
+    
+    function getRegisteredRegistrationFieldTypes(){
+        return $this->_register['registration_fields'];
+    }
+    
+    function getRegisteredRegistrationFieldTypeBySlug($slug) {
+        if (isset($this->_register['registration_fields'][$slug])) {
+            return $this->_register['registration_fields'][$slug];
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Register an Entity Metadata Definition.
      *
@@ -1890,6 +2058,19 @@ class App extends \Slim\Slim{
 
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
+    }
+    
+    /**************
+     * Utils
+     **************/
+    
+    function getManagedEntity(Entity $entity){
+        if($entity->getEntityState() > 2){
+            $entity = App::i()->repo($entity->getClassName())->find($entity->id);
+            $entity->refresh();
+        }
+        
+        return $entity;
     }
 
     /**

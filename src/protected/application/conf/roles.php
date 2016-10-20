@@ -1,12 +1,18 @@
 <?php
 return array(
     'superAdmin' => array(
-        'name' => 'Superadmin'
+        'name' => 'Superadmin',
+        'singularLabel' => 'Super Administrador',
+        'pluralLabel' => 'Super Administradores',
     ),
     'admin' => array(
-        'name' => 'Admin'
+        'name' => 'Admin',
+        'singularLabel' => 'Administrador',
+        'pluralLabel' => 'Administradores',
     ),
     'staff' => array(
-        'name' => 'Equipe'
+        'name' => 'Equipe',
+        'singularLabel' => 'Membro da Equipe',
+        'pluralLabel' => 'Membros da Equipe',
     )
 );

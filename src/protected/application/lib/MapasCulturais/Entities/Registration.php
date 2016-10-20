@@ -19,7 +19,9 @@ class Registration extends \MapasCulturais\Entity
     use Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
-        Traits\EntityAgentRelation;
+        Traits\EntityAgentRelation,
+    	Traits\EntitySealRelation;
+
 
     const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;
@@ -37,7 +39,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", options={"default": "random_id_generator('registration', 10000)"})
+     * @ORM\Column(name="id", type="integer", options={"default": "pseudo_random_id_generator()"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
@@ -137,6 +139,14 @@ class Registration extends \MapasCulturais\Entity
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
+
+        
+        foreach($this->__metadata as $meta){
+            if(substr($meta->key, 0, 6) === 'field_'){
+                $key = $meta->key;
+                $json[$meta->key] = $this->$key;
+            }
+        }
 
         if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
             $json['status'] = $this->status;
@@ -249,7 +259,6 @@ class Registration extends \MapasCulturais\Entity
         foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
-
             $definitions[$groupName]->use = $meta_val;
 
             if($meta_val === 'dontUse'){
@@ -289,10 +298,6 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
-    function randomIdGeneratorFormat($id){
-        return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
-    }
-
     function randomIdGeneratorInitialRange(){
         return 1000;
     }
@@ -311,6 +316,11 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
+        
+		if($status === self::STATUS_APPROVED) {
+			$this->setAgentsSealRelation();
+		}
+		
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
@@ -318,6 +328,48 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    function setAgentsSealRelation() {
+    	$app = App::i();
+    	$app->disableAccessControl();
+    	
+    	/*
+    	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
+    	 */
+    	$projectMetadataSeals = $this->project->registrationSeals;
+    	//eval(\Psy\sh());
+    	//die;
+    	
+    	if(isset($projectMetadataSeals->owner)) {
+    		$relation_class = $this->owner->getSealRelationEntityClassName();
+    		$relation = new $relation_class;
+    		
+	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
+	        $relation->seal		= $sealOwner;
+	        $relation->owner	= $this->owner;
+	    	$relation->save(true);
+    	}
+        
+    	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
+    	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
+    	
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealInstitutions;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective) && is_object($sealCollective)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealCollective;
+        		$relation->owner = $agent;
+        		$relation->save(true);
+        	}
+        }
+        $app->enableAccessControl();
+    }
+    
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
@@ -375,12 +427,15 @@ class Registration extends \MapasCulturais\Entity
 
         $project = $this->project;
 
-        if($project->registrationCategories && !$this->category){
+        $use_category = (bool) $project->registrationCategories;
+        
+        if($use_category && !$this->category){
             $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
 
+        // validate agents
         foreach($definitionsWithAgents as $def){
             $errors = [];
 
@@ -424,7 +479,13 @@ class Registration extends \MapasCulturais\Entity
 
         }
 
+        // validate attachments
         foreach($project->registrationFileConfigurations as $rfc){
+            
+            if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
+                continue;
+            }
+            
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
@@ -433,6 +494,44 @@ class Registration extends \MapasCulturais\Entity
             }
             if($errors){
                 $errorsResult['registration-file-' . $rfc->id] = $errors;
+            }
+        }
+
+        // validate fields
+        foreach ($project->registrationFieldConfigurations as $field) {
+
+            if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+                continue;
+            }
+
+            $errors = [];
+            
+            $prop_name = $field->getFieldName();
+            $val = $this->$prop_name;
+            
+            $empty = (is_string($val) && !trim($val)) || !$val;
+            
+            if ($field->required) {
+                if ($empty) {
+                    $errors[] = sprintf($app->txt('The field "%s" is required.'), $field->title);
+                }
+            }
+            if (!$empty){
+                foreach($field->getFieldTypeDefinition()->validations as $validation => $error_message){
+                    if(strpos($validation,'v::') === 0){
+                        $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
+
+                        eval("\$ok = {$validation}->validate(\$this->{$prop_name});");
+
+                        if (!$ok) {
+                            $errors[] = $error_message;
+                        }
+                    }
+                }
+            }
+            
+            if ($errors) {
+                $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
 

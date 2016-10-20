@@ -4,16 +4,16 @@
         Agentes
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="!collapsedFilters && !showInfobox()">
+    <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label>Palavra-chave</label>
             <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="Buscar agentes" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--area">
-            <span class="label">Área de Atuação</span>
+            <span class="label"><?php $this->dict('taxonomies:area: name') ?></span>
             <div class="dropdown">
-                <div class="placeholder">Selecione as áreas</div>
+                <div class="placeholder"><?php $this->dict('taxonomies:area: select') ?></div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list">
                         <li ng-repeat="area in areas" ng-class="{'selected':isSelected(data.agent.areas, area.id)}" ng-click="toggleSelection(data.agent.areas, area.id)">
@@ -42,6 +42,11 @@
             <a class="hltip btn btn-verified" ng-class="{'selected':data.agent.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('agent')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+
+        <div ng-repeat="entity in ['agent']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-agents-->

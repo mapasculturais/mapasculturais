@@ -1,0 +1,21 @@
+site_name: Mapas Culturais
+extra:
+  logo: 'images/logo.png'
+pages:
+- Sobre: index.md
+- Instalação:
+    - 'Passo-a-passo': 'mc_deploy.md'
+    - 'Aplicando um tema': 'mc_deploy_theme.md'
+    - 'Inserindo shapefiles': 'mc_deploy_shapefiles.md'
+- Configurações:
+    - 'API': 'mc_config_api.md'
+    - 'Autenticação': 'mc_config_authentication.md'
+- Desenvolvimento:
+    - 'Guia do Desenvolvedor': 'mc_developer_guide.md'
+    - 'Docker': 'mc_developer_docker_enviroment.md'
+    - 'Keywords': 'mc_developer_keywords.md'
+    - 'Entidades': 'mc_developer_entities.md'
+    - 'Criando um novo tema': 'mc_developer_theme.md'
+theme: 'flatly'
+markdown_extensions:
+    - fenced_code

@@ -6,14 +6,15 @@ use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
+use Respect\Validation\length;
 
 class Theme extends MapasCulturais\Theme {
 
     protected $_libVersions = array(
         'leaflet' => '0.7.3',
-        'angular' => '1.2.26',
+        'angular' => '1.5.5',
         'jquery' => '2.1.1',
-        'jquery-ui' => '1.11.1',
+        'jquery-ui' => '1.11.4',
         'select2' => '3.5.0',
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
@@ -24,14 +25,15 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected static function _getTexts(){
+        $app = App::i();
         return array(
-            'site: name' => App::i()->config['app.siteName'],
-            'site: description' => App::i()->config['app.siteDescription'],
+            'site: name' => $app->config['app.siteName'],
+            'site: description' => $app->config['app.siteDescription'],
             'site: in the region' => 'na região',
             'site: of the region' => 'da região',
             'site: owner' => 'Secretaria',
             'site: by the site owner' => 'pela Secretaria',
-            
+
             'home: title' => "Bem-vind@!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore com o Mapas Culturais",
@@ -44,16 +46,20 @@ class Theme extends MapasCulturais\Theme {
 
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
-            
-            
+
+
             'entities: Spaces of the agent'=> 'Espaços do agente',
             'entities: Space Description'=> 'Descrição do Espaço',
+            'entities: Agent children'=> 'Agentes',
             'entities: My Spaces'=> 'Meus Espaços',
             'entities: My spaces'=> 'Meus espaços',
-            
+
+        	'entities: My Seals'=> 'Meus Selos',
+        	'entities: My seals'=> 'Meus selos',
+
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
-            
+
             'entities: Space' => 'Espaço',
             'entities: Spaces' => 'Espaços',
             'entities: space' => 'espaço',
@@ -61,11 +67,14 @@ class Theme extends MapasCulturais\Theme {
             'entities: parent space' => 'espaço pai',
             'entities: a space' => 'um espaço',
             'entities: the space' => 'o espaço',
-            'entities: of the space' => 'do espaço',            
+            'entities: of the space' => 'do espaço',
             'entities: In this space' => 'Neste espaço',
             'entities: in this space' => 'neste espaço',
             'entities: registered spaces' => 'espaços cadastrados',
             'entities: new space' => 'novo espaço',
+
+            'entities: Children spaces' => 'Subespaços',
+            'entities: Add child space' => 'Adicionar subespaço',
 
             'entities: space found' => 'espaço encontrado',
             'entities: spaces found' => 'espaços encontrados',
@@ -74,7 +83,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: agent found' => 'agente encontrado',
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados'
+            'entities: project found' => 'projetos encontrados',
+            'entities: Agents'    => 'Agentes',
+            'entities: Projects'  => 'Projetos',
+            'entities: Events'    => 'Eventos',
+            'entities: Seals'     => 'Selos',
+
+            'taxonomies:area: name' => 'Área de Atuação',
+            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
+            'taxonomies:area: select' => 'Selecione as áreas',
         );
     }
 
@@ -94,297 +111,12 @@ class Theme extends MapasCulturais\Theme {
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
     }
 
+    function getSearchSealsUrl(){
+    	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
+    }
+
     protected function _init() {
         $app = App::i();
-
-
-        /* === NOTIFICATIONS  === */
-        // para todos os requests
-        $app->hook('workflow(<<*>>).create', function() use($app) {
-
-            if ($this->notifications) {
-                $app->disableAccessControl();
-                foreach ($this->notifications as $n) {
-                    $n->delete();
-                }
-                $app->enableAccessControl();
-            }
-
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} à inscrição {$origin->number} no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a> foi enviada.";
-                    }else{
-                        $message = "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}.";
-                        $message_to_requester = "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} está requisitando a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    $message_to_requester = "Sua requisição para alterar a propriedade do {$origin_type} {$origin_link} para o agente {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} quer que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    ;
-                    $message_to_requester = "Sua requisição para fazer do {$origin_type} {$origin_link} um {$origin_type} filho de {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} quer adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    $message_to_requester = "Sua requisição para criar a ocorrência do evento {$origin_link} no espaço {$destination_link} foi enviada.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} quer relacionar o evento {$origin_link} ao projeto {$destination_link}.";
-                    $message_to_requester = "Sua requisição para associar o evento {$origin_link} ao projeto {$destination_link} foi enviada.";
-                    break;
-                default:
-                    $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
-                    break;
-            }
-
-            // message to requester user
-            $notification = new Notification;
-            $notification->user = $requester;
-            $notification->message = $message_to_requester;
-            $notification->request = $this;
-            $notification->save(true);
-
-            $notified_user_ids = array($requester->id);
-
-
-            foreach ($destination->usersWithControl as $user) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($user->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $user->id;
-
-                $notification = new Notification;
-                $notification->user = $user;
-                $notification->message = $message;
-                $notification->request = $this;
-                $notification->save(true);
-            }
-
-            if (!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)) {
-                $notification = new Notification;
-                $notification->user = $origin->ownerUser;
-                $notification->message = $message;
-                $notification->request = $this;
-                $notification->save(true);
-            }
-        });
-
-        $app->hook('workflow(<<*>>).approve:before', function() use($app) {
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                    }else{
-                        $message = "{$profile_link} aceitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    $message = "{$profile_link} aceitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = "{$profile_link} aceitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = "{$profile_link} aceitou adicionar o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = "{$profile_link} aceitou relacionar o evento {$origin_link} ao projeto {$destination_link}.";
-                    break;
-                default:
-                    $message = "A requisição foi aprovada.";
-                    break;
-            }
-
-            $users = array();
-
-            // notifica quem fez a requisição
-            $users[] = $this->requesterUser;
-
-            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if (!$destination->ownerUser->equals($this->requesterUser))
-                    $users[] = $destination->ownerUser;
-
-                // se não é o dono da entidade de origem que está aprovando, notifica o dono
-                if (!$origin->ownerUser->equals($app->user))
-                    $users[] = $origin->ownerUser;
-            }else {
-                // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if (!$origin->ownerUser->equals($this->requesterUser))
-                    $users[] = $origin->ownerUser;
-
-                // se não é o dono da entidade de destino que está aprovando, notifica o dono
-                if (!$destination->ownerUser->equals($app->user))
-                    $users[] = $destination->ownerUser;
-            }
-
-            $notified_user_ids = array();
-
-            foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($u->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $u->id;
-
-                $notification = new Notification;
-                $notification->message = $message;
-                $notification->user = $u;
-                $notification->save(true);
-            }
-        });
-
-
-        $app->hook('workflow(<<*>>).reject:before', function() use($app) {
-            $requester = $app->user;
-            $profile = $requester->profile;
-
-            $origin = $this->origin;
-            $destination = $this->destination;
-
-            $origin_type = strtolower($origin->entityType);
-            $origin_url = $origin->singleUrl;
-            $origin_name = $origin->name;
-
-            $destination_url = $destination->singleUrl;
-            $destination_name = $destination->name;
-
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-
-            switch ($this->getClassName()) {
-                case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->canUser('@control')){
-                        if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} cancelou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        }else{
-                            $message = "{$profile_link} cancelou o pedido de relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                        }
-                    }else{
-                        if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} à inscrição <a href=\"{$origin->singleUrl}\" >{$origin->number}</a> no projeto <a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>.";
-                        }else{
-                            $message = "{$profile_link} rejeitou o relacionamento do agente {$destination_link} com o {$origin_type} {$origin_link}.";
-                        }
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChangeOwnership":
-                    if ($this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                        $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    } else {
-                        $message = $this->requesterUser->equals($requester) ?
-                                "{$profile_link} cancelou o pedido de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}." :
-                                "{$profile_link} rejeitou a mudança de propriedade do {$origin_type} {$origin_link} para o agente {$destination_link}.";
-                    }
-                    break;
-                case "MapasCulturais\Entities\RequestChildEntity":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido para que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}." :
-                            "{$profile_link} rejeitou que o {$origin_type} {$origin_link} seja um {$origin_type} filho de {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventOccurrence":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de autorização do evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}." :
-                            "{$profile_link} rejeitou o evento {$origin_link} que ocorre <em>{$this->rule->description}</em> no espaço {$destination_link}.";
-                    break;
-                case "MapasCulturais\Entities\RequestEventProject":
-                    $message = $origin->canUser('@control') ?
-                            "{$profile_link} cancelou o pedido de relacionamento do evento {$origin_link} ao projeto {$destination_link}." :
-                            "{$profile_link} rejeitou o relacionamento do evento {$origin_link} ao projeto {$destination_link}.";
-                    break;
-                default:
-                    $message = $origin->canUser('@control') ?
-                            "A requisição foi cancelada." :
-                            "A requisição foi rejeitada.";
-                    break;
-            }
-
-            $users = array();
-
-            if (!$app->user->equals($this->requesterUser)) {
-                // notifica quem fez a requisição
-                $users[] = $this->requesterUser;
-            }
-
-            if ($this->getClassName() === "MapasCulturais\Entities\RequestChangeOwnership" && $this->type === Entities\RequestChangeOwnership::TYPE_REQUEST) {
-                // se não foi o dono da entidade de destino que fez a requisição, notifica o dono
-                if (!$destination->ownerUser->equals($this->requesterUser))
-                    $users[] = $destination->ownerUser;
-
-                // se não é o dono da entidade de origem que está rejeitando, notifica o dono
-                if (!$origin->ownerUser->equals($app->user))
-                    $users[] = $origin->ownerUser;
-            }else {
-                // se não foi o dono da entidade de origem que fez a requisição, notifica o dono
-                if (!$origin->ownerUser->equals($this->requesterUser))
-                    $users[] = $origin->ownerUser;
-
-                // se não é o dono da entidade de destino que está rejeitando, notifica o dono
-                if (!$destination->ownerUser->equals($app->user))
-                    $users[] = $destination->ownerUser;
-            }
-
-            $notified_user_ids = array();
-
-            foreach ($users as $u) {
-                // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
-                if (in_array($u->id, $notified_user_ids))
-                    continue;
-
-                $notified_user_ids[] = $u->id;
-
-                $notification = new Notification;
-                $notification->message = $message;
-                $notification->user = $u;
-                $notification->save(true);
-            }
-        });
-
-
-        /* ---------------------- */
 
         $app->hook('mapasculturais.body:before', function() {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
@@ -402,6 +134,18 @@ class Theme extends MapasCulturais\Theme {
             endif;
         });
 
+        $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
+
+        $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
+
+        $this->jsObject['EntitiesDescription'] = [
+        		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+        		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
+        		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
+        		"seal" => \MapasCulturais\Entities\Seal::getPropertiesMetadata()
+        ];
+
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
@@ -413,15 +157,17 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
             $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
+            $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
             $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
             $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
-            
+
             $this->jsObject['angularAppDependencies'] = [
-                'entity.module.relatedAgents', 
+                'entity.module.relatedAgents',
+            	'entity.module.relatedSeals',
                 'entity.module.changeOwner',
                 'entity.directive.editableMultiselect',
                 'entity.directive.editableSingleselect',
@@ -430,7 +176,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
                 'mc.directive.mcSelect',
-                'mc.module.notifications', 
+                'mc.module.notifications',
                 'mc.module.findEntity',
 
                 'ngSanitize',
@@ -447,11 +193,10 @@ class Theme extends MapasCulturais\Theme {
                 'longitude' => $app->config['maps.center'][1]
             );
 
-            $this->jsObject['mapMaxClusterRadius'] = $app->config['maps.maxClusterRadius'];
-            $this->jsObject['mapSpiderfyDistanceMultiplier'] = $app->config['maps.spiderfyDistanceMultiplier'];
-            $this->jsObject['mapMaxClusterElements'] = $app->config['maps.maxClusterElements'];
-
-            $this->jsObject['mapGeometryFieldQuery'] = $app->config['maps.geometryFieldQuery'];
+            $this->jsObject['mapMaxClusterRadius']          = $app->config['maps.maxClusterRadius'];
+            $this->jsObject['mapSpiderfyDistanceMultiplier']= $app->config['maps.spiderfyDistanceMultiplier'];
+            $this->jsObject['mapMaxClusterElements']        = $app->config['maps.maxClusterElements'];
+            $this->jsObject['mapGeometryFieldQuery']        = $app->config['maps.geometryFieldQuery'];
 
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
@@ -459,6 +204,8 @@ class Theme extends MapasCulturais\Theme {
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
                 'registration' => \MapasCulturais\Entities\Registration::getPropertiesLabels(),
+                'seal' => \MapasCulturais\Entities\Seal::getPropertiesLabels()
+
             );
 
             $this->jsObject['routes'] = $app->config['routes'];
@@ -469,7 +216,7 @@ class Theme extends MapasCulturais\Theme {
             $this->_populateJsObject();
         });
 
-        $app->hook('view.render(<<agent|space|project|event>>/<<single|edit|create>>):before', function() {
+        $app->hook('view.render(<<agent|space|project|event|seal|saas>>/<<single|edit|create>>):before', function() {
             $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
             $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
             $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
@@ -501,17 +248,21 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
+        $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
+          $this->updateTimestamp = new \DateTime;
+        });
+
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
-        $app->hook('entity(<<agent|space|event|project>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -557,11 +308,31 @@ class Theme extends MapasCulturais\Theme {
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
+
+        $app->hook("GET(site.cep)", function() use($app) {
+            if ($app->config['cep.token']) {
+                $cep = $app->request->get('num');
+                // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
+                $url = sprintf($app->config['cep.endpoint'], $cep);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                if ($app->config['cep.token_header']) {
+                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
+                }
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $output = curl_exec($ch);
+                echo $output;
+            } else {
+                $app->halt(403, 'No token for CEP');
+            }
+        });
     }
 
     function register() {
         $app = App::i();
-        foreach ($app->config['app.geoDivisionsHierarchy'] as $slug => $name) {
+        $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
+        foreach ($geoDivisionsHierarchyCfg as $slug => $name) {
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
@@ -579,7 +350,6 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $this->printStyles('vendor');
-        //$this->printStyles('fonts');
         $this->printStyles('app');
 
         $app->applyHook('mapasculturais.styles');
@@ -647,7 +417,6 @@ class Theme extends MapasCulturais\Theme {
         $versions = $this->_libVersions;
 
         $this->enqueueStyle('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/css/jquery-editable.css", array('select2'));
-//        $this->enqueueStyle('vendor', 'x-editable-tip', "vendor/x-editable-{$versions['x-editable']}/css/tip-yellowsimple.css", array('x-editable'));
 
         $this->enqueueScript('vendor', 'mustache', 'vendor/mustache.js');
 
@@ -683,7 +452,6 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-fullscreen', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet.fullscreen-master/Control.FullScreen.js', array('leaflet'));
 
         //Leaflet Label Plugin
-        //$app->enqueueStyle( 'vendor', 'leaflet-label',           'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/leaflet-label/leaflet.label.css',       array('leaflet'));
         $this->enqueueScript('vendor', 'leaflet-label', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.label-master/dist/leaflet.label-src.js', array('leaflet'));
 
         //Leaflet Draw
@@ -704,25 +472,22 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'momentjs', 'vendor/moment.js');
         $this->enqueueScript('vendor', 'momentjs-pt-br', 'vendor/moment.pt-br.js', array('momentjs'));
 
-        $this->enqueueScript('vendor', 'jquery-ui-core', "vendor/jquery-ui-{$versions['jquery-ui']}/core.js", array('jquery'));
-        $this->enqueueScript('vendor', 'jquery-ui-position', "vendor/jquery-ui-{$versions['jquery-ui']}/position.js", array('jquery-ui-core'));
-        $this->enqueueScript('vendor', 'jquery-ui-datepicker', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker.js", array('jquery-ui-core'));
-        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker-pt-BR.js", array('jquery-ui-datepicker'));
+        $this->enqueueScript('vendor', 'jquery-ui', "vendor/jquery-ui-{$versions['jquery-ui']}/jquery-ui.js", array('jquery'));
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker-pt-BR.js", array('jquery-ui'));
 
-        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$versions['angular']}/angular.js", array('jquery', 'jquery-ui-datepicker-pt-BR', 'jquery-ui-position'));
+        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$versions['angular']}/angular.js", array('jquery', 'jquery-ui-datepicker-pt-BR'));
         $this->enqueueScript('vendor', 'angular-sanitize', "vendor/angular-{$versions['angular']}/angular-sanitize.js", array('angular'));
 
         $this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison.js', array('angular'));
         $this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.js', array('angular'));
 
         $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
-
+        $this->enqueueScript('vendor', 'angular-ui-sortable', '/vendor/ui-sortable/sortable.js', array('jquery-ui', 'angular'));
+        $this->enqueueScript('vendor', 'angular-checklist-model', '/vendor/checklist-model/checklist-model.js', array('jquery-ui', 'angular'));
     }
 
     function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
-
-        //$this->enqueueStyle('fonts', 'elegant', 'css/fonts.css');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
@@ -732,11 +497,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
 
-
-
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
-
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
@@ -775,7 +537,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
         $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
         $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
-
+        $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
 
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
         $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false);
@@ -794,10 +556,12 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agente.png', false);
         $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-evento.png', false);
         $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-espaco.png', false);
+        //$this->jsObject['assets']['pinSealGroup'] = $this->asset('img/agrupador-selo.png', false);
 
         $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agente-evento.png', false);
         $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-espaco-evento.png', false);
         $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-agente.png', false);
+        //$this->jsObject['assets']['pinSealSpaceGroup'] = $this->asset('img/agrupador-combinado-espaco-selo.png', false);
 
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
 
@@ -816,19 +580,20 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
-            'mapasculturais', 
-            'ng-mapasculturais', 
-            'mc.directive.multiselect', 
+            'mapasculturais',
+            'ng-mapasculturais',
+            'mc.directive.multiselect',
             'mc.directive.singleselect',
-            'mc.directive.editBox', 
-            'mc.directive.mcSelect', 
+            'mc.directive.editBox',
+            'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
-            'entity.module.changeOwner', 
-            'entity.directive.editableMultiselect', 
+        	'entity.module.relatedSeals',
+            'entity.module.changeOwner',
+            'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
-        
+
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
@@ -837,6 +602,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
@@ -885,7 +651,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _populateJsObject() {
-
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
@@ -902,6 +667,222 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
+//        eval(\Psy\sh());
+        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+            $skeleton_field = [
+                'fieldType' => 'checklist',
+                'isInline' => true,
+                'isArray' => true,
+                'prefix' => '',
+                'type' => 'metadata',
+                'label' => '',
+                'placeholder' => '',
+                'filter' => [
+                    'param' => '',
+                    'value' => 'IN({val})'
+                ]
+            ];
+
+            $filters = $this->_getFilters();
+            $modified_filters = [];
+
+            $sanitize_filter_value = function($val){
+                return str_replace(',', '\\,', $val);
+            };
+            foreach ($filters as $key => $value) {
+                $modified_filters[] = $key;
+                $modified_filters[$key] = [];
+                foreach ($filters[$key] as $field) {
+                    $mod_field = array_merge($skeleton_field, $field);
+
+                    if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
+                        $mod_field['options'] = [];
+                        if ($mod_field['fieldType'] == 'singleselect')
+                            $mod_field['options'][] = ['value' => null, 'label' => $mod_field['placeholder']];
+                        switch ($mod_field['type']) {
+                            case 'metadata':
+                                $data = App::i()->getRegisteredMetadataByMetakey($field['filter']['param'], "MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($data->config['options'] as $meta_key => $value)
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
+                                break;
+                            case 'entitytype':
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                foreach ($types as $type_key => $type_val)
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
+                                $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
+                                break;
+                            case 'term':
+                                $tax = App::i()->getRegisteredTaxonomyBySlug($field['filter']['param']);
+                                foreach ($tax->restrictedTerms as $v)
+                                    $mod_field['options'][] = ['value' => $sanitize_filter_value($v), 'label' => $v];
+
+                                $this->addTaxonoyTermsToJs($mod_field['filter']['param']);
+                                break;
+                        }
+                    }
+                    $modified_filters[$key][] = $mod_field;
+                }
+            }
+            $this->jsObject['filters'] = $modified_filters;
+        }
+
+        if($app->user->is('admin')) {
+        	$this->jsObject['allowedFields'] = true;
+        } else {
+        	$this->jsObject['allowedFields'] = false;
+        }
+    }
+
+    protected function _getFilters(){
+        return [
+            'space' => [
+                [
+                    'label'=> $this->dict('taxonomies:area: name', false),
+                    'placeholder' => $this->dict('taxonomies:area: select', false),
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'fieldType' => 'checkbox',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => 'acessibilidade',
+                        'value' => 'EQ(Sim)'
+                    ],
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
+                    ]
+                ]
+            ],
+            'agent' => [
+                [
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'area',
+                        'value' => 'IN({val})'
+                    ],
+                ],
+                [
+                    'label' => 'Tipos',
+                    'placeholder' => 'Todos',
+                    'fieldType' => 'singleselect',
+                    'type' => 'entitytype',
+                    // 'isArray' => false,
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'EQ({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
+                    ]
+                ]
+            ],
+            'event' => [
+                // TODO: Apply filter FromTo from configuration, removing from template "filter-field.php"
+                // [
+                //     'label' => ['De', 'a'],
+                //     'fieldType' => 'dateFromTo',
+                //     'placeholder' => '00/00/0000',
+                //     'isArray' => false,
+                //     'prefix' => '@',
+                //     'filter' => [
+                //         'param' => ['from', 'to'],
+                //         'value' => ['LTE({val})', 'GTE({val})']
+                //     ]
+                // ],
+                [
+                    'label' => 'Linguagem',
+                    'placeholder' => 'Selecione as linguagens',
+                    'fieldType' => 'checklist',
+                    'type' => 'term',
+                    'filter' => [
+                        'param' => 'linguagem',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Classificação',
+                    'placeholder' => 'Selecione a classificação',
+                    'filter' => [
+                        'param' => 'classificacaoEtaria',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'isArray' => false,
+                    'addClass' => 'verified-filter',
+                    'filter' => [
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
+                    ]
+                ]
+            ],
+            'project' => [
+                [
+                    'label' => 'Tipo',
+                    'placeholder' => 'Selecione os tipos',
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                [
+                    'label' => 'Inscrições Abertas',
+                    'fieldType' => 'custom.project.ropen'
+                ],
+                [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
+                    ]
+                ]
+            ]
+        ];
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){
@@ -957,13 +938,49 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRelatedAdminAgentsToJs($entity) {
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+
+    function addRelatedSealsToJs($entity) {
+    	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
+    }
+
+    function addSealsToJs($onlyPermited = true,$sealId = array()) {
+        	$query = [];
+        	$query['@select'] = 'id,name,status, singleUrl';
+
+            if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
+
+        	$query['@files'] = '(avatar.avatarMedium):url';
+        	$sealId = implode(',',array_unique($sealId));
+
+        	if(count($sealId) > 0 && !empty($sealId)) {
+        		$query['id'] = 'IN(' .$sealId . ')';
+        	}
+
+        	$query['@ORDER'] = 'createTimestamp DESC';
+
+        	$app = App::i();
+        	if (!$app->user->is('guest')) {
+        		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
+
+            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+            		$this->jsObject['canRelateSeal'] = true;
+            	} else {
+            		$this->jsObject['canRelateSeal'] = false;
+            	}
+            }
+        }
+
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();
 
         $ids = $entity->getChildrenIds();
 
         $ids[] = $entity->id;
-
 
         $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
 
@@ -976,8 +993,12 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addProjectToJs(Entities\Project $entity){
+        $app = App::i();
+
         $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
+
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
             if($a->title > $b->title){
                 return 1;
@@ -987,9 +1008,24 @@ class Theme extends MapasCulturais\Theme {
                 return 0;
             }
         });
+
+        $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
+
+
+        usort($field_types, function ($a,$b){
+            return strcmp($a->name, $b->name);
+        });
+
+        $this->jsObject['registrationFieldTypes'] = $field_types;
+
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
+
+        if($entity->canUser('@control')){
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
+        } else {
         $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+        }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
         $this->jsObject['projectRegistrationsEnabled'] = App::i()->config['app.enableProjectRegistration'];
@@ -1029,7 +1065,6 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-
     /**
     * Returns a verified entity
     * @param type $entity_class
@@ -1044,8 +1079,6 @@ class Theme extends MapasCulturais\Theme {
             return $app->cache->fetch($cache_id);
         }
 
-
-
         $controller = $app->getControllerByEntity($entity_class);
 
         if ($entity_class === 'MapasCulturais\Entities\Event') {
@@ -1055,7 +1088,7 @@ class Theme extends MapasCulturais\Theme {
                 'isVerified' => 'EQ(true)',
                 '@select' => 'id'
             ));
-            
+
         }else{
 
             $entities = $controller->apiQuery([
@@ -1114,7 +1147,13 @@ class Theme extends MapasCulturais\Theme {
 
         $controller = $app->getControllerByEntity($class);
 
-        $result = $controller->apiQuery(['@count'=>1]);
+        $q = ['@count'=>1];
+
+        if($verified === true){
+            $q['isVerified'] = 'EQ(true)';
+        }
+
+        $result = $controller->apiQuery($q);
 
         if($use_cache){
             $app->cache->save($cache_id, $result, $cache_lifetime);

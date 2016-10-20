@@ -56,8 +56,11 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       onComplete: function(time) {
         var mendtime = moment(time, 'HH:mm');
         var mtime = moment($startsAt.val(), 'HH:mm');
-
+        
         if(mtime.isValid() && mendtime.isValid()) {
+            if(mtime > mendtime){
+                mendtime = mendtime.add('days', 1);
+            }
             $duration.val(Math.abs(mendtime.diff(mtime, 'minutes')));
         }
       }});

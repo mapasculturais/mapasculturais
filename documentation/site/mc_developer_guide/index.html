@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Guia do Desenvolvedor - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li class="active">
+                            <a href="./">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_config_authentication/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_developer_docker_enviroment/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#mapas-culturais-guia-do-desenvolvedor">Mapas Culturais &gt; Guia do Desenvolvedor</a></li>
+        
+            <li><a href="#branches-e-desenvolvimento">Branches e desenvolvimento</a></li>
+        
+            <li><a href="#requisitos">Requisitos</a></li>
+        
+            <li><a href="#arquivo-de-configuracao">Arquivo de Configuração</a></li>
+        
+            <li><a href="#app">App</a></li>
+        
+            <li><a href="#traits">Traits</a></li>
+        
+            <li><a href="#model">Model</a></li>
+        
+            <li><a href="#controller">Controller</a></li>
+        
+            <li><a href="#view">View</a></li>
+        
+            <li><a href="#excecoes">Exceções</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="mapas-culturais-guia-do-desenvolvedor">Mapas Culturais &gt; Guia do Desenvolvedor</h1>
+<hr />
+<p>O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.</p>
+<ul>
+<li><a href="#branches-e-desenvolvimento">Branches e desenvolvimento</a></li>
+<li><a href="#requisitos">Requisitos</a><ul>
+<li><a href="#bibliotecas-php-utilizadas">Bibliotecas PHP utilizadas</a></li>
+<li><a href="#bibliotecas-javascript-utilizadas">Bibliotecas Javascript utilizadas</a></li>
+</ul>
+</li>
+<li><a href="#arquivo-de-configuracao">Arquivo de Configuração</a></li>
+<li><a href="#app">App</a></li>
+<li><a href="#traits">Traits</a><ul>
+<li><a href="#traits-genéricos">Traits Genéricos</a></li>
+</ul>
+</li>
+<li><a href="#model">Model</a></li>
+<li><a href="#controller">Controller</a></li>
+<li><a href="#view">View</a><ul>
+<li><a href="#temas">Temas</a></li>
+<li><a href="../theme-php">theme.php</a></li>
+<li><a href="#estrutura-de-pastas-do-tema">Estrutura de pastas do tema</a></li>
+<li><a href="#páginas">Páginas</a></li>
+<li><a href="#layouts">Layouts</a></li>
+<li><a href="#visões">Visões</a></li>
+<li><a href="#partes">Partes</a></li>
+<li><a href="#assets">Assets</a></li>
+<li><a href="#variáveis-acessíveis">Variáveis Acessíveis</a></li>
+<li><a href="#verificando-se-um-usuário-está-logado">Verificando se um usuário está logado</a></li>
+</ul>
+</li>
+<li><a href="">Autenticação</a></li>
+<li><a href="">Roles</a></li>
+<li><a href="">Log</a></li>
+<li><a href="">Cache</a></li>
+<li><a href="">Outputs da API</a></li>
+<li><a href="">Exceções</a></li>
+<li><a href="../mc_developer_keywords/">Busca Por Palavra-chave</a></li>
+</ul>
+<h2 id="branches-e-desenvolvimento">Branches e desenvolvimento</h2>
+<p>Atualmente a aplicação possui 4 branches principais: <strong>Master</strong>, <strong>RC</strong>, <strong>v2</strong> e <strong>v1</strong>. A saber:</p>
+<p><strong>Branch Master</strong>: </p>
+<ul>
+<li>Branch utilizado para desenvolvimento;</li>
+<li>Tudo que existe de novo está nesse branch;</li>
+<li>Atenção: para desenvolvimento de novas features, o desenvolvedor deve criar um branch novo a partir da versão v2 (stable) e não do master;</li>
+</ul>
+<p><strong>Branch RC</strong> (release candidate): </p>
+<ul>
+<li>Branch utilizado para um conjunto estável de novas funcionalidades;</li>
+<li>Após um conjunto novo de funcionalidades nessa branch, a branch vira no novo stable;</li>
+</ul>
+<p><strong>Branch v2</strong>:</p>
+<ul>
+<li>Atual stable da aplicação;</li>
+<li>Novas instalações devem ser feitas usando esse branch;</li>
+<li>Branches novos para novas funcionalidades devem partir desse branch;</li>
+<li>Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e depois gerarem merge no <strong>Branch v2</strong>, no <strong>Branch RC</strong> e no <strong>Branch Master</strong>. Caso seja um bugfix estrutural ou de segurança que impacte todas as versões, deve gerar merge no <strong>Branch v1</strong> também. </li>
+</ul>
+<p><strong>Branch v1</strong>: </p>
+<ul>
+<li>Antigo stable da aplicação;</li>
+<li>Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e voltar para esse mesmo branch (uma vez o branch do bug finalizado, deve haver um merge para para o v1 novamente); </li>
+</ul>
+<p><img alt="Alt text" src="../images/2016_05_19_branches.png" /></p>
+<h2 id="requisitos">Requisitos</h2>
+<ul>
+<li><a href="http://php.net">PHP &gt;= 5.4</a></li>
+<li><a href="http://php.net/manual/pt_BR/book.image.php">php5-gd</a></li>
+<li>[php5-cli] (https://packages.debian.org/pt-br/jessie/php5-cli)</li>
+<li><a href="http://php.net/manual/pt_BR/book.json.php">php5-json</a></li>
+<li><a href="http://php.net/manual/pt_BR/book.curl.php">php5-curl</a></li>
+<li><a href="http://php.net/manual/pt_BR/book.pgsql.php">php5-pgsql</a></li>
+<li><a href="http://php.net/manual/pt_BR/book.apc.php">php-apc</a></li>
+<li><a href="https://getcomposer.org/">Composer</a></li>
+<li><a href="http://www.postgresql.org/">PostgreSQL &gt;= 9.3</a></li>
+<li><a href="http://postgis.net">Postgis &gt;= 2.1</a></li>
+<li><a href="http://packages.ubuntu.com/trusty/misc/postgresql-9.3-postgis-2.1">PostgreSQL-Postgis-Scripts</a></li>
+<li><a href="https://nodejs.org/en/">Node.JS &gt;= 0.10</a></li>
+<li><a href="https://www.npmjs.com/">NPM</a></li>
+<li><a href="https://www.npmjs.com/package/uglify-js">UglifyJS</a></li>
+<li><a href="https://www.npmjs.com/package/gulp-uglifycss">UglifyCSS</a></li>
+<li>[Ruby] (https://www.ruby-lang.org/pt)</li>
+<li>[Sass gem] (https://rubygems.org/gems/sass/versions/3.4.22)</li>
+</ul>
+<h3 id="bibliotecas-php-utilizadas">Bibliotecas PHP Utilizadas</h3>
+<p>Ver arquivo <a href="../../src/protected/composer.json">composer.json</a>
+- <a href="https://packagist.org/packages/slim/slim">Slim</a> - Microframework em cima do qual foi escria a classe <a href="#app">App</a> do MapasCulturais.
+- <a href="https://packagist.org/packages/doctrine/orm">Doctrine/ORM</a> - ORM utilizado para o mapeamento das entidades.
+- <a href="https://packagist.org/packages/opauth/openid">Opauth/OpenId</a> - Utilizado para autenticação via OpenId.
+- <a href="https://packagist.org/packages/respect/validation">respect/validation</a> - Utilizado para as validações das propriedades e metadados das entidades.
+- <a href="https://packagist.org/packages/smottt/wideimage">smottt/wideimage</a> - Utilizado para <em>transformar</em> imagens (criar thumbnails, por exemplo).
+- <a href="https://packagist.org/packages/phpunit/phpunit">phpunit/phpunit</a> - Utilizado para testes.
+- <a href="https://packagist.org/packages/creof/doctrine2-spatial">creof/doctrine2-spatial</a> - Faz o mapeamento de várias procedures do PostGIS para o doctrine.
+- <a href="https://packagist.org/packages/mustache/mustache">mustache/mustache</a> - Utilizado para renderizar alguns templates.
+- <a href="https://packagist.org/packages/phpoffice/phpword">phpoffice/phpword</a> - Utilizado para criar .docs ou .xls onde necessário.
+- <a href="https://packagist.org/packages/michelf/php-markdown">michelf/php-markdown</a> - Utilizado para renderizar os markdowns das <a href="#páginas">páginas</a></p>
+<h3 id="bibliotecas-javascript-utilizadas">Bibliotecas Javascript Utilizadas</h3>
+<p>Ver <a href="#bibliotecas-javascript-utilizadas-no-tema">bibliotecas javascript utilizadas no tema</a>.</p>
+<h2 id="arquivo-de-configuracao">Arquivo de Configuração</h2>
+<h2 id="app">App</h2>
+<h2 id="traits">Traits</h2>
+<p>Os <a href="http://php.net/manual/pt_BR/language.oop5.traits.php">traits</a> ficam no namespace <strong>MapasCulturais\Traits</strong> e seus arquivos na pasta <a href="../../src/protected/application/lib/MapasCulturais/Traits">src/protected/application/lib/MapasCulturais/Traits</a>. </p>
+<p>Se houver no nome do trait um prefixo (<em>Entity, Controller ou Repository</em>) significa que este trait só deve ser utilizado em classes que estendam a classe com o nome do prefixo dentro do namespace MapasCulturais (ex: o trait <em>EntityAvatar</em> só deve ser utilizado em classes que estendem a classe <em>MapasCulturais\Entity</em>). Já se não houver um prefixo significa que é um <a href="#traits-genéricos">trait genérico</a> e que pode ser utilizado em qualquer classe (exemplos: Singleton e MagigGetter).</p>
+<h3 id="traits-genericos">Traits Genéricos</h3>
+<p>Os traits genéricos podem ser usados em qualquer classe do sistema.</p>
+<h4 id="singleton">Singleton</h4>
+<p>Implementa o design pattern <a href="http://pt.wikipedia.org/wiki/Singleton">singleton</a>. É utilizada nas classes <strong>App</strong>, <strong>GuestUser</strong>, <strong>ApiOutput</strong>, <strong>Controller</strong> entre outras.</p>
+<h4 id="magicgetter">MagicGetter</h4>
+<h4 id="magicsetter">MagicSetter</h4>
+<h4 id="magiccallers">MagicCallers</h4>
+<h2 id="model">Model</h2>
+<p>As classes de modelo ficam no namespace <strong>MapasCulturais\Entities</strong> e seus arquivos dentro da pasta <a href="../../src/protected/application/lib/MapasCulturais/Entities">src/protected/application/lib/MapasCulturais/Entities</a>. </p>
+<p>Estas classes devem estender a classe abstrata <a href="#classe-entity">MapasCulturais\Entity</a> e usar os <a href="http://docs.doctrine-project.org/en/latest/reference/annotations-reference.html">Docblock Annotations</a> do <a href="http://docs.doctrine-project.org/en/latest/index.html">Doctrine</a> para fazer o <a href="http://docs.doctrine-project.org/en/latest/reference/basic-mapping.html">mapeamento</a> com a representação desta entidade no banco de dados (geralmente uma tabela). </p>
+<p>Estas podem também usar os <a href="#traits-das-entidades">traits criados para entidades</a> (os que têm o prefixo <strong>Entity</strong> no nome, como por exmplo o <em>EntityFiles</em>, que é para ser usado em entidades que têm arquivos anexos).</p>
+<h3 id="classe-entity">Classe Entity</h3>
+<p>A classe abstrata <a href="../../src/protected/application/lib/MapasCulturais/Entity.php">MapasCulturais\Entity</a> é a classe que serve de base para todoas as entidades do sistema. Implementa uma série de métodos úteis para, entre outros, <a href="#verificação-de-permissões">verificação de permissões</a>, serialização e <a href="#validações">validações</a>.</p>
+<h3 id="traits-das-entidades">Traits das Entidades</h3>
+<ul>
+<li><strong>EntityAgentRelation</strong> - Deve ser usado em entidades que podem ter agentes relacionados. Requer uma entidade auxiliar com o mesmo nome da entidade acrescida do sufixo AgentRelation (exemplo: para a entidade <em>Event</em>, uma classe <em>EventAgentRelation</em>).</li>
+<li><strong>EntityFiles</strong> - Deve ser usado em entidades que podem ter arquivos anexados.</li>
+<li><strong>EntityAvatar</strong> - Deve ser usado em entidades que tenham avatar. Requer o trait <em>EntityFiles</em>.</li>
+<li><strong>EntityGeoLocation</strong> - Deve ser usado em entidades georreferenciadas. Requer as propriedades <em>location</em>, do tipo <em>point</em>, e <em>_geoLocation</em>, do tipo <em>geography</em>.</li>
+<li><strong>EntityMetadata</strong> - Deve ser usado em entidades que tenham metadados. Requer de uma entidade auxiliar. Se existir no mesmo namespace uma classe com o nome da entidade acrescida do sufixo <em>Meta</em> (exemplo: para a entidade <em>Agent</em>, uma classe <em>AgentMeta</em>), esta será usada, senão a entidade Metadata será usada como auxiliar.</li>
+<li><strong>EntityMetaLists</strong> - Deve ser usado em entidades que tenham metadados com múltiplos valores por chave. (exemplo de uso: links).</li>
+<li><strong>EntityNested</strong> - Deve ser usado em entidades hierarquicas. Requer as <a href="http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#one-to-many-self-referencing">associações autoreferenciadas</a> <em>children</em> e <em>parent</em>.</li>
+<li><strong>EntityOwnerAgent</strong> - Deve ser usado em entidades que tenham a associação <a href="http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#many-to-one-unidirectional">ManyToOne</a> <em>owner</em> apontando para a entidade <em>MapasCulturais\Entity\Agent</em>. Requer também um mapeamento do tipo <em>int</em> chamado <em>_ownerId</em> que representa o id do agente que é dono desta entidade.</li>
+<li><strong>EntitySoftDelete</strong> - Usado em entidades que necessitem de lixeira. Requer um mapeamento do tipo <em>int</em> chamado <em>status</em>.</li>
+<li><strong>EntityTaxonomies</strong> - Deve ser usado em entidades que precisem de taxonomias (tags, área de atuação, etc.).</li>
+<li><strong>EntityTypes</strong> - Deve ser usado em entidades que tenham tipos. Requer um mapeamento do tipo <em>int</em> chamado <em>_type</em>. </li>
+<li><strong>EntityVerifiable</strong> - Deve ser usado em entidades <em>verificáveis</em>, o seja, que podem ser marcadas como <em>oficiais</em> pelos admins ou membros da equipe.</li>
+</ul>
+<h3 id="verificacao-de-permissoes">Verificação de Permissões</h3>
+<p>A verificação das permissões são feitas através do método <strong>checkPermission</strong> passando como parâmetro para este o nome da ação que você deseja checar se o usuário tem ou não permissão para executar. Este método, por ua vez, chama o método <a href="#método-canuser">canUser</a> que retornará um booleando <em>true</em> se o usuário pode executar a ação ou <em>false</em> se o usuário não pode executar a ação. Caso o usuário não possa executar a ação, o método <strong>checkPermission</strong> lançará uma exceção do tipo <a href="#permissiondenied">PermissionDenied</a>.</p>
+<h4 id="metodo-canuser">Método canUser</h4>
+<p>O método <strong>canUser</strong> recebe como primeiro parâmetro o nome da ação e opcionalmente, como segundo parâmetro, um usuário. Se nenhum usuário for enviado, será usado o usuário logado ou <em>guest</em>. O retorno desta função é um booleano indicando se o usuário pode ou não executar a ação.</p>
+<p>Este método procurará por um método auxilar chamado <em>canUser acrescido do nome da ação</em> (exemplo: para a ação <strong>remove</strong>, um método chamado <strong>canUserRemove</strong>) e caso não ache será usado o método <a href="#método-genericpermissionverification">genericPermissionVerification</a>.</p>
+<p>No exemplo a seguir dizemos que somente admins podem alterar o satatus da entidade Exemplo.</p>
+<pre><code class="PHP">class Exemplo extends MapasCulturais\Entity{
+    use MapasCulturais\Traits\MagicSetter
+    ....
+    ....
+    protected $_status = 0;
+
+    function setStatus($status){
+        $this-&gt;checkPermission('modifyStatus');
+        $this-&gt;_status = $status;
+        $this-&gt;save();
+    }
+
+    protected function canUserModifyStatus($user){
+        if($user-&gt;is(&quot;admin&quot;))
+            return true;
+        else
+            return false;
+    }
+}
+
+</code></pre>
+
+<h4 id="metodo-genericpermissionverification">Método genericPermissionVerification</h4>
+<p>Este método é utilizado sempre que uma checagem de permissão é feita e o método <strong>canUser</strong> não encontra um método auxiliar com o nome da ação. </p>
+<p>O corpo deste método é o seguinte:</p>
+<pre><code class="PHP">protected function genericPermissionVerification($user){
+    if($user-&gt;is('guest'))
+        return false;
+
+    if($user-&gt;is('admin'))
+        return true;
+
+    if($this-&gt;getOwnerUser()-&gt;id == $user-&gt;id)
+        return true;
+
+    if($this-&gt;usesAgentRelation() &amp;&amp; $this-&gt;userHasControl($user))
+        return true;
+
+    return false;
+}
+
+</code></pre>
+
+<h3 id="validacoes-das-entidades">Validações das Entidades</h3>
+<h2 id="controller">Controller</h2>
+<h2 id="view">View</h2>
+<h3 id="temas">Temas</h3>
+<p>Por enquanto ainda não temos resolvida a estrutura para múltiplos temas. O que temos é um tema único dentro da pasta <strong>src/protected/application/themes/active</strong>, que será modificado para aceitar configurações.</p>
+<h4 id="bibliotecas-javascript-utilizadas-no-tema">Bibliotecas Javascript utilizadas no tema</h4>
+<p>Por enquanto ainda não utilizamos um gerenciador de pacotes para as bibliotecas Javascript. Estas ficam na <a href="#estrutura-de-pastas-do-tema">pasta assets/vendor/</a>.
+ - <a href="https://angularjs.org/">AngularJS</a>
+ - <a href="http://jquery.com/">jQuery</a>
+ - </p>
+<h4 id="themephp">theme.php</h4>
+<p>Este arquivo fica na pasta raíz do tema (<strong>src/protected/application/themes/active</strong>) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a <a href="../mc_config_api/">API de plugins</a>.</p>
+<h4 id="estrutura-de-pastas-do-tema">Estrutura de pastas do tema</h4>
+<p>dentro da pasta raíz do tema
+- <strong>assets/</strong> - <em>onde deve ficar tudo que é acessível pelo público dentro da url <strong>/public</strong> do site</em>
+  - <strong>css/</strong>
+  - <strong>fonts/</strong>
+  - <strong>img/</strong>
+  - <strong>vendor/</strong>
+- <strong>layouts/</strong> - <em>onde ficam os layouts do site</em>
+    - <strong>parts/</strong> - <em>onde ficam os template parts utilizados pelo tema</em>
+- <strong>views/</strong> - <em>onde ficam as viões dos controles</em>
+- <strong>pages/</strong> - onde ficam os arquivos de páginas</p>
+<h3 id="paginas">Páginas</h3>
+<p>As páginas do sistema são arquivos <strong>.md</strong> (Markdown) salvos dentro da pasta <strong>pages/</strong> do tema. Para criar uma nova página basta criar um novo arquivo <strong>.md</strong> dentro desta pasta. Estes arquivos são renderizadas pela biblioteca <a href="https://michelf.ca/projects/php-markdown/extra/">PHP Markdown Extra</a>.</p>
+<h4 id="url-da-pagina">Url da página</h4>
+<p>Para uma página cujo nome de arquivo é <strong>nome-da-pagina.md</strong>, a url de acesso será <strong>http://mapasculturais/page/site/nome-da-pagina/</strong></p>
+<h4 id="titulo-da-pagina">Título da página</h4>
+<p>O texto do <strong>primeiro h1</strong> do conteúdo da página será utilizado como título da página (tag <strong>title</strong>). Isto é feito via javascript.</p>
+<p>No exemplo a seguir o título da página será <strong>Título da Págna</strong></p>
+<pre><code class="Markdown"># Título da Página
+
+Conteúdo da página ....
+
+</code></pre>
+
+<h4 id="sidebars">Sidebars</h4>
+<p>O Conteúdo das sidebars estão nos arquivos <strong>_right.md</strong> e <strong>_left.md</strong></p>
+<h4 id="substituindo-uma-sidebar">Substituindo uma sidebar</h4>
+<p>Você pode substituir uma sidebar envolvendo o conteúdo que você deseja que substitua o conteúdo padrão com as tags <strong>&lt;%left left%&gt;</strong> para a sidebar da esquerda e <strong>&lt;%right right%&gt;</strong> para a sidebar da direita.</p>
+<p>No exemplo a seguir substituimos a sidebar da direita por um menu com três links:</p>
+<pre><code class="Markdown">&lt;%right 
+- [Primeiro link](#primeiro)
+- [Segundo link](#segundo)
+- [Terceiro link](#terceiro)
+right%&gt;
+
+# Título da Página
+
+Conteúdo da página ....
+</code></pre>
+
+<h4 id="extendendo-uma-sidebar">Extendendo uma sidebar</h4>
+<p>Você pode extender uma sidebar, adicionando conteúdo antes ou depois do conteúdo padrão, colocando um <strong>:after</strong> ou <strong>:before</strong> logo depois da tag de abertura.</p>
+<p>No exemplo a seguir extendemos a sidebar da esquerda adicionando um menu com 2 links no final da sidebar:</p>
+<pre><code class="Markdown">&lt;%left:after
+## submenu da página
+
+- [Primeiro Link](#primeiro)
+- [Segundo Link](#segundo)
+left%&gt;
+
+# Título da Página
+
+Conteúdo da página ....
+</code></pre>
+
+<h3 id="layouts">Layouts</h3>
+<p>O layout é a "moldura" do conteúdo de uma visão. A estrutura mínima de um layout é a seguinte:</p>
+<pre><code class="HTML+PHP">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;?php echo isset($entity) ? $this-&gt;getTitle($entity) : $this-&gt;getTitle() ?&gt;&lt;/title&gt;
+        &lt;?php mapasculturais_head(isset($entity) ? $entity : null); ?&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;?php body_header(); ?&gt;
+        &lt;?php echo $TEMPLATE_CONTENT; /* aqui entra o conteúdo da view */ ?&gt;
+        &lt;?php body_footer(); ?&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Por padrão as visões usam o arquivo de layout <strong>default.php</strong>, mas você pode definir qual layout elas usarão colocando a seguinte linha na primeira linha do seu arquivo de visão:</p>
+<pre><code class="PHP">$this-&gt;layout = 'nome-do-layout'; // não precisa do .php no nome do template
+</code></pre>
+
+<h3 id="visoes">Visões</h3>
+<p>As visões são chamadas de dentro das <a href="#actions">actions do controller</a> através do <a href="#método-render">método render</a>, que inclui o <a href="#layouts">layout</a> definido na view, ou do <a href="#método-partial">método partial</a>, que <strong>não</strong> inclui o layout. </p>
+<p>Quando a visão é chamada pelo método render, o conteúdo renderizado da visão é guardado na variável <strong>$TEMPLATE_CONTENT</strong> e enviado para o layout.</p>
+<h4 id="visoes-das-actions-single-create-e-edit">Visões das actions single, create e edit</h4>
+<p>Os arquivos de visão <strong>single.php</strong>, <strong>create.php</strong> e <strong>edit.php</strong> dos controladores <strong>agent</strong>, <strong>space</strong>, <strong>event</strong> e <strong>project</strong> são, não relidade, o mesmo arquivo. O arquivo <em>real</em> é o <strong>single.php</strong> e os dois outros são <em>links simbólicos</em> para o primeiro.</p>
+<p>Para saber, de dentro de um destes arquivos, em qual action você está, você pode usar a propriedade <strong>$this-&gt;controller-&gt;action</strong>:</p>
+<pre><code class="HTML+PHP">&lt;?php if($this-&gt;controller-&gt;action == 'single'): ?&gt;
+    &lt;p&gt;você está visualizando a entidade&lt;/p&gt;
+&lt;?php elseif($this-&gt;controller-&gt;action == 'edit'): ?&gt;
+    &lt;p&gt;você está editando a entidade&lt;/p&gt;
+&lt;?php else: ?&gt;
+    &lt;p&gt;você está criando uma nova entidade&lt;p&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+
+<p>Se você só deseja saber se está no modo de edição use a função <strong>is_editable()</strong>:</p>
+<pre><code class="HTML+PHP">&lt;?php if(is_editable(): ?&gt;
+    &lt;p&gt; você está em modo de edição (edit ou create). &lt;/p&gt;
+&lt;?php else: ?&gt;
+    &lt;p&gt; você está somente visualizando a entidade. &lt;p&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+
+<h3 id="partes">Partes</h3>
+<p>As partes são blocos de código que podem ser incluidos em diferentes views, layouts ou mesmo dentro de outras partes. Estes blocos de código devem ficar, por padrão, na pasta <strong>layouts/parts/</strong> do tema.</p>
+<p>Para usar uma parte cujo nome de arquivo é <strong>uma-parte.php</strong> basta chamar o método <strong>part</strong> da seguinte forma:</p>
+<pre><code class="HTML+PHP">&lt;div&gt; A parte será incluida a seguir: &lt;/div&gt;
+&lt;?php $this-&gt;part('uma-parte'); ?&gt;
+</code></pre>
+
+<h4 id="enviando-variaveis-para-dentro-das-partes">Enviando variáveis para dentro das partes</h4>
+<p>Você pode enviar variáveis para usar dentro das partes. Isto é útil em várias situações, por exmplo quando você quer que uma parte seja usada dentro de um loop e você tem que enviar o item atual do loop para usar dentro da parte.</p>
+<p>No exemplo a seguir, passamos uma variável chamada <strong>user_name</strong>, com o valor <strong>"Fulano de Tal"</strong>, para dentro da parte <strong>uma-parte</strong>.</p>
+<pre><code class="PHP">// dentro de algum arquivo de view, layout ou mesmo outra parte
+$this-&gt;part('uma-parte', ['user_name' =&gt; 'Fulano de Tal']);
+</code></pre>
+
+<pre><code class="HTML+PHP">&lt;!-- dentro do arquivo layouts/parts/uma-parte.php --&gt;
+&lt;span&gt;Nome de usuário: &lt;?php echo $user_name; ?&gt;&lt;/span&gt;
+</code></pre>
+
+<h3 id="assets">Assets</h3>
+<p>Os assets são arquivos estáticos (.css, .js, imagens, etc.) utilizados pelo tema. </p>
+<p>Para imprimir a url de um asset use a função <strong>$this-&gt;asset()</strong>. Já se você deseja adicionar um js ou css use as funções <strong>$app-&gt;enqueueScript()</strong> e <strong>$app-&gt;enqueueStyle()</strong>.</p>
+<h4 id="metodo-asset">Método Asset</h4>
+<p>O Método <strong>asset</strong> do objeto de função serve para imprimir ou somente retornar a url de um asset. Este método aceita dois parâmetros: </p>
+<p>O primeiro, <strong>$file</strong>, é o caminho do arquivo deseja dentro da pasta assets do tema, como exemplo a string "img/uma-image.jpg".</p>
+<p>O Segundo, <strong>$print</strong>, é opcional e tem como padrão <em>true</em>. Se for passado <em>false</em> a função somente retornará a url, mas não imprimirá nada.</p>
+<h5 id="adicionando-uma-imagem">Adicionando uma imagem</h5>
+<p>O exemplo a seguir usa uma imagem chamada <strong>logo.png</strong> que está na pasta <strong>assets/img/</strong> do tema.</p>
+<pre><code class="HTML+PHP">&lt;img src=&quot;&lt;?php $this-&gt;asset('img/logo.png'); ?&gt;&quot; /&gt;
+</code></pre>
+
+<h5 id="criando-um-link-para-um-asset">Criando um link para um asset</h5>
+<p>O exemplo a seguir cria um link para o arquivo <strong>documento.pdf</strong> que está na pasta <strong>asset/</strong> do tema.</p>
+<pre><code class="HTML+PHP">&lt;a href=&quot;&lt;?php $this-&gt;asset('documento.pdf'); ?&gt;&quot; &gt;Documento&lt;/a&gt;
+</code></pre>
+
+<h4 id="metodo-enqueuestyle">Método enqueueStyle</h4>
+<p>Este método é utilizado para adicionar arquivos .css que serão utilizados pela visão, layout ou parte. Este método aceitas 5 parâmetros (<strong>$group</strong>, <strong>$script_name</strong>, <strong>$script_filename</strong>, <em>array</em> <strong>$dependences</strong>, <strong>$media</strong>), sendo os dois último opcional.</p>
+<p>Há três grupos de estilos no sistema: <strong>vendor</strong>, que são estilos utilizados pelas bibliotecas, <strong>fonts</strong> que são as fontes utilizadas, e <strong>app</strong>, que são os estilos escritos exclusivamente para o tema. </p>
+<h5 id="adicionando-um-estilo">Adicionando um estilo</h5>
+<p>O exemplo a seguir adiciona um estilo chamado <strong>um-estilo.css</strong> escrito para a aplicação.</p>
+<pre><code class="PHP">$app-&gt;enqueueStyle('app', 'um-estilo', 'css/um-estilo.css');
+</code></pre>
+
+<h4 id="metodo-enqueuescript">Método enqueueScript</h4>
+<p>Este método é utilizado para adicionar arquivos .js que serão utilizados pela visão, layout ou parte. Este método aceitas 4 parâmetros (<strong>$group</strong>, <strong>$script_name</strong>, <strong>$script_filename</strong>, <em>array</em> <strong>$dependences</strong>), sendo o último opcional.</p>
+<p>Há dois grupos de scripts no sistema: <strong>vendor</strong>, que são as bibliotecas utilizadas, e <strong>app</strong>, que são os scripts escritos exclusivamente para o tema. </p>
+<h5 id="adicionando-um-script">Adicionando um script</h5>
+<p>O exemplo a seguir adiciona um script chamado <strong>um-script.js</strong> escrito para a aplicação.</p>
+<pre><code class="PHP">$app-&gt;enqueueScript('app', 'um-script', 'js/um-script.js');
+</code></pre>
+
+<h5 id="adicionando-um-script-que-depende-de-outro">Adicionando um script que depende de outro</h5>
+<p>O exemplo a seguir adiciona uma biblioteca que depende de outra biblioteca.</p>
+<pre><code class="PHP">$app-&gt;enqueueScript('vendor', 'jquery-ui-datepicker', '/vendor/jquery-ui.datepicker.js', array('jquery'));
+$app-&gt;enqueueScript('vendor', 'jquery', '/vendor/jquery/jquery-2.0.3.min.js');
+</code></pre>
+
+<h4 id="ordem-de-impressao-das-tags-de-estilos-e-scripts">Ordem de impressão das tags de estilos e scripts</h4>
+<p>Os grupos de estilos e scripts serão impressos na seguinte ordem e dentro dos grupos os estilos/scripts serão ordenados conforme suas dependências:
+- Estilos do grupo <strong>vendor</strong>
+- Estilos do grupo <strong>font</strong>
+- Estilos do grupo <strong>app</strong>
+- Scripts do grupo <strong>vendor</strong>
+- Scripts do grupo <strong>app</strong></p>
+<h3 id="variaveis-acessiveis">Variáveis Acessíveis</h3>
+<p>De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáveis estão acessíveis:
+- <strong>$this</strong> - instância da classe <em>MapasCulturais\View</em>.
+    - <strong>$this-&gt;assetUrl</strong> - url dos assets.
+    - <strong>$this-&gt;baseUrl</strong> - url da raíz do site.
+    - <strong>$this-&gt;controller</strong> - o controller que mandou renderizar a visão.
+    - <strong>$this-&gt;controller-&gt;action</strong> - a action que mandou renderizar a visão.
+- <strong>$app</strong> - instância da classe <em>MapasCulturais\App</em>.
+- <strong>$app-&gt;user</strong> - o usuário que estã vendo o site. Este objeto é instância da classe <em>MapasCulturais\Entities\User</em>, se o usuário estiver logado, ou instância da classe <em>MapasCulturais\GuestUser</em>, se o usuário não estiver logado.
+- <strong>$app-&gt;user-&gt;profile</strong> - o agente padrão do usuário. Instância da classe <em>MapasCulturais\Entities\Agent</em>. <em>(somente para usuários logados)</em>
+- <strong>$entity</strong> - é a entidade que está sendo visualizada, editada ou criada. <em>(somente para as actions single, edit e create dos controladores das entidades agent, space, project e event. Dentro das partes somente se esta foi <a href="#enviando-variáveis-para-dentro-das-partes">enviada</a>)</em></p>
+<h3 id="verificando-se-um-usuario-esta-logado">Verificando se um usuário está logado</h3>
+<p>Para saber se um usuário está logado você pode verificar se o usuário não é <em>guest</em>. </p>
+<pre><code class="HTML+PHP">&lt;?php if( ! $app-&gt;user-&gt;is('guest') ): ?&gt;
+    &lt;p&gt;O usuário está logado e o nome do agente padrão dele é &lt;?php echo $app-&gt;user-&gt;profile-&gt;name; ?&gt; ?&gt;&lt;/p&gt;
+&lt;?php else: ?&gt;
+    &lt;p&gt;O usuário não está logado&lt;/p&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+
+<h2 id="excecoes">Exceções</h2>
+<h3 id="permissiondenied">PermissionDenied</h3></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

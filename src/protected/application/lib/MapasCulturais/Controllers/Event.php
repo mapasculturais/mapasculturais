@@ -3,6 +3,7 @@ namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * Event Controller
@@ -15,6 +16,7 @@ class Event extends EntityController {
         Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
+        Traits\ControllerSealRelation,
         Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
@@ -39,7 +41,191 @@ class Event extends EntityController {
         });
         parent::POST_index();
     }
+    
+    function API_findOccurrences(){
+        $app = App::i();
+        $rsm = new ResultSetMapping();
+        
+        
+        $rsm->addScalarResult('id', 'occurrence_id');
+        $rsm->addScalarResult('event_id', 'event_id');
+        $rsm->addScalarResult('space_id', 'space_id');
+        $rsm->addScalarResult('starts_on', 'starts_on');
+        $rsm->addScalarResult('starts_at', 'starts_at');
+        $rsm->addScalarResult('ends_on', 'ends_on');
+        $rsm->addScalarResult('ends_at', 'ends_at');
+        $rsm->addScalarResult('rule', 'rule');
+        
+        $query_data = $this->getData;
+        
+        // find occurrences
+        
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+        
+        $query = $app->em->createNativeQuery("
+            SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule 
+            FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
+            WHERE status > 0 
+            ORDER BY starts_on, starts_at", $rsm);
+        
+        $query->setParameters([
+            'date_from' => $date_from,
+            'date_to' => $date_to
+        ]);
+        
+        if($app->config['app.useEventsCache']){
+            $query->useResultCache(true, $app->config['app.eventsCache.lifetime']);
+        }
+        
+        $_result = $query->getScalarResult();
+        
+        
+        
+        $space_query_data = [];
+        $event_query_data = $this->getData;
+        
+        // filter spaces
+        
+                
+        foreach($this->getData as $key => $val){
+            if(strtolower(substr($key, 0, 6)) === 'space:'){
+                $space_query_data[substr($key, 6)] = $val;
+                unset($event_query_data[$key]);
+            }
+        }
+        
+        unset(
+                $space_query_data['@limit'],
+                $space_query_data['@offset'],
+                $space_query_data['@page']
+        );
+        
+        $space_ids = [];
+        
+        foreach($_result as $occ){
+            $space_ids[] = $occ['space_id'];
+        }
+        
+        $space_ids = implode(',',$space_ids);
+        if(isset($space_query_data['id'])){
+            $space_query_id = $space_query_data['id'];
+            $space_query_data['id'] = "AND({$space_query_id},IN({$space_ids}))";
+        }else{
+            $space_query_data['id'] = "IN({$space_ids})";
+        }
+        
+        if(isset($space_query_data['@select'])){
+            $props = explode(',', $space_query_data['@select']);
+            if(array_search('id', $props) === false){
+                $space_query_data['@select'] .= ',id';
+            }
+        }
+        
+        $space_controller = $app->controller('space');
+        $spaces = $space_controller->apiQuery($space_query_data);
 
+        $spaces_by_id = [];
+        foreach($spaces as $space){
+            $spaces_by_id[$space['id']] = $space;
+        }
+        
+        // filter events
+        
+        unset(
+                $event_query_data['@from'], 
+                $event_query_data['@to'],
+                $event_query_data['@limit'],
+                $event_query_data['@offset'],
+                $event_query_data['@page']
+        );
+        
+        $event_ids = [];
+        
+        foreach($_result as $occ){
+            if(isset($spaces_by_id[$occ['space_id']])){
+                $event_ids[] = $occ['event_id'];
+            }
+        }
+        
+        if($event_ids){
+
+            $event_ids = implode(',',$event_ids);
+
+            if(isset($event_query_data['id'])){
+                $event_query_id = $event_query_data['id'];
+                $event_query_data['id'] = "AND({$event_query_id},IN({$event_ids}))";
+            }else{
+                $event_query_data['id'] = "IN({$event_ids})";
+            }
+            if(isset($event_query_data['@select'])){
+                $props = explode(',', $event_query_data['@select']);
+                if(array_search('id', $props) === false){
+                    $event_query_data['@select'] .= ',id';
+                }
+            }
+            $event_controller = $app->controller('event');
+
+            $events = $event_controller->apiQuery($event_query_data);
+
+            $events_by_id = [];
+            foreach($events as $event){
+                $events_by_id[$event['id']] = $event;
+            }
+
+            $result = [];
+
+            foreach($_result as $i => $occ){
+
+                $space_id = $occ['space_id'];
+                $event_id = $occ['event_id'];
+
+                if(!isset($events_by_id[$event_id]))
+                    continue;
+
+
+                unset($occ['space_id']);
+
+                if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
+                    unset($occ['event']);
+
+                    $space = $spaces_by_id[$space_id];
+                    $event = $events_by_id[$event_id];
+                    $occ['rule'] = json_decode($occ['rule']);
+
+                    $occ['space'] = $space;
+
+                    $item = array_merge($event, $occ);
+
+
+                    $result[] = $item;
+                }
+            }
+
+            // pagination
+
+            $offset = isset($this->getData['@offset']) ? $this->getData['@offset'] : null;
+            $limit = isset($this->getData['@limit']) ? $this->getData['@limit'] : null;
+            $page = isset($this->getData['@page']) ? $this->getData['@page'] : null;
+
+            if($page && $limit){
+                $offset = (($page - 1) * $limit);
+                $result = array_slice($result, $offset, $limit);
+            } else if($offset && $limit){
+                $result = array_slice($result, $offset, $limit);
+            } else if ($offset) {
+                $result = array_slice($result, $offset);
+            } else if ($limit) {
+                $result = array_slice($result, 0, $limit);
+            }
+        } else {
+            $result = [];
+        }
+        
+        // @TODO: set headers to 
+        $this->apiResponse($result);
+        
+    }
 
     function GET_create() {
         if(key_exists('projectId', $this->urlData) && is_numeric($this->urlData['projectId'])){
@@ -89,7 +275,6 @@ class Event extends EntityController {
         }, $events);
 
         $_occurrences = $app->repo('EventOccurrence')->findByEventsAndSpaces($events, [$space], $date_from, $date_to);
-
 
         foreach($events as $e){
             $occurrences_readable[$e->id] = [];
@@ -141,6 +326,7 @@ class Event extends EntityController {
             $query_data['@from'],
             $query_data['@to'],
             $query_data['space']
+                
         );
 
         $space_data = [];
@@ -159,7 +345,7 @@ class Event extends EntityController {
         if(key_exists('_geoLocation', $query_data) || $space_data){
             $space_controller = App::i()->controller('space');
 
-            $space_data['@select'] = 'id';
+            $space_data['@select'] = 'id,name,shortDescription,location,terms,__metadata';
 
             if(key_exists('_geoLocation', $query_data)){
                 $space_data['_geoLocation'] = $this->data['_geoLocation'];

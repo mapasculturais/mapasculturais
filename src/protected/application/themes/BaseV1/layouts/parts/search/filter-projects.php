@@ -4,7 +4,7 @@
         Projetos
         <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
     </header>
-    <div ng-show="!collapsedFilters && !showInfobox()">
+    <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-evento">Palavra-chave</label>
             <input ng-model="data.project.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar projetos" />
@@ -33,6 +33,11 @@
             <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
+        
+        <div ng-repeat="entity in ['project']" class="show-advanced-filters ">
+            <?php $this->part('search/advanced-filters') ?>
+        </div>
+        <!--.filter-->
     </div>
 </div>
 <!--#filter-projects-->

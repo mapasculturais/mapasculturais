@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>API - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li class="active">
+                            <a href="./">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_deploy_shapefiles/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_config_authentication/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#documentacao-da-api">Documentacao da API</a></li>
+        
+            <li><a href="#action-find">Action find</a></li>
+        
+            <li><a href="#operadores">Operadores</a></li>
+        
+            <li><a href="#exemplos-de-uso">Exemplos de uso.</a></li>
+        
+            <li><a href="#action-describe">Action describe</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="documentacao-da-api">Documentacao da API</h1>
+<p><em>Para tornar mais fácil a leitura dos exemplos será utilizada a função getJSON do jQuery.</em></p>
+<h2 id="action-find">Action find</h2>
+<p>Parâmetros
+O Método find aceita os seguintes parâmetros:</p>
+<ul>
+<li><strong>@select</strong> - usado para selecionar as propriedades da entidade que serão retornadas pela api. Você pode retornar propriedades de entidades relacionadas. <em>ex:( @select: id,name,owner.name,owner.singleUrl)</em></li>
+<li><strong>@order</strong> - usado para definir em que ordem o resultado será retornado. <em>ex:( @order: name ASC, id DESC)</em></li>
+<li><strong>@limit</strong> - usado para definir o número máximo de entidades que serão retornadas. <em>ex:( @limit: 10)</em></li>
+<li><strong>@page</strong> - usado em paginações em conjunto com o @limit. <em>ex:( @limit:10, @page: 2)</em></li>
+<li><strong>@or</strong> - se usado a api usará o operador lógico OR para criar a query. <em>ex:( @or:1)</em></li>
+<li><strong>@type</strong> - usado para definir o tipo de documento a ser gerado com o resultado da busca. <em>ex:( @type: html; ou @type: json; ou @type: xml)</em></li>
+<li><strong>@files</strong> - indica que é para retornar os arquivos anexos. <em>ex:( @files=(avatar.avatarSmall,header):name,url - retorna o nome e url do thumbnail de tamanho avatarSmall da imagem avatar e a imagem header original)</em></li>
+</ul>
+<h2 id="operadores">Operadores</h2>
+<p>Para filtrar os resultados o método find aceita os seguintes operadores em qualquer das propriedades e metadados das entidades:</p>
+<ul>
+<li><strong>EQ</strong> (igual) <em>ex:( id: EQ (10) - seleciona a entidade de id igual a 10)</em></li>
+<li><strong>GT</strong> (maior que) <em>ex:( id: GT (10) - seleciona todas as entidades com id maior a 10)</em></li>
+<li><strong>GTE</strong> (maior ou igual) <em>ex:( id: GTE (10) - seleciona todas as entidades com id maior ou igual a 10)</em></li>
+<li><strong>LT</strong> (menor que) <em>ex:( id: LT (10) - seleciona todas as entidades com id menor a 10)</em></li>
+<li><strong>LTE</strong> (menor ou igual) <em>ex:( id: LTE (10) - seleciona todas as entidades com id menor ou igual a 10)</em></li>
+<li><strong>NULL</strong> (nao definido) <em>ex:( age: null() - seleciona todas as entidades com idade não definida)</em></li>
+<li><strong>IN</strong> (en) <em>ex:( id: IN (10,18,33) - seleciona as entidades de id 10, 18 e 33)</em></li>
+<li><strong>BET</strong> (entre) <em>ex:( id: BET (100,200) - seleciona as entidades de id entre 100 e 200)</em></li>
+<li><strong>LIKE</strong> <em>ex:( name: LIKE (fael) - seleciona as entidades com nome LIKE '<em>fael</em>' (ver operador LIKE do sql))</em></li>
+<li><strong>ILIKE</strong> (LIKE ignorando maiúsculas e minúsculas) <em>ex:( name: ILIKE (rafael*) seleciona as entidades com o nome começando com Rafael, rafael, RAFAEL, etc.)</em></li>
+<li><strong>OR</strong> (operador lógico OU) <em>ex:( id: OR (BET (100,200), BET (300,400), IN (10,19,33)) - seleciona as entidades com id entre 100 e 200, entre 300 e 400 ou de id 10,19 ou 33)</em></li>
+<li><strong>AND</strong> (operador lógico AND) <em>ex:( name: AND (ILIKE ('Rafael%'), ILIKE ('*Freitas')) - seleciona as entidades com nome começando com Rafael e terminando com Freitas (por exemplo: Rafael Freitas, Rafael Chaves Freitas, RafaelFreitas))</em></li>
+<li><strong>GEONEAR</strong> <em>ex:( _geoLocation: GEONEAR (-46.6475415229797, -23.5413271705055, 700) - seleciona as entidades que estão no máximo há 700 metros do ponto de latitude -23.5413271705055 e longitude -46.6475415229797)</em></li>
+</ul>
+<h2 id="exemplos-de-uso">Exemplos de uso.</h2>
+<ul>
+<li><strong>retornando o nome do espaço de id 10</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/space/find',
+  {
+    '@select': 'name', 
+    'id': 'eq(10)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id, nome e email dos agentes com email do google</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, email', 
+    'email': 'like(*gmail.com)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome do espaços e nomes do agentes que publicaram os espaços </strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/space/find',
+  {
+    '@select': 'id, name, owner.name',
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com email do google ou do yahoo</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name', 
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  }, 
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id, nome dos agentes com com id entre 100 e 200, exceto o de id 150</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name', 
+    'id': 'AND(BET(100,200), !EQ(150))'
+  }, 
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com com id entre 100 e 200, exceto o de id 150 e que tenham email do google ordenado pela data de criação do agente</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'createTimestamp ASC',
+    'id': 'AND(BET(100,200), !EQ(150))',
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando o id e nome dos agentes com com id entre 100 e 200, exceto o de id 150 OU que tenham email do google ordenado pelo nome descendentemente</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'name DESC',
+    '@or': 1,
+    'id': 'AND(BET(100,200), !EQ(150))',
+    'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando a segunda página de 10 agentes ordenado pelo nome</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, files',
+    '@order': 'name ASC',
+    '@limit': 10,
+    '@page': 2
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando a segunda página de 10 agentes ordenado pelo nome com a url do avatar, url do thumbnail do avatar e todos os downloads</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name',
+    '@order': 'name ASC',
+    '@limit': 10,
+    '@page': 2,
+    '@files': '(avatar,avatar.avatarSmall,downloads):url'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>retornando as entidades próximas a latitude -23.5413271705055 e longitude -46.6475415229797</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    '_geoLocation': 'GEONEAR(-46.6475415229797,-23.5413271705055,700)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<h3 id="filtrando-por-relacionamentos">Filtrando por relacionamentos</h3>
+<ul>
+<li><strong>Selecionando todos os espaços do agente de id 1</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/agent/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    'owner': 'EQ(@Agent:1)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<ul>
+<li><strong>Selecionando todos os eventos do projeto de id 4</strong></li>
+</ul>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/event/find',
+  {
+    '@select': 'id, name, location',
+    '@order': 'name ASC',
+    'project': 'EQ(@Project:4)'
+  },
+  function (response){ console.log(response); });
+</code></pre>
+
+<h2 id="action-describe">Action describe</h2>
+<p>Retorna a descrição de entidade.</p>
+<pre><code class="javascript">$.getJSON(
+  'http://mapasculturais.local/api/event/describe',
+  function (response){ console.log(response); });
+
+// output:
+{
+   &quot;id&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;integer&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;location&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;point&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;name&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:255
+   },
+   &quot;shortDescription&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;longDescription&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;createTimestamp&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;datetime&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;status&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;smallint&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;_type&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;smallint&quot;,
+      &quot;length&quot;:null,
+      &quot;@select&quot;:&quot;type&quot;
+   },
+   &quot;isVerified&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:false,
+      &quot;required&quot;:true,
+      &quot;type&quot;:&quot;boolean&quot;,
+      &quot;length&quot;:null
+   },
+   &quot;parent&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Space&quot;,
+      &quot;isOwningSide&quot;:true
+   },
+   &quot;children&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Space&quot;,
+      &quot;isOwningSide&quot;:false
+   },
+   &quot;owner&quot;:{
+      &quot;isMetadata&quot;:false,
+      &quot;isEntityRelation&quot;:true,
+      &quot;targetEntity&quot;:&quot;Agent&quot;,
+      &quot;isOwningSide&quot;:true
+   },
+   &quot;emailPublico&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Email Público&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;emailPrivado&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Email Privado&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefonePublico&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone Público&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefone1&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone 1&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;telefone2&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Telefone 2&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;acessibilidade&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;select&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;options&quot;:{
+         &quot;&quot;:&quot;Não Informado&quot;,
+         &quot;Sim&quot;:&quot;Sim&quot;,
+         &quot;Não&quot;:&quot;Não&quot;
+      },
+      &quot;label&quot;:&quot;Acessibilidade&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;capacidade&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Capacidade&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;endereco&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Endereço&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;horario&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Horário de funcionamento&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;criterios&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;text&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Critérios de uso do espaço&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;site&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Site&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;facebook&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Facebook&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;twitter&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Twitter&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;googleplus&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Google+&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_regiao&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Região&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_subprefeitura&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Subprefeitura&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   },
+   &quot;sp_distrito&quot;:{
+      &quot;required&quot;:false,
+      &quot;type&quot;:&quot;string&quot;,
+      &quot;length&quot;:null,
+      &quot;private&quot;:false,
+      &quot;label&quot;:&quot;Distrito&quot;,
+      &quot;isMetadata&quot;:true,
+      &quot;isEntityRelation&quot;:false
+   }
+}
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

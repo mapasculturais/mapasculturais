@@ -15,6 +15,27 @@
         margin-right: .75rem;
         background-size: cover;
     }
+    .avatar-seal {
+        float: left;
+        width: 5rem;
+        height: 5rem;
+        margin-right: .75rem;
+        margin-bottom: .75rem;
+        background-size: cover;
+        cursor: pointer;
+    }
+    .botoes {
+         position: absolute;
+         top: -12px;
+         right: -6px;
+         a {
+             background-color: #fff;
+             border-radius: 100%;
+             &:before {
+                 line-height: 180%;
+             }
+         }
+     }
     &:before {
         left: 50%;
         margin-left: -8px;
@@ -22,18 +43,20 @@
     }
 }
 .sidebar-left {
-    overflow: hidden;
+    overflow: visible;
     //tablet
     @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
         float: right;
         width: 25%;
         padding-bottom: 0;
         margin-bottom: 0;
+        overflow: visible;
     }
     //note
     @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
         float: left;
         width: 20%;
+        overflow: visible;
         &.sidebar {
             border-top: none;
         }
@@ -41,6 +64,7 @@
     @media screen and (min-width: 1367px) {
         float: left;
         width: 15%;
+        overflow: visible;
     }
     .widget {
         float: none;
@@ -119,6 +143,18 @@ body.action-single {
         color: $brand-project;
     }
 }
+
+.sidebar.seal {
+    border-top-color: $brand-seal;
+    &:before {
+        border-top-color: $brand-seal !important;
+    }
+    .widget-list-item > a {
+        color: $brand-seal;
+    }
+}
+
+
 .sidebar.registration {
     @extend .sidebar.project;
 }

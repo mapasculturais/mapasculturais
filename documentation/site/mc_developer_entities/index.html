@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Entidades - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_keywords/">Keywords</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_developer_keywords/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_developer_theme/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#entidades-dos-mapas-culturais">Entidades dos Mapas Culturais</a></li>
+        
+            <li><a href="#as-quatro-entidades-possuem-em-comum">As quatro entidades possuem em comum:</a></li>
+        
+            <li><a href="#agentes-e-espacos-possuem-em-comum">Agentes e Espaços possuem em comum:</a></li>
+        
+            <li><a href="#agentes-possuem-exclusivamente">Agentes possuem exclusivamente:</a></li>
+        
+            <li><a href="#espacos-possuem-exclusivamente">Espaços possuem exclusivamente:</a></li>
+        
+            <li><a href="#eventos-possuem-exclusivamente">Eventos possuem exclusivamente:</a></li>
+        
+            <li><a href="#projetos-possuem-exclusivamente">Projetos possuem exclusivamente:</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="entidades-dos-mapas-culturais">Entidades dos Mapas Culturais</h1>
+<p>O banco de dados é composto, basicamente, por quatro entidades: Agentes, Espaços, Eventos e Projetos</p>
+<h2 id="as-quatro-entidades-possuem-em-comum">As quatro entidades possuem em comum:</h2>
+<ul>
+<li>Entidade Verificada ou não pelo mantenedor do sistema</li>
+<li>Nome de Exibição</li>
+<li>Imagem de Capa</li>
+<li>Imagem de Avatar</li>
+<li>Agentes Relacionados</li>
+<li>Descrição Curta</li>
+<li>Descrição Longa</li>
+<li>Tags</li>
+<li>Site</li>
+<li>Vídeos</li>
+<li>Galeria de Imagens</li>
+<li>Download (lista de arquivos)</li>
+<li>Links (lista)</li>
+<li>Facebook</li>
+<li>Tweeter</li>
+<li>Google+</li>
+<li>Publicado por (Agente responsável pela entidade)</li>
+</ul>
+<h2 id="agentes-e-espacos-possuem-em-comum">Agentes e Espaços possuem em comum:</h2>
+<ul>
+<li>Email Privado</li>
+<li>Email Público</li>
+<li>Telefone Público</li>
+<li>Telefones Privados 1 e 2</li>
+<li>Localização Geográfica</li>
+<li>Endereço</li>
+<li>Agenda de Eventos</li>
+<li>Áreas de Atuação:<ul>
+<li>Antropologia</li>
+<li>Arqueologia</li>
+<li>Arquitetura*Urbanismo</li>
+<li>Arquivo</li>
+<li>Arte Digital</li>
+<li>Arte de Rua</li>
+<li>Artes Visuais</li>
+<li>Artesanato</li>
+<li>Audiovisual</li>
+<li>Cinema</li>
+<li>Circo</li>
+<li>Comunicação</li>
+<li>Cultura Cigana</li>
+<li>Cultura Digital</li>
+<li>Cultura Estrangeira (imigrantes)</li>
+<li>Cultura Indígena</li>
+<li>Cultura LGBT</li>
+<li>Cultura Negra</li>
+<li>Cultura Popular</li>
+<li>Dança</li>
+<li>Design</li>
+<li>Direito Autoral</li>
+<li>Economia Criativa</li>
+<li>Educação</li>
+<li>Esporte</li>
+<li>Filosofia</li>
+<li>Fotografia</li>
+<li>Gastronomia</li>
+<li>Gestão Cultural</li>
+<li>História</li>
+<li>Jogos Eletrônicos</li>
+<li>Jornalismo</li>
+<li>Leitura</li>
+<li>Literatura</li>
+<li>Livro</li>
+<li>Meio Ambiente</li>
+<li>Moda</li>
+<li>Museu</li>
+<li>Mídias Sociais</li>
+<li>Música</li>
+<li>Novas Mídias</li>
+<li>Outros</li>
+<li>Patrimônio Imaterial</li>
+<li>Patrimônio Material</li>
+<li>Pesquisa</li>
+<li>Produção Cultural</li>
+<li>Rádio</li>
+<li>Saúde</li>
+<li>Sociologia</li>
+<li>Teatro</li>
+<li>Televisão</li>
+<li>Turismo</li>
+</ul>
+</li>
+</ul>
+<h2 id="agentes-possuem-exclusivamente">Agentes possuem exclusivamente:</h2>
+<ul>
+<li>Nome Completo</li>
+<li>Tipo<ul>
+<li>Coletivo</li>
+<li>Individual</li>
+</ul>
+</li>
+<li>CPF/CNPJ</li>
+<li>Data de Nascimento/Fundação</li>
+<li>Gênero</li>
+<li>Raça/Cor</li>
+</ul>
+<h2 id="espacos-possuem-exclusivamente">Espaços possuem exclusivamente:</h2>
+<ul>
+<li>Tipo:<ul>
+<li>Antiquário</li>
+<li>Arquivo Privado</li>
+<li>Arquivo Público</li>
+<li>Ateliê</li>
+<li>Banca de jornal</li>
+<li>Bens culturais de natureza material</li>
+<li>Biblioteca Privada</li>
+<li>Biblioteca Pública</li>
+<li>Casa de espetáculo</li>
+<li>Casa do Patrimônio</li>
+<li>Centro Comunitário</li>
+<li>Centro Cultural Privado</li>
+<li>Centro Cultural Público</li>
+<li>Centro de Documentação Privado</li>
+<li>Centro de Documentação Público</li>
+<li>Centro de artesanato</li>
+<li>Cine itinerante</li>
+<li>Cineclube</li>
+<li>Circo Fixo</li>
+<li>Circo Itinerante</li>
+<li>Concha acústica</li>
+<li>Creative Bureau</li>
+<li>Danceteria</li>
+<li>Drive-in</li>
+<li>Espaço Mais Cultura</li>
+<li>Espaço Público Para Projeção de Filmes</li>
+<li>Espaço para Eventos</li>
+<li>Espaço para apresentação de dança</li>
+<li>Estúdio</li>
+<li>Gafieira</li>
+<li>Galeria de arte</li>
+<li>Igreja</li>
+<li>Lan-house</li>
+<li>Livraria</li>
+<li>Mesquitas</li>
+<li>Museu Privado</li>
+<li>Museu Público</li>
+<li>Palco de Rua</li>
+<li>Ponto de Leitura Afro</li>
+<li>Praça dos esportes e da cultura</li>
+<li>Rádio Comunitária</li>
+<li>Sala de cinema</li>
+<li>Sala de dança</li>
+<li>Sebo</li>
+<li>Sinagoga</li>
+<li>Teatro Privado</li>
+<li>Teatro Público</li>
+<li>Templo</li>
+<li>Terreiro</li>
+<li>Terreno para Circo</li>
+<li>Usina Cultural</li>
+<li>Videolocadora</li>
+</ul>
+</li>
+<li>Status de Publicação:<ul>
+<li>Publicação restrita - requer autorização para criar eventos</li>
+<li>Publicação livre - qualquer pessoa pode criar eventos</li>
+</ul>
+</li>
+<li>Acessibilidade</li>
+<li>Capacidade</li>
+<li>Horário de Funcionamento</li>
+<li>Critérios de Uso do Espaço</li>
+<li>Subespaços ou Espaço*pai ao qual pertencem</li>
+</ul>
+<h2 id="eventos-possuem-exclusivamente">Eventos possuem exclusivamente:</h2>
+<ul>
+<li>Linguagens:<ul>
+<li>Artes Circenses</li>
+<li>Artes Integradas</li>
+<li>Artes Visuais</li>
+<li>Audiovisual</li>
+<li>Cinema</li>
+<li>Cultura Digital</li>
+<li>Cultura Indígena</li>
+<li>Cultura Tradicional</li>
+<li>Curso ou Oficina</li>
+<li>Dança</li>
+<li>Exposição</li>
+<li>Hip Hop</li>
+<li>Livro e Literatura</li>
+<li>Música Erudita</li>
+<li>Música Popular</li>
+<li>Outros</li>
+<li>Palestra, Debate ou Encontro</li>
+<li>Rádio</li>
+<li>Teatro</li>
+</ul>
+</li>
+<li>Subtítulo</li>
+<li>Inscrições</li>
+<li>Classificação Etária</li>
+<li>Número de Telefone para Informações</li>
+<li>Acessibilidade:<ul>
+<li>Tradução para LIBRAS
+*Áudio Desrição</li>
+</ul>
+</li>
+<li>Projeto ao qual pertence</li>
+<li>Ocorrências: um evento pode ter várias ocorrências, cada ocorrência possui:<ul>
+<li>Espaço relacionado</li>
+<li>Regras de Repetição de Datas, Horários, Duração</li>
+<li>Preço</li>
+</ul>
+</li>
+</ul>
+<h2 id="projetos-possuem-exclusivamente">Projetos possuem exclusivamente:</h2>
+<ul>
+<li>Tipo:<ul>
+<li>Ciclo</li>
+<li>Concurso</li>
+<li>Convenção</li>
+<li>Edital</li>
+<li>Encontro</li>
+<li>Festival</li>
+<li>Jornada</li>
+<li>Mostra</li>
+<li>Programa</li>
+<li>Reunião</li>
+<li>Sarau</li>
+</ul>
+</li>
+<li>Inscrições:<ul>
+<li>Online Ativadas ou Desativadas</li>
+<li>Data Inicial, Final, Horário Final</li>
+<li>Texto de Introdução</li>
+<li>Regulamento</li>
+<li>Categorias</li>
+<li>Agentes:<ul>
+<li>Responsável</li>
+<li>Instituição Responsável</li>
+<li>Coletivo</li>
+<li>Numero máximo de inscrições por Agente Responsável</li>
+<li>Arquivos Anexos:<ul>
+<li>Obrigatório/Opcional</li>
+<li>Com ou sem arquivo de Modelo (formulário)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Status:<ul>
+<li>Inválida - em desacordo com o regulamento (ex. documentação incorreta).</li>
+<li>Pendente - ainda não avaliada.</li>
+<li>Não selecionada * avaliada, mas não selecionada.</li>
+<li>Suplente - avaliada, mas aguardando vaga.</li>
+<li>Selecionada - avaliada e selecionada.</li>
+<li>Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

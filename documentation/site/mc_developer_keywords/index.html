@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Keywords - Mapas Culturais</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Mapas Culturais</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Sobre</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instalação <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_deploy/">Passo-a-passo</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_theme/">Aplicando um tema</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_deploy_shapefiles/">Inserindo shapefiles</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_config_api/">API</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_config_authentication/">Autenticação</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desenvolvimento <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../mc_developer_guide/">Guia do Desenvolvedor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_docker_enviroment/">Docker</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_entities/">Entidades</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mc_developer_theme/">Criando um novo tema</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../mc_developer_docker_enviroment/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../mc_developer_entities/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#busca-por-palavra-chave">Busca por palavra-chave</a></li>
+        
+            <li><a href="#hooks-para-modificar-a-consulta-por-palavra-chave">Hooks para modificar a consulta por palavra-chave</a></li>
+        
+            <li><a href="#exemplos-praticos">Exemplos práticos:</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<p>As consultas abaixo não são SQL puro, são DQLs (<a href="http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/reference/dql-doctrine-query-language.html">Doctrine Query Language</a>)</p>
+<h1 id="busca-por-palavra-chave">Busca por palavra-chave</h1>
+<p>Por padrão, a busca por palavra-chave da API do Mapas Culturais retorna os objetos encontrados na query abaixo, ou seja, uma busca baseada somente no nome do objeto:</p>
+<pre><code class="SQL">SELECT 
+    DISTINCT e.id 
+FROM 
+    {$entity_class} e
+WHERE 
+    unaccent(lower(e.name)) LIKE unaccent(lower(:keyword))
+</code></pre>
+
+<h2 id="hooks-para-modificar-a-consulta-por-palavra-chave">Hooks para modificar a consulta por palavra-chave</h2>
+<p>O Mapas Culturais oferece dois <em>hooks</em> para modificar a query acima: o primeiro permite adicionar <em>joins</em> à consulta e o segundo permite adicionar operações dentro da cláusula <em>WHERE</em>:
+- <strong>repo($entity).getIdsByKeywordDQL.join</strong> - utilizado para adicionar novos <em>joins</em> à consulta, representado na consulta abaixo pela variável <strong>$HOOK_JOINS</strong>; 
+- <strong>repo($entity).getIdsByKeywordDQL.where</strong> - utilizado para adicionar operações dentro da cláusula <em>WHERE</em>, reprensetado na consulta abaixo pela variável <strong>$HOOK_WHERE</strong>.</p>
+<pre><code class="SQL">SELECT 
+    DISTINCT e.id 
+FROM 
+    {$entity_class} e 
+    $HOOK_JOINS
+WHERE 
+    unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) 
+    $HOOK_WHERE
+</code></pre>
+
+<h2 id="exemplos-praticos">Exemplos práticos:</h2>
+<h3 id="utilizando-um-metadado-na-busca-por-palavra-chave">Utilizando um metadado na busca por palavra-chave</h3>
+<p>Vamos usar como exemplo um metadado chamado <strong>num_entidade</strong>, que seria um código que representa a entidade no sistema e que, quando alguém fizesse uma busca por palavra-chave informando tal código, o sistema deveria retornar este objeto. Vamos supor ainda que este código só é aplicado a agentes e espaços, porém para aplicar a todas as entidades que <em>usam</em> busca por palavra-chave (repositórios que usam o <em>trait</em> <strong>MapasCulturais\Traits\RepositoryKeyword</strong>) basta substituir a parte do hook <em>&lt;\<Agent|Space\>></em> por <em>&lt;&lt;*&gt;&gt;</em></p>
+<pre><code class="PHP">$app = \MapasCulturais\App::i(); // instância da aplicação
+
+// adiciona o join do metadado
+$app-&gt;hook('repo(&lt;&lt;Agent|Space&gt;&gt;).getIdsByKeywordDQL.join', function(&amp;$joins, $keyword){
+    $joins .= &quot;
+        LEFT JOIN 
+            e.__metadata num_entitdade 
+        WITH 
+            num_entidade.key = 'num_entidade'&quot;;
+});
+
+// filtra pelo valor do keyword
+$app-&gt;hook('repo(&lt;&lt;Agent|Space&gt;&gt;).getIdsByKeywordDQL.where', function(&amp;$where, $keyword){
+    // a variável $keyword está disponível aqui porém não é recomendado que esta seja utilizada diretamente na consulta
+    // pois ela já estará disponível dentro da consulta pelo parâmetro :keyword.
+    $where .= &quot; OR lower(num_entidade.value) LIKE lower(:keyword)&quot;;
+});
+</code></pre>
+
+<h3 id="utilizando-uma-taxonomia-na-busca-por-palavra-chave">Utilizando uma taxonomia na busca por palavra-chave</h3>
+<p>Agora vamos utilizar como exemplo uma taxonomia chamada "categoria"</p>
+<pre><code class="PHP">$app-&gt;hook('repo(&lt;&lt;*&gt;&gt;).getIdsByKeywordDQL.join', function(&amp;$joins, $keyword) {
+    $taxonomy = App::i()-&gt;getRegisteredTaxonomyBySlug('categoria');
+    $joins .= &quot;LEFT JOIN e.__termRelations categoria_tr
+        LEFT JOIN
+                categoria_tr.term
+                    categoria
+                WITH
+                    categoria.taxonomy = '{$taxonomy-&gt;id}'&quot;;
+});
+
+$app-&gt;hook('repo(&lt;&lt;*&gt;&gt;).getIdsByKeywordDQL.where', function(&amp;$where, $keyword) {
+    $where .= &quot; OR unaccent(lower(categoria.term)) LIKE unaccent(lower(:keyword)) &quot;;
+});
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

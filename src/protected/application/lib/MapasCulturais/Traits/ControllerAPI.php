@@ -162,6 +162,14 @@ trait ControllerAPI{
         else
             return (int) $default_lifetime;
     }
+    
+    
+    protected function detachApiQueryRS($rs){
+        $em = App::i()->em;
+        foreach($rs as $r){
+            $em->detach($r);
+        }
+    }
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -194,7 +202,7 @@ trait ControllerAPI{
             $dql_joins = "";
             $dql_select = [];
             $dql_select_joins = [];
-
+	
             if($class::usesMetadata()){
                 $metadata_class = $class::getMetadataClassName();
 
@@ -206,7 +214,7 @@ trait ControllerAPI{
                     $entity_metadata[] = $meta->key;
                 }
             }
-
+            
             if($class::usesTaxonomies()){
                 $taxonomies = [];
                 $taxonomies_ids = [];
@@ -238,6 +246,8 @@ trait ControllerAPI{
             $page = null;
             $keyword = null;
             $permissions = null;
+            
+            $seals = [];
 
             $dqls = [];
 
@@ -289,6 +299,12 @@ trait ControllerAPI{
                     continue;
                 }elseif(strtolower($key) == '@permissions'){
                     $permissions = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@seals'){
+                    $seals = explode(',', $val);
+                    continue;
+                }elseif(strtolower($key) == '@verified'){
+                    $seals = $app->config['app.verifiedSealsIds'];
                     continue;
                 }elseif(strtolower($key) == '@order'){
                     $order = $val;
@@ -419,6 +435,15 @@ trait ControllerAPI{
                 }
                 $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
             }
+            
+            // seals joins
+            
+            if($seals){
+//                $_seals = $this->_API_find_addValueToParamList($seals);
+                $seals = implode(',', $seals);
+                $dql_joins .= "LEFT JOIN e.__sealRelations __sr";
+                $dqls[] = $this->_API_find_parseParam('__sr.seal', "IN($seals)");
+            }
 
             if($order){
                 $new_order = [];
@@ -529,8 +554,7 @@ trait ControllerAPI{
             }
 
             $query->setParameters($this->_apiFindParamList);
-            $rs = $query->getResult();
-
+            
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
                     return;
@@ -647,6 +671,9 @@ trait ControllerAPI{
 
                 if($permissions){
                     $rs = $query->getResult();
+                    
+                    $this->detachApiQueryRS($rs);
+                    
                     $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
@@ -693,6 +720,8 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
+                    $this->detachApiQueryRS($rs);
+
 
                     $sub_queries($rs);
                 }else{
@@ -700,6 +729,8 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
+                        $this->detachApiQueryRS($rs);
+
                     }
 
                     $sub_queries($rs);

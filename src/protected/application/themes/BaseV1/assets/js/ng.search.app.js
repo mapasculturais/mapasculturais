@@ -58,34 +58,44 @@
         },
         agent: {
             keyword: '',
-            areas: [],
-            type: null,
-            isVerified: false
+            showAdvancedFilters:false,
+            filters: {}
         },
         space: {
             keyword: '',
-            areas: [],
-            types: [],
-            acessibilidade: false,
-            isVerified: false
+            showAdvancedFilters:false,
+            filters: {}
         },
         event: {
             keyword: '',
-            linguagens: [],
             from: moment().format('YYYY-MM-DD'),
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
-            classificacaoEtaria: [],
-            isVerified: false
+            showAdvancedFilters:false,
+            filters: {}
         },
         project: {
             keyword: '',
             linguagens: [],
             types: [],
             isVerified: false,
-            // registration open
-            ropen: false
+            ropen: false,
+            showAdvancedFilters:false,
+            filters: {}
         }
     };
+
+    var entities = ['space', 'event', 'agent', 'project'];
+
+    // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
+    entities.forEach(function(entity){
+        MapasCulturais.filters[entity].forEach(function(filter){
+            if(filter.isArray){
+                skeletonData[entity].filters[filter.filter.param] = [];
+            } else {
+                skeletonData[entity].filters[filter.filter.param] = null;
+            }
+        });
+    });
 
     var diffFilter = function (input) {
         return _diffFilter(input, skeletonData);
@@ -138,13 +148,13 @@
     };
 
     var app = angular.module('search.app', [
-        'ng-mapasculturais', 
-        'rison', 
-        'infinite-scroll', 
-        'ui.date', 
-        'search.service.find', 
-        'search.service.findOne', 
-        'search.controller.map', 
+        'ng-mapasculturais',
+        'rison',
+        'infinite-scroll',
+        'ui.date',
+        'search.service.find',
+        'search.service.findOne',
+        'search.controller.map',
         'search.controller.spatial',
         'mc.module.notifications']);
 
@@ -159,12 +169,28 @@
                 project: 1
             };
         }
+
+        $scope.filters = MapasCulturais.filters;
+
         $rootScope.resetPagination();
 
         $scope.assetsUrl = MapasCulturais.assets;
 
-        $scope.getName = function(valores, id){
-            return valores.filter(function(e){if(e.id === id) return true;})[0].name;
+        $scope.getFilter = function (filter_key){
+            return MapasCulturais.filters[$scope.data.global.filterEntity].filter(function(f){
+                return f['filter'].param === filter_key;
+            })[0];
+        };
+
+        $scope.getFilterTag = function(filter_key){
+            var filter = $scope.getFilter(filter_key);
+            return filter.tag || filter.label;
+        };
+
+        $scope.getFilterOptionLabel = function(filter_key, filter_value){
+            return $scope.getFilter(filter_key).options.filter(function(option){
+                    return option.value === filter_value;
+                })[0].label;
         };
 
         $scope.getId = function(valores, name){
@@ -196,7 +222,13 @@
                 return $scope.data.global.enabled[entity];
             else
                 return $scope.data.global.filterEntity === entity;
-        }
+        };
+
+        $scope.hasAdvancedFilters = function(entity){
+            return MapasCulturais.filters[entity].filter(function(v){
+                return !v.isInline;
+            }).length > 0;
+        };
 
         $scope.hasFilter = function() {
             var ctx = {has: false};
@@ -205,9 +237,7 @@
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
 
-            return ctx.has ||
-                   $scope.data.global.isVerified ||
-                   $scope.data.global.locationFilters.enabled !== null;
+            return ctx.has || $scope.data.global.locationFilters.enabled !== null;
         };
 
         $scope.cleanAllFilters = function () {
@@ -247,10 +277,20 @@
             }
         };
 
+        $scope.defaultTab = function(){
+            for(var i = 0; length(entities) - 1; i++){
+                if ($scope.data.global.enabled[entities[i]]){
+                    tabClick(entities[i]);
+                    return;
+                }
+            }
+
+        };
+
         $scope.parseHash = function(){
             var newValue = $location.hash();
             if(newValue === '') {
-                $scope.tabClick('agent');
+                $scope.defaultTab();
                 return;
             }
 
@@ -305,18 +345,18 @@
 
         $scope.data = angular.copy(skeletonData);
 
-        $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
-        $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
-        $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.areas = MapasCulturais.taxonomyTerms.area.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
+        // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
         MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
-        $scope.types = MapasCulturais.entityTypes;
-        $scope.location = $location;
+        // $scope.types = MapasCulturais.entityTypes;
+        // $scope.location = $location;
 
         $rootScope.$on('$locationChangeSuccess', $scope.parseHash);
 
         if($location.hash() === '') {
-            $scope.tabClick('agent');
+            $scope.defaultTab();
         } else {
             $scope.parseHash();
         }
@@ -421,13 +461,23 @@
         };
 
         $scope.$watch('data.event.from', function(){
-            if(new Date($scope.data.event.from) > new Date($scope.data.event.to))
+            if(!/^[0-9]{4}(\-[0-9]{2}){2}$/.test($scope.data.event.from)){
+                $scope.data.event.from = moment($scope.data.event.from).format('YYYY-MM-DD');
+            }
+
+            if(new Date($scope.data.event.from) > new Date($scope.data.event.to)){
                 $scope.data.event.to = $scope.data.event.from;
+            }
         });
 
-        $scope.$watch('data.event.to', function(newValue, oldValue){
-            if(new Date($scope.data.event.to) < new Date($scope.data.event.from))
+        $scope.$watch('data.event.to', function(){
+            if(!/^[0-9]{4}(\-[0-9]{2}){2}$/.test($scope.data.event.to)){
+                $scope.data.event.to = moment($scope.data.event.to).format('YYYY-MM-DD');
+            }
+
+            if(new Date($scope.data.event.to) < new Date($scope.data.event.from)){
                 $scope.data.event.from = $scope.data.event.to;
+            }
         });
 
 
@@ -464,12 +514,23 @@
         };
 
         $scope.collapsedFilters = true;
+
         $scope.toggleAdvancedFilters = function(){
+
             $scope.collapsedFilters = !$scope.collapsedFilters;
             setTimeout(function(){
                 window.adjustHeader();
             }, 10);
         };
+
+        $scope.showSearch = function(){
+
+            if (document.body.clientWidth > 768) {
+                return true;
+            } else {
+                return !$scope.collapsedFilters && !$scope.showInfobox();
+            }
+        }
 
     }]);
 })(angular);

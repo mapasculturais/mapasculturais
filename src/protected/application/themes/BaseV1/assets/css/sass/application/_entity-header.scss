@@ -62,6 +62,12 @@ article.project, article.registration {
         background-color: $brand-project;
     }
 }
+article.seal {
+    .header-image {
+        background-color: $brand-seal;
+    }
+}
+
 .header-content {
     position: relative;
     margin-top: 3.75rem;
@@ -112,6 +118,10 @@ article.project, article.registration {
     .space-type {
         color: $brand-space;
     }
+    .seal-type {
+        color: $brand-seal;
+    }
+
 
     > h2 {
         margin-bottom: 0;

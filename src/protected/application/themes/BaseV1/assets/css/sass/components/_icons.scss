@@ -83,6 +83,11 @@ h1 .icon {
         content: $unicode-notifications;
     }
 }
+.icon-seal {
+    &:before {
+        content: $unicode-seal;
+    }
+}
 .icon-project {
     &:before {
         content: $unicode-project;
@@ -101,6 +106,11 @@ h1 .icon {
 .icon-panel {
     &:before {
         content: $unicode-panel;
+    }
+}
+.icon-group {
+    &:before {
+        content: $unicode-group;
     }
 }
 .icon-home {
@@ -138,6 +148,7 @@ h1 .icon {
         content: $unicode-show-search-on-list;
     }
 }
+
 .icon-show-map {
     &:before {
         content: $unicode-show-map;
