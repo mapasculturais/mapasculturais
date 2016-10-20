@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ec6d0d773271d80d66616967f11d26f0",
-    "content-hash": "e8d4a73a0fd9605f9c03912d94d20cc7",
+    "hash": "5376d058553115d8eaa5ae34070685c4",
+    "content-hash": "be6ef04830aacea23135b57c4e3b484e",
     "packages": [
         {
             "name": "creof/doctrine2-spatial",
@@ -1918,6 +1918,60 @@
                 "xunit"
             ],
             "time": "2015-10-02 06:51:40"
+        },
+        {
+            "name": "pomo/pomo",
+            "version": "v1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LeoColomb/pomo.git",
+                "reference": "8193f7aa5d0c7586d3b923b9b7c8afcd30fa80bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LeoColomb/pomo/zipball/8193f7aa5d0c7586d3b923b9b7c8afcd30fa80bf",
+                "reference": "8193f7aa5d0c7586d3b923b9b7c8afcd30fa80bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": ">=4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "POMO\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress",
+                    "homepage": "http://wordpress.org",
+                    "role": "Author"
+                },
+                {
+                    "name": "Leo Colombaro",
+                    "homepage": "http://colombaro.fr",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Gettext library to translate with I18n",
+            "homepage": "https://github.com/LeoColomb/pomo",
+            "keywords": [
+                "gettext",
+                "i18n",
+                "internationalization",
+                "localization",
+                "translation"
+            ],
+            "time": "2014-07-22 17:09:48"
         },
         {
             "name": "respect/validation",

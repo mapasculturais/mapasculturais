@@ -20,7 +20,7 @@
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "^2.2",
-        "pomo/pomo": "*"
+        "pomo/pomo": "^1.2"
     },
     "require-dev": {
         "psy/psysh": "@stable"
