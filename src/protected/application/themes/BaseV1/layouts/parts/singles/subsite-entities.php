@@ -7,41 +7,6 @@
         </p>
     <?php endif; ?>
 
-    <?php if($this->isEditable() || $entity->titulo_projetos): ?>
-        <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo_projetos") && $editEntity? 'required': '');?>">Título: Projetos </span>
-            <span class="js-editable" data-edit="titulo_projetos" data-original-title="Título Projetos" data-emptytext="Título da entidade: Projetos"><?php echo $entity->titulo_projetos; ?></span>
-        </p>
-    <?php endif; ?>
-
-    <?php if($this->isEditable() || $entity->titulo_eventos): ?>
-        <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo_eventos") && $editEntity? 'required': '');?>">Título: Eventos </span>
-            <span class="js-editable" data-edit="titulo_eventos" data-original-title="Título Eventos" data-emptytext="Título da entidade: eventos"><?php echo $entity->titulo_eventos; ?></span>
-        </p>
-    <?php endif; ?>
-
-    <?php if($this->isEditable() || $entity->titulo_agentes): ?>
-        <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo_agentes") && $editEntity? 'required': '');?>">Título: Agentes </span>
-            <span class="js-editable" data-edit="titulo_agentes" data-original-title="Título Agentes" data-emptytext="Título da entidade: Agentes"><?php echo $entity->titulo_agentes; ?></span>
-        </p>
-    <?php endif; ?>
-
-    <?php if($this->isEditable() || $entity->titulo_espacos): ?>
-        <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo_espacoes") && $editEntity? 'required': '');?>">Título: Espaços </span>
-            <span class="js-editable" data-edit="titulo_espacos" data-original-title="Título Espaços" data-emptytext="Título da entidade: Espacos"><?php echo $entity->titulo_espacos; ?></span>
-        </p>
-    <?php endif; ?>
-
-    <?php if($this->isEditable() || $entity->titulo_selos): ?>
-        <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"titulo_selos") && $editEntity? 'required': '');?>">Título: Selos </span>
-            <span class="js-editable" data-edit="titulo_selos" data-original-title="Título Selos" data-emptytext="Título da entidade: Selos"><?php echo $entity->titulo_selos; ?></span>
-        </p>
-    <?php endif; ?>
-
     <p>
         <span class="label">Cores: </span>
         <span class="js-editable inline <?php echo ($entity->isPropertyRequired($entity,"cor_agentes") && $editEntity? 'required': '');?>" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Agentes"><?php echo $entity->cor_agentes; ?></span>

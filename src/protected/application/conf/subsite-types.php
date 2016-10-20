@@ -332,23 +332,15 @@ return array(
             'label' => 'Filtros',
             'type' => 'text'
         ),
-        'titulo' => array(
-            'label' => 'Título'
-        ),
-        'titulo_projetos' => array(
-            'label' => 'Título da entidade'
-        ),
-        'titulo_eventos' => array(
-            'label' => 'Título da entidade'
-        ),
-        'titulo_agentes' => array(
-            'label' => 'Título da entidade'
-        ),
-        'titulo_espacos' => array(
-            'label' => 'Título da entidade'
-        ),
-        'titulo_selos' => array(
-            'label' => 'Título da entidade'
-        )
+        'dict' => [
+            'label' => 'Textos configurados',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
+        ]
     )
 );

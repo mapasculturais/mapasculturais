@@ -486,6 +486,10 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
     return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
+    
+    function getEntityState() {
+        return App::i()->em->getUnitOfWork()->getEntityState($this);
+    }
 
     /**
      * Persist the Entity optionally flushing

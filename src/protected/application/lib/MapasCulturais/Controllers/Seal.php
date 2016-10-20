@@ -27,23 +27,23 @@ class Seal extends EntityController {
         Traits\ControllerAPI;
 
 	/**
-	 * Creates a new Seal
-	 *
-	 * This action requires authentication and outputs the json with the new event or with an array of errors.
-	 *
-	 * <code>
-	 * // creates the url to this action
-	 * $url = $app->createUrl(seal');
-	 * </code>
-	 */
-	function POST_index(){
-		$app = App::i();
+     * Creates a new Seal
+     *
+     * This action requires authentication and outputs the json with the new event or with an array of errors.
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl(seal');
+     * </code>
+     */
+    public function POST_index($data = null) {
+        $app = App::i();
 
-		$app->hook('entity(seal).insert:before', function() use($app){
-			$this->owner = $app->user->profile;
-		});
-			parent::POST_index();
-	}
+        $app->hook('entity(seal).insert:before', function() use($app) {
+            $this->owner = $app->user->profile;
+        });
+        parent::POST_index($data);
+    }
 
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();

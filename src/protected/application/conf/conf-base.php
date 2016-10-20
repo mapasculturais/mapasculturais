@@ -111,6 +111,7 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
+    
     'registration.propertiesToExport' => array(
         'id',
         'name',
@@ -208,7 +209,7 @@ return array(
         (
             function_exists('apc_add') ?
                 new \Doctrine\Common\Cache\ApcCache() :
-                new \Doctrine\Common\Cache\FilesystemCache('/tmp/CACHE--' . str_replace(':', '_', @$_SERVER['HTTP_HOST']))
+                new \Doctrine\Common\Cache\FilesystemCache('/tmp/mapas-cache--')
 
         ),
 
