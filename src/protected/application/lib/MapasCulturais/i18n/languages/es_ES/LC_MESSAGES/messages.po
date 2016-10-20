@@ -1,2 +1,0 @@
-msgid "teste pt"
-msgstr "teste es"

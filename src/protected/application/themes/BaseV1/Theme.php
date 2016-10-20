@@ -6,6 +6,7 @@ use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\i;
 use Respect\Validation\length;
 
 class Theme extends MapasCulturais\Theme {
