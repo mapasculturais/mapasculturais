@@ -202,6 +202,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->getRequestedEntity();
         
+        $app = App::i();
         $app->applyHookBoundTo($this, "POST({$this->id}.index):data", ['data' => &$data]);
         
         foreach($data as $field=>$value){
