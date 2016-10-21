@@ -31,7 +31,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => 'de la región',
             'site: owner' => 'Secretaría',
             'site: by the site owner' => 'por la Secretaría',
-            
+
             'home: title' => "¡Bienvenidos!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore con Mapas Culturales",
@@ -44,16 +44,16 @@ class Theme extends MapasCulturais\Theme {
 
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
-            
-            
+
+
             'entities: Spaces of the agent'=> 'Espacios del agente',
             'entities: Space Description'=> 'Descripción del Espacio',
             'entities: My Spaces'=> 'Mis Espacios',
             'entities: My spaces'=> 'Mis Espacios',
-            
+
             'entities: no registered spaces'=> 'ningún espacio registrado',
             'entities: no spaces'=> 'ningún espacio',
-            
+
             'entities: Space' => 'Espacio',
             'entities: Spaces' => 'Espacios',
             'entities: space' => 'espacio',
@@ -61,7 +61,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: parent space' => 'espacio padre',
             'entities: a space' => 'un espacio',
             'entities: the space' => 'el espacio',
-            'entities: of the space' => 'del espacio',            
+            'entities: of the space' => 'del espacio',
             'entities: In this space' => 'En este espacio',
             'entities: in this space' => 'en este espacio',
             'entities: registered spaces' => 'espacios registrados',
@@ -420,9 +420,9 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
-            
+
             $this->jsObject['angularAppDependencies'] = [
-                'entity.module.relatedAgents', 
+                'entity.module.relatedAgents',
                 'entity.module.changeOwner',
                 'entity.directive.editableMultiselect',
                 'entity.directive.editableSingleselect',
@@ -431,7 +431,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.multiselect',
                 'mc.directive.editBox',
                 'mc.directive.mcSelect',
-                'mc.module.notifications', 
+                'mc.module.notifications',
                 'mc.module.findEntity',
 
                 'ngSanitize',
@@ -817,19 +817,19 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['templateUrl']['editableSingleselect'] = $this->asset('js/directives/editableSingleselect.html', false);
 
         $this->enqueueScript('app', 'entity.app', 'js/ng.entity.app.js', array(
-            'mapasculturais', 
-            'ng-mapasculturais', 
-            'mc.directive.multiselect', 
+            'mapasculturais',
+            'ng-mapasculturais',
+            'mc.directive.multiselect',
             'mc.directive.singleselect',
-            'mc.directive.editBox', 
-            'mc.directive.mcSelect', 
+            'mc.directive.editBox',
+            'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
-            'entity.module.changeOwner', 
-            'entity.directive.editableMultiselect', 
+            'entity.module.changeOwner',
+            'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
-        
+
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.editBox', 'js/ng.mc.directive.editBox.js', array('ng-mapasculturais'));
@@ -1040,7 +1040,7 @@ class Theme extends MapasCulturais\Theme {
         $app = \MapasCulturais\App::i();
 
         $cache_id = __METHOD__ . ':' . $entity_class;
-        
+
         if($app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
@@ -1054,7 +1054,7 @@ class Theme extends MapasCulturais\Theme {
                 'isVerified' => 'EQ(true)',
                 '@select' => 'id'
             ));
-            
+
         }else{
 
             $entities = $controller->apiQuery([
@@ -1112,9 +1112,9 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $controller = $app->getControllerByEntity($class);
-        
+
         $q = ['@count'=>1];
-        
+
         if($verified === true){
             $q['isVerified'] = 'EQ(true)';
         }
@@ -1186,4 +1186,32 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
+
+    function registerMetadata($entity_class, $key, $cfg) {
+        $app = \MapasCulturais\App::i();
+        $def = new \MapasCulturais\Definitions\Metadata($key, $cfg);
+        return $app->registerMetadata($def, $entity_class);
+
+    }
+
+    function registerEventMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Event', $key, $cfg);
+    }
+
+    function registerSpaceMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Space', $key, $cfg);
+    }
+
+    function registerAgentMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Agent', $key, $cfg);
+    }
+
+    function registerProjectMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Project', $key, $cfg);
+    }
+
+    function registerSealMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
+    }
+    
 }
