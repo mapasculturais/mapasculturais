@@ -11,13 +11,13 @@ class Theme extends BaseV1\Theme {
         $app = App::i();
 
         /*
-         *  Modifica a consulta da API de espaços para só retornar Bibliotecas
+         *  Modifica a consulta da API de espaços para só retornar Teatros
          *
          * @see protectec/application/conf/space-types.php
          */
-        //$app->hook('API.<<*>>(space).query', function(&$data, &$select_properties, &$dql_joins, &$dql_where) {
-        //    $dql_where .= ' AND e._type >= 20 AND e._type <= 29';
-        //});
+        $app->hook('API.<<*>>(space).query', function(&$data, &$select_properties, &$dql_joins, &$dql_where) {
+            $dql_where .= ' AND e._type >= 30 AND e._type <= 39';
+        });
 
         parent::_init();
 
