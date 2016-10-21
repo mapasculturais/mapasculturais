@@ -1,5 +1,9 @@
 <?php
 $this->layout = 'panel';
+$posini = 0;
+$posfin = 0;
+$msg = "";
+$button = "";
 ?>
 <div class="panel-main-content">
 
@@ -96,12 +100,21 @@ $this->layout = 'panel';
         <header>
             <h2>Atividades</h2>
         </header>
-
         <?php foreach ($app->user->notifications as $notification): ?>
+            <?php $posini = strpos($notification->message,"<a"); ?>
+            <?php if($posini > 0): ?>
+                <?php
+                $posfin = strpos($notification->message,"</a>");
+                $button = substr($notification->message,$posini,$posfin);
+                $msg = str_replace($button,"",$notification->message);
+                ?>
+            <?php else: ?>
+                <?php $msg = $notification->message;?>
+            <?php endif;?>
             <div class="activity clearfix">
                 <p>
                     <span class="small">Em <?php echo $notification->createTimestamp->format('d/m/Y - H:i') ?></span><br/>
-                    <?php echo $notification->message ?>
+                    <?php echo $msg; ?>
                 </p>
                 <?php if ($notification->request): ?>
                     <div>
@@ -116,7 +129,12 @@ $this->layout = 'panel';
                         <?php endif; ?>
                     </div>
                 <?php else: ?>
-                    <div><a class="btn btn-small btn-success" href="<?php echo $notification->deleteUrl ?>">ok</a></div>
+                    <div>
+                    <?php if($button):?>
+                        <?php echo $button;?>
+                    <?php endif;?>
+                    <a class="btn btn-small btn-success" href="<?php echo $notification->deleteUrl ?>">ok</a>
+                    </div>
                 <?php endif ?>
             </div>
         <?php endforeach; ?>
