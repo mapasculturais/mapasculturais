@@ -35,7 +35,7 @@ class Theme extends BaseV1\Theme{
             'label' => 'Qual sua cor preferida?',
             'type' => 'select',
             'options' => ['Amarelo', 'Vermelho', 'Azul', 'Sou daltônico, não ligo muito pra isso']
-        ););
+        ));
 
     }
 
