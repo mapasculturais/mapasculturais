@@ -57,7 +57,7 @@ Exemplo adicionando um metadado em vários tipos de entidade:
     }
 
 ```
-Você também pode definir regras de validação para o campo, utilizando as opções da classe Validator (falta link para documentação dessa classe).
+Você também pode definir regras de validação para o campo, utilizando as opções da classe [Validation](https://github.com/Respect/Validation), consulte sua [documentação](https://github.com/Respect/Validation/blob/master/docs/VALIDATORS.md) para todas as possibilidades.
 ```PHP
 
     function register() {
