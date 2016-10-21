@@ -27,7 +27,7 @@ $entity = $relation->seal;
 
     <?php $this->applyTemplateHook('header-image','before'); ?>
 			<div class="header-image js-imagem-do-header" style="<?php echo $style ?>">
-				<?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))) {?>
+				<?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin')) || $app->user->profile_id == $relation->agent->id) {?>
 					<a class="btn btn-default js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>">Imprimir Certificado</a>
 				<?php } ?>
 			</div>
