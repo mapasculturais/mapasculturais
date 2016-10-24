@@ -282,6 +282,49 @@ class Subsite extends \MapasCulturais\Entity
     }
     
     
+    public function applyConfigurations(&$config){
+        $config['app.verifiedSealsIds'] = $this->verifiedSeals;
+        
+        if($this->longitude && $this->longitude) {
+            $config['maps.center'] = array($this->latitude, $this->longitude);
+        }
+        
+        if($this->zoom_default) {
+            $config['maps.zoom.default'] = $this->zoom_default;
+        }
+        
+        if($this->zoom_max){
+            $config['maps.zoom.max'] = $this->zoom_max;
+        }
+        
+        if($this->zoom_max){
+            $config['maps.zoom.min'] = $this->zoom_max;
+        }
+                
+        $entidades = explode(';', $this->entidades_habilitadas);
+        
+        if(!in_array('Agentes', $entidades)){
+            $config['app.enabled.agents'] = false;
+        }
+
+        if (!in_array('Projetos', $entidades)) {
+            $config['app.enabled.projects'] = false;
+        }
+
+        if (!in_array('Espaços', $entidades)) {
+            $config['app.enabled.spaces'] = false;
+        }
+
+        if (!in_array('Eventos', $entidades)) {
+            $config['app.enabled.events'] = false;
+        }
+
+        if (!in_array('Selos', $entidades)) {
+            $config['app.enabled.seals'] = false;
+        }
+    }
+    
+    
     public function getSassCacheId(){
         return "Subsite-{$this->id}:_variables.scss";
     }

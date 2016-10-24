@@ -364,7 +364,6 @@ class App extends \Slim\Slim{
         
         
         if($this->_subsite){
-            $this->_config['app.verifiedSealsIds'] = $this->_subsite->verifiedSeals;
             $theme_class = $this->_subsite->namespace . "\Theme";
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
         } else {
@@ -463,6 +462,8 @@ class App extends \Slim\Slim{
         if($this->_subsite){
             // apply subsite filters
             $this->_subsite->applyApiFilters();
+            
+            $this->_subsite->applyConfigurations($this->_config);
         }
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))

@@ -49,51 +49,10 @@ class Theme extends BaseV1\Theme{
 
     function _init() {
         $app = App::i();
-        
-        $domain = @$_SERVER['HTTP_HOST'];
-
-        if(($pos = strpos($domain, ':')) !== false){
-            $domain = substr($domain, 0, $pos);
-        }
-
-        if(($pos = strpos($domain, ':')) !== false){
-            $domain = substr($domain, 0, $pos);
-        }
-        
-        $entidades = explode(';', $this->subsiteInstance->entidades_habilitadas);
-        if(!in_array('Agentes', $entidades)){
-
-            $app->_config['app.enabled.agents'] = false;
-        }
-
-        if (!in_array('Projetos', $entidades)) {
-            $app->_config['app.enabled.projects'] = false;
-        }
-
-        if (!in_array('Espaços', $entidades)) {
-            $app->_config['app.enabled.spaces'] = false;
-        }
-
-        if (!in_array('Eventos', $entidades)) {
-            $app->_config['app.enabled.events'] = false;
-        }
-
-        if (!in_array('Selos', $entidades)) {
-            $app->_config['app.enabled.seals'] = false;
-        }
 
         $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->url;
         
         $this->addPath($this->subsitePath);
-
-        $this->jsObject['mapsDefaults']['zoomMax']          = $this->subsiteInstance->zoom_max;
-        $this->jsObject['mapsDefaults']['zoomMin']          = $this->subsiteInstance->zoom_min;
-        $this->jsObject['mapsDefaults']['zoomDefault']      = $this->subsiteInstance->zoom_default;
-        $this->jsObject['mapsDefaults']['zoomPrecise']      = $this->subsiteInstance->zoom_precise;
-        $this->jsObject['mapsDefaults']['zoomApproximate']  = $this->subsiteInstance->zoom_approximate;
-        $this->jsObject['mapsDefaults']['includeGoogleLayers'] = $app->config['maps.includeGoogleLayers'];
-        $this->jsObject['mapsDefaults']['latitude']         = $this->subsiteInstance->latitude;
-        $this->jsObject['mapsDefaults']['longitude']        = $this->subsiteInstance->longitude;
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
         
