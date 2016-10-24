@@ -1,4 +1,4 @@
-### Permissões
+# Permissões
 
 ## Entidades com permissão de edição:
 
