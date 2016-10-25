@@ -73,7 +73,7 @@ $subsite = $app->getCurrentSubsite();
             </div>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('subsite') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+        <?php if($app->isEnabled('subsite') && $app->user->is('saasAdmin')): ?>
             <div>
                 <div>
                     <div class="clearfix">
@@ -87,7 +87,7 @@ $subsite = $app->getCurrentSubsite();
                 </div>
             </div>
         <?php endif; ?>
-        <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+        <?php if($app->isEnabled('seals') && $app->user->is('admin')): ?>
             <div>
                 <div>
                     <div class="clearfix">

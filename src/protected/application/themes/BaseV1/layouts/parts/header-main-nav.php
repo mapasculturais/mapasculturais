@@ -186,7 +186,7 @@
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
 
-                    <?php if($app->isEnabled('subsite')): ?>
+                    <?php if($app->user->is('saasAdmin') && $app->isEnabled('subsite')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.subsite','before'); ?>
                         <li>
                             <a href="<?php echo $app->createUrl('panel', 'subsite') ?>"><?php $this->dict('entities: My Subsites') ?></a>
