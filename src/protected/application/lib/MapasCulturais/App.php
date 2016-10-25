@@ -355,10 +355,10 @@ class App extends \Slim\Slim{
             $domain = substr($domain, 0, $pos);
         }
         try{
-            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain]);
+            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
             
             if(!$this->_subsite){
-                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain]);
+                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
             }
         } catch ( \Exception $e) { }
         
