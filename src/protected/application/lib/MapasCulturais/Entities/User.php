@@ -428,32 +428,48 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
     }
 
-    public function getSubsite(){
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite');
+    public function getSubsite($status = null) {
+        $result = [];
+
+        if ($this->is('saasAdmin')) {
+            $subsites = App::i()->repo('Subsite')->findAll();
+
+            foreach ($subsites as $subsite) {
+                if (!is_null($status) && $subsite->status == $status) {
+                    $result[] = $subsite;
+                } else if ($subsite->status > 0) {
+                    $result[] = $subsite;
+                }
+            }
+        }
+
+        return $result;
     }
+
     function getEnabledSubsite(){
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_ENABLED, '=');
+        return $this->getSubsite(Subsite::STATUS_ENABLED);
     }
     function getDraftSubsite(){
         $this->checkPermission('modify');
-
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_DRAFT, '=');
+        
+        return $this->getSubsite(Subsite::STATUS_DRAFT);
     }
     function getTrashedSubsite(){
         $this->checkPermission('modify');
-
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_TRASH, '=');
+        
+        return $this->getSubsite(Subsite::STATUS_TRASH);
     }
     function getDisabledSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_DISABLED, '=');
+        return $this->getSubsite(Subsite::STATUS_DISABLED);
     }
     function getArchivedSubsite(){
         $this->checkPermission('modify');
 
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Subsite', Subsite::STATUS_ARCHIVED,'=');
+        return $this->getSubsite(Subsite::STATUS_ARCHIVED);
     }
+    
     public function getSeals(){
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
     }
