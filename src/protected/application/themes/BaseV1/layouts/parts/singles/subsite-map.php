@@ -1,5 +1,28 @@
-<?php $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';?>
+<?php
+$lat = $entity->latitude;
+$lng = $entity->longitude;
+$has_private_location = true;
+$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+$this->bodyProperties['ng-app'] = "entity.app";
+$this->bodyProperties['ng-controller'] = "EntityController";
+?>
 <div id="mapa" class="aba-content">
+    <?php $this->applyTemplateHook('location','before'); ?>
+    <div class="servico clearfix">
+        <div class="mapa js-map-container">
+            <?php if($this->isEditable()): ?>
+                <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
+                    <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="Encontrar minha localização"></a>
+                </div>
+            <?php endif; ?>
+            <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
+            <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php echo '[' . $lng . ',' . $lat . ']'; ?>"/>
+        </div>
+        <!--.mapa-->
+    </div>
+    <!--.servico-->
+    <?php $this->applyTemplateHook('location','after'); ?>
+
     <?php if($this->isEditable() || $entity->latitude): ?>
         <p>
             <span class="label <?php echo ($entity->isPropertyRequired($entity,"latitude") && $editEntity? 'required': '');?>">Latitude: </span>

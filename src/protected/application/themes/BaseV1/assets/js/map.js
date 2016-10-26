@@ -174,6 +174,25 @@
                 if ($(this).data('edit') == 'endereco') {
                     $(this).trigger('changeAddress', params.newValue);
                 }
+
+                if ($(this).data('edit') == 'latitude' || $(this).data('edit') == 'longitude') {
+                    var latitude = -23.54364842214825 /*$('[data-edit="latitude').editable('getValue').latitude;*/
+                    var longitude = -46.61720306761708 /*$('[data-edit="longitude"]').editable('getValue').longitude;*/
+                    var empty = latitude === 'null' && longitude === 'null';
+
+                    if(!empty){
+                        console.log("latitude5");
+                        console.log(latitude);
+                        console.log("longitude5");
+                        console.log(longitude);
+                        $('#map-target').editable('setValue', [latitude, longitude]);
+                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                    }else{
+                        $('#map-target').editable('setValue', [0, 0]);
+                        $('.js-map-container').hide();
+                    }
+                }
+
             });
 
             $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
@@ -340,7 +359,7 @@
 
     $(function(){
 
-        if($('body').hasClass('controller-agent')){
+        if($('body').hasClass('controller-agent') || $('body').hasClass('controller-subsite')){
             if(MapasCulturais.isEditable){
                 var publicLocation = $('[data-edit="publicLocation"]').editable('getValue').publicLocation;
                 var empty = publicLocation === undefined;
@@ -363,6 +382,21 @@
                     }
 
                 });
+
+                if ($('body').hasClass('controller-subsite')) {
+                    var latitude = $('[data-edit="latitude').editable('getValue').latitude;
+                    var longitude = $('[data-edit="longitude"]').editable('getValue').longitude;
+                    var empty = latitude === 'null' && longitude === 'null';
+
+                    if(!empty){
+                        $('.js-map-container').show();
+                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                    }else{
+                        $('#map-target').editable('setValue', [0, 0]);
+                        $('.js-map-container').hide();
+                    }
+                }
+
             }else{
                 MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
             }
