@@ -80,6 +80,16 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     protected $agent;
 
+    /**
+     * @var \MapasCulturais\Entities\Agent
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     * })
+     */
+    protected $owner_relation;
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');
@@ -99,7 +109,9 @@ abstract class SealRelation extends \MapasCulturais\Entity
     }
 
     public function save($flush = false) {
+        $app = App::i();
     	 try{
+            $this->owner_relation = $app->user->profile;
             parent::save($flush);
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
@@ -108,6 +120,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
 	    	$app = App::i();
 	    	$app->disableAccessControl();
 	    	$this->status = self::STATUS_PENDING;
+            $this->owner_relation = $app->user->profile;
 	    	parent::save($flush);
 	    	$app->enableAccessControl();
 

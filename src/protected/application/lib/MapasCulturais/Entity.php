@@ -251,12 +251,12 @@ abstract class Entity implements \JsonSerializable{
         if(!$app->isAccessControlEnabled()){
             return true;
         }
-        
+
         if(is_null($userOrAgent)){
             $user = $app->user;
         } else if($userOrAgent instanceof UserInterface) {
             $user = $userOrAgent;
-        } else { 
+        } else {
             $user = $userOrAgent->getOwnerUser();
         }
 
@@ -399,18 +399,26 @@ abstract class Entity implements \JsonSerializable{
 
         $metadata = $class::getPropertiesMetadata();
         if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
+<<<<<<< HEAD
             $app->log->debug("Primeiro: ");
             $app->log->debug($property);
             $return = $metadata[$property]['required'];
             $app->log->debug($return);
+=======
+            $return = $metadata[$property]['required'];
+>>>>>>> rc
         }
 
         $v = $class::$validations;
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
+<<<<<<< HEAD
             $app->log->debug("Segundo: ");
             $return = true;
             $app->log->debug($property);
             $app->log->debug($return);
+=======
+            $return = true;
+>>>>>>> rc
         }
 
         return $return;

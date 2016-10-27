@@ -938,6 +938,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRelatedAdminAgentsToJs($entity) {
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
@@ -945,6 +949,10 @@ class Theme extends MapasCulturais\Theme {
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
         	$query = [];
         	$query['@select'] = 'id,name,status, singleUrl';
+
+            if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
 
         	$query['@files'] = '(avatar.avatarMedium):url';
         	$sealId = implode(',',array_unique($sealId));
@@ -958,13 +966,13 @@ class Theme extends MapasCulturais\Theme {
         	$app = App::i();
         	if (!$app->user->is('guest')) {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-        	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
-        		$this->jsObject['canRelateSeal'] = true;
-        	} else {
-        		$this->jsObject['canRelateSeal'] = false;
-        	}
+            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+            		$this->jsObject['canRelateSeal'] = true;
+            	} else {
+            		$this->jsObject['canRelateSeal'] = false;
+            	}
+            }
         }
 
     function addProjectEventsToJs(Entities\Project $entity){

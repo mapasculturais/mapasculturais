@@ -23,18 +23,18 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <article class="main-content agent">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?>
-            
+
             <?php $this->part('singles/type', ['entity' => $entity]) ?>
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -42,7 +42,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
-    
+
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
@@ -53,7 +53,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
-    
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
@@ -130,6 +130,12 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
+<<<<<<< HEAD
+=======
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
+>>>>>>> rc
 
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
@@ -154,6 +160,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
     <?php endif; ?>
 
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
@@ -161,11 +171,11 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->spaces, 'title' => 'entities: Spaces of the agent')); ?>
     <!-- Children END -->
-    
+
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
     <!-- Children END -->
-    
+
     <!--
     <div class="widget">
         <h3>Projetos do agente</h3>

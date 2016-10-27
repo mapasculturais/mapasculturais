@@ -90,15 +90,15 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <article class="main-content event">
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-        
+
         <?php $this->applyTemplateHook('header.status','after'); ?>
-        
+
         <!--.header-image-->
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-            
+
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--event.png']); ?>
             <!--.avatar-->
             <div class="entity-type event-type">
@@ -106,9 +106,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <a href="#">Evento</a>
             </div>
             <!--.entity-type-->
-            
+
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
-            
+
             <?php if ($this->isEditable() || $entity->subTitle): ?>
                 <?php $this->applyTemplateHook('subtitle','before'); ?>
                 <h4 class="event-subtitle">
@@ -116,7 +116,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 </h4>
                 <?php $this->applyTemplateHook('subtitle','after'); ?>
             <?php endif; ?>
-            
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -138,7 +138,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
-        
+        <!-- #sobre.aba-content -->
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
@@ -343,12 +343,16 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre.aba-content -->
-    
+
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
 <!--.main-content-->
@@ -410,6 +414,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>

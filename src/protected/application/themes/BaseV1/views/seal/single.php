@@ -109,6 +109,10 @@ $this->includeAngularEntityAssets($entity);
       <?php }?>
       </div>
       <!-- #sobre -->
+
+      <!-- #permissao -->
+      <?php $this->part('singles/permissions') ?>
+      <!-- #permissao -->
       <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -124,6 +128,10 @@ $this->includeAngularEntityAssets($entity);
     <?php endif; ?>
 </div>
 <div class="sidebar seal sidebar-right">
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
 	<!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>

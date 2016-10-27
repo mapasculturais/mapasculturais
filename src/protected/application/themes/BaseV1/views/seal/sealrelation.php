@@ -83,7 +83,7 @@ $entity = $relation->seal;
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
-    <?php /*$this->part('owner', array('entity' => $entity, 'owner' => $entity->owner));*/ ?>
+	<?php $this->part('owner', array('entity' => $relation, 'owner' => $relation->owner_relation)); ?>
 </article>
 <div class="sidebar-left sidebar seal">
 
