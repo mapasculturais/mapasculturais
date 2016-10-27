@@ -28,18 +28,18 @@ $_params = [
 
 <article class="main-content registration" ng-controller="ProjectController">
     <?php $this->part('singles/registration--header', $_params); ?>
-    
+
     <article>
         <?php $this->applyTemplateHook('form','begin'); ?>
-        
+
         <?php $this->part('singles/registration-single--header', $_params) ?>
-        
+
         <?php $this->part('singles/registration-single--categories', $_params) ?>
-        
+
         <?php $this->part('singles/registration-single--agents', $_params) ?>
         
         <?php $this->part('singles/registration-single--seals', $_params) ?>
-        
+
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 
         <?php $this->applyTemplateHook('form','end'); ?>

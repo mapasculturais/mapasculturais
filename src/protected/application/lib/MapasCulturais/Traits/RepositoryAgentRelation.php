@@ -72,8 +72,6 @@ trait RepositoryAgentRelation{
         $entityList = $query->getResult();
         return $entityList;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Returns the found agents
@@ -105,5 +103,4 @@ trait RepositoryAgentRelation{
         $entityList = $query->getResult();
         return $entityList;
     }
->>>>>>> rc
 }

@@ -7,17 +7,10 @@ $this->layout = 'panel';
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar <?php $this->dict('entities: new space') ?></a>
 	</header>
     <ul class="abas clearfix clear">
-<<<<<<< HEAD
         <li class="active"><a href="#ativos">Ativos (<?php echo count($enabled); ?>)</a></li>
 		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlSpaces);?>)</a></li>
         <li><a href="#rascunhos">Rascunhos (<?php echo count($draft); ?>)</a></li>
         <li><a href="#lixeira">Lixeira (<?php echo count($trashed); ?>)</a></li>
-=======
-        <li class="active"><a href="#ativos">Ativos</a></li>
-		<li><a href="#permitido">Concedidos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
->>>>>>> rc
     </ul>
     <div id="ativos">
 

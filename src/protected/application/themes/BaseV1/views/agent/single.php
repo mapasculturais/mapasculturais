@@ -130,12 +130,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
-<<<<<<< HEAD
-=======
         <!-- #permissao -->
         <?php $this->part('singles/permissions') ?>
         <!-- #permissao -->
->>>>>>> rc
 
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
