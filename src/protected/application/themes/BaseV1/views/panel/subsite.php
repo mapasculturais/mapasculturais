@@ -2,7 +2,8 @@
 $this->layout = 'panel';
 
 if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
-	$e = new Exceptions\TemplateNotFound("Template $__template_filename not found");
+	//$e = new Exceptions\TemplateNotFound("Template $__template_filename not found");
+	return;
 }
 ?>
 <div class="panel-list panel-main-content">
