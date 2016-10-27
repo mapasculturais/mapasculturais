@@ -299,8 +299,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
     }
 
-<<<<<<< HEAD
-=======
+
     function getAgentWithControl() {
         $this->checkPermission('modify');
         $app = App::i();
@@ -308,7 +307,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $app->repo($entity)->findByAgentWithEntityControl();
     }
 
->>>>>>> rc
     public function getSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }
@@ -421,11 +419,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getNotifications($status = null){
         $app = App::i();
         $app->em->clear('MapasCulturais\Entities\Notification');
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> rc
         if(is_null($status)){
             $status_operator =  '>';
             $status = '0';
