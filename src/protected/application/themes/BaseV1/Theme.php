@@ -825,6 +825,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
         $this->enqueueScript('vendor', 'angular-ui-sortable', '/vendor/ui-sortable/sortable.js', array('jquery-ui', 'angular'));
         $this->enqueueScript('vendor', 'angular-checklist-model', '/vendor/checklist-model/checklist-model.js', array('jquery-ui', 'angular'));
+
+        // It Javis ColorPicker
+        $this->enqueueScript('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js');
+        $this->enqueueStyle('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css');
     }
 
     function includeCommonAssets() {
@@ -855,6 +859,12 @@ class Theme extends MapasCulturais\Theme {
 
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2.png", 'css/select2.png');
         $this->assetManager->publishAsset("vendor/select2-{$versions['select2']}/select2-spinner.gif", 'css/select2-spinner.gif');
+
+        $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/alpha-horizontal.png", 'img/bootstrap-colorpicker/alpha-horizontal.png');
+        $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/alpha.png", 'img/bootstrap-colorpicker/alpha.png');
+        $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/hue-horizontal.png", 'img/bootstrap-colorpicker/hue-horizontal.png');
+        $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/hue.png", 'img/bootstrap-colorpicker/hue.png');
+        $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/saturation.png", 'img/bootstrap-colorpicker/saturation.png');
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
     }

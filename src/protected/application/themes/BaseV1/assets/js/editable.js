@@ -145,6 +145,7 @@ jQuery(function(){
             return false;
         });
     }
+
 });
 
 $(window).on('beforeunload', function(){
@@ -546,7 +547,7 @@ MapasCulturais.Editables = {
                 $('body').append('<input type="hidden" id="fixeditable"/>');
                 $editables = $editables.add($('#fixeditable'));
             }
-            
+
             $editables.editable('submit', {
                 url: target,
                 data: { status: $button.data('status') },
@@ -1003,3 +1004,39 @@ $(function(){
 
     });
 });
+
+(function ($) {
+    "use strict";
+    var Color = function (options) {
+        this.init('color', options, Color.defaults);
+    };
+    $.fn.editableutils.inherit(Color, $.fn.editabletypes.abstractinput);
+    $.extend(Color.prototype, {
+        render: function() {
+            this.$input = this.$tpl.find('input');
+            this.$input.parent().colorpicker({
+                container: this.$tpl,
+                inline: true,
+                template: '<div class="colorpicker dropdown-menu" border="1">' +
+                            '<div class="colorpicker-saturation"><i><b></b></i></div>' +
+                            '<div class="colorpicker-hue"><i></i></div>' +
+                            '<div class="colorpicker-color"><div/></div>' +
+                            '<div class="colorpicker-selectors"></div>' +
+                            '</div>'
+            });
+        },
+        autosubmit: function() {
+            this.$input.keydown(function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });
+        }
+    });
+
+    Color.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="editable-color"><div><input type="text" value="" class="form-control" /></div></div>'
+    });
+    $.fn.editabletypes.color = Color;
+
+}(window.jQuery));
