@@ -20,8 +20,12 @@ return array(
         'MapasCulturais\Themes' => THEMES_PATH
     ),
 
-    'mailer.transport' => Swift_MailTransport::newInstance(),
-    'mailer.from' => null,
+    'mailer.user' => "admin@mapasculturais.org",
+    'mailer.psw'  => "password",
+    'mailer.protocol' => 'ssl',
+    'mailer.server' => 'smtp.gmail.com',
+    'mailer.port'   => '465',
+    'mailer.from' => 'suporte@mapasculturais.org',
 
     // sempre colocar a barra no final da url
     'base.url' => $base_url,

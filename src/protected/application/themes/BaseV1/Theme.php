@@ -252,6 +252,15 @@ class Theme extends MapasCulturais\Theme {
           $this->updateTimestamp = new \DateTime;
         });
 
+        $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
+            $app->createAndSendMailMessage([
+                'from' => $app->config['mailer.from'],
+                'to' => $app->user->email,
+                'subject' => "Novo $this->entityType registrado",
+                'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+            ]);
+        });
+
         // sempre que insere uma imagem cria o avatarSmall
         $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
