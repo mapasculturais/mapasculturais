@@ -96,7 +96,14 @@ class Theme extends MapasCulturais\Theme {
     protected function _init() {
         $app = App::i();
 
-
+        
+        $this->jsObject['EntitiesDescription'] = [
+        "agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
+        "event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
+        "space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
+        "project" => \MapasCulturais\Entities\Project::getPropertiesMetadata()
+        ];
+        
         /* === NOTIFICATIONS  === */
         // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app) {

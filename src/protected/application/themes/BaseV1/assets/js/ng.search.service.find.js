@@ -270,11 +270,13 @@
                 
                 var selectData = 'id,singleUrl,name,type,shortDescription,terms';
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
+                var exportEntity = entity;
 
                 if(entity === 'space'){
                     if(action === 'find') {
                         selectData += ',En_Estado,endereco,acessibilidade';
                     }else{
+                        exportEntity = 'event';
                         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
                         apiExportURL += 'event/findByLocation/?';
                     }
@@ -303,6 +305,18 @@
                 delete searchData['@count'];
 
                 var querystring = '';
+                
+                
+                var Description = MapasCulturais.EntitiesDescription[exportEntity];
+                Object.keys(Description).forEach(function(prop) {
+                	if (!Description[prop].isEntityRelation && (MapasCulturais.allowedFields || (!MapasCulturais.allowedFields && !Description[prop].private))) {
+                		if (Description[prop]['@select']) {
+                			prop = Description[prop]['@select'];
+                		}
+                		selectData += "," + prop;
+                	}
+                })
+                
                 var queryString_apiExport = '@select='+selectData;
 
                 //removes type column from event export
