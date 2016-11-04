@@ -1,0 +1,128 @@
+<?php
+
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+$config = include 'conf-base.php';
+
+
+// o arroba é para não imprimir um erro quando executar pela linha de comando
+$domain = @$_SERVER['HTTP_HOST'];
+$domain_prefix = 'www.';
+
+if(($pos = strpos($domain, ':')) !== false){
+    $domain = substr($domain, 0, $pos);
+    //$domain_prefix = "teatro.";
+}
+
+if (strpos($domain, 'teatro') !== false || true) {
+    $theme_namespace    = 'MecTeatros';
+    $theme_path         = THEMES_PATH . 'mec-teatro';
+} else {
+    $theme_namespace    = 'MapasCulturais\Themes\BaseV1'; // namespace do tema
+    $theme_path         = THEMES_PATH . 'BaseV1';         // caminho para a pasta do tema
+}
+
+
+return array_merge($config,
+    [
+        'app.siteName' => 'Nombre del sitio',
+        'app.siteDescription' => 'Descripción del sitio',
+
+        /* configure e descomente as linhas abaixo para habilitar um tema personalizado */
+        // 'namespaces' => array_merge( $config['namespaces'], ['Name\Space\Do\Tema' => '/caminho/absoluto/para/o/tema']),
+        // 'themes.active' => 'Name\Space\Do\Tema',
+        
+//        'namespaces' => array_merge( $config['namespaces'], ['MapasCulturais\Themes\BaseV1' => THEMES_PATH),
+        'namespaces' => array_merge( $config['namespaces'], [$theme_namespace => $theme_path]),
+
+//        'themes.active' => 'MapasCulturais\Themes\BaseV1',
+        'themes.active' => $theme_namespace,
+
+
+        'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
+            'publishPath' => BASE_PATH . 'assets/',
+
+            'mergeScripts' => true,
+            'mergeStyles' => true,
+
+            'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /assets/{FILENAME}.map -b -p ' . substr_count(BASE_PATH, '/'),
+            'process.css' => 'uglifycss {IN} > {OUT} ',
+            'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
+        ]),
+
+        // development, staging, production
+        'app.mode' => 'development',
+
+        'doctrine.isDev' => false,
+        'slim.debug' => true,
+        'maps.includeGoogleLayers' => true,
+
+        'app.geoDivisionsHierarchy' => [
+            'pais' => 'País',
+            'regiao' => 'Región',
+            'estado' => 'Estado',
+            'mesorregiao' => 'Mesorregión',
+            'microrregiao' => 'Microrregión',
+            'municipio' => 'Municipio',
+            'zona' => 'Zona',
+            'subprefeitura' => 'Alcaldía',
+            'distrito' => 'Distrito'
+        ],
+        // latitude, longitude
+       // 'maps.center' => [-13.987376214146455, -54.38232421875],
+	'maps.center' => [-33.25, -56.31],
+        // zoom do mapa
+        'maps.zoom.default' => 7,
+
+        'plugins.enabled' => array('agenda-singles', 'endereco'),
+
+       // 'auth.provider' => 'Fake',
+        'auth.provider' => 'OpauthMultiple',
+        'auth.config' => array(
+            'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
+            'timeout' => '24 hours',
+            'strategies' => [
+               'Facebook' => array(
+                   'app_id' => '622340137914798', //'2178925342246079',
+                   'app_secret' => '1859e884aff1fe1e8604122047cf0800', // '65a6f68ff42176fee08c874e6acda3d7',
+                  'scope' => 'email'
+               ),
+		
+                'LinkedIn' => array(
+                    'api_key' => '78mpzg5bznuevm',
+                    'secret_key' => 'i9IBrOaNm0opJQZm',
+                    'redirect_uri' => 'http://' . $domain_prefix . 'mapatest.libre.coop/autenticacao/linkedin/oauth2callback',
+                    'scope' => 'r_emailaddress'
+                ),
+                'Google' => array(
+                    'client_id' => '997189727136-g4oo0d3294tfnhcc06o5htg3oqnk8tma.apps.googleusercontent.com',
+                    'client_secret' => 'Kn-_yvfXlpW-NKb9kYfCL8zH',
+                    'redirect_uri' => 'http://' . $domain_prefix . 'mapatest.libre.coop/autenticacao/google/oauth2callback',
+                    'scope' => 'email'
+                ),
+                'Twitter' => array(
+                    'app_id' => '179995005015', //'2178925342246079',
+                    'app_secret' => '82e95d9957566b0b21b70387732fd3a7', // '65a6f68ff42176fee08c874e6acda3d7',
+                ),
+
+            ]
+        ),
+        /* Modelo de configuração para usar o id da cultura */
+//        'auth.provider' => 'OpauthOpenId',
+//        'auth.config' => [
+//            'login_url' => '',
+//            'logout_url' => '',
+//            'salt' => '',
+//            'timeout' => '24 hours'
+//        ],
+
+        'doctrine.database' => [
+            'dbname'    => 'xxx',
+            'user'      => 'xxx',
+	    'password'  => 'xxx',
+            'host'      => ''
+        ],
+    ]
+);
