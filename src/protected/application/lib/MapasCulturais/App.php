@@ -2131,7 +2131,7 @@ class App extends \Slim\Slim{
         $failures = [];
         $mailer = $this->getMailer();
 
-        if(!in_array('mailer',$this->_config['plugins.enabled']) && !$mailer->send($message,$failures)) {
+        if(in_array('mailer',$this->_config['plugins.enabled']) && !$mailer->send($message,$failures)) {
             App::i()->log->debug($failures);
         }
     }
