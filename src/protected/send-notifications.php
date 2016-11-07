@@ -134,5 +134,3 @@ foreach($userList as $reg) {
     }
     $app->auth->logout();
 }
-
-echo "funciona\n";
