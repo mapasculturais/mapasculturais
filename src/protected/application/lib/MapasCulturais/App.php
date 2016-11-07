@@ -2082,6 +2082,10 @@ class App extends \Slim\Slim{
     function getMailer() {
         $transport = [];
 
+        if(!in_array('mailer',$app->config['plugins.enabled'])) {
+            return {};
+        }
+        
         if(isset($this->_config['mailer.user']) &&
             isset($this->_config['mailer.psw']) &&
             isset($this->_config['mailer.server']) &&
