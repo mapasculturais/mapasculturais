@@ -2082,7 +2082,7 @@ class App extends \Slim\Slim{
     function getMailer() {
         $transport = [];
 
-        if(!in_array('mailer',$app->config['plugins.enabled'])) {
+        if(!in_array('mailer',$this->_config['plugins.enabled'])) {
             return;
         }
 
