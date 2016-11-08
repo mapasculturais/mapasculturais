@@ -86,6 +86,12 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <article class="main-content event">
     <header class="main-content-header">
@@ -179,7 +185,11 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
-                    <?php endif; ?>
+                    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
+
+    <?php $this->applyTemplateHook('breadcrumb','end'); ?>    <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
@@ -352,12 +362,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>

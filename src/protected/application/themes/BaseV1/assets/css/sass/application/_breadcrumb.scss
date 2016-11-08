@@ -2,20 +2,19 @@
     list-style-type: none;
     font-size: .8rem;
     overflow: hidden;
-    width: 60%;
+    width: 100%;
     margin: 0;
     background-color: #FFF;
+    border-color: #bbb -moz-use-text-color;
+    border-image: none;
+    border-style: solid none;
+    border-width: 0px 0;
+    background-color: #F4F4F4;
 
     li {
         display: inline-block;
         margin-right: -6px;
-        background-color: #F4F4F4;
-        border-color: #bbb -moz-use-text-color;
-        border-image: none;
-        border-style: solid none;
-        border-width: 1px 0;
         display: inline-block;
-        margin-right: -6px;
         font-weight: 100;
 
         &.active a {
@@ -34,10 +33,6 @@
                     content: none;
                 }
             }
-        }
-
-        &:last-child {
-            border-right: 1px solid #BBB;
         }
 
         a {

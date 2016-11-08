@@ -21,6 +21,12 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 $this->entity = $entity;
 
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'spaces','home_title' => 'entities: My Spaces']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', ['entity' => $entity, 'action' => $action]);  ?>
 
 <article class="main-content space">

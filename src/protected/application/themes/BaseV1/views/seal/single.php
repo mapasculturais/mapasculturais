@@ -14,6 +14,12 @@ $this->includeMapAssets();
 $this->includeAngularEntityAssets($entity);
 
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'seals','home_title' => 'entities: My Seals']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content label">

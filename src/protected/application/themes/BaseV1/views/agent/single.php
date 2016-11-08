@@ -19,6 +19,12 @@ $this->includeAngularEntityAssets($entity);
 
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content agent">
@@ -151,7 +157,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <div class="denuncia">
         <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
     </div>
-    
+
     <form class="formulario hidden">
       <p>
         Nome:<br />
