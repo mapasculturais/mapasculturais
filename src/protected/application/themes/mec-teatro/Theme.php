@@ -92,12 +92,17 @@ class Theme extends BaseV1\Theme {
                 'v::intVal()' => 'El valor deve ser un número'
             ]
         ));
+        
+        $this->registerSpaceMetadata('teatros_aforo_detalles', array(
+            'label' => 'Detalles del aforo',
+            'type' => 'text'
+        ));
 
         $this->registerSpaceMetadata('teatros_boca_escenario', array(
             'label' => 'Boca de escenario (en metros)',
             'type' => 'int',
             'validations' => [
-                'v::intVal()' => 'El valor deve ser un número'
+                'v::numeric()' => 'El valor deve ser un número'
             ]
         ));
 
@@ -105,7 +110,7 @@ class Theme extends BaseV1\Theme {
             'label' => 'Profundidad (en metros)',
             'type' => 'int',
             'validations' => [
-                'v::intVal()' => 'El valor deve ser un número'
+                'v::numeric()' => 'El valor deve ser un número'
             ]
         ));
 
@@ -113,7 +118,7 @@ class Theme extends BaseV1\Theme {
             'label' => 'Altura (en metros)',
             'type' => 'int',
             'validations' => [
-                'v::intVal()' => 'El valor deve ser un número'
+                'v::numeric()' => 'El valor deve ser un número'
             ]
         ));
 
@@ -134,6 +139,11 @@ class Theme extends BaseV1\Theme {
 
         $this->registerSpaceMetadata('teatros_equipamento_audiovisual', array(
             'label' => 'Equipamento Audiovisual',
+            'type' => 'text',
+        ));
+        
+        $this->registerSpaceMetadata('teatros_contactos_adicionales', array(
+            'label' => 'Informaciones de contactos adicionales',
             'type' => 'text',
         ));
 

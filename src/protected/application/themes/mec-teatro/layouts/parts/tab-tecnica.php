@@ -9,6 +9,15 @@
             </span>
         </p>
         <?php endif; ?>
+        
+        <?php if($this->isEditable() || $entity->teatros_aforo_detalles): ?>
+        <p>
+            <span class="label">Detalles del Aforo:</span>
+            <p class="js-editable" data-edit="teatros_aforo_detalles" data-original-title="Detalles del Aforo" data-emptytext="Detalles del Aforo">
+                <?php echo $this->isEditable() ? $entity->teatros_aforo_detalles : nl2br($entity->teatros_aforo_detalles); ?>
+            </p>
+        </p>
+        <?php endif; ?>
 
         <?php if($this->isEditable() || $entity->teatros_boca_escenario): ?>
         <p>
@@ -69,6 +78,15 @@
             <span class="label">Equipamento Audiovisual:</span>
             <p class="js-editable" data-edit="teatros_equipamento_audiovisual" data-original-title="Equipamento Audiovisual" data-emptytext="Equipamento Audiovisual">
                 <?php echo $this->isEditable() ? $entity->teatros_equipamento_audiovisual : nl2br($entity->teatros_equipamento_audiovisual); ?>
+            </p>
+        </p>
+        <?php endif; ?>
+        <hr />
+        <?php if($this->isEditable() || $entity->teatros_contactos_adicionales): ?>
+        <p>
+            <span class="label">Informaciones de contactos adicionales:</span>
+            <p class="js-editable" data-edit="teatros_contactos_adicionales" data-original-title="Informaciones de contactos adicionales" data-emptytext="Informaciones de contactos adicionales">
+                <?php echo $this->isEditable() ? $entity->teatros_contactos_adicionales : nl2br($entity->teatros_contactos_adicionales); ?>
             </p>
         </p>
         <?php endif; ?>
