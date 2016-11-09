@@ -5,7 +5,7 @@ $em = $app->em;
 $conn = $em->getConnection();
 
 return [
-    'importa base de teatros' => function() use ( $app, $conn ) {
+    'importa dados de teatros' => function() use ( $app, $conn ) {
    
         $fields = array(
             'ID',
@@ -36,7 +36,7 @@ return [
         $metadata_range = array(6,13);
         $aforoIndex = 7;
         $acessibilidadeIndex = 6;
-        $contatos_range = array(13,16);
+        $contatos_range = array(14,16);
         $check_numeric_indexes = array(8,9,10);
         
         $data = file_get_contents(__DIR__ . '/metadados-teatros.csv');
