@@ -5,7 +5,7 @@ $em = $app->em;
 $conn = $em->getConnection();
 
 return [
-    'importa dados de teatros' => function() use ( $app, $conn ) {
+    'importa metadados de teatros' => function() use ( $app, $conn ) {
    
         $fields = array(
             'ID',
@@ -167,13 +167,22 @@ return [
                 
                 echo "{$key}: $val \n";
                 
-                if ($val != '')
+                if ($val != '') {
+                    
+                    $conn->executeQuery("
+                        DELETE FROM space_meta 
+                        WHERE object_id = :id AND
+                        key = '$key'", 
+                        ['id' => $teatro->ID]);
+                    
                     $conn->executeQuery("
                         INSERT INTO space_meta (
                             object_id, key, value
                         ) VALUES (
                             :id, '$key', :val
                         )", ['id' => $teatro->ID, 'val' => $val]);
+                }
+                
             }
             
             echo "\n";
