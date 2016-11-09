@@ -23,15 +23,15 @@ Este plugin efetua o registro do site de origem de todas entidades da instalaç�
 Ao final, deve ser assim:
 
 ```
-        'plugins.enabled' => array('endereco', 'notifications', 'em-cartaz'),
-        'plugins' => array(
-                'ProjectPhases' => ['namespace' => 'ProjectPhases'],
-                'AgendaSingles' => ['namespace' => 'AgendaSingles'],
-                'OriginSite' => [
-                        'namespace' => 'OriginSite',
-                        'config'    => ['siteId' => 'url.da.instalacao.com.br']
-                                ]
-        ),
+'plugins.enabled' => array('endereco', 'notifications', 'em-cartaz'),
+'plugins' => array(
+  'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+     'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+     'OriginSite' => [
+        'namespace' => 'OriginSite',
+        'config'    => ['siteId' => 'url.da.instalacao.com.br']
+     ]
+),
 ```
 
 ### Notificações
