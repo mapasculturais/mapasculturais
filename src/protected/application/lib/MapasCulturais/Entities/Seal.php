@@ -159,36 +159,6 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $updateTimestamp;
 
-    protected function canUserPublish($user){
-        if($user->is('guest')){
-            return false;
-        }
-
-        if($user->is('admin')){
-            return true;
-        }
-
-        if($this->canUser('@control', $user)){
-            return true;
-        }
-
-        if($this->project && $this->project->canUser('@control', $user)){
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function canUserView($user){
-        if($this->status === self::STATUS_ENABLED){
-            return true;
-        }else if($this->status === self::STATUS_DRAFT){
-            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
-        }
-
-        return false;
-    }
-
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
     		return false;
