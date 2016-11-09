@@ -24,17 +24,10 @@ return array(
             )
         ),
 
-        'approvedLimit' => array(
-            'label' => 'Número máximo de inscrições por agente responsável',
-            'validations' => array(
-                "v::intVal()" => "O número máximo de vagas deve ser um número inteiro"
-            )
-        ),
-
         'registrationLimit' => array(
-            'label' => 'Limitar número de registros em:',
+            'label' => 'Número máximo de inscrições no projeto',
             'validations' => array(
-                "v::intVal()" => "O número máximo de registros deve ser um número inteiro"
+                "v::intVal()" => "O número máximo de inscrições no projeto deve ser um número inteiro"
             )
         ),
 
@@ -63,7 +56,7 @@ return array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
         ),
-    	
+
         'registrationSeals' => array(
                 'label' => 'Selos',
                 'serialize' => function($value) { return json_encode($value); },

@@ -1,5 +1,5 @@
 <?php
-if($app->user->is('guest'))
+if($app->user->is('guest') || $this->controller->action === 'create')
     return false;
 ?>
 

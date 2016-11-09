@@ -309,15 +309,6 @@ class Registration extends \MapasCulturais\Entity
         // do nothing
     }
 
-    function setRegistrationLimit() {
-        if($this->project->registrationLimit !== 0){
-            $this->project->registrationLimit += -1;
-            $this->project->approvedLimit += -1;
-        }
-        $app = App::i();
-        $app->log->debug($this->project->registrationLimit);
-    }
-
     protected function _setStatusTo($status){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
             $this->checkPermission('send');
@@ -425,7 +416,6 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
-        $this->setRegistrationLimit();
         $this->project->save(true);
         $app->enableAccessControl();
     }
