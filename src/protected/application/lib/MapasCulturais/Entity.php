@@ -250,7 +250,7 @@ abstract class Entity implements \JsonSerializable{
 
         return false;
     }
-    
+
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
         if(!$app->isAccessControlEnabled()){
@@ -264,7 +264,7 @@ abstract class Entity implements \JsonSerializable{
         } else {
             $user = $userOrAgent->getOwnerUser();
         }
-        
+
         if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
             return false;
         }
@@ -486,11 +486,7 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
     return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
-    
-    function getEntityState() {
-        return App::i()->em->getUnitOfWork()->getEntityState($this);
-    }
-    
+
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
@@ -530,12 +526,12 @@ abstract class Entity implements \JsonSerializable{
         try{
             if($this->isNew()){
                 $this->checkPermission('create');
-                
+
 
                 if($this->usesOriginSubsite()){
                     $this->_subsiteId = $app->getCurrentSubsiteId();
                 }
-                
+
             }else{
                 $this->checkPermission('modify');
             }
@@ -781,7 +777,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
     }

@@ -509,7 +509,6 @@ class Theme extends MapasCulturais\Theme {
                 'ngSanitize',
             ];
 
-<<<<<<< HEAD
             if(!$app->isEnabled('subsite') || $app->config['themes.active'] <> 'MapasCulturais\Themes\Subsite') {
               $this->jsObject['mapsDefaults'] = array(
                   'zoomMax' => $app->config['maps.zoom.max'],
