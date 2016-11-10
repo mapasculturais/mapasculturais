@@ -7,7 +7,9 @@ return array(
         'name' => 'SaaS Admin'
     ),
     'superAdmin' => array(
-        'name' => 'Superadmin'
+        'name' => 'Superadmin',
+        'singularLabel' => 'Super Administrador',
+        'pluralLabel' => 'Super Administradores',
     ),
     'admin' => array(
         'name' => 'Admin'

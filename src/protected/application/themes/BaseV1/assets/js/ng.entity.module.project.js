@@ -1073,8 +1073,19 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             $scope.register = function(){
                 var registration = $scope.data.registration;
+                var ownerRegistration = [];
 
-                if(registration.owner && $scope.data.entity.registrations.length < MapasCulturais.entity.object.registrationLimit){
+                for(var i in $scope.data.entity.registrations) {
+                    if($scope.data.entity.registrations[i].owner.id == registration.owner.id) {
+                        ownerRegistration.push($scope.data.entity.registrations[i].owner);
+                    }
+                }
+
+                if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
+                    MapasCulturais.Messages.error('O limite de inscrições para o agente informado se esgotou.');
+                }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
+                    MapasCulturais.Messages.error('O número de vagas da inscrição no projeto se esgotou.');
+                }else if(registration.owner && $scope.data.entity.registrations.length < MapasCulturais.entity.object.registrationLimit){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });

@@ -490,6 +490,10 @@ abstract class Entity implements \JsonSerializable{
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
+    
+    function getEntityState() {
+        return App::i()->em->getUnitOfWork()->getEntityState($this);
+    }
 
     /**
      * Persist the Entity optionally flushing

@@ -31,14 +31,15 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php endforeach; ?>
 
     <p>
-        <span class="label <?php echo ($entity->isPropertyRequired($entity,"approvedLimit") && $editEntity? 'required': '');?>">Número de vagas</span><br>
-        <span class="<?php echo $ditable_class ?>" data-edit="approvedLimit" data-original-title="Número de vagas" data-emptytext="Insira um número total de vagas"><?php echo $entity->approvedLimit ? $entity->approvedLimit : '0'; ?></span>
+        <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimit") && $editEntity? 'required': '');?>">Número máximo de vagas no projeto</span><br>
+        <span class="registration-help">Zero (0) significa sem limites</span><br>
+        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimit" data-original-title="Número máximo de inscrições no projeto" data-emptytext="Insira o número máximo de inscrições no projeto"><?php echo $entity->registrationLimit ? $entity->registrationLimit : '0'; ?></span>
     </p>
 
     <p>
-        <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimit") && $editEntity? 'required': '');?>">Número máximo de inscrições</span><br>
+        <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimitPerOwner") && $editEntity? 'required': '');?>">Número máximo de inscrições por agente responsável</span><br>
         <span class="registration-help">Zero (0) significa sem limites</span><br>
-        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimit" data-original-title="Número máximo de inscrições" data-emptytext="Insira o número máximo de inscrições totais"><?php echo $entity->registrationLimit ? $entity->registrationLimit : '0'; ?></span>
+        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="Número máximo de inscrições" data-emptytext="Insira o número máximo de inscrições totais"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
     </p>
 </div>
 <!-- #registration-agent-relations -->

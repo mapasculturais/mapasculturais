@@ -1,6 +1,10 @@
 <?php
     use MapasCulturais\App;
     $app = App::i();
+
+    if($app->user->is('guest'))
+        return;
+
 ?>
 <ul class="breadcrumb">
     <li>

@@ -1,3 +1,4 @@
+
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
@@ -18,6 +19,12 @@ $this->includeAngularEntityAssets($entity);
 
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content agent">
@@ -47,6 +54,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
+        <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -127,6 +137,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
 
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
@@ -140,6 +153,28 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
+
+    <div class="denuncia">
+        <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
+    </div>
+
+    <form class="formulario hidden">
+      <p>
+        Nome:<br />
+        <input type="text" rows="5" name="nome">
+      </p>
+      <p>
+        E-mail:<br />
+        <input type="text" rows="5" name="email">
+      </p>
+        Mensagem:<br />
+        <textarea type="text" rows="5" cols="40" name="mensagem"></textarea>
+      </p>
+      <p>
+        <input type="submit" value="Enviar Denúncia">
+      </p>
+    </form>
+
 </article>
 <div class="sidebar-left sidebar agent">
     <!-- Related Seals BEGIN -->
@@ -156,6 +191,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o agente.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
     <!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
@@ -187,4 +226,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Link List BEGIN -->
         <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->
+
+
 </div>
+<script type="text/javascript">
+  var botao = document.querySelector(".botao");
+  botao.addEventListener("click", function(){
+    var formulario = document.querySelector(".formulario");
+    formulario.classList.toggle("hidden");
+  }, true)
+
+</script>

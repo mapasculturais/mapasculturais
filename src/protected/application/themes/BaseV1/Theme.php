@@ -509,6 +509,7 @@ class Theme extends MapasCulturais\Theme {
                 'ngSanitize',
             ];
 
+<<<<<<< HEAD
             if(!$app->isEnabled('subsite') || $app->config['themes.active'] <> 'MapasCulturais\Themes\Subsite') {
               $this->jsObject['mapsDefaults'] = array(
                   'zoomMax' => $app->config['maps.zoom.max'],
@@ -580,6 +581,15 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
           $this->updateTimestamp = new \DateTime;
+        });
+
+        $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
+            $app->createAndSendMailMessage([
+                'from' => $app->config['mailer.from'],
+                'to' => $app->user->email,
+                'subject' => "Novo $this->entityType registrado",
+                'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+            ]);
         });
 
         // sempre que insere uma imagem cria o avatarSmall
@@ -1289,6 +1299,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRelatedAdminAgentsToJs($entity) {
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
@@ -1296,6 +1310,10 @@ class Theme extends MapasCulturais\Theme {
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
         	$query = [];
         	$query['@select'] = 'id,name,status, singleUrl';
+
+            if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
 
         	$query['@files'] = '(avatar.avatarMedium):url';
         	$sealId = implode(',',array_unique($sealId));
@@ -1309,13 +1327,13 @@ class Theme extends MapasCulturais\Theme {
         	$app = App::i();
         	if (!$app->user->is('guest')) {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-        	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
-        		$this->jsObject['canRelateSeal'] = true;
-        	} else {
-        		$this->jsObject['canRelateSeal'] = false;
-        	}
+            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+            		$this->jsObject['canRelateSeal'] = true;
+            	} else {
+            		$this->jsObject['canRelateSeal'] = false;
+            	}
+            }
         }
 
     function addProjectEventsToJs(Entities\Project $entity){

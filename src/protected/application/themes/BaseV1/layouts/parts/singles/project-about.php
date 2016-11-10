@@ -1,3 +1,7 @@
+<?php
+$editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+?>
+
 <div id="sobre" class="aba-content">
     <?php $this->applyTemplateHook('tab-about','begin'); ?>
 
@@ -9,14 +13,14 @@
         <?php endif; ?>
 
         <p>
-            <span class="js-editable required" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+            <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
         </p>
         <?php $this->applyTemplateHook('tab-about-service','before'); ?>
         <div class="servico">
             <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
             <?php if($this->isEditable() || $entity->site): ?>
                 <p>
-                    <span class="label">Site:</span>
+                    <span class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>">Site:</span>
                     <span ng-if="data.isEditable" class="js-editable" data-edit="site" data-original-title="Site" data-emptytext="Insira a url de seu site"><?php echo $entity->site; ?></span>
                     <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                 </p>
@@ -27,7 +31,7 @@
     </div>
 
     <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-        <h3>Descrição</h3>
+        <h3 class="<?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>">Descrição</h3>
         <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição do Projeto" data-emptytext="Insira uma descrição do projeto" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
     <?php endif; ?>
 

@@ -43,6 +43,13 @@
             <?php $this->applyTemplateHook('nav.panel.subsite','after'); ?>
         <?php endif; ?>
 
+
+        <?php if(($app->user->is('superAdmin')  || $app->user->is('admin') )): ?>
+            <?php $this->applyTemplateHook('nav.panel.listUsers','before'); ?>
+            <li><a <?php if($this->template == 'panel/list-users') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'listUsers') ?>"><span class="icon icon-group"></span> Usuários e papéis</a></li>
+            <?php $this->applyTemplateHook('nav.panel.listUsers','after'); ?>
+        <?php endif; ?>
+
         <?php if($app->isEnabled('apps')): ?>
             <?php $this->applyTemplateHook('nav.panel.apps','before'); ?>
             <li><a <?php if($this->template == 'panel/apps') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'apps') ?>"><span class="icon icon-api"></span> Meus Apps</a></li>

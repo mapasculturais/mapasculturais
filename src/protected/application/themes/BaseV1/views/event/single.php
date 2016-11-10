@@ -26,8 +26,6 @@ $this->includeMapAssets();
 
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 
-//$this->part('singles/breadcrumb', ['entity' => $entity]);
-
 ?>
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
@@ -88,6 +86,12 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
 <?php $eventOccurrenceItemTemplate_VIEW = ob_get_clean(); ?>
 
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <article class="main-content event">
     <header class="main-content-header">
@@ -127,9 +131,20 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
 
+    <?php $this->applyTemplateHook('tabs','before'); ?>
+    <ul class="abas clearfix clear">
+        <?php $this->applyTemplateHook('tabs','begin'); ?>
+        <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
+        <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
+        <?php $this->applyTemplateHook('tabs','end'); ?>
+    </ul>
+    <?php $this->applyTemplateHook('tabs','after'); ?>
+
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
-
+        <!-- #sobre.aba-content -->
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
@@ -171,6 +186,12 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
+
+                    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+                    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
+
+                    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
@@ -334,16 +355,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!-- #sobre.aba-content -->
 
+        <!-- #permissao -->
+        <?php $this->part('singles/permissions') ?>
+        <!-- #permissao -->
+
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 </article>
@@ -406,6 +425,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>

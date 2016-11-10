@@ -5,36 +5,36 @@ use MapasCulturais\App;
 
 class Space extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
-    
+
     public function getCurrentSubsiteSpaceIds($implode = false){
         $app = App::i();
         if($subsite_id = $app->getCurrentSubsiteId()){
             $cache_id = 'SUBSITE::SPACE-IDS';
-            
+
             if($app->config['app.useSubsiteIdsCache'] && $app->cache->contains($cache_id)){
                 return $app->cache->fetch($cache_id);
             }
             $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
-            
+
             if($_api_result){
                 $space_ids = array_map(function($e){
                     return $e['id'];
                 }, $_api_result);
-            
+
             }else{
                 $space_ids = [0];
             }
-            
+
             if($implode){
                 $space_ids = implode(',', $space_ids);
             }
-            
+
             $app->cache->save($cache_id, $space_ids, $app->config['app.subsiteIdsCache.lifetime']);
-            
+
         } else {
             $space_ids = null;
         }
-        
+
         return $space_ids;
     }
 
@@ -64,12 +64,12 @@ class Space extends \MapasCulturais\Repository{
 
         if($limit)
             $dql_limit = 'LIMIT ' . $limit;
-        
+
 
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
         $app = App::i();
-        
+
         $space_ids = $this->getCurrentSubsiteSpaceIds(true);
         if(!is_null($space_ids)){
             $sql_space_ids = "AND e.id IN($space_ids)";
@@ -83,17 +83,17 @@ class Space extends \MapasCulturais\Repository{
             FROM
                 space e
 
-            WHERE 
+            WHERE
                 e.status > 0 $sql_space_ids AND
                 e.id IN (
-                    SELECT 
-                        space_id 
-                    FROM 
-                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
-                    WHERE 
+                    SELECT
+                        space_id
+                    FROM
+                        recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
+                    WHERE
                         event_id IN (:event_ids)
                 )
-                
+
 
             $dql_limit $dql_offset";
 

@@ -19,7 +19,7 @@ $(function(){
     $('.alert .close').click(function(){
         $(this).parent().slideUp('fast');
     }).css('cursor', 'pointer');
-    
+
     if(MapasCulturais.request.controller === 'app'){
         MapasCulturais.App.init();
     }
@@ -138,9 +138,19 @@ $(function(){
                 case 'space' : return 'espaço'; break;
                 case 'event' : return 'evento'; break;
                 case 'project' : return 'projeto'; break;
+                case 'seal' : return 'selo'; break;
             }
         };
     }
+
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
 
 });
 
@@ -277,7 +287,7 @@ MapasCulturais.App = {
             var selector = $(this).data('selectTarget');
             $(selector).trigger('doubleClick');
         });
-        
+
         if($('.js-input--app-key').length && $('.js-input--app-key--toggle').length){
             $('.js-input--app-key--toggle').on('click', function(){
                 if($('.js-input--app-key').attr('type') === 'password'){
@@ -285,7 +295,7 @@ MapasCulturais.App = {
                 }else{
                     $('.js-input--app-key').attr('type', 'password');
                 }
-                
+
                 return false;
             });
         }

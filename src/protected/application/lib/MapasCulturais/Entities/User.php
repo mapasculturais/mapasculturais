@@ -114,7 +114,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
-       // $this->seals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
 
@@ -146,7 +145,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function addRole($role_name){
         $app = App::i();
         $subsite_id = $app->getCurrentSubsiteId();
-        
+
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
         else
@@ -167,8 +166,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function removeRole($role_name){
         $app = App::i();
         $subsite_id = $app->getCurrentSubsiteId();
-        
-        
+
+
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
         else
@@ -207,7 +206,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected function canUserAddRoleSaasSuperAdmin($user){
         return $user->is('saasSuperAdmin') && $user->id != $this->id;
     }
-    
+
 
     protected function canUserRemoveRole($user){
         return $user->is('admin') && $user->id != $this->id;
@@ -220,7 +219,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected function canUserRemoveRoleSuperAdmin($user){
         return $user->is('superAdmin') && $user->id != $this->id;
     }
-    
+
     protected function canUserRemoveRoleSaasAdmin($user){
         return $user->is('saasSuperAdmin') && $user->id != $this->id;
     }
@@ -228,29 +227,29 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected function canUserRemoveRoleSaasSuperAdmin($user){
         return $user->is('saasSuperAdmin') && $user->id != $this->id;
     }
-    
+
     function is($role_name){
         if($role_name === 'admin' && $this->is('superAdmin')){
             return true;
         }
-        
+
         if($role_name === 'superAdmin' && $this->is('saasAdmin')){
             return true;
         }
-        
+
         if($role_name === 'saasAdmin' && $this->is('saasSuperAdmin')){
             return true;
         }
-        
+
         $app = App::i();
-        
+
         if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
             $subsite_id = null;
         } else {
             $subsite_id = $app->getCurrentSubsiteId();
         }
-        
-        
+
+
         foreach ($this->roles as $role) {
             if ($role->name == $role_name && $role->subsiteId === $subsite_id) {
                 return true;
@@ -344,6 +343,19 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
     }
 
+	function getHasControlAgents(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
+    }
+
+    function getAgentWithControl() {
+        $this->checkPermission('modify');
+        $app = App::i();
+        $entity = $app->view->controller->id;
+        return $app->repo($entity)->findByAgentWithEntityControl();
+    }
+
     public function getSpaces(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space');
     }
@@ -371,6 +383,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
     }
 
+    function getHasControlSpaces(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Space')->findByAgentRelationUser($this, true);
+    }
+
     public function getEvents(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event');
     }
@@ -393,12 +411,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
 
+    function getHasControlEvents(){
+        $this->checkPermission('modify');
+        return App::i()->repo('Event')->findByAgentRelationUser($this, true);
+    }
+
     function getArchivedEvents(){
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED,'=');
     }
-
 
     public function getProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
@@ -420,6 +442,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
+    }
+    function getHasControlProjects(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Project')->findByAgentRelationUser($this, true);
     }
 
     function getArchivedProjects(){
@@ -451,12 +478,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
     function getDraftSubsite(){
         $this->checkPermission('modify');
-        
+
         return $this->getSubsite(Subsite::STATUS_DRAFT);
     }
     function getTrashedSubsite(){
         $this->checkPermission('modify');
-        
+
         return $this->getSubsite(Subsite::STATUS_TRASH);
     }
     function getDisabledSubsite(){
@@ -469,7 +496,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->getSubsite(Subsite::STATUS_ARCHIVED);
     }
-    
+
     public function getSeals(){
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal');
     }
@@ -491,16 +518,23 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
     }
+
     function getArchivedSeals(){
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ARCHIVED,'=');
     }
 
+    function getHasControlSeals(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Seal')->findByAgentRelationUser($this, true);
+    }
+
     function getNotifications($status = null){
         $app = App::i();
         $app->em->clear('MapasCulturais\Entities\Notification');
-        
+
         if(is_null($status)){
             $status_operator =  '>';
             $status = '0';
@@ -530,7 +564,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getEntitiesNotifications($app) {
-      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.user.access'] > 0) {
+      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.user.access'] > 0) {
         $now = new \DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
@@ -542,7 +576,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         }
       }
 
-      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.entities.update'] > 0) {
+      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.entities.update'] > 0) {
           $now = new \DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
@@ -552,7 +586,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '">editar</a>';
+              $notification->save();
             }
           }
 
@@ -564,7 +599,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O projeto <b>" . $project->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $project->editUrl . '">editar</a>';
+              $notification->save();
             }
           }
 
@@ -576,7 +612,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O Evento <b>" . $event->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $event->editUrl . '">editar</a>';
+              $notification->save();
             }
           }
 
@@ -588,7 +625,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '">editar</a>';
+              $notification->save();
             }
           }
 
@@ -600,9 +638,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $seal->editUrl . '">editar</a>';
+              $notification->save();
             }
           }
+        $app->em->flush();
       }
     }
 

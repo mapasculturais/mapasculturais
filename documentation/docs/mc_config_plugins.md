@@ -23,15 +23,15 @@ Este plugin efetua o registro do site de origem de todas entidades da instalaç�
 Ao final, deve ser assim:
 
 ```
-        'plugins.enabled' => array('endereco', 'notifications', 'em-cartaz'),
-        'plugins' => array(
-                'ProjectPhases' => ['namespace' => 'ProjectPhases'],
-                'AgendaSingles' => ['namespace' => 'AgendaSingles'],
-                'OriginSite' => [
-                        'namespace' => 'OriginSite',
-                        'config'    => ['siteId' => 'url.da.instalacao.com.br']
-                                ]
-        ),
+'plugins.enabled' => array('endereco', 'notifications', 'em-cartaz'),
+'plugins' => array(
+  'ProjectPhases' => ['namespace' => 'ProjectPhases'],
+     'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+     'OriginSite' => [
+        'namespace' => 'OriginSite',
+        'config'    => ['siteId' => 'url.da.instalacao.com.br']
+     ]
+),
 ```
 
 ### Notificações
@@ -59,3 +59,37 @@ E as notificações de entidades sem atualização, definido em dias:
 Observação: Para deixar as desabilitadas as notificações de usuário e entidades sem atualização, é só deixar suas diretivas de definição de dias para notificar com o valor 0 (zero).
 
 
+### Mailer
+Assim como as notificações no sistema, o Mailer tem o propósito de comunicar sobre ocorrências no Mapas enviando e-mails para o usuário do sistema, independente se os usuários acessam ou não a plataforma.
+Para habilitar os emails do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
+
+```
+'plugins' => array("mailer");
+```
+
+Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails aconteça, e serão necessárias algumas informações para que a autenticação de e-mail aconteça e os emails sejam enviados:
+
+#### Usuário que será utilizado para autenticação no servidor de e-mail:
+```
+'mailer.user' => "admin@mapasculturais.org"
+```
+#### Senha de usuário para autenticação no servidor de e-mail:
+```
+'mailer.psw'  => "password"
+```
+#### Protocolo que será utilizado em conexão criptografada:
+```
+'mailer.protocol' => 'ssl'
+```
+#### URL do servidor de envio de e-mail:
+```
+'mailer.server' => 'smtp.gmail.com'
+```
+#### Qual porta será utilizada para efetuar a conexão:
+```
+'mailer.port'   => '465'
+```
+#### Qual será o e-mail de remetente:
+```
+'mailer.from' => 'suporte@mapasculturais.org'
+```

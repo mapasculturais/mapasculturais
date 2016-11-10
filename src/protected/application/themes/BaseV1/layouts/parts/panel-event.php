@@ -5,11 +5,9 @@
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
         <?php $linguagem = isset($entity->terms->linguagem)?$entity->terms->linguagem: $entity->terms['linguagem'];?>
 		<div><span class="label">Linguagens:</span> <?php echo implode(', ', $linguagem)?></div>
-		<!--div><span class="label">Horário:</span> <time>00h00</time></div-->
-		<!--div><span class="label">Local:</span> Teatro</div-->
 		<?php if($entity->classificacaoEtaria): ?>
-                    <div><span class="label">Classificação:</span> <?php echo $entity->classificacaoEtaria; ?></div>
-                <?php endif; ?>
+            <div><span class="label">Classificação:</span> <?php echo $entity->classificacaoEtaria; ?></div>
+        <?php endif; ?>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>

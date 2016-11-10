@@ -45,69 +45,6 @@ class Seal extends EntityController {
         parent::POST_index($data);
     }
 
-    function ALL_setAsUserProfile(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $seal = $this->requestedEntity;
-
-        if(!$seal)
-            $app->pass();
-
-        $success = $seal->setAsUserProfile();
-
-        if($this->isAjax()){
-            if($success)
-                $this->json (true);
-            else
-                $this->json (false);
-        }else{
-            $app->redirect($app->request()->getReferer());
-        }
-    }
-
-    function ALL_addRole(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $seal = $this->requestedEntity;
-
-        if(!$seal || !$this->data['role'])
-            $app->pass();
-
-        $success = $seal->user->addRole($this->data['role']);
-
-        if($this->isAjax()){
-            if($success)
-                $this->json (true);
-            else
-                $this->json (false);
-        }else{
-            $app->redirect($app->request()->getReferer());
-        }
-    }
-
-    function ALL_removeRole(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $seal = $this->requestedEntity;
-
-        if(!$seal || !$this->data['role'])
-            $app->pass();
-
-        $success = $seal->user->removeRole($this->data['role']);
-
-        if($this->isAjax()){
-            if($success)
-                $this->json (true);
-            else
-                $this->json (false);
-        }else{
-            $app->redirect($app->request()->getReferer());
-        }
-    }
-
     function GET_sealRelation(){
     	$app = App::i();
 

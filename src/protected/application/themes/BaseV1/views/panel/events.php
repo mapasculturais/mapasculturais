@@ -7,10 +7,11 @@ $this->layout = 'panel'
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>">Adicionar novo evento</a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
-		<li><a href="#arquivo">Arquivo</a></li>
+        <li class="active"><a href="#ativos">Ativos (<?php echo count($enabled); ?>)</a></li>
+		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlEvents);?>)</a></li>
+		<li><a href="#rascunhos">Rascunhos (<?php echo count($draft); ?>)</a></li>
+        <li><a href="#lixeira">Lixeira (<?php echo count($trashed); ?>)</a></li>
+		<li><a href="#arquivo">Arquivo <?php echo count($app->user->archivedEvents);?>)</a></li>
     </ul>
     <div id="ativos">
 
@@ -52,4 +53,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #arquivo-->
+	<!-- #permitido-->
+	<div id="permitido">
+		<?php foreach($app->user->hasControlEvents as $entity): ?>
+			<?php $this->part('panel-event', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$app->user->hasControlEvents): ?>
+			<div class="alert info">Você não possui nenhum evento liberado.</div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>

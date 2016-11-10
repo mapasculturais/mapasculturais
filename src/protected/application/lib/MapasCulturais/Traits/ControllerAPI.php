@@ -14,7 +14,7 @@ trait ControllerAPI{
     private $_apiFindParamList = [];
 
     public $_lastQueryMetadata;
-    
+
     protected $_subsiteEntityIds;
 
     public static function usesAPI(){
@@ -164,7 +164,6 @@ trait ControllerAPI{
         else
             return (int) $default_lifetime;
     }
-   
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -173,9 +172,9 @@ trait ControllerAPI{
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
 
         $counting = key_exists('@count', $qdata);
-        
+
         $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$qdata]);
-        
+
         if($counting)
             unset($qdata['@count']);
 
@@ -184,7 +183,7 @@ trait ControllerAPI{
                 $this->apiErrorResponse('no data');
 
             $class = $this->entityClassName;
-            
+
             $entity_properties = array_keys($app->em->getClassMetadata($this->entityClassName)->fieldMappings);
 
             $entity_associations = $app->em->getClassMetadata($this->entityClassName)->associationMappings;
@@ -197,7 +196,7 @@ trait ControllerAPI{
             $dql_joins = "";
             $dql_select = [];
             $dql_select_joins = [];
-	
+
             if($class::usesMetadata()){
                 $metadata_class = $class::getMetadataClassName();
 
@@ -209,7 +208,7 @@ trait ControllerAPI{
                     $entity_metadata[] = $meta->key;
                 }
             }
-            
+
             if($class::usesTaxonomies()){
                 $taxonomies = [];
                 $taxonomies_ids = [];
@@ -241,7 +240,7 @@ trait ControllerAPI{
             $page = null;
             $keyword = null;
             $permissions = null;
-            
+
             $seals = [];
 
             $dqls = [];
@@ -396,7 +395,7 @@ trait ControllerAPI{
 
                 if($key === 'user' && $class::usesOwnerAgent()){
                     $dql_joins .= ' LEFT JOIN e.owner __user_agent__';
-                    $keys[$key] = '__user_agent__.user';   
+                    $keys[$key] = '__user_agent__.user';
 
                 }elseif(key_exists($key, $entity_associations) && $entity_associations[$key]['isOwningSide']){
                     $keys[$key] = 'e.'.$key;
@@ -430,9 +429,9 @@ trait ControllerAPI{
                 }
                 $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
             }
-            
+
             // seals joins
-            
+
             if($seals){
 //                $_seals = $this->_API_find_addValueToParamList($seals);
                 $seals = implode(',', $seals);
@@ -497,21 +496,21 @@ trait ControllerAPI{
                 $dql_select[] = ', _owner';
                 $dql_select_joins[] = "LEFT JOIN e.owner _owner";
             }
-            
+
             $select_properties = implode(',',array_unique($select_properties));
-            
-            
+
+
             if(in_array('type', $select)){
                 $select_properties .= ',_type';
             }
-            
+
             $status_where = is_array($permissions) && in_array('view', $permissions) ? 'e.status >= 0' : 'e.status > 0';
             $dql_where = $dql_where ? "{$dql_where} AND {$status_where}" : "{$status_where}";
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
-            
+
             $dql_where = "WHERE $dql_where";
-            
+
             $final_dql = "
                 SELECT PARTIAL
                     e.{{$select_properties}}
@@ -551,7 +550,7 @@ trait ControllerAPI{
             }
 
             $query->setParameters($this->_apiFindParamList);
-            
+
             $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
                 if($counting){
                     return;
@@ -668,9 +667,9 @@ trait ControllerAPI{
 
                 if($permissions){
                     $rs = $query->getResult();
-                    
+
                     $app->detachRS($rs);
-                    
+
                     $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
@@ -746,7 +745,7 @@ trait ControllerAPI{
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);
-                
+
                 $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result", [&$qdata, &$result]);
 
                 return $result;
@@ -756,7 +755,7 @@ trait ControllerAPI{
 
 
     protected function _API_find_parseParam($key, $expression){
-        
+
         if(is_string($expression) && !preg_match('#^[ ]*(!)?([a-z]+)[ ]*\((.*)\)$#i', $expression, $match)){
             $this->apiErrorResponse('invalid expression: '. ">>$expression<<");
         }else{
@@ -768,7 +767,7 @@ trait ControllerAPI{
 
             if($operator == 'OR' || $operator == 'AND'){
                 $expressions = $this->_API_find_parseExpression($value);
-                
+
                 foreach($expressions as $expression){
                     $sub_dql = $this->_API_find_parseParam($key, $expression);
                     $dql .= $dql ? " $operator $sub_dql" : "($sub_dql";
@@ -788,20 +787,20 @@ trait ControllerAPI{
 
             }elseif($operator == "IIN"){
                 $values = $this->_API_find_splitParam($value);
-                
+
                 $values = $this->_API_find_addValueToParamList($values);
-                
-                $values = array_map(function($e) use ($key, $not) { 
+
+                $values = array_map(function($e) use ($key, $not) {
                     if($not){
-                        return "unaccent(lower($key)) != unaccent(lower($e))"; 
+                        return "unaccent(lower($key)) != unaccent(lower($e))";
                     }else{
-                        return "unaccent(lower($key)) = unaccent(lower($e))"; 
+                        return "unaccent(lower($key)) = unaccent(lower($e))";
                     }
                 } , $values);
 
                 if(count($values) < 1)
                     $this->apiErrorResponse ('expression IN expects at last one value');
-                
+
                 $dql = "\n(\n\t" . ($not ? implode("\n\t AND ", $values) : implode("\n\t OR ", $values) ) . "\n)";
 
 
@@ -909,8 +908,6 @@ trait ControllerAPI{
         }elseif(strpos($value,'@me.') === 0){
             $v = str_replace('@me.', '', $value);
             $value = $app->user->$v;
-            //foreach($value as $p)
-                //$app->log->debug(">>>>>>>>>>> >>>>>>>>>>>>>> " . print_r([$p->id, $p->name],true) . "<<<<<<<<< <<<<<<<<<<<<<");
         }elseif(trim($value) === '@profile'){
             $value = $app->user->profile ? $app->user->profile : null;
 

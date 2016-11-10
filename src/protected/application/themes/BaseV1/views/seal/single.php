@@ -14,6 +14,12 @@ $this->includeMapAssets();
 $this->includeAngularEntityAssets($entity);
 
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'seals','home_title' => 'entities: My Seals']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content label">
@@ -41,6 +47,9 @@ $this->includeAngularEntityAssets($entity);
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre">Sobre</a></li>
+        <?php if(!($this->controller->action === 'create')):?>
+        <li><a href="#permissao">Permissões</a></li>
+        <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -70,7 +79,7 @@ $this->includeAngularEntityAssets($entity);
             </span><?php if($entity->validPeriod > 0) echo $entity->validPeriod > 1 ? 'Meses':'Mês' ?>
 
             <?php if ($this->isEditable()): ?>
-              <p class="registration-help">(Informar 0 (zero) para validade infinita.)</p>
+              <p class="registration-help">(Informar 0 (zero) para validade infinita ou indicar o número de meses correspondente a validade do selo)</p>
             <?php endif; ?>
 					</p>
 
@@ -106,6 +115,10 @@ $this->includeAngularEntityAssets($entity);
       <?php }?>
       </div>
       <!-- #sobre -->
+
+      <!-- #permissao -->
+      <?php $this->part('singles/permissions') ?>
+      <!-- #permissao -->
       <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>
     <!-- .tabs-content -->
@@ -127,6 +140,10 @@ $this->includeAngularEntityAssets($entity);
     <?php endif; ?>
 </div>
 <div class="sidebar seal sidebar-right">
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
 
 	<!-- Related Agents BEGIN -->
         <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>

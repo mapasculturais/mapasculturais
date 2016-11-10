@@ -157,7 +157,7 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
     
@@ -168,36 +168,6 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
-
-    protected function canUserPublish($user){
-        if($user->is('guest')){
-            return false;
-        }
-
-        if($user->is('admin')){
-            return true;
-        }
-
-        if($this->canUser('@control', $user)){
-            return true;
-        }
-
-        if($this->project && $this->project->canUser('@control', $user)){
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function canUserView($user){
-        if($this->status === self::STATUS_ENABLED){
-            return true;
-        }else if($this->status === self::STATUS_DRAFT){
-            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
-        }
-
-        return false;
-    }
 
     function validatePeriod($value) {
     	if (!is_numeric($value)) {

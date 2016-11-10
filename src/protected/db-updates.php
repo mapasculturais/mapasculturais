@@ -155,23 +155,23 @@ return [
       $conn->executeQuery("CREATE SEQUENCE saas_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
       $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES saas(id);");
     },
-            
+
     'rename saas tables to subsite' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE saas RENAME TO subsite");
         $conn->executeQuery("ALTER TABLE saas_meta RENAME TO subsite_meta");
         $conn->executeQuery("ALTER SEQUENCE saas_id_seq RENAME TO subsite_id_seq");
         $conn->executeQuery("ALTER SEQUENCE saas_meta_id_seq RENAME TO subsite_meta_id_seq");
     },
-            
+
     'remove parent_url and add alias_url' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE subsite DROP COLUMN url_parent");
         $conn->executeQuery("ALTER TABLE subsite ADD COLUMN alias_url VARCHAR(255) DEFAULT NULL;");
-        
+
         $conn->executeQuery("CREATE INDEX url_index ON subsite (url);");
         $conn->executeQuery("CREATE INDEX alias_url_index ON subsite (alias_url);");
 
     },
-       
+
 
     'verified seal migration' => function () use($conn){
         $agent_id = $conn->fetchColumn("select profile_id
@@ -203,7 +203,7 @@ return [
     	$conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
-    
+
     'alter table role add column subsite_id' => function () use($conn) {
     	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_user_fk;");
     	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_unique;");
@@ -214,46 +214,69 @@ return [
         $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_57698A6AC79C849A ON role (subsite_id);");
     },
-            
+
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
     },
-    
+
     'ADD columns subsite_id' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE space ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE space ADD CONSTRAINT FK_2972C13AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_2972C13AC79C849A ON space (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE agent ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_268B9C9DC79C849A ON agent (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE event ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_3BAE0AA7C79C849A ON event (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE project ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_2FB3D0EEC79C849A ON project (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE seal ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_2E30AE30C79C849A ON seal (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE registration ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_62A8A7A7C79C849A ON registration (subsite_id);");
-        
+
         $conn->executeQuery("ALTER TABLE user_app ADD subsite_id INT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (subsite_id);");
     },
-    
+
     'remove subsite slug column' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE subsite DROP COLUMN slug;");
     },
-    
+
     'add subsite verified_seals column' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE subsite ADD verified_seals VARCHAR(512) DEFAULT '[]';");
     },
+    'update entities last_update_timestamp with user last log timestamp' => function () use($conn,$app) {
+        $conn->executeQuery("UPDATE project SET update_timestamp = usr_login.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr WHERE status > 0) AS usr_login WHERE agent_id = usr_login.id;");
+        $conn->executeQuery("UPDATE event SET update_timestamp = usr_login.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr WHERE status > 0) AS usr_login WHERE agent_id = usr_login.id;");
+        $conn->executeQuery("UPDATE agent SET update_timestamp = usr_login.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr WHERE status > 0) AS usr_login WHERE agent_id = usr_login.id;");
+        $conn->executeQuery("UPDATE seal SET update_timestamp = usr_login.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr WHERE status > 0) AS usr_login WHERE agent_id = usr_login.id;");
+        $conn->executeQuery("UPDATE space SET update_timestamp = usr_login.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr WHERE status > 0) AS usr_login WHERE agent_id = usr_login.id;");
+    },
+
+    'Fix field options field type from registration field configuration' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
+    },
+
+    'Created owner seal relation field' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN owner_id INTEGER;");
+        $agent_id = $conn->fetchColumn("select profile_id
+                    from usr
+                    where id = (
+                        select min(usr_id)
+                        from role
+                        where name = 'superAdmin'
+                    )");
+        $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
+    }
 ];

@@ -108,6 +108,11 @@ h1 .icon {
         content: $unicode-panel;
     }
 }
+.icon-group {
+    &:before {
+        content: $unicode-group;
+    }
+}
 .icon-home {
     &:before {
         content: $unicode-home;

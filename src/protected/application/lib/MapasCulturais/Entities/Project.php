@@ -94,7 +94,7 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=false)
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
 
