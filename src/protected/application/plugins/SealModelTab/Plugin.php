@@ -10,45 +10,61 @@ use MapasCulturais\App,
 class Plugin extends \MapasCulturais\Plugin {
 
     public function _init() {
+
         $app = App::i();
 
-        $app->hook('template(seal.<<create|edit>>.tabs-content):end', function() use($app){
-            $opt = [
-                'entity' => $this->requestedEntity,
-            ];
-            if (isset($app->config['seal.models']))
-                $opt['model_count'] = count($app->config['seal.models']);
-            else
-                $opt['model_count'] = 0;
-            $app->view->part('seal-model--content', $opt);
+        $app->sealModels = [];
+
+        $app->hook( 'template(seal.<<create|edit>>.tabs-content):end', function() use($app){
+            $entity = $app->view->controller->requestedEntity;
+            $app->view->part( 'seal-model--content',['entity' => $entity] );
         });
 
-        $app->hook('template(seal.<<create|edit>>.tabs):end', function() use($app){
-            $this->part('seal-model--tab');
+        $app->hook( 'template(seal.<<create|edit>>.tabs):end', function() use($app){
+            $this->part( 'seal-model--tab' );
         });
+
+        $app->hook('GET(seal.printsealrelation):before', function(){
+            $app = App::i();
+            $id = $this->data['id'];
+            $relation = $app->repo('SealRelation')->find($id);
+            $this->requireAuthentication();
+            include PLUGINS_PATH.$relation->seal->seal_model.'/printsealrelation.php';
+            exit();
+        });
+
     }
 
     public function register() {
         $app = App::i();
 
+        $conf = [
+            'label'     => $app->txt('Model template'),
+            'type'      => 'select',
+            'options'   => []
+        ];
 
-        $def__seal_model = new Definitions\Metadata('sealModel', ['label' => $app->txt('Model template')]);
+        foreach ($app->sealModels as $v)
+            $conf['options'][$v['name']] = $v['label'];
 
-        $app->registerMetadata($def__seal_model, 'MapasCulturais\Entities\Seal');
+        $def__seal_model = new Definitions\Metadata('seal_model', $conf);
+
+        $app->registerMetadata( $def__seal_model, 'MapasCulturais\Entities\Seal' );
     }
 }
 
 
 abstract class SealModelTemplatePlugin extends \MapasCulturais\Plugin{
-    public function _init() { }
-
-    public function register(){
+    public function _init() {
         $app = App::i();
-        $app->sealModels = '12';
-        $app->sealModels[] = '123';
+        $app->sealModels[] = $this->getModelName();
     }
+
+
+    public function register(){}
 
     // return label and name
     // ['label'=> 'My Label Name', 'name' => 'my_model_name']
     function getModelName(){}
+
 }
