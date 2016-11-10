@@ -27,7 +27,7 @@ return array(
             'private' => true,
             'label' => 'Edad',
             'validations' => array(
-                "v::int()->positive()" => "La edad/fecha debe ser um número positivo."
+                "v::intVal()->positive()" => "La edad/fecha debe ser um número positivo."
             )
         ),
 
