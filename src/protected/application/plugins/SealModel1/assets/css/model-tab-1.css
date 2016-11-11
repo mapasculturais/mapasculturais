@@ -6,17 +6,18 @@
   overflow: auto;
   margin: auto; }
   #certificate-model1 p.certificate-content {
-    margin: 160px 126px 0px 190px;
-    padding: 40px 0;
-    font-size: 25px;
-    line-height: 2.2rem; }
+    margin: 201px 520px 0 60px;
+    padding: 40px 0 0 0;
+    font-size: 23px;
+    line-height: 2.2rem;
+    text-align: justify; }
     #certificate-model1 p.certificate-content span.entity-name {
       font-size: 22px;
       font-style: italic; }
   #certificate-model1 .footer {
-    margin-top: 50px;
+    margin-top: 30px;
     width: 100%;
-    text-align: right; }
+    margin-left: 62px; }
     #certificate-model1 .footer .footer-signatures {
       width: auto;
       min-width: 580px;
