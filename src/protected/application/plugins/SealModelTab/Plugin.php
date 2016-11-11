@@ -27,16 +27,19 @@ class Plugin extends \MapasCulturais\Plugin {
         });
 
         $app->hook('GET(seal.printsealrelation):before', function() use($app, $that){
+            $id = $this->data['id'];
+            $relation = $app->repo('SealRelation')->find($id);
+
+            if (!$relation->seal->seal_model)
+                return;
 
             $view = $app->view;
             $view->enqueueStyle('app', 'seal_model_tab', 'css/seal-model-tab.css');
 
-            $id = $this->data['id'];
 
             $this->requireAuthentication();
             $this->layout = 'nolayout';
 
-            $relation = $app->repo('SealRelation')->find($id);
             $entity = $relation->seal;
             $period = new \DateInterval("P" . $entity->validPeriod . "M");
             $dateIni = $relation->createTimestamp->format("d/m/Y");

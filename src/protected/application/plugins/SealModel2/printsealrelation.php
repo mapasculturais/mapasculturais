@@ -17,10 +17,6 @@
                         alt="<?php echo $relation->seal->name ?>">
                 </div>
             <?php } ?>
-            <div class="certificate-site-brand">
-                <img src="<?php $view->asset('img/logo-site.png'); ?>"
-                    alt="<?php $view>dict('site: name'); ?>">
-            </div>
         </div>
     </div>
 </div>
