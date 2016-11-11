@@ -1,4 +1,4 @@
-<div id="certificate-model1" style="background-image: url('<?php $view->asset('img/modelo_certificado_01.jpg') ?>')">
+<div id="certificate-model1" style="background-image: url('<?php $view->asset('img/modelo_certificado_04.jpg') ?>')">
     <p class="certificate-content"><?php echo nl2br($msg) ?></p>
     <div class="footer">
         <div class="entity-url">
