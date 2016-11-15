@@ -24,7 +24,7 @@ class Theme extends BaseV1\Theme {
 
         $app->hook('template(space.<<create|edit|single>>.tabs):end', function(){
             //$this->part('tabs-tecnica', ['entity' => $this->data->entity]);
-            echo '<li><a href="#tab-tecnica">Detalles Tecnicos</a></li>';
+            echo '<li><a href="#tab-tecnica">Detalles Técnicos</a></li>';
         });
 
         $app->hook('template(space.<<create|edit|single>>.tabs-content):end', function(){
@@ -128,17 +128,17 @@ class Theme extends BaseV1\Theme {
         ));
 
         $this->registerSpaceMetadata('teatros_equipamento_lumnico', array(
-            'label' => 'Equipamento Lumnico',
+            'label' => 'Equipamiento Lumínico',
             'type' => 'text',
         ));
 
         $this->registerSpaceMetadata('teatros_equipamento_sonido', array(
-            'label' => 'Equipamento de Sonido',
+            'label' => 'Equipamiento de Sonido',
             'type' => 'text',
         ));
 
         $this->registerSpaceMetadata('teatros_equipamento_audiovisual', array(
-            'label' => 'Equipamento Audiovisual',
+            'label' => 'Equipamiento Audiovisual',
             'type' => 'text',
         ));
         
