@@ -35,7 +35,7 @@ class Theme extends MapasCulturais\Theme {
             'home: title' => "¡Bienvenidos!",
             'home: abbreviation' => "MC",
             'home: colabore' => "Colabore con Mapas Culturales",
-            'home: welcome' => "Mapas Culturales es una plataforma de software libre, de cartografía cultural libre y colaborativa.",
+            'home: welcome' => "Culturaenlinea.uy es una herramienta colaborativa en la cual tanto los ciudadanos como los actores culturales pueden cargar información visible para todo el que acceda al mapa. Permite conocer el escenario cultural de nuestro país, así como también cargar eventos, espacios culturales y realizar convocatorias de los diversos llamados realizados por esta secretaría entre otros.",
             'home: events' => "Puede buscar eventos culturales en los campos de búsqueda combinados. Como usuario registrado, puede incluir su evento en la plataforma y darlo a conocer de forma gratuita.",
             'home: agents' => "Puede colaborar en la gestión de la cultura con su propia información completando su perfil de agente cultural. En este espacio, son artistas registrados, gestores y productores; una red de actores involucrados en la escena cultural de la región. Usted puede registrar uno o más agentes (grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con sus eventos de perfil y espacios culturales con libre difusión.",
             'home: spaces' => "Busque espacios culturales incluidos en la plataforma, con el acceso a los campos de búsqueda combinados que ayudan a la exactitud de su búsqueda. Firmar los espacios donde se desarrollan sus actividades artísticas y culturales.",
