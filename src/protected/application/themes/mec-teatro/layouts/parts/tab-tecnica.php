@@ -57,7 +57,7 @@
         <hr />
         <?php if($this->isEditable() || $entity->teatros_equipamento_lumnico): ?>
         <p>
-            <span class="label">Equipamento Lumnico:</span>
+            <span class="label">Equipamiento Lumínico:</span>
             <p class="js-editable" data-edit="teatros_equipamento_lumnico" data-original-title="Equipamento Lumnico" data-emptytext="Equipamento Lumnico">
                 <?php echo $this->isEditable() ? $entity->teatros_equipamento_lumnico : nl2br($entity->teatros_equipamento_lumnico); ?>
             </p>
@@ -66,7 +66,7 @@
         <hr />
         <?php if($this->isEditable() || $entity->teatros_equipamento_sonido): ?>
         <p>
-            <span class="label">Equipamento de Sonido:</span>
+            <span class="label">Equipamiento de Sonido:</span>
             <p class="js-editable" data-edit="teatros_equipamento_sonido" data-original-title="Equipamento de Sonido" data-emptytext="Equipamento de Sonido">
                 <?php echo $this->isEditable() ? $entity->teatros_equipamento_sonido : nl2br($entity->teatros_equipamento_sonido); ?>
             </p>
@@ -75,7 +75,7 @@
         <hr />
         <?php if($this->isEditable() || $entity->teatros_equipamento_audiovisual): ?>
         <p>
-            <span class="label">Equipamento Audiovisual:</span>
+            <span class="label">Equipamiento Audiovisual:</span>
             <p class="js-editable" data-edit="teatros_equipamento_audiovisual" data-original-title="Equipamento Audiovisual" data-emptytext="Equipamento Audiovisual">
                 <?php echo $this->isEditable() ? $entity->teatros_equipamento_audiovisual : nl2br($entity->teatros_equipamento_audiovisual); ?>
             </p>
