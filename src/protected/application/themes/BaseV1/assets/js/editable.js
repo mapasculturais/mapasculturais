@@ -1016,13 +1016,7 @@ $(function(){
             this.$input = this.$tpl.find('input');
             this.$input.parent().colorpicker({
                 container: this.$tpl,
-                inline: true,
-                template: '<div class="colorpicker dropdown-menu" border="1">' +
-                            '<div class="colorpicker-saturation"><i><b></b></i></div>' +
-                            '<div class="colorpicker-hue"><i></i></div>' +
-                            '<div class="colorpicker-color"><div/></div>' +
-                            '<div class="colorpicker-selectors"></div>' +
-                            '</div>'
+                inline: true
             });
         },
         autosubmit: function() {
@@ -1035,7 +1029,7 @@ $(function(){
     });
 
     Color.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div class="editable-color"><div><input type="text" value="" class="form-control" /></div></div>'
+        tpl: '<div class="editable-color"><div><input type="text" value="" class="form-control" style="width:130px !important" /></div></div>'
     });
     $.fn.editabletypes.color = Color;
 
