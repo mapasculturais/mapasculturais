@@ -73,7 +73,9 @@ class Plugin extends \MapasCulturais\Plugin {
         $conf = [
             'label'     => $app->txt('Model template'),
             'type'      => 'select',
-            'options'   => []
+            'options'   => [
+                '' => 'Nenhum modelo Selecionado'
+            ]
         ];
 
         foreach ($app->sealModels as $v)
