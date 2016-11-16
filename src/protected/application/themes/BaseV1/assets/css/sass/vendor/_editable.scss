@@ -32,6 +32,10 @@ p > .editable {
     text-transform: none;
     color: $gray-dark;
 }
+.editable.editable-disabled:after {
+    content: '';
+}
+
 .editable:hover:after {
     color: $gray-darker;
 }
