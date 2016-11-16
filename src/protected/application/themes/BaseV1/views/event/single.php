@@ -364,6 +364,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+
+    <!-- #denuncia/sugestao -->
+    <?php $this->part('singles/compliant_suggestion.php') ?>
+    <!-- #denuncia/sugestao -->
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">

@@ -104,13 +104,11 @@ $this->entity = $entity;
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
-    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'spaces','home_title' => 'entities: My Spaces']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
-
     <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
+
+    <!-- #denuncia/sugestao -->
+    <?php $this->part('singles/compliant_suggestion.php') ?>
+    <!-- #denuncia/sugestao -->
 </article>
 <div class="sidebar-left sidebar space">
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>

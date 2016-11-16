@@ -146,34 +146,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
 
-    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
-
-    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
-
-    <div class="denuncia">
-        <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
-    </div>
-
-    <form class="form-complaint-suggestion hidden" id="formulario">
-      <p>
-        Nome:<br />
-        <input type="text" rows="5" name="nome">
-      </p>
-      <p>
-        E-mail:<br />
-        <input type="text" rows="5" name="email">
-      </p>
-        Mensagem:<br />
-        <textarea type="text" rows="5" cols="40" name="mensagem"></textarea>
-      </p>
-      <p>
-        <input type="submit" value="Enviar Denúncia">
-      </p>
-    </form>
+    <!-- #denuncia/sugestao -->
+    <?php $this->part('singles/compliant_suggestion.php') ?>
+    <!-- #denuncia/sugestao -->
 
 </article>
 <div class="sidebar-left sidebar agent">

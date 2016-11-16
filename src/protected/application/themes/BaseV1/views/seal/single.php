@@ -124,13 +124,11 @@ $this->includeAngularEntityAssets($entity);
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
-    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'seals','home_title' => 'entities: My Seals']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
-
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
+
+    <!-- #denuncia/sugestao -->
+    <?php $this->part('singles/compliant_suggestion.php') ?>
+    <!-- #denuncia/sugestao -->
 </article>
 <div class="sidebar-left sidebar seal">
     <?php if($this->controller->action == 'create'): ?>

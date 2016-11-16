@@ -82,6 +82,10 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+
+    <!-- #denuncia/sugestao -->
+    <?php $this->part('singles/compliant_suggestion.php') ?>
+    <!-- #denuncia/sugestao -->
 </article>
 <div class="sidebar-left sidebar project">
     <!-- Related Seals BEGIN -->
