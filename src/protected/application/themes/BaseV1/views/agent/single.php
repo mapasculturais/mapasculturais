@@ -158,7 +158,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
     </div>
 
-    <form class="formulario hidden">
+    <form class="form-complaint-suggestion hidden" id="formulario">
       <p>
         Nome:<br />
         <input type="text" rows="5" name="nome">
@@ -232,7 +232,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <script type="text/javascript">
   var botao = document.querySelector(".botao");
   botao.addEventListener("click", function(){
-    var formulario = document.querySelector(".formulario");
+    var formulario = document.getElementById("formulario");
     formulario.classList.toggle("hidden");
   }, true)
 
