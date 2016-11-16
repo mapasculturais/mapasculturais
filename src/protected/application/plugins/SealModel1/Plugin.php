@@ -8,15 +8,13 @@ use SealModelTab;
 
 class Plugin extends SealModelTab\SealModelTemplatePlugin
 {
-    function getModelName(){
-        return ['label'=> 'Modelo Mapas 1', 'name' => 'SealModel1'];
-    }
-
-    function getCssFileName(){
-        return 'model-tab-1.css';
-    }
-
-    function getBackgroundImage(){
-        return 'modelo_certificado_01.jpg';
+    function getModelData(){
+        return [
+            'label'=> 'Modelo Mapas 1',
+            'name' => 'SealModel1',
+            'css' => 'model-tab-1.css',
+            'background' => 'modelo_certificado_01.jpg',
+            'preview' => 'preview-model1.png'
+        ];
     }
 }

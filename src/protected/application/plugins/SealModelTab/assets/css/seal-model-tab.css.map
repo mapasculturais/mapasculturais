@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,aAAa;EACT,OAAO,EAAE,IAAI",
+"sources": ["sass/main.sass"],
+"names": [],
+"file": "seal-model-tab.css"
+}

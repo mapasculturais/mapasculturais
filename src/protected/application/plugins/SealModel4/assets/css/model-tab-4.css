@@ -8,7 +8,6 @@
   #certificate-model4 img.background {
     position: absolute;
     z-index: -1;
-    opacity: 0.95;
     width: 1250px; }
   #certificate-model4 p.certificate-content {
     margin: 220px 212px 0 90px;
