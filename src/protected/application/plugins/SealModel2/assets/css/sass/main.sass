@@ -1,38 +1,72 @@
-#certificate-model1
+#certificate-model2
     width: 1250px
+    min-width: 1250px
     background-size: contain
     background-repeat: no-repeat
     height: 100%
-    overflow: auto
+    overflow: hidden
     margin: auto
 
+    img.background
+        position: absolute
+        z-index: -1
+        opacity: 0.95
+        width: 1250px
+
     p.certificate-content
-        margin: 160px 126px 0px 190px
-        padding: 40px 0
-        font-size: 25px
+        margin: 110px 179px 0 377px
+        padding: 30px 0 0 0
+        font-size: 22px
         line-height: 2.2rem
+        text-align: justify
+        height: 616px
 
         span.entity-name
             font-size: 22px
             font-style: italic
 
+    .entity-url
+        float: left
+        position: absolute
+        margin-left: -32px
+        margin-top: -89px
+        left: 0
+        font-size: 14px
+        /* Safari */
+        -webkit-transform: rotate(-90deg)
+        /* Firefox */
+        -moz-transform: rotate(-90deg)
+        /* IE */
+        -ms-transform: rotate(-90deg)
+        /* Opera */
+        -o-transform: rotate(-90deg)
+        /* Internet Explorer */
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3)
+
+
     .footer
-        margin-top: 50px
         width: 100%
-        text-align: right
 
         .footer-signatures
-            width: auto
-            min-width: 580px
+            width: 1075px
+            margin-left: 175px
             text-align: center
+            float: right
+            position: absolute
+            margin-top: -20px
+
             div
                 display: inline
+                &.certificate-seal-owner p
+                    margin-bottom: 0px
+                    height: 50px
 
         div
             position: relative
-            margin: 10px
             vertical-align: bottom
             display: inline-block
 
-        div img
-            height: 80px
+        div.footer-img
+            margin: 0 7px
+            > img
+                height: 82px
