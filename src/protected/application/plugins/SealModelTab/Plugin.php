@@ -18,12 +18,29 @@ class Plugin extends \MapasCulturais\Plugin {
         $app->sealModels = [];
 
         $app->hook( 'template(seal.<<create|edit>>.tabs-content):end', function() use($app){
+            $view = $app->view->enqueueScript('app', 'seal_model_tab', 'js/seal-model-preview.js');
             $entity = $app->view->controller->requestedEntity;
             $app->view->part( 'seal-model--content',['entity' => $entity] );
         });
 
         $app->hook( 'template(seal.<<create|edit>>.tabs):end', function() use($app){
             $this->part( 'seal-model--tab' );
+        });
+
+
+        $app->hook('GET(seal.sealModelPreview)', function() use($app){
+            $preview_name = $app->request->get('p');
+            $preview_url = '';
+            foreach ($app->sealModels as $v){
+                if ($v['name'] == $preview_name){
+                    $preview_url = isset($v['preview']) ? $v['preview'] : '';
+                    break;
+                }
+            }
+            if ($preview_url)
+                $app->view->asset('img/'.$preview_url);
+            else
+                echo '';
         });
 
         $app->hook('GET(seal.printsealrelation):before', function() use($app, $that){
@@ -91,31 +108,26 @@ class Plugin extends \MapasCulturais\Plugin {
 abstract class SealModelTemplatePlugin extends \MapasCulturais\Plugin{
     public function _init() {
         $app = App::i();
-        $app->sealModels[] = $this->getModelName();
+        $app->sealModels[] = $this->getModelData();
 
-        $that = $this;
+        $data = $this->getModelData();
 
-        $app->hook('GET(seal.printsealrelation):before', function() use($app, $that){
+        $app->hook('GET(seal.printsealrelation):before', function() use($app, $data){
             $id = $this->data['id'];
             $relation = $app->repo('SealRelation')->find($id);
-            if ($relation->seal->seal_model == $that->getModelName()['name']){
-                $app->view->assetManager->publishAsset('img/'.$that->getBackgroundImage());
-                $app->view->enqueueStyle('app', $that->getModelName()['name'], 'css/'.$that->getCssFileName());
+            if ($relation->seal->seal_model == $data['name']){
+                $app->view->assetManager->publishAsset('img/' . $data['background']);
+                $app->view->enqueueStyle('app', $data-['name'], 'css/' . $data['css']);
             }
         });
     }
 
-
     public function register(){}
 
-    // return label and name
     // ['label'=> 'My Label Name', 'name' => 'my_model_name']
-    function getModelName(){}
-
-    // return a unique CSS file name for the Model
-    function getCssFileName(){}
+    function getModelData(){}
 
     // return a unique Image File Name for the MOdel background
-    function getBackgroundImage(){}
+    // function getBackgroundImage(){}
 
 }
