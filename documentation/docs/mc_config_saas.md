@@ -5,6 +5,16 @@ Tem objetivo de otimizar a entrega de um determinado software e facilitar a sua 
 No caso do software Mapas Culturais é disponibilizar uma forma fácil e rápida de criar novas instalações a partir de uma instalação física do software.
 As instalação física será a principal que será utilizada para gerenciar todas as sub-instalações criadas via SaaS.
 
+## Configuração
+```
+'namespaces' => array(
+  'MapasCulturais\Themes' => THEMES_PATH,
+  'BaseMinc' => THEMES_PATH . '/mapasculturais-baseminc/',
+  'Subsite' => THEMES_PATH . '/Subsite/',
+  $theme_namespace => $theme_path
+  ),
+```
+
 ## Perfis
 A funcionalidade do SaaS demandou a criação de alguns perfis de usuário que obterão acesso as funcionalidades de gestão das instalações de Mapas Culturais no sistema.
 
