@@ -10,8 +10,8 @@ Será necessário alterar o arquivo de configuração da instalação ```config.
 ```
 'namespaces' => array(
   'MapasCulturais\Themes' => THEMES_PATH,
-  'BaseMinc' => THEMES_PATH . '/mapasculturais-baseminc/',
-  'Subsite' => THEMES_PATH . '/Subsite/',
+  'BaseMinc' => THEMES_PATH . '/mapasculturais-baseminc/', // Tema padrão que será utilizado quando não for acessada nenhuma instalação SaaS
+  'Subsite' => THEMES_PATH . '/Subsite/', //Tema do SaaS que utilizará as informações cadastradas via entidade SubSite
   $theme_namespace => $theme_path
   ),
 ```
