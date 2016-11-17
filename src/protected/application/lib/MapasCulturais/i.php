@@ -126,6 +126,17 @@ class i {
     static function _e( $text, $domain = 'default' ) {
     	echo self::translate( $text, $domain );
     }
+    
+    /**
+     * Display translated text para utiizar em atributos HTML.
+     *
+     * @param string $text   Text to translate.
+     * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+     */
+    static function _esc_attr_e( $text, $domain = 'default' ) {
+    	//TODO: metodo para escapar string para seren utilizadas em atributos HTML
+        echo self::translate( $text, $domain );
+    }
 
     /**
      * Display translated text that has been escaped for safe use in an attribute.
