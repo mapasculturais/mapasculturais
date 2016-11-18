@@ -5,6 +5,17 @@ Tem objetivo de otimizar a entrega de um determinado software e facilitar a sua 
 No caso do software Mapas Culturais é disponibilizar uma forma fácil e rápida de criar novas instalações a partir de uma instalação física do software.
 As instalação física será a principal que será utilizada para gerenciar todas as sub-instalações criadas via SaaS.
 
+## Configuração
+Será necessário alterar o arquivo de configuração da instalação ```config.php``` incluindo as namespaces os temas padrões que serão utilizados na instalação com SaaS:
+```
+'namespaces' => array(
+  'MapasCulturais\Themes' => THEMES_PATH,
+  'BaseMinc' => THEMES_PATH . '/mapasculturais-baseminc/', // Tema padrão que será utilizado quando não for acessada nenhuma instalação SaaS
+  'Subsite' => THEMES_PATH . '/Subsite/', //Tema do SaaS que utilizará as informações cadastradas via entidade SubSite
+  $theme_namespace => $theme_path
+  ),
+```
+
 ## Perfis
 A funcionalidade do SaaS demandou a criação de alguns perfis de usuário que obterão acesso as funcionalidades de gestão das instalações de Mapas Culturais no sistema.
 
