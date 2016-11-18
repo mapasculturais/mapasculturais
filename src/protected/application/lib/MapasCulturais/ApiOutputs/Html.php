@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\ApiOutputs;
 use \MapasCulturais\App;
+use MapasCulturais;
 
 
 
@@ -127,8 +128,16 @@ class Html extends \MapasCulturais\ApiOutput{
                                     echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
                                 }elseif(is_string($v) || is_numeric($v)){
                                     echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
+                                }elseif(is_object($v) && isset($v->date)){
+									echo date_format(date_create($v->date),'Y-m-d H:i:s');
+                                }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
+									echo $v->latitude . ',' . $v->longitude;
                                 }elseif(is_array($v) || is_object($v)){
-                                    $this->printTable($v);
+                                    if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
+                                    	echo implode(', ',$v);	
+                                    } else {
+                                    	$this->printTable($v);
+	                                }
                                 }else{
                                     //var_dump($v);
                                 }
