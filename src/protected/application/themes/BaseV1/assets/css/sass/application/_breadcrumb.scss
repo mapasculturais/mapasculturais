@@ -1,34 +1,30 @@
 .breadcrumb {
+    background-color: #f4f4f4;
     list-style-type: none;
-    font-size: .8rem;
     overflow: hidden;
-    width: 100%;
     margin: 0;
-    background-color: #FFF;
-    border-color: #bbb -moz-use-text-color;
-    border-image: none;
-    border-style: solid none;
-    border-width: 0px 0;
-    background-color: #F4F4F4;
+    @media screen and (max-width: 1366px) and (min-width: 1200px) {
+        margin: 0 0 0 20%;
+    }
+    @media screen and (min-width: 1367px) {
+        margin: 0 0 0 15%;
+    }
 
     li {
         display: inline-block;
         margin-right: -6px;
-        display: inline-block;
-        font-weight: 100;
 
-        &.active a {
-            font-weight: bold;
-            color: #777;
+        &.active {
+            a {
+                font-weight: bold;
+                color: #777;
+            }
         }
 
         &:first-child {
-            border-left: 1px solid #BBB;
+            border-left: 1px solid #ddd;
 
             a {
-                padding-left: 15px;
-                padding-right: 20px;
-
                 &:before {
                     content: none;
                 }
@@ -36,36 +32,37 @@
         }
 
         a {
-            color: #999;
-            text-decoration: none;
-            padding: .6rem;
+            padding: 0 .8rem;
             margin-left: 5px;
+            color: #999;
+            font-size: .8rem;
+            font-family: $font-stack-base;
+            font-weight: bold;
+            line-height: $line-height-base;
+            text-decoration: none;
 
-            &:after {
-                border-bottom: 13px solid transparent;
-                border-left: 8px solid #F4F4F4;
-                border-top: 13px solid transparent;
+            &:after, &:before {
                 content: " ";
                 display: block;
                 height: 0;
-                margin-left: 1px;
-                margin-top: -24px;
                 position: absolute;
                 width: 0;
+            }
+
+            &:after {
+                border-bottom: 12px solid transparent;
+                border-left: 8px solid #f4f4f4;
+                border-top: 12px solid transparent;
+                margin-left: 1px;
+                margin-top: -24.5px;
                 z-index: 2;
             }
 
             &:before {
-                border-bottom: 14px solid transparent;
-                border-left: 8px solid #BBB;
-                border-top: 14px solid transparent;
-                content: " ";
-                display: block;
-                height: 0;
+                border-bottom: 13px solid transparent;
+                border-left: 8px solid #bbb;
+                border-top: 13px solid transparent;
                 margin-left: 1px;
-                margin-top: 0.25px;
-                position: absolute;
-                width: 0;
                 z-index: 1;
             }
         }
