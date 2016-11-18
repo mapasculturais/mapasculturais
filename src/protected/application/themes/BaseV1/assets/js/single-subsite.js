@@ -34,4 +34,25 @@ $(function(){
     
     map.on('zoomend', setState);
     map.on('moveend', setState);
+    
+    
+    $('.js-editable.js-color').on('save', function(e, editable){
+        
+        var $this = $(this);
+        $this.css('background-color', editable.newValue);
+        
+    }).on('shown', function(e,editable){
+//        $(editable.container.$form.find('div.editable-input:first')[0]).colorpicker();
+    }).each(function(){
+        var color = $(this).text();
+        if(color){
+            $(this).css('background-color', color);
+        }
+    });
+    
+    var interval = setInterval(function(){
+       
+       $('.js-editable.js-color').removeClass('editable-unsaved editable-bg-transition');                
+
+    },1);
 });

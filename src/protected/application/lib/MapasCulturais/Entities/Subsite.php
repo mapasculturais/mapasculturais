@@ -318,10 +318,6 @@ class Subsite extends \MapasCulturais\Entity
         if (!in_array('Eventos', $entidades)) {
             $config['app.enabled.events'] = false;
         }
-
-        if (!in_array('Selos', $entidades)) {
-            $config['app.enabled.seals'] = false;
-        }
     }
     
     

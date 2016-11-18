@@ -1017,7 +1017,7 @@ $(function(){
             this.$input.parent().colorpicker({
                 container: this.$tpl,
                 inline: true
-            });
+            })
         },
         autosubmit: function() {
             this.$input.keydown(function (e) {

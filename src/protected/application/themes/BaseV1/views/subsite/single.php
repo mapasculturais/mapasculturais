@@ -15,6 +15,10 @@ $editEntity = $this->isEditable();
 
 $slag_editbla = $this->controller->action === 'create';
 
+
+
+$this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
+
 ?>
 <article class="main-content subsite-container">
     

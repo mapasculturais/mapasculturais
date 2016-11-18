@@ -136,8 +136,7 @@ return array(
                 'Agentes',
                 'Espaços',
                 'Projetos',
-                'Eventos',
-                'Selos'
+                'Eventos'
             )
         ),
         'cor_agentes' => $metadata_config_color,

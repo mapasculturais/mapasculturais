@@ -4,7 +4,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
-$this->enqueueScript('app', 'subsite-map', 'js/subsite-map.js', ['map']);
 ?>
 <div id="mapa" class="aba-content">
     <div id="subsite-map" style="width:100%; height:300px">
