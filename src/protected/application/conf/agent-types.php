@@ -6,145 +6,145 @@ return array(
     'metadata' => array(
         'nomeCompleto' => array(
             'private' => true,
-            'label' => 'Nome completo ou Razão Social',
+            'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
             'validations' => array(
-                //'required' => 'Seu nome completo ou jurídico deve ser informado.'
+                //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
             )
         ),
 
         'documento' => array(
             'private' => true,
-            'label' => 'CPF ou CNPJ',
+            'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
 //            'validations' => array(
-//                'required' => 'Seu CPF ou CNPJ deve ser informado.',
-//                'unique' => 'Este documento já está registrado em nosso sistema.',
-//                'v::oneOf(v::cpf(), v::cnpj())' => 'O número de documento informado é inválido.',
-//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => 'Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.'
+//                'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
+//                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
+//                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
+//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
 //            )
         ),
 
         'idade' => array(
             'private' => true,
-            'label' => 'Idade',
+            'label' => \MapasCulturais\i::__('Idade'),
             'validations' => array(
-                "v::intVal()->positive()" => "A idade/tempo deve ser um número positivo."
+                "v::intVal()->positive()" => \MapasCulturais\i::__("A idade/tempo deve ser um número positivo.")
             )
         ),
 
         'raca' => array(
             'private' => true,
-            'label' => 'Raça/cor',
+            'label' => \MapasCulturais\i::__('Raça/cor'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Branca' => 'Branca',
-                'Preta' => 'Preta',
-                'Amarela' => 'Amarela',
-                'Parda' => 'Parda',
-                'Indígena' => 'Indígena'
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Branca' => \MapasCulturais\i::__('Branca'),
+                'Preta' => \MapasCulturais\i::__('Preta'),
+                'Amarela' => \MapasCulturais\i::__('Amarela'),
+                'Parda' => \MapasCulturais\i::__('Parda'),
+                'Indígena' => \MapasCulturais\i::__('Indígena')
             )
         ),
 
         'dataDeNascimento' => array(
             'private' => true,
-            'label' => 'Data de Nascimento/Fundação',
+            'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'validations' => array(
-                'v::date("Y-m-d")' => 'Data inválida {{format}}',
+                'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
             )
         ),
 
         'precisao' => array(
-            'label' => 'Localização',
+            'label' => \MapasCulturais\i::__('Localização'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Precisa' => 'Precisa',
-                'Aproximada' => 'Aproximada'
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Precisa' => \MapasCulturais\i::__('Precisa'),
+                'Aproximada' => \MapasCulturais\i::__('Aproximada')
             )
         ),
 
         'localizacao' => array(
-            'label' => 'Localização',
+            'label' => \MapasCulturais\i::__('Localização'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Pública' => 'Pública',
-                'Privada' => 'Privada'
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Pública' => \MapasCulturais\i::__('Pública'),
+                'Privada' => \MapasCulturais\i::__('Privada')
             )
         ),
 
         'genero' => array(
             'private' => true,
-            'label' => 'Gênero',
+            'label' => \MapasCulturais\i::__('Gênero'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Mulher Transexual' => 'Mulher Transexual',
-                'Mulher' => 'Mulher',
-                'Homem Transexual' => 'Homem Transexual',
-                'Homem' => 'Homem',
-                'Não Binário' => 'Não Binário',
-                'Travesti' => 'Travesti',
-                'Outras' => 'Outras'
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
+                'Mulher' => \MapasCulturais\i::__('Mulher'),
+                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
+                'Homem' => \MapasCulturais\i::__('Homem'),
+                'Não Binário' => \MapasCulturais\i::__('Não Binário'),
+                'Travesti' => \MapasCulturais\i::__('Travesti'),
+                'Outras' => \MapasCulturais\i::__('Outras')
             )
         ),
 
         'orientacaoSexual' => array(
             'private' => true,
-            'label' => 'Orientação Sexual',
+            'label' => \MapasCulturais\i::__('Orientação Sexual'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informar',
-                'Heterossexual' => 'Heterossexual',
-                'Lésbica' => 'Lésbica',
-                'Gay' => 'Gay',
-                'Bissexual' => 'Bissexual',
-                'Assexual' => 'Assexual',
-                'Outras' => 'Outras'
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
+                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
+                'Gay' => \MapasCulturais\i::__('Gay'),
+                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
+                'Assexual' => \MapasCulturais\i::__('Assexual'),
+                'Outras' => \MapasCulturais\i::__('Outras')
             )
         ),
 
         'emailPublico' => array(
-            'label' => 'Email Público',
+            'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
-                'v::email()' => 'O email público não é um email válido.'
+                'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
             )
         ),
 
         'emailPrivado' => array(
             'private' => true,
-            'label' => 'Email Privado',
+            'label' => \MapasCulturais\i::__('Email Privado'),
             'validations' => array(
-                //'required' => 'O email privado é obrigatório.',
-                'v::email()' => 'O email privado não é um email válido.'
+                //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
+                'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
             )
         ),
 
         'telefonePublico' => array(
-            'label' => 'Telefone Público',
+            'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
             )
         ),
 
         'telefone1' => array(
             'private' => true,
-            'label' => 'Telefone 1',
+            'label' => \MapasCulturais\i::__('Telefone 1'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
             )
         ),
 
 
         'telefone2' => array(
             'private' => true,
-            'label' => 'Telefone 2',
+            'label' => \MapasCulturais\i::__('Telefone 2'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
             )
         ),
 
@@ -152,48 +152,48 @@ return array(
             'private' => function(){
                 return !$this->publicLocation;
             },
-            'label' => 'Endereço',
+            'label' => \MapasCulturais\i::__('Endereço'),
             'type' => 'text'
         ),
                     
         'En_CEP' => [
-            'label' => 'CEP',
+            'label' => \MapasCulturais\i::__('CEP'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Nome_Logradouro' => [
-            'label' => 'Logradouro',
+            'label' => \MapasCulturais\i::__('Logradouro'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Num' => [
-            'label' => 'Número',
+            'label' => \MapasCulturais\i::__('Número'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Complemento' => [
-            'label' => 'Complemento',
+            'label' => \MapasCulturais\i::__('Complemento'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Bairro' => [
-            'label' => 'Bairro',
+            'label' => \MapasCulturais\i::__('Bairro'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Municipio' => [
-            'label' => 'Município',
+            'label' => \MapasCulturais\i::__('Município'),
             'private' => function(){
                 return !$this->publicLocation;
             },
         ],
         'En_Estado' => [
-            'label' => 'Estado',
+            'label' => \MapasCulturais\i::__('Estado'),
             'private' => function(){
                 return !$this->publicLocation;
             },
@@ -231,33 +231,33 @@ return array(
         ],
 
         'site' => array(
-            'label' => 'Site',
+            'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
-                "v::url()" => "A url informada é inválida."
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'facebook' => array(
-            'label' => 'Facebook',
+            'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
+                "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'twitter' => array(
-            'label' => 'Twitter',
+            'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
+                "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'googleplus' => array(
-            'label' => 'Google+',
+            'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
+                "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
 
     ),
     'items' => array(
-        1 => array( 'name' => 'Individual' ),
-        2 => array( 'name' => 'Coletivo' ),
+        1 => array( 'name' => \MapasCulturais\i::__('Individual' )),
+        2 => array( 'name' => \MapasCulturais\i::__('Coletivo') ),
     )
 );

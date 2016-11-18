@@ -62,11 +62,35 @@ msgstr "Busque espacios culturales incluidos en la plataforma, con el acceso a l
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:45
 msgid "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."
-msgstr "Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, se encuentran las formas de financiación, espectáculos, reuniones y edictos creados, y varias iniciativas registradas por los usuarios de la plataforma. Regístrese ahora y publicar sus proyectos."
+msgstr ""
+"Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, "
+"se encuentran las formas de financiación, espectáculos, reuniones y edictos "
+"creados, y varias iniciativas registradas por los usuarios de la plataforma. "
+"Regístrese ahora y publicar sus proyectos."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:46
-msgid "Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href=\"https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados eutilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href=\"http://institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, criado em parceria com o <a href=\"http://institutotim.org.br\" target=\"_blank\">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href=\"https://github.com/hacklabr/mapasculturais/\" target=\"_blank\">GitHub</a>."
-msgstr "Hay varias formas en las que los desarrolladores interactúan con los mapas culturales. La primera es a través de nuestra <a href=\"https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. Con ella usted puede acceder a los datos públicos de nuestra base de datos y utilizarlos para desarrollar aplicaciones externas. Además, Mapas Culturales está realizado a partir del software libre <a href=\"http://institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su desarrollo a través de GitHub. "
+msgid ""
+"Existem algumas maneiras de desenvolvedores interagirem com o Mapas "
+"Culturais. A primeira é através da nossa <a href=\"https://github.com/"
+"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
+"Com ela você pode acessar os dados públicos no nosso banco de dados e "
+"utilizá-los para desenvolver aplicações externas. Além disso, o Mapas "
+"Culturais é construído a partir do sofware livre <a href=\"http://"
+"institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas "
+"Culturais</a>, criado em parceria com o <a href=\"http://institutotim.org.br"
+"\" target=\"_blank\">Instituto TIM</a>, e você pode contribuir para o seu "
+"desenvolvimento através do <a href=\"https://github.com/hacklabr/"
+"mapasculturais/\" target=\"_blank\">GitHub</a>."
+msgstr ""
+"Hay varias formas en las que los desarrolladores interactúan con los mapas "
+"culturales. La primera es a través de nuestra <a href=\"https://github.com/"
+"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
+"Con ella usted puede acceder a los datos públicos de nuestra base de datos y "
+"utilizarlos para desarrollar aplicaciones externas. Además, Mapas Culturales "
+"está realizado a partir del software libre <a href=\"http://institutotim.org."
+"br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado "
+"por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
+"desarrollo a través de GitHub. "
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:48
 msgid "Resultados Verificados"

@@ -30,69 +30,69 @@ class Theme extends MapasCulturais\Theme {
         return array(
             'site: name' => $app->config['app.siteName'],
             'site: description' => $app->config['app.siteDescription'],
-            'site: in the region' => \MapasCulturais\i::__('na região'),
-            'site: of the region' => \MapasCulturais\i::__('da região'),
-            'site: owner' => \MapasCulturais\i::__('Secretaria'),
-            'site: by the site owner' => \MapasCulturais\i::__('pela Secretaria'),
+            'site: in the region' => 'na região',
+            'site: of the region' => 'da região',
+            'site: owner' => 'Secretaria',
+            'site: by the site owner' => 'pela Secretaria',
 
-            'home: title' => \MapasCulturais\i::__("Bem-vind@!"),
-            'home: abbreviation' => \MapasCulturais\i::__("MC"),
+            'home: title' => "Bem-vind@!",
+            'home: abbreviation' => "MC",
             'home: colabore' => \MapasCulturais\i::__("Colabore com o Mapas Culturais"),
-            'home: welcome' => \MapasCulturais\i::__("O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural."),
-            'home: events' => \MapasCulturais\i::__("Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente."),
-            'home: agents' => \MapasCulturais\i::__("Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita."),
-            'home: spaces' => \MapasCulturais\i::__( "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."),
-            'home: projects' => \MapasCulturais\i::__("Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."),
-            'home: home_devs' => \MapasCulturais\i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'),
+            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
+            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
+            'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
+            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
+            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
+            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
 
-            'search: verified results' => \MapasCulturais\i::__('Resultados Verificados'),
-            'search: verified' => \MapasCulturais\i::__("Verificados"),
+            'search: verified results' => 'Resultados Verificados',
+            'search: verified' => "Verificados",
 
 
-            'entities: Spaces of the agent'=> \MapasCulturais\i::__('Espaços do agente'),
-            'entities: Space Description'=> \MapasCulturais\i::__('Descrição do Espaço'),
-            'entities: Agent children'=> \MapasCulturais\i::__('Agentes'),
-            'entities: My Spaces'=> \MapasCulturais\i::__('Meus Espaços'),
-            'entities: My spaces'=> \MapasCulturais\i::__('Meus espaços'),
+            'entities: Spaces of the agent'=> 'Espaços do agente',
+            'entities: Space Description'=> 'Descrição do Espaço',
+            'entities: Agent children'=> 'Agentes',
+            'entities: My Spaces'=> 'Meus Espaços',
+            'entities: My spaces'=> 'Meus espaços',
 
-        	'entities: My Seals'=> \MapasCulturais\i::__('Meus Selos'),
-        	'entities: My seals'=> \MapasCulturais\i::__('Meus selos'),
+        	'entities: My Seals'=> 'Meus Selos',
+        	'entities: My seals'=> 'Meus selos',
 
-            'entities: no registered spaces'=> \MapasCulturais\i::__('nenhum espaço cadastrado'),
-            'entities: no spaces'=> \MapasCulturais\i::__('nenhum espaço'),
+            'entities: no registered spaces'=> 'nenhum espaço cadastrado',
+            'entities: no spaces'=> 'nenhum espaço',
 
-            'entities: Space' => \MapasCulturais\i::__('Espaço'),
-            'entities: Spaces' => \MapasCulturais\i::__('Espaços'),
-            'entities: space' => \MapasCulturais\i::__('espaço'),
-            'entities: spaces' => \MapasCulturais\i::__('espaços'),
-            'entities: parent space' => \MapasCulturais\i::__('espaço pai'),
-            'entities: a space' => \MapasCulturais\i::__('um espaço'),
-            'entities: the space' => \MapasCulturais\i::__('o espaço'),
-            'entities: of the space' => \MapasCulturais\i::__('do espaço'),
-            'entities: In this space' => \MapasCulturais\i::__('Neste espaço'),
-            'entities: in this space' => \MapasCulturais\i::__('neste espaço'),
-            'entities: registered spaces' =>\MapasCulturais\i::__( 'espaços cadastrados'),
-            'entities: new space' => \MapasCulturais\i::__('novo espaço'),
+            'entities: Space' => 'Espaço',
+            'entities: Spaces' => 'Espaços',
+            'entities: space' => 'espaço',
+            'entities: spaces' => 'espaços',
+            'entities: parent space' => 'espaço pai',
+            'entities: a space' => 'um espaço',
+            'entities: the space' => 'o espaço',
+            'entities: of the space' => 'do espaço',
+            'entities: In this space' => 'Neste espaço',
+            'entities: in this space' => 'neste espaço',
+            'entities: registered spaces' => 'espaços cadastrados',
+            'entities: new space' => 'novo espaço',
 
-            'entities: Children spaces' => \MapasCulturais\i::__('Subespaços'),
-            'entities: Add child space' => \MapasCulturais\i::__('Adicionar subespaço'),
+            'entities: Children spaces' => 'Subespaços',
+            'entities: Add child space' => 'Adicionar subespaço',
 
-            'entities: space found' => \MapasCulturais\i::__('espaço encontrado'),
-            'entities: spaces found' => \MapasCulturais\i::__('espaços encontrados'),
-            'entities: event found' => \MapasCulturais\i::__('evento encontrado'),
-            'entities: events found' => \MapasCulturais\i::__('eventos encontrados'),
-            'entities: agent found' => \MapasCulturais\i::__('agente encontrado'),
-            'entities: agents found' => \MapasCulturais\i::__('agentes encontrados'),
-            'entities: project found' => \MapasCulturais\i::__('projeto encontrado'),
-            'entities: project found' => \MapasCulturais\i::__('projetos encontrados'),
-            'entities: Agents'    => \MapasCulturais\i::__('Agentes'),
-            'entities: Projects'  => \MapasCulturais\i::__('Projetos'),
-            'entities: Events'    => \MapasCulturais\i::__('Eventos'),
-            'entities: Seals'     => \MapasCulturais\i::__('Selos'),
+            'entities: space found' => 'espaço encontrado',
+            'entities: spaces found' => 'espaços encontrados',
+            'entities: event found' => 'evento encontrado',
+            'entities: events found' => 'eventos encontrados',
+            'entities: agent found' => 'agente encontrado',
+            'entities: agents found' => 'agentes encontrados',
+            'entities: project found' => 'projeto encontrado',
+            'entities: project found' => 'projetos encontrados',
+            'entities: Agents'    => 'Agentes',
+            'entities: Projects'  => 'Projetos',
+            'entities: Events'    => 'Eventos',
+            'entities: Seals'     => 'Selos',
 
-            'taxonomies:area: name' => \MapasCulturais\i::__('Área de Atuação'),
-            'taxonomies:area: select at least one' => \MapasCulturais\i::__('Selecione pelo menos uma área'),
-            'taxonomies:area: select' => \MapasCulturais\i::__('Selecione as áreas'),
+            'taxonomies:area: name' => 'Área de Atuação',
+            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
+            'taxonomies:area: select' => 'Selecione as áreas',
         );
     }
 
@@ -644,10 +644,10 @@ class Theme extends MapasCulturais\Theme {
 
     function getOccurrenceFrequencies() {
         return array(
-            'once' => \MapasCulturais\i::__('uma vez'),
-            'daily' => \MapasCulturais\i::__('todos os dias'),
-            'weekly' => \MapasCulturais\i::__('semanal'),
-            'monthly' => \MapasCulturais\i::__('mensal'),
+            'once' => 'uma vez',
+            'daily' => 'todos os dias',
+            'weekly' => 'semanal',
+            'monthly' => 'mensal',
         );
     }
 
@@ -748,7 +748,7 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => 'Tipos',
-                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
+                    'placeholder' => 'Selecione os tipos',
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -756,8 +756,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => \MapasCulturais\i::__('Acessibilidade'),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados com Acessibilidade'),
+                    'label' => 'Acessibilidade',
+                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
                     'fieldType' => 'checkbox',
                     'isArray' => false,
                     'filter' => [
@@ -768,7 +768,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => 'Exibir somente resultados Verificados',
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -780,8 +780,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'agent' => [
                 [
-                    'label'=> \MapasCulturais\i::__('Área de Atuação'),
-                    'placeholder' =>\MapasCulturais\i::__( 'Selecione as áreas'),
+                    'label'=> 'Área de Atuação',
+                    'placeholder' => 'Selecione as áreas',
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
@@ -789,8 +789,8 @@ class Theme extends MapasCulturais\Theme {
                     ],
                 ],
                 [
-                    'label' => \MapasCulturais\i::__('Tipos'),
-                    'placeholder' => \MapasCulturais\i::__('Todos'),
+                    'label' => 'Tipos',
+                    'placeholder' => 'Todos',
                     'fieldType' => 'singleselect',
                     'type' => 'entitytype',
                     // 'isArray' => false,
@@ -802,7 +802,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => 'Exibir somente resultados Verificados',
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -826,8 +826,8 @@ class Theme extends MapasCulturais\Theme {
                 //     ]
                 // ],
                 [
-                    'label' => \MapasCulturais\i::__('Linguagem'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione as linguagens'),
+                    'label' => 'Linguagem',
+                    'placeholder' => 'Selecione as linguagens',
                     'fieldType' => 'checklist',
                     'type' => 'term',
                     'filter' => [
@@ -836,8 +836,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => \MapasCulturais\i::__('Classificação'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione a classificação'),
+                    'label' => 'Classificação',
+                    'placeholder' => 'Selecione a classificação',
                     'filter' => [
                         'param' => 'classificacaoEtaria',
                         'value' => 'IN({val})'
@@ -846,7 +846,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => 'Exibir somente resultados Verificados',
                     'fieldType' => 'checkbox-verified',
                     'isArray' => false,
                     'addClass' => 'verified-filter',
@@ -858,8 +858,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'project' => [
                 [
-                    'label' => \MapasCulturais\i::__('Tipo'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
+                    'label' => 'Tipo',
+                    'placeholder' => 'Selecione os tipos',
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -867,13 +867,13 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => \MapasCulturais\i::__('Inscrições Abertas'),
+                    'label' => 'Inscrições Abertas',
                     'fieldType' => 'custom.project.ropen'
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => 'Exibir somente resultados Verificados',
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,

@@ -8,25 +8,25 @@ use MapasCulturais;
 class Html extends \MapasCulturais\ApiOutput{
 
     protected $translate = [
-        'id'=>'Id',
-        'name'=>'Nome',
-        'singleUrl'=>'Link',
-        'type'=>'Tipo',
-        'shortDescription'=>'Descrição Curta',
-        'name'=>'Nome',
-        'terms'=>'Termos',
-        'endereco'=>'Endereço',
-        'classificacaoEtaria'=>'Classificação Etária',
-        'project'=>'Projeto',
+        'id' => 'Id',
+        'name' => 'Nome',
+        'singleUrl' => 'Link',
+        'type' => 'Tipo',
+        'shortDescription' => 'Descrição Curta',
+        'name' => 'Nome',
+        'terms' => 'Termos',
+        'endereco' => 'Endereço',
+        'classificacaoEtaria' => 'Classificação Etária',
+        'project' => 'Projeto',
 
-        'tag'=>'Tags',
-        'area'=>'Áreas',
+        'tag' => 'Tags',
+        'area' => 'Áreas',
         'linguagem' => 'Linguagens',
 
-        'agent'=>'Agente',
-        'space'=>'Espaço',
-        'event'=>'Evento',
-        'project'=>'Projeto'
+        'agent' => 'Agente',
+        'space' => 'Espaço',
+        'event' => 'Evento',
+        'project' => 'Projeto'
     ];
 
     protected function getContentType() {
