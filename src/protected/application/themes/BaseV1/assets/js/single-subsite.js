@@ -35,6 +35,12 @@ $(function(){
     map.on('zoomend', setState);
     map.on('moveend', setState);
     
+    $('#tab-mapa').on('click', function(){
+        setTimeout(function(){
+            map.invalidateSize();
+        },50)
+    })
+    
     
     $('.js-editable.js-color').on('save', function(e, editable){
         
@@ -54,5 +60,5 @@ $(function(){
        
        $('.js-editable.js-color').removeClass('editable-unsaved editable-bg-transition');                
 
-    },1);
+    },10);
 });
