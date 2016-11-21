@@ -291,7 +291,7 @@ class Event extends EntityController {
                 if(!empty($occ->rule->description)) {
                     return $occ->rule->description;
                 }else{
-                    return $occ->startsOn->format('d \d\e') . ' ' . $app->txt($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
+                    return $occ->startsOn->format('d \d\e') . ' ' . \MapasCulturais\i::__($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
                 }
             }, $occurrences[$e->id]);
 
@@ -395,7 +395,7 @@ class Event extends EntityController {
 //
 //                $e['occurrences'][$space_id][] = $occ;
 //
-//                $month = $app->txt($occ->startsOn->format('F'));
+//                $month = \MapasCulturais\i::__($occ->startsOn->format('F'));
 //                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
 //
 //                if(!in_array($str, $e['occurrencesReadable'][$space_id]))

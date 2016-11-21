@@ -66,7 +66,7 @@ abstract class AuthProvider {
         $app = App::i();
 
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }

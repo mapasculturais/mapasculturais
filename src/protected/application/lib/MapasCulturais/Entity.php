@@ -481,7 +481,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+        return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
 
     /**
@@ -727,9 +727,9 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($this->usesTypes() && !$this->_type)
-            $errors['type'] = [App::txt('The type is required')];
+            $errors['type'] = [\MapasCulturais\i::__('O Tipo é obrigatório')];
         elseif($this->usesTypes() && !$this->validateType())
-            $errors['type'] = [App::txt('Invalid type')];
+            $errors['type'] = [\MapasCulturais\i::__('Tipo inválido')];
 
         if($this->usesMetadata())
             $errors = $errors + $this->getMetadataValidationErrors();

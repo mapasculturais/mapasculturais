@@ -584,50 +584,50 @@ class App extends \Slim\Slim{
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'textarea',
-            'name' => $this->txt('Textarea Field')
+            'name' => \MapasCulturais\i::__('Textarea Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'text',
-            'name' => $this->txt('Text Field')
+            'name' => \MapasCulturais\i::__('Text Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'date',
-            'name' => $this->txt('Date Field')
+            'name' => \MapasCulturais\i::__('Date Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'url',
-            'name' => $this->txt('URL Field'),
+            'name' => \MapasCulturais\i::__('URL Field'),
             'validations' => [
-                'v::url()' => $this->txt('The value is not a valid URL')
+                'v::url()' => \MapasCulturais\i::__('The value is not a valid URL')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'email',
-            'name' => $this->txt('Email Field'),
+            'name' => \MapasCulturais\i::__('Email Field'),
             'validations' => [
-                'v::email()' => $this->txt('The value is not a valid email')
+                'v::email()' => \MapasCulturais\i::__('The value is not a valid email')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'select',
-            'name' => $this->txt('Select Field'),
+            'name' => \MapasCulturais\i::__('Select Field'),
             'requireValuesConfiguration' => true
         ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',
-//            'name' => $this->txt('Radio Buttons Field'),
+//            'name' => \MapasCulturais\i::__('Radio Buttons Field'),
 //            'requireValuesConfiguration' => true
 //        ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
-            'name' => $this->txt('Check Boxes Field'),
+            'name' => \MapasCulturais\i::__('Check Boxes Field'),
             'requireValuesConfiguration' => true,
             'serialize' => function (array $value) {
                 return json_encode($value);

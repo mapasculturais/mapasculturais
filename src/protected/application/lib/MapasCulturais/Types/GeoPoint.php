@@ -77,7 +77,7 @@ class GeoPoint implements \JsonSerializable{
 
     public function setLatitude($val) {
          if($val > 90 || $val < -90 || !is_numeric($val))
-            throw new \Exception(App::txt('Latitude must be a float between 90 and -90'));
+            throw new \Exception(\MapasCulturais\i::__('Latitude precisa ser um float entre 90 e -90'));
 
          $this->latitude = $val;
     }
@@ -91,7 +91,7 @@ class GeoPoint implements \JsonSerializable{
      */
     public function setLongitude($val) {
          if($val > 180 || $val < -180)
-            throw new \Exception(App::txt('Longitude must be a float between 180 and -180'));
+            throw new \Exception(\MapasCulturais\i::__('Longitude precisa ser um float entre 180 em -180'));
 
          $this->longitude = $val;
     }
