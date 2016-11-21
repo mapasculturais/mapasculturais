@@ -183,7 +183,14 @@ class Event extends \MapasCulturais\Entity
     protected $updateTimestamp;
 
     private $_newProject = false;
-
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Eventos');
+        else
+            return \MapasCulturais\i::__('Evento');
+    }
+    
     function publish($flush = false){
         $this->checkPermission('publish');
 

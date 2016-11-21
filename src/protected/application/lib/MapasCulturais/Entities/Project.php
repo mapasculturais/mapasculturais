@@ -240,7 +240,14 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
-
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Projetos');
+        else
+            return \MapasCulturais\i::__('Projeto');
+    }
+    
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }

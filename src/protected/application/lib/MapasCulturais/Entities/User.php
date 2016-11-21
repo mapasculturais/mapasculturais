@@ -115,6 +115,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Usuários');
+        else
+            return \MapasCulturais\i::__('Usuário');
+    }
 
     function getOwnerUser(){
         return $this;

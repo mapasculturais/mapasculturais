@@ -220,7 +220,14 @@ class Space extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Espaços');
+        else
+            return \MapasCulturais\i::__('Espaço');
+    }
+        
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
