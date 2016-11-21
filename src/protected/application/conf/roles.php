@@ -2,17 +2,17 @@
 return array(
     'superAdmin' => array(
         'name' => 'Superadmin',
-        'singularLabel' => 'Super Administrador',
-        'pluralLabel' => 'Super Administradores',
+        'singularLabel' => 'roles: Super Administrator',
+        'pluralLabel' => 'roles: Super Administrators',
     ),
     'admin' => array(
         'name' => 'Admin',
-        'singularLabel' => 'Administrador',
-        'pluralLabel' => 'Administradores',
+        'singularLabel' => 'roles: Administrator',
+        'pluralLabel' => 'roles: Administrators',
     ),
     'staff' => array(
         'name' => 'Equipe',
-        'singularLabel' => 'Membro da Equipe',
-        'pluralLabel' => 'Membros da Equipe',
+        'singularLabel' => 'roles: Staff Member',
+        'pluralLabel' => 'roles: Staff Members',
     )
 );
