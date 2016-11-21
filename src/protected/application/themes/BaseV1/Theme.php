@@ -82,6 +82,8 @@ class Theme extends MapasCulturais\Theme {
             'entities: Seal' => 'Selo',
             'entities: seal' => 'selo',
 
+            'entities: Users and roles'=> 'Usuários e papéis',
+
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
 
@@ -109,6 +111,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
+
+            'roles: Super Administrator'=> 'Super Administrador',
+            'roles: Super Administrators'=> 'Super Administradores',
+
+            'roles: Administrator'=> 'Administrador',
+            'roles: Administrators'=> 'Administradores',
+
+            'roles: Staff Member'=> 'Membro da equipe',
+            'roles: Staff Members'=> 'Membros da equipe',
 
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
