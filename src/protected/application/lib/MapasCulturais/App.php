@@ -644,11 +644,11 @@ class App extends \Slim\Slim{
         // all file groups
         $file_groups = [
             'downloads' => new Definitions\FileGroup('downloads'),
-            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', false),
-            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], 'The uploaded file is not a valid document.', true),
-            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
+            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
+            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
         ];
 
         // register file groups
@@ -709,7 +709,7 @@ class App extends \Slim\Slim{
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
             'videos' => new Definitions\MetaListGroup('videos',
@@ -720,12 +720,12 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
+                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório'),
                             "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
         ];

@@ -443,7 +443,7 @@ class Registration extends \MapasCulturais\Entity
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf(\MapasCulturais\i::__('The agent "%s" is required.'), $def->label);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O agente "%s" é obrigatório.'), $def->label);
                 }
             }
 
