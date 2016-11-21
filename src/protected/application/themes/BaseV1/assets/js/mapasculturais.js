@@ -1,5 +1,13 @@
 MapasCulturais = MapasCulturais || {};
 
+function charCounter(obj){
+    if($('#charCounter').text() == '')
+        return;
+
+    var max = $('#charCounter').text().split('/');
+        $('#charCounter').text(($(obj).val().length + '/' + max[1]));
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';

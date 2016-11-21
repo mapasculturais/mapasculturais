@@ -200,5 +200,9 @@ return [
                         where name = 'superAdmin'
                     )");
         $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
-    }
+    },
+
+    'Add field for maximum size from registration field configuration' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
+    },
 ];
