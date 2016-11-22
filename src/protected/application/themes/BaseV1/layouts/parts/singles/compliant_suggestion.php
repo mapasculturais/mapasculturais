@@ -7,7 +7,7 @@ if($this->controller->action === 'create')
     <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
 </div>
 
-<form class="form-complaint-suggestion hidden" id="formulario">
+<form class="form-complaint-suggestion js-compliant-form hidden" action="">
   <p>
     Nome:<br />
     <input type="text" rows="5" name="nome">
@@ -20,6 +20,6 @@ if($this->controller->action === 'create')
     <textarea type="text" rows="5" cols="40" name="mensagem"></textarea>
   </p>
   <p>
-    <input type="submit" value="Enviar Denúncia">
+    <button class="js-submit-button">Enviar Denúncia</button>
   </p>
 </form>

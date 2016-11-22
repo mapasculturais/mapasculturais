@@ -204,11 +204,3 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 
 </div>
-<script type="text/javascript">
-  var botao = document.querySelector(".botao");
-  botao.addEventListener("click", function(){
-    var formulario = document.getElementById("formulario");
-    formulario.classList.toggle("hidden");
-  }, true)
-
-</script>

@@ -113,6 +113,16 @@ $(function(){
         });
     }
 
+    $('.botao').on('click', function(){
+        var formulario = $(".js-compliant-form");
+        formulario.toggle();
+    });
+
+    $('.js-compliant-form .js-submit-button').on('click', function(e){
+        e.preventDefault();
+        $.post(MapasCulturais.createUrl(MapasCulturais.request.controller, "sendCompliantMessage",[MapasCulturais.entity.id]), {message: "Nós somos muito legais!!! =]"});
+    });
+
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
 

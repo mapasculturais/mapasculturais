@@ -25,7 +25,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      */
     protected $entityClassName;
 
-    
+
     protected $_requestedEntity = false;
 
 
@@ -75,7 +75,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if ($this->_requestedEntity !== false) {
             return $this->_requestedEntity;
         }
-        
+
         if (key_exists('id', $this->urlData)) {
             $this->_requestedEntity = $this->repository->find($this->urlData['id']);
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
@@ -83,7 +83,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         } else {
             $this->_requestedEntity = null;
         }
-        
+
         return $this->_requestedEntity;
     }
 
@@ -136,7 +136,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     protected function _finishRequest($entity, $isAjax = false){
         $app = App::i();
-        
+
         $status = 200;
         try{
             $entity->save(true);
@@ -149,13 +149,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             header('CreatedRequests: ' . json_encode($reqs));
         }
-        
+
         $this->finish($entity, $status, $isAjax);
     }
-    
+
     function finish($data, $status = 200, $isAjax = false){
         $app = App::i();
-        
+
         if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
         }elseif(isset($this->getData['redirectTo'])){
@@ -197,11 +197,11 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $this->requireAuthentication();
 
         $entity = $this->getRequestedEntity();
-        
+
         foreach($this->data as $field=>$value){
             $entity->$field = $value;
         }
-        
+
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
@@ -224,7 +224,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $this->requireAuthentication();
 
         $entity = $this->getRequestedEntity();
-        
+
         $class = $this->entityClassName;
 
         $entity->status = $class::STATUS_DRAFT;
@@ -434,7 +434,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $redirect_url = $app->request()->getReferer();
             if($redirect_url === $single_url)
                 $redirect_url = $app->createUrl ('panel');
-            
+
             $app->applyHookBoundTo($this, "DELETE({$this->id}):beforeRedirect", [$entity, &$redirect_url]);
 
             $app->redirect($redirect_url);
@@ -449,5 +449,17 @@ abstract class EntityController extends \MapasCulturais\Controller{
     public function GET_propertiesMetadata(){
         $class = $this->entityClassName;
         echo json_encode($class::getPropertiesMetadata());
+    }
+
+    /*
+     */
+    public function POST_sendCompliantMessage() {
+        var_dump($this->data);
+    }
+
+    /*
+     */
+    public function POST_sendSuggestionMessage() {
+
     }
 }
