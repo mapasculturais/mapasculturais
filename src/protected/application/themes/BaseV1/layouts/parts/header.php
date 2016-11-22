@@ -24,7 +24,7 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
         </header>
         <section id="main-section" class="clearfix">
             <?php if ($this->isEditable()): ?>
-                <div id="ajax-response-errors" class="js-dialog" title="Corrija os erros abaixo e tente novamente.">
+                <div id="ajax-response-errors" class="js-dialog" title="<?php \MapasCulturais\i::_e("Corrija os erros abaixo e tente novamente.");?>">
                     <div class="js-dialog-content"></div>
                 </div>
             <?php endif; ?>

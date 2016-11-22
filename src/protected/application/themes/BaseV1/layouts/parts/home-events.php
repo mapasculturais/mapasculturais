@@ -23,21 +23,21 @@ $url_search_events = $this->searchEventsUrl;
 
 <article id="home-events" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><span class="icon icon-event"></span> Eventos</h1>
+        <h1><span class="icon icon-event"></span><?php \MapasCulturais\i::_e("Eventos");?></h1>
         <div class="clearfix">
             <div class="statistics">
                 <div class="statistic"><?php echo $num_events ?></div>
-                <div class="statistic-label">eventos agendados</div>
+                <div class="statistic-label"><?php \MapasCulturais\i::_e("eventos agendados");?></div>
             </div>
             <div class="statistics">
                 <div class="statistic"><?php echo $num_verified_events ?></div>
-                <div class="statistic-label">eventos da <?php $this->dict('home: abbreviation'); ?></div>
+                <div class="statistic-label"><?php \MapasCulturais\i::_e("eventos da ");?><?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
         <p><?php $this->dict('home: events') ?></p>
         <h4>Encontre eventos por</h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#event-terms">Linguagem</a></li>
+            <li class="active"><a href="#event-terms"><?php \MapasCulturais\i::_e("Linguagem");?></a></li>
         </ul>
         <div id="event-terms" class="tag-box">
             <div>
@@ -59,7 +59,7 @@ $url_search_events = $this->searchEventsUrl;
             </div>
         </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>">Adicionar evento</a>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>">Ver tudo</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('event', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar evento");?></a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_events ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
 </article>
