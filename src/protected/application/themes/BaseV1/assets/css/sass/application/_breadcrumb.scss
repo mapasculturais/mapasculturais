@@ -1,5 +1,4 @@
 .breadcrumb {
-    background-color: #f4f4f4;
     list-style-type: none;
     overflow: hidden;
     margin: 0;
@@ -11,15 +10,9 @@
     }
 
     li {
+        background-color: #fafafa;
         display: inline-block;
         margin-right: -6px;
-
-        &.active {
-            a {
-                font-weight: bold;
-                color: #777;
-            }
-        }
 
         &:first-child {
             border-left: 1px solid #ddd;
@@ -30,6 +23,13 @@
                 }
             }
         }
+        &:last-child {
+            background-color: transparent;
+            color: #777;
+            a {
+                color: #777;
+            }
+        }
 
         a {
             padding: 0 .8rem;
@@ -37,9 +37,7 @@
             color: #999;
             font-size: .8rem;
             font-family: $font-stack-base;
-            font-weight: bold;
             line-height: $line-height-base;
-            text-decoration: none;
 
             &:after, &:before {
                 content: " ";
@@ -51,7 +49,7 @@
 
             &:after {
                 border-bottom: 12px solid transparent;
-                border-left: 8px solid #f4f4f4;
+                border-left: 8px solid #fafafa;
                 border-top: 12px solid transparent;
                 margin-left: 1px;
                 margin-top: -24.5px;
