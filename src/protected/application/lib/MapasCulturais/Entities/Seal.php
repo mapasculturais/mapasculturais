@@ -197,6 +197,13 @@ class Seal extends \MapasCulturais\Entity
     	}
     	return true;
     }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Selos');
+        else
+            return \MapasCulturais\i::__('Selo');
+    }
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

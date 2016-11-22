@@ -109,18 +109,18 @@ class RoutesManager{
 
                     if($app->config['slim.debug']){
                         if($app->request()->isAjax())
-                            $app->halt(403, $app->txt('Permission Denied: ' . $e));
+                            $app->halt(403, \MapasCulturais\i::__('Permission Denied:') . $e);
                         else
-                            $app->halt(403, $app->txt('Permission Denied: <br><pre>' . $e . '</pre>'));
+                            $app->halt(403, \MapasCulturais\i::__('Permission Denied:') . '<br><pre>' . $e . '</pre>');
                     }else{
-                        $app->halt(403, $app->txt('Permission Denied'));
+                        $app->halt(403, \MapasCulturais\i::__('Permission Denied'));
                     }
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
                     $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
                     if($app->request()->isAjax())
                         $app->halt(202, json_encode($requests) );
                     else
-                        $app->halt(202, $app->txt('Created requests: ') . implode(', ',$requests) );
+                        $app->halt(202, \MapasCulturais\i::__('Created requests:') . implode(', ',$requests) );
                 }
             }else{
                 $app->pass();

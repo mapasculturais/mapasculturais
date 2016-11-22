@@ -64,7 +64,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     public function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $this->_setRedirectPath($app->request->getPathInfo());
             $app->redirect($app->controller('auth')->createUrl(''), 401);

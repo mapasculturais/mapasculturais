@@ -1,6 +1,6 @@
-<h1><?php echo $app->txt('Fake Authentication'); ?></h1>
+<h1><?php echo \MapasCulturais\i::__('Fake Authentication'); ?></h1>
 <form method="GET" action="<?php echo $form_action ?>">
-    <?php echo $app->txt('Login with user') ?>:
+    <?php echo \MapasCulturais\i::__('Login with user') ?>:
     <select name="fake_authentication_user_id">
         <?php foreach($users as $u): if(!$u['profile']) continue;
             $role =  $u['roles']; ?>

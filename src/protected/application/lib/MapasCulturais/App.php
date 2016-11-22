@@ -584,50 +584,50 @@ class App extends \Slim\Slim{
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'textarea',
-            'name' => $this->txt('Textarea Field')
+            'name' => \MapasCulturais\i::__('Textarea Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'text',
-            'name' => $this->txt('Text Field')
+            'name' => \MapasCulturais\i::__('Text Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'date',
-            'name' => $this->txt('Date Field')
+            'name' => \MapasCulturais\i::__('Date Field')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'url',
-            'name' => $this->txt('URL Field'),
+            'name' => \MapasCulturais\i::__('URL Field'),
             'validations' => [
-                'v::url()' => $this->txt('The value is not a valid URL')
+                'v::url()' => \MapasCulturais\i::__('The value is not a valid URL')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'email',
-            'name' => $this->txt('Email Field'),
+            'name' => \MapasCulturais\i::__('Email Field'),
             'validations' => [
-                'v::email()' => $this->txt('The value is not a valid email')
+                'v::email()' => \MapasCulturais\i::__('The value is not a valid email')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'select',
-            'name' => $this->txt('Select Field'),
+            'name' => \MapasCulturais\i::__('Select Field'),
             'requireValuesConfiguration' => true
         ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',
-//            'name' => $this->txt('Radio Buttons Field'),
+//            'name' => \MapasCulturais\i::__('Radio Buttons Field'),
 //            'requireValuesConfiguration' => true
 //        ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
-            'name' => $this->txt('Check Boxes Field'),
+            'name' => \MapasCulturais\i::__('Check Boxes Field'),
             'requireValuesConfiguration' => true,
             'serialize' => function (array $value) {
                 return json_encode($value);
@@ -644,11 +644,11 @@ class App extends \Slim\Slim{
         // all file groups
         $file_groups = [
             'downloads' => new Definitions\FileGroup('downloads'),
-            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', false),
-            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], 'The uploaded file is not a valid document.', true),
-            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
+            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
+            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
         ];
 
         // register file groups
@@ -709,7 +709,7 @@ class App extends \Slim\Slim{
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
             'videos' => new Definitions\MetaListGroup('videos',
@@ -720,12 +720,12 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
+                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório'),
                             "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
         ];

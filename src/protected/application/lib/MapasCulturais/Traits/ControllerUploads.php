@@ -54,7 +54,7 @@ trait ControllerUploads{
         $owner = $this->requestedEntity;
         
         if(!$owner){
-            $this->errorJson(App::txt('the owner not exists'));
+            $this->errorJson(\MapasCulturais\i::__('O dono não existe'));
             return;
         }
 
@@ -64,7 +64,7 @@ trait ControllerUploads{
 
         // if no files uploaded or no id in request data, return an error
         if(empty($_FILES) || !$this->data['id']){
-            $this->errorJson(App::txt('no files uploaded'));
+            $this->errorJson(\MapasCulturais\i::__('Nenhum arquivo enviado'));
             return ;
         }
 
@@ -118,7 +118,7 @@ trait ControllerUploads{
 
         // if no files was added to $files array, return an error
         if(empty($files)){
-            $this->errorJson(App::txt('no valid files uploaded'));
+            $this->errorJson(\MapasCulturais\i::__('nenhum arquivo válido enviado'));
             return;
         }else{
             $all_files_contains_error = true;
