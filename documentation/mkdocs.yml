@@ -16,6 +16,7 @@ pages:
     - 'Keywords': 'mc_developer_keywords.md'
     - 'Entidades': 'mc_developer_entities.md'
     - 'Criando um novo tema': 'mc_developer_theme.md'
+    - 'Adicionando campos a um tema': 'mc_developer_theme_add_metadata.md'
 theme: 'flatly'
 markdown_extensions:
     - fenced_code
