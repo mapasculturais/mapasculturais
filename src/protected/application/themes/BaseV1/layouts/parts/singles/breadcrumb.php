@@ -14,6 +14,6 @@
         <a href="<?php echo $app->createUrl('panel', $entity_panel) ?>"><?php echo $this->dict($home_title) ?></a>
     </li>
     <li>
-        <a><?php echo $this->dict("entities: " . ucwords(substr($entity_panel,0,-1)));?></a>
+        <span><?php echo $this->dict("entities: " . ucwords(substr($entity_panel,0,-1)));?></span>
     </li>
 </ul>
