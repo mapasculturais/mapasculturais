@@ -477,7 +477,7 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
 	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
     }
-    
+
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
@@ -852,7 +852,24 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
-
+        if (property_exists($this, 'updateTimestamp')) {
+            $this->updateTimestamp = new \DateTime;
+            if($this->sentNotification){
+                $entity = $this;
+                $nid = $this->sentNotification;
+                $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
+                    if($this->equals($entity)){
+                        $app->log->debug("notification id: $nid");
+                        $notification = $app->repo('Notification')->find($nid);
+                        $notification->delete();
+                        $this->sentNotification = 0;
+                        $this->save();
+                        
+                        $app->em->flush();
+                    }
+                });
+            }
+        }
     }
 
     /**

@@ -73,7 +73,7 @@ $this->includeAngularEntityAssets($entity);
             </span><?php if($entity->validPeriod > 0) echo $entity->validPeriod > 1 ? 'Meses':'Mês' ?>
 
             <?php if ($this->isEditable()): ?>
-              <p class="registration-help">(Informar 0 (zero) para validade infinita.)</p>
+              <p class="registration-help">(Informar 0 (zero) para validade infinita ou indicar o número de meses correspondente a validade do selo)</p>
             <?php endif; ?>
 					</p>
 

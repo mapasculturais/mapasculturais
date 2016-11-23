@@ -68,7 +68,11 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <?php endif; ?>
                     
                 <?php foreach($entity->registrationFieldConfigurations as $field): $field_name = $field->getFieldName(); ?>
-                    <th><?php echo $r->$field_name; ?></th>
+                    <?php if(is_array($r->$field_name)): ?>
+                        <th><?php echo implode(', ', $r->$field_name); ?></th>
+                    <?php else: ?>
+                        <th><?php echo $r->$field_name; ?></th>
+                    <?php endif; ?>
                 <?php endforeach; ?>
 
                 <td>
