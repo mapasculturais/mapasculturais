@@ -93,7 +93,7 @@ $_properties = $app->config['registration.propertiesToExport'];
                         <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
 
                         <td>
-                            <?php echo $agent->terms['area'] ?>
+                            <?php echo implode(',',$agent->terms['area']); ?>
                         </td>
 
                         <?php
