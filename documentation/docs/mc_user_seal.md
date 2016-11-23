@@ -1,6 +1,6 @@
 # Selos
 
-Os Selos Certificadores do mapas culturais é uma forma de reconhecer determinadas entidades no sistema Mapas Culturais por um agente, que pode ser do tipo responsável e/ou coletivo.
+Os Selos Certificadores do mapas culturais são uma forma de reconhecer determinadas entidades(Espaços, Eventos, Usuários) no sistema Mapas Culturais como de autoria própria de uma entidade autorizada (administração da instância por exemplo). É possível criar selos oficiais com determinadas marcas identificando entidades como válidas dentro de um determinado contexto. Uma prefeitura pode criar um selos de "Espaços Municipais" certificando públicamente que aquele espaço faz parte do conjunto de espaços públicos pertencentes à prefeitura. Uma secretaria de cultura pode criar o selo de um programa, identificando, isto é, atribuindo este selo a todos espaços ou eventos que sejam participantes homologados desse programa. Estes são exemplos simples da utilização dos selos, mas muitas outras possibilidades podem existir. 
 
 
 ## Criando e Editando Selos
@@ -9,7 +9,7 @@ Na primeira utilização dos Selos, um selo é criado automaticamente e atribuid
 
 Assim como todas as outras entidades, existe a opção "Meu Selos" e a parte de Selos no Painel.
 
-Por padrão, esse Selo só está habilitado para Administradores da plataforma, a não ser que seja feita alguma customização no tema para que todos os usuários tenham acesso.
+**Por padrão, esse Selo só está habilitado para Administradores da plataforma, a não ser que seja feita alguma customização no tema para que todos os usuários tenham acesso.**
 
 Com os Selos habilitados para o seu usuário, ao clicar em Adicionar ou Editar um Selo você será redirecionado para a tela de Edição dos Selos.
 
