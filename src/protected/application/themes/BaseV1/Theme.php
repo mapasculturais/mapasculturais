@@ -280,10 +280,6 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
-          $this->updateTimestamp = new \DateTime;
-        });
-
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             $user = $this->ownerUser;
 
