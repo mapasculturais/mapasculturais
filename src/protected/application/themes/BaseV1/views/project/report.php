@@ -43,11 +43,13 @@ $_properties = $app->config['registration.propertiesToExport'];
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
-                
+
             <?php foreach($entity->registrationFieldConfigurations as $field): ?>
                 <th><?php echo $field->title; ?></th>
             <?php endforeach; ?>
-            
+
+            <th>Área de Atuação</th>
+
             <th>Arquivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
@@ -66,7 +68,7 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
                 <?php endif; ?>
-                    
+
                 <?php foreach($entity->registrationFieldConfigurations as $field): $field_name = $field->getFieldName(); ?>
                     <?php if(is_array($r->$field_name)): ?>
                         <th><?php echo implode(', ', $r->$field_name); ?></th>
@@ -89,6 +91,10 @@ $_properties = $app->config['registration.propertiesToExport'];
 
                     <?php if($agent): ?>
                         <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+
+                        <td>
+                            <?php echo $agent->terms['area'] ?>
+                        </td>
 
                         <?php
                         foreach($_properties as $prop):
