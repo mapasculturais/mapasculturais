@@ -281,14 +281,15 @@ class Theme extends MapasCulturais\Theme {
         });
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
-            $user = $this->ownerUser;
-
-            $app->createAndSendMailMessage([
-                'from' => $app->config['mailer.from'],
-                'to' => $user->email,
-                'subject' => "Novo $this->entityType registrado",
-                'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
-            ]);
+            if(!$app->user->is('guest')){
+                $user = $this->ownerUser;
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $user->email,
+                    'subject' => "Novo $this->entityType registrado",
+                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                ]);
+            }
         });
 
         // sempre que insere uma imagem cria o avatarSmall
