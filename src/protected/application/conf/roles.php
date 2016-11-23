@@ -1,18 +1,18 @@
 <?php
 return array(
     'superAdmin' => array(
-        'name' => \MapasCulturais\i::__('Superadmin'),
-        'singularLabel' => \MapasCulturais\i::__('Super Administrador'),
-        'pluralLabel' => \MapasCulturais\i::__('Super Administradores'),
+        'name' => 'Superadmin',
+        'singularLabel' => 'roles: Super Administrator',
+        'pluralLabel' => 'roles: Super Administrators',
     ),
     'admin' => array(
-        'name' => \MapasCulturais\i::__('Admin'),
-        'singularLabel' => \MapasCulturais\i::__('Administrador'),
-        'pluralLabel' => \MapasCulturais\i::__('Administradores'),
+        'name' => 'Admin',
+        'singularLabel' => 'roles: Administrator',
+        'pluralLabel' => 'roles: Administrators',
     ),
     'staff' => array(
-        'name' => \MapasCulturais\i::__('Equipe'),
-        'singularLabel' => \MapasCulturais\i::__('Membro da Equipe'),
-        'pluralLabel' => \MapasCulturais\i::__('Membros da Equipe'),
+        'name' => 'Equipe',
+        'singularLabel' => 'roles: Staff Member',
+        'pluralLabel' => 'roles: Staff Members',
     )
 );

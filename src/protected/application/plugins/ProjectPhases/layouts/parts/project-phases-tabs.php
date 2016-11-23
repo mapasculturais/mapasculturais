@@ -10,6 +10,10 @@
         <li ng-if="data.projectRegistrationsEnabled"><a href="#inscritos">Inscritos</a></li>
     <?php endif; ?>
 
+    <?php if(!($this->controller->action === 'create')):?>
+    <li><a href="#permissao">Permissões</a></li>
+    <?php endif;?>
+
     <?php $this->applyTemplateHook('tabs','before'); ?>
 </ul>
 <?php $this->applyTemplateHook('tabs','after'); ?>

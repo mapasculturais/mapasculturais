@@ -26,6 +26,13 @@ $this->includeAngularEntityAssets($entity);
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
 ?>
+
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'projects','home_title' => 'entities: My Projects']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content project" ng-controller="ProjectController">
@@ -89,6 +96,11 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+
+    <!-- Related Admin Agents BEGIN -->
+        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    <!-- Related Admin Agents END -->
+
     <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->

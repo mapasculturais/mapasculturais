@@ -423,6 +423,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getNotifications($status = null){
+        $app = App::i();
+        $app->em->clear('MapasCulturais\Entities\Notification');
+
         if(is_null($status)){
             $status_operator =  '>';
             $status = '0';
@@ -452,7 +455,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getEntitiesNotifications($app) {
-      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.user.access'] > 0) {
+      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.user.access'] > 0) {
         $now = new \DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
@@ -460,71 +463,62 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           $notification = new Notification;
           $notification->user = $app->user;
           $notification->message = "Seu último acesso foi em <b>" . $app->user->lastLoginTimestamp->format('d/m/Y') . "</b>, atualize suas informações se necessário.";
-          $notification->save(true);
+          $notification->save();
         }
       }
 
-      if(isset($app->config['plugins']['notifications']) && $app->config['notifications.entities.update'] > 0) {
+      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.entities.update'] > 0) {
           $now = new \DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            if($agent->status > 0 && !$agent->sentNotification && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
-            }
-          }
-
-          foreach($this->projects as $project) {
-            $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
-            $interval = date_diff($lastUpdateDate, $now);
-            if($project->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-              // message to user about old project registrations
-              $notification = new Notification;
-              $notification->user = $app->user;
-              $notification->message = "O projeto <b>" . $project->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
-            }
-          }
-
-          foreach($this->events as $event) {
-            $lastUpdateDate = $event->updateTimestamp ? $event->updateTimestamp: $event->createTimestamp;
-            $interval = date_diff($lastUpdateDate, $now);
-            if($interval->format('%a') >= $app->config['notifications.entities.update']) {
-              // message to user about old event registrations
-              $notification = new Notification;
-              $notification->user = $app->user;
-              $notification->message = "O Evento <b>" . $event->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '">editar</a>';
+              $notification->save();
+              
+              // use the notification id to use it later on entity update
+              $agent->sentNotification = $notification->id;
+              $agent->save();
             }
           }
 
           foreach($this->spaces as $space) {
             $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            
+            if($space->status > 0 && !$space->sentNotification && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '">editar</a>';
+              $notification->save();              
+              // use the notification id to use it later on entity update
+              $space->sentNotification = $notification->id;
+              $space->save();
             }
           }
 
-          foreach($this->seals as $seal) {
-            $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
-            $interval = date_diff($lastUpdateDate, $now);
-            if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-              // message to user about old seal registrations
-              $notification = new Notification;
-              $notification->user = $app->user;
-              $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->save(true);
-            }
-          }
+          /* @TODO: verificar se faz sentido */
+          
+//          foreach($this->seals as $seal) {
+//            $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
+//            $interval = date_diff($lastUpdateDate, $now);
+//            if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+//              // message to user about old seal registrations
+//              $notification = new Notification;
+//              $notification->user = $app->user;
+//              $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
+//              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $seal->editUrl . '">editar</a>';
+//              $notification->save();
+//            }
+//          }
+
+        $app->em->flush();
       }
     }
 

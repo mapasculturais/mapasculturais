@@ -162,6 +162,14 @@ trait ControllerAPI{
         else
             return (int) $default_lifetime;
     }
+    
+    
+    protected function detachApiQueryRS($rs){
+        $em = App::i()->em;
+        foreach($rs as $r){
+            $em->detach($r);
+        }
+    }
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -517,6 +525,16 @@ trait ControllerAPI{
                 $dql_where
 
                $order";
+                    
+            
+            $final_dql_subqueries = preg_replace('#([^a-z0-9_])e\.#i', '$1original_e.', "SELECT
+                    e.id
+                FROM
+                    $class original_e
+                $dql_joins
+
+                $dql_where");
+            
 
             $result[] = "$final_dql";
 
@@ -546,16 +564,10 @@ trait ControllerAPI{
             }
 
             $query->setParameters($this->_apiFindParamList);
-            $rs = $query->getResult();
-
-            $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
+            
+            $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins, $final_dql_subqueries){
                 if($counting){
                     return;
-                }
-                $ids = [];
-                foreach($rs as $e){
-                    $e = (object) $e;
-                    $ids[] = $e->id;
                 }
 
                 foreach($dql_select as $i => $_select){
@@ -567,17 +579,17 @@ trait ControllerAPI{
                         FROM
                             $class e $_join
                         WHERE
-                            e.id IN(:entity_ids)
+                            e.id IN($final_dql_subqueries)
                     ";
 
                     $q = $app->em->createQuery($dql);
+                    $q->setParameters($this->_apiFindParamList);
 
                     if($app->config['app.log.apiDql'])
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
-                    $q->setParameter('entity_ids', $ids);
-
-                    $q->getResult();
+                    $rs = $q->getResult();
+                    $this->detachApiQueryRS($rs);
                 }
             };
 
@@ -664,6 +676,9 @@ trait ControllerAPI{
 
                 if($permissions){
                     $rs = $query->getResult();
+                    
+                    $this->detachApiQueryRS($rs);
+                    
                     $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
@@ -710,6 +725,8 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
+                    $this->detachApiQueryRS($rs);
+
 
                     $sub_queries($rs);
                 }else{
@@ -717,6 +734,8 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
+                        $this->detachApiQueryRS($rs);
+
                     }
 
                     $sub_queries($rs);

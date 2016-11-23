@@ -178,8 +178,38 @@ return [
     	$conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
-    
+            
+    'update entities last_update_timestamp with user last log timestamp' => function () use($conn,$app) {
+        $agents = $conn->fetchAll("SELECT a.id, u.last_login_timestamp FROM agent a, usr u WHERE u.id = a.user_id");
+        
+        foreach($agents as $agent){
+            $agent = (object) $agent;
+            $conn->executeQuery("UPDATE space SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE event SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE seal SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE project SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+        }
+        
+        $conn->executeQuery("UPDATE agent SET update_timestamp = u.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr) AS u WHERE user_id = u.id AND update_timestamp IS NULL");
+    },
+
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
-    }
+    },
+
+    'Created owner seal relation field' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN owner_id INTEGER;");
+        $agent_id = $conn->fetchColumn("select profile_id
+                    from usr
+                    where id = (
+                        select min(usr_id)
+                        from role
+                        where name = 'superAdmin'
+                    )");
+        $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
+    },
+
+    'Add field for maximum size from registration field configuration' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
+    },
 ];

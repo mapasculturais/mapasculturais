@@ -34,6 +34,7 @@ class Theme extends MapasCulturais\Theme {
             'site: of the region' => \MapasCulturais\i::__('da região'),
             'site: owner' => \MapasCulturais\i::__('Secretaria'),
             'site: by the site owner' => \MapasCulturais\i::__('pela Secretaria'),
+            'site: panel' => \MapasCulturais\i::__('Painel'),
 
             'home: title' => \MapasCulturais\i::__("Bem-vind@!"),
             'home: abbreviation' => \MapasCulturais\i::__("MC"),
@@ -41,22 +42,48 @@ class Theme extends MapasCulturais\Theme {
             'home: welcome' => \MapasCulturais\i::__("O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural."),
             'home: events' => \MapasCulturais\i::__("Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente."),
             'home: agents' => \MapasCulturais\i::__("Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita."),
-            'home: spaces' => \MapasCulturais\i::__( "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."),
+            'home: spaces' => \MapasCulturais\i::__("Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."),
             'home: projects' => \MapasCulturais\i::__("Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."),
             'home: home_devs' => \MapasCulturais\i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'),
 
             'search: verified results' => \MapasCulturais\i::__('Resultados Verificados'),
             'search: verified' => \MapasCulturais\i::__("Verificados"),
 
+            'entities: My Projects' => \MapasCulturais\i::__('Meus Projetos'),
+            'entities: My projects' => \MapasCulturais\i::__('Meus projetos'),
+            'entities: Project' => \MapasCulturais\i::__('Projeto'),
+            'entities: Projects' => \MapasCulturais\i::__('Projetos'),
+            'entities: project' => \MapasCulturais\i::__('projeto'),
+            'entities: projects' => \MapasCulturais\i::__('projetos'),
 
-            'entities: Spaces of the agent'=> \MapasCulturais\i::__('Espaços do agente'),
-            'entities: Space Description'=> \MapasCulturais\i::__('Descrição do Espaço'),
-            'entities: Agent children'=> \MapasCulturais\i::__('Agentes'),
-            'entities: My Spaces'=> \MapasCulturais\i::__('Meus Espaços'),
-            'entities: My spaces'=> \MapasCulturais\i::__('Meus espaços'),
+            'entities: My Events' => \MapasCulturais\i::__('Meus Eventos'),
+            'entities: My events' => \MapasCulturais\i::__('Meus eventos'),
+            'entities: Event' => \MapasCulturais\i::__('Evento'),
+            'entities: Events' => \MapasCulturais\i::__('Eventos'),
+            'entities: event' => \MapasCulturais\i::__('evento'),
+            'entities: events' => \MapasCulturais\i::__('eventos'),
 
-        	'entities: My Seals'=> \MapasCulturais\i::__('Meus Selos'),
-        	'entities: My seals'=> \MapasCulturais\i::__('Meus selos'),
+            'entities: My Agents' => \MapasCulturais\i::__('Meus Agentes'),
+            'entities: My agents' => \MapasCulturais\i::__('Meus agentes'),
+            'entities: Agent' => \MapasCulturais\i::__('Agente'),
+            'entities: Agents' => \MapasCulturais\i::__('Agentes'),
+            'entities: agent' => \MapasCulturais\i::__('agente'),
+            'entities: agents' => \MapasCulturais\i::__('agentes'),
+
+            'entities: Spaces of the agent' => \MapasCulturais\i::__('Espaços do agente'),
+            'entities: Space Description' => \MapasCulturais\i::__('Descrição do Espaço'),
+            'entities: Agent children' => \MapasCulturais\i::__('Agentes'),
+            'entities: My Spaces' => \MapasCulturais\i::__('Meus Espaços'),
+            'entities: My spaces' => \MapasCulturais\i::__('Meus espaços'),
+
+        	'entities: My Seals' => \MapasCulturais\i::__('Meus Selos'),
+        	'entities: My seals' => \MapasCulturais\i::__('Meus selos'),
+            'entities: Seals' => \MapasCulturais\i::__('Selos'),
+            'entities: seals' => \MapasCulturais\i::__('selos'),
+            'entities: Seal' => \MapasCulturais\i::__('Selo'),
+            'entities: seal' => \MapasCulturais\i::__('selo'),
+
+            'entities: Users and roles'=> \MapasCulturais\i::__('Usuários e papéis'),
 
             'entities: no registered spaces'=> \MapasCulturais\i::__('nenhum espaço cadastrado'),
             'entities: no spaces'=> \MapasCulturais\i::__('nenhum espaço'),
@@ -71,7 +98,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: of the space' => \MapasCulturais\i::__('do espaço'),
             'entities: In this space' => \MapasCulturais\i::__('Neste espaço'),
             'entities: in this space' => \MapasCulturais\i::__('neste espaço'),
-            'entities: registered spaces' =>\MapasCulturais\i::__( 'espaços cadastrados'),
+            'entities: registered spaces' => \MapasCulturais\i::__('espaços cadastrados'),
             'entities: new space' => \MapasCulturais\i::__('novo espaço'),
 
             'entities: Children spaces' => \MapasCulturais\i::__('Subespaços'),
@@ -85,10 +112,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => \MapasCulturais\i::__('agentes encontrados'),
             'entities: project found' => \MapasCulturais\i::__('projeto encontrado'),
             'entities: project found' => \MapasCulturais\i::__('projetos encontrados'),
-            'entities: Agents'    => \MapasCulturais\i::__('Agentes'),
-            'entities: Projects'  => \MapasCulturais\i::__('Projetos'),
-            'entities: Events'    => \MapasCulturais\i::__('Eventos'),
-            'entities: Seals'     => \MapasCulturais\i::__('Selos'),
+
+            'roles: Super Administrator'=> \MapasCulturais\i::__('Super Administrador'),
+            'roles: Super Administrators'=> \MapasCulturais\i::__('Super Administradores'),
+
+            'roles: Administrator'=> \MapasCulturais\i::__('Administrador'),
+            'roles: Administrators'=> \MapasCulturais\i::__('Administradores'),
+
+            'roles: Staff Member'=> \MapasCulturais\i::__('Membro da equipe'),
+            'roles: Staff Members'=> \MapasCulturais\i::__('Membros da equipe'),
 
             'taxonomies:area: name' => \MapasCulturais\i::__('Área de Atuação'),
             'taxonomies:area: select at least one' => \MapasCulturais\i::__('Selecione pelo menos uma área'),
@@ -249,8 +281,16 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
-          $this->updateTimestamp = new \DateTime;
+        $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
+            if(!$app->user->is('guest')){
+                $user = $this->ownerUser;
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $user->email,
+                    'subject' => "Novo $this->entityType registrado",
+                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                ]);
+            }
         });
 
         // sempre que insere uma imagem cria o avatarSmall
@@ -939,6 +979,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentRelations'] = $entity->getAgentRelationsGrouped(null, $this->isEditable());
     }
 
+    function addRelatedAdminAgentsToJs($entity) {
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
@@ -946,6 +990,10 @@ class Theme extends MapasCulturais\Theme {
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
         	$query = [];
         	$query['@select'] = 'id,name,status, singleUrl';
+
+            if($onlyPermited) {
+        		$query['@permissions'] = '@control';
+        	}
 
         	$query['@files'] = '(avatar.avatarMedium):url';
         	$sealId = implode(',',array_unique($sealId));
@@ -959,13 +1007,13 @@ class Theme extends MapasCulturais\Theme {
         	$app = App::i();
         	if (!$app->user->is('guest')) {
         		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-        	}
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') ) {
-        		$this->jsObject['canRelateSeal'] = true;
-        	} else {
-        		$this->jsObject['canRelateSeal'] = false;
-        	}
+            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+            		$this->jsObject['canRelateSeal'] = true;
+            	} else {
+            		$this->jsObject['canRelateSeal'] = false;
+            	}
+            }
         }
 
     function addProjectEventsToJs(Entities\Project $entity){
@@ -1213,4 +1261,35 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
+
+
+    function registerMetadata($entity_class, $key, $cfg) {
+        $app = \MapasCulturais\App::i();
+        $def = new \MapasCulturais\Definitions\Metadata($key, $cfg);
+        return $app->registerMetadata($def, $entity_class);
+
+    }
+
+    function registerEventMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Event', $key, $cfg);
+    }
+
+    function registerSpaceMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Space', $key, $cfg);
+    }
+
+    function registerAgentMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Agent', $key, $cfg);
+    }
+
+    function registerProjectMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Project', $key, $cfg);
+    }
+
+    function registerSealMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
+    }
+
+
+
 }

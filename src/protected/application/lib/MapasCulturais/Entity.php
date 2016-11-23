@@ -251,12 +251,12 @@ abstract class Entity implements \JsonSerializable{
         if(!$app->isAccessControlEnabled()){
             return true;
         }
-        
+
         if(is_null($userOrAgent)){
             $user = $app->user;
         } else if($userOrAgent instanceof UserInterface) {
             $user = $userOrAgent;
-        } else { 
+        } else {
             $user = $userOrAgent->getOwnerUser();
         }
 
@@ -399,18 +399,12 @@ abstract class Entity implements \JsonSerializable{
 
         $metadata = $class::getPropertiesMetadata();
         if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
-            $app->log->debug("Primeiro: ");
-            $app->log->debug($property);
             $return = $metadata[$property]['required'];
-            $app->log->debug($return);
         }
 
         $v = $class::$validations;
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
-            $app->log->debug("Segundo: ");
             $return = true;
-            $app->log->debug($property);
-            $app->log->debug($return);
         }
 
         return $return;
@@ -486,6 +480,10 @@ abstract class Entity implements \JsonSerializable{
     
     public function getEntityTypeLabel($plural = false) {}
 
+    function getEntityState() {
+        return App::i()->em->getUnitOfWork()->getEntityState($this);
+    }
+
     /**
      * Persist the Entity optionally flushing
      *
@@ -493,7 +491,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
-
 
         $requests = [];
 
@@ -857,7 +854,24 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
-
+        if (property_exists($this, 'updateTimestamp')) {
+            $this->updateTimestamp = new \DateTime;
+            if($this->sentNotification){
+                $entity = $this;
+                $nid = $this->sentNotification;
+                $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
+                    if($this->equals($entity)){
+                        $app->log->debug("notification id: $nid");
+                        $notification = $app->repo('Notification')->find($nid);
+                        $notification->delete();
+                        $this->sentNotification = 0;
+                        $this->save();
+                        
+                        $app->em->flush();
+                    }
+                });
+            }
+        }
     }
 
     /**

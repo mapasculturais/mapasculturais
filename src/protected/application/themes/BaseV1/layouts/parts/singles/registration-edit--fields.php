@@ -8,10 +8,9 @@
 
                 <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 
-                <p ng-if="field.fieldType === 'textarea'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                <p ng-if="field.fieldType === 'textarea'" style="position: relative;">
+                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-tpl="<textarea onkeyup='charCounter(this);' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea><span id='charCounter'></span>" data-original-title="{{field.title}}" data-maxlength="{{ field.maxSize }}"  data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
-
                 <p ng-if="field.fieldType === 'text'">
                     <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="Informe" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>

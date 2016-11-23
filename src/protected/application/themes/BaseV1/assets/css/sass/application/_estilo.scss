@@ -1,0 +1,25 @@
+
+.botao{
+  float: right;
+  display: inline;
+
+}
+
+input.botao{
+  background: #2063a5;
+  border: 1px solid #143d65;
+  cursor: pointer;
+  color: white;
+}
+
+.form-complaint-suggestion {
+  background: #f8f8f8;
+  padding-left: 18px;
+  padding-top: 32px;
+  border-left: 3px solid  #143d65;
+
+}
+
+input[type=text]:focus {
+    width: 250px;
+}
