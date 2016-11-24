@@ -1087,7 +1087,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     MapasCulturais.Messages.error('O limite de inscrições para o agente informado se esgotou.');
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
                     MapasCulturais.Messages.error('O número de vagas da inscrição no projeto se esgotou.');
-                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit === 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
+                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
