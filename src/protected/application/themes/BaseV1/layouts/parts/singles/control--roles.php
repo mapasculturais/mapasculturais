@@ -7,13 +7,13 @@
         <?php elseif ($entity->user->is('staff')): ?>
             <span data-role="staff"><?php echo $app->getRoleName('staff'); ?></span>
         <?php else: ?>
-            <span>Normal</span>
+            <span><?php \MapasCulturais\i::_e("Normal");?></span>
         <?php endif; ?>
     </div>
     <div class="submenu-dropdown js-options">
         <ul>
             <li>
-                <span>Normal</span>
+                <span><?php \MapasCulturais\i::_e("Normal");?></span>
             </li>
             <?php if ($entity->user->canUser('addRoleStaff')): ?>
                 <li data-role="staff">

@@ -1,57 +1,57 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-11-23 22:40-0300\n"
+"POT-Creation-Date: 2016-11-24 14:20-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: Español\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: /home/leonardo/traduccion/mapasculturais_leog/src/"
-"protected/application/themes\n"
-"X-Poedit-SearchPath-1: /home/leonardo/traduccion/mapasculturais_leog/src/"
-"protected/application/themes/BaseV1/layouts/parts\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: views\n"
+"X-Poedit-SearchPath-2: pages\n"
+"X-Poedit-SearchPath-3: layouts\n"
+"X-Poedit-SearchPath-4: assets\n"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:33
+#: Theme.php:33
 msgid "na região"
 msgstr "en la región"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:34
+#: Theme.php:34
 msgid "da região"
 msgstr "de la región"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:35
+#: Theme.php:35
 msgid "Secretaria"
 msgstr "Secretaría"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:36
+#: Theme.php:36
 msgid "pela Secretaria"
 msgstr "por la Secretaría"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:37
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:4
+#: Theme.php:37 layouts/parts/panel-nav.php:4
 msgid "Painel"
 msgstr "Panel"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:39
+#: Theme.php:39
 msgid "Bem-vind@!"
 msgstr "Bienvenid@!"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:40
+#: Theme.php:40
 msgid "MC"
 msgstr "MC"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:41
+#: Theme.php:41
 msgid "Colabore com o Mapas Culturais"
 msgstr "Colabore con Mapas Culturales"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:42
+#: Theme.php:42
 msgid ""
 "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
@@ -59,7 +59,7 @@ msgstr ""
 "Mapas Culturales es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:43
+#: Theme.php:43
 msgid ""
 "Você pode pesquisar eventos culturais nos campos de busca combinada. Como "
 "usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-"
@@ -69,7 +69,7 @@ msgstr ""
 "usuario registrado, puede incluir su evento en la plataforma y darlo a "
 "conocer de forma gratuita."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:44
+#: Theme.php:44
 msgid ""
 "Você pode colaborar na gestão da cultura com suas próprias informações, "
 "preenchendo seu perfil de agente cultural. Neste espaço, estão registrados "
@@ -85,7 +85,7 @@ msgstr ""
 "(grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con "
 "sus eventos de perfil y espacios culturales con libre difusión."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:45
+#: Theme.php:45
 msgid ""
 "Procure por espaços culturais incluídos na plataforma, acessando os campos "
 "de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também "
@@ -96,7 +96,7 @@ msgstr ""
 "Firmar los espacios donde se desarrollan sus actividades artísticas y "
 "culturales."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:46
+#: Theme.php:46
 msgid ""
 "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, "
 "você encontra leis de fomento, mostras, convocatórias e editais criados, "
@@ -108,7 +108,7 @@ msgstr ""
 "creados, y varias iniciativas registradas por los usuarios de la plataforma. "
 "Regístrese ahora y publicar sus proyectos."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:47
+#: Theme.php:47
 msgid ""
 "Existem algumas maneiras de desenvolvedores interagirem com o Mapas "
 "Culturais. A primeira é através da nossa <a href=\"https://github.com/"
@@ -132,965 +132,859 @@ msgstr ""
 "por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
 "desarrollo a través de GitHub. "
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:49
+#: Theme.php:49
 msgid "Resultados Verificados"
 msgstr "Resultados Verificados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:50
+#: Theme.php:50
 msgid "Verificados"
 msgstr "Verificados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:52
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:176
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:32
+#: Theme.php:52 layouts/parts/header-main-nav.php:176
+#: layouts/parts/panel-nav.php:32
 msgid "Meus Projetos"
 msgstr "MisProyectos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:53
+#: Theme.php:53 views/panel/projects.php:6
 msgid "Meus projetos"
 msgstr "Mis Proyectos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:54
+#: Theme.php:54
 msgid "Projeto"
 msgstr "Proyecto"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:55
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:24
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:25
+#: Theme.php:55 layouts/parts/home-projects.php:25
+#: layouts/parts/home-search.php:24
 msgid "Projetos"
 msgstr "Proyectos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:56
+#: Theme.php:56
 msgid "projeto"
 msgstr "proyecto"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:57
+#: Theme.php:57
 msgid "projetos"
 msgstr "proyectos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:59
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:140
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:8
+#: Theme.php:59 layouts/parts/header-main-nav.php:140
+#: layouts/parts/panel-nav.php:8
 msgid "Meus Eventos"
 msgstr "Mis eventos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:60
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/events.php:6
+#: Theme.php:60 views/panel/events.php:6
 msgid "Meus eventos"
 msgstr "Mis eventos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:61
+#: Theme.php:61
 msgid "Evento"
 msgstr "Evento"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:62
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:26
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:12
+#: Theme.php:62 layouts/parts/home-events.php:26
+#: layouts/parts/home-search.php:12
 msgid "Eventos"
 msgstr "Eventos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:63
+#: Theme.php:63
 msgid "evento"
 msgstr "evento"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:64
+#: Theme.php:64
 msgid "eventos"
 msgstr "eventos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:66
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:149
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:14
+#: Theme.php:66 layouts/parts/header-main-nav.php:149
+#: layouts/parts/panel-nav.php:14
 msgid "Meus Agentes"
 msgstr "Mis Agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:67
+#: Theme.php:67 views/panel/agents.php:6
 msgid "Meus agentes"
 msgstr "Mis Agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:68
+#: Theme.php:68
 msgid "Agente"
 msgstr "Agente"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:69
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:75
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:28
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:16
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-agents.php:4
+#: Theme.php:69 Theme.php:75 layouts/parts/home-agents.php:28
+#: layouts/parts/home-search.php:16 layouts/parts/search/filter-agents.php:4
 msgid "Agentes"
 msgstr "Agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:70
+#: Theme.php:70
 msgid "agente"
 msgstr "agente"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:71
+#: Theme.php:71
 msgid "agentes"
 msgstr "agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:73
+#: Theme.php:73
 msgid "Espaços do agente"
 msgstr "Espacios del agente"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:74
+#: Theme.php:74
 msgid "Descrição do Espaço"
 msgstr "Descripción del Espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:76
+#: Theme.php:76
 msgid "Meus Espaços"
 msgstr "Mis Espacios"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:77
+#: Theme.php:77
 msgid "Meus espaços"
 msgstr "Mis espacios"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:79
+#: Theme.php:79
 msgid "Meus Selos"
 msgstr "Mis Sellos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:80
+#: Theme.php:80 views/panel/seals.php:6
 msgid "Meus selos"
 msgstr "Mis sellos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:81
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:27
+#: Theme.php:81 layouts/parts/home-seals.php:27
 msgid "Selos"
 msgstr "Sellos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:82
+#: Theme.php:82
 msgid "selos"
 msgstr "sellos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:83
+#: Theme.php:83
 msgid "Selo"
 msgstr "Sello"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:84
+#: Theme.php:84
 msgid "selo"
 msgstr "sello"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:86
+#: Theme.php:86
 msgid "Usuários e papéis"
 msgstr "Usuarios y roles"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:88
+#: Theme.php:88
 msgid "nenhum espaço cadastrado"
 msgstr "ningún espacio registrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:89
+#: Theme.php:89
 msgid "nenhum espaço"
 msgstr "ningún espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:91
+#: Theme.php:91
 msgid "Espaço"
 msgstr "Espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:92
+#: Theme.php:92
 msgid "Espaços"
 msgstr "Espacios"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:93
+#: Theme.php:93
 msgid "espaço"
 msgstr "espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:94
+#: Theme.php:94
 msgid "espaços"
 msgstr "espacios"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:95
+#: Theme.php:95
 msgid "espaço pai"
 msgstr "espacio padre"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:96
+#: Theme.php:96
 msgid "um espaço"
 msgstr "un espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:97
+#: Theme.php:97
 msgid "o espaço"
 msgstr "el espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:98
+#: Theme.php:98
 msgid "do espaço"
 msgstr "del espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:99
+#: Theme.php:99
 msgid "Neste espaço"
 msgstr "En este espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:100
+#: Theme.php:100
 msgid "neste espaço"
 msgstr "en este espaio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:101
+#: Theme.php:101
 msgid "espaços cadastrados"
 msgstr "espacios registrados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:102
+#: Theme.php:102
 msgid "novo espaço"
 msgstr "nuevo espacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:104
+#: Theme.php:104
 msgid "Subespaços"
 msgstr "Subespacios"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:105
+#: Theme.php:105
 msgid "Adicionar subespaço"
 msgstr "Agregar subespacio"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:107
+#: Theme.php:107
 msgid "espaço encontrado"
 msgstr "espacio encontrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:108
+#: Theme.php:108
 msgid "espaços encontrados"
 msgstr "espacios encontrados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:109
+#: Theme.php:109
 msgid "evento encontrado"
 msgstr "evento encontrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:110
+#: Theme.php:110
 msgid "eventos encontrados"
 msgstr "evento encontrados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:111
+#: Theme.php:111
 msgid "agente encontrado"
 msgstr "agente encontrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:112
+#: Theme.php:112
 msgid "agentes encontrados"
 msgstr "agentes encontrados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:113
+#: Theme.php:113
 msgid "projeto encontrado"
 msgstr "proyecto encontrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:114
+#: Theme.php:114
 msgid "projetos encontrados"
 msgstr "proyectos encontrados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:116
+#: Theme.php:116
 msgid "Super Administrador"
 msgstr "Súper Administrador"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:117
+#: Theme.php:117
 msgid "Super Administradores"
 msgstr "Súper Administradores"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:119
+#: Theme.php:119
 msgid "Administrador"
 msgstr "Administrador"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:120
+#: Theme.php:120
 msgid "Administradores"
 msgstr "Administradores"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:122
+#: Theme.php:122
 msgid "Membro da equipe"
 msgstr "Miembro del equipo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:123
+#: Theme.php:123
 msgid "Membros da equipe"
 msgstr "Miembros del equipo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:125
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:823
+#: Theme.php:125 Theme.php:823
 msgid "Área de Atuação"
 msgstr "Área de actuación"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:126
+#: Theme.php:126
 msgid "Selecione pelo menos uma área"
 msgstr "Seleccione por lo menos un área"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:127
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:824
+#: Theme.php:127 Theme.php:824
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:687
+#: Theme.php:687
 msgid "uma vez"
 msgstr "una vez"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:688
+#: Theme.php:688
 msgid "todos os dias"
 msgstr "todos sos días"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:689
+#: Theme.php:689
 msgid "semanal"
 msgstr "semanal"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:690
+#: Theme.php:690
 msgid "mensal"
 msgstr "mensual"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:791
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:902
+#: Theme.php:791 Theme.php:902 layouts/parts/search/filter-projects.php:16
+#: layouts/parts/search/filter-spaces.php:30
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:799
+#: Theme.php:799 layouts/parts/search/filter-spaces.php:43
 msgid "Acessibilidade"
 msgstr "Accesibilidad"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:800
+#: Theme.php:800
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:811
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:845
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:889
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:916
+#: Theme.php:811 Theme.php:845 Theme.php:889 Theme.php:916
+#: layouts/parts/search/filter-events.php:48
+#: layouts/parts/search/filter-spaces.php:48
 msgid "Exibir somente resultados Verificados"
 msgstr "Mostrar solamente resultados Verificados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:832
+#: Theme.php:832
 msgid "Tipos"
 msgstr "Tipos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:833
+#: Theme.php:833
 msgid "Todos"
 msgstr "Todos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:869
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:40
+#: Theme.php:869 layouts/parts/home-events.php:40
+#: layouts/parts/search/filter-events.php:20
+#: layouts/parts/singles/project-events.php:36
 msgid "Linguagem"
 msgstr "Lenguaje"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:870
+#: Theme.php:870 layouts/parts/search/filter-events.php:22
 msgid "Selecione as linguagens"
 msgstr "Selecciones los lenguajes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:879
+#: Theme.php:879 layouts/parts/search/filter-events.php:34
+#: layouts/parts/singles/project-events.php:37
 msgid "Classificação"
 msgstr "Clasificación"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:880
+#: Theme.php:880 layouts/parts/search/filter-events.php:36
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:901
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:43
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:41
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:39
+#: Theme.php:901 layouts/parts/home-agents.php:43
+#: layouts/parts/home-projects.php:39 layouts/parts/home-spaces.php:41
+#: layouts/parts/search/filter-projects.php:14
+#: layouts/parts/search/filter-spaces.php:28
+#: layouts/parts/singles/permissions.php:15
 msgid "Tipo"
 msgstr "Tipo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:910
+#: Theme.php:910 layouts/parts/search/filter-projects.php:29
 msgid "Inscrições Abertas"
 msgstr "Inscripciones abiertas"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/auth/fake-authentication.php:1
-msgid "Fake Authentication"
-msgstr "Autenticación falsa"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/auth/fake-authentication.php:3
-msgid "Login with user"
-msgstr "Acceder con usuario"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/events.php:7
-msgid "Adicionar novo evento"
-msgstr "Agregar nuevo evento"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:32
-msgid "agentes cadastrados"
-msgstr "agentes registrados"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:36
-msgid "agentes da "
-msgstr "agentes de la "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:40
-msgid "Encontre agentes por"
-msgstr "Buscar agentes por"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:42
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:40
-msgid "Área de atuação"
-msgstr "Área de actuación"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:65
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:45
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:64
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:55
-msgid "destaque"
-msgstr "destacado"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:72
-msgid "Adicionar agente"
-msgstr "Agregar agente"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:73
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:63
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:53
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:72
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:63
-msgid "Ver tudo"
-msgstr "Ver todo"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:7
-msgid "Este é seu agente padrão."
-msgstr "Este es su agente estándar."
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:9
-msgid "Definir este agente como meu agente padrão."
-msgstr "Definir este agente como mi agente estándar."
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:16
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:12
-msgid "Tipo:"
-msgstr "Tipo:"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:17
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:15
-msgid "Área(s) de atuação:"
-msgstr "Área(s) de actuación:"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:20
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:4
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:13
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:10
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:29
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:22
-msgid "editar"
-msgstr "editar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:24
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:28
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:7
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:11
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:17
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:21
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:12
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:16
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:32
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:36
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:25
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:29
-msgid "excluir"
-msgstr "borrar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:27
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:10
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:20
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:15
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:35
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:28
-msgid "publicar"
-msgstr "publicar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:31
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:14
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:24
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:19
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:39
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:32
-msgid "recuperar"
-msgstr "recuperar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:33
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-app.php:16
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:26
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-seal.php:21
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:41
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:34
-msgid "excluir definitivamente"
-msgstr "eliminar de forma permanente"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-registration.php:17
-msgid "Responsável:"
-msgstr "Responsable:"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:14
-msgid "Revista Em Cartaz"
-msgstr ""
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:16
-msgid "Filtrar Eventos"
-msgstr "Filtrar Eventos"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:17
-msgid "de"
-msgstr "de"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:28
-msgid "Visualizar"
-msgstr "Visualizar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:30
-msgid "Baixar"
-msgstr "Descargar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header.php:27
-msgid "Corrija os erros abaixo e tente novamente."
-msgstr "Corrija los errores abajo e intente nuevamente."
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/gallery.php:7
-msgid "Galeria"
-msgstr "Galería"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/gallery.php:14
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/gallery.php:24
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:47
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:47
-msgid "Excluir"
-msgstr "Borrar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/gallery.php:22
-msgid "Adicionar imagem"
-msgstr "Agregar imagen"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/gallery.php:23
-msgid "Adicionar Imagem na Galeria"
-msgstr "Agregar una imagen a la Galería"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:2
-msgid "Compartilhar"
-msgstr "Compartir"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:5
-msgid "Tweet"
-msgstr ""
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:24
-msgid "Seguir"
-msgstr "Seguir"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:27
-msgid "Perfil no Twitter"
-msgstr "Perfil en Twitter"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:33
-msgid "Perfil no Facebook"
-msgstr "Perfil en Facebook"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:39
-msgid "Perfil no Google Plus"
-msgstr "Perfil en Google Plus"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:4
-msgid "editando"
-msgstr "editando"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:6
-msgid "Clique para adicionar arquivo para download"
-msgstr "Haga clic para agregar archivo para descarga"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:7
-msgid "Adicionar Arquivo"
-msgstr "Agregar Archivo"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:13
-msgid " is-editable"
-msgstr "es editable"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:17
-msgid "Remover este vídeo?"
-msgstr "Eliminar este video?"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/downloads.php:17
-msgid "Excluir arquivo"
-msgstr "Borrar archivo"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/verified.php:8
-msgid "Clique para marcar/desmarcar este"
-msgstr "Haga clic para marcar/desmarcar este"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/verified.php:13
-msgid "Este"
-msgstr "Este"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/verified.php:13
-msgid "é verificado."
-msgstr "verificado"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:8
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:10
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:17
-msgid "Selecionar projeto pai"
-msgstr "Seleccione proyecto padre"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:25
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:27
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:34
-msgid "Selecionar"
-msgstr "Seleccionar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/entity-parent.php:41
-msgid "Aguardando confirmação"
-msgstr "Esperando confirmación"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:2
+#: layouts/parts/ajax-uploader.php:2
 msgid "Para subir arquivos você primeiro deve salvar."
 msgstr "Para subir archivos, primero debe salvar."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:15
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:59
+#: layouts/parts/ajax-uploader.php:15 layouts/parts/video-gallery.php:59
 msgid "Título"
 msgstr "Título"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:17
+#: layouts/parts/ajax-uploader.php:17
 msgid "Tipos de arquivos suportados: "
 msgstr "Tipos de archivos soportados: "
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:18
+#: layouts/parts/ajax-uploader.php:18
 msgid "Tamanho máximo do arquivo: "
 msgstr "Tamaño máximo de archivo:"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:30
-msgid "eventos agendados"
-msgstr "evento agendados"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:34
-msgid "eventos da "
-msgstr "eventos de la "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-events.php:62
-msgid "Adicionar evento"
-msgstr "Agregar evento"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php:9
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php:11
-msgid "Tags"
-msgstr "Etiquetas"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/widget-tags.php:11
-msgid "Insira tags"
-msgstr "Introduzca etiquetas"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:6
-msgid "Digite uma palavra-chave"
-msgstr "Escriba una palabra clave"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:8
-msgid "Buscar"
-msgstr "Buscar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-search.php:33
-msgid "Saiba mais"
-msgstr "Conozca más"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:14
-msgid "Logado como Admin"
-msgstr "Logueado como Admin"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:15
-msgid "Logado como Admin."
-msgstr "Logueado como Admin."
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:79
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:84
-msgid "Notificações"
-msgstr "Notificaciones"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:85
-msgid "Marcar todas como lidas"
-msgstr "Marcar todas como leídas"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:93
-msgid "aceitar"
-msgstr "aceptar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:97
-msgid "cancelar"
-msgstr "cancelar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:98
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:106
-msgid "ok"
-msgstr "ok"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:101
-msgid "rejeitar"
-msgstr "rechazar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:113
-msgid "Ver todas atividades"
-msgstr "Ver todas las actividades"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:183
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:36
-msgid "Minhas Inscrições"
-msgstr "Mis Inscripciones"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:193
-msgid "Trocar Usuário"
-msgstr "Cambiar usuario"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:196
-msgid "Sair"
-msgstr "Salir"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:207
-msgid "Entrar"
-msgstr "Entrar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:7
-msgid "Linguagens: "
-msgstr "Lenguajes: "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:9
-msgid "Classificação:"
-msgstr "Clasificación:"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-event.php:16
-msgid "tornar rascunho"
-msgstr "convertir en borrador"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:25
-msgid "Vídeos"
-msgstr "Videos"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:40
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:55
-msgid "Editar Vídeo"
-msgstr "Editar Video"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:46
-msgid "Editar"
-msgstr "Editar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:47
-msgid "Excluir este vídeo?"
-msgstr "Eliminar este video?"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:59
-msgid "Endereço do vídeo (Youtube ou Vimeo)"
-msgstr "Dirección del video (Youtube o Vimeo)"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:59
-msgid "Descrição"
-msgstr "Descripción"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:61
-msgid "Para adicionar vídeos você primeiro deve salvar."
-msgstr "Para agregar videos, primero debe salvar."
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:69
-msgid "Adicionar Vídeo"
-msgstr "Agregar Video"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/video-gallery.php:75
-msgid "Adicionar vídeo"
-msgstr "Agregar video"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:9
-msgid "Publicado por"
-msgstr "Publicado por"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:14
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:16
-msgid "Selecione um agente"
-msgstr "Seleccione un agente"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:24
-msgid "Repassar propriedade"
-msgstr "Pasar propiedad"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:37
-msgid "Ceder propriedade"
-msgstr "Ceder propriedad"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:39
-msgid "Reivindicar propriedade"
-msgstr "Reivindicar propriedad"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:41
-msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
-msgstr "Seleccione el agente para el cual desea pasar la propiedad de este"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:41
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:10
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:53
-msgid "Cancelar"
-msgstr "Cancelar"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/owner.php:42
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:54
-msgid "Nenhum agente encontrado"
-msgstr "Ningún agente encontrado"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:31
-msgid "selos cadastrados"
-msgstr "sellos registrados"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:35
-msgid "selos da "
-msgstr "sellos de la "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-seals.php:52
-msgid "Adicionar selo"
-msgstr "Agregar sello"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:38
-msgid "Encontre "
-msgstr "Encuentre "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:38
-msgid " por "
-msgstr " por "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-spaces.php:71
-msgid "Adicionar "
-msgstr "Agregar "
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:25
+#: layouts/parts/busca-avancada.php:25
 msgid "Ver resultados em lista"
 msgstr "Ver resultados en lista"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:26
+#: layouts/parts/busca-avancada.php:26
 msgid "Ver resultados no mapa"
 msgstr "Ver resultados en el mapa"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:29
+#: layouts/parts/busca-avancada.php:29
 msgid "Exportar dados"
 msgstr "Exportar datos"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:32
+#: layouts/parts/busca-avancada.php:32
 msgid "Compartilhar resultado"
 msgstr "Compartir resultado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:34
+#: layouts/parts/busca-avancada.php:34
 msgid "Compartilhar resultado: "
 msgstr "Compartir resultado:"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:46
+#: layouts/parts/busca-avancada.php:46
 msgid "obtendo resultados..."
 msgstr "obteniendo resultados..."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:74
+#: layouts/parts/busca-avancada.php:74
 msgid "resultados sem localização"
 msgstr "resultados sin localización"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:79
+#: layouts/parts/busca-avancada.php:79
 msgid "Nenhum resultado encontrado"
 msgstr "Ningún resultado encontrado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:109
+#: layouts/parts/busca-avancada.php:109
 msgid "Área Delimitada"
 msgstr "Área Delimitada"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:110
+#: layouts/parts/busca-avancada.php:110
 msgid "Próximo a mim"
 msgstr "Próximo a mi"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:113
+#: layouts/parts/busca-avancada.php:113
 msgid "Remover todos filtros"
 msgstr "Remover todos los filtros"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:11
-msgid "Para relacionar o selo ao"
-msgstr "Para relacionar el sello al"
+#: layouts/parts/downloads.php:4
+msgid "editando"
+msgstr "editando"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:11
-msgid "primeiro é preciso salvar o registro."
-msgstr "primero es preciso salvar el registro"
+#: layouts/parts/downloads.php:6
+msgid "Clique para adicionar arquivo para download"
+msgstr "Haga clic para agregar archivo para descarga"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:16
-msgid "Selos Aplicados"
-msgstr "Sellos Aplicados"
+#: layouts/parts/downloads.php:7
+msgid "Adicionar Arquivo"
+msgstr "Agregar Archivo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:16
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:17
-msgid "Adicionar selo relacionado"
-msgstr "Agregar sello relacionado"
+#: layouts/parts/downloads.php:13
+msgid " is-editable"
+msgstr "es editable"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:17
-msgid "Fechar"
-msgstr "Cerca"
+#: layouts/parts/downloads.php:17
+msgid "Remover este vídeo?"
+msgstr "Eliminar este video?"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:19
-msgid "Selos Disponíveis"
-msgstr "Sellos Disponibles"
+#: layouts/parts/downloads.php:17
+msgid "Excluir arquivo"
+msgstr "Borrar archivo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:36
-msgid "Excluir selo"
-msgstr "Borrar sello"
+#: layouts/parts/editable-entity-logo.php:1
+msgid "Mapas Culturais"
+msgstr "Mapas Culturales"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:14
-msgid "Inscrições:"
-msgstr "Inscripciones:"
+#: layouts/parts/entity-parent.php:8 layouts/parts/entity-parent.php:10
+#: layouts/parts/entity-parent.php:17
+msgid "Selecionar projeto pai"
+msgstr "Seleccione proyecto padre"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:18
-msgid "a partir de "
-msgstr "a partir de "
+#: layouts/parts/entity-parent.php:25 layouts/parts/entity-parent.php:27
+#: layouts/parts/entity-parent.php:34
+msgid "Selecionar"
+msgstr "Seleccionar"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:20
-msgid " até "
-msgstr " hasta "
+#: layouts/parts/entity-parent.php:41
+msgid "Aguardando confirmação"
+msgstr "Esperando confirmación"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:22
-msgid "de "
-msgstr "de "
+#: layouts/parts/gallery.php:7
+msgid "Galeria"
+msgstr "Galería"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:22
-msgid " a "
-msgstr " a "
+#: layouts/parts/gallery.php:14 layouts/parts/gallery.php:24
+#: layouts/parts/related-admin-agents.php:27
+#: layouts/parts/related-agents.php:40
+#: layouts/parts/singles/control--view-buttons.php:7
+#: layouts/parts/singles/project-registrations--seals.php:35
+#: layouts/parts/singles/project-registrations--seals.php:65
+#: layouts/parts/singles/project-registrations--seals.php:95
+#: layouts/parts/singles/registration-edit--agents.php:25
+#: layouts/parts/singles/registration-edit--fields.php:54
+#: layouts/parts/video-gallery.php:47 views/event/create.php:65
+#: views/event/edit.php:65 views/event/single.php:65
+msgid "Excluir"
+msgstr "Borrar"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-project.php:26
-msgid "Organização:"
-msgstr "Organización: "
+#: layouts/parts/gallery.php:22
+msgid "Adicionar imagem"
+msgstr "Agregar imagen"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:9
-msgid "Buscar por palavra-chave"
-msgstr "Buscar por palabra clave"
+#: layouts/parts/gallery.php:23
+msgid "Adicionar Imagem na Galeria"
+msgstr "Agregar una imagen a la Galería"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:13
-msgid "Ordenar por: "
-msgstr "Ordenar por: "
+#: layouts/parts/header-about-nav.php:4
+msgid "Sobre os Mapas Culturais"
+msgstr "Sobre Mapas Culturales"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:14
-msgid "Nome"
-msgstr "Nombre"
+#: layouts/parts/header-about-nav.php:5
+msgid "Como usar"
+msgstr "Cómo usar"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:15
-msgid "Nome (Z-A)"
-msgstr "Nombre (Z-A)"
+#: layouts/parts/header-main-nav.php:14
+msgid "Logado como Admin"
+msgstr "Logueado como Admin"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:16
-msgid "Data mais recente"
-msgstr "Fecha más reciente"
+#: layouts/parts/header-main-nav.php:15
+msgid "Logado como Admin."
+msgstr "Logueado como Admin."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-search.php:17
-msgid "Data mais antiga"
-msgstr "Fecha más antígua"
+#: layouts/parts/header-main-nav.php:79 layouts/parts/header-main-nav.php:84
+msgid "Notificações"
+msgstr "Notificaciones"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-developers.php:3
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-nav.php:39
+#: layouts/parts/header-main-nav.php:85
+msgid "Marcar todas como lidas"
+msgstr "Marcar todas como leídas"
+
+#: layouts/parts/header-main-nav.php:93 views/panel/index.php:121
+msgid "aceitar"
+msgstr "aceptar"
+
+#: layouts/parts/header-main-nav.php:97 views/panel/index.php:124
+msgid "cancelar"
+msgstr "cancelar"
+
+#: layouts/parts/header-main-nav.php:98 layouts/parts/header-main-nav.php:106
+#: views/panel/index.php:125 views/panel/index.php:136
+msgid "ok"
+msgstr "ok"
+
+#: layouts/parts/header-main-nav.php:101 views/panel/index.php:127
+msgid "rejeitar"
+msgstr "rechazar"
+
+#: layouts/parts/header-main-nav.php:113
+msgid "Ver todas atividades"
+msgstr "Ver todas las actividades"
+
+#: layouts/parts/header-main-nav.php:183 layouts/parts/panel-nav.php:36
+msgid "Minhas Inscrições"
+msgstr "Mis Inscripciones"
+
+#: layouts/parts/header-main-nav.php:193
+msgid "Trocar Usuário"
+msgstr "Cambiar usuario"
+
+#: layouts/parts/header-main-nav.php:196
+msgid "Sair"
+msgstr "Salir"
+
+#: layouts/parts/header-main-nav.php:207
+msgid "Entrar"
+msgstr "Entrar"
+
+#: layouts/parts/header.php:27
+msgid "Corrija os erros abaixo e tente novamente."
+msgstr "Corrija los errores abajo e intente nuevamente."
+
+#: layouts/parts/home-agents.php:32
+msgid "agentes cadastrados"
+msgstr "agentes registrados"
+
+#: layouts/parts/home-agents.php:36
+msgid "agentes da "
+msgstr "agentes de la "
+
+#: layouts/parts/home-agents.php:40
+msgid "Encontre agentes por"
+msgstr "Buscar agentes por"
+
+#: layouts/parts/home-agents.php:42 layouts/parts/home-spaces.php:40
+msgid "Área de atuação"
+msgstr "Área de actuación"
+
+#: layouts/parts/home-agents.php:65 layouts/parts/home-projects.php:55
+#: layouts/parts/home-seals.php:45 layouts/parts/home-spaces.php:64
+msgid "destaque"
+msgstr "destacado"
+
+#: layouts/parts/home-agents.php:72
+msgid "Adicionar agente"
+msgstr "Agregar agente"
+
+#: layouts/parts/home-agents.php:73 layouts/parts/home-events.php:63
+#: layouts/parts/home-projects.php:63 layouts/parts/home-seals.php:53
+#: layouts/parts/home-spaces.php:72
+msgid "Ver tudo"
+msgstr "Ver todo"
+
+#: layouts/parts/home-developers.php:3 layouts/parts/home-nav.php:39
 msgid "Desenvolvedores"
 msgstr "Desarrolladores"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:16
-msgid "Local:"
-msgstr "Local:"
+#: layouts/parts/home-events.php:30
+msgid "eventos agendados"
+msgstr "evento agendados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:17
-msgid "Acessibilidade:"
-msgstr "Accesibilidad:"
+#: layouts/parts/home-events.php:34
+msgid "eventos da "
+msgstr "eventos de la "
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:17
-msgid "Não informado"
-msgstr "No informado"
+#: layouts/parts/home-events.php:62
+msgid "Adicionar evento"
+msgstr "Agregar evento"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-space.php:19
-msgid "Data de Criação:"
-msgstr "Fecha de creación:"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-nav.php:6
+#: layouts/parts/home-nav.php:6
 msgid "Introdução"
 msgstr "Introducción"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:10
+#: layouts/parts/home-projects.php:29
+msgid "projetos cadastrados"
+msgstr "proyectos registrados"
+
+#: layouts/parts/home-projects.php:33
+msgid "projetos da "
+msgstr "proyectos de la "
+
+#: layouts/parts/home-projects.php:37
+msgid "Encontre projetos por"
+msgstr "Busque proyectos por"
+
+#: layouts/parts/home-projects.php:62
+msgid "Adicionar projeto"
+msgstr "Agregar proyecto"
+
+#: layouts/parts/home-seals.php:31
+msgid "selos cadastrados"
+msgstr "sellos registrados"
+
+#: layouts/parts/home-seals.php:35
+msgid "selos da "
+msgstr "sellos de la "
+
+#: layouts/parts/home-seals.php:52
+msgid "Adicionar selo"
+msgstr "Agregar sello"
+
+#: layouts/parts/home-search.php:6
+msgid "Digite uma palavra-chave"
+msgstr "Escriba una palabra clave"
+
+#: layouts/parts/home-search.php:8 layouts/parts/search/filter-spaces.php:10
+#: layouts/parts/search/filter.php:14
+msgid "Buscar"
+msgstr "Buscar"
+
+#: layouts/parts/home-search.php:33
+msgid "Saiba mais"
+msgstr "Conozca más"
+
+#: layouts/parts/home-spaces.php:38
+msgid "Encontre "
+msgstr "Encuentre "
+
+#: layouts/parts/home-spaces.php:38
+msgid " por "
+msgstr " por "
+
+#: layouts/parts/home-spaces.php:71
+msgid "Adicionar "
+msgstr "Agregar "
+
+#: layouts/parts/owner.php:9
+msgid "Publicado por"
+msgstr "Publicado por"
+
+#: layouts/parts/owner.php:14 layouts/parts/owner.php:16
+msgid "Selecione um agente"
+msgstr "Seleccione un agente"
+
+#: layouts/parts/owner.php:24
+msgid "Repassar propriedade"
+msgstr "Pasar propiedad"
+
+#: layouts/parts/owner.php:37
+msgid "Ceder propriedade"
+msgstr "Ceder propriedad"
+
+#: layouts/parts/owner.php:39
+msgid "Reivindicar propriedade"
+msgstr "Reivindicar propriedad"
+
+#: layouts/parts/owner.php:41
+msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
+msgstr "Seleccione el agente para el cual desea pasar la propiedad de este"
+
+#: layouts/parts/owner.php:41 layouts/parts/related-agents.php:9
+#: layouts/parts/related-agents.php:46
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: layouts/parts/owner.php:42 layouts/parts/related-agents.php:47
+msgid "Nenhum agente encontrado"
+msgstr "Ningún agente encontrado"
+
+#: layouts/parts/panel-agent.php:7
+msgid "Este é seu agente padrão."
+msgstr "Este es su agente estándar."
+
+#: layouts/parts/panel-agent.php:9
+msgid "Definir este agente como meu agente padrão."
+msgstr "Definir este agente como mi agente estándar."
+
+#: layouts/parts/panel-agent.php:16 layouts/parts/panel-space.php:12
+msgid "Tipo:"
+msgstr "Tipo:"
+
+#: layouts/parts/panel-agent.php:17 layouts/parts/panel-space.php:15
+msgid "Área(s) de atuação:"
+msgstr "Área(s) de actuación:"
+
+#: layouts/parts/panel-agent.php:20 layouts/parts/panel-app.php:4
+#: layouts/parts/panel-event.php:13 layouts/parts/panel-project.php:29
+#: layouts/parts/panel-seal.php:10 layouts/parts/panel-space.php:22
+msgid "editar"
+msgstr "editar"
+
+#: layouts/parts/panel-agent.php:24 layouts/parts/panel-agent.php:28
+#: layouts/parts/panel-app.php:7 layouts/parts/panel-app.php:11
+#: layouts/parts/panel-event.php:17 layouts/parts/panel-event.php:21
+#: layouts/parts/panel-project.php:32 layouts/parts/panel-project.php:36
+#: layouts/parts/panel-seal.php:12 layouts/parts/panel-seal.php:16
+#: layouts/parts/panel-space.php:25 layouts/parts/panel-space.php:29
+msgid "excluir"
+msgstr "borrar"
+
+#: layouts/parts/panel-agent.php:27 layouts/parts/panel-app.php:10
+#: layouts/parts/panel-event.php:20 layouts/parts/panel-project.php:35
+#: layouts/parts/panel-seal.php:15 layouts/parts/panel-space.php:28
+#: layouts/parts/singles/project-events.php:13
+msgid "publicar"
+msgstr "publicar"
+
+#: layouts/parts/panel-agent.php:31 layouts/parts/panel-app.php:14
+#: layouts/parts/panel-event.php:24 layouts/parts/panel-project.php:39
+#: layouts/parts/panel-seal.php:19 layouts/parts/panel-space.php:32
+msgid "recuperar"
+msgstr "recuperar"
+
+#: layouts/parts/panel-agent.php:33 layouts/parts/panel-app.php:16
+#: layouts/parts/panel-event.php:26 layouts/parts/panel-project.php:41
+#: layouts/parts/panel-seal.php:21 layouts/parts/panel-space.php:34
+msgid "excluir definitivamente"
+msgstr "eliminar de forma permanente"
+
+#: layouts/parts/panel-em-cartaz.php:14 views/panel/em-cartaz.php:46
+msgid "Revista Em Cartaz"
+msgstr ""
+
+#: layouts/parts/panel-em-cartaz.php:16 views/panel/em-cartaz.php:48
+msgid "Filtrar Eventos"
+msgstr "Filtrar Eventos"
+
+#: layouts/parts/panel-em-cartaz.php:17
+msgid "de"
+msgstr "de"
+
+#: layouts/parts/panel-em-cartaz.php:28 views/panel/em-cartaz.php:65
+msgid "Visualizar"
+msgstr "Visualizar"
+
+#: layouts/parts/panel-em-cartaz.php:30 views/panel/em-cartaz.php:67
+msgid "Baixar"
+msgstr "Descargar"
+
+#: layouts/parts/panel-event.php:7
+msgid "Linguagens: "
+msgstr "Lenguajes: "
+
+#: layouts/parts/panel-event.php:9
+msgid "Classificação:"
+msgstr "Clasificación:"
+
+#: layouts/parts/panel-event.php:16 layouts/parts/singles/project-events.php:12
+msgid "tornar rascunho"
+msgstr "convertir en borrador"
+
+#: layouts/parts/panel-nav.php:48
+msgid "Meus Apps"
+msgstr "Mis Apps"
+
+#: layouts/parts/panel-project.php:14
+msgid "Inscrições:"
+msgstr "Inscripciones:"
+
+#: layouts/parts/panel-project.php:18
+msgid "a partir de "
+msgstr "a partir de "
+
+#: layouts/parts/panel-project.php:20
+msgid " até "
+msgstr " hasta "
+
+#: layouts/parts/panel-project.php:22
+msgid "de "
+msgstr "de "
+
+#: layouts/parts/panel-project.php:22
+msgid " a "
+msgstr " a "
+
+#: layouts/parts/panel-project.php:26
+msgid "Organização:"
+msgstr "Organización: "
+
+#: layouts/parts/panel-registration.php:17
+msgid "Responsável:"
+msgstr "Responsable:"
+
+#: layouts/parts/panel-search.php:9
+msgid "Buscar por palavra-chave"
+msgstr "Buscar por palabra clave"
+
+#: layouts/parts/panel-search.php:13
+msgid "Ordenar por: "
+msgstr "Ordenar por: "
+
+#: layouts/parts/panel-search.php:14
+msgid "Nome"
+msgstr "Nombre"
+
+#: layouts/parts/panel-search.php:15
+msgid "Nome (Z-A)"
+msgstr "Nombre (Z-A)"
+
+#: layouts/parts/panel-search.php:16
+msgid "Data mais recente"
+msgstr "Fecha más reciente"
+
+#: layouts/parts/panel-search.php:17
+msgid "Data mais antiga"
+msgstr "Fecha más antígua"
+
+#: layouts/parts/panel-space.php:16
+msgid "Local:"
+msgstr "Local:"
+
+#: layouts/parts/panel-space.php:17
+msgid "Acessibilidade:"
+msgstr "Accesibilidad:"
+
+#: layouts/parts/panel-space.php:17
+msgid "Não informado"
+msgstr "No informado"
+
+#: layouts/parts/panel-space.php:19
+msgid "Data de Criação:"
+msgstr "Fecha de creación:"
+
+#: layouts/parts/panel/highlighted-message.php:2
+msgid "Olá"
+msgstr ""
+
+#: layouts/parts/panel/highlighted-message.php:2
+msgid "bem-vindo ao painel do"
+msgstr ""
+
+#: layouts/parts/redes-sociais.php:2
+msgid "Compartilhar"
+msgstr "Compartir"
+
+#: layouts/parts/redes-sociais.php:5
+msgid "Tweet"
+msgstr ""
+
+#: layouts/parts/redes-sociais.php:24
+msgid "Seguir"
+msgstr "Seguir"
+
+#: layouts/parts/related-agents.php:9
 msgid "Adicionar grupo de agentes"
 msgstr "Agregar grupo de agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:10
+#: layouts/parts/related-agents.php:9
 msgid "Criar"
 msgstr "Crear"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:11
+#: layouts/parts/related-agents.php:10
 msgid "Nome do grupo de agentes"
 msgstr "Nombre del grupo de agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:13
+#: layouts/parts/related-agents.php:12
 msgid ""
 "Grupos de agentes podem ser usados para exibir membros de um coletivo, "
 "equipes técnicas, etc."
@@ -1098,82 +992,669 @@ msgstr ""
 "Grupos de agentes pueden ser usados para exhibir miembros de un colectivo, "
 "equipos técnicos, etc."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:13
+#: layouts/parts/related-agents.php:12 views/panel/index.php:41
 msgid "Adicionar agentes"
 msgstr "Agregar agentes"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:32
+#: layouts/parts/related-agents.php:25
 msgid "Aguardando confirmação."
 msgstr "Esperando confirmación."
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:38
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/templates.php:10
+#: layouts/parts/related-agents.php:31 layouts/parts/templates.php:10
 msgid "tipo:"
 msgstr "tipo:"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:41
+#: layouts/parts/related-agents.php:34
 msgid "Permitir editar:"
 msgstr "Permitir editar:"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:51
+#: layouts/parts/related-agents.php:44
 msgid "Adicionar Integrante a este Grupo"
 msgstr "Agregar Integrante a este Grupo"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-agents.php:53
+#: layouts/parts/related-agents.php:46
 msgid "Adicionar agente relacionado"
 msgstr "Agregar agente relacionado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/editable-entity-logo.php:1
-msgid "Mapas Culturais"
-msgstr "Mapas Culturales"
+#: layouts/parts/related-seals.php:11
+msgid "Para relacionar o selo ao"
+msgstr "Para relacionar el sello al"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/templates.php:7
-msgid "área de atuação:"
-msgstr "área de actuación"
+#: layouts/parts/related-seals.php:11
+msgid "primeiro é preciso salvar o registro."
+msgstr "primero es preciso salvar el registro"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:4
-msgid "Sobre os Mapas Culturais"
-msgstr "Sobre Mapas Culturales"
+#: layouts/parts/related-seals.php:16
+msgid "Selos Aplicados"
+msgstr "Sellos Aplicados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:5
-msgid "Como usar"
-msgstr "Cómo usar"
+#: layouts/parts/related-seals.php:16 layouts/parts/related-seals.php:17
+msgid "Adicionar selo relacionado"
+msgstr "Agregar sello relacionado"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-nav.php:48
-msgid "Meus Apps"
-msgstr "Mis Apps"
+#: layouts/parts/related-seals.php:17
+msgid "Fechar"
+msgstr "Cerca"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:29
-msgid "projetos cadastrados"
-msgstr "proyectos registrados"
+#: layouts/parts/related-seals.php:19
+msgid "Selos Disponíveis"
+msgstr "Sellos Disponibles"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:33
-msgid "projetos da "
-msgstr "proyectos de la "
+#: layouts/parts/related-seals.php:36
+msgid "Excluir selo"
+msgstr "Borrar sello"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:37
-msgid "Encontre projetos por"
-msgstr "Busque proyectos por"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:62
-msgid "Adicionar projeto"
-msgstr "Agregar proyecto"
-
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/advanced-filters.php:1
+#: layouts/parts/search/advanced-filters.php:1
 msgid "Exibir opções avançadas"
 msgstr "Mostrar opciones avanzadas"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/advanced-filters.php:4
+#: layouts/parts/search/advanced-filters.php:4
 msgid "Filtros Avançados"
 msgstr "Filtros Avanzados"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-agents.php:9
+#: layouts/parts/search/filter-agents.php:9
+#: layouts/parts/search/filter-events.php:9
+#: layouts/parts/search/filter-projects.php:9
+#: layouts/parts/search/filter-spaces.php:9 layouts/parts/search/filter.php:9
 msgid "Palavra-chave"
 msgstr "Palabra clave"
 
-#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-agents.php:10
+#: layouts/parts/search/filter-agents.php:10
 msgid "Buscar agentes"
 msgstr "Buscar agentes"
+
+#: layouts/parts/search/filter-events.php:10
+msgid "Buscar eventos"
+msgstr ""
+
+#: layouts/parts/search/filter-projects.php:10
+msgid "Buscar projetos"
+msgstr ""
+
+#: layouts/parts/search/filter-projects.php:33
+msgid "Exibir somente resultados verificados"
+msgstr ""
+
+#: layouts/parts/search/filter.php:19
+msgid "a"
+msgstr ""
+
+#: layouts/parts/singles/avatar.php:9
+#: layouts/parts/singles/control--view-buttons.php:3
+#: layouts/parts/singles/header-image.php:11 layouts/parts/video-gallery.php:46
+#: views/event/create.php:64 views/event/edit.php:64 views/event/single.php:64
+msgid "Editar"
+msgstr "Editar"
+
+#: layouts/parts/singles/avatar.php:10
+msgid "Editar avatar"
+msgstr ""
+
+#: layouts/parts/singles/avatar.php:16
+#: layouts/parts/singles/entity-status.php:10
+#: layouts/parts/singles/entity-status.php:12 layouts/parts/verified.php:13
+msgid "Este"
+msgstr "Este"
+
+#: layouts/parts/singles/avatar.php:16 layouts/parts/verified.php:13
+msgid "é verificado."
+msgstr "verificado"
+
+#: layouts/parts/singles/control--edit-buttons.php:3
+msgid "Sair do modo de edição"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:8
+msgid "Salvar este"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:8
+msgid "como rascunho."
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:8
+msgid "Salvar rascunho"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:9
+msgid "Salvar e publicar este"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:9
+msgid "Publicar"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:12
+#: layouts/parts/singles/control--edit-buttons.php:16
+#: layouts/parts/singles/control--edit-buttons.php:19
+msgid "Salvar"
+msgstr ""
+
+#: layouts/parts/singles/control--edit-buttons.php:23
+msgid "Os ícones de lápis indicam conteúdos editáveis."
+msgstr ""
+
+#: layouts/parts/singles/control--roles.php:10
+#: layouts/parts/singles/control--roles.php:16
+msgid "Normal"
+msgstr ""
+
+#: layouts/parts/singles/control--view-buttons.php:10
+msgid "Recuperar"
+msgstr ""
+
+#: layouts/parts/singles/control--view-buttons.php:13
+msgid "Excluir Definitivamente"
+msgstr ""
+
+#: layouts/parts/singles/control--view-buttons.php:17
+msgid "Você possui permissão para editar este"
+msgstr ""
+
+#: layouts/parts/singles/control--view-buttons.php:17
+msgid "Use os botões à direita para editar ou excluir."
+msgstr ""
+
+#: layouts/parts/singles/entity-status.php:10
+msgid "é um rascunho."
+msgstr ""
+
+#: layouts/parts/singles/entity-status.php:12
+msgid "está na lixeira."
+msgstr ""
+
+#: layouts/parts/singles/header-image.php:12
+msgid "Editar Imagem da Capa"
+msgstr ""
+
+#: layouts/parts/singles/location.php:11
+msgid "Encontrar minha localização"
+msgstr ""
+
+#: layouts/parts/singles/location.php:19 layouts/parts/singles/location.php:20
+msgid "Endereço"
+msgstr ""
+
+#: layouts/parts/singles/location.php:19
+msgid "Insira o endereço"
+msgstr ""
+
+#: layouts/parts/singles/location.php:21
+msgid "CEP"
+msgstr ""
+
+#: layouts/parts/singles/location.php:21
+msgid "Insira o CEP"
+msgstr ""
+
+#: layouts/parts/singles/location.php:22
+msgid "Logradouro"
+msgstr ""
+
+#: layouts/parts/singles/location.php:22
+msgid "Insira o logradouro"
+msgstr ""
+
+#: layouts/parts/singles/location.php:23
+msgid "Número"
+msgstr ""
+
+#: layouts/parts/singles/location.php:23
+msgid "Insira o Número"
+msgstr ""
+
+#: layouts/parts/singles/location.php:24
+msgid "Complemento"
+msgstr ""
+
+#: layouts/parts/singles/location.php:24
+msgid "Insira um complemento"
+msgstr ""
+
+#: layouts/parts/singles/location.php:25
+msgid "Bairro"
+msgstr ""
+
+#: layouts/parts/singles/location.php:25
+msgid "Insira o Bairro"
+msgstr ""
+
+#: layouts/parts/singles/location.php:26
+msgid "Município"
+msgstr ""
+
+#: layouts/parts/singles/location.php:26
+msgid "Insira o Município"
+msgstr ""
+
+#: layouts/parts/singles/location.php:27
+msgid "Estado"
+msgstr ""
+
+#: layouts/parts/singles/location.php:27
+msgid "Insira o Estado"
+msgstr ""
+
+#: layouts/parts/singles/location.php:30
+msgid "Localização"
+msgstr ""
+
+#: layouts/parts/singles/name.php:8
+msgid "Nome de exibição"
+msgstr ""
+
+#: layouts/parts/singles/permissions.php:16
+msgid "Área(s) de atuação"
+msgstr ""
+
+#: layouts/parts/singles/permissions.php:21
+msgid "Você não possui nenhum agente com permissão."
+msgstr ""
+
+#: layouts/parts/singles/project-about--online-registration-button.php:2
+#: layouts/parts/singles/project-about--online-registration-button.php:4
+msgid "Inscrições online"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:12
+msgid ""
+"O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
+"texto atual possui"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:12
+msgid "caracteres. Você deve alterar seu texto ou este será cortado ao salvar."
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:16
+msgid "Descrição Curta"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:16
+msgid "Insira uma descrição curta"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:23
+#: layouts/parts/singles/project-about.php:24
+msgid "Site"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:24
+msgid "Insira a url de seu site"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:34
+#: layouts/parts/video-gallery.php:59
+msgid "Descrição"
+msgstr "Descripción"
+
+#: layouts/parts/singles/project-about.php:35
+msgid "Descrição do Projeto"
+msgstr ""
+
+#: layouts/parts/singles/project-about.php:35
+msgid "Insira uma descrição do projeto"
+msgstr ""
+
+#: layouts/parts/singles/project-events.php:5
+msgid "marcar eventos listados"
+msgstr ""
+
+#: layouts/parts/singles/project-events.php:6
+msgid "desmarcar eventos listados"
+msgstr ""
+
+#: layouts/parts/singles/project-events.php:8
+msgid "filtrar eventos"
+msgstr ""
+
+#: layouts/parts/singles/project-events.php:34
+msgid "Status"
+msgstr ""
+
+#: layouts/parts/singles/project-events.php:35
+msgid "Autor"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:11
+msgid ""
+"Toda inscrição obrigatoriamente deve possuir um Agente Individual "
+"responsável, mas é possível que a inscrição seja feita em nome de um agente "
+"coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas "
+"informações são necessárias e se são obrigatórias."
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:12
+msgid ""
+"A edição destas opções estão desabilitadas porque agentes já se inscreveram "
+"neste projeto."
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:27
+msgid "Selecione uma opção"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:34
+msgid "Número máximo de vagas no projeto"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:35
+#: layouts/parts/singles/project-registrations--agent-relations.php:41
+msgid "Zero (0) significa sem limites"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:36
+msgid "Número máximo de inscrições no projeto"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:36
+msgid "Insira o número máximo de inscrições no projeto"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:40
+#: layouts/parts/singles/project-registrations--agent-relations.php:42
+msgid "Número máximo de inscrições por agente responsável"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--agent-relations.php:42
+msgid "Insira o número máximo de inscrições por agente responsável"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--categories.php:13
+msgid "Opções"
+msgstr ""
+
+#: layouts/parts/singles/project-registrations--categories.php:14
+msgid ""
+"É possível criar opções para os proponentes escolherem na hora de se "
+"inscrever, como, por exemplo, \"categorias\" ou \"modalidades\". Se não "
+"desejar utilizar este recurso, deixe em branco o campo \"Opções\"."
+msgstr ""
+
+#: layouts/parts/templates.php:7
+msgid "área de atuação:"
+msgstr "área de actuación"
+
+#: layouts/parts/verified.php:8
+msgid "Clique para marcar/desmarcar este"
+msgstr "Haga clic para marcar/desmarcar este"
+
+#: layouts/parts/video-gallery.php:25
+msgid "Vídeos"
+msgstr "Videos"
+
+#: layouts/parts/video-gallery.php:40 layouts/parts/video-gallery.php:55
+msgid "Editar Vídeo"
+msgstr "Editar Video"
+
+#: layouts/parts/video-gallery.php:47
+msgid "Excluir este vídeo?"
+msgstr "Eliminar este video?"
+
+#: layouts/parts/video-gallery.php:59
+msgid "Endereço do vídeo (Youtube ou Vimeo)"
+msgstr "Dirección del video (Youtube o Vimeo)"
+
+#: layouts/parts/video-gallery.php:61
+msgid "Para adicionar vídeos você primeiro deve salvar."
+msgstr "Para agregar videos, primero debe salvar."
+
+#: layouts/parts/video-gallery.php:69
+msgid "Adicionar Vídeo"
+msgstr "Agregar Video"
+
+#: layouts/parts/video-gallery.php:75
+msgid "Adicionar vídeo"
+msgstr "Agregar video"
+
+#: layouts/parts/widget-tags.php:9 layouts/parts/widget-tags.php:11
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: layouts/parts/widget-tags.php:11
+msgid "Insira tags"
+msgstr "Introduzca etiquetas"
+
+#: views/auth/fake-authentication.php:1
+msgid "Fake Authentication"
+msgstr "Autenticación falsa"
+
+#: views/auth/fake-authentication.php:3
+msgid "Login with user"
+msgstr "Acceder con usuario"
+
+#: views/panel/agents.php:7
+msgid "Adicionar novo agente"
+msgstr ""
+
+#: views/panel/agents.php:10 views/panel/apps.php:10 views/panel/events.php:10
+#: views/panel/projects.php:10 views/panel/seals.php:10
+#: views/panel/spaces.php:10
+msgid "Ativos"
+msgstr ""
+
+#: views/panel/agents.php:11 views/panel/events.php:11
+#: views/panel/projects.php:11 views/panel/seals.php:11
+#: views/panel/spaces.php:11
+msgid "Concedidos"
+msgstr ""
+
+#: views/panel/agents.php:12 views/panel/events.php:12
+#: views/panel/projects.php:12 views/panel/registrations.php:13
+#: views/panel/seals.php:12 views/panel/spaces.php:12
+msgid "Rascunhos"
+msgstr ""
+
+#: views/panel/agents.php:13 views/panel/apps.php:11 views/panel/events.php:13
+#: views/panel/projects.php:13 views/panel/seals.php:13
+#: views/panel/spaces.php:13
+msgid "Lixeira"
+msgstr ""
+
+#: views/panel/agents.php:21
+msgid "Você não possui nenhum agente cadastrado."
+msgstr ""
+
+#: views/panel/agents.php:30
+msgid "Você não possui nenhum rascunho agente."
+msgstr ""
+
+#: views/panel/agents.php:39
+msgid "Você não possui nenhum agente na lixeira."
+msgstr ""
+
+#: views/panel/agents.php:49
+msgid "Você não possui nenhum agente liberado."
+msgstr ""
+
+#: views/panel/apps.php:6
+msgid "Meus apps"
+msgstr ""
+
+#: views/panel/apps.php:7
+msgid "Adicionar novo app"
+msgstr ""
+
+#: views/panel/apps.php:18
+msgid "Você não possui nenhum app cadastrado."
+msgstr ""
+
+#: views/panel/apps.php:28
+msgid "Você não possui nenhum app na lixeira."
+msgstr ""
+
+#: views/panel/events.php:7
+msgid "Adicionar novo evento"
+msgstr "Agregar nuevo evento"
+
+#: views/panel/events.php:23
+msgid "Você não possui nenhum evento cadastrado."
+msgstr ""
+
+#: views/panel/events.php:32
+msgid "Você não possui nenhum rascunho de evento."
+msgstr ""
+
+#: views/panel/events.php:41
+msgid "Você não possui nenhum evento na lixeira."
+msgstr ""
+
+#: views/panel/events.php:51
+msgid "Você não possui nenhum evento liberado."
+msgstr ""
+
+#: views/panel/index.php:21
+msgid "Ver Meus eventos"
+msgstr ""
+
+#: views/panel/index.php:23
+msgid "Ver Eventos Cedidos"
+msgstr ""
+
+#: views/panel/index.php:24
+msgid "Adicionar eventos"
+msgstr ""
+
+#: views/panel/index.php:38
+msgid "Ver meus agentes"
+msgstr ""
+
+#: views/panel/index.php:40
+msgid "Ver Agentes Cedidos"
+msgstr ""
+
+#: views/panel/index.php:55
+msgid "Ver"
+msgstr ""
+
+#: views/panel/index.php:57
+msgid "Ver Espaços Cedidos"
+msgstr ""
+
+#: views/panel/index.php:58
+msgid "Adicionar"
+msgstr ""
+
+#: views/panel/index.php:72
+msgid "Ver meus projetos"
+msgstr ""
+
+#: views/panel/index.php:74
+msgid "Ver Projetos Cedidos"
+msgstr ""
+
+#: views/panel/index.php:75
+msgid "Adicionar projetos"
+msgstr ""
+
+#: views/panel/index.php:89
+msgid "Ver meus selos"
+msgstr ""
+
+#: views/panel/index.php:91
+msgid "Ver Selos Cedidos"
+msgstr ""
+
+#: views/panel/index.php:92
+msgid "Adicionar selos"
+msgstr ""
+
+#: views/panel/index.php:101
+msgid "Atividades"
+msgstr ""
+
+#: views/panel/index.php:116
+msgid "Em"
+msgstr ""
+
+#: views/panel/list-users.php:35
+msgid "Você tem certeza que deseja remover este usuário da lista de"
+msgstr ""
+
+#: views/panel/list-users.php:36
+msgid "remover do papel"
+msgstr ""
+
+#: views/panel/list-users.php:46
+msgid "Não há"
+msgstr ""
+
+#: views/panel/projects.php:7
+msgid "Adicionar novo projeto"
+msgstr ""
+
+#: views/panel/projects.php:20
+msgid "Você não possui nenhum projeto."
+msgstr ""
+
+#: views/panel/projects.php:29
+msgid "Você não possui nenhum rascunho de projeto."
+msgstr ""
+
+#: views/panel/projects.php:38
+msgid "Você não possui nenhum projeto na lixeira."
+msgstr ""
+
+#: views/panel/projects.php:48
+msgid "Você não possui nenhum projeto liberado."
+msgstr ""
+
+#: views/panel/registrations.php:10
+msgid "Minhas inscrições"
+msgstr ""
+
+#: views/panel/registrations.php:14
+msgid "Enviadas"
+msgstr ""
+
+#: views/panel/registrations.php:21
+msgid "Você não possui nenhum rascunho de inscrição."
+msgstr ""
+
+#: views/panel/registrations.php:30
+msgid "Você não enviou nenhuma inscrição."
+msgstr ""
+
+#: views/panel/seals.php:7
+msgid "Adicionar novo selo"
+msgstr ""
+
+#: views/panel/seals.php:26
+msgid "Você não possui nenhum rascunho selo."
+msgstr ""
+
+#: views/panel/seals.php:35
+msgid "Você não possui nenhum selo na lixeira."
+msgstr ""
+
+#: views/panel/seals.php:45
+msgid "Você não possui nenhum selo liberado."
+msgstr ""
+
+#: views/panel/spaces.php:23 views/panel/spaces.php:41
+msgid "Você não possui"
+msgstr ""
+
+#: views/panel/spaces.php:32
+msgid "Você não possui nenhum rascunho de"
+msgstr ""
+
+#: views/panel/spaces.php:41
+msgid "na lixeira."
+msgstr ""
+
+#: views/panel/spaces.php:51
+msgid "Você não possui nenhum espaço liberado."
+msgstr ""
+
+#~ msgid "Perfil no Twitter"
+#~ msgstr "Perfil en Twitter"
+
+#~ msgid "Perfil no Facebook"
+#~ msgstr "Perfil en Facebook"
+
+#~ msgid "Perfil no Google Plus"
+#~ msgstr "Perfil en Google Plus"
 
 #~ msgid "agentes sem localização"
 #~ msgstr "agentes sin localización"

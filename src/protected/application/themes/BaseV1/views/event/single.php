@@ -61,8 +61,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                    data-dialog-title="Modificar Ocorrência"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='Editar Ocorrência'>Editar</a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'>Excluir</a>
+                   href="#" title='Editar Ocorrência'<?php \MapasCulturais\i::_e("Editar");?>/a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="Excluir esta Ocorrência?" title='Excluir Ocorrência'<?php \MapasCulturais\i::_e("Excluir");?>/a>
             </div>
         <?php endif; ?>
     </div>

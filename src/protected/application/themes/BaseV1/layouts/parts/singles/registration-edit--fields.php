@@ -51,7 +51,7 @@
                     <!-- se já subiu o arquivo-->
                     <!-- se não subiu ainda -->
                     <a class="btn btn-default hltip" ng-class="{'send':!field.file,'edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} anexo">{{!field.file ? 'Enviar' : 'Editar'}}</a>
-                    <a class="btn btn-default delete hltip" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="excluir anexo">Excluir</a>
+                    <a class="btn btn-default delete hltip" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="excluir anexo"<?php \MapasCulturais\i::_e("Excluir");?>/a>
                 </div>
 
                 <edit-box id="editbox-file-{{field.id}}" position="bottom" title="{{field.title}} {{field.required ? '*' : ''}}" cancel-label="Cancelar" close-on-cancel='true' on-submit="sendFile" submit-label="Enviar anexo" index="{{$index}}" spinner-condition="data.uploadSpinner">
