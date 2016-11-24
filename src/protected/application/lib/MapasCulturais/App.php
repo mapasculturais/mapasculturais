@@ -586,50 +586,50 @@ class App extends \Slim\Slim{
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'textarea',
-            'name' => \MapasCulturais\i::__('Textarea Field')
+            'name' => \MapasCulturais\i::__('Campo de texto (textarea)')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'text',
-            'name' => \MapasCulturais\i::__('Text Field')
+            'name' => \MapasCulturais\i::__('Campo de texto simples')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'date',
-            'name' => \MapasCulturais\i::__('Date Field')
+            'name' => \MapasCulturais\i::__('Campo de data')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'url',
-            'name' => \MapasCulturais\i::__('URL Field'),
+            'name' => \MapasCulturais\i::__('Campo de URL (link)'),
             'validations' => [
-                'v::url()' => \MapasCulturais\i::__('The value is not a valid URL')
+                'v::url()' => \MapasCulturais\i::__('O valor não é uma URL válida')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'email',
-            'name' => \MapasCulturais\i::__('Email Field'),
+            'name' => \MapasCulturais\i::__('Campo de email'),
             'validations' => [
-                'v::email()' => \MapasCulturais\i::__('The value is not a valid email')
+                'v::email()' => \MapasCulturais\i::__('O valor não é um endereço de email válido')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'select',
-            'name' => \MapasCulturais\i::__('Select Field'),
+            'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
         ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',
-//            'name' => \MapasCulturais\i::__('Radio Buttons Field'),
+//            'name' => \MapasCulturais\i::__('Seleção única (radio)'),
 //            'requireValuesConfiguration' => true
 //        ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
-            'name' => \MapasCulturais\i::__('Check Boxes Field'),
+            'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
             'requireValuesConfiguration' => true,
             'serialize' => function (array $value) {
                 return json_encode($value);
