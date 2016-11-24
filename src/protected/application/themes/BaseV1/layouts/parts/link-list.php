@@ -11,7 +11,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                         data-response-target='#link-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='editar'></a>
-                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='Excluir este link?' title='excluir'></a>
+                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='" . \MapasCulturais\i::esc_attr__('Excluir este link?') . "' title='" . \MapasCulturais\i::esc_attr__('excluir') . "'></a>
                 </div>
             </li>";
 ?>
@@ -23,10 +23,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
             <a class="add js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                data-response-target="ul.js-metalist"
-               data-dialog-title="Adicionar Link"
+               data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Adicionar Link'); ?>"
                data-metalist-action='insert'
                data-response-template="<?php echo $template ?>"
-               title="Clique para adicionar links">
+               title="<?php \MapasCulturais\i::esc_attr_e('Clique para adicionar links'); ?>">
             </a>
         <?php endif; ?>
         <ul class="js-metalist widget-list js-slimScroll">
@@ -41,8 +41,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                                data-response-target="#link-<?php echo $link->id ?>"
                                data-metalist-action="edit"
                                data-item="<?php echo htmlentities(json_encode($link)) ?>"
-                               href="#" title='editar'></a>
-                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" data-confirm-message="Excluir este link?" title='excluir'></a>
+                               href="#" title='<?php \MapasCulturais\i::esc_attr_e('editar'); ?>'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $link->deleteUrl ?>' data-target="#link-<?php echo $link->id ?>" 
+                            data-confirm-message="<?php \MapasCulturais\i::esc_attr_e('Excluir este link?'); ?>" 
+                            title='<?php \MapasCulturais\i::esc_attr_e('excluir'); ?>'></a>
                         </div>
                     <?php endif; ?>
                 </li>
@@ -53,9 +55,11 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
              data-action-url="<?php echo $this->controller->createUrl('metalist', array('id' => $entity->id)) ?>"
              data-response-template="<?php echo $template ?>"
              data-metalist-group="links"
-             data-metalist-title-label="Título" data-metalist-value-label="Endereço (com http://)" data-metalist-description-label="Descrição">
+             data-metalist-title-label="<?php \MapasCulturais\i::esc_attr_e('Título'); ?>" 
+             data-metalist-value-label="<?php \MapasCulturais\i::esc_attr_e('Endereço (com http://)'); ?>" 
+             data-metalist-description-label="Descrição">
             <?php if($this->controller->action == 'create'): ?>
-                <span class="js-dialog-disabled" data-message="Para adicionar links você primeiro deve salvar."></span>
+                <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e('Para adicionar links você primeiro deve salvar.'); ?>"></span>
             <?php else: ?>
                 <?php $this->part('metalist-form-template'); ?>
             <?php endif; ?>
