@@ -48,15 +48,17 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <th><?php echo $field->title; ?></th>
             <?php endforeach; ?>
 
+            <th>Arquivos</th>
+
             <th>Área de Atuação</th>
 
-            <th>Arquivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
                 <?php endforeach; ?>
             <?php endforeach; ?>
+
         </tr>
     </thead>
     <tbody>
@@ -90,18 +92,27 @@ $_properties = $app->config['registration.propertiesToExport'];
                 ?>
 
                     <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
-
                         <td>
                             <?php echo implode(',',$agent->terms['area']); ?>
                         </td>
+
+                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank">
+                        <?php
+                            if (isset($def->agentRelationGroupName)) {
+                                echo $r->agentsData[$def->agentRelationGroupName]['name'];
+                            }
+                        ?></a></td>
 
                         <?php
                         foreach($_properties as $prop):
                             if($prop === 'name') continue;
                         $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
                         ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
+                        <td><?php
+                            if (isset($def->agentRelationGroupName)) {
+                                echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val;
+                            }
+                        ?></td>
 
                         <?php endforeach; ?>
 
