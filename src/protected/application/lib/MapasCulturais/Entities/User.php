@@ -477,7 +477,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '"<?php \MapasCulturais\i::_e("Editar");?>/a>';
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '">editar</a>';
               $notification->save();
               
               // use the notification id to use it later on entity update
@@ -495,7 +495,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '"<?php \MapasCulturais\i::_e("Editar");?>/a>';
+              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '">editar</a>';
               $notification->save();              
               // use the notification id to use it later on entity update
               $space->sentNotification = $notification->id;
@@ -513,7 +513,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 //              $notification = new Notification;
 //              $notification->user = $app->user;
 //              $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-//              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $seal->editUrl . '"<?php \MapasCulturais\i::_e("Editar");?>/a>';
+//              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $seal->editUrl . '">editar</a>';
 //              $notification->save();
 //            }
 //          }
