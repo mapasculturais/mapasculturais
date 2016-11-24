@@ -101,7 +101,8 @@ class i {
      * @return string Translated text on success, original text on failure.
      */
     static function esc_attr__( $text, $domain = 'default' ) {
-    	return esc_attr( self::translate( $text, $domain ) );
+    	// TODO:
+        return self::translate( $text, $domain ) ;
     }
 
     /**
@@ -128,24 +129,14 @@ class i {
     }
     
     /**
-     * Display translated text para utiizar em atributos HTML.
-     *
-     * @param string $text   Text to translate.
-     * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
-     */
-    static function _esc_attr_e( $text, $domain = 'default' ) {
-    	//TODO: metodo para escapar string para seren utilizadas em atributos HTML
-        echo self::translate( $text, $domain );
-    }
-
-    /**
      * Display translated text that has been escaped for safe use in an attribute.
      *
      * @param string $text   Text to translate.
      * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
      */
     static function esc_attr_e( $text, $domain = 'default' ) {
-    	echo esc_attr( self::translate( $text, $domain ) );
+    	//TODO: metodo para escapar string para seren utilizadas em atributos HTML
+        echo esc_attr( self::translate( $text, $domain ) );
     }
 
     /**
