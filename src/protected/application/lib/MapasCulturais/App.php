@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use SwiftMailer\SwiftMailer;
 
 /**
  * MapasCulturais Application class.
@@ -44,6 +45,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  */
 class App extends \Slim\Slim{
     use \MapasCulturais\Traits\MagicGetter,
+        \MapasCulturais\Traits\MagicSetter,
         \MapasCulturais\Traits\Singleton;
 
     /**
@@ -2061,6 +2063,87 @@ class App extends \Slim\Slim{
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
     }
+
+    /**************
+     * Utils
+     **************/
+
+    function getManagedEntity(Entity $entity){
+        if($entity->getEntityState() > 2){
+            $entity = App::i()->repo($entity->getClassName())->find($entity->id);
+            $entity->refresh();
+        }
+
+        return $entity;
+    }
+
+    /**
+     * returns Swift_Mailer instance
+     *
+     * @return \Swift_Mailer Mailer object
+     */
+    function getMailer() {
+        $transport = [];
+
+        if(!in_array('mailer',$this->_config['plugins.enabled'])) {
+            return;
+        }
+
+        if(isset($this->_config['mailer.user']) &&
+            isset($this->_config['mailer.psw']) &&
+            isset($this->_config['mailer.server']) &&
+            isset($this->_config['mailer.port']) &&
+            isset($this->_config['mailer.protocol'])) {
+            $transport = \Swift_SmtpTransport::newInstance($this->_config['mailer.server'],
+                                                            $this->_config['mailer.port'],
+                                                            $this->_config['mailer.protocol'])
+                                                            ->setUsername($this->_config['mailer.user'])
+                                                            ->setPassword($this->_config['mailer.psw']);
+        }
+
+        $instance = \Swift_Mailer::newInstance($transport);
+
+        return $instance;
+    }
+
+    /**
+     *
+     * @param array $args
+     * @return \Swift_Message
+     */
+    function createMailMessage(array $args = []){
+        $message = \Swift_Message::newInstance();
+
+        if($this->_config['mailer.from']){
+            $message->setFrom($this->_config['mailer.from']);
+        }
+
+        foreach($args as $key => $value){
+            $key = ucfirst($key);
+            $method_name = 'set' . $key;
+
+            if(method_exists($message, $method_name)){
+                $message->$method_name($value);
+            }
+        }
+
+        return $message;
+    }
+
+    function sendMailMessage(\Swift_Message $message){
+        $failures = [];
+        $mailer = $this->getMailer();
+
+        if(in_array('mailer',$this->_config['plugins.enabled']) && !$mailer->send($message,$failures)) {
+            App::i()->log->debug($failures);
+        }
+    }
+
+    function createAndSendMailMessage(array $args = []){
+        $message = $this->createMailMessage($args);
+        $this->sendMailMessage($message);
+    }
+
 
     /**************
      * GetText

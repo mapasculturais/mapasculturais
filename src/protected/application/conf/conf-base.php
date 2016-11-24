@@ -5,7 +5,6 @@ if(!isset($asset_dir)){
     $asset_dir = 'assets/';
 }
 
-
 // creating base url
 $prot_part = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
 //added @ for HTTP_HOST undefined in Tests
@@ -21,6 +20,13 @@ return array(
         'MapasCulturais\Themes' => THEMES_PATH
     ),
 
+    'mailer.user' => "admin@mapasculturais.org",
+    'mailer.psw'  => "password",
+    'mailer.protocol' => 'ssl',
+    'mailer.server' => 'smtp.gmail.com',
+    'mailer.port'   => '465',
+    'mailer.from' => 'suporte@mapasculturais.org',
+
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
     'base.assetUrl' => $base_url . $asset_dir,
@@ -30,7 +36,7 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
-    
+
     'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
@@ -130,7 +136,7 @@ return array(
         'required' => true,
         'label' => \MapasCulturais\i::__('Agente responsável pela inscrição'),
         'agentRelationGroupName' => 'owner',
-        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Raça/Cor, Data de Nascimento/Fundação, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
+        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
         'type' => 1,
         'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
@@ -297,7 +303,7 @@ return array(
             'agente'    => array('agent',   'single'),
             'espaco'    => array('space',   'single'),
             'projeto'   => array('project', 'single'),
-        	  'selo'     	=> array('seal',	  'single'),
+        	'selo'     	=> array('seal',    'single'),
             'sair'      => array('auth',    'logout'),
             'busca'     => array('site',    'search'),
             'sobre'     => array('site',    'page', array('sobre')),

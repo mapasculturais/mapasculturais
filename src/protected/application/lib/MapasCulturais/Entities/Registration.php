@@ -140,7 +140,6 @@ class Registration extends \MapasCulturais\Entity
             'editUrl' => $this->editUrl
         ];
 
-        
         foreach($this->__metadata as $meta){
             if(substr($meta->key, 0, 6) === 'field_'){
                 $key = $meta->key;
@@ -316,11 +315,11 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
-        
+
 		if($status === self::STATUS_APPROVED) {
 			$this->setAgentsSealRelation();
 		}
-		
+
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
@@ -331,27 +330,27 @@ class Registration extends \MapasCulturais\Entity
     function setAgentsSealRelation() {
     	$app = App::i();
     	$app->disableAccessControl();
-    	
+
     	/*
     	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
     	 */
     	$projectMetadataSeals = $this->project->registrationSeals;
     	//eval(\Psy\sh());
     	//die;
-    	
+
     	if(isset($projectMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
-    		
+
 	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
 	        $relation->seal		= $sealOwner;
 	        $relation->owner	= $this->owner;
 	    	$relation->save(true);
     	}
-        
+
     	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
     	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
-    	
+
         foreach($this->relatedAgents as $groupName => $relatedAgents){
         	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
         		$agent = $relatedAgents[0];
@@ -369,7 +368,7 @@ class Registration extends \MapasCulturais\Entity
         }
         $app->enableAccessControl();
     }
-    
+
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
@@ -417,6 +416,7 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
+        $this->project->save(true);
         $app->enableAccessControl();
     }
 
@@ -428,7 +428,7 @@ class Registration extends \MapasCulturais\Entity
         $project = $this->project;
 
         $use_category = (bool) $project->registrationCategories;
-        
+
         if($use_category && !$this->category){
             $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('The field "%s" is required.'), $project->registrationCategTitle)];
         }
@@ -481,11 +481,11 @@ class Registration extends \MapasCulturais\Entity
 
         // validate attachments
         foreach($project->registrationFileConfigurations as $rfc){
-            
+
             if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
                 continue;
             }
-            
+
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
@@ -505,12 +505,12 @@ class Registration extends \MapasCulturais\Entity
             }
 
             $errors = [];
-            
+
             $prop_name = $field->getFieldName();
             $val = $this->$prop_name;
-            
+
             $empty = (is_string($val) && !trim($val)) || !$val;
-            
+
             if ($field->required) {
                 if ($empty) {
                     $errors[] = sprintf(\MapasCulturais\i::__('The field "%s" is required.'), $field->title);
@@ -529,7 +529,7 @@ class Registration extends \MapasCulturais\Entity
                     }
                 }
             }
-            
+
             if ($errors) {
                 $errorsResult['registration-field-' . $field->id] = $errors;
             }
@@ -608,7 +608,7 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
-        
+
         if($user->is('superAdmin')){
             return true;
         }

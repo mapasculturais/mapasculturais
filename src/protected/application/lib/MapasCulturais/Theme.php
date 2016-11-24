@@ -93,7 +93,15 @@ abstract class Theme extends \Slim\View {
         $this->_assetManager = $asset_manager;
 
         $app = App::i();
+        
+        $app->hook('app.register', function() use($app){
+            $def = new Definitions\Metadata('sentNotification', ['label' => 'sent notification', 'type' => 'boolean']);
 
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
+        });
+        
+        
         $this->documentMeta = new \ArrayObject;
         $this->bodyClasses = new \ArrayObject;
         $this->bodyProperties = new \ArrayObject;

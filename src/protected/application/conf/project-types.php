@@ -24,6 +24,13 @@ return array(
             )
         ),
 
+        'registrationLimit' => array(
+            'label' => 'Número máximo de inscrições no projeto',
+            'validations' => array(
+                "v::intVal()" => "O número máximo de inscrições no projeto deve ser um número inteiro"
+            )
+        ),
+
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
@@ -49,7 +56,7 @@ return array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
-    	
+
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
                 'serialize' => function($value) { return json_encode($value); },
@@ -92,7 +99,6 @@ return array(
         32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
         33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
         34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
-        
     )
     /* EXEMPLOS DE METADADOS:
 
