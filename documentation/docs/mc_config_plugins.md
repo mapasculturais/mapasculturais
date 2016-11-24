@@ -67,7 +67,7 @@ Para habilitar os emails do sistema, é necessário acrescentar no array de plug
 'plugins' => array("mailer");
 ```
 
-Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails aconteça, e serão necessárias algumas informações para que a autenticação de e-mail aconteça e os emails sejam enviados:
+Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails aconteça, e serão necessárias algumas informações para que a autenticação de e-mail aconteça o envio das mensagens:
 
 #### Usuário que será utilizado para autenticação no servidor de e-mail:
 ```
@@ -93,3 +93,4 @@ Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails
 ```
 'mailer.from' => 'suporte@mapasculturais.org'
 ```
+Em SOs Unix like é possível ter o envio de mensagens avisando a necessidade de atualização de entidades configurando um script do Mailer no serviço Cron, configurando a execução da rotina da pasta scripts notifications.sh de acordo com a periodicidade desejada.

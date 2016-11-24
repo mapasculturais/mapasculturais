@@ -48,23 +48,41 @@ class Theme extends MapasCulturais\Theme {
             'search: verified results' => 'Resultados Verificados',
             'search: verified' => "Verificados",
 
-            'entities: My Projects'=> 'Meus Projetos',
-            'entities: My projects'=> 'Meus projetos',
+            'entities: My Projects' => 'Meus Projetos',
+            'entities: My projects' => 'Meus projetos',
+            'entities: Project' => 'Projeto',
+            'entities: Projects' => 'Projetos',
+            'entities: project' => 'projeto',
+            'entities: projects' => 'projetos',
 
-            'entities: My Events'=> 'Meus Eventos',
-            'entities: My events'=> 'Meus eventos',
+            'entities: My Events' => 'Meus Eventos',
+            'entities: My events' => 'Meus eventos',
+            'entities: Event' => 'Evento',
+            'entities: Events' => 'Eventos',
+            'entities: event' => 'evento',
+            'entities: events' => 'eventos',
 
-            'entities: My Agents'=> 'Meus Agentes',
-            'entities: My agents'=> 'Meus agentes',
+            'entities: My Agents' => 'Meus Agentes',
+            'entities: My agents' => 'Meus agentes',
+            'entities: Agent' => 'Agente',
+            'entities: Agents' => 'Agentes',
+            'entities: agent' => 'agente',
+            'entities: agents' => 'agentes',
 
-            'entities: Spaces of the agent'=> 'Espaços do agente',
-            'entities: Space Description'=> 'Descrição do Espaço',
-            'entities: Agent children'=> 'Agentes',
-            'entities: My Spaces'=> 'Meus Espaços',
-            'entities: My spaces'=> 'Meus espaços',
+            'entities: Spaces of the agent' => 'Espaços do agente',
+            'entities: Space Description' => 'Descrição do Espaço',
+            'entities: Agent children' => 'Agentes',
+            'entities: My Spaces' => 'Meus Espaços',
+            'entities: My spaces' => 'Meus espaços',
 
-        	'entities: My Seals'=> 'Meus Selos',
-        	'entities: My seals'=> 'Meus selos',
+        	'entities: My Seals' => 'Meus Selos',
+        	'entities: My seals' => 'Meus selos',
+            'entities: Seals' => 'Selos',
+            'entities: seals' => 'selos',
+            'entities: Seal' => 'Selo',
+            'entities: seal' => 'selo',
+
+            'entities: Users and roles'=> 'Usuários e papéis',
 
             'entities: no registered spaces'=> 'nenhum espaço cadastrado',
             'entities: no spaces'=> 'nenhum espaço',
@@ -93,10 +111,15 @@ class Theme extends MapasCulturais\Theme {
             'entities: agents found' => 'agentes encontrados',
             'entities: project found' => 'projeto encontrado',
             'entities: project found' => 'projetos encontrados',
-            'entities: Agents'    => 'Agentes',
-            'entities: Projects'  => 'Projetos',
-            'entities: Events'    => 'Eventos',
-            'entities: Seals'     => 'Selos',
+
+            'roles: Super Administrator'=> 'Super Administrador',
+            'roles: Super Administrators'=> 'Super Administradores',
+
+            'roles: Administrator'=> 'Administrador',
+            'roles: Administrators'=> 'Administradores',
+
+            'roles: Staff Member'=> 'Membro da equipe',
+            'roles: Staff Members'=> 'Membros da equipe',
 
             'taxonomies:area: name' => 'Área de Atuação',
             'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
@@ -263,7 +286,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             $user = $this->ownerUser;
-            
+
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
                 'to' => $user->email,
