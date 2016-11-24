@@ -29,10 +29,6 @@
         </form>
         <a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a>
     </div>
-<<<<<<< HEAD
+
     <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="<?php \MapasCulturais\i::_e("Saiba mais");?>"></a></div>
 </section>
-=======
-    <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="Saiba mais"></a></div>
-</section>
->>>>>>> master
