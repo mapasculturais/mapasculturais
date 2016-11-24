@@ -6,17 +6,10 @@ $this->addRelatedAgentsToJs($entity);
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="widget" ng-if="isEditable">
-<<<<<<< HEAD
-        <edit-box id="new-related-agent-group" position="left" title="<?php \MapasCulturais\i::_e("Adicionar grupo de agentes");?>" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::_e("Criar");?>" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
-            <input type="text" ng-model="data.newGroupName" placeholder="<?php \MapasCulturais\i::_e("Nome do grupo de agentes");?>"/>
-        </edit-box>
-        <a class="btn btn-default add hltip" title="<?php \MapasCulturais\i::_e("Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc.");?>" ng-click="editbox.open('new-related-agent-group', $event)"><?php \MapasCulturais\i::_e("Adicionar agentes");?></a>
-=======
-        <edit-box id="new-related-agent-group" position="left" title="Adicionar grupo de agentes relacionados" cancel-label="Cancelar" submit-label="Criar" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
+        <edit-box id="new-related-agent-group" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar grupo de agentes relacionados");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Criar");?>" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
             <input type="text" ng-model="data.newGroupName" placeholder="Nome do grupo de agentes"/>
         </edit-box>
-        <a class="btn btn-default add hltip" title="Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc." ng-click="editbox.open('new-related-agent-group', $event)">Agentes relacionados</a>
->>>>>>> 793e4dced87e8ba2abbb3218e2c7d90f1d26969a
+        <a class="btn btn-default add hltip" title="<?php \MapasCulturais\i::esc_attr_e("Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc."); ?>" ng-click="editbox.open('new-related-agent-group', $event)"><?php \MapasCulturais\i::_e("Agentes relacionados");?></a>
     </div>
     <div class="widget" ng-repeat="group in groups">
         <h3>{{group.name}}</h3>
