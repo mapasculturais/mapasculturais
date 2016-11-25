@@ -522,6 +522,16 @@ trait ControllerAPI{
 
                $order";
 
+
+            $final_dql_subqueries = preg_replace('#([^a-z0-9_])e\.#i', '$1original_e.', "SELECT
+                    e.id
+                FROM
+                    $class original_e
+                $dql_joins
+
+                $dql_where");
+
+
             $result[] = "$final_dql";
 
             if($app->config['app.log.apiDql'])
@@ -551,14 +561,9 @@ trait ControllerAPI{
 
             $query->setParameters($this->_apiFindParamList);
 
-            $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins){
+            $sub_queries = function($rs) use($counting, $app, $class, $dql_select, $dql_select_joins, $final_dql_subqueries){
                 if($counting){
                     return;
-                }
-                $ids = [];
-                foreach($rs as $e){
-                    $e = (object) $e;
-                    $ids[] = $e->id;
                 }
 
                 foreach($dql_select as $i => $_select){
@@ -570,17 +575,17 @@ trait ControllerAPI{
                         FROM
                             $class e $_join
                         WHERE
-                            e.id IN(:entity_ids)
+                            e.id IN($final_dql_subqueries)
                     ";
 
                     $q = $app->em->createQuery($dql);
+                    $q->setParameters($this->_apiFindParamList);
 
                     if($app->config['app.log.apiDql'])
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
-                    $q->setParameter('entity_ids', $ids);
-
-                    $q->getResult();
+                    $rs = $q->getResult();
+                    $this->detachApiQueryRS($rs);
                 }
             };
 

@@ -46,6 +46,7 @@ use SwiftMailer\SwiftMailer;
  */
 class App extends \Slim\Slim{
     use \MapasCulturais\Traits\MagicGetter,
+        \MapasCulturais\Traits\MagicSetter,
         \MapasCulturais\Traits\Singleton;
 
     /**

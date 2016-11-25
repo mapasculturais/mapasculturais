@@ -1,0 +1,49 @@
+#certificate-model1 {
+  width: 1250px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100%;
+  overflow: hidden;
+  margin: auto; }
+  #certificate-model1 img.background {
+    position: absolute;
+    z-index: -1;
+    opacity: 0.95;
+    width: 1250px; }
+  #certificate-model1 p.certificate-content {
+    margin: 200px 535px 0 53px;
+    padding: 30px 0 0 0;
+    font-size: 22px;
+    line-height: 2.2rem;
+    text-align: justify;
+    height: 526px; }
+    #certificate-model1 p.certificate-content span.entity-name {
+      font-size: 22px;
+      font-style: italic; }
+  #certificate-model1 .footer {
+    width: 100%; }
+    #certificate-model1 .footer .entity-url {
+      margin-left: 72px;
+      margin-top: 88px;
+      width: 364px; }
+    #certificate-model1 .footer .footer-signatures {
+      width: 720px;
+      text-align: center;
+      float: right;
+      position: absolute;
+      margin-top: -20px; }
+      #certificate-model1 .footer .footer-signatures div {
+        display: inline; }
+        #certificate-model1 .footer .footer-signatures div.certificate-seal-owner p {
+          margin-bottom: 0px;
+          height: 50px; }
+    #certificate-model1 .footer div {
+      position: relative;
+      vertical-align: bottom;
+      display: inline-block; }
+    #certificate-model1 .footer div.footer-img {
+      margin: 0 7px; }
+      #certificate-model1 .footer div.footer-img > img {
+        height: 82px; }
+
+/*# sourceMappingURL=model-tab-1.css.map */

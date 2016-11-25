@@ -17,9 +17,9 @@ use MapasCulturais\Traits;
 class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
     protected static $validations = [
-        'owner' => [ 'required' => "O projeto é obrigatório."],
-        'title' => [ 'required' => "O título do anexo é obrigatório."],
-        'fieldType' => [ 'required' => "O tipo de campo é obrigatório" ]
+    'owner' => [ 'required' => "O projeto é obrigatório."],
+    'title' => [ 'required' => "O título do anexo é obrigatório."],
+    'fieldType' => [ 'required' => "O tipo de campo é obrigatório" ]
     ];
     /**
      * @var integer
@@ -54,6 +54,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="max_size", type="string", nullable=true)
+     */
+    protected $maxSize;
 
     /**
      * @var boolean
@@ -118,17 +125,18 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function jsonSerialize() {
-        
+
         return [
-            'id' => $this->id,
-            'ownerId' => $this->owner->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'required' => $this->required,
-            'fieldType' => $this->fieldType,
-            'fieldOptions' => $this->fieldOptions,
-            'categories' => $this->categories,
-            'fieldName' => $this->getFieldName()
+        'id' => $this->id,
+        'ownerId' => $this->owner->id,
+        'title' => $this->title,
+        'description' => $this->description,
+        'maxSize' => $this->maxSize,
+        'required' => $this->required,
+        'fieldType' => $this->fieldType,
+        'fieldOptions' => $this->fieldOptions,
+        'categories' => $this->categories,
+        'fieldName' => $this->getFieldName()
         ];
     }
 

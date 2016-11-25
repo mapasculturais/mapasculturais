@@ -1,5 +1,13 @@
 MapasCulturais = MapasCulturais || {};
 
+function charCounter(obj){
+    if($('#charCounter').text() == '')
+        return;
+
+    var max = $('#charCounter').text().split('/');
+        $('#charCounter').text(($(obj).val().length + '/' + max[1]));
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
@@ -152,6 +160,26 @@ $(function(){
     });
 
 
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
+
+    // positioning agent details box on mobile
+
+    if ($(window).width() < 768) {
+        $('.agentes-relacionados .avatar').on('click hover', function () {
+            $('.descricao-do-agente').hide();
+
+            var descAgent = $(this).find('.descricao-do-agente');
+            var descAgentHeight = descAgent.outerHeight();
+            descAgent.show().css('top',-((descAgentHeight)+10));
+        });
+    }
 });
 
 MapasCulturais.utils = {

@@ -417,6 +417,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected static function _getTexts(){
         $app = App::i();
+
         return array_map(function($e) { return $e['text']; }, self::_dict());
     }
 
@@ -578,19 +579,16 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('entity(<<agent|space|event|project|seal>>).save:before', function() use($app){
-          $this->updateTimestamp = new \DateTime;
-        });
-
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
-            $user = $this->ownerUser;
-            
-            $app->createAndSendMailMessage([
-                'from' => $app->config['mailer.from'],
-                'to' => $user->email,
-                'subject' => "Novo $this->entityType registrado",
-                'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
-            ]);
+            if(!$app->user->is('guest')){
+                $user = $this->ownerUser;
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $user->email,
+                    'subject' => "Novo $this->entityType registrado",
+                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                ]);
+            }
         });
 
         // sempre que insere uma imagem cria o avatarSmall
@@ -1583,4 +1581,35 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
+
+
+    function registerMetadata($entity_class, $key, $cfg) {
+        $app = \MapasCulturais\App::i();
+        $def = new \MapasCulturais\Definitions\Metadata($key, $cfg);
+        return $app->registerMetadata($def, $entity_class);
+
+    }
+
+    function registerEventMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Event', $key, $cfg);
+    }
+
+    function registerSpaceMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Space', $key, $cfg);
+    }
+
+    function registerAgentMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Agent', $key, $cfg);
+    }
+
+    function registerProjectMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Project', $key, $cfg);
+    }
+
+    function registerSealMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
+    }
+
+
+
 }

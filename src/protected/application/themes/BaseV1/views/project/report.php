@@ -43,18 +43,22 @@ $_properties = $app->config['registration.propertiesToExport'];
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
-                
+
             <?php foreach($entity->registrationFieldConfigurations as $field): ?>
                 <th><?php echo $field->title; ?></th>
             <?php endforeach; ?>
-            
+
             <th>Arquivos</th>
+
+            <th>Área de Atuação</th>
+
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
                 <?php endforeach; ?>
             <?php endforeach; ?>
+
         </tr>
     </thead>
     <tbody>
@@ -66,9 +70,13 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
                 <?php endif; ?>
-                    
+
                 <?php foreach($entity->registrationFieldConfigurations as $field): $field_name = $field->getFieldName(); ?>
-                    <th><?php echo $r->$field_name; ?></th>
+                    <?php if(is_array($r->$field_name)): ?>
+                        <th><?php echo implode(', ', $r->$field_name); ?></th>
+                    <?php else: ?>
+                        <th><?php echo $r->$field_name; ?></th>
+                    <?php endif; ?>
                 <?php endforeach; ?>
 
                 <td>
@@ -84,14 +92,27 @@ $_properties = $app->config['registration.propertiesToExport'];
                 ?>
 
                     <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+                        <td>
+                            <?php echo implode(',',$agent->terms['area']); ?>
+                        </td>
+
+                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank">
+                        <?php
+                            if (isset($def->agentRelationGroupName)) {
+                                echo $r->agentsData[$def->agentRelationGroupName]['name'];
+                            }
+                        ?></a></td>
 
                         <?php
                         foreach($_properties as $prop):
                             if($prop === 'name') continue;
                         $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
                         ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
+                        <td><?php
+                            if (isset($def->agentRelationGroupName)) {
+                                echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val;
+                            }
+                        ?></td>
 
                         <?php endforeach; ?>
 
