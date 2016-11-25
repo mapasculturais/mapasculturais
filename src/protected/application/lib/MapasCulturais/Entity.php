@@ -678,7 +678,6 @@ abstract class Entity implements \JsonSerializable{
      * )
      * </code>
      *
-     * @see \MapasCulturais\App::txt() The MapasCulturais GetText method
      * @see \MapasCulturais\Traits\Metadata::getMetadataValidationErrors() Metadata Validation Errors
      *
      * @return array
@@ -719,7 +718,7 @@ abstract class Entity implements \JsonSerializable{
                     if (!key_exists($property, $errors))
                         $errors[$property] = [];
 
-                    $errors[$property][] = App::txt($error_message);
+                    $errors[$property][] = $error_message;
 
                 }
             }

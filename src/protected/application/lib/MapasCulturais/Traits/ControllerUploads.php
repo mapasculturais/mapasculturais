@@ -109,7 +109,7 @@ trait ControllerUploads{
 
                 }catch(\MapasCulturais\Exceptions\FileUploadError $e){
                     $files[] = [
-                        'error' => App::txt($e->message), 
+                        'error' => $e->message, 
                         'group' => $upload_group
                     ];
                 }

@@ -88,10 +88,10 @@ class Plugin extends \MapasCulturais\Plugin {
         $app = App::i();
 
         $conf = [
-            'label'     => $app->txt('Model template'),
+            'label'     => \MapasCulturais\i::__('Modelo de selo'),
             'type'      => 'select',
             'options'   => [
-                '' => 'Nenhum modelo Selecionado'
+                '' => \MapasCulturais\i::__('Nenhum modelo Selecionado')
             ]
         ];
 

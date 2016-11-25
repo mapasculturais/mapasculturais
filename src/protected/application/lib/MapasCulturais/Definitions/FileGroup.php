@@ -52,6 +52,6 @@ class FileGroup extends \MapasCulturais\Definition{
             }
         }
 
-        return !$ok ? App::txt($this->errorMessage) : '';
+        return !$ok ? $this->errorMessage : '';
     }
 }
