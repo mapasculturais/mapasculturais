@@ -61,6 +61,7 @@ return array(
     'app.enabled.seals'   => true,
     'app.enabled.apps'     => true,
 
+    //'app.subsite.mainUrl' => 'mapas.mary',
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
     'themes.active.debugParts' => true,
     'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem(array(
@@ -117,7 +118,7 @@ return array(
         'required' => 'Obrigatório',
         'optional' => 'Opcional'
     ),
-    
+
     'registration.propertiesToExport' => array(
         'id',
         'name',
@@ -235,10 +236,10 @@ return array(
 
     'app.useApiCache' => true,
     'app.apiCache.lifetime' => 120,
-    
+
     'app.useSubsiteIdsCache' => true,
     'app.subsiteIdsCache.lifetime' => 120,
-    
+
 
     'app.usePermissionsCache' => true,
     'app.permissionsCache.lifetime' => 120,

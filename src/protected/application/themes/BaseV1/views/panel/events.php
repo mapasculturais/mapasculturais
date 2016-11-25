@@ -11,7 +11,7 @@ $this->layout = 'panel'
 		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlEvents);?>)</a></li>
 		<li><a href="#rascunhos">Rascunhos (<?php echo count($draft); ?>)</a></li>
         <li><a href="#lixeira">Lixeira (<?php echo count($trashed); ?>)</a></li>
-		<li><a href="#arquivo">Arquivo <?php echo count($app->user->archivedEvents);?>)</a></li>
+		<li><a href="#arquivo">Arquivo (<?php echo count($app->user->archivedEvents);?>)</a></li>
     </ul>
     <div id="ativos">
 

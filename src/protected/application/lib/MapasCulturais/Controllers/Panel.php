@@ -190,7 +190,7 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_spaces(){
-        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
+        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'originSiteUrl', 'editUrl',
                    'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(space)', [&$fields]);

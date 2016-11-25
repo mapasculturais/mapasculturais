@@ -24,6 +24,9 @@
                     </div>
                 <?php endif; ?>
 		<div><span class="label">Organização:</span> <?php echo $entity->owner->name; ?></div>
+        <?php if($entity->originSiteUrl): ?>
+            <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
+        <?php endif; ?>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>

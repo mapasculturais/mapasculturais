@@ -8,6 +8,9 @@
 		<?php if($entity->classificacaoEtaria): ?>
             <div><span class="label">Classificação:</span> <?php echo $entity->classificacaoEtaria; ?></div>
         <?php endif; ?>
+        <?php if($entity->originSiteUrl): ?>
+            <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
+        <?php endif; ?>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>

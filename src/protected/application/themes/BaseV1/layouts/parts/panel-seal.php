@@ -6,6 +6,11 @@ use MapasCulturais\Entities\Seal;
         <a class="icon icon-seal hltip"></a>
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
     </h1>
+    <div class="objeto-meta">
+        <?php if($entity->originSiteUrl): ?>
+            <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
+        <?php endif; ?>
+    </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
             <?php if($entity->status === Seal::STATUS_ENABLED): ?>
