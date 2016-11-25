@@ -5,9 +5,32 @@ $app = App::i();
 $em = $app->em;
 $conn = $em->getConnection();
 
+
+function __table_exists($table_name) {
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '$table_name';")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function __column_exists($table_name, $column_name) {
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='$table_name' and column_name='$column_name'")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 return [
-
-
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -57,7 +80,11 @@ return [
     },
 
     'create table user apps' => function() use ($conn) {
-
+        if(__table_exists('user_app')){
+            echo "TABLE user_app ALREADY EXISTS";
+            return true;
+        }
+        
         $conn->executeQuery("CREATE TABLE user_app (
                                 public_key character varying(64) NOT NULL,
                                 private_key character varying(128) NOT NULL,
@@ -76,7 +103,7 @@ return [
 
     'create table user_meta' => function() use ($conn) {
 
-        if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'user_meta';")){
+        if(__table_exists('user_meta')){
             echo "TABLE user_meta ALREADY EXISTS";
             return true;
         }
@@ -104,7 +131,7 @@ return [
 
     'create seal and seal relation tables' => function() use ($conn) {
 
-        if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'seal';")){
+        if(__table_exists('seal')){
             echo "TABLE seal ALREADY EXISTS";
             return true;
         }
@@ -131,6 +158,10 @@ return [
 
 
     'create registration field configuration table' => function () use($conn){
+        if(__table_exists('registration_field_configuration')){
+            echo "TABLE registration_field_configuration ALREADY EXISTS";
+            return true;
+        }
         $conn->executeQuery("CREATE TABLE registration_field_configuration (id INT NOT NULL, project_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, categories TEXT DEFAULT NULL, required BOOLEAN NOT NULL, field_type VARCHAR(255) NOT NULL, field_options VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
         $conn->executeQuery("CREATE INDEX IDX_60C85CB1166D1F9C ON registration_field_configuration (project_id);");
         $conn->executeQuery("COMMENT ON COLUMN registration_field_configuration.categories IS '(DC2Type:array)';");
@@ -139,7 +170,12 @@ return [
     },
 
     'alter table registration_file_configuration add categories' => function () use($conn){
-        $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT registration_meta_project_fk;");
+        if(__column_exists('registration_file_configuration', 'categories')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        
+        $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT IF EXISTS registration_meta_project_fk;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD categories TEXT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER id DROP DEFAULT;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER project_id DROP NOT NULL;");
