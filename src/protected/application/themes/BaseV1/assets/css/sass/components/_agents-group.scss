@@ -1,9 +1,12 @@
 .agentes {
+    position: relative;
     .avatar {
-        position: relative;
-        &:hover {
-            .descricao-do-agente {
-                display: block;
+        @media screen and (min-width: 768px) {
+            position: relative;
+            &:hover {
+                .descricao-do-agente {
+                    display: block;
+                }
             }
         }
         &.pending {
@@ -15,17 +18,24 @@
             display: none;
             position: absolute;
             z-index: $z-index-descricao-do-agente;
-            top: 3.5rem;
-            right: -.75rem;
-            width: 200px;
+            top: 0;
+            left: calc(50% - 110px);
+            width: 220px;
             padding: $padding-base;
             font-size: $font-size-smaller;
             background: #fff;
             border-radius: $border-radius-base;
             box-shadow: $box-shadow-dropdown;
-            &:before {
-                @include arrow(up, $caret-width-base, #fff);
-                right: $padding-large;
+            box-sizing: border-box;
+            @media screen and (min-width: 768px) {
+                left: initial;
+                right: -.75rem;
+                top: 3.5rem;
+                &:before {
+                    @include arrow(up, $caret-width-base, #fff);
+                    left: initial;
+                    right: $padding-large;
+                }
             }
             h1 {
                 font-size: $font-size-base;

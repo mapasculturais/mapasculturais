@@ -944,17 +944,11 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
                     if(status.value === 10) {
-                        if(MapasCulturais.entity.object.approvedLimit > $scope.approvedRegistrations()) {
-                            RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                                if(registration.status === 0){
-                                    $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
-                                }
-                            });
-                        } else if(MapasCulturais.entity.object.approvedLimit === 0) {
-                            MapasCulturais.Messages.error('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.');
-                        } else {
-                            MapasCulturais.Messages.error('Você atingiu o limite máximo de ' + MapasCulturais.entity.object.approvedLimit + (MapasCulturais.entity.object.approvedLimit > 1 ? ' inscrições aprovadas.' : ' inscrição aprovada.'));
-                        }
+                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
+                            if(registration.status === 0){
+                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                            }
+                        });
                     } else {
                         RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                             if(registration.status === 0){
@@ -1087,7 +1081,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     MapasCulturais.Messages.error('O limite de inscrições para o agente informado se esgotou.');
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
                     MapasCulturais.Messages.error('O número de vagas da inscrição no projeto se esgotou.');
-                }else if(registration.owner && $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit){
+                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
