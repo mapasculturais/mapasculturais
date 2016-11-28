@@ -14,5 +14,5 @@
     <?php endif; ?>
 <?php endif; ?>
 <script type="text/javascript">
-    MapasCulturais.Messages.alert('<?php \MapasCulturais\i::_e("Você possui permissão para editar este");?> <?php echo strtolower($entity->entityType) ?>. <?php \MapasCulturais\i::_e("Use os botões à direita para editar ou excluir.");?>');
+    MapasCulturais.Messages.alert('<?php printf(\MapasCulturais\i::esc_attr__("Você possui permissão para editar este %s. Use os botões à direita para editar ou excluir."), strtolower($entity->entityTypeLabel()));?>');
 </script>
