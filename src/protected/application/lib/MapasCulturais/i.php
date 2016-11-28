@@ -136,7 +136,7 @@ class i {
      */
     static function esc_attr_e( $text, $domain = 'default' ) {
     	//TODO: metodo para escapar string para seren utilizadas em atributos HTML
-        echo esc_attr( self::translate( $text, $domain ) );
+        echo self::esc_attr__( $text, $domain ) ;
     }
 
     /**
