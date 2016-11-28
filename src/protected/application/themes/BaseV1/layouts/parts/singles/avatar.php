@@ -13,7 +13,7 @@
     <?php endif; ?>
     <!-- pro responsivo!!! -->
     <?php if($entity->isVerified): ?>
-        <a class="verified-seal hltip active" title="<?php \MapasCulturais\i::_e("Este");?> <?php echo $entity->entityType ?> <?php \MapasCulturais\i::_e("é verificado.");?>" href="#"></a>
+        <a class="verified-seal hltip active" title="<?php printf(\MapasCulturais\i::esc_attr__("Este %s é verificado."), $entity->entityTypeLabel());?>" href="#"></a>
     <?php endif; ?>
 </div>
 <!--.avatar-->
