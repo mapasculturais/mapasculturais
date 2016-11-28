@@ -7,9 +7,9 @@ $class = $entity->getClassName();
 ?>
 <?php $this->applyTemplateHook('entity-status','before'); ?>
 <?php if($entity->status === $class::STATUS_DRAFT): ?>
-    <div class="alert warning"><?php \MapasCulturais\i::_e("Este");?> <?php echo strtolower($entity->entityType)?> <?php \MapasCulturais\i::_e("é um rascunho.");?></div>
+    <div class="alert warning"><?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entityTypeLabel()));?></div>
 <?php elseif($entity->status === $class::STATUS_TRASH): ?>
-    <div class="alert danger"><?php \MapasCulturais\i::_e("Este");?> <?php echo strtolower($entity->entityType)?> <?php \MapasCulturais\i::_e("está na lixeira.");?></div>
+    <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entityTypeLabel()));?></div>
 <?php endif; ?>
 
 <?php $this->applyTemplateHook('entity-status','after'); ?>

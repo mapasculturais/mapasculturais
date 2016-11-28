@@ -8,13 +8,13 @@ $this->addRelatedSealsToJs($entity);
 
 <?php if($this->controller->action == 'create'): ?>
 	<div class="widget">
-		<p class="alert info"><?php \MapasCulturais\i::_e("Para relacionar o selo ao");?> <?php echo $entity->entityType;?>, <?php \MapasCulturais\i::_e("primeiro é preciso salvar o registro.");?><span class="close"></span></p>
+		<p class="alert info"><?php printf(\MapasCulturais\i::__("Para relacionar o selo ao %s, primeiro é preciso salvar o registro."); ?><span class="close"></span></p>
 	</div>
 <?php else: ?>
     <div class="selos-add" ng-controller="RelatedSealsController">
         <div ng-if="relations.length > 0 || (isEditable && seals.length > 0)" class="widget">
             <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> <div ng-if="isEditable && canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::_e("Adicionar selo relacionado");?>"></div></h3>
-            <edit-box id="sealsAvailable" position="right" title="<?php \MapasCulturais\i::_e("Adicionar selo relacionado");?>" cancel-label="<?php \MapasCulturais\i::_e("Fechar");?>" close-on-cancel='true'>
+            <edit-box id="sealsAvailable" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar selo relacionado");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Fechar");?>" close-on-cancel='true'>
                 <div ng-if="seals.length > 0" class="widget">
                     <h3><?php \MapasCulturais\i::_e("Selos Disponíveis");?></h3>
                     <div class="selos clearfix">
