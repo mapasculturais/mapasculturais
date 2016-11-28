@@ -68,7 +68,7 @@ class Plugin extends \MapasCulturais\Plugin {
                 "[sealOwner]"               => $relation->seal->agent->name,
                 "[sealShortDescription]"    => $relation->seal->shortDescription,
                 "[sealRelationLink]"        => $app->createUrl('seal','printsealrelation',[$relation->id]),
-                "[entityDefinition]"        => $relation->owner->entityType,
+                "[entityDefinition]"        => $relation->owner->entityTypeLabel(),
                 "[entityName]"              => '<span class="entity-name">'.$relation->owner->name.'</span>',
                 "[dateIni]"                 => $dateIni,
                 "[dateFin]"                 => $dateFin

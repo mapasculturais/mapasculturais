@@ -287,8 +287,8 @@ class Theme extends MapasCulturais\Theme {
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
-                    'subject' => "Novo $this->entityType registrado",
-                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                    'subject' => sprintf(\MapasCulturais\i::__("Novo %s registrado"), $this->entityTypeLabel()),
+                    'body' => sprintf(\MapasCulturais\i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel(), $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
                 ]);
             }
         });
