@@ -29,13 +29,6 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-    protected static $validations = [
-        'owner' => [
-            'required' => "O agente responsável é obrigatório.",
-            '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsável.',
-        ]
-    ];
-
     /**
      * @var integer
      *
@@ -125,6 +118,15 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+
+    static function getValidations() {
+        return [
+            'owner' => [
+                'required' => \MapasCulturais\i::__("O agente responsável é obrigatório."),
+                '$this->validateOwnerLimit()' => \MapasCulturais\i::__('Foi excedido o limite de inscrições para este agente responsável.'),
+            ]
+        ];
     }
 
     function jsonSerialize() {

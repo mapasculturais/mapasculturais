@@ -402,7 +402,7 @@ abstract class Entity implements \JsonSerializable{
             $return = $metadata[$property]['required'];
         }
 
-        $v = $class::$validations;
+        $v = $class::getValidations();
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
             $return = true;
         }
@@ -685,7 +685,7 @@ abstract class Entity implements \JsonSerializable{
     public function getValidationErrors(){
         $errors = $this->_validationErrors;
         $class = get_called_class();
-        foreach($class::$validations as $property => $validations){
+        foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
                 continue;

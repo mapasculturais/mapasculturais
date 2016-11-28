@@ -18,10 +18,6 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
 
     use \MapasCulturais\Traits\EntityFiles;
 
-    protected static $validations = [
-        'owner' => [ 'required' => "O projeto é obrigatório."],
-        'title' => [ 'required' => "O título do anexo é obrigatório."]
-    ];
     /**
      * @var integer
      *
@@ -77,6 +73,17 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+
+    static function getValidations() {
+        return [
+            'owner' => [ 
+                'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
+            ],
+            'title' => [ 
+                'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
+            ]
+        ];
+    }
 
     public function getFileGroupName(){
         return 'rfc_' . $this->id;

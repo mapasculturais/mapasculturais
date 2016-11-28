@@ -28,19 +28,6 @@ class Seal extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
-    protected static $validations = [
-      'name' => [
-        'required' => 'O nome do selo é obrigatório'
-      ],
-      'shortDescription' => [
-        'required' => 'A descrição curta é obrigatória',
-        'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-      ],
-    	'validPeriod' => [
-    		'v::allOf(v::positive(),v::intVal())' => 'Validade do selo é obrigatória.'
-    	]
-    ];
-
     /**
      * @var integer
      *
@@ -158,6 +145,23 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do selo é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'validPeriod' => [
+                'v::allOf(v::positive(),v::intVal())' => \MapasCulturais\i::__('Validade do selo é obrigatória.')
+            ]
+        ];
+    }
+
+
 
     function validatePeriod($value) {
     	if (!is_numeric($value)) {

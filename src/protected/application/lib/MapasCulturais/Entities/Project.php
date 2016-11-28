@@ -30,27 +30,6 @@ class Project extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft;
 
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do projeto é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do projeto é obrigatório',
-        ],
-        'registrationFrom' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '!empty($this->registrationTo)' => 'Data final obrigatória caso data inicial preenchida'
-        ],
-        'registrationTo' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '$this->validateRegistrationDates()' => 'A data final das inscrições deve ser maior ou igual a data inicial'
-        ]
-    ];
-
     /**
      * @var integer
      *
@@ -246,6 +225,29 @@ class Project extends \MapasCulturais\Entity
             return \MapasCulturais\i::__('Projetos');
         else
             return \MapasCulturais\i::__('Projeto');
+    }
+    
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do projeto é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'type' => [
+                'required' => \MapasCulturais\i::__('O tipo do projeto é obrigatório'),
+            ],
+            'registrationFrom' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '!empty($this->registrationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
+            ],
+            'registrationTo' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
+            ]
+        ];
     }
     
     function getEvents(){

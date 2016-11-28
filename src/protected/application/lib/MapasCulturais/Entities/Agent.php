@@ -40,19 +40,6 @@ class Agent extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do agente é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do agente é obrigatório',
-        ]
-    ];
-
     protected function validateLocation(){
         if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
             return true;
@@ -259,7 +246,22 @@ class Agent extends \MapasCulturais\Entity
         else
             return \MapasCulturais\i::__('Agente');
     }
-
+    
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do agente é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'type' => [
+                'required' => \MapasCulturais\i::__('O tipo do agente é obrigatório'),
+            ]
+        ];
+    }
+    
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 

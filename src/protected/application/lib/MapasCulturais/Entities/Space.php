@@ -32,19 +32,6 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityDraft;
 
 
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do espaço é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do espaço é obrigatório',
-        ]
-    ];
-
     //
 
     /**
@@ -227,7 +214,25 @@ class Space extends \MapasCulturais\Entity
         else
             return \MapasCulturais\i::__('Espaço');
     }
-        
+    
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do espaço é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'type' => [
+                'required' => \MapasCulturais\i::__('O tipo do espaço é obrigatório'),
+            ]
+        ];
+    }
+    
+    
+    
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
