@@ -533,11 +533,30 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
         $this->enqueueScript('app', 'tim', 'js/tim.js');
+        $this->localizeScript('tim', [
+            'previous' => \MapasCulturais\i::__('Anterior'),
+            'next' => \MapasCulturais\i::__('Próxima'),
+            /* Translators: Count of the photo gallery slideshow: 2 of 10 */
+            'counter' => \MapasCulturais\i::__('%curr% de %total%'),
+        ]);
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
+        $this->localizeScript('tim', [
+            'agente'    => \MapasCulturais\i::__('agente'),
+            'espaço'    => \MapasCulturais\i::__('espaço'),
+            'evento'    => \MapasCulturais\i::__('evento'),
+            'projeto'   => \MapasCulturais\i::__('projeto'),
+            'selo'      => \MapasCulturais\i::__('selo'),
+            'Enviar'    => \MapasCulturais\i::__('Enviar'),
+            'Cancelar'  => \MapasCulturais\i::__('Cancelar')
+        ]);
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
-
+        $this->localizeScript('moduleNotifications', [
+            'error'    => \MapasCulturais\i::__('There was an error'),
+        ]);
+        
+        
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
@@ -564,8 +583,23 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
+        $this->localizeScript('controllerMap', [
+            /* Translators: serach results. Eventos encontrados no espaço {nome do espaço} */
+            'eventsFound'    => \MapasCulturais\i::__('Eventos encontrados no espaço'),
+        ]);
+        
         $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
-
+        $this->localizeScript('controllerSpatial', [
+            'tooltip.start' =>  \MapasCulturais\i::__('Clique e arraste para desenhar o círculo'),
+            'tooltip.end' =>    \MapasCulturais\i::__('Solte o mouse para finalizar o desenho'),
+            'title' =>          \MapasCulturais\i::__('Cancelar desenho'),
+            'text' =>           \MapasCulturais\i::__('Cancelar'),
+            'circle' =>         \MapasCulturais\i::__('Desenhar um círculo'),
+            'radius' =>         \MapasCulturais\i::__('Raio'),
+            'currentLocation' =>\MapasCulturais\i::__('Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de {{radius}}KM deste ponto.'),
+        ]);
+        
+        
         $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
         $this->localizeScript('searchApp', [
             'all' => \MapasCulturais\i::__('Todos'),
@@ -648,6 +682,12 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
+        $this->localizeScript('changeOwner', [
+            'ownerChanged' =>  \MapasCulturais\i::__('O proprietário da entidade foi modificado'),
+            'cannotChangeOwner' =>  \MapasCulturais\i::__('O proprietário da entidade não pode ser modificado'),
+            'requestMessage' =>  \MapasCulturais\i::__('Sua requisição para mudança de propriedade deste {{type}} para o agente {{recipient}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));

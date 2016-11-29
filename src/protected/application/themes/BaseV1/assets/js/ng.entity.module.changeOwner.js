@@ -2,6 +2,8 @@
     "use strict";
 
     var module = angular.module('entity.module.changeOwner', ['ngSanitize']);
+    
+    var labels = MapasCulturais.gettext.changeOwner;
 
     module.config(['$httpProvider',function($httpProvider){
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -33,10 +35,10 @@
         setOwnerTo: function(agentId){
                 return $http.post(this.getUrl(), {ownerId: agentId}).
                     success(function(data, status){
-                        $rootScope.$emit('changedOwner', { message: "The entity owner was changed", data: data, status: status });
+                        $rootScope.$emit('changedOwner', { message: labels['ownerChanged'], data: data, status: status });
                     }).
                     error(function(data, status){
-                        $rootScope.$emit('error', { message: "Cannot change the owner", data: data, status: status });
+                        $rootScope.$emit('error', { message: labels['cannotChangeOwner'], data: data, status: status });
                     });
             }
         };
@@ -72,7 +74,10 @@
         $scope.requestEntity = function(e){
             ChangeOwnerService.setOwnerTo(e.id).success(function(data, status){
                 if(status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição foi para mudança de propriedade deste ' + MapasCulturais.entity.getTypeName() + ' para o agente <strong>'+e.name+'</strong> foi enviada.');
+                    var requestMessage = labels['requestMessage'];
+                    requestMessage.replace('{{type}}', MapasCulturais.entity.getTypeName());
+                    requestMessage.replace('{{recipient}}', '<strong>'+e.name+'</strong>');
+                    MapasCulturais.Messages.alert(requestMessage);
                 }else{
                     $('.js-owner-name').html('<a href="' + e.singleUrl + '">' + e.name + '</a>');
                     $('.js-owner-description').html(e.shortDescription);
