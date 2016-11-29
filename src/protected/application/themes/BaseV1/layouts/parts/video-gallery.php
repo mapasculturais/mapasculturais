@@ -22,7 +22,7 @@ $template = "<li id='video-{{id}}'>
             </li>";
 ?>
 <?php if ($this->isEditable() || $videos): ?>
-    <h3>videos</h3>
+    <h3>Videos</h3>
     <a name="video"></a>
     <div id="video-player" class="video" ng-non-bindable>
         <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
