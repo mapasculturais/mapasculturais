@@ -243,5 +243,19 @@ return [
                         where name = 'superAdmin'
                     )");
         $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
+    },
+    
+    'create table permission' => function () use($conn) {
+        if(__table_exists('permission')){
+            echo 'tabela permission já foi criada';
+            return true;
+        }
+        $conn->executeQuery("CREATE SEQUENCE permission_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("CREATE TABLE permission (id INT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, object_type VARCHAR(255) NOT NULL, object_id INT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE INDEX IDX_E04992AAA76ED395 ON permission (user_id);");
+        $conn->executeQuery("CREATE INDEX IDX_E04992AA232D562B ON permission (object_id);");
+        $conn->executeQuery("CREATE INDEX permission_owner_idx ON permission (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX permission_permission_idx ON permission (object_type, object_id, name);");
+        $conn->executeQuery("ALTER TABLE permission ADD CONSTRAINT FK_E04992AAA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     }
 ];
