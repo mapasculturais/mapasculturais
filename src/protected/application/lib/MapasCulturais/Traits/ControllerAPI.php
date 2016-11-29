@@ -588,7 +588,8 @@ trait ControllerAPI{
                     if($app->config['app.log.apiDql'])
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
-                    $q->getResult();
+                    $rs = $q->getResult();
+                    $this->detachApiQueryRS($rs);
                 }
             };
 
