@@ -567,6 +567,13 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
 
         $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
+        $this->localizeScript('searchApp', [
+            'all' => \MapasCulturais\i::__('Todos'),
+            /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
+            'dateFrom' => \MapasCulturais\i::__('de'),
+            /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
+            'dateTo' => \MapasCulturais\i::__('a')
+        ]);
     }
 
     function includeMapAssets() {
