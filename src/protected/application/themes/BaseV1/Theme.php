@@ -496,6 +496,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents',
             	'entity.module.relatedSeals',
+                'entity.module.subsite',
                 'entity.module.changeOwner',
                 'entity.directive.editableMultiselect',
                 'entity.directive.editableSingleselect',
@@ -950,6 +951,7 @@ class Theme extends MapasCulturais\Theme {
             'entity.module.relatedAgents',
         	'entity.module.relatedSeals',
             'entity.module.changeOwner',
+            'entity.module.subsite',
             'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
@@ -963,6 +965,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.subsite', 'js/ng.entity.module.subsite.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 

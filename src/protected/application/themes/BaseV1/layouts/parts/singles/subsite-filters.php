@@ -3,6 +3,8 @@ $entityClass = $entity->getClassName();
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $viewModeString = $entityName !== 'project' ? '' : ',viewMode:list';
 
+$this->addSealsToJs(true,array(),$entity);
+
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 
 function printSubsiteFilter($property){
@@ -17,7 +19,6 @@ function printSubsiteFilter($property){
     <style>
         section.filter-section {
             margin-bottom: 1.5em;
-
         }
 
         section.filter-section header {
@@ -27,7 +28,22 @@ function printSubsiteFilter($property){
             text-transform:uppercase;
             font-weight:bold;
         }
-
+        .botoes {
+            position: absolute;
+            top: -12px;
+            right: -6px;
+            a {
+                background-color: #fff;
+                border-radius: 100%;
+                &:before {
+                    line-height: 180%;
+                }
+            }
+        }
+        .img-seal {
+            max-height: 70px;
+            max-width: 70px;
+        }
     </style>
     <section class="filter-section">
         <header>Agentes</header>
@@ -81,13 +97,38 @@ function printSubsiteFilter($property){
             <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="Linguagem" data-emptytext="Selecione o(s) tipos(s) de linguagem"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
         </p>
     </section>
-    
+
     <section class="filter-section">
         <header>Selos Verificadores</header>
         <p>
             <span class="label <?php echo ($entity->isPropertyRequired($entity,"verifiedSeals") && $editEntity? 'required': '');?>">Selos: </span>
-            <span class="js-editable" data-edit="verifiedSeals" data-original-title="Selos Verificadores" data-emptytext="Informe os ids dos selos verificadores separados por ponto e vírgula"><?php printSubsiteFilter($entity->verifiedSeals) ?></span>
+            <div class="subsite-related-seal-configuration" ng-controller="SealsSubSiteController">
+        		<div class="selos-relacionados">
+        			<input type="hidden" id="verifiedSeals" name="verifiedSeals" class="js-editable" data-edit="verifiedSeals" data-name="verifiedSeals" data-value="<?php printSubsiteFilter($entity->verifiedSeals) ?>">
+                    <edit-box id='set-seal-subsite' cancel-label="Cancelar" close-on-cancel='true'>
+			            <div ng-if="seals.length > 0" class="widget">
+					        <div class="selos clearfix">
+					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal(seal)">
+									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarSmall'].url)}}" width="48">
+									<h3>{{seal.name}}</h3>
+					            </div>
+					        </div>
+					    </div>
+					</edit-box>
+        			<div class="widget">
+        				<div class="selos clearfix">
+                            <div ng-if="entity.verifiedSeals.length > 0" class="avatar-seal" ng-repeat="item in entity.verifiedSeals">
+        						<img ng-if="item" class="img-seal" ng-src="{{avatarUrl(seals[getArrIndexBySealId(item)]['@files:avatar.avatarSmall'].url)}}">
+        		                <div ng-if="item" class="descricao-do-selo">
+        		                    <h1><a href="{{seals[getArrIndexBySealId(item)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(item)].name}}</a></h1>
+                                    <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="deleteSeal(item)"></a></div>
+        		                </div>
+        	            	</div>
+                            <div ng-click="editbox.open('set-seal-subsite', $event)" class="hltip editable editable-empty" title="Adicionar selo"></div>
+                        </div>
+                    </div>
+        		</div>
+        	</div>
         </p>
     </section>
 </div>
-
