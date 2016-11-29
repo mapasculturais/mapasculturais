@@ -249,6 +249,7 @@ return [
         if(__table_exists('permission')){
             echo 'tabela permission já foi criada';
             return true;
+            
         }
         $conn->executeQuery("CREATE SEQUENCE permission_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         $conn->executeQuery("CREATE TABLE permission (id INT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, object_type VARCHAR(255) NOT NULL, object_id INT DEFAULT NULL, PRIMARY KEY(id));");

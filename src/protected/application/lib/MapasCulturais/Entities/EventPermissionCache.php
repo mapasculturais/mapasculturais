@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class EventPermission extends Permission{
+class EventPermissionCache extends PermissionCache{
 
     /**
      * @var \MapasCulturais\Entities\Event

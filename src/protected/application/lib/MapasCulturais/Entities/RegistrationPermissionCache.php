@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class RegistrationPermission extends Permission{
+class RegistrationPermissionCache extends PermissionCache{
 
     /**
      * @var \MapasCulturais\Entities\Registration

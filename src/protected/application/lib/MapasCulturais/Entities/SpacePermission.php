@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class SpacePermission extends Permission{
+class SpacePermissionCache extends PermissionCache{
 
     /**
      * @var \MapasCulturais\Entities\Space

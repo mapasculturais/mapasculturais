@@ -6,26 +6,26 @@ use Doctrine\ORM\Mapping as ORM;
 use \MapasCulturais\App;
 
 /**
- * Permission
+ * PermissionCache
  * @ORM\Table(name="permission", indexes={
  *      @ORM\Index(name="permission_owner_idx", columns={"object_type", "object_id"}), 
  *      @ORM\Index(name="permission_permission_idx", columns={"object_type", "object_id", "name"})
  * })
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Permission")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectPermission",
-        "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventPermission",
-        "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentPermission",
-        "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpacePermission",
-        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealPermission",
-        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationPermission"
+        "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectPermissionCache",
+        "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventPermissionCache",
+        "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentPermissionCache",
+        "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpacePermissionCache",
+        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealPermissionCache",
+        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationPermissionCache"
    })
  */
-abstract class Permission extends \MapasCulturais\Entity {
+abstract class PermissionCache extends \MapasCulturais\Entity {
 
 
     /**
