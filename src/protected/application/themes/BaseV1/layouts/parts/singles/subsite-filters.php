@@ -119,9 +119,9 @@ function printSubsiteFilter($property){
         				<div class="selos clearfix">
                             <div ng-if="entity.verifiedSeals.length > 0" class="avatar-seal" ng-repeat="item in entity.verifiedSeals">
         						<img ng-if="item" class="img-seal" ng-src="{{avatarUrl(seals[getArrIndexBySealId(item)]['@files:avatar.avatarSmall'].url)}}">
+                                <div class="botoes"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="deleteSeal(item)"></a></div>
         		                <div ng-if="item" class="descricao-do-selo">
         		                    <h1><a href="{{seals[getArrIndexBySealId(item)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(item)].name}}</a></h1>
-                                    <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="deleteSeal(item)"></a></div>
         		                </div>
         	            	</div>
                             <div ng-click="editbox.open('set-seal-subsite', $event)" class="hltip editable editable-empty" title="Adicionar selo"></div>
