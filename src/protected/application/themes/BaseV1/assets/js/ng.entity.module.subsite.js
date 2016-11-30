@@ -6,6 +6,7 @@
     module.controller('SealsSubSiteController', ['$scope', '$rootScope', 'EditBox', function($scope, $rootScope, EditBox) {
         $scope.editbox = EditBox;
         $scope.seals = [];
+		$scope.allowedSeals = MapasCulturais.allowedSeals;
         $scope.entity = MapasCulturais.entity.object;
         $scope.verifiedSeals = MapasCulturais.entity.object.verifiedSeals;
         $scope.showCreateDialog = {};
@@ -40,10 +41,14 @@
         };
 
         $scope.getArrIndexBySealId = function(sealId) {
-            for(var found in $scope.seals) {
-                if($scope.seals[found].id == sealId)
-                    return found;
-            };
+			sealId = parseInt(sealId);
+            for(var found in $scope.allowedSeals) {
+                if($scope.allowedSeals[found].id == sealId) {
+					break;
+					break;
+				}
+            }
+			return found;
         };
 
         $scope.avatarUrl = function(url){
