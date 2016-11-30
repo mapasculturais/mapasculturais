@@ -187,12 +187,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
-                    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-                    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
-
-                    <?php $this->applyTemplateHook('breadcrumb','end'); ?>
-
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
                         <p>
