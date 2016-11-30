@@ -32,6 +32,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityPermissionCache,
 
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
@@ -234,6 +235,11 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     */
+    protected $__permissionsCache;
 
     /**
      * @var \DateTime

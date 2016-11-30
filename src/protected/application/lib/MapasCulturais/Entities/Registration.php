@@ -20,7 +20,8 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation,
-    	Traits\EntitySealRelation;
+    	Traits\EntitySealRelation,
+        Traits\EntityPermissionCache;
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
@@ -58,7 +59,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -69,7 +70,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -120,6 +121,11 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     */
+    protected $__permissionsCache;
 
 
     function __construct() {

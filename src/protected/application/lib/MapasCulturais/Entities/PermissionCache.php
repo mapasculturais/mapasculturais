@@ -7,9 +7,10 @@ use \MapasCulturais\App;
 
 /**
  * PermissionCache
- * @ORM\Table(name="permission", indexes={
- *      @ORM\Index(name="permission_owner_idx", columns={"object_type", "object_id"}), 
- *      @ORM\Index(name="permission_permission_idx", columns={"object_type", "object_id", "name"})
+ * @ORM\Table(name="pcache", indexes={
+ *      @ORM\Index(name="pcache_owner_idx", columns={"object_type", "object_id"}), 
+ *      @ORM\Index(name="pcache_permission_idx", columns={"object_type", "object_id", "action"}),
+ *      @ORM\Index(name="pcache_permission_user_idx", columns={"object_type", "object_id", "action", "user_id"}),
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -42,9 +43,9 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="action", type="string", length=255, nullable=false)
      */
-    protected $name;
+    protected $action;
 
 
     /**
@@ -55,6 +56,13 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
     protected $createTimestamp;
     
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     */
+    protected $userId;
+    
+    /**
      * @var \MapasCulturais\Entities\User
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
@@ -63,5 +71,9 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      * })
      */
     protected $user;
+    
+    protected function canUserCreate($user){
+        return true;
+    }
 
 }

@@ -96,6 +96,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
+        
     }
 
     function __toString() {
@@ -235,6 +236,10 @@ abstract class Entity implements \JsonSerializable{
             return $this->canUser('@control', $user);
         }
     }
+    
+    protected function canUserModify($user) {
+        return $this->genericPermissionVerification($user);
+    }
 
     protected function canUserRemove($user){
         if($user->is('guest'))
@@ -258,6 +263,10 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent;
         } else {
             $user = $userOrAgent->getOwnerUser();
+        }
+        
+        if($this->usesPermissionCache() && $this->permissionCacheExists()){
+            return $this->_cachedCanUser($action, $user);
         }
 
         $result = false;

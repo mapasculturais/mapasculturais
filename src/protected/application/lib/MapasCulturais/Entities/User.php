@@ -83,12 +83,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
      */
     protected $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
@@ -96,7 +96,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      * })

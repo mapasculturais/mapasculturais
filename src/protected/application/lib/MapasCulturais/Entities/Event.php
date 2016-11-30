@@ -28,7 +28,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityPermissionCache;
 
 
 
@@ -112,7 +113,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -122,7 +123,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -174,6 +175,11 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     */
+    protected $__permissionsCache;
 
     /**
      * @var \DateTime
