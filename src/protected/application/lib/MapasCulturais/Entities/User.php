@@ -292,10 +292,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
-	function getHasControlAgents(){
+    function getArchivedAgents(){
         $this->checkPermission('modify');
 
         return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
+    }
+
+    function getHasControlAgents(){
+        $this->checkPermission('modify');
+
+        return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
     }
 
     function getAgentWithControl() {
@@ -325,6 +331,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
+    }
+
+    function getArchivedSpaces(){
+        $this->checkPermission('modify');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
     }
 
     function getHasControlSpaces(){
@@ -359,6 +370,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return App::i()->repo('Event')->findByAgentRelationUser($this, true);
     }
 
+    function getArchivedEvents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED,'=');
+    }
+
     public function getProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
     }
@@ -380,6 +397,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
+
+    function getArchivedProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
+    }
+
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
@@ -407,6 +431,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
     }
+
+    function getArchivedSeals(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ARCHIVED,'=');
+    }
+    
     function getHasControlSeals(){
         $this->checkPermission('modify');
 
