@@ -329,12 +329,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlSpaces(){
         $this->checkPermission('modify');
-<<<<<<< HEAD
-
-        return App::i()->repo('Space')->findByAgentRelationUser($this, true);
-=======
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
->>>>>>> 72dad01... Developed Archived entities on system.
     }
 
     public function getEvents(){

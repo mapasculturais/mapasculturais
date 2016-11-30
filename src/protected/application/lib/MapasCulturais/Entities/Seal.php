@@ -27,7 +27,6 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityArchive;
 
     const STATUS_RELATED = -1;
-    const STATUS_INVITED = -2;
 
     protected static $validations = [
       'name' => [
