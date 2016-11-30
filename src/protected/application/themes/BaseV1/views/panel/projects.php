@@ -40,7 +40,6 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
-<<<<<<< HEAD
 	<!-- #arquivo-->
     <div id="arquivo">
         <?php foreach($user->archivedProjects as $entity): ?>

@@ -8,7 +8,7 @@
 		<?php if($entity->classificacaoEtaria): ?>
             <div><span class="label">Classificação:</span> <?php echo $entity->classificacaoEtaria; ?></div>
         <?php endif; ?>
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl) && !empty($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
 	</div>

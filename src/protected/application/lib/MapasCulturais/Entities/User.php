@@ -346,7 +346,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 	function getHasControlAgents(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
+        if(!($agents = App::i()->repo('Agent')->findByAgentRelationUser($this, true)))
+            $agents = [];
+
+        return $agents;
     }
 
     function getAgentWithControl() {
@@ -386,7 +389,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getHasControlSpaces(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Space')->findByAgentRelationUser($this, true);
+        if(!($spaces = App::i()->repo('Space')->findByAgentRelationUser($this, true)))
+            $spaces = [];
+            
+        return $spaces;
     }
 
     public function getEvents(){
@@ -413,7 +419,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlEvents(){
         $this->checkPermission('modify');
-        return App::i()->repo('Event')->findByAgentRelationUser($this, true);
+        if(!($events = App::i()->repo('Event')->findByAgentRelationUser($this, true)))
+            $events = [];
+        return $events;
     }
 
     function getArchivedEvents(){
@@ -446,7 +454,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Project')->findByAgentRelationUser($this, true);
+        if(!($projects = App::i()->repo('Project')->findByAgentRelationUser($this, true)))
+            $projects = [];
+
+        return $projects;
     }
 
     function getArchivedProjects(){
@@ -528,7 +539,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getHasControlSeals(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Seal')->findByAgentRelationUser($this, true);
+        if(!($seals = App::i()->repo('Seal')->findByAgentRelationUser($this, true)))
+            $seals = [];
+
+        return $seals;
     }
 
     function getNotifications($status = null){

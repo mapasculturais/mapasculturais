@@ -169,32 +169,7 @@
                     marker.setLatLng(foundLocation);
                 }
             }
-
-            $('.js-editable').on('save', function(e, params) {
-                if ($(this).data('edit') == 'endereco') {
-                    $(this).trigger('changeAddress', params.newValue);
-                }
-
-                if ($(this).data('edit') == 'latitude' || $(this).data('edit') == 'longitude') {
-                    var latitude = -23.54364842214825 /*$('[data-edit="latitude').editable('getValue').latitude;*/
-                    var longitude = -46.61720306761708 /*$('[data-edit="longitude"]').editable('getValue').longitude;*/
-                    var empty = latitude === 'null' && longitude === 'null';
-
-                    if(!empty){
-                        console.log("latitude5");
-                        console.log(latitude);
-                        console.log("longitude5");
-                        console.log(longitude);
-                        $('#map-target').editable('setValue', [latitude, longitude]);
-                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
-                    }else{
-                        $('#map-target').editable('setValue', [0, 0]);
-                        $('.js-map-container').hide();
-                    }
-                }
-
-            });
-
+            
             $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
                 geocoder.geocode({'address': strAddress + ', Brasil'}, geocode_callback);
             });
