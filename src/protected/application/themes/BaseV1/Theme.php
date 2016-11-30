@@ -367,6 +367,11 @@ class Theme extends MapasCulturais\Theme {
                 'description' => 'No Painel em Meus selos, conseguimos vizualizar os selos e adicionar',
                 'text' => 'Selos'
             ],
+            'entities: Users and roles' => [
+                'name'          => 'Usuários e papéis',
+                'description'   => 'No Painel, em Usuários e Papéis, conseguimos visualizar os usuários e quais sãos seus perfis e papéis',
+                'text'          => 'Usuários e papéis'
+            ],
             'taxonomies:area: name' => [
                 'name' => 'Área de Atuação',
                 'description' => 'Colocar qual é a área de atuação',
@@ -412,6 +417,36 @@ class Theme extends MapasCulturais\Theme {
                 'description' => 'Mensagem Error 500',
                 'text' => ''
             ],
+            'roles: Super Administrator' => [
+                'name' => 'Super Administrador',
+                'description' => '',
+                'text' => 'Super Administrador'
+            ],
+            'roles: Super Administrators' => [
+                'name' => 'Super Administradores',
+                'description' => '',
+                'text' => 'Super Administradores'
+            ],
+            'roles: Administrator' => [
+                'name' => 'Administrador',
+                'description' => '',
+                'text' => 'Administrador'
+            ],
+            'roles: Administrators' => [
+                'name' => 'Administradores',
+                'description' => '',
+                'text' => 'Administradores'
+            ],
+            'roles: Staff Member' => [
+                'name' => 'Membro da equipe',
+                'description' => '',
+                'text' => 'Membro da equipe'
+            ],
+            'roles: Staff Members' => [
+                'name' => 'Membros da equipe',
+                'description' => '',
+                'text' => 'Membros da equipe'
+            ]
         ];
     }
 
