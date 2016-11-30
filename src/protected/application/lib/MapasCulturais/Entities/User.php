@@ -356,7 +356,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
         $app = App::i();
         $entity = $app->view->controller->id;
-        return $app->repo($entity)->findByAgentWithEntityControl();
+        $agents = $app->repo($entity)->findByAgentWithEntityControl();
+        if(!$agents)
+            $agents = [];
+        return $agents;
     }
 
     public function getSpaces(){
@@ -391,7 +394,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         if(!($spaces = App::i()->repo('Space')->findByAgentRelationUser($this, true)))
             $spaces = [];
-            
+
         return $spaces;
     }
 
@@ -454,7 +457,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
-        if(!($projects = App::i()->repo('Project')->findByAgentRelationUser($this, true)))
+        $projects = App::i()->repo('Project')->findByAgentRelationUser($this, true);
+
+        if(!$projects)
             $projects = [];
 
         return $projects;
