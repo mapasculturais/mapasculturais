@@ -446,7 +446,28 @@ class Theme extends MapasCulturais\Theme {
                 'name' => 'Membros da equipe',
                 'description' => '',
                 'text' => 'Membros da equipe'
+            ],
+            'roles: Subsite Super Administrator' => [
+                'name' => 'Subsite Super Administrador',
+                'description' => '',
+                'text' => 'Subsite Super Administrador'
+            ],
+            'roles: Subsite Super Administrators' => [
+                'name' => 'Subsite Super Administradores',
+                'description' => '',
+                'text' => 'Subsite Super Administradores'
+            ],
+            'roles: Subsite Administrator' => [
+                'name' => 'Subsite Administrador',
+                'description' => '',
+                'text' => 'Subsite Administrador'
+            ],
+            'roles: Subsite Administrators' => [
+                'name' => 'Subsite Administradores',
+                'description' => '',
+                'text' => 'Subsite Administradores'
             ]
+
         ];
     }
 
