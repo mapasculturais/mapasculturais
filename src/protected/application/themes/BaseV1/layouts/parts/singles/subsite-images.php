@@ -1,4 +1,5 @@
 <div id="imagens" class="aba-content">
+    <p class="alert info">Maiores explicações aqui</p>
     <div class="logo-container">
         <h3 class="label">
             Logo:

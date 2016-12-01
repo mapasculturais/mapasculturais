@@ -6,6 +6,7 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 ?>
 <div id="mapa" class="aba-content">
+    <p class="alert info">Maiores explicações aqui</p>
     <div id="subsite-map" style="width:100%; height:500px">
         
     </div>
@@ -30,5 +31,5 @@ $this->bodyProperties['ng-controller'] = "EntityController";
         <span class="label <?php echo ($entity->isPropertyRequired($entity,"zoom_maximo") && $editEntity? 'required': '');?>">Zoom Máximo: </span>
         <span class="js-editable" data-edit="zoom_max" data-original-title="Zoom Máximo" data-emptytext="Zoom máximo do mapa"><?php echo $entity->zoom_max;?></span>
     </p>
-    
+
 </div>

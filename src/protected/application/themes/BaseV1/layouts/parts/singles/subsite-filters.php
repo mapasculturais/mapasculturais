@@ -14,8 +14,8 @@ function printSubsiteFilter($property){
 }
 
 ?>
-
 <div id="filtros" class="aba-content">
+    <p class="alert info">Maiores explicações aqui</p>
     <style>
         section.filter-section {
             margin-bottom: 1.5em;
