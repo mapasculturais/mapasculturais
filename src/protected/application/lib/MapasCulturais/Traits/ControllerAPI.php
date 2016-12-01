@@ -190,6 +190,8 @@ trait ControllerAPI{
 
             $entity_metadata = [];
             $metadata_class = "";
+            
+            $profiles = false;
 
             $meta_num = 0;
             $taxo_num = 0;
@@ -314,6 +316,9 @@ trait ControllerAPI{
                     continue;
                 }elseif(strtolower($key) == '@limit'){
                     $limit = $val;
+                    continue;
+                }elseif(strtolower($key) == '@profiles'){
+                    $profiles = true;
                     continue;
                 }elseif(strtolower($key) == '@type'){
                     continue;
@@ -510,6 +515,10 @@ trait ControllerAPI{
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
 
             $dql_where = "WHERE $dql_where";
+            
+            if($profiles){
+                $dql_joins .= " JOIN e.user __profile_user JOIN __profile_user.profile __profile WITH __profile.id = e.id";
+            }
 
             $final_dql = "
                 SELECT PARTIAL
