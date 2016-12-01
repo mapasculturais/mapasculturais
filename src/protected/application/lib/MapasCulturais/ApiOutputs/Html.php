@@ -76,7 +76,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             continue;
                         }elseif($k==='occurrences'){ ?>
                             <th>
-                                <table><thead><tr> <th>Quando</th> <th>Onde</th> <th>Quanto</th> </tr></thead></table>
+                                <table><thead><tr> <th><?php \MapasCulturais\i::_e("Quando");?></th> <th><?php \MapasCulturais\i::_e("Onde");?></th> <th><?php \MapasCulturais\i::_e("Quanto");?></th> </tr></thead></table>
                             </th>
                             <?php
                         }else{

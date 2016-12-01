@@ -25,6 +25,6 @@ if($entity instanceof MapasCulturais\Entities\Project){
     <?php endif; ?>
     
     <?php if ($is_project && $entity->canUser('createChild')): ?>
-        <a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create', array('parentId' => $entity->id)) ?>">Adicionar subprojeto</a>
+        <a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create', array('parentId' => $entity->id)) ?>"><?php \MapasCulturais\i::_e("Adicionar subprojeto");?></a>
     <?php endif; ?>
 </div>
