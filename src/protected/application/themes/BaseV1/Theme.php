@@ -540,7 +540,7 @@ class Theme extends MapasCulturais\Theme {
             'counter' => \MapasCulturais\i::__('%curr% de %total%'),
         ]);
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
-        $this->localizeScript('tim', [
+        $this->localizeScript('mapas', [
             'agente'    => \MapasCulturais\i::__('agente'),
             'espaço'    => \MapasCulturais\i::__('espaço'),
             'evento'    => \MapasCulturais\i::__('evento'),
@@ -689,6 +689,41 @@ class Theme extends MapasCulturais\Theme {
         ]);
         
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
+        $this->localizeScript('moduleProject', [
+            'selectFieldType' =>  \MapasCulturais\i::__('Selecione o tipo de campo'),
+            'fieldCreated' =>  \MapasCulturais\i::__('Campo criado.'),
+            'fieldRemoved' =>  \MapasCulturais\i::__('Campo removido.'),
+            'changesSaved' =>  \MapasCulturais\i::__('Alterações Salvas.'),
+            'attachmentCreated' =>  \MapasCulturais\i::__('Anexo criado.'),
+            'attachmentRemoved' =>  \MapasCulturais\i::__('Anexo removido.'),
+            'confirmAttachmentRemoved' =>  \MapasCulturais\i::__('Deseja remover este anexo?'),
+            'confirmRemoveModel' =>  \MapasCulturais\i::__('Deseja remover este modelo?'),
+            'modelRemoved' =>  \MapasCulturais\i::__('Modelo removido.'),
+            'statusPublished' =>  \MapasCulturais\i::__('publicado'),
+            'statusDraft' =>  \MapasCulturais\i::__('rascunho'),
+            'publishing...' =>  \MapasCulturais\i::__('Publicando...'),
+            'eventsPublished' =>  \MapasCulturais\i::__('Eventos publicados.'),
+            'savingAsDraft' =>  \MapasCulturais\i::__('Tornando rascunho...'),
+            'savedAsDraft' =>  \MapasCulturais\i::__('Eventos transformados em rascunho.'),
+            'confirmRemoveAttachment' =>  \MapasCulturais\i::__('Deseja remover este anexo?'),
+            'allStatus' =>  \MapasCulturais\i::__('Todas'),
+            'pending' =>  \MapasCulturais\i::__('Pendente'),
+            'invalid' =>  \MapasCulturais\i::__('Inválida'),
+            'notSelected' =>  \MapasCulturais\i::__('Não selecionada'),
+            'suplente' =>  \MapasCulturais\i::__('Suplente'),
+            'selected' =>  \MapasCulturais\i::__('Selecionada'),
+            'Draft' =>  \MapasCulturais\i::__('Rascunho'),
+            'confirmReopen' =>  \MapasCulturais\i::__('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'),
+            'defineVacancies' =>  \MapasCulturais\i::__('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.'),
+            'reachedMax' =>  \MapasCulturais\i::__('Você atingiu o limite máximo de 1 inscrição aprovada'),
+            'reachedMaxPlural' =>  \MapasCulturais\i::__('Você atingiu o limite máximo de {{num}} inscrições aprovadas'),
+            'limitReached' =>  \MapasCulturais\i::__('O limite de inscrições para o agente informado se esgotou.'),
+            'VacanciesOver' =>  \MapasCulturais\i::__('O número de vagas da inscrição no projeto se esgotou.'),
+            'needResponsible' =>  \MapasCulturais\i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
+            'correctErrors' =>  \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+            'registrationSent' =>  \MapasCulturais\i::__('Inscrição enviada. Aguarde tela de sumário.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));

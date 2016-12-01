@@ -527,6 +527,8 @@ MapasCulturais.EditBox = {
     },
 
     initBoxes: function(selector){
+        
+        var labels = MapasCulturais.gettext.mapas;
 
         $(selector).each(function(){
             var $dialog = $(this);

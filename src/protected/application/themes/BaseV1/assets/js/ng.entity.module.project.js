@@ -208,7 +208,9 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
 module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
-
+    
+    var labels = MapasCulturais.gettext.moduleProject;
+    
     $scope.isEditable = MapasCulturais.isEditable;
     $scope.maxUploadSize = MapasCulturais.maxUploadSize;
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -227,7 +229,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
     fieldTypes.unshift({
         slug: null,
-        name: 'Selecione o tipo de campo',
+        name: labels['selectFieldType'],
         disabled: true
     });
 
@@ -332,7 +334,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     sortFields();
                     EditBox.close('editbox-registration-fields');
                     $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
-                    MapasCulturais.Messages.success('Campo criado.');
+                    MapasCulturais.Messages.success(labels['fieldCreated']);
                 }
             });
         };
@@ -342,7 +344,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 fieldService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fields.splice($index, 1);
-                        MapasCulturais.Messages.alert('Campo removido.');
+                        MapasCulturais.Messages.alert(labels['fieldRemoved']);
                     }
                 });
             }
@@ -371,7 +373,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-field-'+data.id);
-                    MapasCulturais.Messages.success('Alterações Salvas.');
+                    MapasCulturais.Messages.success(labels['changesSaved']);
                 }
             });
         };
@@ -403,17 +405,17 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     sortFields();
                     EditBox.close('editbox-registration-files');
                     $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
-                    MapasCulturais.Messages.success('Anexo criado.');
+                    MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
-            if(confirm('Deseja remover este anexo?')){
+            if(confirm(labels['confirmAttachmentRemoved'])){
                 fileService.delete(id).then(function(response){
                     if(!response.error){
                         $scope.data.fields.splice($index, 1);
-                        MapasCulturais.Messages.alert('Anexo removido.');
+                        MapasCulturais.Messages.alert(labels['attachmentRemoved']);
                     }
                 });
             }
@@ -438,7 +440,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-files-'+data.id);
-                    MapasCulturais.Messages.success('Alterações Salvas.');
+                    MapasCulturais.Messages.success(labels['changesSaved']);
                 }
             });
         };
@@ -464,10 +466,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
-            if(confirm('Deseja remover este modelo?')){
+            if(confirm(labels['confirmRemoveModel'])){
                 $http.get($scope.data.fields[$index].template.deleteUrl).success(function(response){
                     delete $scope.data.fields[$index].template;
-                    MapasCulturais.Messages.alert('Modelo removido.');
+                    MapasCulturais.Messages.alert(labels['modelRemoved']);
                 });
             }
         };
@@ -500,14 +502,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
     $scope.events = $scope.data.entity.events.slice();
     $scope.numSelectedEvents = 0;
+    
+    var labels = MapasCulturais.gettext.moduleProject;
 
     $scope.events.forEach(function(evt){
         evt.statusText = '';
 
         if(evt.status == 1){
-            evt.statusText = 'publicado';
+            evt.statusText = labels['statusPublished'];
         } else if(evt.status == 0){
-            evt.statusText = 'rascunho';
+            evt.statusText = labels['statusDraft'];
         }
     });
 
@@ -603,15 +607,15 @@ module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout'
             return;
         }
 
-        $scope.data.processingText = 'Publicando...';
+        $scope.data.processingText = labels['publishing...'];
 
         $scope.data.processing = true;
 
         ProjectEventsService.publish(ids.toString()).success(function(){
-            MapasCulturais.Messages.success('Eventos publicados.');
+            MapasCulturais.Messages.success(labels['eventsPublished']);
             events.forEach(function(e){
                 e.status = 1;
-                e.statusText = 'publicado';
+                e.statusText = labels['statusPublished'];
             });
 
             $scope.data.processing = false;
@@ -637,15 +641,15 @@ module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout'
             return;
         }
 
-        $scope.data.processingText = 'Tornando rascunho...';
+        $scope.data.processingText = labels['savingAsDraft'];
 
         $scope.data.processing = true;
 
         ProjectEventsService.unpublish(ids.toString()).success(function(){
-            MapasCulturais.Messages.success('Eventos transformados em rascunho.');
+            MapasCulturais.Messages.success(labels['savedAsDraft']);
             events.forEach(function(e){
                 e.status = 0;
-                e.statusText = 'rascunho';
+                e.statusText = labels['statusDraft'];
             });
 
             $scope.data.processing = false;
@@ -659,6 +663,8 @@ module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout'
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
     var registrationsUrl = new UrlService('registration');
+    
+    var labels = MapasCulturais.gettext.moduleProject;
 
     $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
 
@@ -722,7 +728,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if(!$form.data('onSuccess')){
             $form.data('onSuccess', true);
             $form.on('ajaxForm.success', function(){
-                MapasCulturais.Messages.success('Alterações salvas.');
+                MapasCulturais.Messages.success(labels['changesSaved']);
             });
         }
     };
@@ -733,7 +739,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.removeFile = function (id, $index) {
-        if(confirm('Deseja remover este anexo?')){
+        if(confirm(labels['confirmRemoveAttachment'])){
             $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
                 delete $scope.data.fields[$index].file;
             });
@@ -820,6 +826,8 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         return { value: e, label: e };
     }) : [];
 
+    var labels = MapasCulturais.gettext.moduleProject;
+
     $scope.editbox = EditBox;
     $scope.data = angular.extend({
         uploadSpinner: false,
@@ -834,32 +842,32 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         },
 
         registrationStatuses:[
-        {value: null, label: 'Todas'},
-        {value: 1, label: 'Pendente'},
-        {value: 2, label: 'Inválida'},
-        {value: 3, label: 'Não selecionada'},
-        {value: 8, label: 'Suplente'},
-        {value: 10, label: 'Selecionada'}
+        {value: null, label: labels['allStatus']},
+        {value: 1, label: labels['pending']},
+        {value: 2, label: labels['invalid']},
+        {value: 3, label: labels['notSelected']},
+        {value: 8, label: labels['suplente']},
+        {value: 10, label: labels['selected']}
         ],
 
         registrationStatusesNames: [
-        {value: 1, label: 'Pendente'},
-        {value: 2, label: 'Inválida'},
-        {value: 3, label: 'Não selecionada'},
-        {value: 8, label: 'Suplente'},
-        {value: 10, label: 'Selecionada'},
-        {value: 0, label: 'Rascunho'}
+        {value: 1, label: labels['pending']},
+        {value: 2, label: labels['invalid']},
+        {value: 3, label: labels['notSelected']},
+        {value: 8, label: labels['suplente']},
+        {value: 10, label: labels['selected']},
+        {value: 0, label: labels['Draft']}
         ],
 
         publishedRegistrationStatuses:[
-        {value: null, label: 'Todas'},
-        {value: 8, label: 'Suplente'},
-        {value: 10, label: 'Selecionada'}
+        {value: null, label: labels['allStatus']},
+        {value: 8, label: labels['suplente']},
+        {value: 10, label: labels['selected']}
         ],
 
         publishedRegistrationStatusesNames: [
-        {value: 8, label: 'Suplente'},
-        {value: 10, label: 'Selecionada'}
+        {value: 8, label: labels['suplente']},
+        {value: 10, label: labels['selected']}
         ],
 
         publishedRegistrationStatus: 10,
@@ -942,7 +950,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
 
             // PLEASE REFACTOR ME
             $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'))){
+                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
                     if(status.value === 10) {
                         if(MapasCulturais.entity.object.approvedLimit > $scope.approvedRegistrations()) {
                             RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
@@ -951,9 +959,10 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                                 }
                             });
                         } else if(MapasCulturais.entity.object.approvedLimit === 0) {
-                            MapasCulturais.Messages.error('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.');
+                            MapasCulturais.Messages.error(labels['defineVacancies']);
                         } else {
-                            MapasCulturais.Messages.error('Você atingiu o limite máximo de ' + MapasCulturais.entity.object.approvedLimit + (MapasCulturais.entity.object.approvedLimit > 1 ? ' inscrições aprovadas.' : ' inscrição aprovada.'));
+                            labels['reachedMaxPlural'].replace('{{num}}', MapasCulturais.entity.object.approvedLimit);
+                            MapasCulturais.Messages.error( MapasCulturais.entity.object.approvedLimit > 1 ? labels['reachedMaxPlural'] : labels['reachedMax'] );
                         }
                     } else {
                         RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
@@ -1049,7 +1058,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     replaceRegistrationAgentBy(attrs.name, response.agent, response.status);
                     EditBox.close(editBoxId);
                     if(response.status > 0)
-                        MapasCulturais.Messages.success('Alterações salvas.');
+                        MapasCulturais.Messages.success(labels['changesSaved']);
                 });
             };
 
@@ -1084,15 +1093,15 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 }
 
                 if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
-                    MapasCulturais.Messages.error('O limite de inscrições para o agente informado se esgotou.');
+                    MapasCulturais.Messages.error(labels['limitReached']);
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
-                    MapasCulturais.Messages.error('O número de vagas da inscrição no projeto se esgotou.');
+                    MapasCulturais.Messages.error(labels['VacanciesOver']);
                 }else if(registration.owner && $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
                 }else {
-                    MapasCulturais.Messages.error('Para se inscrever neste projeto você deve selecionar um agente responsável.');
+                    MapasCulturais.Messages.error(labels['needResponsible']);
                 }
             };
 
@@ -1171,9 +1180,9 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                                 focused = true;
                             }
                         });
-                        MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                        MapasCulturais.Messages.error(labels['correctErrors']);
                     }else{
-                        MapasCulturais.Messages.success('Inscrição enviada. Aguarde tela de sumário.');
+                        MapasCulturais.Messages.success(labels['registrationSent']);
                         document.location = response.singleUrl;
                     }
                 });
