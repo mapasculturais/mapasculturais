@@ -18,7 +18,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
 
 <?php if ($this->isEditable() || $links): ?>
     <div class="widget" ng-non-bindable>
-        <h3>Links</h3>
+        <h3><?php \MapasCulturais\i::_e("Links");?></h3>
         <?php if($this->isEditable()): ?>
             <a class="add js-open-editbox hltip" data-target="#editbox-links" href="#"
                data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
@@ -51,13 +51,13 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
             <?php endforeach; endif;?>
         </ul>
 
-        <div id="editbox-links" ng-non-bindable class="js-editbox mc-left" title="Editar Link"
+        <div id="editbox-links" ng-non-bindable class="js-editbox mc-left" title="<?php \MapasCulturais\i::esc_attr_e('Editar Link'); ?>"
              data-action-url="<?php echo $this->controller->createUrl('metalist', array('id' => $entity->id)) ?>"
              data-response-template="<?php echo $template ?>"
              data-metalist-group="links"
              data-metalist-title-label="<?php \MapasCulturais\i::esc_attr_e('Título'); ?>" 
              data-metalist-value-label="<?php \MapasCulturais\i::esc_attr_e('Endereço (com http://)'); ?>" 
-             data-metalist-description-label="Descrição">
+             data-metalist-description-label="<?php \MapasCulturais\i::esc_attr_e('Descrição'); ?>">
             <?php if($this->controller->action == 'create'): ?>
                 <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e('Para adicionar links você primeiro deve salvar.'); ?>"></span>
             <?php else: ?>

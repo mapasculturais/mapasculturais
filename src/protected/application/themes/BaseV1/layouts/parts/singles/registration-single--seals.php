@@ -11,14 +11,14 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
 ?>
 <!-- BEGIN Seals -->
 <div id="registration-agent" class="registration-fieldset">
-    <h4>5. Selos Certificadores</h4>
-    <p class="registration-help">Selos certificadores que serão atribuídos aos agentes da inscrição quando a mesma for aprovada.</p>
+    <h4>5. <?php \MapasCulturais\i::_e("Selos Certificadores");?></h4>
+    <p class="registration-help"><?php \MapasCulturais\i::_e("Selos certificadores que serão atribuídos aos agentes da inscrição quando a mesma for aprovada.");?></p>
     <ul class="registration-list" ng-controller="SealsController">
         <li class="registration-list-item registration-edit-mode">
             <div class="registration-label">
-                <span class="label">Agente responsável</span>
+                <span class="label"><?php \MapasCulturais\i::_e("Agente responsável");?></span>
             </div>
-            <div class="registration-description">Selos atribuídos a agentes</div>
+            <div class="registration-description"><?php \MapasCulturais\i::_e("Selos atribuídos a agentes");?></div>
 
             <div class="js-registration-agent registration-agent">
                 <div class="clearfix">
@@ -26,7 +26,7 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
                         <img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $owner; ?>)]['@files:avatar.avatarMedium'].url)}}" class="registration-agent-avatar">
                         <div>
                             <a href="{{seals[getArrIndexBySealId(<?php echo $owner; ?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $owner; ?>)].name}}</a>
-                            <span ng-if="!<?php echo $owner; ?>">Não informado</span>
+                            <span ng-if="!<?php echo $owner; ?>"><?php \MapasCulturais\i::_e("Não informado");?></span>
                         </div>
                     </div>
                 </div>
@@ -34,9 +34,9 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
         </li>
         <li class="registration-list-item registration-edit-mode">
             <div class="registration-label">
-                <span class="label">Instituição responsável</span>
+                <span class="label"><?php \MapasCulturais\i::_e("Instituição responsável");?></span>
             </div>
-            <div class="registration-description">Selos atribuídos a instituições</div>
+            <div class="registration-description"><?php \MapasCulturais\i::_e("Selos atribuídos a instituições");?></div>
 
             <div class="js-registration-agent registration-agent">
                 <div class="clearfix">
@@ -44,7 +44,7 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
                         <img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $institution; ?>)]['@files:avatar.avatarMedium'].url)}}" class="registration-agent-avatar">
                         <div>
                             <a href="{{seals[getArrIndexBySealId(<?php echo $institution; ?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $institution; ?>)].name}}</a>
-                            <span ng-if="!<?php echo $institution; ?>">Não informado</span>
+                            <span ng-if="!<?php echo $institution; ?>"><?php \MapasCulturais\i::_e("Não informado");?></span>
                         </div>
                     </div>
                 </div>
@@ -52,9 +52,9 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
         </li>
         <li class="registration-list-item registration-edit-mode">
             <div class="registration-label">
-                <span class="label">Coletivo</span>
+                <span class="label"><?php \MapasCulturais\i::_e("Coletivo");?></span>
             </div>
-            <div class="registration-description">Selos atribuídos a agentes coletivos</div>
+            <div class="registration-description"><?php \MapasCulturais\i::_e("Selos atribuídos a agentes coletivos");?></div>
 
             <div class="js-registration-agent registration-agent">
                 <div class="clearfix">
@@ -62,7 +62,7 @@ $this->addSealsToJs(false, [$owner, $institution, $collective]);
                         <img ng-src="{{avatarUrl(seals[getArrIndexBySealId(<?php echo $collective; ?>)]['@files:avatar.avatarMedium'].url)}}" class="registration-agent-avatar">
                         <div>
                             <a href="{{seals[getArrIndexBySealId(<?php echo $collective; ?>)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(<?php echo $collective; ?>)].name}}</a>
-                            <span ng-if="!<?php echo $collective; ?>">Não informado</span>
+                            <span ng-if="!<?php echo $collective; ?>"><?php \MapasCulturais\i::_e("Não informado");?></span>
                         </div>
                     </div>
                 </div>
