@@ -22,7 +22,7 @@ $mensagem = str_replace("[entityName]",$relation->owner->name,$mensagem);
 $mensagem = str_replace("[dateIni]",$dateIni,$mensagem);
 $mensagem = str_replace("[dateFin]",$dateFin,$mensagem);
 ?>
-<h1 align="center">Certificado</h1>
+<h1 align="center"><?php \MapasCulturais\i::_e("Certificado");?></h1>
 <div align="center">
   <?php echo nl2br($mensagem);?>
 </div>

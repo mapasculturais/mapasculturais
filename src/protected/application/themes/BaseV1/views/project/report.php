@@ -5,23 +5,23 @@ use MapasCulturais\Entities\Agent;
 function echoStatus($registration){
     switch ($registration->status){
         case R::STATUS_APPROVED:
-            echo 'selecionada';
+            echo \MapasCulturais\i::_e('selecionada');
             break;
 
         case R::STATUS_NOTAPPROVED:
-            echo 'não selecionada';
+            echo \MapasCulturais\i::_e('não selecionada');
             break;
 
         case R::STATUS_WAITLIST:
-            echo 'suplente';
+            echo \MapasCulturais\i::_e('suplente');
             break;
 
         case R::STATUS_INVALID:
-            echo 'inválida';
+            echo \MapasCulturais\i::_e('inválida');
             break;
 
         case R::STATUS_SENT:
-            echo 'pendente';
+            echo \MapasCulturais\i::_e('pendente');
             break;
     }
 }
@@ -38,8 +38,8 @@ $_properties = $app->config['registration.propertiesToExport'];
 <table>
     <thead>
         <tr>
-            <th>Número</th>
-            <th>Status</th>
+            <th><?php \MapasCulturais\i::_e("Número");?></th>
+            <th><?php \MapasCulturais\i::_e("Status");?></th>
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
@@ -77,7 +77,7 @@ $_properties = $app->config['registration.propertiesToExport'];
 
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
-                        <a href="<?php echo $r->files['zipArchive']->url; ?>">zip</a>
+                        <a href="<?php echo $r->files['zipArchive']->url; ?>"><?php \MapasCulturais\i::_e("zip");?></a>
                      <?php endif; ?>
                 </td>
 
