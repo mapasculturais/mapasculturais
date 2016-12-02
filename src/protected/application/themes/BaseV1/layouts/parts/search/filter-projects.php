@@ -30,7 +30,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="Exibir somente resultados verificados" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="Exibir somente <?php $this->dict('search: verified results') ?>" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
         

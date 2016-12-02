@@ -20,6 +20,56 @@ $slag_editbla = $this->controller->action === 'create';
 $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 
 ?>
+
+<style>
+    section.filter-section {
+        margin-bottom: 2em;
+    }
+    
+    section.filter-section .help {
+        color:#666;
+        font-style: italic;
+    }
+
+    section.filter-section>p { 
+        font-size:.9em; 
+        margin-bottom:.9em;
+    }
+
+    section.filter-section header {
+        border-bottom:1px solid #bbb;
+        margin-bottom:.5em;
+        font-size: 1em;
+        text-transform:uppercase;
+        font-weight:bold;
+    }
+    
+    section.filter-section header .show-all { 
+        font-size: .9em;
+        font-weight: initial;
+        text-transform: lowercase;
+        float: right;
+        
+    }
+    
+    .botoes {
+        position: absolute;
+        top: -12px;
+        right: -6px;
+        a {
+            background-color: #fff;
+            border-radius: 100%;
+            &:before {
+                line-height: 180%;
+            }
+        }
+    }
+    .img-seal {
+        max-height: 70px;
+        max-width: 70px;
+    }
+</style>
+
 <article class="main-content subsite-container">
     
     <!--.header-image-->

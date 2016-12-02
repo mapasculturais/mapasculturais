@@ -15,36 +15,8 @@ function printSubsiteFilter($property){
 
 ?>
 <div id="filtros" class="aba-content">
-    <p class="alert info">Maiores explicações aqui</p>
-    <style>
-        section.filter-section {
-            margin-bottom: 1.5em;
-        }
+    <p class="alert info">Configure aqui os filtros que serão aplicados sobre os dados cadastrados na instalação principal. Deixe em branco os campos onde você não quer aplicar filtro algum, deixando aparecer todos os dados da instalação principal.</p>
 
-        section.filter-section header {
-            border-bottom:1px solid #bbb;
-            margin-bottom:.5em;
-            font-size: 1em;
-            text-transform:uppercase;
-            font-weight:bold;
-        }
-        .botoes {
-            position: absolute;
-            top: -12px;
-            right: -6px;
-            a {
-                background-color: #fff;
-                border-radius: 100%;
-                &:before {
-                    line-height: 180%;
-                }
-            }
-        }
-        .img-seal {
-            max-height: 70px;
-            max-width: 70px;
-        }
-    </style>
     <section class="filter-section">
         <header>Agentes</header>
         <p>

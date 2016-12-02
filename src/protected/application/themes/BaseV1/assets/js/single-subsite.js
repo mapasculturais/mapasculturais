@@ -47,8 +47,6 @@ $(function(){
         var $this = $(this);
         $this.css('background-color', editable.newValue);
         
-    }).on('shown', function(e,editable){
-//        $(editable.container.$form.find('div.editable-input:first')[0]).colorpicker();
     }).each(function(){
         var color = $(this).text();
         if(color){
@@ -58,7 +56,50 @@ $(function(){
     
     var interval = setInterval(function(){
        
-       $('.js-editable.js-color').removeClass('editable-unsaved editable-bg-transition');                
+       $('.js-editable.js-color').removeClass('editable-unsaved editable-bg-transition');
 
     },10);
+    
+    
+    $('.js-editable--subsite-text').on('shown', function(e, editable){
+        var $this = $(this);
+        var prop = $this.data('edit');
+        var examples = $this.data('examples');
+        var val = $this.editable('getValue')[prop];
+        var parents = editable.input.$input.parents();
+        
+        setTimeout(function(){
+            var $container = $(parents[parents.length - 1]);
+            $container.width($container.width());
+            
+            if(examples && editable.input.$input.parent().find('.examples')){
+                examples = '"' + examples.join('", "') + '"';
+                editable.input.$input.after('<div class="examples hltip"><strong>exemplos:</strong> ' + examples + '</div>');
+                
+            }
+        },5);
+        
+        if(val === ''){
+            editable.input.$input.val($this.data('placeholder'));
+            
+        }
+    }).on('save', function(e, params) {
+        var $this = $(this);
+        
+        if(params.newValue === $this.data('placeholder')){
+            $(this).removeClass('editable-unsaved');
+            params.newValue = '';
+            params.submitValue = '';
+        }
+        return;
+    });
+    
+    $('.show-all input').on('change', function(){
+        if(this.checked){
+            $(this).parents('section.filter-section').find('p.js-text-config.hidden').removeClass('hidden');
+        } else {
+            $(this).parents('section.filter-section').find('p.js-text-config.js-optional').addClass('hidden');
+            
+        }
+    });
 });
