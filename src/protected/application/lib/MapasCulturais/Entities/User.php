@@ -142,9 +142,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $result;
     }
 
-    function addRole($role_name){
+    function addRole($role_name, $subsite_id = false){
         $app = App::i();
-        $subsite_id = $app->getCurrentSubsiteId();
+        if(!$subsite_id)
+            $subsite_id = $app->getCurrentSubsiteId();
 
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
@@ -163,10 +164,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
-    function removeRole($role_name){
+    function removeRole($role_name, $subsite_id = false){
         $app = App::i();
-        $subsite_id = $app->getCurrentSubsiteId();
-
+        $app->log->debug("Estamos chegando longe ainda ------------------------------------------>");
+        if(!$subsite_id)
+            $subsite_id = $app->getCurrentSubsiteId();
 
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
@@ -174,6 +176,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $this->checkPermission('removeRole');
 
         foreach($this->roles as $role){
+            $app->log->debug($role->name);
             if($role->name == $role_name && $role->subsiteId === $subsite_id){
                 $role->delete(true);
                 return true;
