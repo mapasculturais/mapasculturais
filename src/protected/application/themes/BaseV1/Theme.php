@@ -725,7 +725,15 @@ class Theme extends MapasCulturais\Theme {
         ]);
         
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedAgents', [
+            'requestSent' =>  \MapasCulturais\i::__('Sua requisição para relacionar o agente {{agent}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedSeals', [
+            'requestSent' =>  \MapasCulturais\i::__('Sua requisição para relacionar o selo {{seal}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
