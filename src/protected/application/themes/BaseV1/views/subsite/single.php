@@ -71,7 +71,7 @@ $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 </style>
 
 <article class="main-content subsite-container">
-    
+
     <!--.header-image-->
     <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
@@ -85,20 +85,20 @@ $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
             <?php endif; ?>
 
             <div>
-                <span class="icon"></span><span class="label">Tema:</span> 
+                <span class="icon"></span><span class="label">Tema:</span>
                 <span class="js-editable required" data-edit="namespace" data-original-title="Tema" data-emptytext="Selecione a o tema a ser utilizado"><?php echo $entity->namespace; ?></span>
             </div>
-            
+
             <div>
-                <span class="icon"></span><span class="label">Domínio Principal:</span> 
+                <span class="icon"></span><span class="label">Domínio Principal:</span>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"url") && $editEntity? 'required': '');?>" data-edit="url" data-original-title="Domínio Principal" data-emptytext="Ex: mapas.cultura.gov.br"><?php echo $entity->url; ?></span>
             </div>
-            
+
             <div>
-                <span class="icon"></span><span class="label">Domínio Secundário:</span> 
+                <span class="icon"></span><span class="label">Domínio Secundário:</span>
                 <span class="js-editable" data-edit="aliasUrl" data-original-title="Domínio Secundário" data-emptytext="Ex: mapas.cultura.gov.br"><?php echo $entity->aliasUrl; ?></span>
             </div>
-            
+
     </div>
     <!--.header-content-->
     <?php $this->applyTemplateHook('header-content','after'); ?>
@@ -130,6 +130,10 @@ $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 </article>
 
 <div class="sidebar-right">
+    <!-- Related Profile Agents BEGIN -->
+    <?php $this->part('related-profiles-agents.php', array('entity' => $entity)); ?>
+    <!-- Related Profile Agents END -->
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info">Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>

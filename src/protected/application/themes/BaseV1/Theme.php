@@ -664,6 +664,7 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents',
+                'entity.module.relatedProfileAgents',
             	'entity.module.relatedSeals',
                 'entity.module.subsite',
                 'entity.module.changeOwner',
@@ -1118,6 +1119,7 @@ class Theme extends MapasCulturais\Theme {
             'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
+            'entity.module.relatedProfileAgents',
         	'entity.module.relatedSeals',
             'entity.module.changeOwner',
             'entity.module.subsite',
@@ -1133,6 +1135,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.relatedProfileAgents', 'js/ng.entity.module.relatedProfileAgents.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.subsite', 'js/ng.entity.module.subsite.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
@@ -1474,38 +1477,51 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
     }
 
+    function addRelatedProfileAgentsToJs($entity) {
+    	$app = App::i();
+    	if (!$app->user->is('guest')) {
+            $app->log->debug($entity->id);
+            $agents = $app->repo('subsite')->getUserByRole('saasSuperAdmin',$entity->id);
+    		$this->jsObject['entity']['agentProfileRelations'] = $agents;
+            foreach($agents as $key => $agent) {
+                $agents[$key]->{'agent'} = $app->repo('agent')->find($agent->profile->id);
+                $agents[$key]->agent->{'files'} = $agents[$key]->agent->files;
+            }
+        }
+    }
+
     function addRelatedSealsToJs($entity) {
     	$this->jsObject['entity']['sealRelations'] = $entity->getRelatedSeals(true, $this->isEditable());
     }
 
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
-        	$query = [];
-        	$query['@select'] = 'id,name,status, singleUrl';
+    	$query = [];
+    	$query['@select'] = 'id,name,status, singleUrl';
 
-            if($onlyPermited) {
-        		$query['@permissions'] = '@control';
+        if($onlyPermited) {
+    		$query['@permissions'] = '@control';
+    	}
+
+    	$query['@files'] = '(avatar.avatarSmall):url';
+    	$sealId = implode(',',array_unique($sealId));
+
+    	if(count($sealId) > 0 && !empty($sealId)) {
+    		$query['id'] = 'IN(' .$sealId . ')';
+    	}
+
+    	$query['@ORDER'] = 'createTimestamp DESC';
+
+    	$app = App::i();
+    	if (!$app->user->is('guest')) {
+    		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
+
+        	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+        		$this->jsObject['canRelateSeal'] = true;
+        	} else {
+        		$this->jsObject['canRelateSeal'] = false;
         	}
-
-        	$query['@files'] = '(avatar.avatarSmall):url';
-        	$sealId = implode(',',array_unique($sealId));
-
-        	if(count($sealId) > 0 && !empty($sealId)) {
-        		$query['id'] = 'IN(' .$sealId . ')';
-        	}
-
-        	$query['@ORDER'] = 'createTimestamp DESC';
-
-        	$app = App::i();
-        	if (!$app->user->is('guest')) {
-        		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
-
-            	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
-            		$this->jsObject['canRelateSeal'] = true;
-            	} else {
-            		$this->jsObject['canRelateSeal'] = false;
-            	}
-            }
         }
+    }
 
     function addProjectEventsToJs(Entities\Project $entity){
         $app = App::i();

@@ -144,6 +144,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function addRole($role_name, $subsite_id = false){
         $app = App::i();
+
         $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
 
         if(method_exists($this, 'canUserAddRole' . $role_name))
@@ -167,13 +168,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $app = App::i();
         $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
 
-
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
         else
             $this->checkPermission('removeRole');
 
         foreach($this->roles as $role){
+            $app->log->debug($role->name);
             if($role->name == $role_name && $role->subsiteId === $subsite_id){
                 $role->delete(true);
                 return true;

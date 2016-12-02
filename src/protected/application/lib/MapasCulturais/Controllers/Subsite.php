@@ -22,17 +22,18 @@ class Subsite extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft,
         Traits\ControllerArchive,
-        Traits\ControllerAPI;
-    
+        Traits\ControllerAPI,
+        Traits\ControllerSubSiteAdmin;
+
     protected function __construct() {
         parent::__construct();
-        
+
         $app = App::i();
-        
+
         $app->hook('entity(Subsite).new', function(){
             $this->entidades_habilitadas = 'Agentes;Projetos;Espaços;Eventos';
         });
-        
+
         $app->hook('PUT(subsite.single):data, POST(subsite.index):data', function(&$data){
             $_dict = [];
             foreach($data as $key => $val){
@@ -43,15 +44,15 @@ class Subsite extends EntityController {
                 }
             }
             $data['dict'] = $_dict;
-            
+
         });
-        
+
         $app->hook('mapasculturais.head', function() use($app){
             $cache_id = "SaaS:themesNamespaces";
             $themes = [];
             if($app->cache->contains($cache_id )){
                 $themes = $app->cache->fetch($cache_id);
-                
+
             } else {
                 foreach (scandir(THEMES_PATH) as $ff) {
                     if ($ff != '.' && $ff != '..') {
@@ -63,33 +64,33 @@ class Subsite extends EntityController {
                                 $namespace = $matches[1];
                                 if(!in_array($namespace, $themes) && class_exists($namespace . "\Theme")){
                                     $themes[] = $namespace;
-                                }        
-                            }            
+                                }
+                            }
                         }
                     }
                 }
                 $app->cache->save($cache_id, $themes);
             }
-            
+
             $themes_order = ['Subsite'];
-            
+
             foreach($themes as $theme){
                 if(!in_array($theme, $themes_order)){
                     $themes_order[] = $theme;
                 }
             }
-            
+
             $themes = [];
             foreach($themes_order as $theme){
                 $themes[$theme] = $theme === 'Subsite' ? 'Tema Personalizável' : $theme;
             }
-            
-            
+
+
             $app->view->jsObject['entity']['definition']['namespace']['type'] = 'select';
             $app->view->jsObject['entity']['definition']['namespace']['options'] = $themes;
             $app->view->jsObject['entity']['definition']['namespace']['optionsOrder'] = $themes_order;
             $app->view->jsObject['entity']['definition']['namespace']['isMetadata'] = true;
-            
+
             foreach($app->view->_dict() as $key => $def){
                 $key = str_replace(' ', '+', $key);
                 $app->view->jsObject['entity']['definition']["dict:" . $key] = [
@@ -97,8 +98,8 @@ class Subsite extends EntityController {
                     'isMetadata' => 'true'
                 ];
             }
-            
-            
+
+
         },1000);
     }
 
@@ -121,8 +122,8 @@ class Subsite extends EntityController {
 
         parent::POST_index($data);
     }
-    
-    
+
+
     function GET_single(){
         parent::GET_edit();
     }
