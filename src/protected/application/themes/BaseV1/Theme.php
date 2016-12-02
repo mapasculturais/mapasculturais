@@ -54,6 +54,7 @@ class Theme extends MapasCulturais\Theme {
             'entities: Projects' => 'Projetos',
             'entities: project' => 'projeto',
             'entities: projects' => 'projetos',
+            'entities: Projects of the agent' => 'Projetos do agente',
 
             'entities: My Events' => 'Meus Eventos',
             'entities: My events' => 'Meus eventos',
