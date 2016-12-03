@@ -138,6 +138,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
+        $result['profile'] = $this->profile->simplify('id,name,type,terms,avatar,singleUrl');
         unset($result['authUid']);
         return $result;
     }
@@ -172,10 +173,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $this->checkPermission('removeRole' . $role_name);
         else
             $this->checkPermission('removeRole');
-
+        
         foreach($this->roles as $role){
-            $app->log->debug($role->name);
-            if($role->name == $role_name && $role->subsiteId === $subsite_id){
+            if($role->name == $role_name && $role->subsiteId == $subsite_id){
                 $role->delete(true);
                 return true;
             }

@@ -664,7 +664,7 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['angularAppDependencies'] = [
                 'entity.module.relatedAgents',
-                'entity.module.relatedProfileAgents',
+                'entity.module.subsiteAdmins',
             	'entity.module.relatedSeals',
                 'entity.module.subsite',
                 'entity.module.changeOwner',
@@ -1119,8 +1119,8 @@ class Theme extends MapasCulturais\Theme {
             'mc.directive.mcSelect',
             'mc.module.findEntity',
             'entity.module.relatedAgents',
-            'entity.module.relatedProfileAgents',
-        	'entity.module.relatedSeals',
+            'entity.module.subsiteAdmins',
+            'entity.module.relatedSeals',
             'entity.module.changeOwner',
             'entity.module.subsite',
             'entity.directive.editableMultiselect',
@@ -1135,7 +1135,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity.module.relatedProfileAgents', 'js/ng.entity.module.relatedProfileAgents.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.subsite', 'js/ng.entity.module.subsite.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
@@ -1477,16 +1477,26 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
     }
 
-    function addRelatedProfileAgentsToJs($entity) {
+    function addSubsiteAdminsToJs($subsite) {
     	$app = App::i();
     	if (!$app->user->is('guest')) {
-            $app->log->debug($entity->id);
-            $agents = $app->repo('subsite')->getUserByRole('saasSuperAdmin',$entity->id);
-    		$this->jsObject['entity']['agentProfileRelations'] = $agents;
-            foreach($agents as $key => $agent) {
-                $agents[$key]->{'agent'} = $app->repo('agent')->find($agent->profile->id);
-                $agents[$key]->agent->{'files'} = $agents[$key]->agent->files;
+            $admins_roles = $app->repo('Role')->findBy(['name' => 'admin', 'subsiteId' => $subsite->id]);
+            $super_admins_roles = $app->repo('Role')->findBy(['name' => 'superAdmin', 'subsiteId' => $subsite->id]);
+            
+            $admins = [];
+            $super_admins = [];
+            
+            foreach($admins_roles as $role) {
+                $admins[] = $role->user;
+
             }
+            foreach($super_admins_roles as $role) {
+                $super_admins[] = $role->user;
+
+            }
+            
+            $this->jsObject['entity']['admins'] = $admins;
+            $this->jsObject['entity']['superAdmins'] = $super_admins;
         }
     }
 
