@@ -14,7 +14,7 @@
                     <a href="<?php echo $download->url;?>"><span><?php echo $download->description ? $download->description : $download->name;?></span></a>
                     <?php if($this->isEditable()): ?>
                         <div class="botoes">
-                        <a data-href="<?php echo $download->deleteUrl?>" data-target="#file-<?php echo $download->id ?>" data-configm-message=<?php \MapasCulturais\i::_e('Remover este vídeo?');?> class="delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title=<?php \MapasCulturais\i::_e("Excluir arquivo");?>></a>
+                        <a data-href="<?php echo $download->deleteUrl?>" data-target="#file-<?php echo $download->id ?>" data-configm-message="<?php \MapasCulturais\i::_e('Remover este vídeo?');?>" class="delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="<?php \MapasCulturais\i::_e("Excluir arquivo");?>"></a>
                         </div>
                     <?php endif; ?>
                 </li>
