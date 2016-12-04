@@ -8,12 +8,12 @@
         <?php endforeach; ?>
     </select>
     <br/>
-    <input type="submit" value="<?php \MapasCulturais\i::_e("ok");?>" />
+    <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("ok");?>" />
 </form>
 
 <form method="POST" action="<?php echo $new_user_form_action ?>">
     <h2><?php \MapasCulturais\i::_e("Criar novo usuário");?></h2>
     <p><label> <?php \MapasCulturais\i::_e("Name");?>: <input type="text" name="name" value="" /></label></p>
     <p><label> <?php \MapasCulturais\i::_e("E-mail");?>: <input type="email" name="email" value="" /></label></p>
-    <input type="submit" value="<?php \MapasCulturais\i::_e("Criar");?>"/>
+    <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("Criar");?>"/>
 </form>

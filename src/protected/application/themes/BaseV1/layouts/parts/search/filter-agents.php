@@ -7,7 +7,7 @@
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
-            <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="<?php \MapasCulturais\i::_e("Buscar agentes");?>" />
+            <input ng-model="data.agent.keyword" class="search-field" type="text" name="busca" placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar agentes");?>" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--area">

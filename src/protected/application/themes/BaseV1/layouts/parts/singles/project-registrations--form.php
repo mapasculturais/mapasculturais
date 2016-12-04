@@ -7,8 +7,8 @@
             <p class="registration-help"><?php \MapasCulturais\i::_e("Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um agente individual (pessoa física), com um CPF válido preenchido.");?></p>
             <div>
                 <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : 'Agente responsável pela inscrição'}}</div>
-                <edit-box id="editbox-select-registration-owner" position="bottom" title="<?php \MapasCulturais\i::_e("Selecione o agente responsável pela inscrição.");?>" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.registrationSpinner">
-                    <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="<?php \MapasCulturais\i::_e("Nenhum agente encontrado");?>" select="setRegistrationOwner" api-query='data.relationApiQuery.owner' spinner-condition="data.registrationSpinner"></find-entity>
+                <edit-box id="editbox-select-registration-owner" position="bottom" title="<?php \MapasCulturais\i::esc_attr_e("Selecione o agente responsável pela inscrição.");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+                    <find-entity id='find-entity-registration-owner' entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" select="setRegistrationOwner" api-query='data.relationApiQuery.owner' spinner-condition="data.registrationSpinner"></find-entity>
                 </edit-box>
             </div>
             <div>

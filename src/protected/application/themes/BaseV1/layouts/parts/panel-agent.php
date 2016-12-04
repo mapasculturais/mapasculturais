@@ -4,9 +4,9 @@ use MapasCulturais\Entities\Agent;
 <article class="objeto clearfix">
     <h1>
         <?php if($entity->isUserProfile): ?>
-            <a class="icon icon-agent hltip active js-disable" title="<?php \MapasCulturais\i::_e("Este é seu agente padrão.");?>"></a>
+            <a class="icon icon-agent hltip active js-disable" title="<?php \MapasCulturais\i::esc_attr_e("Este é seu agente padrão.");?>"></a>
         <?php elseif($entity->status === Agent::STATUS_ENABLED): ?>
-            <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::_e("Definir este agente como meu agente padrão.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
+            <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como meu agente padrão.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
     </h1>

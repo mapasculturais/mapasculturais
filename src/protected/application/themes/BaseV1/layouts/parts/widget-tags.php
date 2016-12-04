@@ -8,7 +8,7 @@ $tags = $entity->terms['tag'];
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Tags");?></h3>
         <?php if($this->isEditable()): ?>
-            <span id="term-area" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::_e("Tags");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira tags");?>" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
+            <span id="term-area" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tags");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira tags");?>" data-taxonomy="tag"><?php echo implode('; ', $entity->terms['tag'])?></span>
         <?php else: ?>
             <?php
             foreach($tags as $i => $t): ?>

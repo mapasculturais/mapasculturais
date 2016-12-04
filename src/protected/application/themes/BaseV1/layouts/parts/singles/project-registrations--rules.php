@@ -7,12 +7,12 @@
 
     <?php else: ?>
         <p class="registration-help"><?php \MapasCulturais\i::_e("Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf.");?></p>
-        <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="<?php \MapasCulturais\i::_e("Enviar regulamento");?>" ><?php \MapasCulturais\i::_e("Enviar");?></a>
+        <a class="btn btn-default send hltip" ng-if="!data.entity.registrationRulesFile" ng-click="openRulesUploadEditbox($event)" title="<?php \MapasCulturais\i::esc_attr_e("Enviar regulamento");?>" ><?php \MapasCulturais\i::_e("Enviar");?></a>
         <div ng-if="data.entity.registrationRulesFile">
             <span class="js-open-editbox mc-editable" ng-click="openRulesUploadEditbox($event)">{{data.entity.registrationRulesFile.name}}</span>
-            <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="<?php \MapasCulturais\i::_e("excluir regulamento");?>"></a>
+            <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="<?php \MapasCulturais\i::esc_attr_e("excluir regulamento");?>"></a>
         </div>
-        <edit-box id="edibox-upload-rules" position="bottom" title="<?php \MapasCulturais\i::_e("Regulamento");?>" submit-label="<?php \MapasCulturais\i::_e("Enviar");?>" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
+        <edit-box id="edibox-upload-rules" position="bottom" title="<?php \MapasCulturais\i::esc_attr_e("Regulamento");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
             <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id)) ?>" data-group="rules"  enctype="multipart/form-data">
                 <div class="alert danger hidden"></div>
                 <p class="form-help"><?php \MapasCulturais\i::_e("Tamanho máximo do arquivo");?>: {{maxUploadSizeFormatted}}</p>

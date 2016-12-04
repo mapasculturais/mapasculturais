@@ -11,9 +11,9 @@ if ($this->isEditable() || "$entity" != "$owner"):
         <?php if ($this->isEditable() && $entity->canUser('changeOwner')): ?>
             <h6 class="js-search js-include-editable"
                 data-field-name='ownerId'
-                data-emptytext="<?php \MapasCulturais\i::_e("Selecione um agente");?>"
+                data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um agente");?>"
                 data-search-box-width="400px"
-                data-search-box-placeholder="<?php \MapasCulturais\i::_e("Selecione um agente");?>"
+                data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e("Selecione um agente");?>"
                 data-entity-controller="agent"
                 data-search-result-template="#agent-search-result-template"
                 data-selection-template="#agent-response-template"
@@ -21,7 +21,7 @@ if ($this->isEditable() || "$entity" != "$owner"):
                 data-selection-format="changeOwner"
                 data-auto-open="true"
                 data-value="<?php echo $owner->id ?>"
-                title="<?php \MapasCulturais\i::_e("Repassar propriedade");?>"
+                title="<?php \MapasCulturais\i::esc_attr_e("Repassar propriedade");?>"
                 ><?php echo $owner->name ?></h6>
             <?php else: ?>
             <h6 class='js-owner-name'><a href="<?php echo $app->createUrl('agent', 'single', array($owner->id)) ?>"><?php echo $owner->name ?></a></h6>
@@ -38,8 +38,8 @@ if ($this->isEditable() || "$entity" != "$owner"):
                 <?php else: ?>
                     <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)"><?php \MapasCulturais\i::_e("Reivindicar propriedade");?></a>
                 <?php endif; ?>
-                <edit-box id="editbox-change-owner" position="right" title="<?php \MapasCulturais\i::_e("Selecione o agente para o qual você deseja passar a propriedade deste");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.spinner">
-                    <find-entity id='find-entity-change-owner' entity="agent" no-results-text="<?php \MapasCulturais\i::_e("Nenhum agente encontrado");?>" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
+                <edit-box id="editbox-change-owner" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Selecione o agente para o qual você deseja passar a propriedade deste");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.spinner">
+                    <find-entity id='find-entity-change-owner' entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
                 </edit-box>
             <?php endif; ?>
         </div>

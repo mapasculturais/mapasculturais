@@ -59,7 +59,7 @@ $this->includeAngularEntityAssets($entity);
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
@@ -67,7 +67,7 @@ $this->includeAngularEntityAssets($entity);
 
 					<p>
 						<span class="label"><?php \MapasCulturais\i::_e("Validade");?>:</span>
-						<span class="js-editable" data-edit="validPeriod" data-original-title="<?php \MapasCulturais\i::_e("Periodo");?>" data-emptytext="<?php \MapasCulturais\i::_e("Informe o período de duração da validade do selo");?>">
+						<span class="js-editable" data-edit="validPeriod" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Periodo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o período de duração da validade do selo");?>">
             <?php
               if($this->isEditable() || $entity->validPeriod > 0){
                 echo $entity->validPeriod;
@@ -92,7 +92,7 @@ $this->includeAngularEntityAssets($entity);
       <?php if($this->isEditable() || $entity->longDescription) {?>
   			<p>
   				<h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
-  				<span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::_e("Descrição do Selo");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira uma descrição do selo");?>" ><?php echo $this->isEditable ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+  				<span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Selo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do selo");?>" ><?php echo $this->isEditable ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
   				<!--.descricao-->
   			</p>
       <?php } ?>
@@ -109,7 +109,7 @@ $this->includeAngularEntityAssets($entity);
             [entityName]: <?php \MapasCulturais\i::_e("Nome da entidade (Teatro Municipal)");?><br>
             [dateIni]: <?php \MapasCulturais\i::_e("Data de Início da Validade do selo aplicado");?><br>
             [dateFin]: <?php \MapasCulturais\i::_e("Data de Fim da Validade do selo aplicado");?></p>
-  				<span class="descricao js-editable" data-edit="certificateText" data-original-title="<?php \MapasCulturais\i::_e("Conteúdo da Impressão do Certificado");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira o conteúdo da impressão do certificado do selo.");?>" ><?php echo nl2br($entity->certificateText); ?></span>
+  				<span class="descricao js-editable" data-edit="certificateText" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Conteúdo da Impressão do Certificado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o conteúdo da impressão do certificado do selo.");?>" ><?php echo nl2br($entity->certificateText); ?></span>
   	      <!--.conteúdo da impressão do certificado do selo-->
   			</p>
       <?php }?>

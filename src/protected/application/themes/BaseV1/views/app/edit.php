@@ -18,9 +18,9 @@ $this->layout = 'panel';
             </div>
             <div>
                 <span class="label"><?php \MapasCulturais\i::_e("Chave Privada");?>:</span><br>
-                <input type="password" value="<?php echo $entity->privateKey; ?>" disabled="disabled" class="js-input--select-on-click js-input--app-key txt small" data-input-types="['password', 'text']"> <a href="#" class='js-input--app-key--toggle hltip' hltitle="<?php \MapasCulturais\i::_e("ver/ocultar");?>">!</a>
+                <input type="password" value="<?php echo $entity->privateKey; ?>" disabled="disabled" class="js-input--select-on-click js-input--app-key txt small" data-input-types="['password', 'text']"> <a href="#" class='js-input--app-key--toggle hltip' hltitle="<?php \MapasCulturais\i::esc_attr_e("ver/ocultar");?>">!</a>
             </div>
-            <input type="submit" value="<?php \MapasCulturais\i::_e("Atualizar");?>">
+            <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("Atualizar");?>">
         </form>
     </header>
 </div>

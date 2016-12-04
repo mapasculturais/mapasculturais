@@ -7,7 +7,7 @@
     <div class="simple-filters" ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-espaco"><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
-            <input ng-model="data.space.keyword" class="search-field" type="text" name="palavra-chave-espaco" placeholder="<?php \MapasCulturais\i::_e("Buscar");?> <?php $this->dict('entities: spaces') ?>" />
+            <input ng-model="data.space.keyword" class="search-field" type="text" name="palavra-chave-espaco" placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar");?> <?php $this->dict('entities: spaces') ?>" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--area">
@@ -45,7 +45,7 @@
         <!--.filter-->
         
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.space.isVerified}" title="<?php \MapasCulturais\i::_e("Exibir somente resultados Verificados");?>" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.space.isVerified}" title="<?php \MapasCulturais\i::esc_attr_e("Exibir somente resultados Verificados");?>" ng-click="toggleVerified('space')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
         

@@ -21,15 +21,15 @@
 
             <div ng-if="data.isEditable" class="btn-group">
                 <span ng-if="def.agent">
-                    <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::_e("Editar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Trocar agente");?></a>
-                    <a class="btn btn-default delete hltip" ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" title="<?php \MapasCulturais\i::_e("Excluir");?> {{def.label}}"<?php \MapasCulturais\i::_e("Excluir");?></a>
+                    <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Trocar agente");?></a>
+                    <a class="btn btn-default delete hltip" ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" title="<?php \MapasCulturais\i::esc_attr_e("Excluir");?> {{def.label}}"<?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
                 </span>
-                <a class="btn btn-default add hltip" ng-if="!def.agent" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::_e("Adicionar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Adicionar");?></a>
+                <a class="btn btn-default add hltip" ng-if="!def.agent" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Adicionar");?></a>
             </div>
 
-            <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="<?php \MapasCulturais\i::_e("Selecionar");?> {{def.label}}" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.registrationSpinner">
+            <edit-box id="editbox-select-registration-{{def.agentRelationGroupName}}" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Selecionar");?> {{def.label}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.registrationSpinner">
                 <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
-                <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="<?php \MapasCulturais\i::_e("Nenhum agente encontrado");?>" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
+                <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
         </li>
     </ul>

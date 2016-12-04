@@ -5,7 +5,7 @@
             <span class="btn btn-small btn-default" ng-click="selectAll()"><?php \MapasCulturais\i::_e("marcar eventos listados");?></span>
             <span class="btn btn-small btn-default" ng-click="deselectAll()"><?php \MapasCulturais\i::_e("desmarcar eventos listados");?></span>
         </div>
-        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="<?php \MapasCulturais\i::_e("filtrar eventos");?>" style="width:300px;"><br>
+        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="<?php \MapasCulturais\i::esc_attr_e("filtrar eventos");?>" style="width:300px;"><br>
 
         <div class="eventos-selecionados">
             <div class="alignright" ng-show="!data.processing">

@@ -76,7 +76,7 @@ $this->entity = $entity;
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable required" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable required" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>

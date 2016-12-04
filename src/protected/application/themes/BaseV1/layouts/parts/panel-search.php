@@ -6,7 +6,7 @@ if ($meta->count < 7 && empty($meta->keyword)){
 <div>
     <form>
         <div style="float:left">
-            <input placeholder="<?php \MapasCulturais\i::_e("Buscar por palavra-chave");?>" name="keyword" value="<?php echo isset($meta->keyword) ? $meta->keyword : '';?>" autofocus size="50">
+            <input placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar por palavra-chave");?>" name="keyword" value="<?php echo isset($meta->keyword) ? $meta->keyword : '';?>" autofocus size="50">
             <input type="submit" value="Ok">
         </div>
         <div style="float:right">

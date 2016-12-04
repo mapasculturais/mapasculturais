@@ -13,7 +13,7 @@ $this->addRelatedSealsToJs($entity);
 <?php else: ?>
     <div class="selos-add" ng-controller="RelatedSealsController">
         <div ng-if="relations.length > 0 || (isEditable && seals.length > 0)" class="widget">
-            <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> <div ng-if="isEditable && canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::_e("Adicionar selo relacionado");?>"></div></h3>
+            <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> <div ng-if="isEditable && canRelateSeal" ng-click="editbox.open('sealsAvailable', $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar selo relacionado");?>"></div></h3>
             <edit-box id="sealsAvailable" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar selo relacionado");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Fechar");?>" close-on-cancel='true'>
                 <div ng-if="seals.length > 0" class="widget">
                     <h3><?php \MapasCulturais\i::_e("Selos Disponíveis");?></h3>
@@ -33,7 +33,7 @@ $this->addRelatedSealsToJs($entity);
                     <a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">
                         <img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
                     </a>
-                    <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="<?php \MapasCulturais\i::_e("Excluir selo");?>" ng-click="deleteRelation(relation,relation.seal.id)"></a></div>
+                    <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="<?php \MapasCulturais\i::esc_attr_e("Excluir selo");?>" ng-click="deleteRelation(relation,relation.seal.id)"></a></div>
                     <div class="descricao-do-selo">
                         <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
                     </div>

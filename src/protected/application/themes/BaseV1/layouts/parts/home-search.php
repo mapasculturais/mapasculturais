@@ -3,7 +3,7 @@
         <h1><?php $this->dict('home: title') ?></h1>
         <p><?php $this->dict('home: welcome') ?></p>
         <form id="home-search-form" class="clearfix" ng-non-bindable>
-            <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="<?php \MapasCulturais\i::_e("Digite uma palavra-chave");?>"/>
+            <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="<?php \MapasCulturais\i::esc_attr_e("Digite uma palavra-chave");?>"/>
             <div id="home-search-filter" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">
                 <div class="placeholder"><span class="icon icon-search"></span><?php \MapasCulturais\i::_e("Buscar");?></div>
                 <div class="submenu-dropdown">
@@ -30,5 +30,5 @@
         <a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a>
     </div>
 
-    <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="<?php \MapasCulturais\i::_e("Saiba mais");?>"></a></div>
+    <div class="view-more"><a class="hltip icon icon-select-arrow" href="#home-events" title="<?php \MapasCulturais\i::esc_attr_e("Saiba mais");?>"></a></div>
 </section>

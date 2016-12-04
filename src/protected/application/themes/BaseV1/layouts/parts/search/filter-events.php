@@ -7,7 +7,7 @@
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter searcj-filter--keyword">
             <label for="palavra-chave-evento"><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
-            <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="<?php \MapasCulturais\i::_e("Buscar eventos");?>" />
+            <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar eventos");?>" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--date">
@@ -45,7 +45,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="<?php \MapasCulturais\i::_e("Exibir somente resultados Verificados");?>" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="<?php \MapasCulturais\i::esc_attr_e("Exibir somente resultados Verificados");?>" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
         <div ng-repeat="entity in ['event']" class="show-advanced-filters ">

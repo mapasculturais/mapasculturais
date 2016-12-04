@@ -5,8 +5,8 @@
 
 <?php if($entity->usesDraft()): ?>
     <?php if($entity->isNew() || $entity->status === $status_draft):  ?>
-        <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="<?php \MapasCulturais\i::_e("Salvar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?> <?php \MapasCulturais\i::_e("como rascunho.");?>"><?php \MapasCulturais\i::_e("Salvar rascunho");?></a>
-        <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="<?php \MapasCulturais\i::_e("Salvar e publicar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>."><?php \MapasCulturais\i::_e("Publicar");?></a>
+        <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="<?php \MapasCulturais\i::esc_attr_e("Salvar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?> <?php \MapasCulturais\i::_e("como rascunho.");?>"><?php \MapasCulturais\i::_e("Salvar rascunho");?></a>
+        <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="<?php \MapasCulturais\i::esc_attr_e("Salvar e publicar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>."><?php \MapasCulturais\i::_e("Publicar");?></a>
 
     <?php else: ?>
         <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>

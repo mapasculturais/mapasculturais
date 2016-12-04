@@ -7,7 +7,7 @@
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
             <label for="palavra-chave-evento"><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
-            <input ng-model="data.project.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="<?php \MapasCulturais\i::_e("Buscar projetos");?>" />
+            <input ng-model="data.project.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar projetos");?>" />
         </form>
         <!--.filter-->
         <div class="filter">
@@ -30,7 +30,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="<?php \MapasCulturais\i::_e("Exibir somente resultados verificados");?>" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.project.isVerified}" title="<?php \MapasCulturais\i::esc_attr_e("Exibir somente resultados verificados");?>" ng-click="toggleVerified('project')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
         

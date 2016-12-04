@@ -24,7 +24,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <p>
                 <span class="label <?php echo ($entity->isPropertyRequired($entity,$metadata_name) && $editEntity? 'required': '');?>"><?php echo $def->label ?></span> <span class="registration-help">(<?php echo $def->description ?>)</span>
                 <br>
-                <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="<?php \MapasCulturais\i::_e("Selecione uma opção");?>"><?php echo $option_label ?></span>
+                <span class="<?php echo $ditable_class ?>" data-edit="<?php echo $metadata_name ?>" data-original-title="<?php echo $def->metadataConfiguration['label'] ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione uma opção");?>"><?php echo $option_label ?></span>
             </p>
 
         </div>
@@ -33,13 +33,13 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <p>
         <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimit") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Número máximo de vagas no projeto");?></span><br>
         <span class="registration-help"><?php \MapasCulturais\i::_e("Zero (0) significa sem limites");?></span><br>
-        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimit" data-original-title="<?php \MapasCulturais\i::_e("Número máximo de inscrições no projeto");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira o número máximo de inscrições no projeto");?>"><?php echo $entity->registrationLimit ? $entity->registrationLimit : '0'; ?></span>
+        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimit" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número máximo de inscrições no projeto");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o número máximo de inscrições no projeto");?>"><?php echo $entity->registrationLimit ? $entity->registrationLimit : '0'; ?></span>
     </p>
 
     <p>
         <span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationLimitPerOwner") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Número máximo de inscrições por agente responsável");?></span><br>
         <span class="registration-help"><?php \MapasCulturais\i::_e("Zero (0) significa sem limites");?></span><br>
-        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="<?php \MapasCulturais\i::_e("Número máximo de inscrições por agente responsável");?>" data-emptytext="<?php \MapasCulturais\i::_e("Insira o número máximo de inscrições por agente responsável");?>"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
+        <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número máximo de inscrições por agente responsável");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o número máximo de inscrições por agente responsável");?>"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
     </p>
 </div>
 <!-- #registration-agent-relations -->

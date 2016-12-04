@@ -22,14 +22,14 @@
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
             <div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
-                <a class="hltip icon icon-show-search-on-list"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="<?php \MapasCulturais\i::_e("Ver resultados em lista"); ?>"></a>
-                <a class="hltip icon icon-show-search-on-map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="<?php \MapasCulturais\i::_e("Ver resultados no mapa"); ?>"></a>
+                <a class="hltip icon icon-show-search-on-list"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados em lista"); ?>"></a>
+                <a class="hltip icon icon-show-search-on-map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados no mapa"); ?>"></a>
             </div>
             <div id="export-tools" data-toggle="share-search-results">
-                <a class="hltip icon icon-download" ng-href="{{apiURL}}&@type=excel" title="<?php \MapasCulturais\i::_e("Exportar dados"); ?>"></a>
+                <a class="hltip icon icon-download" ng-href="{{apiURL}}&@type=excel" title="<?php \MapasCulturais\i::esc_attr_e("Exportar dados"); ?>"></a>
             </div>
             <div id="share-tools">
-                <a class="hltip icon icon-share" title="<?php \MapasCulturais\i::_e("Compartilhar resultado"); ?>"></a>
+                <a class="hltip icon icon-share" title="<?php \MapasCulturais\i::esc_attr_e("Compartilhar resultado"); ?>"></a>
                 <form id="share-url" class="share-search-results">
                     <label for="search-url"><?php \MapasCulturais\i::_e("Compartilhar resultado: "); ?></label>
                     <input id="search-url" name="search-url" type="text" ng-value="location.absUrl()" />

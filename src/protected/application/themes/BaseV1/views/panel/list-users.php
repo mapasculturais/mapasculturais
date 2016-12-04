@@ -32,7 +32,7 @@ $first = true;
 
                     <div class="entity-actions">
                         <?php if ($u->canUser('RemoveRole' . $role['permissionSuffix'])): ?>
-                            <a class="btn btn-small btn-danger js-confirm-before-go" data-confirm-text="<?php \MapasCulturais\i::_e("Você tem certeza que deseja remover este usuário da lista de");?> <?php echo $role['pluralLabel']; ?>?" href="<?php echo $app->createUrl('agent', 'removeRole', ['id' => $u->profile->id, 'role' => $roleSlug]); ?>">
+                            <a class="btn btn-small btn-danger js-confirm-before-go" data-confirm-text="<?php \MapasCulturais\i::esc_attr_e("Você tem certeza que deseja remover este usuário da lista de");?> <?php echo $role['pluralLabel']; ?>?" href="<?php echo $app->createUrl('agent', 'removeRole', ['id' => $u->profile->id, 'role' => $roleSlug]); ?>">
                             <?php \MapasCulturais\i::_e("remover do papel");?>
                             </a>
                         <?php endif; ?>

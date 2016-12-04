@@ -82,7 +82,7 @@
                     <li>
                         <div class="clearfix">
                             <h6 class="alignleft"><?php \MapasCulturais\i::_e("Notificações");?></h6>
-                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="<?php \MapasCulturais\i::_e("Marcar todas como lidas");?>"></a>
+                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="<?php \MapasCulturais\i::esc_attr_e("Marcar todas como lidas");?>"></a>
                         </div>
                         <ul>
                             <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">

@@ -6,10 +6,10 @@ $this->addRelatedAgentsToJs($entity);
 ?>
 <div class="agentes-relacionados" ng-controller="RelatedAgentsController">
     <div class="widget" ng-if="isEditable">
-        <edit-box id="new-related-agent-group" position="left" title="<?php \MapasCulturais\i::_e("Adicionar grupo de agentes");?>" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::_e("Criar");?>" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
-            <input type="text" ng-model="data.newGroupName" placeholder="<?php \MapasCulturais\i::_e("Nome do grupo de agentes");?>"/>
+        <edit-box id="new-related-agent-group" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar grupo de agentes");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Criar");?>" on-cancel="closeNewGroupEditBox" on-submit="createGroup">
+            <input type="text" ng-model="data.newGroupName" placeholder="<?php \MapasCulturais\i::esc_attr_e("Nome do grupo de agentes");?>"/>
         </edit-box>
-        <a class="btn btn-default add hltip" title="<?php \MapasCulturais\i::_e("Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc.");?>" ng-click="editbox.open('new-related-agent-group', $event)"><?php \MapasCulturais\i::_e("Adicionar agentes");?></a>
+        <a class="btn btn-default add hltip" title="<?php \MapasCulturais\i::esc_attr_e("Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes técnicas, etc.");?>" ng-click="editbox.open('new-related-agent-group', $event)"><?php \MapasCulturais\i::_e("Adicionar agentes");?></a>
     </div>
     <div class="widget" ng-repeat="group in groups">
         <h3>{{group.name}}</h3>
@@ -41,10 +41,10 @@ $this->addRelatedAgentsToJs($entity);
                     </div>
                 </div>
             </div>
-            <div ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::_e("Adicionar Integrante a este Grupo");?>"></div>
+            <div ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Integrante a este Grupo");?>"></div>
 
-            <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="<?php \MapasCulturais\i::_e("Adicionar agente relacionado");?>" spinner-condition="spinners[group.name]" cancel-label="<?php \MapasCulturais\i::_e("Cancelar");?>" close-on-cancel='true'>
-                <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::_e("Nenhum agente encontrado");?>" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
+            <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente relacionado");?>" spinner-condition="spinners[group.name]" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
+                <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
             </edit-box>
         </div>
     </div>

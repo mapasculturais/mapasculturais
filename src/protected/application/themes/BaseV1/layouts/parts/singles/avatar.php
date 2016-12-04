@@ -7,7 +7,7 @@
     <?php endif; ?>
     <?php if($this->isEditable()): ?>
         <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#"><?php \MapasCulturais\i::_e("Editar");?></a>
-        <div id="editbox-change-avatar" class="js-editbox mc-right" title="<?php \MapasCulturais\i::_e("Editar avatar");?>">
+        <div id="editbox-change-avatar" class="js-editbox mc-right" title="<?php \MapasCulturais\i::esc_attr_e("Editar avatar");?>">
             <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
         </div>
     <?php endif; ?>
