@@ -11,6 +11,7 @@ $this->layout = 'panel'
 		<li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
         <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftProjects); ?>)</a></li>
         <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedProjects); ?>)</a></li>
+		<li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>
@@ -49,4 +50,14 @@ $this->layout = 'panel'
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($user->archivedProjects as $entity): ?>
+            <?php $this->part('panel-project', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedProjects): ?>
+            <div class="alert info">Você não possui nenhum projeto arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

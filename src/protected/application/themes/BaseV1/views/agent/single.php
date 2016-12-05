@@ -199,6 +199,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Children END -->
 
     <!-- Children BEGIN -->
+        <?php $this->part('singles/list-entities.php', array('entities'=>$entity->projects, 'title' => 'entities: Projects of the agent')); ?>
+    <!-- Children END -->
+
+    <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
     <!-- Children END -->
 

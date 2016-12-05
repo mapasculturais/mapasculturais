@@ -5,11 +5,12 @@
 
 <?php if($entity->usesDraft()): ?>
     <?php if($entity->isNew() || $entity->status === $status_draft):  ?>
-        <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="<?php \MapasCulturais\i::esc_attr_e("Salvar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?> <?php \MapasCulturais\i::_e("como rascunho.");?>"><?php \MapasCulturais\i::_e("Salvar rascunho");?></a>
-        <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="<?php \MapasCulturais\i::esc_attr_e("Salvar e publicar este");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>."><?php \MapasCulturais\i::_e("Publicar");?></a>
-
+        <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="<?php printf(\MapasCulturais\i::esc_attr__('Salvar este %s como rascunho.'), $entity->getEntityTypeLabel()); ?>"><?php \MapasCulturais\i::_e("Salvar rascunho");?></a>
+        <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="<?php printf(\MapasCulturais\i::esc_attr__('Salvar e publicar este %s.'), $entity->getEntityTypeLabel()); ?>"><?php \MapasCulturais\i::_e("Publicar");?></a>
+        <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$this->controller->id . 's'); ?>"><?php \MapasCulturais\i::_e("Cancelar");?></a>
     <?php else: ?>
         <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>
+
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>
@@ -17,8 +18,9 @@
 
 <?php else: ?>
     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>
+
 <?php endif; ?>
 
 <script type="text/javascript">
-    MapasCulturais.Messages.help('<?php \MapasCulturais\i::_e("Os ícones de lápis indicam conteúdos editáveis.");?>');
+    MapasCulturais.Messages.help('<?php \MapasCulturais\i::esc_attr_e("Os ícones de lápis indicam conteúdos editáveis.");?>');
 </script>

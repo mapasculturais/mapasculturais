@@ -22,10 +22,14 @@ use MapasCulturais\Entities\Agent;
 
             <?php if($entity->status === Agent::STATUS_ENABLED): ?>
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
+                <a class="btn btn-small btn-success" href="<?php echo $entity->archiveUrl; ?>"><?php \MapasCulturais\i::_e("arquivar");?></a>
 
             <?php elseif ($entity->status === Agent::STATUS_DRAFT): ?>
                 <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>"><?php \MapasCulturais\i::_e("publicar");?></a>
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
+
+            <?php elseif ($entity->status === \MapasCulturais\Entities\Agent::STATUS_ARCHIVED): ?>
+                <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
 
             <?php else: ?>
                 <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>

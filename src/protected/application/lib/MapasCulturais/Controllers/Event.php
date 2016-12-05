@@ -21,6 +21,7 @@ class Event extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI;
 
     /**
@@ -41,12 +42,12 @@ class Event extends EntityController {
         });
         parent::POST_index();
     }
-    
+
     function API_findOccurrences(){
         $app = App::i();
         $rsm = new ResultSetMapping();
-        
-        
+
+
         $rsm->addScalarResult('id', 'occurrence_id');
         $rsm->addScalarResult('event_id', 'event_id');
         $rsm->addScalarResult('space_id', 'space_id');
@@ -55,58 +56,58 @@ class Event extends EntityController {
         $rsm->addScalarResult('ends_on', 'ends_on');
         $rsm->addScalarResult('ends_at', 'ends_at');
         $rsm->addScalarResult('rule', 'rule');
-        
+
         $query_data = $this->getData;
-        
+
         // find occurrences
-        
+
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
-        
+
         $query = $app->em->createNativeQuery("
-            SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule 
-            FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL) 
-            WHERE status > 0 
+            SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule
+            FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
+            WHERE status > 0
             ORDER BY starts_on, starts_at", $rsm);
-        
+
         $query->setParameters([
             'date_from' => $date_from,
             'date_to' => $date_to
         ]);
-        
+
         if($app->config['app.useEventsCache']){
             $query->useResultCache(true, $app->config['app.eventsCache.lifetime']);
         }
-        
+
         $_result = $query->getScalarResult();
-        
-        
-        
+
+
+
         $space_query_data = [];
         $event_query_data = $this->getData;
-        
+
         // filter spaces
-        
-                
+
+
         foreach($this->getData as $key => $val){
             if(strtolower(substr($key, 0, 6)) === 'space:'){
                 $space_query_data[substr($key, 6)] = $val;
                 unset($event_query_data[$key]);
             }
         }
-        
+
         unset(
                 $space_query_data['@limit'],
                 $space_query_data['@offset'],
                 $space_query_data['@page']
         );
-        
+
         $space_ids = [];
-        
+
         foreach($_result as $occ){
             $space_ids[] = $occ['space_id'];
         }
-        
+
         $space_ids = implode(',',$space_ids);
         if(isset($space_query_data['id'])){
             $space_query_id = $space_query_data['id'];
@@ -114,14 +115,14 @@ class Event extends EntityController {
         }else{
             $space_query_data['id'] = "IN({$space_ids})";
         }
-        
+
         if(isset($space_query_data['@select'])){
             $props = explode(',', $space_query_data['@select']);
             if(array_search('id', $props) === false){
                 $space_query_data['@select'] .= ',id';
             }
         }
-        
+
         $space_controller = $app->controller('space');
         $spaces = $space_controller->apiQuery($space_query_data);
 
@@ -129,25 +130,25 @@ class Event extends EntityController {
         foreach($spaces as $space){
             $spaces_by_id[$space['id']] = $space;
         }
-        
+
         // filter events
-        
+
         unset(
-                $event_query_data['@from'], 
+                $event_query_data['@from'],
                 $event_query_data['@to'],
                 $event_query_data['@limit'],
                 $event_query_data['@offset'],
                 $event_query_data['@page']
         );
-        
+
         $event_ids = [];
-        
+
         foreach($_result as $occ){
             if(isset($spaces_by_id[$occ['space_id']])){
                 $event_ids[] = $occ['event_id'];
             }
         }
-        
+
         if($event_ids){
 
             $event_ids = implode(',',$event_ids);
@@ -221,10 +222,10 @@ class Event extends EntityController {
         } else {
             $result = [];
         }
-        
-        // @TODO: set headers to 
+
+        // @TODO: set headers to
         $this->apiResponse($result);
-        
+
     }
 
     function GET_create() {
@@ -326,7 +327,7 @@ class Event extends EntityController {
             $query_data['@from'],
             $query_data['@to'],
             $query_data['space']
-                
+
         );
 
         $space_data = [];

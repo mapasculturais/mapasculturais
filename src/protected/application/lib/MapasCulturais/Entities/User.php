@@ -227,7 +227,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
-
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -300,7 +299,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus(Agent::STATUS_RELATED);
     }
 
-	function getHasControlAgents(){
+    function getArchivedAgents(){
+        $this->checkPermission('modify');
+
+        return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
+    }
+
+    function getHasControlAgents(){
         $this->checkPermission('modify');
 
         return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
@@ -335,10 +340,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_DISABLED, '=');
     }
 
+    function getArchivedSpaces(){
+        $this->checkPermission('modify');
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
+    }
+
     function getHasControlSpaces(){
         $this->checkPermission('modify');
-
-        return App::i()->repo('Space')->findByAgentRelationUser($this, true);
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
     }
 
     public function getEvents(){
@@ -368,6 +377,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return App::i()->repo('Event')->findByAgentRelationUser($this, true);
     }
 
+    function getArchivedEvents(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_ARCHIVED,'=');
+    }
+
     public function getProjects(){
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project');
     }
@@ -389,6 +404,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
+
+    function getArchivedProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
+    }
+
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
@@ -416,6 +438,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     	return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_DISABLED, '=');
     }
+
+    function getArchivedSeals(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ARCHIVED,'=');
+    }
+    
     function getHasControlSeals(){
         $this->checkPermission('modify');
 
@@ -479,7 +508,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
               $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '">editar</a>';
               $notification->save();
-              
+
               // use the notification id to use it later on entity update
               $agent->sentNotification = $notification->id;
               $agent->save();
@@ -489,14 +518,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           foreach($this->spaces as $space) {
             $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
-            
+
             if($space->status > 0 && !$space->sentNotification && $interval->format('%a') >= $app->config['notifications.entities.update']) {
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
               $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
               $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '">editar</a>';
-              $notification->save();              
+              $notification->save();
               // use the notification id to use it later on entity update
               $space->sentNotification = $notification->id;
               $space->save();
@@ -504,7 +533,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           }
 
           /* @TODO: verificar se faz sentido */
-          
+
 //          foreach($this->seals as $seal) {
 //            $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
 //            $interval = date_diff($lastUpdateDate, $now);

@@ -952,18 +952,11 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
             $scope.setRegistrationStatus = function(registration, status){
                 if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
                     if(status.value === 10) {
-                        if(MapasCulturais.entity.object.approvedLimit > $scope.approvedRegistrations()) {
-                            RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                                if(registration.status === 0){
-                                    $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
-                                }
-                            });
-                        } else if(MapasCulturais.entity.object.approvedLimit === 0) {
-                            MapasCulturais.Messages.error(labels['defineVacancies']);
-                        } else {
-                            labels['reachedMaxPlural'].replace('{{num}}', MapasCulturais.entity.object.approvedLimit);
-                            MapasCulturais.Messages.error( MapasCulturais.entity.object.approvedLimit > 1 ? labels['reachedMaxPlural'] : labels['reachedMax'] );
-                        }
+                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
+                            if(registration.status === 0){
+                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                            }
+                        });
                     } else {
                         RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                             if(registration.status === 0){
@@ -1096,7 +1089,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     MapasCulturais.Messages.error(labels['limitReached']);
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
                     MapasCulturais.Messages.error(labels['VacanciesOver']);
-                }else if(registration.owner && $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit){
+                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });

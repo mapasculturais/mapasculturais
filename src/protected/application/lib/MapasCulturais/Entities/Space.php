@@ -29,7 +29,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityArchive;
 
 
     //

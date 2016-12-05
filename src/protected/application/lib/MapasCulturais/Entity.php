@@ -54,6 +54,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DRAFT = 0;
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
+    const STATUS_ARCHIVED = -2;
 
     /**
      * array of validation definition
@@ -865,7 +866,7 @@ abstract class Entity implements \JsonSerializable{
                         $notification->delete();
                         $this->sentNotification = 0;
                         $this->save();
-                        
+
                         $app->em->flush();
                     }
                 });

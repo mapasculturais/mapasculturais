@@ -47,11 +47,11 @@ $this->includeMapAssets();
                 <a class="hltip hltip-auto-update btn-map btn-map-agent"  ng-class="{active: data.global.enabled.agent}" ng-click="data.global.enabled.agent = !data.global.enabled.agent" title="{{(data.global.enabled.agent) && 'Ocultar' || 'Mostrar'}} <?php \MapasCulturais\i::_e("agentes");?>"></a>
             <?php endif; ?>
 
-            
+
             <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} <?php \MapasCulturais\i::_e("selos");?>"></a>
             <?php endif; ?>
-            
+
         </div>
     </div>
 
@@ -71,6 +71,12 @@ $this->includeMapAssets();
                         <span ng-repeat="area in openEntity.agent.terms.area">
                             <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                         </span>
+                </div>
+                <div>
+                    <span class="label">Tags:</span>
+                    <span ng-repeat="tags in openEntity.agent.terms.tag">
+                        <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search') ?>##(agent:(keyword:'{{tags}}'),global:(enabled:(agent:!t),filterEntity:agent,viewMode:list))">{{tags}}</a>
+                    </span>
                 </div>
             </div>
         </article>
@@ -95,6 +101,12 @@ $this->includeMapAssets();
                     </div>
                     <div ng-show="openEntity.space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span>{{openEntity.space.endereco}}</div>
                     <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{openEntity.space.acessibilidade || 'Não Informado'}}</div>
+                    <div>
+                        <span class="label">Tags:</span>
+                        <span ng-repeat="tags in openEntity.space.terms.tag">
+                            <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(keyword:'{{tags}}'),global:(enabled:(space:!t),filterEntity:space,viewMode:list))">{{tags}}</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </article>
@@ -143,6 +155,12 @@ $this->includeMapAssets();
                             <span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span>
                             <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a>
                         </div>
+                        <div>
+                            <span class="label">Tags:</span>
+                            <span ng-repeat="tags in event.terms.tag">
+                                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(keyword:'{{tags}}'),global:(enabled:(event:!t),filterEntity:event,viewMode:list))">{{tags}}</a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -173,6 +191,12 @@ $this->includeMapAssets();
                     <div class="objeto-meta">
                         <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#">{{project.type.name}}</a></div>
                         <div ng-if="readableProjectRegistrationDates(project)"><span class="label"><?php \MapasCulturais\i::_e("Inscrições");?>:</span> {{readableProjectRegistrationDates(project)}}</div>
+                        <div>
+                            <span class="label">Tags:</span>
+                            <span ng-repeat="tags in project.terms.tag">
+                                <a class="tag tag-project" href="<?php echo $app->createUrl('site', 'search') ?>##(project:(keyword:'{{tags}}'),global:(enabled:(project:!t),filterEntity:project,viewMode:list))">{{tags}}</a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -200,6 +224,12 @@ $this->includeMapAssets();
                                 <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
+                        <div>
+                            <span class="label">Tags:</span>
+                            <span ng-repeat="tags in agent.terms.tag">
+                                <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search') ?>##(agent:(keyword:'{{tags}}'),global:(enabled:(agent:!t),filterEntity:agent,viewMode:list))">{{tags}}</a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -217,11 +247,20 @@ $this->includeMapAssets();
                     </a>
                     <p class="objeto-resumo">{{space.shortDescription}}</p>
                     <div class="objeto-meta">
-                        <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, space.type.name))">{{space.type.name}}</a></div>
+                        <div>
+                            <span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span>
+                            <a ng-click="toggleSelection(data.space.types, getId(types.space, space.type.name))">{{space.type.name}}</a>
+                        </div>
                         <div>
                             <span class="label"><?php \MapasCulturais\i::_e("Área de atuação");?>:</span>
                             <span ng-repeat="area in space.terms.area">
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
+                            </span>
+                        </div>
+                        <div>
+                            <span class="label">Tags:</span>
+                            <span ng-repeat="tags in space.terms.tag">
+                                <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(keyword:'{{tags}}'),global:(enabled:(space:!t),filterEntity:space,viewMode:list))">{{tags}}</a>
                             </span>
                         </div>
                         <div ng-show="space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> {{space.endereco}}</div>
@@ -270,6 +309,12 @@ $this->includeMapAssets();
                             </span>
                         </div>
                         <div><span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
+                        <div>
+                            <span class="label">Tags:</span>
+                            <span ng-repeat="tags in event.terms.tag">
+                                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(keyword:'{{tags}}'),global:(enabled:(event:!t),filterEntity:event,viewMode:list))">{{tags}}</a>
+                            </span>
+                        </div>
 
                     </div>
                 </div>
