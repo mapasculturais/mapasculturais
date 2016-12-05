@@ -3,7 +3,7 @@ $site_name = $this->dict('site: name', false);
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR" dir="ltr">
+<html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">
     <head>
         <meta charset="UTF-8" />
         <title><?php echo $title == $site_name ? $title : "{$site_name} - {$title}"; ?></title>
