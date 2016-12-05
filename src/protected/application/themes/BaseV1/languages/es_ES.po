@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-04 15:34-0300\n"
+"POT-Creation-Date: 2016-12-04 22:34-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -450,9 +450,8 @@ msgid "Anterior"
 msgstr "Anterior"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:538
-#, fuzzy
 msgid "Próxima"
-msgstr "Próximo a mi"
+msgstr "Próxima"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:540
 msgid "%curr% de %total%"
@@ -492,9 +491,8 @@ msgid "There was an error"
 msgstr "Ocurrió un error"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:588
-#, fuzzy
 msgid "Eventos encontrados no espaço"
-msgstr "evento encontrados"
+msgstr "Eventos encontrados en el espacio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:593
 msgid "Clique e arraste para desenhar o círculo"
@@ -505,9 +503,8 @@ msgid "Solte o mouse para finalizar o desenho"
 msgstr "Suelte el mouse para finalizar el diseño"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:595
-#, fuzzy
 msgid "Cancelar desenho"
-msgstr "Cancelar"
+msgstr "Cancelar diseño"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:597
 msgid "Desenhar um círculo"
@@ -560,9 +557,8 @@ msgstr ""
 "{{recipient}} fue enviada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:693
-#, fuzzy
 msgid "Selecione o tipo de campo"
-msgstr "Seleccione los tipos"
+msgstr "Seleccione el tipo de campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:694
 msgid "Campo criado."
@@ -578,51 +574,44 @@ msgstr "Cambios guardados."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:697
 msgid "Anexo criado."
-msgstr "Anexo creado."
+msgstr "Adjunto creado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:698
 msgid "Anexo removido."
-msgstr "Enexo eliminado."
+msgstr "Adjunto eliminado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:699
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:708
-#, fuzzy
 msgid "Deseja remover este anexo?"
-msgstr "Eliminar este video?"
+msgstr "Desea eliminar este adjunto?"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:700
-#, fuzzy
 msgid "Deseja remover este modelo?"
-msgstr "Eliminar este video?"
+msgstr "Desea eliminar este modelo?"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:701
 msgid "Modelo removido."
 msgstr "Modelo eliminado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:702
-#, fuzzy
 msgid "publicado"
-msgstr "publicar"
+msgstr "publicado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:703
-#, fuzzy
 msgid "rascunho"
-msgstr "convertir en borrador"
+msgstr "borrador"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:704
-#, fuzzy
 msgid "Publicando..."
-msgstr "Publicado por"
+msgstr "Publicando..."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:705
-#, fuzzy
 msgid "Eventos publicados."
-msgstr "Sellos Aplicados"
+msgstr "Eventos publicados."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:706
-#, fuzzy
 msgid "Tornando rascunho..."
-msgstr "convertir en borrador"
+msgstr "Convirtiendo en borrador..."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:707
 msgid "Eventos transformados em rascunho."
@@ -645,23 +634,20 @@ msgid "Inválida"
 msgstr "No válida"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:712
-#, fuzzy
 msgid "Não selecionada"
-msgstr "Seleccionar"
+msgstr "No seleccionada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:713
 msgid "Suplente"
 msgstr "Suplente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:714
-#, fuzzy
 msgid "Selecionada"
-msgstr "Seleccionar"
+msgstr "Seleccionada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:715
-#, fuzzy
 msgid "Rascunho"
-msgstr "convertir en borrador"
+msgstr "Borrador"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:716
 msgid ""
@@ -702,9 +688,8 @@ msgstr ""
 "Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:723
-#, fuzzy
 msgid "Corrija os erros indicados abaixo."
-msgstr "Corrija los errores abajo e intente nuevamente."
+msgstr "Corrija los errores indicados abajo."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:724
 msgid "Inscrição enviada. Aguarde tela de sumário."
@@ -845,9 +830,8 @@ msgid "ok"
 msgstr "ok"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/auth/fake-authentication.php:15
-#, fuzzy
 msgid "Criar novo usuário"
-msgstr "Cambiar usuario"
+msgstr "Crear nuevo usuario"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/auth/fake-authentication.php:16
 msgid "Name"
@@ -901,9 +885,8 @@ msgstr "Esperando confirmación"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:40
-#, fuzzy
 msgid "Descrição Legível"
-msgstr "Descripción"
+msgstr "Descripción Legible"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:41
@@ -911,7 +894,6 @@ msgstr "Descripción"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:41
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:41
-#, fuzzy
 msgid "Não Informado"
 msgstr "No informado"
 
@@ -942,9 +924,8 @@ msgstr "Horario inicial"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:481
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:44
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:481
-#, fuzzy
 msgid "Duração"
-msgstr "Organización: "
+msgstr "Duración "
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:44
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:44
@@ -974,9 +955,8 @@ msgstr "Frecuencia"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:50
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:503
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:7
-#, fuzzy
 msgid "Data inicial"
-msgstr "Fecha más antígua"
+msgstr "Fecha inicial"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:52
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:508
@@ -985,9 +965,8 @@ msgstr "Fecha más antígua"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:52
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:508
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:9
-#, fuzzy
 msgid "Data final"
-msgstr "Fecha más antígua"
+msgstr "Fecha final"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:61
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:61
@@ -1018,9 +997,8 @@ msgstr "Editar"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:65
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:65
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:65
-#, fuzzy
 msgid "Excluir esta Ocorrência?"
-msgstr "Eliminar este video?"
+msgstr "Eliminar esta Ocurrencia?"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:65
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:65
@@ -1058,9 +1036,8 @@ msgstr "Dirección"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:121
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:121
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:121
-#, fuzzy
 msgid "Subtítulo"
-msgstr "Título"
+msgstr "Subtítulo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:121
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:121
@@ -1147,9 +1124,8 @@ msgstr "caracteres. Usted debe cambiar su texto o será cortado al guardar."
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:74
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:74
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:16
-#, fuzzy
 msgid "Descrição Curta"
-msgstr "Descripción"
+msgstr "Descripción corta"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:157
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:157
@@ -1162,9 +1138,8 @@ msgstr "Agregue una descripción corta para el evento"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:164
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:175
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-tabs.php:6
-#, fuzzy
 msgid "Inscrições"
-msgstr "Inscripciones:"
+msgstr "Inscripciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:164
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:164
@@ -1175,9 +1150,8 @@ msgstr "Informaciones sobre las inscripciones"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:174
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:174
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:174
-#, fuzzy
 msgid "Classificação Etária"
-msgstr "Clasificación"
+msgstr "Clasificación etaria"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:174
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:174
@@ -1212,9 +1186,8 @@ msgstr "Informe la dirección de la página web del evento"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:187
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:187
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:187
-#, fuzzy
 msgid "Mais Informações"
-msgstr "Mis Inscripciones"
+msgstr "Más información"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:200
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:200
@@ -1225,44 +1198,38 @@ msgstr "Traducción para LIBRAS"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:204
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:204
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:204
-#, fuzzy
 msgid "Áudio Descrição"
-msgstr "Descripción"
+msgstr "Audio Descripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:204
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:204
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:204
-#, fuzzy
 msgid "Descrição Sonora"
-msgstr "Descripción"
+msgstr "Descripción Sonora"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:323
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:323
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:323
-#, fuzzy
 msgid "Adicionar Ocorrência"
-msgstr "Agregar imagen"
+msgstr "Agregar Ocurrencia"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:325
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:325
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:325
-#, fuzzy
 msgid "Clique para adicionar ocorrências"
-msgstr "Haga clic para agregar archivo para descarga"
+msgstr "Haga clic para agregar ocurrencias"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:326
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:326
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:326
-#, fuzzy
 msgid "Adicionar ocorrência"
-msgstr "Agregar imagen"
+msgstr "Agregar ocurrencia"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:332
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:332
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:332
-#, fuzzy
 msgid "Para adicionar ocorrências, primeiro é preciso salvar o evento"
-msgstr "Para agregar videos, primero debe salvar."
+msgstr "Para agregar ocurrencias, primero debe guardar."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:341
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:341
@@ -1287,9 +1254,8 @@ msgstr "Descripción"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:342
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:342
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:342
-#, fuzzy
 msgid "Descrição do Evento"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del Evento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:342
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:342
@@ -1303,16 +1269,14 @@ msgstr "Agregue una descripción del evento"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:384
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:382
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:384
-#, fuzzy
 msgid "Selecione um projeto"
-msgstr "Seleccione un agente"
+msgstr "Seleccione un proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:395
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:395
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:395
-#, fuzzy
 msgid "Selecionar um Projeto"
-msgstr "Seleccione proyecto padre"
+msgstr "Seleccione un proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:408
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:410
@@ -1320,16 +1284,14 @@ msgstr "Seleccione proyecto padre"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:410
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:408
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:410
-#, fuzzy
 msgid "Linguagens"
-msgstr "Lenguajes: "
+msgstr "Lenguajes"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:410
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:410
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:410
-#, fuzzy
 msgid "Selecione pelo menos uma linguagem"
-msgstr "Seleccione por lo menos un área"
+msgstr "Seleccione por lo menos un lenguaje"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:424
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:424
@@ -1347,9 +1309,8 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:466
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:458
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:466
-#, fuzzy
 msgid "Selecione"
-msgstr "Seleccionar"
+msgstr "Seleccione"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:514
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:514
@@ -1393,9 +1354,8 @@ msgstr "M"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:534
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:534
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/create.php:534
-#, fuzzy
 msgid "Descrição legível do horário"
-msgstr "Descripción del Espacio"
+msgstr "Descripción legible del horario"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/single.php:535
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/event/edit.php:535
@@ -1441,10 +1401,9 @@ msgstr "Agregue una descripción corta"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/space/single.php:129
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/space/edit.php:129
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/space/create.php:129
-#, fuzzy
 msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar"
-msgstr "Para agregar videos, primero debe salvar."
+msgstr "Para agregar archivos para descarga o links, primero debe guardar."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/project/single.php:96
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/project/edit.php:96
@@ -1457,14 +1416,12 @@ msgstr ""
 "proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/project/report.php:8
-#, fuzzy
 msgid "selecionada"
-msgstr "Seleccionar"
+msgstr "seleccionada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/project/report.php:12
-#, fuzzy
 msgid "não selecionada"
-msgstr "Seleccionar"
+msgstr "no seleccionada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/project/report.php:16
 msgid "suplente"
@@ -1497,9 +1454,8 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/single.php:12
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/edit.php:12
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/create.php:11
-#, fuzzy
 msgid "Nome do Aplicativo"
-msgstr "Sellos Aplicados"
+msgstr "Nombre del Aplicativo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/single.php:16
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/edit.php:16
@@ -1518,9 +1474,8 @@ msgstr "ver/ocultar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/single.php:23
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/edit.php:23
-#, fuzzy
 msgid "Atualizar"
-msgstr "Visualizar"
+msgstr "Actualizar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/app/create.php:8
 msgid "Novo App"
@@ -1579,9 +1534,8 @@ msgid "Você não possui nenhum espaço liberado."
 msgstr "Usted no posee ningún espacio liberado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/agents.php:7
-#, fuzzy
 msgid "Adicionar novo agente"
-msgstr "Agregar agente"
+msgstr "Agregar nuevo agente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/agents.php:21
 msgid "Você não possui nenhum agente cadastrado."
@@ -1600,9 +1554,8 @@ msgid "Você não possui nenhum agente liberado."
 msgstr "Usted no posee ningún agente liberado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/projects.php:7
-#, fuzzy
 msgid "Adicionar novo projeto"
-msgstr "Agregar proyecto"
+msgstr "Agregar nuevo proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/projects.php:20
 msgid "Você não possui nenhum projeto."
@@ -1653,9 +1606,8 @@ msgid "Baixar"
 msgstr "Descargar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/seals.php:7
-#, fuzzy
 msgid "Adicionar novo selo"
-msgstr "Agregar nuevo evento"
+msgstr "Agregar nuevo sello"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/seals.php:26
 msgid "Você não possui nenhum rascunho selo."
@@ -1671,7 +1623,6 @@ msgstr "Usted no posee ningún sello liberado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/registrations.php:10
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:3
-#, fuzzy
 msgid "Minhas inscrições"
 msgstr "Mis Inscripciones"
 
@@ -1708,24 +1659,20 @@ msgid "Você não possui nenhum evento liberado."
 msgstr "Usted no posee ningún evento liberado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:21
-#, fuzzy
 msgid "Ver Meus eventos"
-msgstr "Mis eventos"
+msgstr "Ver mis eventos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:23
-#, fuzzy
 msgid "Ver Eventos Cedidos"
-msgstr "evento agendados"
+msgstr "Ver Eventos Cedidos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:24
-#, fuzzy
 msgid "Adicionar eventos"
-msgstr "Agregar evento"
+msgstr "Agregar eventos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:38
-#, fuzzy
 msgid "Ver meus agentes"
-msgstr "Mis Agentes"
+msgstr "Ver mis agentes"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:40
 msgid "Ver Agentes Cedidos"
@@ -1741,51 +1688,42 @@ msgid "Ver"
 msgstr "Ver"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:57
-#, fuzzy
 msgid "Ver Espaços Cedidos"
-msgstr "espacios registrados"
+msgstr "Ver espacios Cedidos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:58
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:209
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:27
-#, fuzzy
 msgid "Adicionar"
-msgstr "Agregar "
+msgstr "Agregar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:72
-#, fuzzy
 msgid "Ver meus projetos"
-msgstr "Mis Proyectos"
+msgstr "Ver miis Proyectos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:74
-#, fuzzy
 msgid "Ver Projetos Cedidos"
-msgstr "MisProyectos"
+msgstr "Ver Proyectos Cedidos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:75
-#, fuzzy
 msgid "Adicionar projetos"
-msgstr "Agregar proyecto"
+msgstr "Agregar proyectos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:89
-#, fuzzy
 msgid "Ver meus selos"
-msgstr "Mis sellos"
+msgstr "Ver mis sellos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:91
-#, fuzzy
 msgid "Ver Selos Cedidos"
-msgstr "Sellos Aplicados"
+msgstr "Ver Sellos Cedidos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:92
-#, fuzzy
 msgid "Adicionar selos"
-msgstr "Agregar sello"
+msgstr "Agregar sellos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:101
-#, fuzzy
 msgid "Atividades"
-msgstr "Ver todas las actividades"
+msgstr "Actividades"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/index.php:116
 msgid "Em"
@@ -1807,14 +1745,12 @@ msgid "rejeitar"
 msgstr "rechazar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/apps.php:6
-#, fuzzy
 msgid "Meus apps"
 msgstr "Mis Apps"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/apps.php:7
-#, fuzzy
 msgid "Adicionar novo app"
-msgstr "Agregar nuevo evento"
+msgstr "Agregar nueva app"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/apps.php:18
 msgid "Você não possui nenhum app cadastrado."
@@ -1825,9 +1761,8 @@ msgid "Você não possui nenhum app na lixeira."
 msgstr "Usted no posee ninguna app en la papelera."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/printsealrelation.php:25
-#, fuzzy
 msgid "Certificado"
-msgstr "Verificados"
+msgstr "Certificado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:69
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:69
@@ -1867,17 +1802,15 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:95
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/sealrelation.php:75
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/create.php:95
-#, fuzzy
 msgid "Descrição do Selo"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del Sello"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:95
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:95
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/sealrelation.php:75
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/create.php:95
-#, fuzzy
 msgid "Insira uma descrição do selo"
-msgstr "Descripción del Espacio"
+msgstr "Ingrese una descripción del sello"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:102
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:102
@@ -1900,16 +1833,14 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:104
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:104
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/create.php:104
-#, fuzzy
 msgid "Nome do selo aplicado"
-msgstr "Sellos Aplicados"
+msgstr "Nombre del Sello aplicado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/create.php:105
-#, fuzzy
 msgid "Descrição curta do selo aplicado"
-msgstr "Descripción del Espacio"
+msgstr "Descripción corta del sello aplicado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/single.php:106
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/seal/edit.php:106
@@ -2016,13 +1947,13 @@ msgstr "Agregue el Nombre Completo o la Razón Social"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:91
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:91
 msgid "CPF/CNPJ"
-msgstr ""
+msgstr "CI/RUT"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:91
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:91
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:91
 msgid "Insira o CPF ou CNPJ com pontos, hífens e barras"
-msgstr ""
+msgstr "Ingrese CI o RUT con puntos, guiones y barras"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:92
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:93
@@ -2030,108 +1961,107 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:93
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:92
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:93
-#, fuzzy
 msgid "Data de Nascimento/Fundação"
-msgstr "Fecha de creación:"
+msgstr "Fecha de Nacimiento/Fundación"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:93
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:93
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:93
 msgid "Insira a data de nascimento ou fundação do agente"
-msgstr ""
+msgstr "Ingrese la fecha de nacimiento o fundación del agente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:97
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:97
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:97
 msgid "Gênero"
-msgstr ""
+msgstr "Género"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:97
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:97
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:97
 msgid "Selecione o gênero se for pessoa física"
-msgstr ""
+msgstr "Seleccione el género, en el caso de persona física"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:98
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:98
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:98
 msgid "Orientação Sexual"
-msgstr ""
+msgstr "Orientación sexual"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:98
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:98
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:98
 msgid "Selecione a orientação sexual se for pessoa física"
-msgstr ""
+msgstr "Seleccione la orientación sexual en caso de persona física"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:99
 msgid "Raça/Cor"
-msgstr ""
+msgstr "Raza/Color"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:99
 msgid "Raça/cor"
-msgstr ""
+msgstr "Raza/Color"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:99
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:99
 msgid "Selecione a raça/cor se for pessoa física"
-msgstr ""
+msgstr "Seleccione raza/color en caso de persona física"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:101
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:101
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:101
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:42
 msgid "Email Privado"
-msgstr ""
+msgstr "E-mail Privado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:101
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:101
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:101
 msgid "Insira um email que não será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un e-mail que será exhibido públicamente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:105
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:38
 msgid "Email Público"
-msgstr ""
+msgstr "E-mail Público"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:105
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:105
 msgid "Insira um email que será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un e-mail que será exhibido públicamente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:109
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:109
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:109
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:46
 msgid "Telefone Público"
-msgstr ""
+msgstr "Teléfono Público"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:109
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:109
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:109
 msgid "Insira um telefone que será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un teléfono que será exhibido públicamente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:113
 msgid "Telefone 1"
-msgstr ""
+msgstr "Teléfono 1"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:114
@@ -2140,7 +2070,7 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:114
 msgid "Telefone Privado"
-msgstr ""
+msgstr "Teléfono Privado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:114
@@ -2149,39 +2079,37 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:113
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:114
 msgid "Insira um telefone que não será exibido publicamente"
-msgstr ""
+msgstr "Ingrese un teléfono que no será exhibido públicamente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:114
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:114
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:114
 msgid "Telefone 2"
-msgstr ""
+msgstr "Teléfono 2"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:127
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:127
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:127
-#, fuzzy
 msgid "Descrição do Agente"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del Agente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:127
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:127
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:127
-#, fuzzy
 msgid "Insira uma descrição do agente"
-msgstr "Espacios del agente"
+msgstr "Ingrese una descripción del agente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:164
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:164
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:164
 msgid "Mensagem"
-msgstr ""
+msgstr "Mensaje"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:168
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:168
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/create.php:168
 msgid "Enviar Denúncia"
-msgstr ""
+msgstr "Enviar Denuncia"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/single.php:185
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/agent/edit.php:185
@@ -2190,51 +2118,48 @@ msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "agente."
 msgstr ""
+"Para agregar archivos para descarga o links, primero es preciso guardar el "
+"agente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/generic/list.php:16
 msgid "ID"
 msgstr ""
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/generic/list.php:27
-#, fuzzy
 msgid "edit"
 msgstr "editar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/generic/list.php:39
 msgid "Your comments here..."
-msgstr ""
+msgstr "Sus comentario aquí..."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/generic/list.php:40
 msgid "Enter comments"
-msgstr ""
+msgstr "Ingrese comentarios"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/generic/edit.php:1
 msgid "list"
-msgstr ""
+msgstr "lista"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:26
-#, fuzzy
 msgid "Local"
-msgstr "Local:"
+msgstr "Local"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:27
 msgid "Digite um endereço"
-msgstr ""
+msgstr "Digite una dirección"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:31
-#, fuzzy
 msgid "Buscar somente resultados próximos a mim."
-msgstr "Mostrar solamente resultados Verificados"
+msgstr "Buscar solamente resultados próximos a mi."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:36
-#, fuzzy
 msgid "Mostrar"
-msgstr "Entrar"
+msgstr "Mostrar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:70
-#, fuzzy
 msgid "Áreas de atuação"
-msgstr "Área de actuación"
+msgstr "Áreas de actuación"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:91
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:198
@@ -2245,9 +2170,8 @@ msgid "Área de atuação"
 msgstr "Área de actuación"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:103
-#, fuzzy
 msgid "Eventos encontrados em:"
-msgstr "evento encontrados"
+msgstr "Eventos encontrados en:"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/search.php:160
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-projects.php:62
@@ -2266,7 +2190,7 @@ msgstr "Agregar evento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/site/permission-denied.php:1
 msgid "Você não tem permissão para executar esta operação."
-msgstr ""
+msgstr "Usted no tiene permiso para ejecutar esta acción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/home-agents.php:32
 msgid "agentes cadastrados"
@@ -2297,17 +2221,15 @@ msgstr "Ver todo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:21
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:26
-#, fuzzy
 msgid "Adicionar Link"
-msgstr "Agregar "
+msgstr "Agregar Link"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:29
-#, fuzzy
 msgid "Clique para adicionar links"
-msgstr "Haga clic para agregar archivo para descarga"
+msgstr "Haga clic para agregar archivo links"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:44
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:20
@@ -2320,9 +2242,8 @@ msgid "editar"
 msgstr "editar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:46
-#, fuzzy
 msgid "Excluir este link?"
-msgstr "Eliminar este video?"
+msgstr "Eliminar este link?"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:47
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:24
@@ -2341,9 +2262,8 @@ msgid "excluir"
 msgstr "borrar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:54
-#, fuzzy
 msgid "Editar Link"
-msgstr "Editar"
+msgstr "Editar Link"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:58
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:15
@@ -2353,12 +2273,11 @@ msgstr "Título"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:59
 msgid "Endereço (com http://)"
-msgstr ""
+msgstr "Dirección (con http://)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/link-list.php:62
-#, fuzzy
 msgid "Para adicionar links você primeiro deve salvar."
-msgstr "Para agregar videos, primero debe salvar."
+msgstr "Para agregar links, primero debe guardar."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel-agent.php:7
 msgid "Este é seu agente padrão."
@@ -2432,7 +2351,7 @@ msgstr "Compartir"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:5
 msgid "Tweet"
-msgstr ""
+msgstr "Tweet"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/redes-sociais.php:24
 msgid "Seguir"
@@ -2727,9 +2646,10 @@ msgid "Remover todos filtros"
 msgstr "Remover todos los filtros"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:11
-#, fuzzy, php-format
+#, php-format
 msgid "Para relacionar o selo ao %s, primeiro é preciso salvar o registro."
-msgstr "primero es preciso salvar el registro"
+msgstr ""
+"Para relacionar el sello al %s, primero es preciso guardar el registro."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/related-seals.php:16
 msgid "Selos Aplicados"
@@ -2920,64 +2840,58 @@ msgid "Buscar agentes"
 msgstr "Buscar agentes"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-events.php:10
-#, fuzzy
 msgid "Buscar eventos"
-msgstr "Buscar agentes"
+msgstr "Buscar eventos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-projects.php:10
-#, fuzzy
 msgid "Buscar projetos"
-msgstr "Mis Proyectos"
+msgstr "Buscar proyectos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/search/filter-projects.php:33
-#, fuzzy
 msgid "Exibir somente resultados verificados"
-msgstr "Mostrar solamente resultados Verificados"
+msgstr "Mostrar solamente resultados verificados"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel/highlighted-message.php:2
 msgid "Olá"
-msgstr ""
+msgstr "Hola"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/panel/highlighted-message.php:2
 msgid "bem-vindo ao painel do"
-msgstr ""
+msgstr "Bienvenido al panel de"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:6
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:15
-#, fuzzy
 msgid "Publicação livre"
-msgstr "Publicado por"
+msgstr "Publicación libre"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:7
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:16
 msgid "Qualquer pessoa pode criar eventos."
-msgstr ""
+msgstr "Cualquier persona puede crear eventos."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:9
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:18
 msgid "Publicação restrita"
-msgstr ""
+msgstr "Publicación restringida"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:10
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:19
 msgid "Requer autorização para criar eventos."
-msgstr ""
+msgstr "Requiere autorización para crear eventos."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:35
-#, fuzzy
 msgid "Descrição do Projeto"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del Proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:35
 msgid "Insira uma descrição do projeto"
-msgstr ""
+msgstr "Ingrese una descripción del proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:14
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:7
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:17
-#, fuzzy
 msgid "Selos Certificadores"
-msgstr "Resultados Verificados"
+msgstr "Sellos Certificadores"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:15
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:18
@@ -2985,238 +2899,225 @@ msgid ""
 "Selos certificadores que serão atribuídos aos agentes da inscrição quando a "
 "mesma for aprovada."
 msgstr ""
+"Sellos certificadores que serán atribuidos a los agentes de la inscripción "
+"cuando la misma fuera aprobada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:19
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:11
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:22
-#, fuzzy
 msgid "Agente responsável"
-msgstr "Responsable:"
+msgstr "Agente responsable"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:21
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:24
 msgid "Selos atribuídos a agentes"
-msgstr ""
+msgstr "Sellos atribuidos a agentes"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:37
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:42
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:40
 msgid "Instituição responsável"
-msgstr ""
+msgstr "Institución responsable"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:39
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:42
 msgid "Selos atribuídos a instituições"
-msgstr ""
+msgstr "Sellos atribuidos a instituciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:55
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:72
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
 msgid "Coletivo"
-msgstr ""
+msgstr "Colectivo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:57
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:60
 msgid "Selos atribuídos a agentes coletivos"
-msgstr ""
+msgstr "Sellos atribuidos a agentes colectivos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:5
-#, fuzzy
 msgid "marcar eventos listados"
-msgstr "evento encontrados"
+msgstr "marcar eventos listados"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:6
 msgid "desmarcar eventos listados"
-msgstr ""
+msgstr "desmarcar eventos listados"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:8
-#, fuzzy
 msgid "filtrar eventos"
-msgstr "Filtrar Eventos"
+msgstr "filtrar eventos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:35
 msgid "Autor"
-msgstr ""
+msgstr "Autor"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:2
 msgid "Inscrição enviada no dia"
-msgstr ""
+msgstr "Inscripción enviada el dia"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:6
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:1
 msgid "Formulário de Inscrição"
-msgstr ""
+msgstr "Formulario de inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:9
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:4
-#, fuzzy
 msgid "Número da Inscrição"
-msgstr "Descripción"
+msgstr "Número de la Inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:11
-#, fuzzy
 msgid "Encontrar minha localização"
-msgstr "agentes sin localización"
+msgstr "Encontrar mi localización"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:19
 msgid "Insira o endereço"
-msgstr ""
+msgstr "Ingrese una dirección"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:21
 msgid "CEP"
-msgstr ""
+msgstr "CP"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:21
-#, fuzzy
 msgid "Insira o CEP"
-msgstr "Introduzca etiquetas"
+msgstr "Ingrese el CP"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:22
 msgid "Logradouro"
-msgstr ""
+msgstr "Calle"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:22
 msgid "Insira o logradouro"
-msgstr ""
+msgstr "Ingrese la calle"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:23
 msgid "Insira o Número"
-msgstr ""
+msgstr "Ingrese el Número"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:24
 msgid "Complemento"
-msgstr ""
+msgstr "Complemento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:24
 msgid "Insira um complemento"
-msgstr ""
+msgstr "Ingrese un complemento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:25
 msgid "Bairro"
-msgstr ""
+msgstr "Barrio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:25
-#, fuzzy
 msgid "Insira o Bairro"
-msgstr "Introduzca etiquetas"
+msgstr "Ingrese el Barrio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:26
 msgid "Município"
-msgstr ""
+msgstr "Municipio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:26
 msgid "Insira o Município"
-msgstr ""
+msgstr "Ingrese el Municipio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:27
 msgid "Estado"
-msgstr ""
+msgstr "Departamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:27
-#, fuzzy
 msgid "Insira o Estado"
-msgstr "Introduzca etiquetas"
+msgstr "Ingrese el Departamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/location.php:30
-#, fuzzy
 msgid "Localização"
-msgstr "sin localización"
+msgstr "Localización"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/entity-status.php:10
 #, php-format
 msgid "Este %s é um rascunho"
-msgstr ""
+msgstr "Este %s es un borrador"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/entity-status.php:12
 #, php-format
 msgid "Este %s está na lixeira"
-msgstr ""
+msgstr "Este %s está en la papelera"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:2
 msgid "Itens com asterisco são obrigatórios."
-msgstr ""
+msgstr "Items con asterisco son obligatorios."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-tabs.php:8
 msgid "Resultado"
-msgstr ""
+msgstr "Resultado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-tabs.php:10
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:2
-#, fuzzy
 msgid "Inscritos"
-msgstr "Inscripciones:"
+msgstr "Inscriptos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-tabs.php:14
-#, fuzzy
 msgid "Status dos eventos"
-msgstr "Mis eventos"
+msgstr "Estado de los eventos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:7
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:25
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:5
-#, fuzzy
 msgid "Inscrição"
-msgstr "Descripción"
+msgstr "Inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:25
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:57
-#, fuzzy
 msgid "Responsável"
-msgstr "Responsable:"
+msgstr "Responsable"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:43
 msgid "Enviada em"
-msgstr ""
+msgstr "Enviada en"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:45
 msgid "Não enviada."
-msgstr ""
+msgstr "No enviada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:46
 msgid "Editar e enviar"
-msgstr ""
+msgstr "Editar e enviar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--fields.php:2
 msgid "Campos adicionais do formulário de inscrição."
-msgstr ""
+msgstr "Campos adicionales del formulario de inscripción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--fields.php:10
-#, fuzzy
 msgid "Campo não informado."
-msgstr "No informado"
+msgstr "Campo no informado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--fields.php:15
 msgid "Arquivo não enviado."
-msgstr ""
+msgstr "Archivo no enviado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-extra-info.php:7
 msgid "Critérios de uso"
-msgstr ""
+msgstr "Criterios de uso"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/permissions.php:16
-#, fuzzy
 msgid "Área(s) de atuação"
-msgstr "Área(s) de actuación:"
+msgstr "Área(s) de actuación"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/permissions.php:21
 msgid "Você não possui nenhum agente com permissão."
-msgstr ""
+msgstr "Usted no posee ningún agente con permiso."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--config.php:4
 msgid ""
 "Utilize este espaço caso queira abrir inscrições para Agentes Culturais "
 "cadastrados na plataforma."
 msgstr ""
+"Utilice este espacio en caso que quiera abrir inscripciones para Agentes "
+"Culturales registrados en la plataforma."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/type.php:8
-#, fuzzy
 msgid "Selecione um tipo"
-msgstr "Seleccione los tipos"
+msgstr "Seleccione un tipo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/avatar.php:10
-#, fuzzy
 msgid "Editar avatar"
-msgstr "Editar"
+msgstr "Editar avatar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:11
 msgid ""
@@ -3225,6 +3126,10 @@ msgid ""
 "coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas "
 "informações são necessárias e se são obrigatórias."
 msgstr ""
+"Toda inscripción obligatoriamente debe poseer un Agente Individual "
+"responsable, pero es posible que la inscripción sea hecha en nombre de un "
+"agente colectivo, con o sin RUT. En esos casos, es preciso definir abajo si "
+"esa información es necesaria y si es obligatoria."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:12
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:5
@@ -3233,52 +3138,52 @@ msgid ""
 "A edição destas opções estão desabilitadas porque agentes já se inscreveram "
 "neste projeto."
 msgstr ""
+"La edición de estas opciones están deshabilitadas porque agentes ya se "
+"inscribieron en este proyecto."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:27
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--categories.php:7
-#, fuzzy
 msgid "Selecione uma opção"
-msgstr "Seleccione la clasificación"
+msgstr "Seleccione una opción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:34
 msgid "Número máximo de vagas no projeto"
-msgstr ""
+msgstr "Número máximo de vacantes en el proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:35
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:41
 msgid "Zero (0) significa sem limites"
-msgstr ""
+msgstr "Cero (0) significa sin límites"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:36
 msgid "Número máximo de inscrições no projeto"
-msgstr ""
+msgstr "Número máximo de inscripciones en el proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:36
 msgid "Insira o número máximo de inscrições no projeto"
-msgstr ""
+msgstr "Ingrese el número máximo de inscripciones en el proyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:42
 msgid "Número máximo de inscrições por agente responsável"
-msgstr ""
+msgstr "Número máximo de inscripciones por agente responsable"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:42
 msgid "Insira o número máximo de inscrições por agente responsável"
-msgstr ""
+msgstr "Ingrese el número máximo de inscripciones por agente responsable"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--online-registration-button.php:2
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--online-registration-button.php:4
-#, fuzzy
 msgid "Inscrições online"
-msgstr "Inscripciones:"
+msgstr "Inscripciones online"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:2
 msgid "Campos adicionais"
-msgstr ""
+msgstr "Campos adicionales"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:3
 msgid "Para efetuar sua inscrição, informe os campos abaixo."
-msgstr ""
+msgstr "Para afectuar su inscripción, informe los campos abajo."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:12
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:15
@@ -3288,122 +3193,114 @@ msgstr ""
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:31
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:35
 msgid "Informe"
-msgstr ""
+msgstr "Informe"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:45
 msgid "baixar modelo"
-msgstr ""
+msgstr "descargar modelo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:53
 msgid "anexo"
-msgstr ""
+msgstr "adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:54
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:151
-#, fuzzy
 msgid "excluir anexo"
-msgstr "Borrar sello"
+msgstr "eliminar adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:57
 msgid "Enviar anexo"
-msgstr ""
+msgstr "Enviar adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:60
-#, fuzzy
 msgid "Tamanho máximo do arquivo:"
 msgstr "Tamaño máximo de archivo:"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:3
 msgid "Campos"
-msgstr ""
+msgstr "Campos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:4
 msgid "Configure aqui os campos do formulário de inscrição."
-msgstr ""
+msgstr "Configure aquí los campos del formulario de inscripción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:8
-#, fuzzy
 msgid "Antes de configurar os campos é preciso salvar o projeto."
-msgstr "primero es preciso salvar el registro"
+msgstr "Antes de configurar los campos es preciso guardar el proyecto."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:11
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:17
-#, fuzzy
 msgid "Adicionar campo"
-msgstr "Agregar "
+msgstr "Agregar campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:12
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:37
-#, fuzzy
 msgid "Adicionar anexo"
-msgstr "Agregar agente"
+msgstr "Agregar adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:19
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:70
 msgid "Nome do campo"
-msgstr ""
+msgstr "Nombre del campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:20
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:71
-#, fuzzy
 msgid "Descrição do campo"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:22
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:73
 msgid "Opções de seleção"
-msgstr ""
+msgstr "Opciones de selección"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:23
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:74
 msgid "Informe uma opção por linha."
-msgstr ""
+msgstr "Informe una opción por línea."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:26
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:77
 msgid "Quantidade máxima de caracteres"
-msgstr ""
+msgstr "Cantidad máxima de caracteres"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:28
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:79
 msgid "O preenchimento deste campo é obrigatório"
-msgstr ""
+msgstr "El llenado de este campo es obligatorio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:30
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:81
 msgid "Selecione em quais categorias este campo é utilizado"
-msgstr ""
+msgstr "Seleccione en cuáles categorías este campo es utilizado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:38
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:111
 msgid "Nome do anexo"
-msgstr ""
+msgstr "Nombre del adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:39
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:112
-#, fuzzy
 msgid "Descrição do anexo"
-msgstr "Descripción del Espacio"
+msgstr "Descripción del adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:40
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:113
 msgid "O envio deste anexo é obrigatório"
-msgstr ""
+msgstr "El envío de este adjunto es obligatorio"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:42
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:116
 msgid "Selecione em quais categorias este anexo é utilizado"
-msgstr ""
+msgstr "Seleccione en cuáles categorías ese adjunto será utilizado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:56
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:98
 msgid "Somente para"
-msgstr ""
+msgstr "Solamente para"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:68
-#, fuzzy
 msgid "Editar Campo"
-msgstr "Editar"
+msgstr "Editar Campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:68
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:110
@@ -3411,86 +3308,85 @@ msgstr "Editar"
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:16
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:19
 msgid "Salvar"
-msgstr ""
+msgstr "Guardar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:89
-#, fuzzy
 msgid "editar campo"
-msgstr "editar"
+msgstr "editar campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:90
-#, fuzzy
 msgid "excluir campo"
-msgstr "borrar"
+msgstr "borrar campo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:102
 msgid "Anexo"
-msgstr ""
+msgstr "Adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:110
-#, fuzzy
 msgid "Editar Anexo"
-msgstr "Editar Video"
+msgstr "Editar Adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:124
-#, fuzzy
 msgid "Excluir modelo"
-msgstr "Borrar sello"
+msgstr "Borrar modelo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:130
 msgid "Enviar modelo"
-msgstr ""
+msgstr "Enviar modelo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:136
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:18
-#, fuzzy
 msgid "Tamanho máximo do arquivo"
-msgstr "Tamaño máximo de archivo:"
+msgstr "Tamaño máximo del archivo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:149
-#, fuzzy
 msgid "editar anexo"
-msgstr "editando"
+msgstr "editar adjunto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:150
 msgid "enviar modelo"
-msgstr ""
+msgstr "enviar modelo"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:4
 msgid ""
 "Não é possível alterar o status das inscrições através desse dispositivo. "
 "Tente a partir de um dispositivo com tela maior."
 msgstr ""
+"No es posible cambiar el estado de las inscripciones a través de este "
+"dispositivo. Intente a partir de un dispositivo con pantalla más grande."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:7
 msgid "Baixar lista de inscritos"
-msgstr ""
+msgstr "Descargar lista de inscriptos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:10
 msgid ""
 "Altere os status das inscrições na última coluna da tabela de acordo com o "
 "seguinte critério:"
 msgstr ""
+"Cambie el estado de las inscripciones en la última columna de la tabla de "
+"acuerdo con el siguiente criterio:"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:12
 msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
 msgstr ""
+"No válida - no cumple con el reglamento (ejem. documentación incorrecta)."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:13
 msgid "Pendente - ainda não avaliada."
-msgstr ""
+msgstr "Pendiente - aún no validada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:14
 msgid "Não selecionada - avaliada, mas não selecionada."
-msgstr ""
+msgstr "No seleccionada - evaluada, pero no seleccionada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:15
 msgid "Suplente - avaliada, mas aguardando vaga."
-msgstr ""
+msgstr "Suplente - evaluada, pero aguardando vacante."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:16
 msgid "Selecionada - avaliada e selecionada."
-msgstr ""
+msgstr "Seleccionada - evaluada y seleccionada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:17
 msgid ""
@@ -3498,78 +3394,78 @@ msgid ""
 "reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais "
 "exibida nesta tabela."
 msgstr ""
+"Borrador - utilice esta opción para permitir que el responsable edite y "
+"reenvíe una inscripción. Al seleccionar esta opción, la inscripción no será "
+"más exhibida en esta tabla."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:34
 msgid "Anexos"
-msgstr ""
+msgstr "Adjuntos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:44
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:21
 msgid "Nenhuma inscrição enviada."
-msgstr ""
+msgstr "Ninguna inscripción enviada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:45
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:22
 msgid "Nenhuma inscrição encontrada com os filtros selecionados."
-msgstr ""
+msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:46
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:23
 msgid "1 inscrição enviada."
-msgstr ""
+msgstr "1 inscripción enviada."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:47
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:24
 msgid "1 inscrição encontrada com os filtros selecionados."
-msgstr ""
+msgstr "1 inscripción encontrada con los filtros seleccionados."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:48
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:25
-#, fuzzy
 msgid "inscrições enviadas."
-msgstr "Inscripciones abiertas"
+msgstr "Inscripciones enviadas."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:49
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:26
 msgid "inscrições encontradas com os filtros selecionados."
-msgstr ""
+msgstr "inscripciones encontradas con los filtros seleccionados."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:67
-#, fuzzy
 msgid "Baixar arquivos"
-msgstr "Borrar archivo"
+msgstr "Descargar archivos"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:1
 msgid "Baixar o regulamento"
-msgstr ""
+msgstr "Descargar el reglamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:3
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:15
 msgid "Regulamento"
-msgstr ""
+msgstr "Reglamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:6
-#, fuzzy
 msgid "Antes de subir o regulamento é preciso salvar o projeto."
-msgstr "primero es preciso salvar el registro"
+msgstr "Antes de cargar el reglamento es preciso salvar el proyecto."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
 msgstr ""
+"Envíe un archivo con el reglamento. Formatos aceptados: .doc, .odt y .pdf."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 msgid "Enviar regulamento"
-msgstr ""
+msgstr "Enviar reglamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:13
-#, fuzzy
 msgid "excluir regulamento"
-msgstr "eliminar de forma permanente"
+msgstr "eliminar reglamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:13
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:25
 msgid "Opções"
-msgstr ""
+msgstr "Opciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:14
 msgid ""
@@ -3577,269 +3473,270 @@ msgid ""
 "inscrever, como, por exemplo, \"categorias\" ou \"modalidades\". Se não "
 "desejar utilizar este recurso, deixe em branco o campo \"Opções\"."
 msgstr ""
+"Es posible crear opciones para que los proponente elijan a la hora de "
+"inscribirse, como por ejemplo \"categorías\" o \"modalidades\". Si no desea "
+"utilizar este recurso, deje en blanco el campo \"Opciones\"."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:17
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:18
 msgid "Título das opções"
-msgstr ""
+msgstr "Título de las opciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:18
 msgid "Insira um título para o campo de opções"
-msgstr ""
+msgstr "Ingrese un título para el campo de opciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:21
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:22
-#, fuzzy
 msgid "Descrição das opções"
-msgstr "Descripción del Espacio"
+msgstr "Descripción de las opciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:22
 msgid "Insira uma descrição para o campo de opções"
-msgstr ""
+msgstr "Ingrese una descripción para el campo de opciones"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:27
 msgid "Opções de inscrição (coloque uma opção por linha)"
-msgstr ""
+msgstr "Opciones de inscripción (coloque una opción por línea)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--categories.php:27
 msgid "Insira as opções de inscrição"
-msgstr ""
+msgstr "Ingrese las opciones de inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:4
 msgid ""
 "Não é possível realizar as inscrições online através desse dispositivo. "
 "Tente se inscrever a partir de um dispositivo com a tela maior."
 msgstr ""
+" No es posible realizar las incripciones online a través de este "
+"dispositivo. Intente inscribirse a partir de un dispositivo con una pantalla "
+"más grande."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:7
 msgid ""
 "Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um "
 "agente individual (pessoa física), com um CPF válido preenchido."
 msgstr ""
+"Para iniciar su inscripción, seleccione el agente responsable. Él debe ser "
+"un agente individual (persona física), con un documento de identidad válido "
+"ingresado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:10
 msgid "Selecione o agente responsável pela inscrição."
-msgstr ""
+msgstr "Seleccione el agente responsable por la inscripción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:15
-#, fuzzy
 msgid "Fazer inscrição"
-msgstr "Descripción"
+msgstr "Realizar inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:19
 msgid ""
 "Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. "
 "Clique no botão abaixo para criar uma conta ou fazer login."
 msgstr ""
+"Para inscribirse es preciso tener una cuenta y estar logueado en esta "
+"plataforma. Cliquee el botón abajo para crear una cuenta o ingrese a la "
+"plataforma (login)."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration--header.php:20
-#, fuzzy
 msgid "Este projeto é verificado."
-msgstr "verificado"
+msgstr "Este proyecto está verificado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:10
-#, fuzzy
 msgid "Recuperar"
-msgstr "recuperar"
+msgstr "Recuperar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:13
-#, fuzzy
 msgid "Excluir Definitivamente"
-msgstr "eliminar de forma permanente"
+msgstr "Eliminar Definitivamente"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/header-image.php:12
-#, fuzzy
 msgid "Editar Imagem da Capa"
-msgstr "Agregar una imagen a la Galería"
+msgstr "Editar imagen de la portada"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:6
-#, fuzzy
 msgid "Inscrições abertas de"
-msgstr "Inscripciones abiertas"
+msgstr "Inscripciones abiertas de"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
 msgid "às"
-msgstr ""
+msgstr "a las"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
 msgid "Hora final"
-msgstr ""
+msgstr "Hora final"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:8
 msgid ""
 "Relacione os selos que serão atribuídos as entidades relacionadas a "
 "inscrição quando o inscrito for aprovado."
 msgstr ""
+"Relacione los sellos que serán atribuidos a las entidades relacionadas a la "
+"inscripción cuando el inscripto sea aprobado."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:11
 msgid "(Selos atribuídos a agentes)"
-msgstr ""
+msgstr "(Sellos atribuidos a agentes)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:34
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:64
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:94
-#, fuzzy
 msgid "Trocar selo"
-msgstr "Cambiar usuario"
+msgstr "Cambiar sello"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:35
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:65
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:95
-#, fuzzy
 msgid "excluir selo"
-msgstr "Borrar sello"
+msgstr "borrar sello"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:42
 msgid "(Selos atribuídos a instituições)"
-msgstr ""
+msgstr "(Sellos atribuidos a instituciones)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:72
 msgid "(Selos atribuídos a agentes coletivos)"
-msgstr ""
+msgstr "(Sellos atribuidos a agentes colectivos)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php:2
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:2
 msgid "Agentes (proponentes)"
-msgstr ""
+msgstr "Agentes (proponentes)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--publish-button.php:4
 msgid "O resultado já foi publicado"
-msgstr ""
+msgstr "El resultado ya fue publicado"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--publish-button.php:9
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--publish-button.php:11
-#, fuzzy
 msgid "Publicar resultados"
-msgstr "Compartir resultado"
+msgstr "Publicar resultados"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--publish-button.php:11
 msgid ""
 "Você só pode publicar a lista de aprovados após o término do período de "
 "inscrições."
 msgstr ""
+"Usted solo puede publicar la lista de aprobados después del término del "
+"período de inscripciones."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/widget-projects.php:28
-#, fuzzy
 msgid "Adicionar subprojeto"
-msgstr "Agregar proyecto"
+msgstr "Agregar subproyecto"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--categories.php:7
 msgid "Opção"
-msgstr ""
+msgstr "Opción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:5
 msgid "Virtual ou Físico? (se for virtual a localização não é obrigatória)"
-msgstr ""
+msgstr "Virtual o Físico? (si fuera virtual la localización no es obligatoria)"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:14
-#, fuzzy
 msgid "Acessibilidade física"
-msgstr "Accesibilidad"
+msgstr "Accesibilidad física"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:21
 msgid "Capacidade"
-msgstr ""
+msgstr "Capacidad"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:25
 msgid "Horário de funcionamento"
-msgstr ""
+msgstr "Horario de funcionamento"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:50
 msgid "Telefone Privado 1"
-msgstr ""
+msgstr "Teléfono Privado 1"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:51
 msgid "Telefone Privado 2"
-msgstr ""
+msgstr "Teléfono Privado 2"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--intro.php:5
 msgid "Crie um texto de introdução."
-msgstr ""
+msgstr "Cree un texto de introducción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--intro.php:6
-#, fuzzy
 msgid "Introdução da inscrição"
-msgstr "Introducción"
+msgstr "Introducción de la inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--intro.php:6
-#, fuzzy
 msgid "Insira o texto."
-msgstr "Introduzca etiquetas"
+msgstr "Ingrese el texto."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:3
 msgid "Sair do modo de edição"
-msgstr ""
+msgstr "Salir del modo edición"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
 msgid "Salvar este"
-msgstr ""
+msgstr "Guardar este"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
-#, fuzzy
 msgid "como rascunho."
-msgstr "convertir en borrador"
+msgstr "como borrador."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
-#, fuzzy
 msgid "Salvar rascunho"
-msgstr "convertir en borrador"
+msgstr "Guardar borrador"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
 msgid "Salvar e publicar este"
-msgstr ""
+msgstr "Guardar y publicar este"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
-#, fuzzy
 msgid "Publicar"
-msgstr "publicar"
+msgstr "Publicar"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:23
 msgid "Os ícones de lápis indicam conteúdos editáveis."
-msgstr ""
+msgstr "Los íconos de lápiz indican contenidos editables."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--roles.php:10
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/control--roles.php:16
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:3
 msgid ""
 "Certifique-se que você preencheu as informações corretamente antes de enviar "
 "sua inscrição."
 msgstr ""
+"Asegúrese de que ha introducido la información correcta antes de enviar su "
+"inscripción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:3
 msgid "Depois de enviada, não será mais possível editá-la."
-msgstr ""
+msgstr "Después de enviada, no será posible editarla."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:4
-#, fuzzy
 msgid "Enviar inscrição"
-msgstr "Descripción"
+msgstr "Enviar inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:14
-#, fuzzy
 msgid "As inscrições encerraram-se em"
-msgstr "Inscripciones abiertas"
+msgstr "Las inscripciones se cerrarán en"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
 msgid ""
 "Somente super admins podem usar este botão e somente deve ser usado para "
 "enviar inscrições que não foram enviadas por problema do sistema."
 msgstr ""
+"Solamente súper administradores pueden usar este botón y solamente debe ser "
+"usado para enviar inscripciones que no fueron enviadas por problemas del "
+"sistema."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
 msgid "enviar esta inscrição"
-msgstr ""
+msgstr "enviar esta inscripción"
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:3
 msgid "Relacione os agentes responsáveis pela inscrição."
-msgstr ""
+msgstr "Relaciones los agentes responsables por la inscripción."
 
 #: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:24
-#, fuzzy
 msgid "Trocar agente"
-msgstr "Buscar agentes"
+msgstr "Cambiar agente"
 
 #~ msgid "Clique para marcar/desmarcar este"
 #~ msgstr "Haga clic para marcar/desmarcar este"
