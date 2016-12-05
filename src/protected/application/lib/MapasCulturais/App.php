@@ -165,9 +165,6 @@ class App extends \Slim\Slim{
 
         $this->_initiated = true;
 
-        //Load defaut translation textdomain
-        i::load_default_textdomain();
-
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
@@ -412,6 +409,9 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
+            
+        //Load defaut translation textdomain
+        i::load_default_textdomain();
 
         return $this;
     }

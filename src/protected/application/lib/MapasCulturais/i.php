@@ -12,7 +12,8 @@ use POMO\MO;
 class i {
 
     static function get_locale() {
-        return 'es_ES';
+        $app = App::i();
+        return $app->config['app.lcode'];
     }
 
     /**
