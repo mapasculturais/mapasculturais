@@ -22,7 +22,8 @@ class Subsite extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft,
         Traits\ControllerArchive,
-        Traits\ControllerSubSiteAdmin;
+        Traits\ControllerSubSiteAdmin,
+        Traits\ControllerAPI;
 
     protected function __construct() {
         parent::__construct();
