@@ -32,7 +32,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-owner', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
-		                	<a ng-click="removeSeal('owner')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>"<?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
+		                	<a ng-click="removeSeal('owner')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>"><?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
 		                </div>
 	            	</div>
 				</div>
@@ -62,7 +62,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-institution', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
-		                	<a ng-click="removeSeal('institution')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>" <?php \MapasCulturais\i::_e("Excluir");?> </a>
+		                	<a ng-click="removeSeal('institution')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>"> <?php \MapasCulturais\i::_e("Excluir");?> </a>
 		                </div>
 	            	</div>
 				</div>
@@ -92,7 +92,7 @@ if(!$app->isEnabled('seals'))
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-collective', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
-		                	<a ng-click="removeSeal('collective')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>"<?php \MapasCulturais\i::esc_attr_e("Excluir");?> </a>
+		                	<a ng-click="removeSeal('collective')" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir selo");?>"><?php \MapasCulturais\i::esc_attr_e("Excluir");?> </a>
 		                </div>
 	            	</div>
 				</div>
