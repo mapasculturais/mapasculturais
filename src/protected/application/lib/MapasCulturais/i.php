@@ -102,8 +102,7 @@ class i {
      * @return string Translated text on success, original text on failure.
      */
     static function esc_attr__( $text, $domain = 'default' ) {
-    	// TODO:
-        return self::translate( $text, $domain ) ;
+        return htmlspecialchars(self::translate( $text, $domain )) ;
     }
 
     /**
@@ -136,7 +135,6 @@ class i {
      * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
      */
     static function esc_attr_e( $text, $domain = 'default' ) {
-    	//TODO: metodo para escapar string para seren utilizadas em atributos HTML
         echo self::esc_attr__( $text, $domain ) ;
     }
 
