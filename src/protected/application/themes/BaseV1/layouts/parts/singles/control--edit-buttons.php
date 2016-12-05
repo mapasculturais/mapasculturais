@@ -7,9 +7,10 @@
     <?php if($entity->isNew() || $entity->status === $status_draft):  ?>
         <a class="btn btn-default js-submit-button hltip" data-status="<?php echo $status_draft ?>"  hltitle="Salvar este <?php echo strtolower($entity->getEntityType()) ?> como rascunho.">Salvar rascunho</a>
         <a class="btn btn-primary js-submit-button hltip" data-status="<?php echo $status_enabled ?>" hltitle="Salvar e publicar este <?php echo strtolower($entity->getEntityType()) ?>.">Publicar</a>
-
+        <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$this->controller->id . 's'); ?>">Cancelar</a>
     <?php else: ?>
         <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
+
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>
@@ -17,6 +18,7 @@
 
 <?php else: ?>
     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>">Salvar</a>
+
 <?php endif; ?>
 
 <script type="text/javascript">
