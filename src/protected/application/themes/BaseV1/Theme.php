@@ -42,18 +42,18 @@ class Theme extends MapasCulturais\Theme {
                 'title' => 'Nomes das entidades',
                 'description' => 'Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é interessante renomear as entidades, como por exemplo em uma instalação que só exibe museus é interessante chamar os espaços de museus.'
             ],
-            'error' => [
-                'title' => 'Erros',
-                'description' => 'Textos das mensagens de erro'
-            ],
-            'roles' => [
-                'title' => 'Perfis e Papéis',
-                'description' => 'Textos referente a perfis e papéis de usuários'
-            ],
-            'taxonomies' => [
-                'title' => 'Tipologia',
-                'description' => 'Nomes da taxonomias utilizadas no site'
-            ]
+//            'error' => [
+//                'title' => 'Erros',
+//                'description' => 'Textos das mensagens de erro'
+//            ],
+//            'roles' => [
+//                'title' => 'Perfis e Papéis',
+//                'description' => 'Textos referente a perfis e papéis de usuários'
+//            ],
+//            'taxonomies' => [
+//                'title' => 'Tipologia',
+//                'description' => 'Nomes da taxonomias utilizadas no site'
+//            ]
         ];
         
         return $groups;
@@ -178,406 +178,470 @@ class Theme extends MapasCulturais\Theme {
             
             
             // NOMES DAS ENTIDADES
-            'entities: My Projects' => [
-                'name' => 'texto "Meus Projetos"',
-                'description' => '',
-                'examples' => [],
-                'text' => 'Meus Projetos'
-            ],
-            'entities: My projects' => [
-                'name' => 'Projetos',
-                'description' => 'Nome de exibição, sobre e descrição',
-                'examples' => [],
-                'text' => 'Meus projetos'
-            ],
-            'entities: My Events' => [
-                'name' => 'Eventos',
-                'description' => 'Buscar, adicionar e filtrar eventos ',
-                'examples' => [],
-                'text' => 'Meus Eventos'
-            ],
-            'entities: My events' => [
-                'name' => 'Eventos',
-                'description' => 'Buscar eventos vizualizando pelo Mapa ou por pesquisa',
-                'examples' => [],
-                'text' => 'Meus eventos'
-            ],
-            'entities: My Agents' => [
-                'name' => 'Meus Agentes',
-                'description' => 'Agentes Ativos, rascunhos e adicionar Agentes',
-                'examples' => [],
-                'text' => 'Meus Agentes'
-            ],
-            'entities: My agents' => [
-                'name' => 'Meus Agentes',
-                'description' => 'Agentes Ativos, rascunhos e adicionar Agentes',
-                'examples' => [],
-                'text' => 'Meus agentes'
-            ],
-            'entities: Spaces of the agent' => [
-                'name' => 'Espaços do agente',
-                'description' => 'Conseguimos vizualizar todos os as agentes e adicionar',
-                'examples' => [],
-                'text' => 'Espaços do agente'
-            ],
-            'entities: Space Description' => [
-                'name' => 'Descrição do Espaço',
-                'description' => 'Nome, sobre, descrição e critérios de uso espaço',
-                'examples' => [],
-                'text' => 'Descrição do Espaço'
-            ],
-            'entities: Agent children' => [
-                'name' => 'Agentes',
-                'description' => 'Buscar agentes por área ou endereço',
-                'examples' => [],
-                'text' => 'Agentes'
-            ],
-            'entities: My Spaces' => [
-                'name' => 'Meus Espaços ',
-                'description' => 'Adicionar novo, espaços ativos',
-                'examples' => [],
-                'text' => 'Meus Espaços'
-            ],
-            'entities: My spaces' => [
-                'name' => 'Meus espaços',
-                'description' => 'Adicionar novo, espaços ativos ',
-                'examples' => [],
-                'text' => 'Meus espaços'
-            ],
-            'entities: Subsite Description' => [
-                'name' => 'Descrição Subsite',
-                'description' => 'Nome da Instalação, Agentes, Espaços, Eventos, Selos verificadores',
-                'examples' => [],
-                'text' => 'Descrição do Subsite'
-            ],
-            'entities: My Subsites' => [
-                'name' => 'Meus Subsites',
-                'description' => 'Adicionar novo, Subsites ativos',
-                'examples' => [],
-                'text' => 'Meus Subsites'
-            ],
-            'entities: My subsites' => [
-                'name' => 'Meus subsites',
-                'description' => 'Adicionar novo, subsites ativos',
-                'examples' => [],
-                'text' => 'Meus subsites'
-            ],
-            'entities: Subsite' => [
-                'name' => 'Subsite',
-                'description' => 'Agentes, Espaços, Eventos e Selos verificadores',
-                'examples' => [],
-                'text' => 'Subsite'
-            ],
-            'entities: no registered subsite' => [
-                'name' => 'Nenhum subsite cadastrado',
-                'description' => 'Exemplo: "Você não possui nenhum Subsite."',
-                'examples' => [],
-                'text' => 'nenhum subsite cadastrado'
-            ],
-            'entities: no subsite' => [
-                'name' => 'Nenhum subsite',
-                'description' => 'Exemplo: "Você não possui nenhum Subsite."',
-                'examples' => [],
-                'text' => 'nenhum subsite'
-            ],
-            'entities: registered subsite' => [
-                'name' => 'Subsite cadastrado',
-                'description' => 'Preencher todos os dados e clicar em Publicar',
-                'examples' => [],
-                'text' => 'subsite cadastrado'
-            ],
-            'entities: add new subsite' => [
-                'name' => 'Adicionar novo subsite',
-                'description' => 'Clicar em Adicionar novo Subsite',
-                'examples' => [],
-                'text' => "Adicionar novo subsite"
-            ],
-            'entities: My Seals' => [
-                'name' => 'Meus Selos',
-                'description' => 'Adicionar, ativos, rascunhos ',
-                'examples' => [],
-                'text' => 'Meus Selos'
-            ],
-            'entities: My seals' => [
-                'name' => 'Meus Selos',
-                'description' => 'Adicionar, ativos, rascunhos',
-                'examples' => [],
-                'text' => 'Meus selos'
-            ],
-            'entities: no registered spaces' => [
-                'name' => 'Nenhum espaço cadastrado',
-                'description' => 'Exemplo: "Você não possui nenhum espaço cadastrado."',
-                'examples' => [],
-                'text' => 'nenhum espaço cadastrado'
-            ],
-            'entities: no spaces' => [
-                'name' => 'Nenhum espaço',
-                'description' => 'Exemplo: "Você não possui nenhum espaço cadastrado."',
-                'examples' => [],
-                'text' => 'nenhum espaço'
-            ],
+
+// ======== Espaços
             'entities: Space' => [
-                'name' => 'Espaço',
-                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
-                'examples' => [],
+                'name' => 'texto "Espaço"',
+                'description' => 'nome da entidade Espaço no singular',
+                'examples' => ['Espaço', 'Museu', 'Biblioteca'],
                 'text' => 'Espaço'
             ],
             'entities: Spaces' => [
-                'name' => 'Espaços',
-                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
-                'examples' => [],
+                'name' => 'texto "Espaços"',
+                'description' => 'nome da entidade Espaço no plural',
+                'examples' => ['Espaços', 'Museus', 'Bibliotecas'],
                 'text' => 'Espaços'
             ],
             'entities: space' => [
-                'name' => 'Espaço',
-                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
-                'examples' => [],
+                'name' => 'texto "espaço"',
+                'description' => 'nome da entidade espaço no singular',
+                'examples' => ['espaço', 'museu', 'biblioteca'],
                 'text' => 'espaço'
             ],
             'entities: spaces' => [
-                'name' => 'Espaço',
-                'description' => 'Buscar por áreas, tipos ou endereço. Campo para acessibilidade',
-                'examples' => [],
+                'name' => 'texto "espaços"',
+                'description' => 'nome da entidade espaço no plural',
+                'examples' => ['espaços', 'museus', 'bibliotecas'],
                 'text' => 'espaços'
             ],
+            'entities: My Spaces' => [
+                'name' => 'texto "Meus Espaços"',
+                'description' => '',
+                'examples' => ['Meus Espaços', 'Meus Museus', 'Minhas Bibliotecas'],
+                'text' => 'Meus Espaços'
+            ],
+            'entities: My spaces' => [
+                'name' => 'texto "Meus espaços"',
+                'description' => '',
+                'examples' => ['Meus espaços', 'Meus museus', 'Minhas bibliotecas'],
+                'text' => 'Meus espaços'
+            ],
+            'entities: Space Description' => [
+                'name' => 'texto "Descrição do Espaço"',
+                'description' => '',
+                'examples' => ['Descrição do Espaço', 'Descrição do Museu', 'Descrição da Biblioteca'],
+                'text' => 'Descrição do Espaço'
+            ],
             'entities: parent space' => [
-                'name' => 'Espaço pai',
-                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
-                'examples' => [],
+                'name' => 'texto "espaço pai"',
+                'description' => '',
+                'examples' => ['espaço pai', 'museu pai', 'biblioteca mãe'],
                 'text' => 'espaço pai'
             ],
             'entities: a space' => [
-                'name' => 'Um(a) espaço',
-                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
-                'examples' => [],
+                'name' => 'texto "um espaço"',
+                'description' => '',
+                'examples' => ['um espaço', 'um museu', 'uma biblioteca'],
                 'text' => 'um espaço'
             ],
             'entities: the space' => [
-                'name' => 'O(a) espaço',
-                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
-                'examples' => [],
+                'name' => 'texto "o espaço"',
+                'description' => '',
+                'examples' => ["o espaço", "o museu", "a biblioteca"],
                 'text' => 'o espaço'
             ],
             'entities: of the space' => [
-                'name' => 'Do(a) espaço',
-                'description' => 'Refere-se ao espaço pai (mapas) e espaço mãe (museus)',
-                'examples' => [],
+                'name' => 'texto "do espaço"',
+                'description' => '',
+                'examples' => ['do espaço', 'do museu', 'da biblioteca'],
                 'text' => 'do espaço'
             ],
             'entities: In this space' => [
-                'name' => 'Neste espaço',
-                'description' => 'Inserir uma descrição curta',
-                'examples' => [],
+                'name' => 'texto "Neste espaço"',
+                'description' => '',
+                'examples' => ['Neste espaço', 'Neste museu', 'Nesta biblioteca'],
                 'text' => 'Neste espaço'
             ],
             'entities: in this space' => [
-                'name' => 'Neste espaço',
-                'description' => 'Inserir uma descrição curta',
-                'examples' => [],
+                'name' => 'texto "neste espaço"',
+                'description' => '',
+                'examples' => ['neste espaço', 'neste museu', 'nesta biblioteca'],
                 'text' => 'neste espaço'
             ],
             'entities: registered spaces' => [
-                'name' => 'Espaços cadastrados',
-                'description' => 'Na aba espaços conseguimos cadastrar e vizualizar',
-                'examples' => [],
+                'name' => 'texto "espaços cadastrados"',
+                'description' => '',
+                'examples' => ['espaços cadastrados', 'museus cadastrados', 'bibliotecas cadastradas'],
                 'text' => 'espaços cadastrados'
             ],
+            'entities: no registered spaces' => [
+                'name' => 'texto "nenhum espaço cadastrado"',
+                'description' => '',
+                'examples' => ['nenhum espaço cadastrado', 'nenhum museu cadastrado', 'nenhuma biblioteca cadastrada'],
+                'text' => 'nenhum espaço cadastrado'
+            ],
+            'entities: no spaces' => [
+                'name' => 'texto "nenhum espaço"',
+                'description' => '',
+                'examples' => ['nenhum espaço', 'nenhum museu', 'nenhuma biblioteca'],
+                'text' => 'nenhum espaço'
+            ],
             'entities: new space' => [
-                'name' => 'Novo Espaço',
-                'description' => 'Buscar no painel pelo Meus Espaços e clicar no botão: Adicionar novo espaço',
-                'examples' => [],
+                'name' => 'texto "novo espaço"',
+                'description' => '',
+                'examples' => ['novo espaço', 'novo museu', 'nova biblioteca'],
                 'text' => 'novo espaço'
             ],
             'entities: Children spaces' => [
-                'name' => 'Subespaços',
-                'description' => 'Criamos o Espaço principal e a partir disso podemos criar espaços filhos',
-                'examples' => [],
+                'name' => 'texto "Subespaços"',
+                'description' => '',
+                'examples' => ['Subespaços', 'Espaços filhos', 'Museus filhos', "Subespaços do museu", 'Bibliotecas filhas', "Subespaços da biblioteca"],
                 'text' => 'Subespaços'
             ],
             'entities: Add child space' => [
-                'name' => 'Espaços',
-                'description' => 'Criamos o Espaço principal e a partir disso podemos criar espaços filhos',
-                'examples' => [],
+                'name' => 'texto "Adicionar subespaço"',
+                'description' => '',
+                'examples' => ['Adicionar subespaço', 'Adicionar espaço filho', 'Adicionar museu filho', 'Adicionar subespaço do museu', 'Adicionar biblioteca filha', 'Adicionar subespaço da biblioteca'],
                 'text' => 'Adicionar subespaço'
             ],
             'entities: space found' => [
-                'name' => 'Espaço encontrado',
-                'description' => 'Procuprar por filtro e abaixo aparece Espaços de acordo com o filtro',
-                'examples' => [],
+                'name' => 'teto "espaço encontrado"',
+                'description' => '',
+                'examples' => ['espaço encontrado', 'museu encontrado', 'biblioteca encontrada'],
                 'text' => 'espaço encontrado'
             ],
             'entities: spaces found' => [
-                'name' => 'Espaços encontrado',
-                'description' => 'Procurar por filtro e abaixo aparace Espaços de acordo com o filtro',
-                'examples' => [],
+                'name' => 'espaços encontrado',
+                'description' => '',
+                'examples' => ['espaços encontrados', 'museus encontrados', 'bibliotecas encontradas'],
                 'text' => 'espaços encontrados'
             ],
-            'entities: event found' => [
-                'name' => 'Evento encontrado',
-                'description' => 'Procurar por filtro e abaixo aparce o Evento de acordo com o filtro',
-                'examples' => [],
-                'text' => 'evento encontrado'
+            'entities: Spaces of the agent' => [
+                'name' => 'texto "Espaços do agente"',
+                'description' => '',
+                'examples' => ['Espaços do agente', 'Museus do agente', 'Bibliotecas do agente'],
+                'text' => 'Espaços do agente'
             ],
-            'entities: events found' => [
-                'name' => 'Eventos encontrados',
-                'description' => 'Na aba Eventos conseguimos vizualizar os Eventos conforme buscamos pelo Mapa ou campo de busca.',
-                'examples' => [],
-                'text' => 'eventos encontrados'
+            
+
+
+
+// ======== Agentes
+            'entities: Agents' => [
+                'name' => 'texto "Agentes"',
+                'description' => 'nome da entidade Agente no plural',
+                'examples' => ['Agentes'],
+                'text' => 'Agentes'
             ],
             'entities: agent found' => [
-                'name' => 'Agente econtrado',
-                'description' => 'Na aba Agentes conseguimos localizar os Agentes por nome, área ou Estado. Podendo adicionar agentes novos ',
-                'examples' => [],
+                'name' => 'texto "agente econtrado"',
+                'description' => '',
+                'examples' => ['agente encontrado'],
                 'text' => 'agente encontrado'
             ],
             'entities: agents found' => [
-                'name' => 'Agentes encontrados',
-                'description' => 'Na aba Agentes conseguimos procurar pelo nome ou áreas. E através do mapa conseguimos vizualizar os Agentes',
-                'examples' => [],
+                'name' => 'texto "agentes encontrados"',
+                'description' => '',
+                'examples' => ['agentes encontrados'],
                 'text' => 'agentes encontrados'
             ],
-            'entities: project found' => [
-                'name' => 'Projeto encontrado',
-                'description' => 'Na aba Projeto conseguimos procurar pelo nome ou tipos.',
-                'examples' => [],
-                'text' => 'projeto encontrado'
+            'entities: My Agents' => [
+                'name' => 'texto "Meus Agentes"',
+                'description' => '',
+                'examples' => ['Meus Agentes'],
+                'text' => 'Meus Agentes'
             ],
-            'entities: project found' => [
-                'name' => 'Projetos encontrados',
-                'description' => 'Na aba Projeto conseguimos procurar pelo nome ou tipos.',
-                'examples' => [],
-                'text' => 'projetos encontrados'
+            'entities: My agents' => [
+                'name' => 'texto "Meus agentes"',
+                'description' => '',
+                'examples' => ["Meus agentes"],
+                'text' => 'Meus agentes'
             ],
-            'entities: Agents' => [
-                'name' => 'Agentes',
-                'description' => 'Na aba Agentes  conseguimos vizualizar os Agentes, buscar e adicionar.',
-                'examples' => [],
+            'entities: Agent children' => [
+                'name' => 'texto "Sub-agentes"',
+                'description' => 'texto nomeia os agentes filhos, ou sub-agentes, de outro agente',
+                'examples' => ['Sub-agentes', 'Agentes Filhos', 'Agentes'],
                 'text' => 'Agentes'
             ],
+            
+
+
+
+// ======== Projetos
             'entities: Projects' => [
-                'name' => 'Projetos',
-                'description' => 'Na aba de Projetos conseguimos vizualizar os Projetos e adicionar.',
-                'examples' => [],
+                'name' => 'texto "Projetos"',
+                'description' => 'nome da entidade Projeto no plural',
+                'examples' => ['Projetos'],
                 'text' => 'Projetos'
             ],
+            'entities: My Projects' => [
+                'name' => 'texto "Meus Projetos"',
+                'description' => '',
+                'examples' => ['Meus Projetos'],
+                'text' => 'Meus Projetos'
+            ],
+            'entities: My projects' => [
+                'name' => 'texto "Meus projetos"',
+                'description' => '',
+                'examples' => ['Meus projetos'],
+                'text' => 'Meus projetos'
+            ],
+            'entities: project found' => [
+                'name' => 'texto "projeto encontrado"',
+                'description' => '',
+                'examples' => ['projeto encontrado'],
+                'text' => 'projeto encontrado'
+            ],
+            'entities: projects found' => [
+                'name' => 'texto "projetos encontrados"',
+                'description' => '',
+                'examples' => ['projetos encontrados'],
+                'text' => 'projetos encontrados'
+            ],
+            
+
+
+
+// ======== Eventos
             'entities: Events' => [
-                'name' => 'Eventos',
-                'description' => 'Na aba de Eventos conseguimos vizualizar os Eventos, buscar e adicionar',
-                'examples' => [],
+                'name' => 'texto "Eventos"',
+                'description' => 'nome da entidade Evento no plural',
+                'examples' => ['Eventos', 'Ações'],
                 'text' => 'Eventos'
             ],
+            'entities: My Events' => [
+                'name' => 'texto "Meus Eventos"',
+                'description' => '',
+                'examples' => ['Meus Eventos', 'Minhas Ações'],
+                'text' => 'Meus Eventos'
+            ],
+            'entities: My events' => [
+                'name' => 'texto "Meus eventos"',
+                'description' => '',
+                'examples' => ['Meus eventos', 'Minhas ações'],
+                'text' => 'Meus eventos'
+            ],
+            'entities: event found' => [
+                'name' => 'texto "evento encontrado"',
+                'description' => '',
+                'examples' => ['evento encontrado', 'ação encontrada'],
+                'text' => 'evento encontrado'
+            ],
+            'entities: events found' => [
+                'name' => 'texto "eventos encontrados"',
+                'description' => '',
+                'examples' => ['eventos encontrados', 'ações encontradas'],
+                'text' => 'eventos encontrados'
+            ],
+
+
+
+
+// ======== Subsites
+            'entities: Subsite Description' => [
+                'name' => 'texto "Descrição do Subsite"',
+                'description' => '',
+                'examples' => ['Descrição do Subsite', 'Descrição da Instalação'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'Descrição do Subsite'
+            ],
+            'entities: My Subsites' => [
+                'name' => 'texto "Meus Subsites"',
+                'description' => '',
+                'examples' => ['Meus Subsites', 'Minhas Instalações'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'Meus Subsites'
+            ],
+            'entities: My subsites' => [
+                'name' => 'texto "Meus subsites"',
+                'description' => '',
+                'examples' => ['Meus subsites', 'Minhas instalações'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'Meus subsites'
+            ],
+            'entities: Subsite' => [
+                'name' => 'texto "Subsite"',
+                'description' => '',
+                'examples' => ['Subsite', 'Instalação'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'Subsite'
+            ],
+            'entities: no registered subsite' => [
+                'name' => 'texto "nenhum subsite cadastrado"',
+                'description' => '',
+                'examples' => ['nenhum subsite cadastrado', 'nenhuma instalação cadastrada'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'nenhum subsite cadastrado'
+            ],
+            'entities: no subsite' => [
+                'name' => 'texto "nenhum subsite"',
+                'description' => '',
+                'examples' => ['nenhum subsite', 'nenhuma instalação'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'nenhum subsite'
+            ],
+            'entities: registered subsite' => [
+                'name' => 'texto "subsite cadastrado"',
+                'description' => '',
+                'examples' => ['subsite cadastrado', 'instalação cadastrada'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => 'subsite cadastrado'
+            ],
+            'entities: add new subsite' => [
+                'name' => 'texto "adicionar novo subsite"',
+                'description' => '',
+                'examples' => ['adicionar novo subsite', 'adcionar nova instalação'],
+                'skip' => true, // não aparece na configuração do subsite
+                'text' => "adicionar novo subsite"
+            ],
+            
+
+
+
+// ========= Selos
             'entities: Seals' => [
-                'name' => 'Selos',
-                'description' => 'No Painel em Meus selos, conseguimos vizualizar os selos e adicionar',
-                'examples' => [],
+                'name' => 'texto "Selos"',
+                'description' => 'nome da entidade Selos no plural',
+                'examples' => ['Selos', 'Selos Certificadores', 'Certificações'],
                 'text' => 'Selos'
             ],
-            'entities: Users and roles' => [
-                'name'          => 'Usuários e papéis',
-                'description'   => 'No Painel, em Usuários e Papéis, conseguimos visualizar os usuários e quais sãos seus perfis e papéis',
-                'examples' => [],
-                'text'          => 'Usuários e papéis'
+            'entities: My Seals' => [
+                'name' => 'texto "Meus Selos"',
+                'description' => '',
+                'examples' => ['Meus Selos', 'Meus Selos Certificadores', 'Minhas Certificações'],
+                'text' => 'Meus Selos'
             ],
+            'entities: My seals' => [
+                'name' => 'texto "Meus selos"',
+                'description' => '',
+                'examples' => ['Meus selos', 'Meus selos certificadores', 'Minhas certificações'],
+                'text' => 'Meus selos'
+            ],
+            
+            'entities: Users and roles' => [
+                'name' => 'texto "Usuários e papéis"',
+                'description' => '',
+                'examples' => [],
+                'skip' => true,
+                'text' => 'Usuários e papéis'
+            ],
+            
+            
+            // Taxonomias
             'taxonomies:area: name' => [
                 'name' => 'Área de Atuação',
                 'description' => 'Colocar qual é a área de atuação',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Área de Atuação'
             ],
             'taxonomies:area: select at least one' => [
                 'name' => 'Selecione pelos menos uma área',
                 'description' => 'Precisa ter pelo menos uma área selecionada',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Selecione pelo menos uma área'
             ],
             'taxonomies:area: select' => [
                 'name' => 'Selecione as áreas',
                 'description' => 'Selecionar quantas áreas for preciso',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Selecione as áreas'
             ],
+            
+            
+            // Mensagens de erro
             'error:403: title' => [
                 'name' => 'Permissão negada',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Permissão negada'
             ],
             'error:403: message' => [
                 'name' => 'Você não tem permissão para executar esta ação',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Você não tem permissão para executar esta ação.'
             ],
             'error:404: title' => [
                 'name' => 'Página não encontrada',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Página não encontrada.'
             ],
             'error:404: message' => [
                 'name' => 'Messagem Error 404',
                 'description' => 'Messagem Error 404',
                 'examples' => [],
+                'skip' => true,
                 'text' => ''
             ],
             'error:500: title' => [
                 'name' => 'Um erro inesperado aconteceu',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Um erro inesperado aconteceu'
             ],
             'error:500: message' => [
                 'name' => 'Error 500',
                 'description' => 'Mensagem Error 500',
                 'examples' => [],
+                'skip' => true,
                 'text' => ''
             ],
+            
+            
+            
+            // Roles
             'roles: Super Administrator' => [
                 'name' => 'Super Administrador',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Super Administrador'
             ],
             'roles: Super Administrators' => [
                 'name' => 'Super Administradores',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Super Administradores'
             ],
             'roles: Administrator' => [
                 'name' => 'Administrador',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Administrador'
             ],
             'roles: Administrators' => [
                 'name' => 'Administradores',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Administradores'
             ],
             'roles: Subsite Super Administrator' => [
                 'name' => 'Subsite Super Administrador',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Subsite Super Administrador'
             ],
             'roles: Subsite Super Administrators' => [
                 'name' => 'Subsite Super Administradores',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Subsite Super Administradores'
             ],
             'roles: Subsite Administrator' => [
                 'name' => 'Subsite Administrador',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Subsite Administrador'
             ],
             'roles: Subsite Administrators' => [
                 'name' => 'Subsite Administradores',
                 'description' => '',
                 'examples' => [],
+                'skip' => true,
                 'text' => 'Subsite Administradores'
             ]
 
