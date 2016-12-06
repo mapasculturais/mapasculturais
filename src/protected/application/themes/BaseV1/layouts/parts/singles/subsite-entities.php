@@ -1,6 +1,6 @@
 <?php $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';?>
 <div id="entidades" class="aba-content">
-    <p class="alert info">Maiores explicações aqui</p>
+    <p class="alert info"> Nesta seção você configura as entidades que estarão habilitadas na instalação e as cores para cada uma das entidades.</p>
     <?php if($this->isEditable() || $entity->entidades_habilitadas): ?>
         <p>
             <span class="label">Entidades Habilitadas: </span>

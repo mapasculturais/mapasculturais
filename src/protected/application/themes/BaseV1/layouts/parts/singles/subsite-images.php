@@ -1,5 +1,5 @@
 <div id="imagens" class="aba-content">
-    <p class="alert info">Maiores explicações aqui</p>
+    <p class="alert info">Nesta seção você configura as imagens que vão aparecer na instalação. É possível selecionar o logo da instalação, o background e o logo da instituição.</p>
     <div class="logo-container">
         <h3 class="label">
             Logo:

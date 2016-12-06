@@ -6,9 +6,8 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 ?>
 <div id="mapa" class="aba-content">
-    <p class="alert info">Maiores explicações aqui</p>
+    <p class="alert info">Nesta seção você indica a posição inicial do mapa, ou seja, quando o usuário abrir o mapa ele visualizará as informações nessa posição já estabelecida podendo fazer um zoom mínimo e máximo. Informe o endereço/nome município/nome estado no campo “Digite um endereço”.</p>
     <div id="subsite-map" style="width:100%; height:500px">
-        
     </div>
 
     <p>
