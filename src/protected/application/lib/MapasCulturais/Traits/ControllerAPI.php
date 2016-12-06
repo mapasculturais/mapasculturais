@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Query;
 
 trait ControllerAPI{
 
@@ -375,7 +376,7 @@ trait ControllerAPI{
                     };
 
                     $append_files_cb = function(&$result, $entity) use($cfg, $extract_data_cb){
-
+                        return;
                         $files = $entity->files;
 
                         foreach($cfg['files'] as $im){
@@ -505,9 +506,31 @@ trait ControllerAPI{
                 $dql_select[] = ', _owner';
                 $dql_select_joins[] = "LEFT JOIN e.owner _owner";
             }
+            
+            $view_private = [];
+            if($class::usePermissionCache()){
+                $private_data_cache_id = "$class :: canUserViewPrivateData :: {$app->user->id}";
+
+                if($app->rcache->contains($private_data_cache_id)){
+                    $view_private = $app->rcache->fetch($private_data_cache_id);
+                } elseif($permissions != ['viewPrivateData']) {
+
+                    $pq = $app->em->createQuery("
+                        SELECT PARTIAL 
+                            e.{id} 
+                        FROM 
+                            $class e JOIN e.__permissionsCache __pcache WITH __pcache.action ='viewPrivateData' AND __pcache.userId = {$app->user->id}");
+
+
+                    $view_private = [];
+                    foreach($pq->getArrayResult() as $_id){
+                        $view_private[$_id['id']] = true;
+                    }                
+                    $app->rcache->save($private_data_cache_id, $view_private);
+                }
+            }
 
             $select_properties = implode(',',array_unique($select_properties));
-            
             
             if(in_array('type', $select)){
                 $select_properties .= ',_type';
@@ -515,6 +538,16 @@ trait ControllerAPI{
 
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
 
+            
+            if($class::usePermissionCache() && $permissions){
+                $_uid = $this->_API_find_addValueToParamList($app->user->id);
+
+                $class::usesPermissionCache();
+                $_pkey = implode(',', $this->_API_find_addValueToParamList($permissions));
+                $dql_joins = "JOIN e.__permissionsCache __pcache WITH __pcache.action IN($_pkey) AND __pcache.userId = $_uid";
+            }
+            
+            
             $final_dql = "
                 SELECT PARTIAL
                     e.{{$select_properties}}
@@ -538,10 +571,15 @@ trait ControllerAPI{
 
             $result[] = "$final_dql";
 
-            if($app->config['app.log.apiDql'])
+            if($app->config['app.log.apiDql']){
                 $app->log->debug("API DQL: ".$final_dql);
+                
+            }
 
             $query = $app->em->createQuery($final_dql);
+            
+            $query->setHydrationMode(Query::HYDRATE_ARRAY);
+
 
             if($app->user->is('superAdmin') && isset($_GET['@debug'])){
                 if(isset($_GET['@type']) && $_GET['@type'] == 'html') {
@@ -588,17 +626,23 @@ trait ControllerAPI{
                     if($app->config['app.log.apiDql'])
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
-                    $rs = $q->getResult();
-                    $this->detachApiQueryRS($rs);
+                            
+                    $rs = $q->getResult(Query::HYDRATE_ARRAY);
                 }
             };
 
-            $processEntity = function($r) use($append_files_cb, $select){
+            $processEntity = function($r) use($append_files_cb, $select, $view_private){
 
                 $entity = [];
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
+                    
+                    if($prop === 'location' && !$r['publicLocation'] && !isset($view_private[$entity['id']])){
+                        
+//                        var_dump($entity);
+                        $r[$prop] = ['latitude' => 0, 'longitude' => 0];
+                    }
                     try{
                         if(strpos($prop, '.')){
                             $props = explode('.',$prop);
@@ -618,7 +662,7 @@ trait ControllerAPI{
 
                             $prop_value = $current_object;
                         }else{
-                            $prop_value = $r->$prop;
+                            $prop_value = $r[$prop];
                         }
                         if(is_object($prop_value) && $prop_value instanceof \Doctrine\Common\Collections\Collection)
                             $prop_value = $prop_value->toArray();
@@ -645,72 +689,11 @@ trait ControllerAPI{
                 $query->setFirstResult(0)
                       ->setMaxResults(1);
 
-                $paginator = new Paginator($query, $fetchJoinCollection = true);
-                $entity = null;
-
-                if(count($paginator)){
-                    $r = $paginator->getIterator()->current();
-
-                    if($permissions){
-                        foreach($permissions as $perm){
-                            $perm = trim($perm);
-                            if($perm[0] === '!'){
-                                if($r->canUser(substr($perm, 1))){
-                                    $r = null;
-                                    break;
-                                }
-                            }else{
-                                if(!$r->canUser($perm)){
-                                    $r = null;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if($r)
-                        $entity = $processEntity($r);
-                }
+                $entity = $query->getOneOrNullResult(Query::HYDRATE_ARRAY);
                 return $entity;
             }else{
 
-                if($permissions){
-                    $rs = $query->getResult();
-                    
-                    $this->detachApiQueryRS($rs);
-                    
-                    $result = [];
-
-                    $rs = array_values(array_filter($rs, function($entity) use($permissions){
-                        foreach($permissions as $perm){
-                            $perm = trim($perm);
-                            if($perm[0] === '!'){
-                                $not = true;
-                                $_perm = substr($perm,1);
-                            }else{
-                                $not = false;
-                                $_perm = $perm;
-                            }
-                            $can = $entity->canUser($_perm);
-                            return $not ? !$can : $can;
-                        }
-
-                        return true;
-                    }));
-
-                    if(!$page){
-                        $page = 1;
-                    }
-
-                    $rs_count = count($rs);
-
-                    if($page && $limit){
-                        $offset = (($page - 1) * $limit);
-                        $rs = array_slice($rs, $offset, $limit);
-                    }
-                    $sub_queries($rs);
-
-                }else if($limit){
+                if($limit){
                     if(!$page){
                         $page = 1;
                     }
@@ -720,29 +703,20 @@ trait ControllerAPI{
                     $query->setFirstResult($offset)
                           ->setMaxResults($limit);
 
+                    
                     $paginator = new Paginator($query, $fetchJoinCollection = true);
 
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
-                    $this->detachApiQueryRS($rs);
-
 
                     $sub_queries($rs);
                 }else{
-                    if($counting){
-                        $rs = $query->getArrayResult();
-                    } else {
-                        $rs = $query->getResult();
-                        $this->detachApiQueryRS($rs);
-
-                    }
-
+                    $rs = $query->getResult(Query::HYDRATE_ARRAY);
                     $sub_queries($rs);
 
                     $rs_count = count($rs);
                 }
-
 
                 if ($counting) {
                     return $rs_count;

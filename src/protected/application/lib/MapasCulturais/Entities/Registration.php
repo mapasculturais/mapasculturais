@@ -123,7 +123,7 @@ class Registration extends \MapasCulturais\Entity
     protected $__files;
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

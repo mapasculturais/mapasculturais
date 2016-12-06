@@ -132,8 +132,9 @@ class Html extends \MapasCulturais\ApiOutput{
                             ?>
                             <td>
                                 <?php
-                                
-                                if(is_object($v) && $k==='type'){
+                                if(is_bool($v)){
+                                    echo $v ? 'true' : 'false';
+                                }elseif(is_object($v) && $k==='type'){
                                     echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
                                 }elseif(is_string($v) || is_numeric($v)){
                                     echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
@@ -182,6 +183,7 @@ class Html extends \MapasCulturais\ApiOutput{
                         echo $v->name;
                     }elseif($p==='tag' || $p==='area'){
                         echo implode(', ',$v);
+                        
                     }elseif(is_object($v) || is_array($v)){
                         $this->printTable($v);
                     }elseif(is_string($v) || is_numeric($v)){

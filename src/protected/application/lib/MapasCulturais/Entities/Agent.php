@@ -237,7 +237,7 @@ class Agent extends \MapasCulturais\Entity
     protected $__sealRelations;
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
