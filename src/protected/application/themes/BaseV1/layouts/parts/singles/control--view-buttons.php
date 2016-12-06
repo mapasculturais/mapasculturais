@@ -4,10 +4,10 @@
 <?php endif; ?>
 
 <?php if ($entity->canUser('remove') && $entity->status !== $status_trash): ?>
-    <a href="<?php echo $entity->deleteUrl ?>" class="btn btn-danger"<?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
+    <a href="<?php echo $entity->deleteUrl ?>" class="btn btn-danger"><?php \MapasCulturais\i::_e("Excluir");?></a>
 
 <?php elseif ($entity->canUser('undelete') && $entity->status === $status_trash): ?>
-    <a href="<?php echo $entity->undeleteUrl ?>" class="btn btn-success"<?php \MapasCulturais\i::esc_attr_e("Recuperar");?></a>
+    <a href="<?php echo $entity->undeleteUrl ?>" class="btn btn-success"><?php \MapasCulturais\i::_e("Recuperar");?></a>
 
     <?php if($entity->canUser('destroy')): ?>
         <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>"<?php \MapasCulturais\i::esc_attr_e("Excluir Definitivamente");?></a>
