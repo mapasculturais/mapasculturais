@@ -30,7 +30,8 @@ $has_private_location = isset($has_private_location) && $has_private_location
                     <span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Localização");?>:</span>
                     <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-showbuttons="false"
                         data-value="<?php echo $entity->publicLocation ? '1' : '0';?>"
-                        data-source="[{value: 1, text: 'Pública'},{value: 0, text:'Privada'}]">
+                        <?php /* Translators: Location public / private */ ?>
+                        data-source="[{value: 1, text: '<?php \MapasCulturais\i::esc_attr_e("Pública");?>'},{value: 0, text:'<?php \MapasCulturais\i::esc_attr_e("Pública");?>'}]">
                     </span>
                 </p>
             <?php endif; ?>

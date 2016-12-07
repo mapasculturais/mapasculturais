@@ -51,7 +51,7 @@
                     <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item">
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">
-                                <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</small></em></div>
+                                <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em></div>
                                 <span ng-if="field.categories.length" class="attachment-description"> 
                                     <?php \MapasCulturais\i::_e("Somente para");?> <strong>{{field.categories.join(', ')}}</strong>
                                     <br>

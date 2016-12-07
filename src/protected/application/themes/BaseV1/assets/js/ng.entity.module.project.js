@@ -282,6 +282,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldTypes: fieldTypes,
             fieldsWithOptions: fieldTypes.filter(function(e) { if(e.requireValuesConfiguration) return e; }).map(function(e) { return e.slug; } ),
             fieldTypesBySlug: fieldTypesBySlug,
+            fieldsRequiredLabel: labels['requiredLabel'],
+            fieldsOptionalLabel: labels['optionalLabel'],
             categories: []
         };
 
@@ -682,6 +684,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     $scope.data.fields = RegistrationService.getFields();
+    $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
+    $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
     var fieldsByName = {};
     $scope.data.fields.forEach(function(e){
@@ -838,7 +842,8 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
 
         registration: {
             owner: null,
-            category: null
+            category: null,
+            owner_default_label: labels['registrationOwnerDefault']
         },
 
         registrationStatuses:[
