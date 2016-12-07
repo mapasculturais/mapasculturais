@@ -5,23 +5,23 @@
             <span class="close"></span>
         </p>
     <?php endif; ?>
-        
+
     <?php $this->part('singles/project-registrations--user-registrations', ['entity' => $entity]) ?>
-    
+
     <?php $this->part('singles/project-registrations--intro', ['entity' => $entity]); ?>
-        
+
     <?php $this->part('singles/project-registrations--rules', ['entity' => $entity]); ?>
-    
+
     <?php if ($this->isEditable()): ?>
-        
+
         <?php $this->part('singles/project-registrations--categories', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/project-registrations--agent-relations', ['entity' => $entity]) ?>
         
         <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>
-        
+
         <?php $this->part('singles/project-registrations--fields', ['entity' => $entity]) ?>
-        
+
     <?php endif; ?>
 
     <?php $this->part('singles/project-registrations--form', ['entity' => $entity]) ?>

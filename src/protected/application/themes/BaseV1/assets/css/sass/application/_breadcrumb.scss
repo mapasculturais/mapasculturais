@@ -2,6 +2,7 @@
     list-style-type: none;
     overflow: hidden;
     margin: 0;
+    position: relative;
     @media screen and (max-width: 1366px) and (min-width: 1200px) {
         margin: 0 0 0 20%;
     }
@@ -12,6 +13,10 @@
     li {
         background-color: #fafafa;
         display: inline-block;
+        font-family: $font-stack-base;
+        font-size: .8rem;
+        font-weight: bold;
+        line-height: $line-height-base;
         margin-right: -6px;
 
         &:first-child {
@@ -25,19 +30,15 @@
         }
         &:last-child {
             background-color: transparent;
-            color: #777;
-            a {
+            span {
                 color: #777;
             }
         }
 
-        a {
+        a, span {
             padding: 0 .8rem;
             margin-left: 5px;
             color: #999;
-            font-size: .8rem;
-            font-family: $font-stack-base;
-            line-height: $line-height-base;
 
             &:after, &:before {
                 content: " ";
@@ -45,14 +46,15 @@
                 height: 0;
                 position: absolute;
                 width: 0;
+                top: 0;
             }
 
             &:after {
-                border-bottom: 12px solid transparent;
+                border-bottom: 11px solid transparent;
                 border-left: 8px solid #fafafa;
                 border-top: 12px solid transparent;
                 margin-left: 1px;
-                margin-top: -24.5px;
+                margin-top: 1px;
                 z-index: 2;
             }
 

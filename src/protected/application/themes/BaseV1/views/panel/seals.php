@@ -11,6 +11,7 @@ $this->layout = 'panel'
 		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlSeals);?>)</a></li>
         <li><a href="#rascunhos">Rascunhos (<?php echo count($app->user->draftSeals);?>)</a></li>
         <li><a href="#lixeira">Lixeira (<?php echo count($app->user->trashedSeals);?>)</a></li>
+		<li><a href="#arquivo">Arquivo (<?php echo count($app->user->archivedSeals);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
@@ -46,4 +47,14 @@ $this->layout = 'panel'
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($app->user->archivedSeals as $entity): ?>
+            <?php $this->part('panel-seal', array('entity' => $entity));?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedSeals):  ?>
+            <div class="alert info">Você não possui nenhum selo arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

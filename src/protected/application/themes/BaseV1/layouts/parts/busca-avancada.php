@@ -47,21 +47,21 @@
             </span>
             <span ng-if="!spinnerCount">
                 <span ng-if="numResults(numAgents, 'agent')">{{numResults(numAgents, 'agent')}} agente<span ng-show="numResults(numAgents, 'agent')!==1">s</span>
-                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} agentes sem localização">
-                        ({{resultsNotInMap.agent}})
+                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} agentes sem localização">
+                        (+{{resultsNotInMap.agent}})
                     </span>
                 </span>
                 <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numAgents, 'agent') && (numResults(numSpaces, 'space') || numResults(numEvents.events, 'event'))">,</span>
                 <span ng-if="numResults(numSpaces, 'space')">{{numResults(numSpaces, 'space')}} <?php $this->dict('entities: space') ?><span ng-show="numResults(numSpaces, 'space')!==1">s</span>
-                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} <?php $this->dict('entities: spaces') ?> sem localização">
-                        ({{resultsNotInMap.space}})
+                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} <?php $this->dict('entities: spaces') ?> sem localização">
+                        (+{{resultsNotInMap.space}})
                     </span>
                 </span>
                 <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numSpaces, 'space') && numResults(numEvents.events, 'event')">,</span>
                 <span ng-if="data.global.viewMode === 'map' && numResults(numEvents.events, 'event')">{{numEvents.events}} evento<span ng-show="numEvents.events!==1">s</span>
                     em {{numResults(numEvents.spaces, 'event')}} <?php $this->dict('entities: space') ?><span ng-show="numResults(numEvents.spaces, 'event')!==1">s</span>
-                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
-                        ({{resultsNotInMap.event}})
+                    <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} eventos sem localização">
+                        (+{{resultsNotInMap.event}})
                     </span>
                 </span>
                 <span ng-if="data.global.viewMode === 'list' && numEventsInList">{{numEventsInList}} evento<span ng-show="numEventsInList!==1">s</span> </span>

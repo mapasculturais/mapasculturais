@@ -22,6 +22,7 @@ class Project extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
 
@@ -65,16 +66,16 @@ class Project extends EntityController {
             $app->pass();
 
         $entity = $this->requestedEntity;
-        
+
 
         if(!$entity)
             $app->pass();
 
-        
+
         $entity->checkPermission('@control');
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
-        
+
         $response = $app->response();
         //$response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';

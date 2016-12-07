@@ -11,6 +11,7 @@ $this->layout = 'panel'
 		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlAgents); ?>)</a></li>
         <li><a href="#rascunhos">Rascunhos (<?php echo count($user->draftAgents); ?>)</a></li>
         <li><a href="#lixeira">Lixeira (<?php echo count($user->trashedAgents); ?>)</a></li>
+		<li><a href="#arquivo">Arquivo (<?php echo count($app->user->archivedAgents);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
@@ -50,4 +51,14 @@ $this->layout = 'panel'
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($app->user->archivedAgents as $entity): ?>
+            <?php $this->part('panel-agent', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedAgents): ?>
+            <div class="alert info">Você não possui nenhum agente arquivado.</div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 </div>

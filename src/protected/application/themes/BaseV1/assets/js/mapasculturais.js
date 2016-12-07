@@ -210,6 +210,26 @@ $(function(){
     });
 
 
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
+
+    // positioning agent details box on mobile
+
+    if ($(window).width() < 768) {
+        $('.agentes-relacionados .avatar').on('click hover', function () {
+            $('.descricao-do-agente').hide();
+
+            var descAgent = $(this).find('.descricao-do-agente');
+            var descAgentHeight = descAgent.outerHeight();
+            descAgent.show().css('top',-((descAgentHeight)+10));
+        });
+    }
 });
 
 MapasCulturais.utils = {
