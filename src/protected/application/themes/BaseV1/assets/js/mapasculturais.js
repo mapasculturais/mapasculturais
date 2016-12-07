@@ -121,15 +121,55 @@ $(function(){
         });
     }
 
-    $('.botao').on('click', function(){
-        var formulario = $(".js-compliant-form");
-        formulario.toggle();
+    $('.button-form-compliant-suggestion.compliant').on('click', function(){
+        var form_compliant = $(".js-compliant-form");
+        form_compliant.toggle();
+
+        var form_suggestion = $(".js-suggestion-form");
+        form_suggestion.hide();
+
+        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
+        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
+
+        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
     });
 
-    $('.js-compliant-form .js-submit-button').on('click', function(e){
+    $('.button-form-compliant-suggestion.suggestion').on('click', function(){
+        var form_suggestion = $(".js-suggestion-form");
+        form_suggestion.toggle();
+
+        var form_compliant = $(".js-compliant-form");
+        form_compliant.hide();
+
+        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
+        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
+
+        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
+    });
+
+    function showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant) {
+        if(form_compliant.is(":hidden")) {
+            btn_suggestion.show();
+        } else {
+            btn_suggestion.hide()
+        }
+
+        if(form_suggestion == null) {
+            console.log("AAAQUUUII");
+        }
+        if(form_suggestion.is(":hidden")) {
+            conso
+            btn_compliant.show();
+        } else {
+            btn_compliant.hide();
+        }
+    }
+
+    // @TODO transformar isso no Serviço do Angular para enviar e fazer a requisição para o controller da entidade
+    /*$('.js-compliant-form .js-submit-button').on('click', function(e){
         e.preventDefault();
         $.post(MapasCulturais.createUrl(MapasCulturais.request.controller, "sendCompliantMessage",[MapasCulturais.entity.id]), {message: "Nós somos muito legais!!! =]"});
-    });
+    });*/
 
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 

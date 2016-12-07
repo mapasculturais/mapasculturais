@@ -454,7 +454,26 @@ abstract class EntityController extends \MapasCulturais\Controller{
     /*
      */
     public function POST_sendCompliantMessage() {
-        var_dump($this->data);
+        $app = App::i();
+        $agent = $app->repo($this->entityClassName)->find($this->data['entityId']);
+
+        /*
+         * Envio de E-mail ao responsável da entidade
+         */
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $agent->user->email,
+            'subject' => "Denúncia - Mapas Culturais",
+            'body' => $this->data['message']
+        ]);
+
+        /* message to user about last access system
+        $notification = new Notification;
+        $notification->user = $agent->user;
+        $notification->message = $this->data['message'];
+        $notification->type = $this->data['type'];
+        $notification->savekkk();
+        $app->em->flush();*/
     }
 
     /*

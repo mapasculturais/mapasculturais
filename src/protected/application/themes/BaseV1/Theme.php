@@ -774,6 +774,8 @@ class Theme extends MapasCulturais\Theme {
         } else {
         	$this->jsObject['allowedFields'] = false;
         }
+
+        $this->jsObject['notification_type'] = $app->getRegisteredMetadata('MapasCulturais\Entities\Notification');
     }
 
     protected function _getFilters(){
