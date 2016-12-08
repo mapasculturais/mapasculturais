@@ -29,3 +29,58 @@ No seu tema ou plugin, adicione o novo script:
 
 E siga as instruções em [customizable.js](../../src/protected/application/themes/BaseV1/assets/js/customizable.js)
 para fazer seu próprio geocoder.
+
+## Busca por código postal
+
+Ao editar uma entidade e preencher o campo de código postal, o sistema pode fazer uma consulta a um serviço para
+preencher os campos de endereço automaticamente.
+
+Por padrão, Mapas Culturais faz isso buscando por CEP no serviço [CEP Aberto](http://www.cepaberto.com).
+
+Para modificar e utilizar outro serviço, basta sobreescrever o método getAddressByPostalCode() na classe do seu tema, que extendeu a classe to Tema BaseV1.
+
+Veja o exemplo:
+
+```PHP
+   
+class MeuTema extends BaseV1\Theme {
+
+    //... todo seu código...
+    
+    function getAddressByPostalCode($postalCode) {
+        
+        $url = 'http://MeuServio.com/postalcode=' . $postalCode;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        $response = json_decode($response);
+        
+        if (isset($json->logradouro)) { 
+            $response = [
+                'success' => true,
+                'lat' => $json->latitude,
+                'lon' => $json->longitude,
+                'streetName' => $json->logradouro,
+                'neighborhood' => $json->bairro,
+                'city' => $json->cidade,
+                'state' => $json->estado
+            ];
+        } else {
+            $response = [
+                'success' => false,
+                'error_msg' => 'Falha a buscar endereço'
+            ];
+        }
+        
+        return $response;
+    }
+    
+    //...
+
+}
+   
+```
+
+*NOTA:* os campos lat e lon são opcionais e ainda não estão sendo utilizados. Mas provavelmente, em breve, passaremos 
+a utilizar ele também para posicionar o pin no mapa.
