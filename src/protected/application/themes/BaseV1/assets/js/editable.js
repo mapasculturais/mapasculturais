@@ -914,6 +914,7 @@ $(function(){
         var municipio = $('#En_Municipio').editable('getValue', true);
         var estado = $('#En_Estado').editable('getValue', true);
         if(cep && nome_logradouro && numero && bairro && municipio && estado){
+            var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
             var endereco =  nome_logradouro + ", " + numero + (complemento ? ", " + complemento : " ") + ", " + bairro + ", " + cep  + ", " + municipio + ", " + estado;
             $('#endereco').editable('setValue', endereco);
             $('#endereco').trigger('changeAddress', endereco);

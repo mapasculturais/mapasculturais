@@ -551,6 +551,13 @@ class Theme extends MapasCulturais\Theme {
             'Cancelar'  => \MapasCulturais\i::__('Cancelar')
         ]);
 
+        $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
+        
+        // This replaces the default geocoder with the google geocoder
+        if (App::i()->config['app.useGoogleGeocode'])
+            $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
+
+
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleNotifications', [

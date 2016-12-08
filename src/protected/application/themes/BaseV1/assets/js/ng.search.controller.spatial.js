@@ -173,37 +173,13 @@
         };
 
 
-        var geocoder = null;
-        if(typeof google !== 'undefined')
-            geocoder =  new google.maps.Geocoder();
-
-        // callback to handle google geolocation result
-        function geocode_callback(results, status) {
-            if(typeof google === 'undefined'){
-                return false;
-            }
-            if (status == google.maps.GeocoderStatus.OK) {
-                var location = results[0].geometry.location;
-                var foundLocation = new L.latLng(location.lat(), location.lng());
-                map.setView(foundLocation, 15);
-                marker.setLatLng(foundLocation);
-            }
-        }
-
         function filterAddress () {
-            var geocoder = null;
-            var addressString = $scope.data.global.locationFilters.address.text + ', Brasil';
+            var addressString = $scope.data.global.locationFilters.address.text;
 
-            if (!google){
-                return;
-            }else{
-                geocoder = new google.maps.Geocoder();
-            }
-            geocoder.geocode({'address': addressString}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
+            MapasCulturais.geocoder.geocode({'fullAddress': addressString}, function(results) {
+                if (results) {
                     $window.$timout.cancel($window.dataTimeout);
-                    var location = results[0].geometry.location;
-                    var foundLocation = new L.latLng(location.lat(), location.lng());
+                    var foundLocation = new L.latLng(results.lat, results.lon);
 
                     $window.leaflet.map.setView(foundLocation, 13);
 
@@ -220,8 +196,8 @@
                         address : {
                             text : $scope.data.global.locationFilters.address.text,
                             center : {
-                                lat: location.lat(),
-                                lng: location.lng()
+                                lat: results.lat,
+                                lng: results.lng
                             },
                             radius : $scope.defaultLocationRadius
                         }
