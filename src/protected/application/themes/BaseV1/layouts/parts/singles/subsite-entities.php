@@ -34,6 +34,19 @@
         <span class="label">Cores: </span> <br>
 
         <div class="color">
+            <label>Introdução Site</label>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_intro") && $editEntity? 'required': '');?>" data-edit="cor_intro" data-original-title="Introdução Site" data-emptytext="Introdução do Site" data-type="color"><?php echo $entity->cor_intro; ?></span>
+        </div>
+
+        <div class="color">
+            <label>Desenvolvedores</label>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_dev") && $editEntity? 'required': '');?>" data-edit="cor_dev" data-original-title="Desenvolvedores" data-emptytext="Desenvolvedores" data-type="color"><?php echo $entity->cor_dev; ?></span>
+        </div>
+        </br>
+        </br>
+        </br>
+        </br>
+        <div class="color">
             <label>Agentes</label>
             <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_agentes") && $editEntity? 'required': '');?>" data-edit="cor_agentes" data-original-title="Agentes" data-emptytext="Agentes" data-type="color"><?php echo $entity->cor_agentes; ?></span>
         </div>

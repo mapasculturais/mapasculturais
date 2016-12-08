@@ -44,7 +44,7 @@ $metadata_config_estado = [
         'TO' => 'Tocantins'
     ]
 ];
-    
+
 $metadata_config_color = [
     'label' => 'Cor da entidade',
     'validations' => [
@@ -64,7 +64,7 @@ $metadata_config_area = [
     },
     'options' => [
         /* @TODO: incluir arquivo taxonomies.php e pegar os termos de lá */
-        
+
         'Antropologia',
         'Arqueologia',
         'Arquitetura*Urbanismo',
@@ -144,9 +144,11 @@ return array(
         'cor_projetos' => $metadata_config_color,
         'cor_eventos' => $metadata_config_color,
         'cor_selos' => $metadata_config_color,
-        
+        'cor_intro' => $metadata_config_color,
+        'cor_dev' => $metadata_config_color,
+
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
-        
+
         'filtro_space_meta_En_Municipio' => [
             'label' => 'Município',
             'type' => 'tag',
@@ -167,9 +169,9 @@ return array(
                 return json_decode($v);
             },
         ],
-        
+
         'filtro_agent_meta_En_Estado' => $metadata_config_estado,
-        
+
         'filtro_agent_meta_En_Municipio' => [
             'label' => 'Município',
             'type' => 'tag',
@@ -190,7 +192,7 @@ return array(
                 return json_decode($v);
             },
         ],
-        
+
         'filtro_space_meta_type' => array(
             'label' => 'Tipo de espaço',
             'type' => 'multiselect',
@@ -266,7 +268,7 @@ return array(
         ),
         'filtro_space_term_area' => $metadata_config_area,
         'filtro_agent_term_area' => $metadata_config_area,
-                    
+
         'filtro_event_term_linguagem' => array(
             'label' => 'Linguagem',
             'type' => 'multiselect',

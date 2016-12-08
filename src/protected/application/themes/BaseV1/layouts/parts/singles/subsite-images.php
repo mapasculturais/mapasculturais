@@ -22,7 +22,7 @@
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de 140x60px com extensões <strong>.png/.jpg</strong></span>
+        <span class="tip">Deve ter as dimensões de <strong>140x60px</strong> com extensões <strong>.png/.jpg</strong></span>
 
         <?php $this->applyTemplateHook('logo','after'); ?>
     </div>
@@ -49,7 +49,7 @@
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter extensões .png/.jpg)</span>
+        <span class="tip">Deve ter extensões <strong>680x680px</strong> com extensões <strong>.png/.jpg</strong> e deve ter fundo transparente</span>
 
         <?php $this->applyTemplateHook('background','after'); ?>
     </div>
@@ -76,7 +76,7 @@
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de 90x39px com extensões .png/.jpg)</span>
+        <span class="tip">Deve ter as dimensões de <strong>90x39px</strong> com extensões <strong>.png/.jpg</strong></span>
 
         <?php $this->applyTemplateHook('institute','after'); ?>
     </div>

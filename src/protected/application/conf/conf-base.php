@@ -78,9 +78,11 @@ return array(
     'themes.brand-space'    => '#e83f96',
     'themes.brand-project'  => '#cc0033',
     'themes.brand-event'    => '#b3b921',
-    'themes.brand-subsite'     => '#ff5545',
+    'themes.brand-subsite'  => '#ff5545',
     'themes.brand-seal'     => '#ff5545',
     'themes.brand-agent'    => '#1dabc6',
+    'themes.brand-intro'    => '#1dabc6',
+    'themes.brand-dev'      => '#9966cc',
 
     //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
