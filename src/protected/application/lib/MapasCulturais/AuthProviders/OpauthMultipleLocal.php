@@ -4,8 +4,16 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 
 
-class OpauthMultiple extends \MapasCulturais\AuthProvider{
+class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
     protected $opauth;
+    
+    var $login_error        = true;
+    var $login_error_msg    = 'bla';
+    var $register_error     = false;
+    var $register_error_msg = false;
+    var $triedEmail = '';
+    var $triedName = '';
+    
     protected function _init() {
 
         $app = App::i();
@@ -34,7 +42,7 @@ class OpauthMultiple extends \MapasCulturais\AuthProvider{
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
-            $this->render('multiple-local');
+            $app->auth->renderForm($this);
         });
 
         $providers = implode('|', array_keys($config['strategies']));
@@ -54,15 +62,72 @@ class OpauthMultiple extends \MapasCulturais\AuthProvider{
         });
         
         
-        
-        // Local
-        
-        
-        
-        
+        $app->hook('POST(auth.register)', function () use($app){
+            
+            if ($app->auth->validateRegisterFields()) {
+            
+                // Para simplificar, montaremos uma resposta no padrão Oauth
+                $response = [
+                    'auth' => [
+                        'provider' => 'local',
+                        'uid' => $app->request->post('email'),
+                        'info' => [
+                            'email' => $app->request->post('email'),
+                            'name' => $app->request->post('name'),
+                        ]
+                    ]
+                ];
+                
+                $user = $app->auth->createUser($response);
+                
+                // save user password
+                $user->localAuthenticationPassword = $app->auth->hashPassword($app->request->post('password'));
+                var_dump($user->localAuthenticationPassword);
+                var_dump($user->email);
+                var_dump($user->id);
+                
+                //$user->save(true);
+                //$user->flush();
+                
+                $profile = $user->profile;
+
+                $this->_setAuthenticatedUser($user);
+                //App::i()->applyHook('auth.successful');
+                var_dump($user->id);
+                //$app->redirect($profile->editUrl);
+                
+            
+            } else {
+                $app->auth->renderForm($this);
+            }
+
+        });
         
         
     }
+    
+    function validateRegisterFields() {
+        return true;
+    }
+    
+    function hashPassword($pass) {
+        return md5($pass);
+    }
+    
+    function renderForm($theme) {
+        $app = App::i();
+        $theme->render('multiple-local', [
+            'register_form_action' => $app->createUrl('auth', 'register'),
+            'login_form_action' => $app->createUrl('auth', 'login'),
+            'login_error'        => $app->auth->login_error,
+            'login_error_msg'    => $app->auth->login_error_msg,   
+            'register_error'     => $app->auth->register_error,    
+            'register_error_msg' => $app->auth->register_error_msg,
+            'triedEmail' => $app->auth->triedEmail,
+            'triedName' => $app->auth->triedName,
+        ]);
+    }
+    
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
     }
@@ -155,6 +220,12 @@ class OpauthMultiple extends \MapasCulturais\AuthProvider{
         return $valid;
     }
     public function _getAuthenticatedUser() {
+        
+        if (is_object($this->_authenticatedUser)) {
+            $app->log->debug('================' . var_dump($this->_authenticatedUser));
+            return $this->_authenticatedUser;
+        }
+        
         $user = null;
         if($this->_validateResponse()){
             $app = App::i();
