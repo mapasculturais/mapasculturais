@@ -7,12 +7,18 @@ use MapasCulturais\Entities;
 class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
     protected $opauth;
     
-    var $login_error        = true;
-    var $login_error_msg    = 'bla';
+    var $login_error        = false;
+    var $login_error_msg    = '';
     var $register_error     = false;
-    var $register_error_msg = false;
+    var $register_error_msg = '';
     var $triedEmail = '';
     var $triedName = '';
+    
+    protected $passMetaName = 'localAuthenticationPassword';
+    
+    function dump($x) {
+        \Doctrine\Common\Util\Debug::dump($x);
+    }
     
     protected function _init() {
 
@@ -79,22 +85,53 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
                 ];
                 
                 $user = $app->auth->createUser($response);
+                $user = App::i()->repo("User")->find($user->id);
+                #$user = $app->em->find('\MapasCulturais\Entities\User', $user->id);
                 
                 // save user password
-                $user->localAuthenticationPassword = $app->auth->hashPassword($app->request->post('password'));
-                var_dump($user->localAuthenticationPassword);
-                var_dump($user->email);
-                var_dump($user->id);
+                #$user->localAuthenticationPassword = $app->auth->hashPassword($app->request->post('password'));
+                //$user->setMetadata('localAuthenticationPassword', $app->auth->hashPassword($app->request->post('password')));
+                //var_dump($user->localAuthenticationPassword);
+                //var_dump($user->email);
+                //var_dump($user->id);
                 
-                //$user->save(true);
-                //$user->flush();
+                //$user->save();
+                #$app->em->persist($user);
+                #$app->em->flush();
+                
+                /*
+                 * Pq ao tentar salvar aqui o $user não tem permissão
+                 * 
+                 * Colocar como plugin:
+                 * -- declarar nova classe de autenticação
+                 * -- carregar template
+                 * 
+                 * Como declarar nova permissão ou verificar se é admin
+                 * 
+                 * vou fazer um skeleton
+                 * 
+                 * 
+                 * 
+                 */ 
+                
                 
                 $profile = $user->profile;
+                $this->_setRedirectPath($profile->editUrl);
 
-                $this->_setAuthenticatedUser($user);
-                //App::i()->applyHook('auth.successful');
-                var_dump($user->id);
-                //$app->redirect($profile->editUrl);
+                $app->auth->authenticateUser($user);
+                //$app->auth->_setAuthenticatedUser($user);
+                //$_SESSION['multipleLocalUserId'] = $user->id;
+                
+                //\Doctrine\Common\Util\Debug::dump($user);
+                
+                //$this->_authenticatedUser = $user;
+                
+                //\Doctrine\Common\Util\Debug::dump($this->_authenticatedUser);
+                
+                App::i()->applyHook('auth.successful');
+                //\Doctrine\Common\Util\Debug::dump($user);
+                //\Doctrine\Common\Util\Debug::dump($profile->editUrl);
+                $app->redirect($profile->editUrl);
                 
             
             } else {
@@ -102,6 +139,139 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
             }
 
         });
+        
+        $app->hook('POST(auth.login)', function () use($app){
+        
+            if ($app->auth->verifyLogin())
+                $app->redirect ($app->auth->getRedirectPath());
+            else
+                $app->auth->renderForm($this);
+        
+        });
+        
+        $app->hook('POST(auth.recover)', function () use($app){
+        
+            $app->auth->recover();
+            $app->auth->renderForm($this);
+        
+        });
+        
+        $app->hook('GET(auth.recover-resetform)', function () use($app){
+        
+            $app->auth->renderRecoverForm($this);
+        
+        });
+        
+        $app->hook('POST(auth.dorecover)', function () use($app){
+        
+            if ($app->auth->dorecover()) {
+                $this->error_msg = 'Senha alterada com sucesso. Agora você pode fazer login';
+                $app->auth->renderForm($this);
+            } else {
+                $app->auth->renderRecoverForm($this);
+            }
+            
+        
+        });
+        
+        
+    }
+    
+    function renderRecoverForm($theme) {
+        $app = App::i();
+        $theme->render('pass-recover', [
+            'form_action' => $app->createUrl('auth', 'dorecover') . '?t=' . $app->request->get('t'),
+            'login_error'        => $app->auth->login_error,
+            'login_error_msg'    => $app->auth->login_error_msg,   
+            'triedEmail' => $app->auth->triedEmail,
+        ]);
+    }
+    
+    function dorecover() {
+        $app = App::i();
+        $email = $app->request->post('email');
+        $pass = $app->request->post('password');
+        $user = $app->repo("User")->findOneBy(array('email' => $email));
+        $token = $app->request->get('t');
+        
+        if (!$user) {
+            $this->login_error = true;
+            $this->triedEmail = $email;
+            $this->login_error_msg = 'Email ou token inválidos';
+            return false;
+        }
+        
+        $meta = 'recover_token_' . $token;
+        $savedToken = $user->getMetadata($meta);
+        
+        if (!$savedToken) {
+            $this->login_error = true;
+            $this->triedEmail = $email;
+            $this->login_error_msg = 'Email ou token inválidos';
+            return false;
+        }
+        
+        // check if token is still valid
+        $now = time();
+        $diff = $now - intval($savedToken);
+        
+        if ($diff > 60 * 60 * 24 * 30) {
+            $this->login_error = true;
+            $this->triedEmail = $email;
+            $this->login_error_msg = 'Este token expirou';
+            return false;
+        }
+        
+        $user->setMetadata($this->passMetaName, $this->hashPassword($pass));
+        //$this-dump($user);
+        //$this-dump($this->passMetaName);
+        var_dump($this->passMetaName);
+        //$this-dump($this->hashPassword($pass));
+        
+        
+        die;
+        $user->saveMetadata();
+        $app->em->flush();
+        
+        return true;
+    }
+    
+    function authenticateUser(Entities\User $user) {
+        $this->_setAuthenticatedUser($user);
+        $_SESSION['multipleLocalUserId'] = $user->id;
+    }
+    
+    function verifyLogin() {
+        $app = App::i();
+        $email = $app->request->post('email');
+        $pass = $app->request->post('password');
+        $user = $app->repo("User")->findOneBy(array('email' => $email));
+        
+        if (!$user) {
+            $this->login_error = true;
+            $this->triedEmail = $email;
+            $this->login_error_msg = 'Usuário ou senha inválidos';
+            return false;
+        }
+        
+        //$this->dump($user);
+        $meta = $this->passMetaName;
+        $savedPass = $user->getMetadata($meta);
+        #$this->dump($savedPass);
+        #$this->dump($pass);
+        #var_dump(password_verify($pass, $savedPass));
+        #die;
+        if (password_verify($pass, $savedPass)) {
+            $this->authenticateUser($user);
+            //$this->_setAuthenticatedUser($user);
+            //$_SESSION['multipleLocalUserId'] = $user->id;
+            return true;
+        }
+        
+        $this->login_error = true;
+        $this->login_error_msg = 'Usuário ou senha inválidos';
+        return false;
+        
         
         
     }
@@ -111,7 +281,42 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
     }
     
     function hashPassword($pass) {
-        return md5($pass);
+        return password_hash($pass, PASSWORD_DEFAULT);
+    }
+    
+    function recover() {
+        $app = App::i();
+        $email = $app->request->post('email');
+        $user = $app->repo("User")->findOneBy(array('email' => $email));
+        
+        if (!$user) {
+            $this->login_error = true;
+            $this->triedEmail = $email;
+            $this->login_error_msg = 'Email não encontrado';
+            return false;
+        }
+        
+        // generate the hash
+        $source = random_int(333333, 444444);
+        $cut = random_int(10, 30);
+        $string = $this->hashPassword($source);
+        $token = substr($string, $cut, 20);
+        
+        //var_dump($token); die;
+        
+        // save hash and created time
+        $user->setMetadata('recover_token_' . $token, time());
+        $user->saveMetadata();
+        $app->em->flush();
+        
+        // build recover URL
+        $url = $app->createUrl('auth', 'recover-resetform') . '?t=' . $token;
+        
+        // send email
+        
+        // set feedback
+        $this->login_error = true;
+        $this->login_error_msg = 'LINK: ' . $url;
     }
     
     function renderForm($theme) {
@@ -119,6 +324,7 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
         $theme->render('multiple-local', [
             'register_form_action' => $app->createUrl('auth', 'register'),
             'login_form_action' => $app->createUrl('auth', 'login'),
+            'recover_form_action' => $app->createUrl('auth', 'recover'),
             'login_error'        => $app->auth->login_error,
             'login_error_msg'    => $app->auth->login_error_msg,   
             'register_error'     => $app->auth->register_error,    
@@ -130,6 +336,7 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
     
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
+        unset($_SESSION['multipleLocalUserId']);
     }
     public function _requireAuthentication() {
         $app = App::i();
@@ -220,10 +427,16 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
         return $valid;
     }
     public function _getAuthenticatedUser() {
-        
+
+
         if (is_object($this->_authenticatedUser)) {
-            $app->log->debug('================' . var_dump($this->_authenticatedUser));
             return $this->_authenticatedUser;
+        }
+        
+        if (isset($_SESSION['multipleLocalUserId'])) {
+            $user_id = $_SESSION['multipleLocalUserId'];
+            $user = App::i()->repo("User")->find($user_id);
+            return $user;
         }
         
         $user = null;
@@ -277,6 +490,12 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
          $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
         $user->email = $response['auth']['info']['email'];
+        
+        if (null !== $app->request->post('password')) {
+            //$user->localAuthenticationPassword = $app->auth->hashPassword($app->request->post('password'));
+            $user->setMetadata($this->passMetaName, $app->auth->hashPassword($app->request->post('password')));
+        }
+        
         $app->em->persist($user);
 
         // cria um agente do tipo user profile para o usuário criado acima
@@ -296,12 +515,15 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
         $app->em->flush();
 
         $user->profile = $agent;
+        
         $user->save(true);
-
+        
         $app->enableAccessControl();
 
         $this->_setRedirectPath($agent->editUrl);
-
+        
+        //\Doctrine\Common\Util\Debug::dump($user);
+        
         return $user;
     }
 }

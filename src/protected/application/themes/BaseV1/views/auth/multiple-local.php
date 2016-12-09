@@ -36,6 +36,20 @@
 
 </form>
 
+<h2>Esqueci minha senha</h2>
+
+<form action="<?php echo $recover_form_action; ?>" method="POST">
+
+
+    Email
+    <input type="text" name="email" value="" />
+    <br/><br/>
+
+    <input type="submit" value="Recuperar" />
+
+</form>
+
+
 <h2>Redes sociais</h2>
 
 
