@@ -459,18 +459,23 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         /*
          * Envio de E-mail ao responsável da entidade
-         */
+         *
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $agent->user->email,
             'subject' => "Denúncia - Mapas Culturais",
             'body' => $this->data['message']
-        ]);
-
-        /* message to user about last access system
+        ]);*/
+        //$app->log->debug($agent->dump());//
+        $app->log->debug($agent->user->dump());
+        /* message to user about last access system*/
         $notification = new Notification;
         $notification->user = $agent->user;
-        $notification->message = $this->data['message'];
+        $app->log->debug("Classe chamada");
+        $app->log->debug($notification->entityClassName);
+        $app->log->debug("Classe chamada User");
+        $app->log->debug($notification->user->entityClassName);
+        /*$notification->message = $this->data['message'];
         $notification->type = $this->data['type'];
         $notification->savekkk();
         $app->em->flush();*/
@@ -479,6 +484,25 @@ abstract class EntityController extends \MapasCulturais\Controller{
     /*
      */
     public function POST_sendSuggestionMessage() {
+        $app = App::i();
+        $agent = $app->repo($this->entityClassName)->find($this->data['entityId']);
 
+        /*
+         * Envio de E-mail ao responsável da entidade
+         */
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $agent->user->email,
+            'subject' => "Contato - Mapas Culturais",
+            'body' => $this->data['message']
+        ]);
+
+        /* message to user about last access system */
+        $notification = new Notification;
+        $notification->user = $agent->user;
+        $notification->message = $this->data['message'];
+        $notification->type = $this->data['type'];
+        $notification->savekkk();
+        $app->em->flush();
     }
 }

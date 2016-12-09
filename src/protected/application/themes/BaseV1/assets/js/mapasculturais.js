@@ -165,12 +165,6 @@ $(function(){
         }
     }
 
-    // @TODO transformar isso no Serviço do Angular para enviar e fazer a requisição para o controller da entidade
-    /*$('.js-compliant-form .js-submit-button').on('click', function(e){
-        e.preventDefault();
-        $.post(MapasCulturais.createUrl(MapasCulturais.request.controller, "sendCompliantMessage",[MapasCulturais.entity.id]), {message: "Nós somos muito legais!!! =]"});
-    });*/
-
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
 

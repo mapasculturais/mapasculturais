@@ -35,7 +35,7 @@ if($this->controller->action === 'create')
     </p>
 </form>
 
-<!--form class="form-complaint-suggestion js-suggestion-form hidden" action="" ng-controller="SuggestionController">
+<form class="form-complaint-suggestion js-suggestion-form hidden" action="" ng-controller="SuggestionController">
     <p>
         Nome:<br />
         <input ng-model="data.name" type="text" rows="5" name="nome">
@@ -68,4 +68,4 @@ if($this->controller->action === 'create')
     <p>
         <button class="js-submit-button" ng-click="send()">Enviar</button>
     </p>
-</form-->
+</form>
