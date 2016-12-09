@@ -296,6 +296,7 @@ class Theme extends MapasCulturais\Theme {
         // sempre que insere uma imagem cria o avatarSmall
         $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
+            $this->transform('avatarMedium');
             $this->transform('avatarBig');
         });
 
