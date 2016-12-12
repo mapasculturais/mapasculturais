@@ -219,7 +219,7 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
             
         }
         
-        if ($app->request->post('email') != '') { // We are changing the password
+        if ($app->request->post('new_pass') != '') { // We are changing the password
             
             $curr_pass = $app->request->post('current_pass');
             $new_pass = $app->request->post('new_pass');
