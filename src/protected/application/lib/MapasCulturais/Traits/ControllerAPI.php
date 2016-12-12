@@ -171,6 +171,49 @@ trait ControllerAPI{
             $em->detach($r);
         }
     }
+    
+    
+    protected function _API_canCurrentUserViewEntityPrivateData($entity_id){
+        $app = App::i();
+        
+        if($app->user->is('guest')){
+            return false;
+        }
+        
+        if($app->user->is('admin')){
+            return true;
+        }
+        
+        $class = $this->entityClassName;
+
+        if($class::usePermissionCache()){
+            $private_data_cache_id = "$class :: canUserViewPrivateData :: {$app->user->id}";
+
+            if($app->rcache->contains($private_data_cache_id)){
+                $view_private = $app->rcache->fetch($private_data_cache_id);
+            } elseif($permissions != ['viewPrivateData']) {
+
+                $pq = $app->em->createQuery("
+                    SELECT PARTIAL 
+                        e.{id} 
+                    FROM 
+                        $class e JOIN e.__permissionsCache __pcache WITH __pcache.action ='viewPrivateData' AND __pcache.userId = {$app->user->id}");
+
+
+                $view_private = [];
+                foreach($pq->getArrayResult() as $_id){
+                    $view_private[$_id['id']] = true;
+                }
+                $app->rcache->save($private_data_cache_id, $view_private);
+            }
+            
+            if(isset($view_private[$entity_id]) && $view_private[$entity_id]){
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -507,29 +550,6 @@ trait ControllerAPI{
                 $dql_select_joins[] = "LEFT JOIN e.owner _owner";
             }
             
-            $view_private = [];
-            if($class::usePermissionCache()){
-                $private_data_cache_id = "$class :: canUserViewPrivateData :: {$app->user->id}";
-
-                if($app->rcache->contains($private_data_cache_id)){
-                    $view_private = $app->rcache->fetch($private_data_cache_id);
-                } elseif($permissions != ['viewPrivateData']) {
-
-                    $pq = $app->em->createQuery("
-                        SELECT PARTIAL 
-                            e.{id} 
-                        FROM 
-                            $class e JOIN e.__permissionsCache __pcache WITH __pcache.action ='viewPrivateData' AND __pcache.userId = {$app->user->id}");
-
-
-                    $view_private = [];
-                    foreach($pq->getArrayResult() as $_id){
-                        $view_private[$_id['id']] = true;
-                    }                
-                    $app->rcache->save($private_data_cache_id, $view_private);
-                }
-            }
-
             $select_properties = implode(',',array_unique($select_properties));
             
             if(in_array('type', $select)){
@@ -631,16 +651,14 @@ trait ControllerAPI{
                 }
             };
 
-            $processEntity = function($r) use($append_files_cb, $select, $view_private){
+            $processEntity = function($r) use($append_files_cb, $select){
 
                 $entity = [];
                 $append_files_cb($entity, $r);
                 foreach($select as $i=> $prop){
                     $prop = trim($prop);
                     
-                    if($prop === 'location' && !$r['publicLocation'] && !isset($view_private[$entity['id']])){
-                        
-//                        var_dump($entity);
+                    if($prop === 'location' && isset($r['publicLocation']) && !$r['publicLocation'] && !$this->_API_canCurrentUserViewEntityPrivateData($r['id'])){
                         $r[$prop] = ['latitude' => 0, 'longitude' => 0];
                     }
                     try{
