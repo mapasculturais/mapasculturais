@@ -174,7 +174,85 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
         
         });
         
+        $app->hook('panel.menu:after', function () use($app){
         
+            $active = $this->template == 'panel/my-account' ? 'class="active"' : '';
+            $url = $app->createUrl('panel', 'my-account');
+            $label = "Minha conta";
+            
+            echo "<li><a href='$url' $active>$label</a></li>";
+        
+        });
+        
+        $app->hook('ALL(panel.my-account)', function () use($app){
+        
+            if ($app->request->post('email'))
+                $app->auth->processMyAccount();
+            
+            $active = $this->template == 'panel/my-account' ? 'class="active"' : '';
+            $user = $app->user;
+            $email = $user->email ? $user->email : '';
+            $this->render('my-account', [
+                'email' => $email,
+                'form_action' => $app->createUrl('panel', 'my-account'),
+                'login_error'        => $app->auth->login_error,
+                'login_error_msg'    => $app->auth->login_error_msg,  
+            ]);
+        
+        });
+        
+    }
+    
+    function processMyAccount() {
+        $app = App::i();
+        
+        $email = $app->request->post('email');
+        $user = $app->user;
+        $emailChanged = false;
+        
+        if ($user->email != $email) { // we are changing the email
+            
+            $user->email = $email;
+            
+            $this->login_error_msg = 'Email alterado com sucesso';
+            $emailChanged = true;
+            
+        }
+        
+        if ($app->request->post('email') != '') { // We are changing the password
+            
+            $curr_pass = $app->request->post('current_pass');
+            $new_pass = $app->request->post('new_pass');
+            $confirm_new_pass = $app->request->post('confirm_new_pass');
+            $meta = $this->passMetaName;
+            $curr_saved_pass = $user->getMetadata($meta);
+            
+            if (password_verify($curr_pass, $curr_saved_pass) && $this->verifyPassowrds($new_pass, $confirm_new_pass)) {
+                
+                $user->setMetadata($meta, $app->auth->hashPassword($new_pass));
+                $this->login_error_msg = $emailChanged ? 'Email e senha alterados com sucecsso' : 'Senha alterada com sucesso';
+                
+            } else {
+                $this->login_error = true;
+                $this->login_error_msg = 'Dados de senha inválidos';
+                return false;
+            }
+            
+        }
+        
+        $app->em->flush();
+        $user->save();
+        
+        return true;
+        
+    }
+    
+    function verifyPassowrds($pass, $verify) {
+    
+        //TODO: validação
+        
+        return $pass == $verify;
+    
     }
     
     function renderRecoverForm($theme) {
@@ -230,7 +308,7 @@ class OpauthMultipleLocal extends \MapasCulturais\AuthProvider{
         
         
         die;
-        $user->saveMetadata();
+        $user->saveMetadata(); // está dando erro de permissão
         $app->em->flush();
         
         return true;
