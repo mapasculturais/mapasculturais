@@ -130,13 +130,14 @@ $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 </article>
 
 <div class="sidebar-right">
-    <!-- Related Profile Agents BEGIN -->
-    <?php $this->part('related-profiles-agents.php', array('entity' => $entity)); ?>
-    <!-- Related Profile Agents END -->
 
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo.<span class="close"></span></p>
+            <p class="alert info">Parar configurar os administradores você deve primeiro salvar o subsite.<span class="close"></span></p>
         </div>
+    <?php else: ?>
+        <!-- Related Profile Agents BEGIN -->
+        <?php $this->part('related-profiles-agents.php', array('entity' => $entity)); ?>
+        <!-- Related Profile Agents END -->
     <?php endif; ?>
 </div>

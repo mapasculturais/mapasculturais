@@ -21,6 +21,41 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             'cliente_id' => '',
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
         ], $this->_config);
+        
+        
+        //  SaaS -- BEGIN
+        $app->hook('template(subsite.single.tabs):end', function() use($app){
+            $this->part('singles/subsite--login-cidadao--tab');
+        });
+        
+        $app->hook('template(subsite.single.tabs-content):end', function() use($app){
+            $this->part('singles/subsite--login-cidadao--content');
+        });
+        
+        $metadata = [
+            'login_cidaddao__id' => ['label' => 'Login Cidadão Client ID', 'private' => 'true'],
+            'login_cidaddao__secret' => ['label' => 'Login Cidadão Client Secret', 'private' => 'true']
+        ];
+
+        foreach($metadata as $k => $cfg){
+            $def = new \MapasCulturais\Definitions\Metadata($k, $cfg);
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Subsite');
+        }
+        
+        $app->hook('subsite.applyConfigurations:before', function(&$app_config) use(&$config) {
+            
+            if($this->login_cidaddao__id && $this->login_cidaddao__secret && isset($app_config['auth.config'])){
+                $app_config['auth.config']['client_id'] = $this->login_cidaddao__id;
+                $app_config['auth.config']['client_secret'] = $this->login_cidaddao__secret;
+                
+                $config['client_id'] = $this->login_cidaddao__id;
+                $config['client_secret'] = $this->login_cidaddao__secret;
+            }
+        });
+        
+        // SaaS -- END
+        
+        
         $opauth_config = [
             'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
             'Strategy' => [

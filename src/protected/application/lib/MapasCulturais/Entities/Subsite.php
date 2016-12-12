@@ -242,6 +242,8 @@ class Subsite extends \MapasCulturais\Entity
         }
         
         $subsite_id = $app->getCurrentSubsiteId();
+        
+        $app->applyHookBoundTo($this, 'subsite.applyFilters:before');
 
         foreach($this->filters as $controller => $entity_filters){
             $cache_id = "subsite:{$controller}:Ids";
@@ -279,10 +281,16 @@ class Subsite extends \MapasCulturais\Entity
         $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
             $dql_where .= " AND e._subsiteId = {$subsite_id}";
         });
+        
+        $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
     }
     
     
     public function applyConfigurations(&$config){
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:before', ['config' => &$config]);
+
         $config['app.verifiedSealsIds'] = $this->verifiedSeals;
         
         if($this->longitude && $this->longitude) {
@@ -318,6 +326,9 @@ class Subsite extends \MapasCulturais\Entity
         if (!in_array('Eventos', $entidades)) {
             $config['app.enabled.events'] = false;
         }
+        
+        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
+
     }
     
     
