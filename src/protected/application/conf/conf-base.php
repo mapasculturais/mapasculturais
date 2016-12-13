@@ -94,6 +94,8 @@ return array(
     'cep.token_header'  => 'Authorization: Token token="%s"',
     'cep.token'         => '',
 
+    'export.excelName'      => 'mapas-culturais-dados-exportados.xls',
+
     'app.geoDivisionsHierarchy' => [
         'pais'          => \MapasCulturais\i::__('País'),          // metadata: geoPais
         'regiao'        => \MapasCulturais\i::__('Região'),        // metadata: geoRegiao
