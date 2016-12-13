@@ -30,7 +30,7 @@ return array(
     // development, staging, production
     'app.mode' => 'production',
     'app.lcode' => 'pt-br',
-    
+
     'app.verifiedSealsIds' => [1],
 
     'app.dbUpdatesDisabled' => false,
@@ -85,6 +85,8 @@ return array(
     'cep.endpoint'      => 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s',
     'cep.token_header'  => 'Authorization: Token token="%s"',
     'cep.token'         => '',
+
+    'export.excelName'      => 'mapas-culturais-dados-exportados.xls',
 
     'app.geoDivisionsHierarchy' => [
         'pais'          => 'País',          // metadata: geoPais
