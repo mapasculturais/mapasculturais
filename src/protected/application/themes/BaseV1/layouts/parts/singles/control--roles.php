@@ -12,13 +12,13 @@
         <?php elseif ($entity->user->is('admin')): ?>
             <span data-role="admin"><?php echo $app->getRoleName('admin'); ?></span>
         <?php else: ?>
-            <span>Normal</span>
+            <span><?php \MapasCulturais\i::_e("Normal");?></span>
         <?php endif; ?>
     </div>
     <div class="submenu-dropdown js-options">
         <ul>
             <li>
-                <span>Normal</span>
+                <span><?php \MapasCulturais\i::_e("Normal");?></span>
             </li>
             
             <?php if ($entity->user->canUser('addRoleAdmin')): ?>

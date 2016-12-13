@@ -7,6 +7,8 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
 use Respect\Validation\length;
+use MapasCulturais\i;
+
 
 class Theme extends MapasCulturais\Theme {
 
@@ -64,116 +66,122 @@ class Theme extends MapasCulturais\Theme {
         return [
             // TEXTOS GERAIS
             'site: name' => [
-                'name' => 'nome do site',
-                'description' => 'usado para formar o título do site e título do compartilhamento das páginas do site',
-                'examples' => ['Mapa da Cultura', 'Mapa Cultural do Estado do Acre', 'Mapa da Cultura de Rio Branco'],
-                'text' => $app->config['app.siteName'],
+                'name' => i::__('nome do site'),
+                'description' => i::__('usado para formar o título do site e título do compartilhamento das páginas do site'),
+                'examples' => [i::__('Mapa da Cultura'), i::__('Mapa Cultural do Estado do Acre'), i::__('Mapa da Cultura de Rio Branco')],
+                'text' => $app->config["app.siteName"],
                 'required' => true
             ],
             'site: description' => [
-                'name' => 'descrição do site',
-                'description' => 'usado principalmente como texto do compartilhamento da home do site',
-                'text' => $app->config['app.siteDescription'],
+                'name' => i::__('descrição do site'),
+                'description' => i::__('usado principalmente como texto do compartilhamento da home do site'),
+                'text' => $app->config["app.siteDescription"],
                 'required' => true
             ],
             'site: owner' => [
-                'name' => 'nome da instituição responsável pelo site',
-                'description' => 'usado nos lugares do site onde aparece o nome da instituição',
-                'examples' => ['Ministério da Cultura', 'Fundação de Cultura Elias Mansour'],
-                'text' => 'Secretaria',
+                'name' => i::__('nome da instituição responsável pelo site'),
+                'description' => i::__('usado nos lugares do site onde aparece o nome da instituição'),
+                'examples' => [i::__('Ministério da Cultura'), i::__('Fundação de Cultura Elias Mansour')],
+                'text' => i::__('Secretaria'),
                 'required' => true
             ],
             'site: by the site owner' => [
-                'name' => 'texto "pela instituição responsável pelo site"',
-                'description' => 'usado nos lugares do site onde se quer dizer que algo foi feito "pela instituição responsável"',
-                'exampless' => ['pelo Ministério da Cultura', 'pela Fundação de Cultura Elias Mansour'],
-                'text' => 'pela Secretaria',
+                'name' => i::__('texto "pela instituição responsável pelo site"'),
+                'description' => i::__('usado nos lugares do site onde se quer dizer que algo foi feito "pela instituição responsável"'),
+                'exampless' => [i::__('pelo Ministério da Cultura'), i::__('pela Fundação de Cultura Elias Mansour')],
+                'text' => i::__('pela Secretaria'),
                 'required' => true
             ],
             'site: in the region' => [
-                'name' => 'texto "na região "',
-                'description' => 'usado nos lugares do site onde se quer dizer "na região"',
-                'examples' => ['no Brasil', 'no Estado do Acre', 'na cidade de Rio Branco'],
-                'text' => 'na região',
+                'name' => i::__('texto "na região "'),
+                'description' => i::__('usado nos lugares do site onde se quer dizer "na região"'),
+                'examples' => [i::__('no Brasil'), i::__('no Estado do Acre'), i::__('na cidade de Rio Branco')],
+                'text' => i::__('na região'),
                 'required' => true
             ],
             'site: of the region' => [
-                'name' => 'texto "da região"',
-                'description' => 'usado nos lugares do site onde se quer dizer que algo é "da região"',
-                'examples' => ['do Brasil', 'do Estado do Acre', 'da cidade de Rio Branco'],
-                'text' => 'da região',
+                'name' => i::__('texto "da região"'),
+                'description' => i::__('usado nos lugares do site onde se quer dizer que algo é "da região"'),
+                'examples' => [i::__('do Brasil'), i::__('do Estado do Acre'), i::__('da cidade de Rio Branco')],
+                'text' => i::__('da região'),
                 'required' => true
             ],
             'site: panel' => [
-                'name' => 'nome do painel de controle',
-                'description' => 'usado principalmente como título dos links para a área administrativa do site',
-                'examples' => ['Painel', 'Painel de Controle', 'Área Administrativa'],
-                'text' => 'Painel de Controle'
+                'name' => i::__('nome do painel de controle'),
+                'description' => i::__('usado principalmente como título dos links para a área administrativa do site'),
+                'examples' => [i::__('Painel'), i::__('Painel de Controle'), i::__('Área Administrativa')],
+                'text' => i::__('Painel de Controle')
             ],
             
             // TEXTOS DA HOME DO SITE
             'home: title' => [
-                'name' => 'título da mensagem de boas-vindas',
-                'description' => 'usado na home do site para desejar as boas-vindas',
-                'examples' => ['Bem-vind@!', 'Bem-vindo'],
-                'text' => "Bem-vind@!"
+                'name' => i::__('título da mensagem de boas-vindas'),
+                'description' => i::__('usado na home do site para desejar as boas-vindas'),
+                'examples' => [i::__('Bem-vind@!'), i::__('Bem-vindo')],
+                'text' => i::__('Bem-vind@!')
             ],
             'home: welcome' => [
-                'name' => 'texto de boas-vindas',
-                'description' => 'texto que aparece embaixo da mensagem de boas-vindas na home do site',
-                'text' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural."
+                'name' => i::__('texto de boas-vindas'),
+                'description' => i::__('texto que aparece embaixo da mensagem de boas-vindas na home do site'),
+                'text' => i::__('O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.')
             ],
             'home: abbreviation' => [
-                'name' => 'abreviação ou sigla da instituição responsável pelo site',
-                'description' => 'usado principalmente na home para se referir à instituição de maneira curta',
-                'examples' => ['MinC', 'FEM', 'SECULT', 'SMC'],
-                'text' => "MC",
+                'name' => i::__('abreviação ou sigla da instituição responsável pelo site'),
+                'description' => i::__('usado principalmente na home para se referir à instituição de maneira curta'),
+                'examples' => [i::__('MinC'), i::__('FEM'), i::__('SECULT'), i::__('SMC')],
+                'text' => i::__('MC'),
                 'required' => true
             ],
             'home: colabore' => [
-                'name' => 'texto do botão colabore',
-                'description' => 'texto do botão que chama o usuário para colaborar com o mapeamento',
-                'examples' => ['Colabore com o SNIIC', 'Colabore com o Mapa da Cultura', 'Colabore com o SpCultura'],
-                'text' => "Colabore com o Mapas Culturais"
+                'name' => i::__('texto do botão colabore'),
+                'description' => i::__('texto do botão que chama o usuário para colaborar com o mapeamento'),
+                'examples' => [i::__('Colabore com o SNIIC'), i::__('Colabore com o Mapa da Cultura'), i::__('Colabore com o SpCultura')],
+                'text' => i::__('Colabore com o Mapas Culturais')
             ],
             'home: events' => [
-                'name' => 'texto da seção "eventos" da home',
-                'description' => '',
-                'text' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente."
+                'name' => i::__('texto da seção "eventos" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.')
             ],
             'home: agents' => [
-                'name' => 'texto da seção "agentes" da home',
-                'description' => '',
-                'text' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita."
+                'name' => i::__('texto da seção "agentes" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.')
             ],
             'home: spaces' => [
-                'name' => 'texto da seção "espaços" da home',
-                'description' => '',
-                'text' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."
+                'name' => i::__('texto da seção "espaços" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.')
             ],
             'home: projects' => [
-                'name' => 'texto da seção "projetos" da home',
-                'description' => '',
-                'text' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."
+                'name' => i::__('texto da seção "projetos" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.')
             ],
             'home: home_devs' => [
-                'name' => 'texto da seção "desenvolvedores" da home',
-                'description' => '',
-                'text' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'
+                'name' => i::__('texto da seção "desenvolvedores" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.')
             ],
             
             // TEXTOS UTILIZADOS NA PÁGINA DE BUSCA, MAPA
             'search: verified results' => [
-                'name' => 'resultados verifiados',
-                'description' => 'texto do botão que aplica/remove o filtro por resultados verificados',
-                'examples' => ['resultados verificados', 'resultados certificados', 'entidades certificadas', 'entidades validadas'],
-                'text' => 'resultados verificados'
+                'name' => i::__('resultados verifiados'),
+                'description' => i::__('texto do botão que aplica/remove o filtro por resultados verificados'),
+                'examples' => [i::__('resultados verificados'), i::__('resultados certificados'), i::__('entidades certificadas'), i::__('entidades validadas')],
+                'text' => i::__('resultados verificados')
+            ],
+            'search: display only verified results' => [
+                'name' => i::__('exibir somente resultados verifiados'),
+                'description' => i::__('texto explicativo do botão que aplica/remove o filtro por resultados verificados'),
+                'examples' => [i::__('exibir somente resultados verificados'), i::__('exibir somente resultados certificados'), i::__('exibir somente entidades certificadas'), i::__('exibir somente entidades validadas')],
+                'text' => i::__('exibir somente resultados verificados')
             ],
             'search: verified' => [
-                'name' => 'label do filtro de resultados verificados',
-                'description' => 'texto do label do filtro de resultados que aparece quando o filtro por resultados veridicados é aplicado',
-                'examples' => ['verificados', 'certificados', 'SMC', 'SECULT'],
-                'text' => "verificados"
+                'name' => i::__('label do filtro de resultados verificados'),
+                'description' => i::__('texto do label do filtro de resultados que aparece quando o filtro por resultados veridicados é aplicado'),
+                'examples' => [i::__('verificados'), i::__('certificados'), i::__('SMC'), i::__('SECULT')],
+                'text' => i::__('verificados')
             ],
             
             
@@ -181,136 +189,136 @@ class Theme extends MapasCulturais\Theme {
 
 // ======== Espaços
             'entities: Space' => [
-                'name' => 'texto "Espaço"',
-                'description' => 'nome da entidade Espaço no singular',
-                'examples' => ['Espaço', 'Museu', 'Biblioteca'],
-                'text' => 'Espaço'
+                'name' => i::__('texto "Espaço"'),
+                'description' => i::__('nome da entidade Espaço no singular'),
+                'examples' => [i::__('Espaço'), i::__('Museu'), i::__('Biblioteca')],
+                'text' => i::__('Espaço')
             ],
             'entities: Spaces' => [
-                'name' => 'texto "Espaços"',
-                'description' => 'nome da entidade Espaço no plural',
-                'examples' => ['Espaços', 'Museus', 'Bibliotecas'],
-                'text' => 'Espaços'
+                'name' => i::__('texto "Espaços"'),
+                'description' => i::__('nome da entidade Espaço no plural'),
+                'examples' => [i::__('Espaços'), i::__('Museus'), i::__('Bibliotecas')],
+                'text' => i::__('Espaços')
             ],
             'entities: space' => [
-                'name' => 'texto "espaço"',
-                'description' => 'nome da entidade espaço no singular',
-                'examples' => ['espaço', 'museu', 'biblioteca'],
-                'text' => 'espaço'
+                'name' => i::__('texto "espaço"'),
+                'description' => i::__('nome da entidade espaço no singular'),
+                'examples' => [i::__('espaço'), i::__('museu'), i::__('biblioteca')],
+                'text' => i::__('espaço')
             ],
             'entities: spaces' => [
-                'name' => 'texto "espaços"',
-                'description' => 'nome da entidade espaço no plural',
-                'examples' => ['espaços', 'museus', 'bibliotecas'],
-                'text' => 'espaços'
+                'name' => i::__('texto "espaços"'),
+                'description' => i::__('nome da entidade espaço no plural'),
+                'examples' => [i::__('espaços'), i::__('museus'), i::__('bibliotecas')],
+                'text' => i::__('espaços')
             ],
             'entities: My Spaces' => [
-                'name' => 'texto "Meus Espaços"',
-                'description' => '',
-                'examples' => ['Meus Espaços', 'Meus Museus', 'Minhas Bibliotecas'],
-                'text' => 'Meus Espaços'
+                'name' => i::__('texto "Meus Espaços"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Espaços'), i::__('Meus Museus'), i::__('Minhas Bibliotecas')],
+                'text' => i::__('Meus Espaços')
             ],
             'entities: My spaces' => [
-                'name' => 'texto "Meus espaços"',
-                'description' => '',
-                'examples' => ['Meus espaços', 'Meus museus', 'Minhas bibliotecas'],
-                'text' => 'Meus espaços'
+                'name' => i::__('texto "Meus espaços"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus espaços'), i::__('Meus museus'), i::__('Minhas bibliotecas')],
+                'text' => i::__('Meus espaços')
             ],
             'entities: Space Description' => [
-                'name' => 'texto "Descrição do Espaço"',
-                'description' => '',
-                'examples' => ['Descrição do Espaço', 'Descrição do Museu', 'Descrição da Biblioteca'],
-                'text' => 'Descrição do Espaço'
+                'name' => i::__('texto "Descrição do Espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Descrição do Espaço'), i::__('Descrição do Museu'), i::__('Descrição da Biblioteca')],
+                'text' => i::__('Descrição do Espaço')
             ],
             'entities: parent space' => [
-                'name' => 'texto "espaço pai"',
-                'description' => '',
-                'examples' => ['espaço pai', 'museu pai', 'biblioteca mãe'],
-                'text' => 'espaço pai'
+                'name' => i::__('texto "espaço pai"'),
+                'description' => i::__(''),
+                'examples' => [i::__('espaço pai'), i::__('museu pai'), i::__('biblioteca mãe')],
+                'text' => i::__('espaço pai')
             ],
             'entities: a space' => [
-                'name' => 'texto "um espaço"',
-                'description' => '',
-                'examples' => ['um espaço', 'um museu', 'uma biblioteca'],
-                'text' => 'um espaço'
+                'name' => i::__('texto "um espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('um espaço'), i::__('um museu'), i::__('uma biblioteca')],
+                'text' => i::__('um espaço')
             ],
             'entities: the space' => [
-                'name' => 'texto "o espaço"',
-                'description' => '',
-                'examples' => ["o espaço", "o museu", "a biblioteca"],
-                'text' => 'o espaço'
+                'name' => i::__('texto "o espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('o espaço'), i::__('o museu'), i::__('a biblioteca')],
+                'text' => i::__('o espaço')
             ],
             'entities: of the space' => [
-                'name' => 'texto "do espaço"',
-                'description' => '',
-                'examples' => ['do espaço', 'do museu', 'da biblioteca'],
-                'text' => 'do espaço'
+                'name' => i::__('texto "do espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('do espaço'), i::__('do museu'), i::__('da biblioteca')],
+                'text' => i::__('do espaço')
             ],
             'entities: In this space' => [
-                'name' => 'texto "Neste espaço"',
-                'description' => '',
-                'examples' => ['Neste espaço', 'Neste museu', 'Nesta biblioteca'],
-                'text' => 'Neste espaço'
+                'name' => i::__('texto "Neste espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Neste espaço'), i::__('Neste museu'), i::__('Nesta biblioteca')],
+                'text' => i::__('Neste espaço')
             ],
             'entities: in this space' => [
-                'name' => 'texto "neste espaço"',
-                'description' => '',
-                'examples' => ['neste espaço', 'neste museu', 'nesta biblioteca'],
-                'text' => 'neste espaço'
+                'name' => i::__('texto "neste espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('neste espaço'), i::__('neste museu'), i::__('nesta biblioteca')],
+                'text' => i::__('neste espaço')
             ],
             'entities: registered spaces' => [
-                'name' => 'texto "espaços cadastrados"',
-                'description' => '',
-                'examples' => ['espaços cadastrados', 'museus cadastrados', 'bibliotecas cadastradas'],
-                'text' => 'espaços cadastrados'
+                'name' => i::__('texto "espaços cadastrados"'),
+                'description' => i::__(''),
+                'examples' => [i::__('espaços cadastrados'), i::__('museus cadastrados'), i::__('bibliotecas cadastradas')],
+                'text' => i::__('espaços cadastrados')
             ],
             'entities: no registered spaces' => [
-                'name' => 'texto "nenhum espaço cadastrado"',
-                'description' => '',
-                'examples' => ['nenhum espaço cadastrado', 'nenhum museu cadastrado', 'nenhuma biblioteca cadastrada'],
-                'text' => 'nenhum espaço cadastrado'
+                'name' => i::__('texto "nenhum espaço cadastrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('nenhum espaço cadastrado'), i::__('nenhum museu cadastrado'), i::__('nenhuma biblioteca cadastrada')],
+                'text' => i::__('nenhum espaço cadastrado')
             ],
             'entities: no spaces' => [
-                'name' => 'texto "nenhum espaço"',
-                'description' => '',
-                'examples' => ['nenhum espaço', 'nenhum museu', 'nenhuma biblioteca'],
-                'text' => 'nenhum espaço'
+                'name' => i::__('texto "nenhum espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('nenhum espaço'), i::__('nenhum museu'), i::__('nenhuma biblioteca')],
+                'text' => i::__('nenhum espaço')
             ],
             'entities: new space' => [
-                'name' => 'texto "novo espaço"',
-                'description' => '',
-                'examples' => ['novo espaço', 'novo museu', 'nova biblioteca'],
-                'text' => 'novo espaço'
+                'name' => i::__('texto "novo espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('novo espaço'), i::__('novo museu'), i::__('nova biblioteca')],
+                'text' => i::__('novo espaço')
             ],
             'entities: Children spaces' => [
-                'name' => 'texto "Subespaços"',
-                'description' => '',
-                'examples' => ['Subespaços', 'Espaços filhos', 'Museus filhos', "Subespaços do museu", 'Bibliotecas filhas', "Subespaços da biblioteca"],
-                'text' => 'Subespaços'
+                'name' => i::__('texto "Subespaços"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Subespaços'), i::__('Espaços filhos'), i::__('Museus filhos'), i::__('Subespaços do museu'), i::__('Bibliotecas filhas'), i::__('Subespaços da biblioteca')],
+                'text' => i::__('Subespaços')
             ],
             'entities: Add child space' => [
-                'name' => 'texto "Adicionar subespaço"',
-                'description' => '',
-                'examples' => ['Adicionar subespaço', 'Adicionar espaço filho', 'Adicionar museu filho', 'Adicionar subespaço do museu', 'Adicionar biblioteca filha', 'Adicionar subespaço da biblioteca'],
-                'text' => 'Adicionar subespaço'
+                'name' => i::__('texto "Adicionar subespaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Adicionar subespaço'), i::__('Adicionar espaço filho'), i::__('Adicionar museu filho'), i::__('Adicionar subespaço do museu'), i::__('Adicionar biblioteca filha'), i::__('Adicionar subespaço da biblioteca')],
+                'text' => i::__('Adicionar subespaço')
             ],
             'entities: space found' => [
-                'name' => 'teto "espaço encontrado"',
-                'description' => '',
-                'examples' => ['espaço encontrado', 'museu encontrado', 'biblioteca encontrada'],
-                'text' => 'espaço encontrado'
+                'name' => i::__('teto "espaço encontrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('espaço encontrado'), i::__('museu encontrado'), i::__('biblioteca encontrada')],
+                'text' => i::__('espaço encontrado')
             ],
             'entities: spaces found' => [
-                'name' => 'espaços encontrado',
-                'description' => '',
-                'examples' => ['espaços encontrados', 'museus encontrados', 'bibliotecas encontradas'],
-                'text' => 'espaços encontrados'
+                'name' => i::__('espaços encontrado'),
+                'description' => i::__(''),
+                'examples' => [i::__('espaços encontrados'), i::__('museus encontrados'), i::__('bibliotecas encontradas')],
+                'text' => i::__('espaços encontrados')
             ],
             'entities: Spaces of the agent' => [
-                'name' => 'texto "Espaços do agente"',
-                'description' => '',
-                'examples' => ['Espaços do agente', 'Museus do agente', 'Bibliotecas do agente'],
-                'text' => 'Espaços do agente'
+                'name' => i::__('texto "Espaços do agente"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Espaços do agente'), i::__('Museus do agente'), i::__('Bibliotecas do agente')],
+                'text' => i::__('Espaços do agente')
             ],
             
 
@@ -318,40 +326,40 @@ class Theme extends MapasCulturais\Theme {
 
 // ======== Agentes
             'entities: Agents' => [
-                'name' => 'texto "Agentes"',
-                'description' => 'nome da entidade Agente no plural',
-                'examples' => ['Agentes'],
-                'text' => 'Agentes'
+                'name' => i::__('texto "Agentes"'),
+                'description' => i::__('nome da entidade Agente no plural'),
+                'examples' => [i::__('Agentes')],
+                'text' => i::__('Agentes')
             ],
             'entities: agent found' => [
-                'name' => 'texto "agente econtrado"',
-                'description' => '',
-                'examples' => ['agente encontrado'],
-                'text' => 'agente encontrado'
+                'name' => i::__('texto "agente econtrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('agente encontrado')],
+                'text' => i::__('agente encontrado')
             ],
             'entities: agents found' => [
-                'name' => 'texto "agentes encontrados"',
-                'description' => '',
-                'examples' => ['agentes encontrados'],
-                'text' => 'agentes encontrados'
+                'name' => i::__('texto "agentes encontrados"'),
+                'description' => i::__(''),
+                'examples' => [i::__('agentes encontrados')],
+                'text' => i::__('agentes encontrados')
             ],
             'entities: My Agents' => [
-                'name' => 'texto "Meus Agentes"',
-                'description' => '',
-                'examples' => ['Meus Agentes'],
-                'text' => 'Meus Agentes'
+                'name' => i::__('texto "Meus Agentes"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Agentes')],
+                'text' => i::__('Meus Agentes')
             ],
             'entities: My agents' => [
-                'name' => 'texto "Meus agentes"',
-                'description' => '',
-                'examples' => ["Meus agentes"],
-                'text' => 'Meus agentes'
+                'name' => i::__('texto "Meus agentes"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus agentes')],
+                'text' => i::__('Meus agentes')
             ],
             'entities: Agent children' => [
-                'name' => 'texto "Sub-agentes"',
-                'description' => 'texto nomeia os agentes filhos, ou sub-agentes, de outro agente',
-                'examples' => ['Sub-agentes', 'Agentes Filhos', 'Agentes'],
-                'text' => 'Agentes'
+                'name' => i::__('texto "Sub-agentes"'),
+                'description' => i::__('texto nomeia os agentes filhos, ou sub-agentes, de outro agente'),
+                'examples' => [i::__('Sub-agentes'), i::__('Agentes Filhos'), i::__('Agentes')],
+                'text' => i::__('Agentes')
             ],
             
 
@@ -359,34 +367,34 @@ class Theme extends MapasCulturais\Theme {
 
 // ======== Projetos
             'entities: Projects' => [
-                'name' => 'texto "Projetos"',
-                'description' => 'nome da entidade Projeto no plural',
-                'examples' => ['Projetos'],
-                'text' => 'Projetos'
+                'name' => i::__('texto "Projetos"'),
+                'description' => i::__('nome da entidade Projeto no plural'),
+                'examples' => [i::__('Projetos')],
+                'text' => i::__('Projetos')
             ],
             'entities: My Projects' => [
-                'name' => 'texto "Meus Projetos"',
-                'description' => '',
-                'examples' => ['Meus Projetos'],
-                'text' => 'Meus Projetos'
+                'name' => i::__('texto "Meus Projetos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Projetos')],
+                'text' => i::__('Meus Projetos')
             ],
             'entities: My projects' => [
-                'name' => 'texto "Meus projetos"',
-                'description' => '',
-                'examples' => ['Meus projetos'],
-                'text' => 'Meus projetos'
+                'name' => i::__('texto "Meus projetos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus projetos')],
+                'text' => i::__('Meus projetos')
             ],
             'entities: project found' => [
-                'name' => 'texto "projeto encontrado"',
-                'description' => '',
-                'examples' => ['projeto encontrado'],
-                'text' => 'projeto encontrado'
+                'name' => i::__('texto "projeto encontrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('projeto encontrado')],
+                'text' => i::__('projeto encontrado')
             ],
             'entities: projects found' => [
-                'name' => 'texto "projetos encontrados"',
-                'description' => '',
-                'examples' => ['projetos encontrados'],
-                'text' => 'projetos encontrados'
+                'name' => i::__('texto "projetos encontrados"'),
+                'description' => i::__(''),
+                'examples' => [i::__('projetos encontrados')],
+                'text' => i::__('projetos encontrados')
             ],
             
 
@@ -394,34 +402,34 @@ class Theme extends MapasCulturais\Theme {
 
 // ======== Eventos
             'entities: Events' => [
-                'name' => 'texto "Eventos"',
-                'description' => 'nome da entidade Evento no plural',
-                'examples' => ['Eventos', 'Ações'],
-                'text' => 'Eventos'
+                'name' => i::__('texto "Eventos"'),
+                'description' => i::__('nome da entidade Evento no plural'),
+                'examples' => [i::__('Eventos'), i::__('Ações')],
+                'text' => i::__('Eventos')
             ],
             'entities: My Events' => [
-                'name' => 'texto "Meus Eventos"',
-                'description' => '',
-                'examples' => ['Meus Eventos', 'Minhas Ações'],
-                'text' => 'Meus Eventos'
+                'name' => i::__('texto "Meus Eventos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Eventos'), i::__('Minhas Ações')],
+                'text' => i::__('Meus Eventos')
             ],
             'entities: My events' => [
-                'name' => 'texto "Meus eventos"',
-                'description' => '',
-                'examples' => ['Meus eventos', 'Minhas ações'],
-                'text' => 'Meus eventos'
+                'name' => i::__('texto "Meus eventos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus eventos'), i::__('Minhas ações')],
+                'text' => i::__('Meus eventos')
             ],
             'entities: event found' => [
-                'name' => 'texto "evento encontrado"',
-                'description' => '',
-                'examples' => ['evento encontrado', 'ação encontrada'],
-                'text' => 'evento encontrado'
+                'name' => i::__('texto "evento encontrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('evento encontrado'), i::__('ação encontrada')],
+                'text' => i::__('evento encontrado')
             ],
             'entities: events found' => [
-                'name' => 'texto "eventos encontrados"',
-                'description' => '',
-                'examples' => ['eventos encontrados', 'ações encontradas'],
-                'text' => 'eventos encontrados'
+                'name' => i::__('texto "eventos encontrados"'),
+                'description' => i::__(''),
+                'examples' => [i::__('eventos encontrados'), i::__('ações encontradas')],
+                'text' => i::__('eventos encontrados')
             ],
 
 
@@ -429,60 +437,60 @@ class Theme extends MapasCulturais\Theme {
 
 // ======== Subsites
             'entities: Subsite Description' => [
-                'name' => 'texto "Descrição do Subsite"',
-                'description' => '',
-                'examples' => ['Descrição do Subsite', 'Descrição da Instalação'],
+                'name' => i::__('texto "Descrição do Subsite"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Descrição do Subsite'), i::__('Descrição da Instalação')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'Descrição do Subsite'
+                'text' => i::__('Descrição do Subsite')
             ],
             'entities: My Subsites' => [
-                'name' => 'texto "Meus Subsites"',
-                'description' => '',
-                'examples' => ['Meus Subsites', 'Minhas Instalações'],
+                'name' => i::__('texto "Meus Subsites"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Subsites'), i::__('Minhas Instalações')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'Meus Subsites'
+                'text' => i::__('Meus Subsites')
             ],
             'entities: My subsites' => [
-                'name' => 'texto "Meus subsites"',
-                'description' => '',
-                'examples' => ['Meus subsites', 'Minhas instalações'],
+                'name' => i::__('texto "Meus subsites"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus subsites'), i::__('Minhas instalações')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'Meus subsites'
+                'text' => i::__('Meus subsites')
             ],
             'entities: Subsite' => [
-                'name' => 'texto "Subsite"',
-                'description' => '',
-                'examples' => ['Subsite', 'Instalação'],
+                'name' => i::__('texto "Subsite"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Subsite'), i::__('Instalação')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'Subsite'
+                'text' => i::__('Subsite')
             ],
             'entities: no registered subsite' => [
-                'name' => 'texto "nenhum subsite cadastrado"',
-                'description' => '',
-                'examples' => ['nenhum subsite cadastrado', 'nenhuma instalação cadastrada'],
+                'name' => i::__('texto "nenhum subsite cadastrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('nenhum subsite cadastrado'), i::__('nenhuma instalação cadastrada')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'nenhum subsite cadastrado'
+                'text' => i::__('nenhum subsite cadastrado')
             ],
             'entities: no subsite' => [
-                'name' => 'texto "nenhum subsite"',
-                'description' => '',
-                'examples' => ['nenhum subsite', 'nenhuma instalação'],
+                'name' => i::__('texto "nenhum subsite"'),
+                'description' => i::__(''),
+                'examples' => [i::__('nenhum subsite'), i::__('nenhuma instalação')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'nenhum subsite'
+                'text' => i::__('nenhum subsite')
             ],
             'entities: registered subsite' => [
-                'name' => 'texto "subsite cadastrado"',
-                'description' => '',
-                'examples' => ['subsite cadastrado', 'instalação cadastrada'],
+                'name' => i::__('texto "subsite cadastrado"'),
+                'description' => i::__(''),
+                'examples' => [i::__('subsite cadastrado'), i::__('instalação cadastrada')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => 'subsite cadastrado'
+                'text' => i::__('subsite cadastrado')
             ],
             'entities: add new subsite' => [
-                'name' => 'texto "adicionar novo subsite"',
-                'description' => '',
-                'examples' => ['adicionar novo subsite', 'adcionar nova instalação'],
+                'name' => i::__('texto "adicionar novo subsite"'),
+                'description' => i::__(''),
+                'examples' => [i::__('adicionar novo subsite'), i::__('adcionar nova instalação')],
                 'skip' => true, // não aparece na configuração do subsite
-                'text' => "adicionar novo subsite"
+                'text' => i::__('adicionar novo subsite')
             ],
             
 
@@ -490,159 +498,159 @@ class Theme extends MapasCulturais\Theme {
 
 // ========= Selos
             'entities: Seals' => [
-                'name' => 'texto "Selos"',
-                'description' => 'nome da entidade Selos no plural',
-                'examples' => ['Selos', 'Selos Certificadores', 'Certificações'],
-                'text' => 'Selos'
+                'name' => i::__('texto "Selos"'),
+                'description' => i::__('nome da entidade Selos no plural'),
+                'examples' => [i::__('Selos'), i::__('Selos Certificadores'), i::__('Certificações')],
+                'text' => i::__('Selos')
             ],
             'entities: My Seals' => [
-                'name' => 'texto "Meus Selos"',
-                'description' => '',
-                'examples' => ['Meus Selos', 'Meus Selos Certificadores', 'Minhas Certificações'],
-                'text' => 'Meus Selos'
+                'name' => i::__('texto "Meus Selos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus Selos'), i::__('Meus Selos Certificadores'), i::__('Minhas Certificações')],
+                'text' => i::__('Meus Selos')
             ],
             'entities: My seals' => [
-                'name' => 'texto "Meus selos"',
-                'description' => '',
-                'examples' => ['Meus selos', 'Meus selos certificadores', 'Minhas certificações'],
-                'text' => 'Meus selos'
+                'name' => i::__('texto "Meus selos"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Meus selos'), i::__('Meus selos certificadores'), i::__('Minhas certificações')],
+                'text' => i::__('Meus selos')
             ],
             
             'entities: Users and roles' => [
-                'name' => 'texto "Usuários e papéis"',
-                'description' => '',
+                'name' => i::__('texto "Usuários e papéis"'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Usuários e papéis'
+                'text' => i::__('Usuários e papéis')
             ],
             
             
             // Taxonomias
             'taxonomies:area: name' => [
-                'name' => 'Área de Atuação',
-                'description' => 'Colocar qual é a área de atuação',
+                'name' => i::__('Área de Atuação'),
+                'description' => i::__('Colocar qual é a área de atuação'),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Área de Atuação'
+                'text' => i::__('Área de Atuação')
             ],
             'taxonomies:area: select at least one' => [
-                'name' => 'Selecione pelos menos uma área',
-                'description' => 'Precisa ter pelo menos uma área selecionada',
+                'name' => i::__('Selecione pelos menos uma área'),
+                'description' => i::__('Precisa ter pelo menos uma área selecionada'),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Selecione pelo menos uma área'
+                'text' => i::__('Selecione pelo menos uma área')
             ],
             'taxonomies:area: select' => [
-                'name' => 'Selecione as áreas',
-                'description' => 'Selecionar quantas áreas for preciso',
+                'name' => i::__('Selecione as áreas'),
+                'description' => i::__('Selecionar quantas áreas for preciso'),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Selecione as áreas'
+                'text' => i::__('Selecione as áreas')
             ],
             
             
             // Mensagens de erro
             'error:403: title' => [
-                'name' => 'Permissão negada',
-                'description' => '',
+                'name' => i::__('Permissão negada'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Permissão negada'
+                'text' => i::__('Permissão negada')
             ],
             'error:403: message' => [
-                'name' => 'Você não tem permissão para executar esta ação',
-                'description' => '',
+                'name' => i::__('Você não tem permissão para executar esta ação'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Você não tem permissão para executar esta ação.'
+                'text' => i::__('Você não tem permissão para executar esta ação.')
             ],
             'error:404: title' => [
-                'name' => 'Página não encontrada',
-                'description' => '',
+                'name' => i::__('Página não encontrada'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Página não encontrada.'
+                'text' => i::__('Página não encontrada.')
             ],
             'error:404: message' => [
-                'name' => 'Messagem Error 404',
-                'description' => 'Messagem Error 404',
+                'name' => i::__('Messagem Error 404'),
+                'description' => i::__('Messagem Error 404'),
                 'examples' => [],
                 'skip' => true,
-                'text' => ''
+                'text' => i::__('')
             ],
             'error:500: title' => [
-                'name' => 'Um erro inesperado aconteceu',
-                'description' => '',
+                'name' => i::__('Um erro inesperado aconteceu'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Um erro inesperado aconteceu'
+                'text' => i::__('Um erro inesperado aconteceu')
             ],
             'error:500: message' => [
-                'name' => 'Error 500',
-                'description' => 'Mensagem Error 500',
+                'name' => i::__('Error 500'),
+                'description' => i::__('Mensagem Error 500'),
                 'examples' => [],
                 'skip' => true,
-                'text' => ''
+                'text' => i::__('')
             ],
             
             
             
             // Roles
             'roles: Super Administrator' => [
-                'name' => 'Super Administrador',
-                'description' => '',
+                'name' => i::__('Super Administrador'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Super Administrador'
+                'text' => i::__('Super Administrador')
             ],
             'roles: Super Administrators' => [
-                'name' => 'Super Administradores',
-                'description' => '',
+                'name' => i::__('Super Administradores'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Super Administradores'
+                'text' => i::__('Super Administradores')
             ],
             'roles: Administrator' => [
-                'name' => 'Administrador',
-                'description' => '',
+                'name' => i::__('Administrador'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Administrador'
+                'text' => i::__('Administrador')
             ],
             'roles: Administrators' => [
-                'name' => 'Administradores',
-                'description' => '',
+                'name' => i::__('Administradores'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Administradores'
+                'text' => i::__('Administradores')
             ],
             'roles: Subsite Super Administrator' => [
-                'name' => 'Subsite Super Administrador',
-                'description' => '',
+                'name' => i::__('Subsite Super Administrador'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Subsite Super Administrador'
+                'text' => i::__('Subsite Super Administrador')
             ],
             'roles: Subsite Super Administrators' => [
-                'name' => 'Subsite Super Administradores',
-                'description' => '',
+                'name' => i::__('Subsite Super Administradores'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Subsite Super Administradores'
+                'text' => i::__('Subsite Super Administradores')
             ],
             'roles: Subsite Administrator' => [
-                'name' => 'Subsite Administrador',
-                'description' => '',
+                'name' => i::__('Subsite Administrador'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Subsite Administrador'
+                'text' => i::__('Subsite Administrador')
             ],
             'roles: Subsite Administrators' => [
-                'name' => 'Subsite Administradores',
-                'description' => '',
+                'name' => i::__('Subsite Administradores'),
+                'description' => i::__(''),
                 'examples' => [],
                 'skip' => true,
-                'text' => 'Subsite Administradores'
+                'text' => i::__('Subsite Administradores')
             ]
 
         ];
@@ -820,8 +828,8 @@ class Theme extends MapasCulturais\Theme {
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
-                    'subject' => "Novo $this->entityType registrado",
-                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                    'subject' => sprintf(i::__("Novo %s registrado"), $this->entityTypeLabel()),
+                    'body' => sprintf(i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel(), $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
                 ]);
             }
         });
@@ -829,6 +837,7 @@ class Theme extends MapasCulturais\Theme {
         // sempre que insere uma imagem cria o avatarSmall
         $app->hook('entity(<<agent|space|event|project|subsite|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
+            $this->transform('avatarMedium');
             $this->transform('avatarBig');
         });
 
@@ -893,25 +902,84 @@ class Theme extends MapasCulturais\Theme {
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
-
-        $app->hook("GET(site.cep)", function() use($app) {
-            if ($app->config['cep.token']) {
-                $cep = $app->request->get('num');
-                // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
-                $url = sprintf($app->config['cep.endpoint'], $cep);
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                if ($app->config['cep.token_header']) {
-                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
-                }
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $output = curl_exec($ch);
-                echo $output;
+        
+        $theme = $this;
+        $app->hook("GET(site.address_by_postalcode)", function() use($app, $theme) {
+            
+            $response = $theme->getAddressByPostalCode($app->request->get('postalcode'));
+            if ($response['success'] === true) {
+                echo json_encode($response);
             } else {
-                $app->halt(403, 'No token for CEP');
+                $app->halt(403, $response['error_msg']);
             }
+            
         });
+    }
+    
+    
+    /*
+     * This methods tries to fill the address fields using the postal code
+     * 
+     * By default it relies on brazilian CEP, but you can override this methods
+     * to use another API.
+     * 
+     * It should return an Arrau with an item success set to true or false.
+     * 
+     * If true, it has to return the following fields.
+     * Note: lat & lon are optional, they are not beeing used yet but will probably be soon
+     * 
+     * response example:
+     * 
+     * [
+     *    'success' => true,
+     *      'lat' => $json->latitude,
+     *      'lon' => $json->longitude,
+     *      'streetName' => $json->logradouro,
+     *      'neighborhood' => $json->bairro,
+     *      'city' => $json->cidade,
+     *      'state' => $json->estado
+     * ]
+     * 
+     */ 
+    function getAddressByPostalCode($postalCode) {
+        $app = App::i();
+        if ($app->config['cep.token']) {
+            $cep = str_replace('-', '', $postalCode);
+            // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
+            $url = sprintf($app->config['cep.endpoint'], $cep);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            if ($app->config['cep.token_header']) {
+                // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
+            }
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            $json = json_decode($output);
+            if (isset($json->logradouro)) { 
+                $response = [
+                    'success' => true,
+                    'lat' => $json->latitude,
+                    'lon' => $json->longitude,
+                    'streetName' => $json->logradouro,
+                    'neighborhood' => $json->bairro,
+                    'city' => $json->cidade,
+                    'state' => $json->estado
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'error_msg' => 'Falha a buscar endereço'
+                ];
+            }
+        } else {
+            $response = [
+                'success' => false,
+                'error_msg' => 'No token for CEP'
+            ];
+        }
+        
+        return $response;
     }
 
     function register() {
@@ -1081,11 +1149,37 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
         $this->enqueueScript('app', 'tim', 'js/tim.js');
+        $this->localizeScript('tim', [
+            'previous' => i::__('Anterior'),
+            'next' => i::__('Próxima'),
+            /* Translators: Count of the photo gallery slideshow: 2 of 10 */
+            'counter' => i::__('%curr% de %total%'),
+        ]);
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
+        $this->localizeScript('mapas', [
+            'agente'    => i::__('agente'),
+            'espaço'    => i::__('espaço'),
+            'evento'    => i::__('evento'),
+            'projeto'   => i::__('projeto'),
+            'selo'      => i::__('selo'),
+            'Enviar'    => i::__('Enviar'),
+            'Cancelar'  => i::__('Cancelar')
+        ]);
+
+        $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
+        
+        // This replaces the default geocoder with the google geocoder
+        if (App::i()->config['app.useGoogleGeocode'])
+            $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
+
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
-
+        $this->localizeScript('moduleNotifications', [
+            'error'    => i::__('There was an error'),
+        ]);
+        
+        
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
@@ -1118,9 +1212,31 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
+        $this->localizeScript('controllerMap', [
+            /* Translators: serach results. Eventos encontrados no espaço {nome do espaço} */
+            'eventsFound'    => i::__('Eventos encontrados no espaço'),
+        ]);
+        
         $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
-
+        $this->localizeScript('controllerSpatial', [
+            'tooltip.start' =>  i::__('Clique e arraste para desenhar o círculo'),
+            'tooltip.end' =>    i::__('Solte o mouse para finalizar o desenho'),
+            'title' =>          i::__('Cancelar desenho'),
+            'text' =>           i::__('Cancelar'),
+            'circle' =>         i::__('Desenhar um círculo'),
+            'radius' =>         i::__('Raio'),
+            'currentLocation' =>i::__('Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de {{radius}}KM deste ponto.'),
+        ]);
+        
+        
         $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
+        $this->localizeScript('searchApp', [
+            'all' => i::__('Todos'),
+            /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
+            'dateFrom' => i::__('de'),
+            /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
+            'dateTo' => i::__('a')
+        ]);
     }
 
     function includeMapAssets() {
@@ -1197,11 +1313,64 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
+        $this->localizeScript('changeOwner', [
+            'ownerChanged' =>  i::__('O proprietário da entidade foi modificado'),
+            'cannotChangeOwner' =>  i::__('O proprietário da entidade não pode ser modificado'),
+            'requestMessage' =>  i::__('Sua requisição para mudança de propriedade deste {{type}} para o agente {{recipient}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->localizeScript('moduleProject', [
+            'selectFieldType' =>  i::__('Selecione o tipo de campo'),
+            'fieldCreated' =>  i::__('Campo criado.'),
+            'fieldRemoved' =>  i::__('Campo removido.'),
+            'changesSaved' =>  i::__('Alterações Salvas.'),
+            'attachmentCreated' =>  i::__('Anexo criado.'),
+            'attachmentRemoved' =>  i::__('Anexo removido.'),
+            'confirmAttachmentRemoved' =>  i::__('Deseja remover este anexo?'),
+            'confirmRemoveModel' =>  i::__('Deseja remover este modelo?'),
+            'modelRemoved' =>  i::__('Modelo removido.'),
+            'statusPublished' =>  i::__('publicado'),
+            'statusDraft' =>  i::__('rascunho'),
+            'publishing...' =>  i::__('Publicando...'),
+            'eventsPublished' =>  i::__('Eventos publicados.'),
+            'savingAsDraft' =>  i::__('Tornando rascunho...'),
+            'savedAsDraft' =>  i::__('Eventos transformados em rascunho.'),
+            'confirmRemoveAttachment' =>  i::__('Deseja remover este anexo?'),
+            'registrationOwnerDefault' =>  i::__('Agente responsável pela inscrição'),
+            'allStatus' =>  i::__('Todas'),
+            'pending' =>  i::__('Pendente'),
+            'invalid' =>  i::__('Inválida'),
+            'notSelected' =>  i::__('Não selecionada'),
+            'suplente' =>  i::__('Suplente'),
+            'selected' =>  i::__('Selecionada'),
+            'Draft' =>  i::__('Rascunho'),
+            'requiredLabel' =>  i::__('Obrigatório'),
+            'optionalLabel' =>  i::__('Opcional'),
+            'confirmReopen' =>  i::__('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'),
+            'defineVacancies' =>  i::__('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.'),
+            'reachedMax' =>  i::__('Você atingiu o limite máximo de 1 inscrição aprovada'),
+            'reachedMaxPlural' =>  i::__('Você atingiu o limite máximo de {{num}} inscrições aprovadas'),
+            'limitReached' =>  i::__('O limite de inscrições para o agente informado se esgotou.'),
+            'VacanciesOver' =>  i::__('O número de vagas da inscrição no projeto se esgotou.'),
+            'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
+            'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
+            'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
-        $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.subsite', 'js/ng.entity.module.subsite.js', array('ng-mapasculturais'));
+        
+        $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedAgents', [
+            'requestSent' =>  i::__('Sua requisição para relacionar o agente {{agent}} foi enviada.'),
+        ]);
+        
+        $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedSeals', [
+            'requestSent' =>  i::__('Sua requisição para relacionar o selo {{seal}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
@@ -1242,10 +1411,10 @@ class Theme extends MapasCulturais\Theme {
 
     function getOccurrenceFrequencies() {
         return array(
-            'once' => 'uma vez',
-            'daily' => 'todos os dias',
-            'weekly' => 'semanal',
-            'monthly' => 'mensal',
+            'once' => i::__('uma vez'),
+            'daily' => i::__('todos os dias'),
+            'weekly' => i::__('semanal'),
+            'monthly' => i::__('mensal'),
         );
     }
 
@@ -1346,7 +1515,7 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => 'Tipos',
-                    'placeholder' => 'Selecione os tipos',
+                    'placeholder' => i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -1354,8 +1523,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Acessibilidade',
-                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'label' => i::__('Acessibilidade'),
+                    'placeholder' => i::__('Exibir somente resultados com Acessibilidade'),
                     'fieldType' => 'checkbox',
                     'isArray' => false,
                     'filter' => [
@@ -1378,8 +1547,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'agent' => [
                 [
-                    'label'=> 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> i::__('Área de Atuação'),
+                    'placeholder' =>i::__( 'Selecione as áreas'),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
@@ -1387,8 +1556,8 @@ class Theme extends MapasCulturais\Theme {
                     ],
                 ],
                 [
-                    'label' => 'Tipos',
-                    'placeholder' => 'Todos',
+                    'label' => i::__('Tipos'),
+                    'placeholder' => i::__('Todos'),
                     'fieldType' => 'singleselect',
                     'type' => 'entitytype',
                     // 'isArray' => false,
@@ -1400,7 +1569,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente ' . $this->dict('search: verified results', false),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -1424,8 +1593,8 @@ class Theme extends MapasCulturais\Theme {
                 //     ]
                 // ],
                 [
-                    'label' => 'Linguagem',
-                    'placeholder' => 'Selecione as linguagens',
+                    'label' => i::__('Linguagem'),
+                    'placeholder' => i::__('Selecione as linguagens'),
                     'fieldType' => 'checklist',
                     'type' => 'term',
                     'filter' => [
@@ -1434,8 +1603,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Classificação',
-                    'placeholder' => 'Selecione a classificação',
+                    'label' => i::__('Classificação'),
+                    'placeholder' => i::__('Selecione a classificação'),
                     'filter' => [
                         'param' => 'classificacaoEtaria',
                         'value' => 'IN({val})'
@@ -1444,7 +1613,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente ' . $this->dict('search: verified results', false),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'isArray' => false,
                     'addClass' => 'verified-filter',
@@ -1456,8 +1625,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'project' => [
                 [
-                    'label' => 'Tipo',
-                    'placeholder' => 'Selecione os tipos',
+                    'label' => i::__('Tipo'),
+                    'placeholder' => i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -1465,13 +1634,13 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Inscrições Abertas',
+                    'label' => i::__('Inscrições Abertas'),
                     'fieldType' => 'custom.project.ropen'
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente ' . $this->dict('search: verified results', false),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -1708,7 +1877,7 @@ class Theme extends MapasCulturais\Theme {
             $entities = $controller->apiQueryByLocation(array(
                 '@from' => date('Y-m-d'),
                 '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
-                'isVerified' => 'EQ(true)',
+                '@verified' => 'IN(1)',
                 '@select' => 'id'
             ));
 
@@ -1716,7 +1885,7 @@ class Theme extends MapasCulturais\Theme {
 
             $entities = $controller->apiQuery([
                 '@select' => 'id',
-                'isVerified' => 'EQ(true)'
+                '@verified' => 'IN(1)'
             ]);
         }
 
@@ -1773,7 +1942,7 @@ class Theme extends MapasCulturais\Theme {
         $q = ['@count'=>1];
 
         if($verified === true){
-            $q['isVerified'] = 'EQ(true)';
+            $q['@verified'] = 'IN(1)';
         }
 
         $result = $controller->apiQuery($q);
@@ -1818,7 +1987,7 @@ class Theme extends MapasCulturais\Theme {
             '@count' => 1,
             '@from' => date('Y-m-d'),
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
-            'isVerified' => 'EQ(true)'
+            '@verified' => 'IN(1)'
         ));
 
         $app->cache->save($cache_id, $result, 120);

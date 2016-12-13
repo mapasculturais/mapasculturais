@@ -1,4 +1,4 @@
- <?php 
+<?php 
  use MapasCulturais\Entities;
  use MapasCulturais\Entities\Notification;
  $app = MapasCulturais\App::i();
@@ -20,13 +20,13 @@
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type = strtolower($origin->entityType);
+            $origin_type = strtolower($origin->entityTypeLabel());
             $origin_url = $origin->singleUrl;
             $origin_name = $origin->name;
 
             $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
-            $destination_type = strtolower($destination->entityType);
+            $destination_type = strtolower($destination->entityTypeLabel());
 
             $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
@@ -108,7 +108,7 @@
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type = strtolower($origin->entityType);
+            $origin_type = strtolower($origin->entityTypeLabel());
             $origin_url = $origin->singleUrl;
             $origin_name = $origin->name;
 
@@ -191,7 +191,7 @@
             $origin = $this->origin;
             $destination = $this->destination;
 
-            $origin_type = strtolower($origin->entityType);
+            $origin_type = strtolower($origin->entityTypeLabel());
             $origin_url = $origin->singleUrl;
             $origin_name = $origin->name;
 

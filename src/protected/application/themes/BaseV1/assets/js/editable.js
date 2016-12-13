@@ -980,7 +980,7 @@ $(function(){
         var municipio = $('#En_Municipio').editable('getValue', true);
         var estado = $('#En_Estado').editable('getValue', true);
         if(cep && nome_logradouro && numero && bairro && municipio && estado){
-            var endereco =  nome_logradouro + ", " + numero + (complemento ? ", " + complemento : " ") + ", " + bairro + ", " + cep  + ", " + municipio + ", " + estado;
+            var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
             $('#endereco').editable('setValue', endereco);
             $('#endereco').trigger('changeAddress', endereco);
             $('.js-endereco').html(endereco);
@@ -995,13 +995,14 @@ $(function(){
 
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
-        cep = cep.replace('-','');
-        $.getJSON('/site/cep?num='+cep, function(r){
-            $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
-            $('#En_Bairro').editable('setValue', r.bairro);
-            $('#En_Municipio').editable('setValue', r.cidade);
-            $('#En_Estado').editable('setValue', r.estado);
-            concatena_enderco();
+        $.getJSON('/site/address_by_postalcode?postalcode='+cep, function(r){
+            if (r.success) {
+                $('#En_Nome_Logradouro').editable('setValue', r.streetName);
+                $('#En_Bairro').editable('setValue', r.neighborhood);
+                $('#En_Municipio').editable('setValue', r.city);
+                $('#En_Estado').editable('setValue', r.state);
+                concatena_enderco();
+            }
         });
 
     });

@@ -33,20 +33,6 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityArchive;
 
 
-
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do evento é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'project' => [
-            '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
-        ]
-    ];
-
     /**
      * @var integer
      *
@@ -193,7 +179,29 @@ class Event extends \MapasCulturais\Entity
     protected $_subsiteId;
 
     private $_newProject = false;
-
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Eventos');
+        else
+            return \MapasCulturais\i::__('Evento');
+    }
+    
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do evento é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'project' => [
+                '$this->validateProject()' => \MapasCulturais\i::__('Você não pode criar eventos neste projeto.')
+            ]
+        ];
+    }
+    
     function publish($flush = false){
         $this->checkPermission('publish');
 

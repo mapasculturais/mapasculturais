@@ -113,7 +113,7 @@ class RoutesManager{
                     if($app->request()->isAjax()){
                         $app->halt(202, json_encode($requests) );
                     }else{
-                        $app->halt(202, $app->txt('Created requests: ') . implode(', ',$requests) );
+                        $app->halt(202, \MapasCulturais\i::__('Created requests: ') . implode(', ',$requests) );
                     }
                 } catch(\Exception $e) {
                     $e_class = get_class($e);
@@ -122,6 +122,7 @@ class RoutesManager{
                         throw $e;
                     }
                     $this->callAction($app->controller('site'), 'error', ['code' => 500, 'e' => $e], false);
+
                 }
             }else{
                 $app->pass();

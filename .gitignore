@@ -21,5 +21,4 @@ _apigen.phar
 .DS_Store
 .composer/
 .bash_history
-Subsite/*
-src/protected/composer.lock
+SaaS/*

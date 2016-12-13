@@ -76,6 +76,7 @@ class Event extends EntityController {
             SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule
             FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
             WHERE status > 0 $subsite_sql
+
             ORDER BY starts_on, starts_at", $rsm);
 
         $query->setParameters([
@@ -300,7 +301,7 @@ class Event extends EntityController {
                 if(!empty($occ->rule->description)) {
                     return $occ->rule->description;
                 }else{
-                    return $occ->startsOn->format('d \d\e') . ' ' . $app->txt($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
+                    return $occ->startsOn->format('d \d\e') . ' ' . \MapasCulturais\i::__($occ->startsOn->format('F')) . ' às ' . $occ->startsAt->format('H:i');
                 }
             }, $occurrences[$e->id]);
 
@@ -404,7 +405,7 @@ class Event extends EntityController {
 //
 //                $e['occurrences'][$space_id][] = $occ;
 //
-//                $month = $app->txt($occ->startsOn->format('F'));
+//                $month = \MapasCulturais\i::__($occ->startsOn->format('F'));
 //                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
 //
 //                if(!in_array($str, $e['occurrencesReadable'][$space_id]))

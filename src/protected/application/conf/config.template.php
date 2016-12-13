@@ -3,8 +3,8 @@ $config = include 'conf-base.php';
 
 return array_merge($config,
     [
-        'app.siteName' => 'Nome do site',
-        'app.siteDescription' => 'Descrição do site',
+        'app.siteName' => \MapasCulturais\i::__('Nome do site'),
+        'app.siteDescription' => \MapasCulturais\i::__('Descrição do site'),
 
         /* configure e descomente as linhas abaixo para habilitar um tema personalizado */
         // 'namespaces' => array_merge( $config['namespaces'], ['Name\Space\Do\Tema' => '/caminho/absoluto/para/o/tema']),
@@ -29,15 +29,15 @@ return array_merge($config,
         'maps.includeGoogleLayers' => true,
 
         'app.geoDivisionsHierarchy' => [
-            'pais' => 'País',
-            'regiao' => 'Região',
-            'estado' => 'Estado',
-            'mesorregiao' => 'Mesorregião',
-            'microrregiao' => 'Microrregião',
-            'municipio' => 'Município',
-            'zona' => 'Zona',
-            'subprefeitura' => 'Subprefeitura',
-            'distrito' => 'Distrito'
+            'pais' => \MapasCulturais\i::__('País'),
+            'regiao' => \MapasCulturais\i::__('Região'),
+            'estado' => \MapasCulturais\i::__('Estado'),
+            'mesorregiao' => \MapasCulturais\i::__('Mesorregião'),
+            'microrregiao' => \MapasCulturais\i::__('Microrregião'),
+            'municipio' => \MapasCulturais\i::__('Município'),
+            'zona' => \MapasCulturais\i::__('Zona'),
+            'subprefeitura' => \MapasCulturais\i::__('Subprefeitura'),
+            'distrito' => \MapasCulturais\i::__('Distrito')
         ],
         // latitude, longitude
         'maps.center' => [-13.987376214146455, -54.38232421875],

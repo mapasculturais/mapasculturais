@@ -325,4 +325,22 @@ return [
     'Add field for maximum size from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
     },
+    
+    'create avatar thumbs' => function() use($conn){
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
+        
+        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
+        
+        foreach($files as $f){
+            $f->transform('avatarSmall');
+            $f->transform('avatarMedium');
+            $f->transform('avatarBig');
+        }
+        
+        $this->disableAccessControl();
+    }
 ];

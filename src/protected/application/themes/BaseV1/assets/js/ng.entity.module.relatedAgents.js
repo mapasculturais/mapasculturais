@@ -2,6 +2,8 @@
     "use strict";
 
     var module = angular.module('entity.module.relatedAgents', ['ngSanitize']);
+    
+    var labels = MapasCulturais.gettext.relatedAgents;
 
     module.config(['$httpProvider',function($httpProvider){
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -33,7 +35,7 @@
                 return $http.post(this.getUrl('createAgentRelation'), {group: group, agentId: agentId, has_control: hasControl }).
                         success(function(data, status){
                             if(status === 202){
-                                MapasCulturais.Messages.alert('Sua requisição para relacionar o agente <strong>' + data.agent.name + '</strong> foi enviada.');
+                                MapasCulturais.Messages.alert(labels['requestSent'].replace('{{agent}}', '<strong>'+data.agent.name+'</strong>'));
                             }
                             $rootScope.$emit('relatedAgent.created', data);
                         }).

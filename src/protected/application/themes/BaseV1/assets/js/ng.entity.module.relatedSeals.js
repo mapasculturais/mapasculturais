@@ -2,6 +2,8 @@
 	"use strict";
 
 	var module = angular.module('entity.module.relatedSeals', [ 'ngSanitize' ]);
+    
+    var labels = MapasCulturais.gettext.relatedSeals;
 
 	module
 			.config([
@@ -61,9 +63,7 @@
 														function(data, status) {
 															if (status === 202) {
 																MapasCulturais.Messages
-																		.alert('Sua requisição para relacionar o selo <strong>'
-																				+ data.Seal.name
-																				+ '</strong> foi enviada.');
+																		.alert(labels['requestSent'].replace('{{seal}}', '<strong>'+data.Seal.name+'</strong>'));
 															}
 															$rootScope
 																	.$emit(

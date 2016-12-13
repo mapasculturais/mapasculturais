@@ -116,6 +116,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Usuários');
+        else
+            return \MapasCulturais\i::__('Usuário');
+    }
 
     function getOwnerUser(){
         return $this;
@@ -344,7 +351,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
     }
 
-	function getHasControlAgents(){
+
+    function getHasControlAgents(){
         $this->checkPermission('modify');
 
         if(!($agents = App::i()->repo('Agent')->findByAgentRelationUser($this, true)))
@@ -392,7 +400,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlSpaces(){
         $this->checkPermission('modify');
-
+        
         if(!($spaces = App::i()->repo('Space')->findByAgentRelationUser($this, true)))
             $spaces = [];
 
@@ -455,6 +463,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_DISABLED, '=');
     }
+
+    function getArchivedProjects(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
+    }
+
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
@@ -464,12 +479,6 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $projects = [];
 
         return $projects;
-    }
-
-    function getArchivedProjects(){
-        $this->checkPermission('modify');
-
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Project', Project::STATUS_ARCHIVED,'=');
     }
 
     public function getSubsite($status = null) {
