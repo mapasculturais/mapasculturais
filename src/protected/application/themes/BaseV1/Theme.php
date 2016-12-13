@@ -936,9 +936,9 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _getFilters(){
-        return [
+        $filters = [
             'space' => [
-                [
+                'area' => [
                     'label'=> $this->dict('taxonomies:area: name', false),
                     'placeholder' => $this->dict('taxonomies:area: select', false),
                     'type' => 'term',
@@ -947,18 +947,18 @@ class Theme extends MapasCulturais\Theme {
                         'value' => 'IN({val})'
                     ]
                 ],
-                [
-                    'label' => 'Tipos',
-                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
+                'tipos' => [
+                    'label' => i::__('Tipos'),
+                    'placeholder' => i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
                         'value' => 'IN({val})'
                     ]
                 ],
-                [
-                    'label' => \MapasCulturais\i::__('Acessibilidade'),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados com Acessibilidade'),
+                'acessibilidade' => [
+                    'label' => i::__('Acessibilidade'),
+                    'placeholder' => i::__('Exibir somente resultados com Acessibilidade'),
                     'fieldType' => 'checkbox',
                     'isArray' => false,
                     'filter' => [
@@ -966,10 +966,10 @@ class Theme extends MapasCulturais\Theme {
                         'value' => 'EQ(Sim)'
                     ],
                 ],
-                [
+                'verificados' => [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => 'Exibir somente ' . $this->dict('search: verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -980,18 +980,18 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ],
             'agent' => [
-                [
-                    'label'=> \MapasCulturais\i::__('Área de Atuação'),
-                    'placeholder' =>\MapasCulturais\i::__( 'Selecione as áreas'),
+                'area' => [
+                    'label'=> i::__('Área de Atuação'),
+                    'placeholder' =>i::__( 'Selecione as áreas'),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
                         'value' => 'IN({val})'
                     ],
                 ],
-                [
-                    'label' => \MapasCulturais\i::__('Tipos'),
-                    'placeholder' => \MapasCulturais\i::__('Todos'),
+                'tipos' => [
+                    'label' => i::__('Tipos'),
+                    'placeholder' => i::__('Todos'),
                     'fieldType' => 'singleselect',
                     'type' => 'entitytype',
                     // 'isArray' => false,
@@ -1000,10 +1000,10 @@ class Theme extends MapasCulturais\Theme {
                         'value' => 'EQ({val})'
                     ]
                 ],
-                [
+                'verificados' => [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -1026,9 +1026,9 @@ class Theme extends MapasCulturais\Theme {
                 //         'value' => ['LTE({val})', 'GTE({val})']
                 //     ]
                 // ],
-                [
-                    'label' => \MapasCulturais\i::__('Linguagem'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione as linguagens'),
+                'linguagem' => [
+                    'label' => i::__('Linguagem'),
+                    'placeholder' => i::__('Selecione as linguagens'),
                     'fieldType' => 'checklist',
                     'type' => 'term',
                     'filter' => [
@@ -1036,18 +1036,18 @@ class Theme extends MapasCulturais\Theme {
                         'value' => 'IN({val})'
                     ]
                 ],
-                [
-                    'label' => \MapasCulturais\i::__('Classificação'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione a classificação'),
+                'classificacao' => [
+                    'label' => i::__('Classificação'),
+                    'placeholder' => i::__('Selecione a classificação'),
                     'filter' => [
                         'param' => 'classificacaoEtaria',
                         'value' => 'IN({val})'
                     ]
                 ],
-                [
+                'verificados' => [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'isArray' => false,
                     'addClass' => 'verified-filter',
@@ -1058,23 +1058,23 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ],
             'project' => [
-                [
-                    'label' => \MapasCulturais\i::__('Tipo'),
-                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
+                'tipos' => [
+                    'label' => i::__('Tipo'),
+                    'placeholder' => i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
                         'value' => 'IN({val})'
                     ]
                 ],
-                [
-                    'label' => \MapasCulturais\i::__('Inscrições Abertas'),
+                'inscricoes' => [
+                    'label' => i::__('Inscrições Abertas'),
                     'fieldType' => 'custom.project.ropen'
                 ],
-                [
+                'verificados' => [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
+                    'placeholder' => $this->dict('search: display only verified results', false),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -1085,6 +1085,10 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ]
         ];
+        
+        App::i()->applyHookBoundTo($this, 'search.filters', [&$filters]);
+        
+        return $filters;
     }
 
     function addEntityToJs(MapasCulturais\Entity $entity){
