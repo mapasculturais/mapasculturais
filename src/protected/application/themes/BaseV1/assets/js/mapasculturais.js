@@ -154,16 +154,22 @@ $(function(){
             btn_suggestion.hide()
         }
 
-        if(form_suggestion == null) {
-            console.log("AAAQUUUII");
-        }
         if(form_suggestion.is(":hidden")) {
-            conso
             btn_compliant.show();
         } else {
             btn_compliant.hide();
         }
     }
+
+    $('.js-submit-button.compliant-form').on('click', function(){
+        $('.compliant-box').show();
+        $('.js-submit-button.compliant-form').hide();
+    });
+
+    $('.js-submit-button.suggestion-form').on('click', function(){
+        $('.suggestion-box').show();
+        $('.js-submit-button.suggestion-form').hide();
+    });
 
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 

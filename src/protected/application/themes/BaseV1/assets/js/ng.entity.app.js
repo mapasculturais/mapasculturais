@@ -31,8 +31,9 @@
             var anonimous   = $scope.data.anonimous;
             var only_owner  = $scope.data.only_owner;
             var message     = $scope.data.message;
+            var copy        = $scope.data.copy;
 
-            CompliantService.send(name,email,type,anonimous,only_owner,message).
+            CompliantService.send(name,email,type,anonimous,only_owner,message,copy).
                 success(function (data) {});
         }
     }]);
@@ -54,8 +55,8 @@
                 return baseUrl + controllerId + "/" + action;
             },
 
-            send: function(name,email,type,anonimous,only_owner,message) {
-                return $http.post(this.getUrl('sendCompliantMessage'), {name: name,email: email,type: type,anonimous: anonimous,only_owner: only_owner,message: message, entityId: this.entityId}).
+            send: function(name,email,type,anonimous,only_owner,message,copy) {
+                return $http.post(this.getUrl('sendCompliantMessage'), {name: name,email: email,type: type,anonimous: anonimous,only_owner: only_owner,message: message, entityId: this.entityId, copy: copy}).
                         success(function(data, status){
                             if(status === 202){
                                 MapasCulturais.Messages.alert('Sua requisição para enviar uma denúncia foi enviada com sucesso.');
@@ -69,8 +70,8 @@
         };
     }]);
 
-    app.controller('SuggestionController',['$scope', '$timeout', 'SuggestionService',function($scope, $timeout, CompliantService){
-        $scope.suggestion_type = MapasCulturais.notification_type.sugestion_type.config.options;
+    app.controller('SuggestionController',['$scope', '$timeout', 'SuggestionService',function($scope, $timeout, SuggestionService){
+        $scope.suggestion_type = MapasCulturais.notification_type.suggestion_type.config.options;
         $scope.send = function( ) {
 
             var name        = $scope.data.name;
@@ -79,8 +80,9 @@
             var anonimous   = $scope.data.anonimous;
             var only_owner  = $scope.data.only_owner;
             var message     = $scope.data.message;
+            var copy        = $scope.data.copy;
 
-            SuggestionService.send(name,email,type,anonimous,only_owner,message).
+            SuggestionService.send(name,email,type,anonimous,only_owner,message,copy).
                 success(function (data) {});
         }
     }]);
@@ -102,8 +104,8 @@
                 return baseUrl + controllerId + "/" + action;
             },
 
-            send: function(name,email,type,anonimous,only_owner,message) {
-                return $http.post(this.getUrl('sendSuggestionMessage'), {name: name,email: email,type: type,anonimous: anonimous,only_owner: only_owner,message: message, entityId: this.entityId}).
+            send: function(name,email,type,anonimous,only_owner,message, copy) {
+                return $http.post(this.getUrl('sendSuggestionMessage'), {name: name,email: email,type: type,anonimous: anonimous,only_owner: only_owner,message: message, entityId: this.entityId, copy: copy}).
                         success(function(data, status){
                             if(status === 202){
                                 MapasCulturais.Messages.alert('Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com sucesso.');

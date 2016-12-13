@@ -2158,15 +2158,9 @@ class App extends \Slim\Slim{
         $this->sendMailMessage($message);
     }
 
-
-    /**************
-     * GetText
-     **************/
-
     static function getCurrentLCode(){
         return App::i()->_config['app.lcode'];
     }
-
 
     static function getTranslations($lcode, $domain = null) {
         $app = App::i();
@@ -2239,6 +2233,11 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         }
         return null;
+    }
+
+    function getAdmins() {
+        $app = App::i();
+        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
     }
 
 }

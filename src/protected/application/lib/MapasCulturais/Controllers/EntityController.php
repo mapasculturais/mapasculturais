@@ -452,57 +452,148 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     /*
+     * Send compliant message (mail and notification)
      */
     public function POST_sendCompliantMessage() {
         $app = App::i();
-        $agent = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        $message = "";
+        if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
+            $message = "Denúncia Anônima";
+        } else {
+            $message = "Denúncia feita por " . $this->data['name'] . " em " . date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME'])  ;
+        }
 
-        /*
-         * Envio de E-mail ao responsável da entidade
-         *
-        $app->createAndSendMailMessage([
-            'from' => $app->config['mailer.from'],
-            'to' => $agent->user->email,
-            'subject' => "Denúncia - Mapas Culturais",
-            'body' => $this->data['message']
-        ]);*/
+        $message .= " Referente a página " . $entity->singleUrl;
+        $message .= " Mensagem: " . $this->data['message'];
+
+        if(in_array('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+            $admins = $app->getAdmins();
+
+            foreach($admins as $administrator) {
+                /*
+                * Envia e-mail para o administrador para instalação Mapas
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $administrator->user->email,
+                    'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
+                    'body' => $message
+                ]);
+            }
+        }
+        if(array_key_exists('copy',$this->data) && $this->data['copy']) {
+            if(array_key_exists('email',$this->data) && !empty(trim($this->data['email']))) {
+                $email = $this->data['email'];
+            } else {
+                $email = $app->user->email;
+            }
+
+            if($email) {
+                /*
+                * Envia e-mail de cópia para o remetente da denúncia
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
+                    'body' => $message
+                ]);
+            }
+        }
+
         //$app->log->debug($agent->dump());//
-        $app->log->debug($agent->user->dump());
+        //$app->log->debug($agent->user->dump());
         /* message to user about last access system*/
-        $notification = new Notification;
+        /*$notification = new Notification;
         $notification->user = $agent->user;
         $app->log->debug("Classe chamada");
         $app->log->debug($notification->entityClassName);
         $app->log->debug("Classe chamada User");
         $app->log->debug($notification->user->entityClassName);
-        /*$notification->message = $this->data['message'];
+        $notification->message = $this->data['message'];
         $notification->type = $this->data['type'];
         $notification->savekkk();
         $app->em->flush();*/
     }
 
     /*
+     *
      */
     public function POST_sendSuggestionMessage() {
         $app = App::i();
-        $agent = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        $message = "";
+        if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
+            $message = "Mensagem Anônima";
+        } else {
+            $message = "Mensagem enviada por " . $this->data['name'] . " em " . date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME'])  ;
+        }
 
-        /*
-         * Envio de E-mail ao responsável da entidade
-         */
-        $app->createAndSendMailMessage([
-            'from' => $app->config['mailer.from'],
-            'to' => $agent->user->email,
-            'subject' => "Contato - Mapas Culturais",
-            'body' => $this->data['message']
-        ]);
+        $message .= " Referente a página " . $entity->singleUrl;
+        $message .= " Mensagem: " . $this->data['message'];
 
-        /* message to user about last access system */
+        if(in_array('mailer.from',$app->config) && !empty($app->config['mailer.from'])) {
+            if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
+                $admins = $app->getAdmins();
+
+                foreach($admins as $administrator) {
+                    /*
+                    * Envia e-mail para o administrador para instalação Mapas
+                    */
+                    $app->createAndSendMailMessage([
+                        'from' => $app->config['mailer.from'],
+                        'to' => $administrator->user->email,
+                        'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
+                        'body' => $message
+                    ]);
+                }
+            }
+
+            if(isset($agent->user->email) && !empty($agent->user->email)) {
+                if(in_array('anonimous',$this->data) && !$this->data['anonimous']) {
+                    $email = "<Anonimous>";
+                } else {
+                    $email = $agent->user->email;
+                }
+                /*
+                * Envio de E-mail ao responsável da entidade
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => $this->data['type'] . " - Mapas Culturais",
+                    'body' => $message
+                ]);
+            }
+        }
+
+        if(array_key_exists('copy',$this->data) && $this->data['copy']) {
+            if(array_key_exists('email',$this->data) && !empty(trim($this->data['email']))) {
+                $email = $this->data['email'];
+            } else {
+                $email = $app->user->email;
+            }
+
+            if($email) {
+                /*
+                * Envia e-mail de cópia para o remetente da denúncia
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => "Mensagem - Mapas Culturais - " . $this->data['type'],
+                    'body' => $message
+                ]);
+            }
+        }
+
+        /* message to user about last access system
         $notification = new Notification;
         $notification->user = $agent->user;
         $notification->message = $this->data['message'];
         $notification->type = $this->data['type'];
         $notification->savekkk();
-        $app->em->flush();
+        $app->em->flush();*/
     }
 }
