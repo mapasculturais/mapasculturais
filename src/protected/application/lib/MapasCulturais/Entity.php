@@ -686,6 +686,11 @@ abstract class Entity implements \JsonSerializable{
     public function getValidationErrors(){
         $errors = $this->_validationErrors;
         $class = get_called_class();
+
+        if(!method_exists($class, 'getValidations')) {
+            return $errors;
+        }
+        
         foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
