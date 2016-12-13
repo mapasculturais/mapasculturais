@@ -28,19 +28,6 @@ class Seal extends \MapasCulturais\Entity
 
     const STATUS_RELATED = -1;
 
-    protected static $validations = [
-      'name' => [
-        'required' => 'O nome do selo é obrigatório'
-      ],
-      'shortDescription' => [
-        'required' => 'A descrição curta é obrigatória',
-        'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-      ],
-    	'validPeriod' => [
-    		'v::allOf(v::positive(),v::intVal())' => 'Validade do selo é obrigatória.'
-    	]
-    ];
-
     /**
      * @var integer
      *
@@ -159,6 +146,23 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $updateTimestamp;
 
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do selo é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'validPeriod' => [
+                'v::allOf(v::positive(),v::intVal())' => \MapasCulturais\i::__('Validade do selo é obrigatória.')
+            ]
+        ];
+    }
+
+
+
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
     		return false;
@@ -166,6 +170,13 @@ class Seal extends \MapasCulturais\Entity
     		return false;
     	}
     	return true;
+    }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Selos');
+        else
+            return \MapasCulturais\i::__('Selo');
     }
 
     //============================================================= //

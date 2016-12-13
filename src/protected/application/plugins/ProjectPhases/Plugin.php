@@ -188,15 +188,15 @@ class Plugin extends \MapasCulturais\Plugin{
             $parent = $this->requestedEntity;
             
             $_phases = [
-                $app->txt('Segunda fase'),
-                $app->txt('Terceira fase'),
-                $app->txt('Quarta fase'),
-                $app->txt('Quinta fase'),
-                $app->txt('Sexta fase'),
-                $app->txt('Sétima fase'),
-                $app->txt('Oitava fase'),
-                $app->txt('Nona fase'),
-                $app->txt('Décima fase')
+                \MapasCulturais\i::__('Segunda fase'),
+                \MapasCulturais\i::__('Terceira fase'),
+                \MapasCulturais\i::__('Quarta fase'),
+                \MapasCulturais\i::__('Quinta fase'),
+                \MapasCulturais\i::__('Sexta fase'),
+                \MapasCulturais\i::__('Sétima fase'),
+                \MapasCulturais\i::__('Oitava fase'),
+                \MapasCulturais\i::__('Nona fase'),
+                \MapasCulturais\i::__('Décima fase')
             ];
             
             $phases = self::getPhases($parent);
@@ -269,7 +269,7 @@ class Plugin extends \MapasCulturais\Plugin{
             $target_project ->checkPermission('@control');
             
             if($target_project->previousPhaseRegistrationsImported){
-                $this->errorJson($app->txt('As inscrições já foram importadas para esta fase'), 400);
+                $this->errorJson(\MapasCulturais\i::__('As inscrições já foram importadas para esta fase'), 400);
             }
             
             $previous_phase = self::getPreviousPhase($target_project);
@@ -281,7 +281,7 @@ class Plugin extends \MapasCulturais\Plugin{
             });
             
             if(count($registrations) < 1){
-                $this->errorJson($app->txt('Não há inscrições aprovadas ou suplentes na fase anterior'), 400);
+                $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas ou suplentes na fase anterior'), 400);
             }
             
             $new_registrations = [];
@@ -468,14 +468,14 @@ class Plugin extends \MapasCulturais\Plugin{
     function register () {
         $app = App::i();
 
-        $def__is_project_phase = new Definitions\Metadata('isProjectPhase', ['label' => $app->txt('Is a project phase?')]);
-        $def__previous_phase_imported = new Definitions\Metadata('previousPhaseRegistrationsImported', ['label' => $app->txt('Previous phase registrations imported')]);
+        $def__is_project_phase = new Definitions\Metadata('isProjectPhase', ['label' => \MapasCulturais\i::__('Is a project phase?')]);
+        $def__previous_phase_imported = new Definitions\Metadata('previousPhaseRegistrationsImported', ['label' => \MapasCulturais\i::__('Previous phase registrations imported')]);
 
         $app->registerMetadata($def__is_project_phase, 'MapasCulturais\Entities\Project');
         $app->registerMetadata($def__previous_phase_imported, 'MapasCulturais\Entities\Project');
         
-        $def__prev = new Definitions\Metadata('previousPhaseRegistrationId', ['label' => $app->txt('Previous phase registration id')]);
-        $def__next = new Definitions\Metadata('nextPhaseRegistrationId', ['label' => $app->txt('Next phase registration id')]);
+        $def__prev = new Definitions\Metadata('previousPhaseRegistrationId', ['label' => \MapasCulturais\i::__('Previous phase registration id')]);
+        $def__next = new Definitions\Metadata('nextPhaseRegistrationId', ['label' => \MapasCulturais\i::__('Next phase registration id')]);
 
         $app->registerMetadata($def__prev, 'MapasCulturais\Entities\Registration');
         $app->registerMetadata($def__next, 'MapasCulturais\Entities\Registration');

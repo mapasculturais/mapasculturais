@@ -6,8 +6,8 @@
     </header>
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter searcj-filter--keyword">
-            <label for="palavra-chave-evento">Palavra-chave</label>
-            <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="Buscar eventos" />
+            <label for="palavra-chave-evento"><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
+            <input ng-model="data.event.keyword" class="search-field" type="text" name="palavra-chave-evento" placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar eventos");?>" />
         </form>
         <!--.filter-->
         <div class="filter search-filter--date">
@@ -17,9 +17,9 @@
         </div>
         <!--.filter-->
         <div class="filter search-filter--linguagem">
-            <label>Linguagem</label>
+            <label><?php \MapasCulturais\i::_e("Linguagem");?></label>
             <div class="dropdown">
-                <div class="placeholder">Selecione as linguagens</div>
+                <div class="placeholder"><?php \MapasCulturais\i::_e("Selecione as linguagens");?></div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list select">
                         <li ng-repeat="linguagem in linguagens" ng-class="{'selected':isSelected(data.event.linguagens, linguagem.id)}" ng-click="toggleSelection(data.event.linguagens, linguagem.id)">
@@ -31,9 +31,9 @@
         </div>
         <!--.filter-->
         <div class="filter search-filter--classificacao">
-            <span class="label">Classificação</span>
+            <span class="label"><?php \MapasCulturais\i::_e("Classificação");?></span>
             <div id="classificacao" class="dropdown">
-                <div class="placeholder">Selecione a classificação</div>
+                <div class="placeholder"><?php \MapasCulturais\i::_e("Selecione a classificação");?></div>
                 <div class="submenu-dropdown">
                     <ul class="filter-list select">
                         <li ng-repeat="classificacao in classificacoes" ng-class="{'selected':isSelected(data.event.classificacaoEtaria, classificacao.id)}" ng-click="toggleSelection(data.event.classificacaoEtaria, classificacao.id)">
@@ -45,7 +45,7 @@
         </div>
         <!--.filter-->
         <div class="filter verified-filter search-filter--verified">
-            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="Exibir somente resultados Verificados" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
+            <a class="hltip btn btn-verified" ng-class="{'selected':data.event.isVerified}" title="<?php \MapasCulturais\i::esc_attr_e("Exibir somente resultados Verificados");?>" ng-click="toggleVerified('event')"><?php $this->dict('search: verified results') ?></a>
         </div>
         <!-- div.verified-filter -->
         <div ng-repeat="entity in ['event']" class="show-advanced-filters ">

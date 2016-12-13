@@ -3,7 +3,7 @@
         <li><a class="up icon icon-arrow-up" href="#"></a></li>
         <li id="nav-intro">
             <a class="icon icon-home" href="#home-intro"></a>
-            <span class="nav-title">Introdução</span>
+            <span class="nav-title"><?php \MapasCulturais\i::_e("Introdução");?></span>
         </li>
         
         <?php if($app->isEnabled('events')): ?>
@@ -36,7 +36,7 @@
             
         <li id="nav-developers">
             <a class="icon icon-developers" href="#home-developers"></a>
-            <span class="nav-title">Desenvolvedores</span>
+            <span class="nav-title"><?php \MapasCulturais\i::_e("Desenvolvedores");?></span>
         </li>
         <li><a class="down icon icon-select-arrow" href="#"></a></li>
     </ul>

@@ -152,19 +152,10 @@
                     );
             };
 
-            // activate google service
-            var geocoder = null;
-            if(typeof google !== 'undefined')
-                geocoder =  new google.maps.Geocoder();
-
-            // callback to handle google geolocation result
-            function geocode_callback(results, status) {
-                if(typeof google === 'undefined'){
-                    return false;
-                }
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var location = results[0].geometry.location;
-                    var foundLocation = new L.latLng(location.lat(), location.lng());
+            // callback to handle geolocation result
+            function geocode_callback(results) {
+                if (results) {
+                    var foundLocation = new L.latLng(results.lat, results.lon);
                     map.setView(foundLocation, config.zoomPrecise);
                     marker.setLatLng(foundLocation);
                 }
@@ -177,7 +168,20 @@
             });
 
             $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
-                geocoder.geocode({'address': strAddress + ', Brasil'}, geocode_callback);
+                var streetName = $('#En_Nome_Logradouro').editable('getValue', true);
+                var number = $('#En_Num').editable('getValue', true);
+                var neighborhood = $('#En_Bairro').editable('getValue', true);
+                var city = $('#En_Municipio').editable('getValue', true);
+                var state = $('#En_Estado').editable('getValue', true);
+                var cep = $('#En_CEP').editable('getValue', true);
+                MapasCulturais.geocoder.geocode({
+                    streetName: streetName,
+                    number: number,
+                    neighborhood: neighborhood,
+                    city: city,
+                    state: state,
+                    postalCode: cep
+                }, geocode_callback);
             });
 
             //Mais controles

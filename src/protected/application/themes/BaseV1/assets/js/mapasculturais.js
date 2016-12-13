@@ -11,6 +11,9 @@ function charCounter(obj){
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
+    
+    var labels = MapasCulturais.gettext.mapas;
+    
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -142,11 +145,11 @@ $(function(){
     if(MapasCulturais.entity){
         MapasCulturais.entity.getTypeName = function(){
             switch(MapasCulturais.request.controller){
-                case 'agent' : return 'agente'; break;
-                case 'space' : return 'espaço'; break;
-                case 'event' : return 'evento'; break;
-                case 'project' : return 'projeto'; break;
-                case 'seal' : return 'selo'; break;
+                case 'agent' : return labels['agente']; break;
+                case 'space' : return labels['espaço']; break;
+                case 'event' : return labels['evento']; break;
+                case 'project' : return labels['projeto']; break;
+                case 'seal' : return labels['selo']; break;
             }
         };
     }
@@ -535,6 +538,8 @@ MapasCulturais.EditBox = {
     },
 
     initBoxes: function(selector){
+        
+        var labels = MapasCulturais.gettext.mapas;
 
         $(selector).each(function(){
             var $dialog = $(this);
@@ -558,8 +563,8 @@ MapasCulturais.EditBox = {
             if($dialog.attr('title')){
                 $dialog.prepend('<header><h1>' + $(this).attr('title') + '</h1></header>');
             }
-            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
-            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
+            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : labels['Enviar'];
+            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : labels['Cancelar'];
 
             $dialog.append('<footer><button class="mc-cancel btn btn-default">' + cancel_label + '</button> <button type="submit" class="mc-submit">' + submit_label + '</button> </footer><div class="mc-arrow"></div>');
 

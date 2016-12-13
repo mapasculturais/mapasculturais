@@ -5,16 +5,16 @@
         <?php if($entity instanceof MapasCulturais\Entities\Project): ?>
             <span  class="js-search js-include-editable"
                    data-field-name='parentId'
-                   data-emptytext="Selecionar projeto pai"
+                   data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecionar projeto pai");?>"
                    data-search-box-width="400px"
-                   data-search-box-placeholder="Selecionar projeto pai"
+                   data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e("Selecionar projeto pai");?>"
                    data-entity-controller="project"
                    data-search-result-template="#agent-search-result-template"
                    data-selection-template="#agent-response-template"
                    data-no-result-template="#agent-response-no-results-template"
                    data-selection-format="parentProject"
                    data-allow-clear="1"
-                   title="Selecionar projeto pai"
+                   title="<?php \MapasCulturais\i::esc_attr_e("Selecionar projeto pai");?>"
                    data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                    data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
              ><?php if($entity->parent) echo $entity->parent->name; ?></span>
@@ -22,23 +22,23 @@
         <?php elseif($entity instanceof MapasCulturais\Entities\Space): ?>
             <span  class="js-search js-include-editable"
                     data-field-name='parentId'
-                    data-emptytext="Selecionar <?php $this->dict('entities: parent space') ?>"
+                    data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecionar");?> <?php $this->dict('entities: parent space') ?>"
                     data-search-box-width="400px"
-                    data-search-box-placeholder="Selecionar <?php $this->dict('entities: parent space') ?>"
+                    data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e("Selecionar");?> <?php $this->dict('entities: parent space') ?>"
                     data-entity-controller="space"
                     data-search-result-template="#agent-search-result-template"
                     data-selection-template="#agent-response-template"
                     data-no-result-template="#agent-response-no-results-template"
                     data-selection-format="parentSpace"
                     data-allow-clear="1"
-                    title="Selecionar <?php $this->dict('entities: parent space') ?>"
+                    title="<?php \MapasCulturais\i::esc_attr_e("Selecionar");?> <?php $this->dict('entities: parent space') ?>"
                     data-value="<?php if($entity->parent) echo $entity->parent->id; ?>"
                     data-value-name="<?php if($entity->parent) echo $entity->parent->name; ?>"
               ><?php if($entity->parent) echo $entity->parent->name; ?></span>
         <?php endif; ?>
     <?php endif; ?>
 
-    <span class="warning pending js-pending-parent hltip" data-hltip-classes="hltip-warning" hltitle="Aguardando confirmação" <?php if(!$child_entity_request) echo 'style="display:none"'?> ></span>
+    <span class="warning pending js-pending-parent hltip" data-hltip-classes="hltip-warning" hltitle="<?php \MapasCulturais\i::esc_attr_e("Aguardando confirmação");?>" <?php if(!$child_entity_request) echo 'style="display:none"'?> ></span>
 
 <?php elseif($entity->parent): ?>
     <h4 class="entity-parent-title"><a href="<?php echo $entity->parent->singleUrl; ?>"><?php echo $entity->parent->name; ?></a></h4>

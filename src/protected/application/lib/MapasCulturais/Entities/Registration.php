@@ -29,13 +29,6 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-    protected static $validations = [
-        'owner' => [
-            'required' => "O agente responsável é obrigatório.",
-            '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsável.',
-        ]
-    ];
-
     /**
      * @var integer
      *
@@ -125,6 +118,15 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+
+    static function getValidations() {
+        return [
+            'owner' => [
+                'required' => \MapasCulturais\i::__("O agente responsável é obrigatório."),
+                '$this->validateOwnerLimit()' => \MapasCulturais\i::__('Foi excedido o limite de inscrições para este agente responsável.'),
+            ]
+        ];
     }
 
     function jsonSerialize() {
@@ -430,7 +432,7 @@ class Registration extends \MapasCulturais\Entity
         $use_category = (bool) $project->registrationCategories;
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $project->registrationCategTitle)];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -443,17 +445,17 @@ class Registration extends \MapasCulturais\Entity
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O agente "%s" é obrigatório.'), $def->label);
                 }
             }
 
             if($def->agent){
                 if($def->relationStatus < 0){
-                    $errors[] = sprintf($app->txt('The agent "%s" did not confirm your request.'), $def->agent->name);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{
                     if($def->agent->type->id !== $def->type){
                         $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
-                        $errors[] = sprintf($app->txt('This agent must be of type "%s".'), $typeDescription);
+                        $errors[] = sprintf(\MapasCulturais\i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
                     }
 
                     $erroredProperties  = [];
@@ -466,9 +468,9 @@ class Registration extends \MapasCulturais\Entity
                         }
                     }
                     if(count($erroredProperties) === 1){
-                        $errors[] = sprintf($app->txt('The field "%s" is required.'), $erroredProperties[0]);
+                        $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $erroredProperties[0]);
                     }elseif(count($erroredProperties) > 1){
-                        $errors[] = sprintf($app->txt('The fields %s are required.'), implode(', ', $erroredProperties));
+                        $errors[] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $erroredProperties));
                     }
                 }
             }
@@ -489,7 +491,7 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = sprintf($app->txt('The file "%s" is required.'), $rfc->title);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O arquivo "%s" é obrigatório.'), $rfc->title);
                 }
             }
             if($errors){
@@ -513,7 +515,7 @@ class Registration extends \MapasCulturais\Entity
 
             if ($field->required) {
                 if ($empty) {
-                    $errors[] = sprintf($app->txt('The field "%s" is required.'), $field->title);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $field->title);
                 }
             }
             if (!$empty){

@@ -24,7 +24,7 @@ $this->addRelatedAdminAgentsToJs($entity);
                         <div><span class="label">tipo:</span> {{admin.agent.type.name}}</div>
                     </div>
                     <div ng-if="isEditable">
-                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdminRelation(admin.agent)">Excluir</a>
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdminRelation(admin.agent)"><?php \MapasCulturais\i::_e("Excluir");?></a>
                     </div>
                 </div>
             </div>

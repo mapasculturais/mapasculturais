@@ -403,7 +403,7 @@ abstract class Entity implements \JsonSerializable{
             $return = $metadata[$property]['required'];
         }
 
-        $v = $class::$validations;
+        $v = $class::getValidations();
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
             $return = true;
         }
@@ -476,8 +476,10 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+        return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
+    
+    public function getEntityTypeLabel($plural = false) {}
 
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
@@ -677,7 +679,6 @@ abstract class Entity implements \JsonSerializable{
      * )
      * </code>
      *
-     * @see \MapasCulturais\App::txt() The MapasCulturais GetText method
      * @see \MapasCulturais\Traits\Metadata::getMetadataValidationErrors() Metadata Validation Errors
      *
      * @return array
@@ -685,7 +686,7 @@ abstract class Entity implements \JsonSerializable{
     public function getValidationErrors(){
         $errors = $this->_validationErrors;
         $class = get_called_class();
-        foreach($class::$validations as $property => $validations){
+        foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
@@ -718,16 +719,16 @@ abstract class Entity implements \JsonSerializable{
                     if (!key_exists($property, $errors))
                         $errors[$property] = [];
 
-                    $errors[$property][] = App::txt($error_message);
+                    $errors[$property][] = $error_message;
 
                 }
             }
         }
 
         if($this->usesTypes() && !$this->_type)
-            $errors['type'] = [App::txt('The type is required')];
+            $errors['type'] = [\MapasCulturais\i::__('O Tipo é obrigatório')];
         elseif($this->usesTypes() && !$this->validateType())
-            $errors['type'] = [App::txt('Invalid type')];
+            $errors['type'] = [\MapasCulturais\i::__('Tipo inválido')];
 
         if($this->usesMetadata())
             $errors = $errors + $this->getMetadataValidationErrors();

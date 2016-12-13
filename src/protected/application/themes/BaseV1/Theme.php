@@ -6,6 +6,7 @@ use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\i;
 use Respect\Validation\length;
 
 class Theme extends MapasCulturais\Theme {
@@ -29,102 +30,102 @@ class Theme extends MapasCulturais\Theme {
         return array(
             'site: name' => $app->config['app.siteName'],
             'site: description' => $app->config['app.siteDescription'],
-            'site: in the region' => 'na região',
-            'site: of the region' => 'da região',
-            'site: owner' => 'Secretaria',
-            'site: by the site owner' => 'pela Secretaria',
-            'site: panel' => 'Painel',
+            'site: in the region' => \MapasCulturais\i::__('na região'),
+            'site: of the region' => \MapasCulturais\i::__('da região'),
+            'site: owner' => \MapasCulturais\i::__('Secretaria'),
+            'site: by the site owner' => \MapasCulturais\i::__('pela Secretaria'),
+            'site: panel' => \MapasCulturais\i::__('Painel'),
 
-            'home: title' => "Bem-vind@!",
-            'home: abbreviation' => "MC",
-            'home: colabore' => "Colabore com o Mapas Culturais",
-            'home: welcome' => "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural.",
-            'home: events' => "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente.",
-            'home: agents' => "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.",
-            'home: spaces' => "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.",
-            'home: projects' => "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.",
-            'home: home_devs' => 'Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.',
+            'home: title' => \MapasCulturais\i::__("Bem-vind@!"),
+            'home: abbreviation' => \MapasCulturais\i::__("MC"),
+            'home: colabore' => \MapasCulturais\i::__("Colabore com o Mapas Culturais"),
+            'home: welcome' => \MapasCulturais\i::__("O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural."),
+            'home: events' => \MapasCulturais\i::__("Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente."),
+            'home: agents' => \MapasCulturais\i::__("Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita."),
+            'home: spaces' => \MapasCulturais\i::__("Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."),
+            'home: projects' => \MapasCulturais\i::__("Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."),
+            'home: home_devs' => \MapasCulturais\i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.'),
 
-            'search: verified results' => 'Resultados Verificados',
-            'search: verified' => "Verificados",
+            'search: verified results' => \MapasCulturais\i::__('Resultados Verificados'),
+            'search: verified' => \MapasCulturais\i::__("Verificados"),
 
-            'entities: My Projects' => 'Meus Projetos',
-            'entities: My projects' => 'Meus projetos',
-            'entities: Project' => 'Projeto',
-            'entities: Projects' => 'Projetos',
-            'entities: project' => 'projeto',
-            'entities: projects' => 'projetos',
-            'entities: Projects of the agent' => 'Projetos do agente',
+            'entities: My Projects' => \MapasCulturais\i::__('Meus Projetos'),
+            'entities: My projects' => \MapasCulturais\i::__('Meus projetos'),
+            'entities: Project' => \MapasCulturais\i::__('Projeto'),
+            'entities: Projects' => \MapasCulturais\i::__('Projetos'),
+            'entities: project' => \MapasCulturais\i::__('projeto'),
+            'entities: projects' => \MapasCulturais\i::__('projetos'),
+            'entities: Projects of the agent' => \MapasCulturais\i::__('Projetos do agente'),
 
-            'entities: My Events' => 'Meus Eventos',
-            'entities: My events' => 'Meus eventos',
-            'entities: Event' => 'Evento',
-            'entities: Events' => 'Eventos',
-            'entities: event' => 'evento',
-            'entities: events' => 'eventos',
+            'entities: My Events' => \MapasCulturais\i::__('Meus Eventos'),
+            'entities: My events' => \MapasCulturais\i::__('Meus eventos'),
+            'entities: Event' => \MapasCulturais\i::__('Evento'),
+            'entities: Events' => \MapasCulturais\i::__('Eventos'),
+            'entities: event' => \MapasCulturais\i::__('evento'),
+            'entities: events' => \MapasCulturais\i::__('eventos'),
 
-            'entities: My Agents' => 'Meus Agentes',
-            'entities: My agents' => 'Meus agentes',
-            'entities: Agent' => 'Agente',
-            'entities: Agents' => 'Agentes',
-            'entities: agent' => 'agente',
-            'entities: agents' => 'agentes',
+            'entities: My Agents' => \MapasCulturais\i::__('Meus Agentes'),
+            'entities: My agents' => \MapasCulturais\i::__('Meus agentes'),
+            'entities: Agent' => \MapasCulturais\i::__('Agente'),
+            'entities: Agents' => \MapasCulturais\i::__('Agentes'),
+            'entities: agent' => \MapasCulturais\i::__('agente'),
+            'entities: agents' => \MapasCulturais\i::__('agentes'),
 
-            'entities: Spaces of the agent' => 'Espaços do agente',
-            'entities: Space Description' => 'Descrição do Espaço',
-            'entities: Agent children' => 'Agentes',
-            'entities: My Spaces' => 'Meus Espaços',
-            'entities: My spaces' => 'Meus espaços',
+            'entities: Spaces of the agent' => \MapasCulturais\i::__('Espaços do agente'),
+            'entities: Space Description' => \MapasCulturais\i::__('Descrição do Espaço'),
+            'entities: Agent children' => \MapasCulturais\i::__('Agentes'),
+            'entities: My Spaces' => \MapasCulturais\i::__('Meus Espaços'),
+            'entities: My spaces' => \MapasCulturais\i::__('Meus espaços'),
 
-        	'entities: My Seals' => 'Meus Selos',
-        	'entities: My seals' => 'Meus selos',
-            'entities: Seals' => 'Selos',
-            'entities: seals' => 'selos',
-            'entities: Seal' => 'Selo',
-            'entities: seal' => 'selo',
+        	'entities: My Seals' => \MapasCulturais\i::__('Meus Selos'),
+        	'entities: My seals' => \MapasCulturais\i::__('Meus selos'),
+            'entities: Seals' => \MapasCulturais\i::__('Selos'),
+            'entities: seals' => \MapasCulturais\i::__('selos'),
+            'entities: Seal' => \MapasCulturais\i::__('Selo'),
+            'entities: seal' => \MapasCulturais\i::__('selo'),
 
-            'entities: Users and roles'=> 'Usuários e papéis',
+            'entities: Users and roles'=> \MapasCulturais\i::__('Usuários e papéis'),
 
-            'entities: no registered spaces'=> 'nenhum espaço cadastrado',
-            'entities: no spaces'=> 'nenhum espaço',
+            'entities: no registered spaces'=> \MapasCulturais\i::__('nenhum espaço cadastrado'),
+            'entities: no spaces'=> \MapasCulturais\i::__('nenhum espaço'),
 
-            'entities: Space' => 'Espaço',
-            'entities: Spaces' => 'Espaços',
-            'entities: space' => 'espaço',
-            'entities: spaces' => 'espaços',
-            'entities: parent space' => 'espaço pai',
-            'entities: a space' => 'um espaço',
-            'entities: the space' => 'o espaço',
-            'entities: of the space' => 'do espaço',
-            'entities: In this space' => 'Neste espaço',
-            'entities: in this space' => 'neste espaço',
-            'entities: registered spaces' => 'espaços cadastrados',
-            'entities: new space' => 'novo espaço',
+            'entities: Space' => \MapasCulturais\i::__('Espaço'),
+            'entities: Spaces' => \MapasCulturais\i::__('Espaços'),
+            'entities: space' => \MapasCulturais\i::__('espaço'),
+            'entities: spaces' => \MapasCulturais\i::__('espaços'),
+            'entities: parent space' => \MapasCulturais\i::__('espaço pai'),
+            'entities: a space' => \MapasCulturais\i::__('um espaço'),
+            'entities: the space' => \MapasCulturais\i::__('o espaço'),
+            'entities: of the space' => \MapasCulturais\i::__('do espaço'),
+            'entities: In this space' => \MapasCulturais\i::__('Neste espaço'),
+            'entities: in this space' => \MapasCulturais\i::__('neste espaço'),
+            'entities: registered spaces' => \MapasCulturais\i::__('espaços cadastrados'),
+            'entities: new space' => \MapasCulturais\i::__('novo espaço'),
 
-            'entities: Children spaces' => 'Subespaços',
-            'entities: Add child space' => 'Adicionar subespaço',
+            'entities: Children spaces' => \MapasCulturais\i::__('Subespaços'),
+            'entities: Add child space' => \MapasCulturais\i::__('Adicionar subespaço'),
 
-            'entities: space found' => 'espaço encontrado',
-            'entities: spaces found' => 'espaços encontrados',
-            'entities: event found' => 'evento encontrado',
-            'entities: events found' => 'eventos encontrados',
-            'entities: agent found' => 'agente encontrado',
-            'entities: agents found' => 'agentes encontrados',
-            'entities: project found' => 'projeto encontrado',
-            'entities: project found' => 'projetos encontrados',
+            'entities: space found' => \MapasCulturais\i::__('espaço encontrado'),
+            'entities: spaces found' => \MapasCulturais\i::__('espaços encontrados'),
+            'entities: event found' => \MapasCulturais\i::__('evento encontrado'),
+            'entities: events found' => \MapasCulturais\i::__('eventos encontrados'),
+            'entities: agent found' => \MapasCulturais\i::__('agente encontrado'),
+            'entities: agents found' => \MapasCulturais\i::__('agentes encontrados'),
+            'entities: project found' => \MapasCulturais\i::__('projeto encontrado'),
+            'entities: project found' => \MapasCulturais\i::__('projetos encontrados'),
 
-            'roles: Super Administrator'=> 'Super Administrador',
-            'roles: Super Administrators'=> 'Super Administradores',
+            'roles: Super Administrator'=> \MapasCulturais\i::__('Super Administrador'),
+            'roles: Super Administrators'=> \MapasCulturais\i::__('Super Administradores'),
 
-            'roles: Administrator'=> 'Administrador',
-            'roles: Administrators'=> 'Administradores',
+            'roles: Administrator'=> \MapasCulturais\i::__('Administrador'),
+            'roles: Administrators'=> \MapasCulturais\i::__('Administradores'),
 
-            'roles: Staff Member'=> 'Membro da equipe',
-            'roles: Staff Members'=> 'Membros da equipe',
+            'roles: Staff Member'=> \MapasCulturais\i::__('Membro da equipe'),
+            'roles: Staff Members'=> \MapasCulturais\i::__('Membros da equipe'),
 
-            'taxonomies:area: name' => 'Área de Atuação',
-            'taxonomies:area: select at least one' => 'Selecione pelo menos uma área',
-            'taxonomies:area: select' => 'Selecione as áreas',
+            'taxonomies:area: name' => \MapasCulturais\i::__('Área de Atuação'),
+            'taxonomies:area: select at least one' => \MapasCulturais\i::__('Selecione pelo menos uma área'),
+            'taxonomies:area: select' => \MapasCulturais\i::__('Selecione as áreas'),
         );
     }
 
@@ -287,8 +288,8 @@ class Theme extends MapasCulturais\Theme {
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
-                    'subject' => "Novo $this->entityType registrado",
-                    'body' => "Criado(a) {$this->entityType} de nome {$this->name} pelo usuário {$app->user->profile->name} na instalação {$this->origin_site} em " . $this->createTimestamp->format('d/m/Y - H:i') ."."
+                    'subject' => sprintf(\MapasCulturais\i::__("Novo %s registrado"), $this->entityTypeLabel()),
+                    'body' => sprintf(\MapasCulturais\i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel(), $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
                 ]);
             }
         });
@@ -350,25 +351,84 @@ class Theme extends MapasCulturais\Theme {
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
-
-        $app->hook("GET(site.cep)", function() use($app) {
-            if ($app->config['cep.token']) {
-                $cep = $app->request->get('num');
-                // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
-                $url = sprintf($app->config['cep.endpoint'], $cep);
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                if ($app->config['cep.token_header']) {
-                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
-                }
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $output = curl_exec($ch);
-                echo $output;
+        
+        $theme = $this;
+        $app->hook("GET(site.address_by_postalcode)", function() use($app, $theme) {
+            
+            $response = $theme->getAddressByPostalCode($app->request->get('postalcode'));
+            if ($response['success'] === true) {
+                echo json_encode($response);
             } else {
-                $app->halt(403, 'No token for CEP');
+                $app->halt(403, $response['error_msg']);
             }
+            
         });
+    }
+    
+    
+    /*
+     * This methods tries to fill the address fields using the postal code
+     * 
+     * By default it relies on brazilian CEP, but you can override this methods
+     * to use another API.
+     * 
+     * It should return an Arrau with an item success set to true or false.
+     * 
+     * If true, it has to return the following fields.
+     * Note: lat & lon are optional, they are not beeing used yet but will probably be soon
+     * 
+     * response example:
+     * 
+     * [
+     *    'success' => true,
+     *      'lat' => $json->latitude,
+     *      'lon' => $json->longitude,
+     *      'streetName' => $json->logradouro,
+     *      'neighborhood' => $json->bairro,
+     *      'city' => $json->cidade,
+     *      'state' => $json->estado
+     * ]
+     * 
+     */ 
+    function getAddressByPostalCode($postalCode) {
+        $app = App::i();
+        if ($app->config['cep.token']) {
+            $cep = str_replace('-', '', $postalCode);
+            // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
+            $url = sprintf($app->config['cep.endpoint'], $cep);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            if ($app->config['cep.token_header']) {
+                // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
+            }
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            $json = json_decode($output);
+            if (isset($json->logradouro)) { 
+                $response = [
+                    'success' => true,
+                    'lat' => $json->latitude,
+                    'lon' => $json->longitude,
+                    'streetName' => $json->logradouro,
+                    'neighborhood' => $json->bairro,
+                    'city' => $json->cidade,
+                    'state' => $json->estado
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'error_msg' => 'Falha a buscar endereço'
+                ];
+            }
+        } else {
+            $response = [
+                'success' => false,
+                'error_msg' => 'No token for CEP'
+            ];
+        }
+        
+        return $response;
     }
 
     function register() {
@@ -534,11 +594,37 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle('app', 'main', 'css/main.css');
 
         $this->enqueueScript('app', 'tim', 'js/tim.js');
+        $this->localizeScript('tim', [
+            'previous' => \MapasCulturais\i::__('Anterior'),
+            'next' => \MapasCulturais\i::__('Próxima'),
+            /* Translators: Count of the photo gallery slideshow: 2 of 10 */
+            'counter' => \MapasCulturais\i::__('%curr% de %total%'),
+        ]);
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
+        $this->localizeScript('mapas', [
+            'agente'    => \MapasCulturais\i::__('agente'),
+            'espaço'    => \MapasCulturais\i::__('espaço'),
+            'evento'    => \MapasCulturais\i::__('evento'),
+            'projeto'   => \MapasCulturais\i::__('projeto'),
+            'selo'      => \MapasCulturais\i::__('selo'),
+            'Enviar'    => \MapasCulturais\i::__('Enviar'),
+            'Cancelar'  => \MapasCulturais\i::__('Cancelar')
+        ]);
+
+        $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
+        
+        // This replaces the default geocoder with the google geocoder
+        if (App::i()->config['app.useGoogleGeocode'])
+            $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
+
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
-
+        $this->localizeScript('moduleNotifications', [
+            'error'    => \MapasCulturais\i::__('There was an error'),
+        ]);
+        
+        
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
@@ -565,9 +651,31 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
+        $this->localizeScript('controllerMap', [
+            /* Translators: serach results. Eventos encontrados no espaço {nome do espaço} */
+            'eventsFound'    => \MapasCulturais\i::__('Eventos encontrados no espaço'),
+        ]);
+        
         $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
-
+        $this->localizeScript('controllerSpatial', [
+            'tooltip.start' =>  \MapasCulturais\i::__('Clique e arraste para desenhar o círculo'),
+            'tooltip.end' =>    \MapasCulturais\i::__('Solte o mouse para finalizar o desenho'),
+            'title' =>          \MapasCulturais\i::__('Cancelar desenho'),
+            'text' =>           \MapasCulturais\i::__('Cancelar'),
+            'circle' =>         \MapasCulturais\i::__('Desenhar um círculo'),
+            'radius' =>         \MapasCulturais\i::__('Raio'),
+            'currentLocation' =>\MapasCulturais\i::__('Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de {{radius}}KM deste ponto.'),
+        ]);
+        
+        
         $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
+        $this->localizeScript('searchApp', [
+            'all' => \MapasCulturais\i::__('Todos'),
+            /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
+            'dateFrom' => \MapasCulturais\i::__('de'),
+            /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
+            'dateTo' => \MapasCulturais\i::__('a')
+        ]);
     }
 
     function includeMapAssets() {
@@ -642,9 +750,61 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'mc.directive.mcSelect', 'js/ng.mc.directive.mcSelect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.module.findEntity', 'js/ng.mc.module.findEntity.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.changeOwner', 'js/ng.entity.module.changeOwner.js', array('ng-mapasculturais'));
+        $this->localizeScript('changeOwner', [
+            'ownerChanged' =>  \MapasCulturais\i::__('O proprietário da entidade foi modificado'),
+            'cannotChangeOwner' =>  \MapasCulturais\i::__('O proprietário da entidade não pode ser modificado'),
+            'requestMessage' =>  \MapasCulturais\i::__('Sua requisição para mudança de propriedade deste {{type}} para o agente {{recipient}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
+        $this->localizeScript('moduleProject', [
+            'selectFieldType' =>  \MapasCulturais\i::__('Selecione o tipo de campo'),
+            'fieldCreated' =>  \MapasCulturais\i::__('Campo criado.'),
+            'fieldRemoved' =>  \MapasCulturais\i::__('Campo removido.'),
+            'changesSaved' =>  \MapasCulturais\i::__('Alterações Salvas.'),
+            'attachmentCreated' =>  \MapasCulturais\i::__('Anexo criado.'),
+            'attachmentRemoved' =>  \MapasCulturais\i::__('Anexo removido.'),
+            'confirmAttachmentRemoved' =>  \MapasCulturais\i::__('Deseja remover este anexo?'),
+            'confirmRemoveModel' =>  \MapasCulturais\i::__('Deseja remover este modelo?'),
+            'modelRemoved' =>  \MapasCulturais\i::__('Modelo removido.'),
+            'statusPublished' =>  \MapasCulturais\i::__('publicado'),
+            'statusDraft' =>  \MapasCulturais\i::__('rascunho'),
+            'publishing...' =>  \MapasCulturais\i::__('Publicando...'),
+            'eventsPublished' =>  \MapasCulturais\i::__('Eventos publicados.'),
+            'savingAsDraft' =>  \MapasCulturais\i::__('Tornando rascunho...'),
+            'savedAsDraft' =>  \MapasCulturais\i::__('Eventos transformados em rascunho.'),
+            'confirmRemoveAttachment' =>  \MapasCulturais\i::__('Deseja remover este anexo?'),
+            'registrationOwnerDefault' =>  \MapasCulturais\i::__('Agente responsável pela inscrição'),
+            'allStatus' =>  \MapasCulturais\i::__('Todas'),
+            'pending' =>  \MapasCulturais\i::__('Pendente'),
+            'invalid' =>  \MapasCulturais\i::__('Inválida'),
+            'notSelected' =>  \MapasCulturais\i::__('Não selecionada'),
+            'suplente' =>  \MapasCulturais\i::__('Suplente'),
+            'selected' =>  \MapasCulturais\i::__('Selecionada'),
+            'Draft' =>  \MapasCulturais\i::__('Rascunho'),
+            'requiredLabel' =>  \MapasCulturais\i::__('Obrigatório'),
+            'optionalLabel' =>  \MapasCulturais\i::__('Opcional'),
+            'confirmReopen' =>  \MapasCulturais\i::__('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'),
+            'defineVacancies' =>  \MapasCulturais\i::__('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.'),
+            'reachedMax' =>  \MapasCulturais\i::__('Você atingiu o limite máximo de 1 inscrição aprovada'),
+            'reachedMaxPlural' =>  \MapasCulturais\i::__('Você atingiu o limite máximo de {{num}} inscrições aprovadas'),
+            'limitReached' =>  \MapasCulturais\i::__('O limite de inscrições para o agente informado se esgotou.'),
+            'VacanciesOver' =>  \MapasCulturais\i::__('O número de vagas da inscrição no projeto se esgotou.'),
+            'needResponsible' =>  \MapasCulturais\i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
+            'correctErrors' =>  \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+            'registrationSent' =>  \MapasCulturais\i::__('Inscrição enviada. Aguarde tela de sumário.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedAgents', [
+            'requestSent' =>  \MapasCulturais\i::__('Sua requisição para relacionar o agente {{agent}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
+        $this->localizeScript('relatedSeals', [
+            'requestSent' =>  \MapasCulturais\i::__('Sua requisição para relacionar o selo {{seal}} foi enviada.'),
+        ]);
+        
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
@@ -685,10 +845,10 @@ class Theme extends MapasCulturais\Theme {
 
     function getOccurrenceFrequencies() {
         return array(
-            'once' => 'uma vez',
-            'daily' => 'todos os dias',
-            'weekly' => 'semanal',
-            'monthly' => 'mensal',
+            'once' => \MapasCulturais\i::__('uma vez'),
+            'daily' => \MapasCulturais\i::__('todos os dias'),
+            'weekly' => \MapasCulturais\i::__('semanal'),
+            'monthly' => \MapasCulturais\i::__('mensal'),
         );
     }
 
@@ -789,7 +949,7 @@ class Theme extends MapasCulturais\Theme {
                 ],
                 [
                     'label' => 'Tipos',
-                    'placeholder' => 'Selecione os tipos',
+                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -797,8 +957,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Acessibilidade',
-                    'placeholder' => 'Exibir somente resultados com Acessibilidade',
+                    'label' => \MapasCulturais\i::__('Acessibilidade'),
+                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados com Acessibilidade'),
                     'fieldType' => 'checkbox',
                     'isArray' => false,
                     'filter' => [
@@ -809,7 +969,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -821,8 +981,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'agent' => [
                 [
-                    'label'=> 'Área de Atuação',
-                    'placeholder' => 'Selecione as áreas',
+                    'label'=> \MapasCulturais\i::__('Área de Atuação'),
+                    'placeholder' =>\MapasCulturais\i::__( 'Selecione as áreas'),
                     'type' => 'term',
                     'filter' => [
                         'param' => 'area',
@@ -830,8 +990,8 @@ class Theme extends MapasCulturais\Theme {
                     ],
                 ],
                 [
-                    'label' => 'Tipos',
-                    'placeholder' => 'Todos',
+                    'label' => \MapasCulturais\i::__('Tipos'),
+                    'placeholder' => \MapasCulturais\i::__('Todos'),
                     'fieldType' => 'singleselect',
                     'type' => 'entitytype',
                     // 'isArray' => false,
@@ -843,7 +1003,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,
@@ -867,8 +1027,8 @@ class Theme extends MapasCulturais\Theme {
                 //     ]
                 // ],
                 [
-                    'label' => 'Linguagem',
-                    'placeholder' => 'Selecione as linguagens',
+                    'label' => \MapasCulturais\i::__('Linguagem'),
+                    'placeholder' => \MapasCulturais\i::__('Selecione as linguagens'),
                     'fieldType' => 'checklist',
                     'type' => 'term',
                     'filter' => [
@@ -877,8 +1037,8 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Classificação',
-                    'placeholder' => 'Selecione a classificação',
+                    'label' => \MapasCulturais\i::__('Classificação'),
+                    'placeholder' => \MapasCulturais\i::__('Selecione a classificação'),
                     'filter' => [
                         'param' => 'classificacaoEtaria',
                         'value' => 'IN({val})'
@@ -887,7 +1047,7 @@ class Theme extends MapasCulturais\Theme {
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
                     'fieldType' => 'checkbox-verified',
                     'isArray' => false,
                     'addClass' => 'verified-filter',
@@ -899,8 +1059,8 @@ class Theme extends MapasCulturais\Theme {
             ],
             'project' => [
                 [
-                    'label' => 'Tipo',
-                    'placeholder' => 'Selecione os tipos',
+                    'label' => \MapasCulturais\i::__('Tipo'),
+                    'placeholder' => \MapasCulturais\i::__('Selecione os tipos'),
                     'type' => 'entitytype',
                     'filter' => [
                         'param' => 'type',
@@ -908,13 +1068,13 @@ class Theme extends MapasCulturais\Theme {
                     ]
                 ],
                 [
-                    'label' => 'Inscrições Abertas',
+                    'label' => \MapasCulturais\i::__('Inscrições Abertas'),
                     'fieldType' => 'custom.project.ropen'
                 ],
                 [
                     'label' => $this->dict('search: verified results', false),
                     'tag' => $this->dict('search: verified', false),
-                    'placeholder' => 'Exibir somente resultados Verificados',
+                    'placeholder' => \MapasCulturais\i::__('Exibir somente resultados Verificados'),
                     'fieldType' => 'checkbox-verified',
                     'addClass' => 'verified-filter',
                     'isArray' => false,

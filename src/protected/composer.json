@@ -20,6 +20,7 @@
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "^2.2",
+        "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4"
     },
     "require-dev": {

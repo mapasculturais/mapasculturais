@@ -30,7 +30,7 @@ trait ControllerAPI{
         $responder = $app->getRegisteredApiOutputById($type);
 
         if(!$responder){
-            echo sprintf(App::txt("type %s is not registered."), $type);
+            echo sprintf(\MapasCulturais\i::__("tipo %s não está registrado."), $type);
             App::i()->stop();
         }else{
             return $responder;

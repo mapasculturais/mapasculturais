@@ -11,8 +11,8 @@
         Admin:
         <a onclick="jQuery.get('<?php echo $app->createUrl('auth', 'fakeLogin') ?>/?fake_authentication_user_id=1',
             function(){
-                console.info('Logado como Admin');
-                MapasCulturais.Messages.success('Logado como Admin.');
+                console.info(<?php \MapasCulturais\i::_e('Logado como Admin');?>);
+                MapasCulturais.Messages.success(<?php \MapasCulturais\i::_e('Logado como Admin.');?>);
             })">
             Login
         </a>
@@ -88,13 +88,13 @@
             <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="icon icon-notifications"></div>
-                    <div class="menu-item-label">Notificações</div>
+                    <div class="menu-item-label"><?php \MapasCulturais\i::_e("Notificações");?></div>
                 </a>
                 <ul class="submenu hidden">
                     <li>
                         <div class="clearfix">
-                            <h6 class="alignleft">Notificações</h6>
-                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="Marcar todas como lidas"></a>
+                            <h6 class="alignleft"><?php \MapasCulturais\i::_e("Notificações");?></h6>
+                            <a href="#" style="display:none" class="staging-hidden hltip icon icon-check_alt" title="<?php \MapasCulturais\i::esc_attr_e("Marcar todas como lidas");?>"></a>
                         </div>
                         <ul>
                             <li ng-repeat="notification in data" on-last-repeat="adjustScroll();">
@@ -102,27 +102,27 @@
                                     <span ng-bind-html="notification.message"></span>
                                     <br>
 
-                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)">aceitar</a>
+                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)"><?php \MapasCulturais\i::_e("aceitar");?></a>
 
                                     <span ng-if="notification.request.permissionTo.reject">
                                         <span ng-if="notification.request.requesterUser.id === MapasCulturais.userId">
-                                            <a class="btn btn-small btn-default" ng-click="reject(notification.id)">cancelar</a>
-                                            <a class="btn btn-small btn-success" ng-click="delete(notification.id)">ok</a>
+                                            <a class="btn btn-small btn-default" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("cancelar");?></a>
+                                            <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
                                         </span>
                                         <span ng-if="notification.request.requesterUser.id !== MapasCulturais.userId">
-                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)">rejeitar</a>
+                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("rejeitar");?></a>
                                         </span>
                                     </span>
 
                                     <span ng-if="!notification.isRequest">
-                                        <a class="btn btn-small btn-success" ng-click="delete(notification.id)">ok</a>
+                                        <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
                                     </span>
 
                                 </p>
                             </li>
                         </ul>
                         <a href="<?php echo $app->createUrl('panel'); ?>">
-                            Ver todas atividades
+                            <?php \MapasCulturais\i::_e("Ver todas atividades");?>
                         </a>
                     </li>
                 </ul>
@@ -149,7 +149,7 @@
                     <?php if($app->isEnabled('events')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'events') ?>">Meus Eventos</a>
+                            <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
                             <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
@@ -158,7 +158,7 @@
                     <?php if($app->isEnabled('agents')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>">Meus Agentes</a>
+                            <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
                             <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
@@ -185,14 +185,14 @@
                     <?php if($app->isEnabled('projects')): ?>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>">Meus Projetos</a>
+                            <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><?php \MapasCulturais\i::_e("Meus Projetos");?></a>
                             <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
 
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
                         <li>
-                            <a href="<?php echo $app->createUrl('panel', 'registrations') ?>">Minhas Inscrições</a>
+                            <a href="<?php echo $app->createUrl('panel', 'registrations') ?>"><?php \MapasCulturais\i::_e("Minhas Inscrições");?></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
@@ -202,10 +202,10 @@
                     <!--<li><a href="#">Ajuda</a></li>-->
                     <li>
                         <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
-                            <a href="<?php echo $app->createUrl('auth'); ?>">Trocar Usuário</a>
+                            <a href="<?php echo $app->createUrl('auth'); ?>"><?php \MapasCulturais\i::_e("Trocar Usuário");?></a>
                             <?php if(!empty($fake_options)) echo $fake_options; ?>
                         <?php endif; ?>
-                        <a href="<?php echo $app->createUrl('auth', 'logout'); ?>">Sair</a>
+                        <a href="<?php echo $app->createUrl('auth', 'logout'); ?>"><?php \MapasCulturais\i::_e("Sair");?></a>
                     </li>
                 </ul>
             </li>
@@ -216,7 +216,7 @@
             <li class="login">
                 <a href="<?php echo $app->createUrl('panel') ?>">
                     <div class="icon icon-login"></div>
-                    <div class="menu-item-label">Entrar</div>
+                    <div class="menu-item-label"><?php \MapasCulturais\i::_e("Entrar");?></div>
                 </a>
                 <?php if(!empty($fake_options)): ?>
                     <ul class="submenu" style="margin: 2px 0 0 -12px"><li><?php echo str_ireplace("Login\n        </a>", 'Login</a> |', $fake_options) ?></li></ul>
