@@ -102,4 +102,22 @@ $(function(){
             
         }
     });
+    
+    function searchByKeyword(){
+        var keyword = $('.js-subsite-map-search--input').val();
+
+        MapasCulturais.geocoder.geocode({fullAddress: keyword}, function(r){
+            map.setView(r);
+        });
+    }
+    
+    $('.js-subsite-map-search--button').on('click', function(e){
+        searchByKeyword();
+    });
+    
+    $('.js-subsite-map-search--input').on('keypress', function(e){
+        if(e.keyCode === 13){
+            searchByKeyword();
+        }
+    });
 });
