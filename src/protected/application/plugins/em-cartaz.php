@@ -139,7 +139,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
     foreach($linguagens as $linguagem){
 
         $query = array(
-            'isVerified' => 'eq(true)',
+            '@verified' => 'IN(1)',
             '@from'=>$from->format('Y-m-d'),
             '@to'=>$to->format('Y-m-d'),
             '@select' => 'id,name,shortDescription,singleUrl,classificacaoEtaria,location,metadata,occurrences,project,relatedAgents',
@@ -181,7 +181,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         }
 
         foreach($projects as $project){
-            
+
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){
