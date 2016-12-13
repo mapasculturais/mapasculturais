@@ -398,6 +398,10 @@ abstract class Entity implements \JsonSerializable{
 
         return $data_array;
     }
+    
+    static public function getValidations(){
+        return [];
+    }
 
     public function isPropertyRequired($entity,$property) {
         $app = App::i();
