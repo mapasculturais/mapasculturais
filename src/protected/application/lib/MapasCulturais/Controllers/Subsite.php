@@ -127,5 +127,13 @@ class Subsite extends EntityController {
     function GET_single(){
         parent::GET_edit();
     }
+    
+    function ALL_deleteCache(){
+        $this->requireAuthentication();
+        
+        $subsite = $this->requestedEntity;
+        
+        $subsite->clearCache();
+    }
 
 }

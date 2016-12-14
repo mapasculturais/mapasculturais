@@ -197,13 +197,16 @@ class App extends \Slim\Slim{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
             $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        $this->_cache->setNamespace($config['app.cache.namespace']);
+        
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        
         $this->_mscache->setNamespace(__DIR__);
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
-            if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
-                $path = $this->cache->fetch($cache_id);
+            if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
+                $path = $this->_mscache->fetch($cache_id);
                 require_once $path;
                 return true;
             }
@@ -223,7 +226,7 @@ class App extends \Slim\Slim{
                     if(\file_exists($path)){
                         require_once $path;
                         if($config['app.useRegisteredAutoloadCache'])
-                            $this->cache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                            $this->_mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
                         return true;
                     }
                 }
@@ -311,9 +314,9 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
-        $doctrine_config->setMetadataCacheImpl($this->_cache);
-        $doctrine_config->setQueryCacheImpl($this->_cache);
-        $doctrine_config->setResultCacheImpl($this->_cache);
+        $doctrine_config->setMetadataCacheImpl($this->_mscache);
+        $doctrine_config->setQueryCacheImpl($this->_mscache);
+        $doctrine_config->setResultCacheImpl($this->_mscache);
 
 
         // obtaining the entity manager
@@ -336,9 +339,6 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
 
 
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
         // ===================================== //
 
 
@@ -348,8 +348,6 @@ class App extends \Slim\Slim{
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
         }
-//
-//        die($domain);
 
         // para permitir o db update rodar para criar a tabela do subsite
         if(($pos = strpos($domain, ':')) !== false){
@@ -365,9 +363,13 @@ class App extends \Slim\Slim{
 
 
         if($this->_subsite){
+            $this->_cache->setNamespace($config['app.cache.namespace'] . ':' . $this->_subsite->id);
+
             $theme_class = $this->_subsite->namespace . "\Theme";
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
         } else {
+            $this->_cache->setNamespace($config['app.cache.namespace']);
+            
             $theme_class = $config['themes.active'] . '\Theme';
             $theme_instance = new $theme_class($config['themes.assetManager']);
         }

@@ -359,11 +359,21 @@ class Subsite extends \MapasCulturais\Entity
         return $user->is('superAdmin');
     }
     
-    public function save($flush = false) {
-        parent::save($flush);
+    function clearCache(){
+        $this->checkPermission('modify');
+        
         $app = App::i();
         
         $app->msCache->delete($this->getSassCacheId());
+        
+        $subsite_cache = clone $app->cache;
+        $subsite_cache->deleteAll();
+        
+    }
+    
+    public function save($flush = false) {
+        parent::save($flush);
+        $this->clearCache();
     }
 
     //============================================================= //
