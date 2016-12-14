@@ -15,6 +15,7 @@ use SwiftMailer\SwiftMailer;
  * @property-read \Doctrine\ORM\EntityManager $em The Doctrine Entity Manager
  * @property-read \Slim\Log $log Slim Logger
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
+ * @property-read \Doctrine\Common\Cache\CacheProvider $mscache Multisite Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
  * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
  * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
@@ -67,6 +68,12 @@ class App extends \Slim\Slim{
     protected $_cache = null;
 
     /**
+     * Cache Component
+     * @var \Doctrine\Common\Cache\CacheProvider
+     */
+    protected $_mscache = null;
+
+    /**
      * Runtime Cache
      * @var \Doctrine\Common\Cache\ArrayCache
      */
@@ -97,7 +104,7 @@ class App extends \Slim\Slim{
      * App Configuration.
      * @var array
      */
-    protected $_config = [];
+    public $_config = [];
 
     /**
      * The Application Registry.
@@ -138,6 +145,8 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
+
+    protected $_subsite = null;
 
     /**
      * Initializes the application instance.
@@ -182,15 +191,22 @@ class App extends \Slim\Slim{
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
+            $this->_mscache = clone $this->_cache;
+
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        $this->_cache->setNamespace($config['app.cache.namespace']);
+        
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        
+        $this->_mscache->setNamespace(__DIR__);
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
-            if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
-                $path = $this->cache->fetch($cache_id);
+            if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
+                $path = $this->_mscache->fetch($cache_id);
                 require_once $path;
                 return true;
             }
@@ -210,7 +226,7 @@ class App extends \Slim\Slim{
                     if(\file_exists($path)){
                         require_once $path;
                         if($config['app.useRegisteredAutoloadCache'])
-                            $this->cache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                            $this->_mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
                         return true;
                     }
                 }
@@ -243,43 +259,6 @@ class App extends \Slim\Slim{
 
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
-
-        $theme_class = $config['themes.active'].'\Theme';
-
-        parent::__construct([
-            'log.level' => $config['slim.log.level'],
-            'log.enabled' => $config['slim.log.enabled'],
-            'debug' => $config['slim.debug'],
-            'templates.path' => $this->_config['path.templates'],
-            'view' => new $theme_class($config['themes.assetManager']),
-            'mode' => $this->_config['app.mode']
-        ]);
-
-        foreach($config['plugins'] as $slug => $plugin){
-            $_namespace = $plugin['namespace'];
-            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-            $plugin_class_name = "$_namespace\\$_class";
-
-            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
-
-            $slug = is_numeric($slug) ? $_namespace : $slug;
-
-            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
-        }
-
-        $config = $this->_config;
-
-        // custom log writer
-        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
-            $log = $this->getLog();
-            $log->setWriter($config['slim.log.writer']);
-        }
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
 
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
@@ -335,9 +314,9 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
-        $doctrine_config->setMetadataCacheImpl($this->_cache);
-        $doctrine_config->setQueryCacheImpl($this->_cache);
-        $doctrine_config->setResultCacheImpl($this->_cache);
+        $doctrine_config->setMetadataCacheImpl($this->_mscache);
+        $doctrine_config->setQueryCacheImpl($this->_mscache);
+        $doctrine_config->setResultCacheImpl($this->_mscache);
 
 
         // obtaining the entity manager
@@ -358,6 +337,81 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
+
+
+        // ===================================== //
+
+
+
+        $domain = @$_SERVER['HTTP_HOST'];
+
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+
+        // para permitir o db update rodar para criar a tabela do subsite
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+        try{
+            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
+
+            if(!$this->_subsite){
+                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
+            }
+        } catch ( \Exception $e) { }
+
+
+        if($this->_subsite){
+            $this->_cache->setNamespace($config['app.cache.namespace'] . ':' . $this->_subsite->id);
+
+            $theme_class = $this->_subsite->namespace . "\Theme";
+            $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
+        } else {
+            $this->_cache->setNamespace($config['app.cache.namespace']);
+            
+            $theme_class = $config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($config['themes.assetManager']);
+        }
+
+
+        parent::__construct([
+            'log.level' => $config['slim.log.level'],
+            'log.enabled' => $config['slim.log.enabled'],
+            'debug' => $config['slim.debug'],
+            'templates.path' => $this->_config['path.templates'],
+            'view' => $theme_instance,
+            'mode' => $this->_config['app.mode']
+        ]);
+
+        foreach($config['plugins'] as $slug => $plugin){
+            $_namespace = $plugin['namespace'];
+            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+            $plugin_class_name = "$_namespace\\$_class";
+
+            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+
+            $slug = is_numeric($slug) ? $_namespace : $slug;
+
+            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+        }
+
+        $config = $this->_config;
+        // ===================================== //
+
+        // custom log writer
+        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
+            $log = $this->getLog();
+            $log->setWriter($config['slim.log.writer']);
+        }
+
+
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
+
+
 
 
         // ============= STORAGE =============== //
@@ -406,6 +460,14 @@ class App extends \Slim\Slim{
             }
         }
         // ===================================== //
+
+
+        if($this->_subsite){
+            // apply subsite filters
+            $this->_subsite->applyApiFilters();
+
+            $this->_subsite->applyConfigurations($this->_config);
+        }
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
@@ -534,6 +596,14 @@ class App extends \Slim\Slim{
         }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
+        // get types and metadata configurations
+        if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
+            $subsite_types = include $theme_subsite_types;
+        } else {
+            $subsite_types = include APPLICATION_PATH.'/conf/subsite-types.php';
+        }
+        $subsite_meta = key_exists('metadata', $subsite_types) && is_array($subsite_types['metadata']) ? $subsite_types['metadata'] : [];
+
         if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
             $seal_types = include $theme_seal_types;
         } else {
@@ -561,6 +631,7 @@ class App extends \Slim\Slim{
         $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
+        $this->registerController('subsite',    'MapasCulturais\Controllers\Subsite');
 
 
         $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
@@ -651,6 +722,9 @@ class App extends \Slim\Slim{
             'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), false),
             'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
             'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
+            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
         ];
 
         // register file groups
@@ -681,6 +755,12 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+
+        $this->registerFileGroup('subsite',$file_groups['header']);
+        $this->registerFileGroup('subsite',$file_groups['avatar']);
+        $this->registerFileGroup('subsite',$file_groups['logo']);
+        $this->registerFileGroup('subsite',$file_groups['background']);
+        $this->registerFileGroup('subsite',$file_groups['institute']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
@@ -840,6 +920,15 @@ class App extends \Slim\Slim{
                 $metadata = new Definitions\Metadata($meta_key, $meta_config);
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
+        }
+
+        // register Subsite types and Subsite metadata
+        $entity_class = 'MapasCulturais\Entities\Subsite';
+
+        // add subsite metadata definition to event type
+        foreach($subsite_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
         }
 
         // register seal time unit types
@@ -1179,6 +1268,19 @@ class App extends \Slim\Slim{
      * Getters
      **********************************************/
 
+    public function getCurrentSubsiteId(){
+        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
+        if($this->_subsite){
+            return $this->_subsite->id;
+        }
+
+        return null;
+    }
+
+    public function getCurrentSubsite(){
+        return $this->_subsite;
+    }
+
     public function getMaxUploadSize($useSuffix=true){
         $MB = 1024;
         $GB = $MB * 1024;
@@ -1269,6 +1371,14 @@ class App extends \Slim\Slim{
      */
     public function getCache(){
         return $this->_cache;
+    }
+
+    /**
+     * Returns the Multisite Cache Component
+     * @return \Doctrine\Common\Cache\CacheProvider
+     */
+    public function getMsCache(){
+        return $this->_mscache;
     }
 
     /**
@@ -1387,6 +1497,7 @@ class App extends \Slim\Slim{
     function getRegistrationAgentsDefinitions(){
         $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
         foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
+            App::i()->log->debug($groupName);
             $definitions[$groupName] = $def;
         }
         return $definitions;
@@ -1591,7 +1702,6 @@ class App extends \Slim\Slim{
             $entity = '\MapasCulturais\Entities\\' . $entity;
 
         $controller_class = preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $entity);
-
         return $this->getControllerByClass($controller_class);
     }
 
@@ -2062,6 +2172,45 @@ class App extends \Slim\Slim{
 
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
+    }
+
+    /*************
+     * Utils
+     ************/
+
+    function slugify($text) {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
+
+
+    function detachRS($rs){
+        $em = $this->_em;
+
+        foreach($rs as $r){
+            $em->detach($r);
+        }
     }
 
     /**************

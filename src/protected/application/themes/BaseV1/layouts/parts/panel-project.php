@@ -24,6 +24,9 @@
                     </div>
                 <?php endif; ?>
 		<div><span class="label"><?php \MapasCulturais\i::_e("Organização:");?></span> <?php echo $entity->owner->name; ?></div>
+        <?php if($entity->originSiteUrl): ?>
+            <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
+        <?php endif; ?>
 	</div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
@@ -38,6 +41,9 @@
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_ARCHIVED): ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
+
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_ARCHIVED): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
 
         <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>

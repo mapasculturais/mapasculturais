@@ -271,7 +271,7 @@ abstract class Controller{
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
             if($call_method)
-                call_user_func_array($call_method, $arguments);
+                $call_method();
             else
                 $app->applyHookBoundTo($this, $call_hook, $arguments);
 

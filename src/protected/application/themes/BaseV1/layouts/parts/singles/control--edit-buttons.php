@@ -1,5 +1,5 @@
 <!-- se estiver na página de edição e logado mostrar:-->
-<?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration'): ?>
+<?php if ($this->controller->action !== 'create' && $this->controller->id !== 'registration' && $entity->singleUrl != $entity->editUrl): ?>
     <a href="<?php echo $entity->singleUrl?>" class="btn btn-default js-toggle-edit"><?php \MapasCulturais\i::_e("Sair do modo de edição");?></a>
 <?php endif; ?>
 
@@ -12,8 +12,8 @@
             <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$this->controller->id . 's'); ?>"><?php \MapasCulturais\i::_e("Cancelar");?></a>
         <?php endif; ?>
     <?php else: ?>
-        <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>
-
+        <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>"><?php echo $entity->isArchived() ? \MapasCulturais\i::__("Desarquivar") : \MapasCulturais\i::__("Arquivar"); ?></a>
+        <a class="btn btn-primary js-submit-button" data-status="<?php echo $entity->isArchived() ? $status_archived : $status_enabled; ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>

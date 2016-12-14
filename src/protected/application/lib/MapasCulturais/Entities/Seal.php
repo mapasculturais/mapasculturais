@@ -24,6 +24,7 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityOriginSubsite,
         Traits\EntityArchive;
 
     const STATUS_RELATED = -1;
@@ -115,7 +116,7 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
-    protected $_seals = [];
+    protected $_seals;
 
 
     /**
@@ -145,6 +146,14 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     static function getValidations() {
         return [

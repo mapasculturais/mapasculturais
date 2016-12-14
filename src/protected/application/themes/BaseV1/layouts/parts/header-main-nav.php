@@ -80,6 +80,7 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
         <?php endif; ?>
+
     </ul>
     <!--.menu.entities-menu-->
     <ul class="menu session-menu clearfix">
@@ -197,6 +198,14 @@
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
                     <?php endif; ?>
 
+                    <?php if($app->user->is('saasAdmin') && $app->isEnabled('subsite')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.subsite','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'subsite') ?>"><?php $this->dict('entities: My Subsites') ?></a>
+                            <a class="add"href="<?php echo $app->createUrl('subsite', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.subsite','after'); ?>
+                    <?php endif; ?>
 
                     <li class="row"></li>
                     <!--<li><a href="#">Ajuda</a></li>-->

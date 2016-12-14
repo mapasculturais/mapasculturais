@@ -29,7 +29,9 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityOriginSubsite,
         Traits\EntityArchive;
+
 
     /**
      * @var integer
@@ -221,6 +223,14 @@ class Project extends \MapasCulturais\Entity
     */
     protected $__sealRelations;
     
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Projetos');

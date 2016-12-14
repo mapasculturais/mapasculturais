@@ -90,6 +90,9 @@
 #nav-projects {
     background: $brand-project;
 }
+#nav-subsite {
+    background: $brand-subsite;
+}
 #nav-seals {
     background: $brand-seal;
 }
@@ -405,6 +408,13 @@
     background: $brand-project;
     .abas li.active {
         border-bottom-color: $brand-project;
+    }
+}
+//** Subsite section
+#home-subsite {
+    background: $brand-subsite;
+    .abas li.active {
+        border-bottom-color: $brand-subsite;
     }
 }
 //** Seals section

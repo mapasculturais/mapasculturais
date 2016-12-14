@@ -20,6 +20,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation,
+        Traits\EntityOriginSubsite,
     	Traits\EntitySealRelation;
 
 
@@ -113,6 +114,14 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
+
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
 
     function __construct() {
