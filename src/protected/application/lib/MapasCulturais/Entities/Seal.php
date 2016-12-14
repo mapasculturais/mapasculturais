@@ -23,23 +23,11 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityOriginSubsite,
+        Traits\EntityArchive;
 
     const STATUS_RELATED = -1;
-    const STATUS_INVITED = -2;
-
-    protected static $validations = [
-      'name' => [
-        'required' => 'O nome do selo é obrigatório'
-      ],
-      'shortDescription' => [
-        'required' => 'A descrição curta é obrigatória',
-        'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-      ],
-    	'validPeriod' => [
-    		'v::allOf(v::positive(),v::intVal())' => 'Validade do selo é obrigatória.'
-    	]
-    ];
 
     /**
      * @var integer
@@ -128,7 +116,7 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="owner", cascade="remove", orphanRemoval=true)
      */
-    protected $_seals = [];
+    protected $_seals;
 
 
     /**
@@ -158,36 +146,31 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
-    protected function canUserPublish($user){
-        if($user->is('guest')){
-            return false;
-        }
-
-        if($user->is('admin')){
-            return true;
-        }
-
-        if($this->canUser('@control', $user)){
-            return true;
-        }
-
-        if($this->project && $this->project->canUser('@control', $user)){
-            return true;
-        }
-
-        return false;
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do selo é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'validPeriod' => [
+                'v::allOf(v::positive(),v::intVal())' => \MapasCulturais\i::__('Validade do selo é obrigatória.')
+            ]
+        ];
     }
 
-    protected function canUserView($user){
-        if($this->status === self::STATUS_ENABLED){
-            return true;
-        }else if($this->status === self::STATUS_DRAFT){
-            return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
-        }
 
-        return false;
-    }
 
     function validatePeriod($value) {
     	if (!is_numeric($value)) {
@@ -196,6 +179,13 @@ class Seal extends \MapasCulturais\Entity
     		return false;
     	}
     	return true;
+    }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Selos');
+        else
+            return \MapasCulturais\i::__('Selo');
     }
 
     //============================================================= //

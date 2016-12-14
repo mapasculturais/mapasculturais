@@ -1,0 +1,331 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-11-18 02:02-0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: Español\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /home/leonardo/traduccion/mapasculturais_leog/src/"
+"protected/application/themes\n"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:33
+msgid "na região"
+msgstr "en la región"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:34
+msgid "da região"
+msgstr "de la región"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:35
+msgid "Secretaria"
+msgstr "Secretaría"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:36
+msgid "pela Secretaria"
+msgstr "por la Secretaría"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:38
+msgid "Bem-vind@!"
+msgstr "Bienvenid@!"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:39
+msgid "MC"
+msgstr "MC"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:40
+msgid "Colabore com o Mapas Culturais"
+msgstr "Colabore con Mapas Culturales"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:41
+msgid "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de mapeamento cultural."
+msgstr "Mapas Culturales es una plataforma de software libre, de cartografía cultural libre y colaborativa."
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:42
+msgid "Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente."
+msgstr "Puede buscar eventos culturales en los campos de búsqueda combinados. Como usuario registrado, puede incluir su evento en la plataforma y darlo a conocer de forma gratuita."
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:43
+msgid "Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita."
+msgstr "Puede colaborar en la gestión de la cultura con su propia información completando su perfil de agente cultural. En este espacio, son artistas registrados, gestores y productores; una red de actores involucrados en la escena cultural de la región. Usted puede registrar uno o más agentes (grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con sus eventos de perfil y espacios culturales con libre difusión."
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:44
+msgid "Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais."
+msgstr "Busque espacios culturales incluidos en la plataforma, con el acceso a los campos de búsqueda combinados que ayudan a la exactitud de su búsqueda. Firmar los espacios donde se desarrollan sus actividades artísticas y culturales."
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:45
+msgid "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos."
+msgstr ""
+"Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, "
+"se encuentran las formas de financiación, espectáculos, reuniones y edictos "
+"creados, y varias iniciativas registradas por los usuarios de la plataforma. "
+"Regístrese ahora y publicar sus proyectos."
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:46
+msgid ""
+"Existem algumas maneiras de desenvolvedores interagirem com o Mapas "
+"Culturais. A primeira é através da nossa <a href=\"https://github.com/"
+"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
+"Com ela você pode acessar os dados públicos no nosso banco de dados e "
+"utilizá-los para desenvolver aplicações externas. Além disso, o Mapas "
+"Culturais é construído a partir do sofware livre <a href=\"http://"
+"institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas "
+"Culturais</a>, criado em parceria com o <a href=\"http://institutotim.org.br"
+"\" target=\"_blank\">Instituto TIM</a>, e você pode contribuir para o seu "
+"desenvolvimento através do <a href=\"https://github.com/hacklabr/"
+"mapasculturais/\" target=\"_blank\">GitHub</a>."
+msgstr ""
+"Hay varias formas en las que los desarrolladores interactúan con los mapas "
+"culturales. La primera es a través de nuestra <a href=\"https://github.com/"
+"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
+"Con ella usted puede acceder a los datos públicos de nuestra base de datos y "
+"utilizarlos para desarrollar aplicaciones externas. Además, Mapas Culturales "
+"está realizado a partir del software libre <a href=\"http://institutotim.org."
+"br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado "
+"por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
+"desarrollo a través de GitHub. "
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:48
+msgid "Resultados Verificados"
+msgstr "Resultados Verificados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:49
+msgid "Verificados"
+msgstr "Verificados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:52
+msgid "Espaços do agente"
+msgstr "Espacios del agente"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:53
+msgid "Descrição do Espaço"
+msgstr "Descripción del Espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:54
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:88
+msgid "Agentes"
+msgstr "Agentes"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:55
+msgid "Meus Espaços"
+msgstr "Mis Espacios"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:56
+msgid "Meus espaços"
+msgstr "Mis espacios"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:58
+msgid "Meus Selos"
+msgstr "Mis Sellos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:59
+msgid "Meus selos"
+msgstr "Mis sellos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:61
+msgid "nenhum espaço cadastrado"
+msgstr "ningún espacio registrado"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:62
+msgid "nenhum espaço"
+msgstr "ningún espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:64
+msgid "Espaço"
+msgstr "Espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:65
+msgid "Espaços"
+msgstr "Espacios"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:66
+msgid "espaço"
+msgstr "espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:67
+msgid "espaços"
+msgstr "espacios"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:68
+msgid "espaço pai"
+msgstr "espacio padre"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:69
+msgid "um espaço"
+msgstr "un espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:70
+msgid "o espaço"
+msgstr "el espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:71
+msgid "do espaço"
+msgstr "del espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:72
+msgid "Neste espaço"
+msgstr "En este espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:73
+msgid "neste espaço"
+msgstr "en este espaio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:74
+msgid "espaços cadastrados"
+msgstr "espacios registrados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:75
+msgid "novo espaço"
+msgstr "nuevo espacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:77
+msgid "Subespaços"
+msgstr "Subespacios"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:78
+msgid "Adicionar subespaço"
+msgstr "Agregar subespacio"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:80
+msgid "espaço encontrado"
+msgstr "espacio encontrado"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:81
+msgid "espaços encontrados"
+msgstr "espacios encontrados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:82
+msgid "evento encontrado"
+msgstr "evento encontrado"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:83
+msgid "eventos encontrados"
+msgstr "evento encontrados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:84
+msgid "agente encontrado"
+msgstr "agente encontrado"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:85
+msgid "agentes encontrados"
+msgstr "agentes encontrados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:86
+msgid "projeto encontrado"
+msgstr "proyecto encontrado"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:87
+msgid "projetos encontrados"
+msgstr "proyectos encontrados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:89
+msgid "Projetos"
+msgstr "Proyectos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:90
+msgid "Eventos"
+msgstr "Eventos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:91
+msgid "Selos"
+msgstr "Sellos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:93
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:783
+msgid "Área de Atuação"
+msgstr "Área de actuación"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:94
+msgid "Selecione pelo menos uma área"
+msgstr "Seleccione por lo menos un área"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:95
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:784
+msgid "Selecione as áreas"
+msgstr "Seleccione las áreas"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:647
+msgid "uma vez"
+msgstr "una vez"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:648
+msgid "todos os dias"
+msgstr "todos sos días"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:649
+msgid "semanal"
+msgstr "semanal"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:650
+msgid "mensal"
+msgstr "mensual"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:751
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:862
+msgid "Selecione os tipos"
+msgstr "Seleccione los tipos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:759
+msgid "Acessibilidade"
+msgstr "Accesibilidad"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:760
+msgid "Exibir somente resultados com Acessibilidade"
+msgstr "Mostrar solamente resultados con Accesibilidad"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:771
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:805
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:849
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:876
+msgid "Exibir somente resultados Verificados"
+msgstr "Mostrar solamente resultados Verificados"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:792
+msgid "Tipos"
+msgstr "Tipos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:793
+msgid "Todos"
+msgstr "Todos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:829
+msgid "Linguagem"
+msgstr "Lenguaje"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:830
+msgid "Selecione as linguagens"
+msgstr "Selecciones los lenguajes"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:839
+msgid "Classificação"
+msgstr "Clasificación"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:840
+msgid "Selecione a classificação"
+msgstr "Seleccione la clasificación"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:861
+msgid "Tipo"
+msgstr "Tipo"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/Theme.php:870
+msgid "Inscrições Abertas"
+msgstr "Inscripciones abiertas"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/events.php:6
+msgid "Meus eventos"
+msgstr "Mis eventos"
+
+#: /home/leonardo/traduccion/mapasculturais_leog/src/protected/application/themes/BaseV1/views/panel/events.php:7
+msgid "Adicionar novo evento"
+msgstr "Agregar nuevo evento"
+
+#~ msgid "teste pt"
+#~ msgstr "teste es"

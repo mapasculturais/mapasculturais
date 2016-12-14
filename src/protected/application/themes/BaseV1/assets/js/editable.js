@@ -42,7 +42,7 @@ jQuery(function(){
                }
             });
         }
-        
+
         if ($(this).hasClass('js-mask-phone')) {
             var masks = ['(00) 00000-0000', '(00) 0000-00009'];
             editable.input.$input.mask(masks[1], {onKeyPress:
@@ -85,6 +85,7 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
+        
         editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
         //textarea display default Ctrl+Enter and Esc shortcuts
         switch (editable.input.type.trim()) {
@@ -145,6 +146,7 @@ jQuery(function(){
             return false;
         });
     }
+
 });
 
 $(window).on('beforeunload', function(){
@@ -286,7 +288,6 @@ MapasCulturais.Editables = {
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
-
             var input_type;
 
             if(!entity[field_name])
@@ -295,6 +296,7 @@ MapasCulturais.Editables = {
             var config = {
                 name: field_name,
                 type: 'text',
+                maxlength : 20,
                 emptytext: entity[field_name].label,
                 placeholder: entity[field_name].label
             };
@@ -304,6 +306,7 @@ MapasCulturais.Editables = {
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
+                    config.tpl = '<textarea ></textarea>'
                     break;
 
                 case 'select':
@@ -322,10 +325,73 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
+                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
                     config.clear = 'Limpar';
+                    break;
 
+                case 'multiselect':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
+                    };
+
+
+                    if (entity[field_name].options) {
+                        select2_option.tags = [];
+                        Object.keys(entity[field_name].options).forEach(function (k) {
+                            select2_option.tags.push({
+                                id: k,
+                                text: entity[field_name].options[k]
+                            });
+                        });
+                    }
+
+                    // console.log(field_name, select2_option.tags);
+
+                    select2_option.createSearchChoice = function () {
+                        return null;
+                    };
+
+
+                    config.type = 'select2';
+                    config.select2 = select2_option;
+
+                    config.display = function (value, sourceData) {
+                        if (value) {
+                            var html = value.map(function (i) {
+                                return entity[field_name].options[i];
+                            }).join('; ');
+                        }
+
+                        $(this).html(html);
+
+                    }
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
+                    break;
+
+                case 'tag':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
+                    };
+
+
+                    if (entity[field_name].options)
+                        select2_option.tags = Object.keys(entity[field_name].options);
+
+
+                    config.type = 'select2';
+                    config.select2 = select2_option;
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
                     break;
 
                 case 'boolean':
@@ -430,7 +496,8 @@ MapasCulturais.Editables = {
 
 
     setButton : function (editableEntitySelector){
-        var $submitButton = $('.js-submit-button');
+        var $submitButton = $('.js-submit-button'),
+            $archiveButton = $('.js-archive-button');
 
         //Ctrl+S:save
         $(document.body).on('keydown', function(event){
@@ -446,11 +513,14 @@ MapasCulturais.Editables = {
         });
 
         $submitButton.click(function(){
+            $('.editable-empty.editable-unsaved').each(function(){
+                $(this).editable('setValue', '');
+            });
 
-            var target;
-            var $button = $(this);
-            var controller = MapasCulturais.request.controller;
-            var action = $(editableEntitySelector).data('action');
+            var target; //Vazio
+            var $button = $(this); // Retorna submitButton
+            var controller = MapasCulturais.request.controller; //Retorna controller da entidade atual
+            var action = $(editableEntitySelector).data('action'); //"edit"
             var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
 
             if(action === 'create'){
@@ -474,8 +544,6 @@ MapasCulturais.Editables = {
                 return false;
 
             $submitButton.data('clicked', 'sim');
-
-
 
             if($editables.length === 1){
                 $('body').append('<input type="hidden" id="fixeditable"/>');
@@ -912,7 +980,7 @@ $(function(){
         var municipio = $('#En_Municipio').editable('getValue', true);
         var estado = $('#En_Estado').editable('getValue', true);
         if(cep && nome_logradouro && numero && bairro && municipio && estado){
-            var endereco =  nome_logradouro + ", " + numero + (complemento ? ", " + complemento : " ") + ", " + bairro + ", " + cep  + ", " + municipio + ", " + estado;
+            var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
             $('#endereco').editable('setValue', endereco);
             $('#endereco').trigger('changeAddress', endereco);
             $('.js-endereco').html(endereco);
@@ -927,14 +995,45 @@ $(function(){
 
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
-        cep = cep.replace('-','');
-        $.getJSON('/site/cep?num='+cep, function(r){
-            $('#En_Nome_Logradouro').editable('setValue', r.logradouro);
-            $('#En_Bairro').editable('setValue', r.bairro);
-            $('#En_Municipio').editable('setValue', r.cidade);
-            $('#En_Estado').editable('setValue', r.estado);
-            concatena_enderco();
+        $.getJSON('/site/address_by_postalcode?postalcode='+cep, function(r){
+            if (r.success) {
+                $('#En_Nome_Logradouro').editable('setValue', r.streetName);
+                $('#En_Bairro').editable('setValue', r.neighborhood);
+                $('#En_Municipio').editable('setValue', r.city);
+                $('#En_Estado').editable('setValue', r.state);
+                concatena_enderco();
+            }
         });
 
     });
 });
+
+(function ($) {
+    "use strict";
+    var Color = function (options) {
+        this.init('color', options, Color.defaults);
+    };
+    $.fn.editableutils.inherit(Color, $.fn.editabletypes.abstractinput);
+    $.extend(Color.prototype, {
+        render: function() {
+            this.$input = this.$tpl.find('input');
+            this.$input.parent().colorpicker({
+                container: this.$tpl,
+                inline: true
+            })
+        },
+        autosubmit: function() {
+            this.$input.keydown(function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });
+        }
+    });
+
+    Color.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="editable-color"><div><input type="text" value="" class="form-control" style="width:130px !important" /></div></div>'
+    });
+    $.fn.editabletypes.color = Color;
+
+}(window.jQuery));

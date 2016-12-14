@@ -11,34 +11,44 @@
 		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
                 <?php if($entity->registrationFrom || $entity->registrationTo): ?>
                     <div>
-                        <span class="label">Inscrições:</span>
+                        <span class="label"><?php \MapasCulturais\i::_e("Inscrições:");?></span>
                         <?php
                             if($entity->isRegistrationOpen()) echo'open ';
                             if($entity->registrationFrom && !$entity->registrationTo)
-                                echo 'a partir de '.$entity->registrationFrom->format('d/m/Y');
+                                echo \MapasCulturais\i::_e("a partir de ") .$entity->registrationFrom->format('d/m/Y');
                             elseif(!$entity->registrationFrom && $entity->registrationTo)
-                                echo ' até '. $entity->registrationTo->format('d/m/Y');
+                                echo \MapasCulturais\i::_e(' até '). $entity->registrationTo->format('d/m/Y');
                             else
-                                echo 'de '. $entity->registrationFrom->format('d/m/Y') .' a '. $entity->registrationTo->format('d/m/Y');
+                                echo \MapasCulturais\i::_e('de '). $entity->registrationFrom->format('d/m/Y') .\MapasCulturais\i::_e(' a '). $entity->registrationTo->format('d/m/Y');
                         ?>
                     </div>
                 <?php endif; ?>
-		<div><span class="label">Organização:</span> <?php echo $entity->owner->name; ?></div>
+		<div><span class="label"><?php \MapasCulturais\i::_e("Organização:");?></span> <?php echo $entity->owner->name; ?></div>
+        <?php if($entity->originSiteUrl): ?>
+            <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
+        <?php endif; ?>
 	</div>
     <div class="entity-actions">
-        <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>">editar</a>
+        <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Project::STATUS_ENABLED): ?>
-            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->archiveUrl; ?>"><?php \MapasCulturais\i::_e("arquivar");?></a>
 
         <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_DRAFT): ?>
-            <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>">publicar</a>
-            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>">excluir</a>
+            <a class="btn btn-small btn-warning" href="<?php echo $entity->publishUrl; ?>"><?php \MapasCulturais\i::_e("publicar");?></a>
+            <a class="btn btn-small btn-danger" href="<?php echo $entity->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
+
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_ARCHIVED): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
+
+        <?php elseif ($entity->status === \MapasCulturais\Entities\Project::STATUS_ARCHIVED): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>">desarquivar</a>
 
         <?php else: ?>
-            <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>">recuperar</a>
+            <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>
                 <?php if($entity->canUser('destroy')): ?>
-                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>">excluir definitivamente</a>
+                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
                 <?php endif; ?>
         <?php endif; ?>
     </div>

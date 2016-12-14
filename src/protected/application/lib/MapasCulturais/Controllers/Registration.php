@@ -71,7 +71,7 @@ class Registration extends EntityController {
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, 'The uploaded file is not a valid document.', true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });

@@ -6,17 +6,17 @@
     </header>
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">
-            <label for="palavra-chave-<?php echo strtolower($entity_name); ?>">Palavra-chave</label>
+            <label for="palavra-chave-<?php echo strtolower($entity_name); ?>"><?php \MapasCulturais\i::_e("Palavra-chave");?></label>
             <input  ng-model="data.<?php echo $entity_name; ?>.keyword"
                     class="search-field"
                     type="text"
                     name="palavra-chave-<?php echo strtolower($entity_name); ?>"
-                    placeholder="Buscar <?php echo strtolower($display_name); ?>" />
+                    placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar");?> <?php echo strtolower($display_name); ?>" />
         </form>
         <?php if($entity_name === 'event'): ?>
             <div class="filter search-filter--date">
                 <label class="show-label" for="data-de-inicio">De</label>
-                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" /> <label class="show-label">a</label>
+                <input id="data-de-inicio" class="data" ng-model="data.event.from" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" /> <label class="show-label"><?php \MapasCulturais\i::_e("a");?></label>
                 <input class="data" ng-model="data.event.to" ui-date="dateOptions" ui-date-format="yy-mm-dd" placeholder="00/00/0000" />
             </div>
         <?php endif; ?>

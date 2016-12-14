@@ -1,12 +1,12 @@
 <div class="alert success">
-    Inscrição enviada no dia
+    <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>
     <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i:s'); ?>
 </div>
 
-<h3 class="registration-header">Formulário de Inscrição</h3>
+<h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></h3>
 
 <div class="registration-fieldset clearfix">
-    <h4>Número da Inscrição</h4>
+    <h4><?php \MapasCulturais\i::_e("Número da Inscrição");?></h4>
     <div class="registration-id alignleft">
         <?php echo $entity->number ?>
     </div>

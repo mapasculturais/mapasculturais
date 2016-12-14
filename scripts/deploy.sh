@@ -31,7 +31,7 @@ cd $DIR
 
 cd $DIR/..
 
-git pull --all
+#git pull --all
 
 cd $DIR/../src/protected/
 

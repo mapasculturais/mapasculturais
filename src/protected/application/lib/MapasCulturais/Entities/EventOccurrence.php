@@ -18,45 +18,6 @@ class EventOccurrence extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
-    protected static $validations = [
-        'startsOn' => [
-            'required' => 'Data de inicio é obrigatória',
-            '$value instanceof \DateTime' => 'Data de inicio inválida'
-        ],
-        'endsOn' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
-        ],
-        'startsAt' => [
-            'required' => 'Hora de inicio é obrigatória',
-            '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio inválida',
-        ],
-        'duration' => [
-            //'required' => 'A duração é obrigatória',
-            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida'
-        ],
-        'frequency' => [
-            'required' => 'Frequência é obrigatória',
-            '$this->validateFrequency($value)' => 'Frequência inválida'
-        ],
-        'separation' => [
-            'v::positive()' => 'Erro interno'
-        ],
-        'until' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
-            '$value >= $this->startsOn' => 'Data final antes da inicial'
-        ],
-        'event' => [
-            'required' => 'Evento é obrigatório'
-        ],
-        'space' => [
-            'required' => 'Espaço é obrigatório'
-        ],
-        'description' => [
-            'required' => 'A descrição legível do horário é obrigatória'
-        ]
-
-    ];
-
     private $flag_day_on = true;
 
     /**
@@ -182,6 +143,49 @@ class EventOccurrence extends \MapasCulturais\Entity
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_ENABLED;
+
+    static function getValidations() {
+        return [
+            'startsOn' => [
+                'required' => \MapasCulturais\i::__('Data de inicio é obrigatória'),
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data de inicio inválida')
+            ],
+            'endsOn' => [
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+            ],
+            'startsAt' => [
+                'required' => \MapasCulturais\i::__('Hora de inicio é obrigatória'),
+                '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => \MapasCulturais\i::__('Hora de inicio inválida'),
+            ],
+            'duration' => [
+                //'required' => 'A duração é obrigatória',
+                '$value instanceof \DateInterval' => \MapasCulturais\i::__('Duração inválida'),//'Hora final inválida'
+            ],
+            'frequency' => [
+                'required' => \MapasCulturais\i::__('Frequência é obrigatória'),
+                '$this->validateFrequency($value)' => \MapasCulturais\i::__('Frequência inválida')
+            ],
+            'separation' => [
+                'v::positive()' => \MapasCulturais\i::__('Erro interno')
+            ],
+            'until' => [
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+                '$value >= $this->startsOn' => \MapasCulturais\i::__('Data final antes da inicial')
+            ],
+            'event' => [
+                'required' => \MapasCulturais\i::__('Evento é obrigatório')
+            ],
+            'space' => [
+                'required' => \MapasCulturais\i::__('Espaço é obrigatório')
+            ],
+            'description' => [
+                'required' => \MapasCulturais\i::__('A descrição legível do horário é obrigatória')
+            ]
+
+        ];
+    }
+
+
 
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;

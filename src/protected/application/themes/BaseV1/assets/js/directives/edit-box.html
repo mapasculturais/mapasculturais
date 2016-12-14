@@ -5,7 +5,7 @@
     </header>
     <div class="mc-content" ng-transclude></div>
     <footer>
-        <div ng-show="spinnerCondition" class="mc-spinner" style="float:left; margin-top:10px; margin-bottom:-10px"><img ng-src="{{spinnerUrl}}" /></div>
+        <div ng-show="spinnerCondition" class="mc-spinner"><img ng-src="{{spinnerUrl}}" /></div>
         <button ng-if="args.cancelLabel" type="button" class="mc-cancel btn btn-default" ng-click="cancel()" ng-bind-html='args.cancelLabel'></button>
         <button ng-if="args.submitLabel" type="submit" ng-click="submit()">{{args.submitLabel}}</button>
         </button>

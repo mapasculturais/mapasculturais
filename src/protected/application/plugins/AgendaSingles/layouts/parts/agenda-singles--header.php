@@ -1,7 +1,7 @@
 <header class="entinty-calendar-header clearfix">
     <strong><span id="agenda-count"></span></strong>
-    evento<span id="agenda-count-plural" class="hidden">s</span>
-    entre
+    <?php \MapasCulturais\i::_e("evento");?><span id="agenda-count-plural" class="hidden">s</span>
+    <?php \MapasCulturais\i::_e("entre");?>
     <input id="agenda-from-visible" type="text" class="js-agenda-singles-dates agenda-singles-datepicker tag"
            readonly="readonly" placeholder="00/00/0000" value="<?php echo $date_from->format('d/m/Y'); ?>">
     <input id="agenda-from" name="startsOn" type="hidden" value="<?php echo $date_from->format('Y-m-d'); ?>">

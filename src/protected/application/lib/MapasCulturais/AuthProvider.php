@@ -43,6 +43,12 @@ abstract class AuthProvider {
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
         $user = $this->_createUser($data);
         $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $user->email,
+            'subject' => "Bem-vindo(a) ao Mapas Culturais",
+            'body' => "Bem-vindo(a) ao Mapas Culturais {$user->profile->name}, comece a cadastrar seus agentes, espaços e eventos."
+        ]);
         return $user;
     }
 
@@ -66,7 +72,7 @@ abstract class AuthProvider {
         $app = App::i();
 
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }

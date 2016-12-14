@@ -32,7 +32,8 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
-        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
+        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
+        "MapasCulturais\Entities\Subsite"                          = "\MapasCulturais\Entities\SubsiteFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -103,7 +104,7 @@ abstract class File extends \MapasCulturais\Entity
      *          )
      * @var array
      */
-    protected $tmpFile = ['name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
+    protected $tmpFile = ['error' => '', 'name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
 
     /**
      * Creates a new file from upload
@@ -289,7 +290,7 @@ abstract class File extends \MapasCulturais\Entity
             $app->enableAccessControl();
             $result = $transformed;
         }
-        
+
         return $result;
     }
 
@@ -331,7 +332,7 @@ abstract class File extends \MapasCulturais\Entity
         }
 
         $path = $this->getPath();
-        if(!file_exists($path) 
+        if(!file_exists($path)
             || !is_writable($path)
             || !is_writable(dirname($path))
             || filesize($path) == 0) {

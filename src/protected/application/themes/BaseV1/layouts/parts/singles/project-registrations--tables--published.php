@@ -2,13 +2,13 @@
     <thead>
         <tr>
             <th class="registration-id-col">
-                Inscrição
+                <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                 <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
             <th class="registration-agents-col">
-                Agentes
+                <?php \MapasCulturais\i::_e("Agentes");?>
             </th>
             <th class="registration-status-col">
                 <mc-select placeholder="status" model="data.publishedRegistrationStatus" data="data.publishedRegistrationStatuses"></mc-select>
@@ -18,12 +18,12 @@
     <tbody>
         <tr>
             <td colspan='5'>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0">Nenhuma inscrição enviada.</span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 0">Nenhuma inscrição encontrada com os filtros selecionados.</span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1">1 inscrição enviada.</span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 1">1 inscrição encontrada com os filtros selecionados.</span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} inscrições enviadas.</span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} inscrições encontradas com os filtros selecionados.</span>
+                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição enviada.");?></span>
+                <span ng-if="usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1"><?php \MapasCulturais\i::_e("1 inscrição enviada.");?></span>
+                <span ng-if="usingFilters() && getFilteredRegistrations().length === 1"><?php \MapasCulturais\i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições enviadas.");?></span>
+                <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
         <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" ng-if="reg.status == 10 || reg.status == 8" >

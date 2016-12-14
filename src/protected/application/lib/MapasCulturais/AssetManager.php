@@ -45,7 +45,7 @@ abstract class AssetManager{
                 if(key_exists($dep, $assets))
                     $this->_addAssetToArray ($assets, $assets[$dep], $array);
                 else
-                    throw new \Exception(sprintf(App::txt('Missing script dependence: %s depends on %s'), $asset_name, $dep));
+                    throw new \Exception(sprintf(\MapasCulturais\i::__('Dependência de scripts faltando: %s depende de %s'), $asset_name, $dep));
             }
             $array[] = $asset_filename;
         }

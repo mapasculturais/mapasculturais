@@ -6,7 +6,9 @@
     var timeoutTime = 300;
 
     var defaultLocationRadius = 2000;
-
+    
+    var labels = MapasCulturais.gettext.searchApp;
+    
     var skeletonData = {
         global: {
             isVerified: false,
@@ -349,7 +351,7 @@
         // $scope.linguagens = MapasCulturais.taxonomyTerms.linguagem.map(function(el, i){ return {id: i, name: el}; });
         // $scope.classificacoes = MapasCulturais.classificacoesEtarias.map(function(el, i){ return {id: i, name: el}; });
 
-        MapasCulturais.entityTypes.agent.unshift({id:null, name: 'Todos'});
+        MapasCulturais.entityTypes.agent.unshift({id:null, name: labels['all']});
         // $scope.types = MapasCulturais.entityTypes;
         // $scope.location = $location;
 
@@ -495,7 +497,7 @@
             if(from === to)
                 return formatDate(from);
             else
-                return 'de ' + formatDate(from) + ' a ' + formatDate(to);
+                return labels['dateFrom'] + ' ' + formatDate(from) + ' ' + labels['dateTo'] + ' ' + formatDate(to);
         };
 
         $scope.cleanEventDateFilters = function(){
@@ -510,7 +512,7 @@
             var from = moment(project.registrationFrom.date).format('DD/MM/YYYY');
             var to = moment(project.registrationTo.date).format('DD/MM/YYYY');
 
-            return from !== to ? 'de ' + from + ' a ' + to : from;
+            return from !== to ? labels['dateFrom'] + ' ' + from + ' ' + labels['dateTo'] + ' ' + to : from;
         };
 
         $scope.collapsedFilters = true;
