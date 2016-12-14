@@ -1,4 +1,4 @@
-### Perfis Mapas Culturais
+# Perfis Mapas Culturais
 Os perfis disponíveis da plataforma são de acesso como administrador de uma determinado nível no sistema.
 
 ## Administrador
