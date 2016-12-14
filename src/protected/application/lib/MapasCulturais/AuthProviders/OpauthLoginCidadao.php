@@ -24,11 +24,11 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         
         
         //  SaaS -- BEGIN
-        $app->hook('template(subsite.single.tabs):end', function() use($app){
+        $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
             $this->part('singles/subsite--login-cidadao--tab');
         });
         
-        $app->hook('template(subsite.single.tabs-content):end', function() use($app){
+        $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
             $this->part('singles/subsite--login-cidadao--content');
         });
         
