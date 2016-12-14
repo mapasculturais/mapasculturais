@@ -30,18 +30,7 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityArchive;
 
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome da instalação é obrigatório'
-        ],
-        'url' => [
-            'required' => 'A url da instalação é obrigatória',
-            'unique' => 'Esta URL já está sendo utilizada'
-        ],
-        'aliasUrl' => [
-            'unique' => 'Esta URL já está sendo utilizada'
-        ]
-    ];
+
     /**
      * @var integer
      *
@@ -111,9 +100,16 @@ class Subsite extends \MapasCulturais\Entity
     
     function setVerifiedSeals($val) {
         if(is_string($val)) {
-            $val = explode(';', $val);
+            if(trim($val)){
+                $val = explode(';', $val);
+            } else {
+                $val = [];
+            }
+        } else if( $val ){
+            $val = (array) $val;
+        } else {
+            $val = [];
         }
-        
         $this->verifiedSeals = $val;
     }
 
@@ -139,6 +135,21 @@ class Subsite extends \MapasCulturais\Entity
     
     
     protected $filters = [];
+    
+    static function getValidations(){
+        return [
+            'name' => [
+                'required' => 'O nome da instalação é obrigatório'
+            ],
+            'url' => [
+                'required' => 'A url da instalação é obrigatória',
+                'unique' => 'Esta URL já está sendo utilizada'
+            ],
+            'aliasUrl' => [
+                'unique' => 'Esta URL já está sendo utilizada'
+            ]
+        ];
+    }
 
     
     public function __construct() {
