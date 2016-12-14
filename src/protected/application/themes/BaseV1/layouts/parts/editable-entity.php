@@ -18,7 +18,8 @@ $params = [
     'entity' => $entity,
     'status_draft' => $class::STATUS_DRAFT,
     'status_enabled' => $class::STATUS_ENABLED,
-    'status_trash' => $class::STATUS_TRASH
+    'status_trash' => $class::STATUS_TRASH,
+    'status_archived' => $class::STATUS_ARCHIVED
 ];
 ?>
 

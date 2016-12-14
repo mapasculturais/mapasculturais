@@ -17,7 +17,8 @@ use MapasCulturais\Traits;
  */
 class UserApp extends \MapasCulturais\Entity {
 
-    use Traits\EntitySoftDelete;
+    use Traits\EntitySoftDelete,
+        Traits\EntityOriginSubsite;
 
     /**
      * @var string
@@ -63,6 +64,14 @@ class UserApp extends \MapasCulturais\Entity {
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     public function __construct() {
         $this->_publicKey = self::getToken(32);

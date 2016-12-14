@@ -193,12 +193,19 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('thisControllerId');
      * </code>
      */
-    function POST_index(){
+    function POST_index($data = null) {
         $this->requireAuthentication();
+        
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
 
         $entity = $this->getRequestedEntity();
         
-        foreach($this->data as $field=>$value){
+        $app = App::i();
+        $app->applyHookBoundTo($this, "POST({$this->id}.index):data", ['data' => &$data]);
+        
+        foreach($data as $field=>$value){
             $entity->$field = $value;
         }
         
@@ -327,18 +334,24 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
-    function PUT_single(){
+    function PUT_single($data = null) {
         $this->requireAuthentication();
+        
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
 
         $app = App::i();
+        
+        $app->applyHookBoundTo($this, "PUT({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
 
         if(!$entity)
             $app->pass();
-
+        
         //Atribui a propriedade editada
-        foreach($this->postData as $field=>$value){
+        foreach($data as $field => $value){
             $entity->$field = $value;
         }
 
@@ -350,10 +363,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
 
-    function PATCH_single(){
+    function PATCH_single($data = null) {
         $this->requireAuthentication();
 
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
+        
         $app = App::i();
+        
+        $app->applyHookBoundTo($this, "PATCH({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
 
@@ -361,7 +380,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $app->pass();
 
         //Atribui a propriedade editada
-        foreach($this->postData as $field=>$value){
+        foreach($data as $field => $value){
             $entity->$field = $value;
         }
 

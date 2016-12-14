@@ -115,6 +115,10 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
     }
 
+    function isArchived(){
+        return $this->status === self::STATUS_ARCHIVED;
+    }
+
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
 
@@ -261,6 +265,10 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
+        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
+            return false;
+        }
+
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -390,6 +398,10 @@ abstract class Entity implements \JsonSerializable{
 
         return $data_array;
     }
+    
+    static public function getValidations(){
+        return [];
+    }
 
     public function isPropertyRequired($entity,$property) {
         $app = App::i();
@@ -518,11 +530,17 @@ abstract class Entity implements \JsonSerializable{
         }
 
         try{
-            if($this->isNew())
+            if($this->isNew()){
                 $this->checkPermission('create');
-            else
-                $this->checkPermission('modify');
 
+
+                if($this->usesOriginSubsite()){
+                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                }
+
+            }else{
+                $this->checkPermission('modify');
+            }
             $app->em->persist($this);
 
             if($flush){

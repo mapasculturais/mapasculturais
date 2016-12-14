@@ -185,11 +185,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Mais Informações");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Mais Informações");?>" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
-                    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>    <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
@@ -338,10 +334,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+
                 <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
                 <span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Evento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do evento");?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
-
 
             <!-- Video Gallery BEGIN -->
             <?php $this->part('video-gallery.php', array('entity' => $entity)); ?>

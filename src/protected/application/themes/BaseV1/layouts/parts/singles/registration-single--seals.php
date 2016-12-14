@@ -1,5 +1,4 @@
 <?php
-
 if(!$app->isEnabled('seals'))
 	return;
 

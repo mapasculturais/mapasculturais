@@ -160,13 +160,7 @@
                     marker.setLatLng(foundLocation);
                 }
             }
-
-            $('.js-editable').on('save', function(e, params) {
-                if ($(this).data('edit') == 'endereco') {
-                    $(this).trigger('changeAddress', params.newValue);
-                }
-            });
-
+            
             $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
                 var streetName = $('#En_Nome_Logradouro').editable('getValue', true);
                 var number = $('#En_Num').editable('getValue', true);
@@ -344,7 +338,7 @@
 
     $(function(){
 
-        if($('body').hasClass('controller-agent')){
+        if($('body').hasClass('controller-agent') || $('body').hasClass('controller-subsite')){
             if(MapasCulturais.isEditable){
                 var publicLocation = $('[data-edit="publicLocation"]').editable('getValue').publicLocation;
                 var empty = publicLocation === undefined;
@@ -367,6 +361,21 @@
                     }
 
                 });
+
+                if ($('body').hasClass('controller-subsite')) {
+                    var latitude = $('[data-edit="latitude').editable('getValue').latitude;
+                    var longitude = $('[data-edit="longitude"]').editable('getValue').longitude;
+                    var empty = latitude === 'null' && longitude === 'null';
+
+                    if(!empty){
+                        $('.js-map-container').show();
+                        MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
+                    }else{
+                        $('#map-target').editable('setValue', [0, 0]);
+                        $('.js-map-container').hide();
+                    }
+                }
+
             }else{
                 MapasCulturais.Map.initialize({mapSelector: '.js-map', locateMeControl: false, exportToGlobalScope: true, mapCenter:MapasCulturais.mapCenter});
             }

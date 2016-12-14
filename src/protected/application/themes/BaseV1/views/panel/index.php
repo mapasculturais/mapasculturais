@@ -1,5 +1,8 @@
 <?php
 $this->layout = 'panel';
+
+$subsite = $app->getCurrentSubsite();
+
 $posini = 0;
 $posfin = 0;
 $msg = "";
@@ -8,6 +11,12 @@ $button = "";
 <div class="panel-main-content">
 
     <?php $this->part('panel/highlighted-message') ?>
+
+    <?php if($subsite && $subsite->canUser('modify')):?>
+    <p class="highlighted-message" style="margin-top:-2em;">
+        Você é administrador deste subsite. Clique <a href="<?php echo $subsite->singleUrl ?>">aqui</a> para configurar.
+    </p>
+    <?php endif; ?>
 
     <section id="user-stats" class="clearfix">
         <?php if($app->isEnabled('events')): ?>
@@ -78,6 +87,20 @@ $button = "";
             </div>
         <?php endif; ?>
 
+        <?php if($app->isEnabled('subsite') && $app->user->is('saasAdmin')): ?>
+            <div>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft">Subsite</span>
+                        <div class="icon icon-subsite alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'subsite') ?>" title="Ver meus subsite"><?php echo $count->subsite; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('subsite', 'create'); ?>" title="Adicionar subsite"></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
             <div>
                 <div>
@@ -94,6 +117,7 @@ $button = "";
                 </div>
             </div>
         <?php endif; ?>
+
     </section>
     <?php if($app->user->notifications): ?>
     <section id="activities">

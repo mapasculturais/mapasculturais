@@ -33,6 +33,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityArchive,
+        Traits\EntityOriginSubsite,
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -228,6 +229,14 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
 
     /**

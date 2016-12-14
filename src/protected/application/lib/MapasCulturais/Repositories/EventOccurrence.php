@@ -46,7 +46,12 @@ class EventOccurrence extends \MapasCulturais\Repository {
 
         if ($offset)
             $dql_offset = 'OFFSET ' . $offset;
-
+        
+        $subsite_space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds();
+        
+        if(!is_null($subsite_space_ids)){
+            $space_ids = array_intersect($subsite_space_ids, $space_ids);
+        } 
         $strNativeQuery = "
             SELECT
                 eo.*

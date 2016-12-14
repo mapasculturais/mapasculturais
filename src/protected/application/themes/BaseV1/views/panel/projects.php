@@ -8,10 +8,10 @@ $this->layout = 'panel'
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledProjects); ?>)</a></li>
-		<li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
+        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
         <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftProjects); ?>)</a></li>
         <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedProjects); ?>)</a></li>
-		<li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
+        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>
@@ -40,16 +40,6 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
-	<!-- #permitido-->
-	<div id="permitido">
-		<?php foreach($app->user->hasControlProjects as $entity): ?>
-			<?php $this->part('panel-project', array('entity' => $entity)); ?>
-		<?php endforeach; ?>
-		<?php if(!$user->hasControlProjects): ?>
-			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum projeto liberado.");?></div>
-		<?php endif; ?>
-	</div>
-	<!-- #permitido-->
 	<!-- #arquivo-->
     <div id="arquivo">
         <?php foreach($user->archivedProjects as $entity): ?>
@@ -60,4 +50,14 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #arquivo-->
+	<!-- #permitido-->
+	<div id="permitido">
+		<?php foreach($app->user->hasControlProjects as $entity): ?>
+			<?php $this->part('panel-project', array('entity' => $entity)); ?>
+		<?php endforeach; ?>
+		<?php if(!$user->hasControlProjects): ?>
+			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum projeto liberado."); ?></div>
+		<?php endif; ?>
+	</div>
+	<!-- #permitido-->
 </div>

@@ -29,6 +29,7 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityOriginSubsite,
         Traits\EntityArchive;
 
 
@@ -168,6 +169,14 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     private $_newProject = false;
     

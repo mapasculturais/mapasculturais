@@ -8,10 +8,10 @@ $this->layout = 'panel'
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($app->user->enabledSeals);?>)</a></li>
-		<li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
+        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
         <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($app->user->draftSeals);?>)</a></li>
         <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($app->user->trashedSeals);?>)</a></li>
-		<li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
+        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
@@ -37,6 +37,16 @@ $this->layout = 'panel'
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($app->user->archivedSeals as $entity): ?>
+            <?php $this->part('panel-seal', array('entity' => $entity));?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedSeals):  ?>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum selo arquivado.");?></div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlSeals as $entity): ?>
@@ -47,14 +57,4 @@ $this->layout = 'panel'
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
-	<!-- #arquivo-->
-    <div id="arquivo">
-        <?php foreach($app->user->archivedSeals as $entity): ?>
-            <?php $this->part('panel-seal', array('entity' => $entity));?>
-        <?php endforeach; ?>
-        <?php if(!$user->archivedSeals):  ?>
-            <div class="alert info">Você não possui nenhum selo arquivado.</div>
-        <?php endif; ?>
-    </div>
-    <!-- #arquivo-->
 </div>

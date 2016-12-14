@@ -171,7 +171,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 </article>
 <div class="sidebar-left sidebar agent">
-	<!-- Related Seals BEGIN -->
+    <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
 
