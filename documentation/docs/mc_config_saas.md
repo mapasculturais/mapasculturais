@@ -50,3 +50,6 @@ Imagem logomarca da organização envolvida na instalação do Mapas Culturais, 
 
 ## Aba 'Mapa' da Instalação
 Define-se a posição geografica central da instalação que onde o Mapa será exibido e o perímetro deste ponto central definido que a instalação vai abranger no Mapa.
+
+## Aba 'Login Cidadão' da Instalação
+Nesta seção são especificadas o ID e Token para a url da instalação utilizar a autenticação do sistema com a interface do Login Cidadão.
