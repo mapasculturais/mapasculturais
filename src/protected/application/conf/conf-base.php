@@ -75,14 +75,14 @@ return array(
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
     )),
 
-    'themes.brand-space'    => '#e83f96',
-    'themes.brand-project'  => '#cc0033',
-    'themes.brand-event'    => '#b3b921',
-    'themes.brand-subsite'  => '#ff5545',
-    'themes.brand-seal'     => '#ff5545',
-    'themes.brand-agent'    => '#1dabc6',
-    'themes.brand-intro'    => '#1dabc6',
-    'themes.brand-dev'      => '#9966cc',
+    'themes.brand-space'        => '#e83f96',
+    'themes.brand-project'      => '#cc0033',
+    'themes.brand-event'        => '#b3b921',
+    'themes.brand-subsite'      => '#ff5545',
+    'themes.brand-seal'         => '#ff5545',
+    'themes.brand-agent'        => '#1dabc6',
+    'themes.brand-intro'        => '#1c5690',
+    'themes.brand-developer'    => '#9966cc',
 
     'app.useGoogleGeocode' => false,
 
