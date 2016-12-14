@@ -10,6 +10,14 @@ return array_merge($config,
         // 'namespaces' => array_merge( $config['namespaces'], ['Name\Space\Do\Tema' => '/caminho/absoluto/para/o/tema']),
         // 'themes.active' => 'Name\Space\Do\Tema',
 
+	/* to setup Saas Subsite theme */
+	//'namespaces' => array(
+        //    'MapasCulturais\Themes' => THEMES_PATH,
+        //    'TemplateV1' => THEMES_PATH . '/TemplateV1/',
+        //    'Subsite' => THEMES_PATH . '/Subsite/'
+        //),
+
+
         'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
             'publishPath' => BASE_PATH . 'assets/',
 
