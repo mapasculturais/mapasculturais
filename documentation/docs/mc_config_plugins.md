@@ -33,6 +33,21 @@ Ao final, deve ser assim:
      ]
 ),
 ```
+### Sufixo da URL do domínio
+Esse plugin é para configurar a exibição do domínio do campo de url de domínio no formulário do subsites do Saas quando todas as instalações pertencem ao mesmo domínio. A configuração abaixo deve ser incluída no array de plugins da instalação com o formato da exibição do sufixo da url do domínio:
+
+```
+'plugins' => array(
+  'SubsiteDomainSufix' => [
+    'namespace' => 'SubsiteDomainSufix',
+    'config' => [
+      'sufix' => function () {
+        return 'domain-sufix.gov.br';
+      }
+    ]
+  ]
+)
+```
 
 ### Notificações
 As notificações têm o propósito de comunicar ou solicitar aprovação de relacionamento entre entidades no sistema.
