@@ -5,9 +5,32 @@ $app = App::i();
 $em = $app->em;
 $conn = $em->getConnection();
 
+
+function __table_exists($table_name) {
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '$table_name';")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function __column_exists($table_name, $column_name) {
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='$table_name' and column_name='$column_name'")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 return [
-
-
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -57,7 +80,11 @@ return [
     },
 
     'create table user apps' => function() use ($conn) {
-
+        if(__table_exists('user_app')){
+            echo "TABLE user_app ALREADY EXISTS";
+            return true;
+        }
+        
         $conn->executeQuery("CREATE TABLE user_app (
                                 public_key character varying(64) NOT NULL,
                                 private_key character varying(128) NOT NULL,
@@ -76,7 +103,7 @@ return [
 
     'create table user_meta' => function() use ($conn) {
 
-        if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'user_meta';")){
+        if(__table_exists('user_meta')){
             echo "TABLE user_meta ALREADY EXISTS";
             return true;
         }
@@ -104,7 +131,7 @@ return [
 
     'create seal and seal relation tables' => function() use ($conn) {
 
-        if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE  table_schema = 'public' AND table_name = 'seal';")){
+        if(__table_exists('seal')){
             echo "TABLE seal ALREADY EXISTS";
             return true;
         }
@@ -131,6 +158,10 @@ return [
 
 
     'create registration field configuration table' => function () use($conn){
+        if(__table_exists('registration_field_configuration')){
+            echo "TABLE registration_field_configuration ALREADY EXISTS";
+            return true;
+        }
         $conn->executeQuery("CREATE TABLE registration_field_configuration (id INT NOT NULL, project_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, categories TEXT DEFAULT NULL, required BOOLEAN NOT NULL, field_type VARCHAR(255) NOT NULL, field_options VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
         $conn->executeQuery("CREATE INDEX IDX_60C85CB1166D1F9C ON registration_field_configuration (project_id);");
         $conn->executeQuery("COMMENT ON COLUMN registration_field_configuration.categories IS '(DC2Type:array)';");
@@ -139,7 +170,12 @@ return [
     },
 
     'alter table registration_file_configuration add categories' => function () use($conn){
-        $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT registration_meta_project_fk;");
+        if(__column_exists('registration_file_configuration', 'categories')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        
+        $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT IF EXISTS registration_meta_project_fk;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD categories TEXT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER id DROP DEFAULT;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER project_id DROP NOT NULL;");
@@ -178,6 +214,20 @@ return [
     	$conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
+            
+    'update entities last_update_timestamp with user last log timestamp' => function () use($conn,$app) {
+        $agents = $conn->fetchAll("SELECT a.id, u.last_login_timestamp FROM agent a, usr u WHERE u.id = a.user_id");
+        
+        foreach($agents as $agent){
+            $agent = (object) $agent;
+            $conn->executeQuery("UPDATE space SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE event SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE seal SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+            $conn->executeQuery("UPDATE project SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
+        }
+        
+        $conn->executeQuery("UPDATE agent SET update_timestamp = u.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr) AS u WHERE user_id = u.id AND update_timestamp IS NULL");
+    },
 
     'Fix field options field type from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
@@ -193,5 +243,23 @@ return [
                         where name = 'superAdmin'
                     )");
         $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
+    },
+    
+    'create avatar thumbs' => function() use($conn){
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
+        
+        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
+        
+        foreach($files as $f){
+            $f->transform('avatarSmall');
+            $f->transform('avatarMedium');
+            $f->transform('avatarBig');
+        }
+        
+        $this->disableAccessControl();
     }
 ];

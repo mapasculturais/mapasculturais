@@ -35,10 +35,12 @@
     }
 }
 
-.required {
-    &:before {
-        content: "*";
-        display: inline-block;
-        color: red;
+body{
+    &.action-edit, &.action-create{
+        .required:before {
+            content: "*";
+            display: inline-block;
+            color: red;
+        }
     }
 }
