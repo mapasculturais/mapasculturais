@@ -94,6 +94,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 <?php $this->part('editable-entity', array('entity' => $entity, 'action' => $action));  ?>
 <article class="main-content event">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -185,12 +186,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>">Mais Informações:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="Mais Informações" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
-                    <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
-
-    <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
-
-    <?php $this->applyTemplateHook('breadcrumb','end'); ?>    <?php endif; ?>
-
+                    <?php endif; ?>
+                    
                     <?php if($this->isEditable() || $entity->traducaoLibras || $entity->descricaoSonora): ?>
                         <br>
                         <p>
@@ -365,9 +362,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
 
-    <!-- #denuncia/sugestao -->
-    <?php $this->part('singles/compliant_suggestion.php') ?>
-    <!-- #denuncia/sugestao -->
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">

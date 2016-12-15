@@ -23,6 +23,8 @@ $this->includeAngularEntityAssets($entity);
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content label">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
+
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -126,9 +128,7 @@ $this->includeAngularEntityAssets($entity);
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 
-    <!-- #denuncia/sugestao -->
-    <?php $this->part('singles/compliant_suggestion.php') ?>
-    <!-- #denuncia/sugestao -->
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar seal">
     <?php if($this->controller->action == 'create'): ?>

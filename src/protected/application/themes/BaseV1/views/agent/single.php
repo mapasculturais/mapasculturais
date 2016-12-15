@@ -28,6 +28,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content agent">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -146,10 +147,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
 
-    <!-- #denuncia/sugestao -->
-    <?php $this->part('singles/compliant_suggestion.php') ?>
-    <!-- #denuncia/sugestao -->
-
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar agent">
 	<!-- Related Seals BEGIN -->

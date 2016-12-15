@@ -1,7 +1,6 @@
 <?php
 $app = \MapasCulturais\App::i();
 $user = $app->user;
-
 if($this->controller->action === 'create')
     return false;
 ?>
@@ -16,10 +15,17 @@ if($this->controller->action === 'create')
 </style>
 
 <div class="compliant-suggestion-box">
-    <input class="button-form-compliant-suggestion compliant btn-primary" type="button" name="Envia" value="Denuncia">
+    <?php if($compliant): ?>
+    <input class="button-form-compliant-suggestion compliant btn-primary" type="button" name="compliant" value="Denuncia">
+    <?php endif;?>
+    <?php if($suggestion): ?>
     &nbsp;
-    <input class="button-form-compliant-suggestion suggestion btn-success" type="button" name="Envia" value="Contato">
+    <input class="button-form-compliant-suggestion suggestion btn-success" type="button" name="suggestion" value="Contato">
+    <?php endif;?>
 </div>
+
+
+<?php if($compliant): ?>
 
 <form class="form-complaint-suggestion js-compliant-form hidden" ng-controller="CompliantController">
     <?php if($user->is('guest')):?>
@@ -55,7 +61,9 @@ if($this->controller->action === 'create')
         <p class="alert sucess">Enviado com Sucesso.<span class="close"></span></p>
     </div>
 </form>
+<?php endif;?>
 
+<?php if($suggestion): ?>
 <form class="form-complaint-suggestion js-suggestion-form hidden" ng-controller="SuggestionController">
     <p>
         Nome:<br />
@@ -92,3 +100,4 @@ if($this->controller->action === 'create')
         <p class="alert sucess">Enviado com Sucesso.<span class="close"></span></p>
     </div>
 </form>
+<?php endif;?>
