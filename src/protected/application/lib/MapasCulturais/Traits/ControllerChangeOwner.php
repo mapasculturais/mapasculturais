@@ -8,12 +8,12 @@ trait ControllerChangeOwner{
         $app = \MapasCulturais\App::i();
 
         if(!key_exists('ownerId', $this->postData))
-            $this->errorJson($app->txt('The ownerId is required.'));
+            $this->errorJson(\MapasCulturais\i::__('The ownerId is required.'));
 
         $owner = $app->repo('Agent')->find($this->postData['ownerId']);
 
         if(!$owner)
-            $this->errorJson(sprintf ($app->txt('The agent with id %s not found.'), $this->postData['ownerId']));
+            $this->errorJson(sprintf (\MapasCulturais\i::__('The agent with id %s not found.'), $this->postData['ownerId']));
 
         $entity = $this->requestedEntity;
 

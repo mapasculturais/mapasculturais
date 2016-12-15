@@ -37,9 +37,8 @@ class RoutesManager{
     }
 
     protected function addRoutes(){
-        App::i()->map('/(:args+)', function ($url_args = []){
-            $app = App::i();
-
+        $app = App::i();
+        $app->map('/(:args+)', function ($url_args = []) use ($app){
             $api_call = false;
             if(key_exists(0, $url_args) && $url_args[0] === 'api'){
                 array_shift($url_args);
@@ -106,27 +105,34 @@ class RoutesManager{
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
+                    
+                    $this->callAction($app->controller('site'), 'error', ['code' => 403, 'e' => $e], false);
 
-                    if($app->config['slim.debug']){
-                        if($app->request()->isAjax())
-                            $app->halt(403, $app->txt('Permission Denied: ' . $e));
-                        else
-                            $app->halt(403, $app->txt('Permission Denied: <br><pre>' . $e . '</pre>'));
-                    }else{
-                        $app->halt(403, $app->txt('Permission Denied'));
-                    }
                 }  catch (\MapasCulturais\Exceptions\WorkflowRequest $e){
                     $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
-                    if($app->request()->isAjax())
+                    if($app->request()->isAjax()){
                         $app->halt(202, json_encode($requests) );
-                    else
-                        $app->halt(202, $app->txt('Created requests: ') . implode(', ',$requests) );
+                    }else{
+                        $app->halt(202, \MapasCulturais\i::__('Created requests: ') . implode(', ',$requests) );
+                    }
+                } catch(\Exception $e) {
+                    $e_class = get_class($e);
+                    
+                    if(strpos($e_class, 'Slim\Exception') === 0){
+                        throw $e;
+                    }
+                    $this->callAction($app->controller('site'), 'error', ['code' => 500, 'e' => $e], false);
+
                 }
             }else{
                 $app->pass();
             }
 
         })->via('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
+        
+        $app->notFound(function() use ($app) {
+            $this->callAction($app->controller('site'), 'error', ['code' => 404], false);
+        });
     }
 
     /**

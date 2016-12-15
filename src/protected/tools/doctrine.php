@@ -16,8 +16,17 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+ini_set('error_reporting', E_ALL & ~E_NOTICE);
+
+
+$_SERVER['REQUEST_METHOD'] = 'CLI';
+$_SERVER['REMOTE_ADDR'] = 'localhost';
+$_SERVER['REQUEST_URI'] = './doctrine';
+$_SERVER['SERVER_NAME'] = 'localhost';
 
 (@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
+
+
 $configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
 
 $helperSet = null;

@@ -8,6 +8,7 @@ use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\Subsite;
 
 /**
  * User Panel Controller
@@ -39,6 +40,7 @@ class Panel extends \MapasCulturais\Controller {
         $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
         $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->subsite        = $app->controller('subsite')->apiQuery(['@count'=>1]);
         $count->seals		= $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
@@ -188,7 +190,7 @@ class Panel extends \MapasCulturais\Controller {
      *
      */
     function GET_spaces(){
-        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'editUrl',
+        $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'originSiteUrl', 'editUrl',
                    'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
@@ -285,5 +287,23 @@ class Panel extends \MapasCulturais\Controller {
         $enabledApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_ENABLED]);
         $thrashedApps = App::i()->repo('UserApp')->findBy(['user' => $user, 'status' => \MapasCulturais\Entities\UserApp::STATUS_TRASH]);
         $this->render('apps', ['user' => $user, 'enabledApps' => $enabledApps, 'thrashedApps' => $thrashedApps]);
+    }
+
+    /**
+     * Render the subsite list of the user panel (Only SuperAdmin, Admin and Owner Subsite panel).
+     *
+     * This method requires authentication and renders the template 'panel/subsite'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'registrations');
+     * </code>
+     *
+     */
+    function GET_subsite(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+
+        $this->render('subsite', ['user' => $user]);
     }
 }

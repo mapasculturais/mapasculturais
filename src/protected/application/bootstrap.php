@@ -3,6 +3,7 @@ namespace MapasCulturais;
 define('BASE_PATH', realpath(__DIR__.'/../../') . '/');
 define('PROTECTED_PATH', realpath(__DIR__.'/../') . '/');
 define('APPLICATION_PATH', realpath(__DIR__) . '/');
+define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');

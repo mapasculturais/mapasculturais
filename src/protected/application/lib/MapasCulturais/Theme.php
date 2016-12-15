@@ -433,6 +433,41 @@ abstract class Theme extends \Slim\View {
         }
         $this->_assetManager->enqueueStyle($group, $style_name, $style_filename, $dependences, $media);
     }
+    
+    /**
+     * Add localization strings to a javascript object
+     *
+     * It simmply adds the strings to the jsObject property that can be accessed throug the MapasCulturais javascript object.
+     * 
+     * Example: 
+     * 
+     * $this->localizeScript('myScript', ['noresults' => \MapasCulturais\i::__('Nenhum resultado')]);
+     *
+     * In javascript this will be available:
+     * 
+     * MapasCulturais.gettext.myScript['noresults']
+     * 
+     * @param string $group All strings will be grouped in this property. Make this unique to avoid conflict with other scripts
+     * @param array $vars Array with translated strgins with key beeing the variable name anda value beeing the translated string
+     */
+    public function localizeScript($group, $vars) {
+        
+        if (!is_string($group) || empty($group))
+            throw new \Exception('localizeScript expects $group to be a string');
+        
+        if (!is_array($vars))
+            throw new \Exception('localizeScript expects $vars to be an array');
+        
+        if (!isset($this->jsObject['gettext']))
+            $this->jsObject['gettext'] = [];
+        
+        if ( isset($this->jsObject['gettext'][$group]) && is_array($this->jsObject['gettext'][$group]) ) {
+            $this->jsObject['gettext'][$group] = array_merge($vars, $this->jsObject['gettext'][$group]);
+        } else {
+            $this->jsObject['gettext'][$group] = $vars;
+        }
+        
+    }
 
     function printScripts($group){
         $this->_assetManager->printScripts($group);

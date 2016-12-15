@@ -50,6 +50,9 @@ class Plugin extends \MapasCulturais\Plugin {
 
         $app->hook('view.render(<<agent|space|project>>/single):before', function() use ($app) {
             $app->view->enqueueScript('app', 'agenda-single', 'js/agenda-single.js', array('mapasculturais'));
+            $app->view->localizeScript('agendaSingles', [
+                'none' => \MapasCulturais\i::__('Nenhum')
+            ]);
         });
         
         $app->hook('template(<<agent|space|project>>.single.tabs):end', function() use($app){

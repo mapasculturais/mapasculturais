@@ -25,6 +25,8 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
+//$this->part('singles/breadcrumb', ['entity' => $entity]);
+
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -96,7 +98,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 <div class="sidebar project sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto.<span class="close"></span></p>
+            <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 

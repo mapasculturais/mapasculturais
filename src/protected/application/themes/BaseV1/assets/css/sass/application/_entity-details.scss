@@ -20,12 +20,50 @@
     font-size: $font-size-smaller;
     color: #888;
 }
-.infos {
-
-}
 .mapa {
-         box-sizing: border-box;
+    box-sizing: border-box;
     -moz-box-sizing: border-box;
     height: 408px;
     margin-bottom: $line-height-base;
+}
+
+// Subsite
+.subsite-header {
+    background-color: #e83f96;
+    margin: 0 auto;
+    width: 60%;
+    min-height: 12rem;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.tip {
+    color: #999;
+    font-size: 13px;
+
+    a {
+        color: #143d65;
+    }
+}
+
+.logo, .background {
+    position: relative;
+}
+
+.btn.edit {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5rem;
+}
+
+.setup-name {
+    font-family: "aleo", serif;
+    font-size: 29px;
+}
+
+.header-field {
+    color: #e83f96 !important;
 }

@@ -33,6 +33,21 @@ Ao final, deve ser assim:
      ]
 ),
 ```
+### Sufixo da URL do domínio
+Esse plugin é para configurar a exibição do domínio do campo de url de domínio no formulário do subsites do Saas quando todas as instalações pertencem ao mesmo domínio. A configuração abaixo deve ser incluída no array de plugins da instalação com o formato da exibição do sufixo da url do domínio:
+
+```
+'plugins' => array(
+  'SubsiteDomainSufix' => [
+    'namespace' => 'SubsiteDomainSufix',
+    'config' => [
+      'sufix' => function () {
+        return 'domain-sufix.gov.br';
+      }
+    ]
+  ]
+)
+```
 
 ### Notificações
 As notificações têm o propósito de comunicar ou solicitar aprovação de relacionamento entre entidades no sistema.
@@ -64,7 +79,7 @@ Assim como as notificações no sistema, o Mailer tem o propósito de comunicar 
 Para habilitar os emails do sistema, é necessário acrescentar no array de plugins da configuração da instalação:
 
 ```
-'plugins' => array("mailer");
+'plugins.enabled' => array("mailer");
 ```
 
 Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails aconteça, e serão necessárias algumas informações para que a autenticação de e-mail aconteça o envio das mensagens:

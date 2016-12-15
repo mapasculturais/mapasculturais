@@ -11,7 +11,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
 
     protected function _init() {
         $app = App::i();
-
+        
         $url = $app->createUrl('auth');
         $config = array_merge([
             'timeout' => '24 hours',
@@ -21,7 +21,9 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             'cliente_id' => '',
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
         ], $this->_config);
-        $opauth_config = [
+        
+        
+         $opauth_config = [
             'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
             'Strategy' => [
                 'logincidadao' => $config
@@ -32,6 +34,40 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             'path' => $config['path'],
             'callback_url' => $app->createUrl('auth','response')
         ];
+        
+        
+        //  SaaS -- BEGIN
+        $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
+            $this->part('singles/subsite--login-cidadao--tab');
+        });
+        
+        $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
+            $this->part('singles/subsite--login-cidadao--content');
+        });
+        
+        $metadata = [
+            'login_cidaddao__id' => ['label' => 'Login Cidadão Client ID', 'private' => 'true'],
+            'login_cidaddao__secret' => ['label' => 'Login Cidadão Client Secret', 'private' => 'true']
+        ];
+
+        foreach($metadata as $k => $cfg){
+            $def = new \MapasCulturais\Definitions\Metadata($k, $cfg);
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Subsite');
+        }
+        
+        if($subsite = $app->getCurrentSubsite()){
+
+            
+            $login_cidaddao__id = $subsite->getMetadata('login_cidaddao__id');
+            $login_cidaddao__secret = $subsite->getMetadata('login_cidaddao__secret');
+            
+            if($login_cidaddao__id && $login_cidaddao__secret){
+                $opauth_config['Strategy']['logincidadao']['client_id'] = $login_cidaddao__id;
+                $opauth_config['Strategy']['logincidadao']['client_secret'] = $login_cidaddao__secret;
+            }
+        }
+        
+        // SaaS -- END
 
         if(isset($config['onCreateRedirectUrl'])){
             $this->onCreateRedirectUrl = $config['onCreateRedirectUrl'];
@@ -64,7 +100,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     public function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $this->_setRedirectPath($app->request->getPathInfo());
             $app->redirect($app->controller('auth')->createUrl(''), 401);

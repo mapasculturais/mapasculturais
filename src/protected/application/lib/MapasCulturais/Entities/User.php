@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @property-read \MapasCulturais\Entities\Space[] $spaces Active Spaces
  * @property-read \MapasCulturais\Entities\Project[] $projects Active Projects
  * @property-read \MapasCulturais\Entities\Event[] $events Active Events
+ * @property-read \MapasCulturais\Entities\Subsite[] $subsite Active Subsite
  * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
  * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
@@ -115,6 +116,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
     }
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Usuários');
+        else
+            return \MapasCulturais\i::__('Usuário');
+    }
 
     function getOwnerUser(){
         return $this;
@@ -137,11 +145,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
+        $result['profile'] = $this->profile->simplify('id,name,type,terms,avatar,singleUrl');
         unset($result['authUid']);
         return $result;
     }
 
-    function addRole($role_name){
+    function addRole($role_name, $subsite_id = false){
+        $app = App::i();
+
+        $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
+
         if(method_exists($this, 'canUserAddRole' . $role_name))
             $this->checkPermission('addRole' . $role_name);
         else
@@ -151,6 +164,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $role = new Role;
             $role->user = $this;
             $role->name = $role_name;
+            $role->subsiteId = $subsite_id;
             $role->save(true);
             return true;
         }
@@ -158,15 +172,17 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
-    function removeRole($role_name){
+    function removeRole($role_name, $subsite_id = false){
+        $app = App::i();
+        $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
+
         if(method_exists($this, 'canUserRemoveRole' . $role_name))
             $this->checkPermission('removeRole' . $role_name);
         else
             $this->checkPermission('removeRole');
-
-
+        
         foreach($this->roles as $role){
-            if($role->name == $role_name){
+            if($role->name == $role_name && $role->subsiteId == $subsite_id){
                 $role->delete(true);
                 return true;
             }
@@ -191,6 +207,15 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('superAdmin') && $user->id != $this->id;
     }
 
+    protected function canUserAddRoleSaasAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+
+    protected function canUserAddRoleSaasSuperAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+
+
     protected function canUserRemoveRole($user){
         return $user->is('admin') && $user->id != $this->id;
     }
@@ -203,13 +228,41 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('superAdmin') && $user->id != $this->id;
     }
 
-    function is($role_name){
-        if($role_name == 'admin' && $this->is('superAdmin'))
-            return true;
+    protected function canUserRemoveRoleSaasAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
 
-        foreach($this->roles as $role)
-            if($role->name == $role_name)
+    protected function canUserRemoveRoleSaasSuperAdmin($user){
+        return $user->is('saasSuperAdmin') && $user->id != $this->id;
+    }
+
+    function is($role_name){
+        if($role_name === 'admin' && $this->is('superAdmin')){
+            return true;
+        }
+
+        if($role_name === 'superAdmin' && $this->is('saasAdmin')){
+            return true;
+        }
+
+        if($role_name === 'saasAdmin' && $this->is('saasSuperAdmin')){
+            return true;
+        }
+
+        $app = App::i();
+
+        if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
+            $subsite_id = null;
+        } else {
+            $subsite_id = $app->getCurrentSubsiteId();
+        }
+
+
+        foreach ($this->roles as $role) {
+            if ($role->name == $role_name && $role->subsiteId === $subsite_id) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -298,17 +351,24 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $this->_getAgentsByStatus( Agent::STATUS_ARCHIVED);
     }
 
+
     function getHasControlAgents(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Agent')->findByAgentRelationUser($this, true);
+        if(!($agents = App::i()->repo('Agent')->findByAgentRelationUser($this, true)))
+            $agents = [];
+
+        return $agents;
     }
 
     function getAgentWithControl() {
         $this->checkPermission('modify');
         $app = App::i();
         $entity = $app->view->controller->id;
-        return $app->repo($entity)->findByAgentWithEntityControl();
+        $agents = $app->repo($entity)->findByAgentWithEntityControl();
+        if(!$agents)
+            $agents = [];
+        return $agents;
     }
 
     public function getSpaces(){
@@ -340,7 +400,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlSpaces(){
         $this->checkPermission('modify');
-        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Space', Space::STATUS_ARCHIVED,'=');
+        
+        if(!($spaces = App::i()->repo('Space')->findByAgentRelationUser($this, true)))
+            $spaces = [];
+
+        return $spaces;
     }
 
     public function getEvents(){
@@ -364,10 +428,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Event', Event::STATUS_DISABLED, '=');
     }
+
     function getHasControlEvents(){
         $this->checkPermission('modify');
-
-        return App::i()->repo('Event')->findByAgentRelationUser($this, true);
+        if(!($events = App::i()->repo('Event')->findByAgentRelationUser($this, true)))
+            $events = [];
+        return $events;
     }
 
     function getArchivedEvents(){
@@ -407,7 +473,54 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getHasControlProjects(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Project')->findByAgentRelationUser($this, true);
+        $projects = App::i()->repo('Project')->findByAgentRelationUser($this, true);
+
+        if(!$projects)
+            $projects = [];
+
+        return $projects;
+    }
+
+    public function getSubsite($status = null) {
+        $result = [];
+
+        if ($this->is('saasAdmin')) {
+            $subsites = App::i()->repo('Subsite')->findAll();
+
+            foreach ($subsites as $subsite) {
+                if (!is_null($status) && $subsite->status == $status) {
+                    $result[] = $subsite;
+                } else if ($subsite->status > 0) {
+                    $result[] = $subsite;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    function getEnabledSubsite(){
+        return $this->getSubsite(Subsite::STATUS_ENABLED);
+    }
+    function getDraftSubsite(){
+        $this->checkPermission('modify');
+
+        return $this->getSubsite(Subsite::STATUS_DRAFT);
+    }
+    function getTrashedSubsite(){
+        $this->checkPermission('modify');
+
+        return $this->getSubsite(Subsite::STATUS_TRASH);
+    }
+    function getDisabledSubsite(){
+        $this->checkPermission('modify');
+
+        return $this->getSubsite(Subsite::STATUS_DISABLED);
+    }
+    function getArchivedSubsite(){
+        $this->checkPermission('modify');
+
+        return $this->getSubsite(Subsite::STATUS_ARCHIVED);
     }
 
     public function getSeals(){
@@ -437,11 +550,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Seal', Seal::STATUS_ARCHIVED,'=');
     }
-    
+
     function getHasControlSeals(){
         $this->checkPermission('modify');
 
-        return App::i()->repo('Seal')->findByAgentRelationUser($this, true);
+        if(!($seals = App::i()->repo('Seal')->findByAgentRelationUser($this, true)))
+            $seals = [];
+
+        return $seals;
     }
 
     function getNotifications($status = null){

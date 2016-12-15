@@ -2,15 +2,15 @@
     <div id="eventos" ng-if="data.entity.userHasControl && data.entity.events.length" ng-controller="ProjectEventsController">
 
         <div class="alignright" >
-            <span class="btn btn-small btn-default" ng-click="selectAll()">marcar eventos listados</span>
-            <span class="btn btn-small btn-default" ng-click="deselectAll()">desmarcar eventos listados</span>
+            <span class="btn btn-small btn-default" ng-click="selectAll()"><?php \MapasCulturais\i::_e("marcar eventos listados");?></span>
+            <span class="btn btn-small btn-default" ng-click="deselectAll()"><?php \MapasCulturais\i::_e("desmarcar eventos listados");?></span>
         </div>
-        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="filtrar eventos" style="width:300px;"><br>
+        <input type="text" ng-model="data.eventFilter" ng-change="filterEvents()" placeholder="<?php \MapasCulturais\i::esc_attr_e("filtrar eventos");?>" style="width:300px;"><br>
 
         <div class="eventos-selecionados">
             <div class="alignright" ng-show="!data.processing">
-                <span class="btn btn-small btn-default" ng-click="unpublishSelectedEvents()">tornar rascunho</span>
-                <span class="btn btn-small btn-success" ng-click="publishSelectedEvents()">publicar</span>
+                <span class="btn btn-small btn-default" ng-click="unpublishSelectedEvents()"><?php \MapasCulturais\i::_e("tornar rascunho");?></span>
+                <span class="btn btn-small btn-success" ng-click="publishSelectedEvents()"><?php \MapasCulturais\i::_e("publicar");?></span>
             </div>
             <div ng-show="data.processing" class="mc-spinner alignright" ><img ng-src="{{data.spinnerUrl}}" /> {{data.processingText}}</div>
             {{numSelectedEvents}} {{numSelectedEvents == 1 ? 'evento selecionado' : 'eventos selecionados' }}
@@ -31,10 +31,10 @@
                 </div>
 
                 <div class="objeto-meta">
-                    <div><span class="label">Status:</span> {{event.status === 0 ? 'rascunho' : 'publicado'}}</div>
-                    <div><span class="label">Autor:</span> <a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></div>
-                    <div><span class="label">Linguagem:</span> {{event.terms.linguagem.join(', ')}}</div>
-                    <div><span class="label">Classificação:</span> {{event.classificacaoEtaria}}</div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Status");?>:</span> {{event.status === 0 ? 'rascunho' : 'publicado'}}</div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Autor");?>:</span> <a href='{{event.owner.singleUrl}}'>{{event.owner.name}}</a></div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Linguagem");?>:</span> {{event.terms.linguagem.join(', ')}}</div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span> {{event.classificacaoEtaria}}</div>
                 </div>
             </div>
         </article>
