@@ -251,6 +251,7 @@ class Theme extends MapasCulturais\Theme {
         // sempre que insere uma imagem cria o avatarSmall
         $app->hook('entity(<<agent|space|event|project|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
+            $this->transform('avatarMedium');
             $this->transform('avatarBig');
         });
 
@@ -1081,7 +1082,7 @@ class Theme extends MapasCulturais\Theme {
             $entities = $controller->apiQueryByLocation(array(
                 '@from' => date('Y-m-d'),
                 '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
-                'isVerified' => 'EQ(true)',
+                '@verified' => 'IN(1)',
                 '@select' => 'id'
             ));
 
@@ -1089,7 +1090,7 @@ class Theme extends MapasCulturais\Theme {
 
             $entities = $controller->apiQuery([
                 '@select' => 'id',
-                'isVerified' => 'EQ(true)'
+                '@verified' => 'IN(1)'
             ]);
         }
 
@@ -1146,7 +1147,7 @@ class Theme extends MapasCulturais\Theme {
         $q = ['@count'=>1];
 
         if($verified === true){
-            $q['isVerified'] = 'EQ(true)';
+            $q['@verified'] = 'IN(1)';
         }
 
         $result = $controller->apiQuery($q);
@@ -1191,7 +1192,7 @@ class Theme extends MapasCulturais\Theme {
             '@count' => 1,
             '@from' => date('Y-m-d'),
             '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
-            'isVerified' => 'EQ(true)'
+            '@verified' => 'IN(1)'
         ));
 
         $app->cache->save($cache_id, $result, 120);
