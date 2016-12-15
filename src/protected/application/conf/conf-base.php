@@ -23,7 +23,7 @@ return array(
     'mailer.user' => "admin@mapasculturais.org",
     'mailer.psw'  => "password",
     'mailer.protocol' => 'ssl',
-    'mailer.server' => 'smtp.gmail.com',
+    'mailer.server' => 'localhost',
     'mailer.port'   => '465',
     'mailer.from' => 'suporte@mapasculturais.org',
 

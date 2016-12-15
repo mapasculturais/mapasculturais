@@ -2234,9 +2234,6 @@ class App extends \Slim\Slim{
     function getMailer() {
         $transport = [];
 
-        if(!in_array('mailer',$this->_config['plugins.enabled'])) {
-            return;
-        }
 
         if(isset($this->_config['mailer.user']) &&
             isset($this->_config['mailer.psw']) &&
@@ -2282,9 +2279,13 @@ class App extends \Slim\Slim{
     function sendMailMessage(\Swift_Message $message){
         $failures = [];
         $mailer = $this->getMailer();
-
-        if(in_array('mailer',$this->_config['plugins.enabled']) && !$mailer->send($message,$failures)) {
-            App::i()->log->debug($failures);
+        
+        try {
+            $mailer->send($message,$failures);
+            return true;
+        } catch(\Swift_TransportException $exception) {
+            App::i()->log->debug($exception);
+            return false;
         }
     }
 
