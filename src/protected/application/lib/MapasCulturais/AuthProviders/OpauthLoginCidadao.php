@@ -48,8 +48,8 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $login_cidaddao__secret = $this->getMetadata('login_cidaddao__secret');
             
             if($login_cidaddao__id && $login_cidaddao__secret){
-                $config['client_id'] = $this->login_cidaddao__id;
-                $config['client_secret'] = $this->login_cidaddao__secret;
+                $config['client_id'] = $login_cidaddao__id;
+                $config['client_secret'] = $login_cidaddao__secret;
             }
         });
         
