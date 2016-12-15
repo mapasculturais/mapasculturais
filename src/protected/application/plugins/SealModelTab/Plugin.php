@@ -62,6 +62,7 @@ class Plugin extends \MapasCulturais\Plugin {
             $dateIni = $relation->createTimestamp->format("d/m/Y");
             $dateFin = $relation->createTimestamp->add($period)->format("d/m/Y");
 
+            // todo: fazer o replace em qualquer propriedade baseado no que está dentro de [] ou configurar num array os replaces necessários
             $replaces = [
                 "\t"                        =>"&nbsp;&nbsp;&nbsp;&nbsp",
                 "[sealName]"                => $relation->seal->name,
@@ -71,12 +72,14 @@ class Plugin extends \MapasCulturais\Plugin {
                 "[entityDefinition]"        => $relation->owner->entityType,
                 "[entityName]"              => '<span class="entity-name">'.$relation->owner->name.'</span>',
                 "[dateIni]"                 => $dateIni,
-                "[dateFin]"                 => $dateFin
+                "[dateFin]"                 => $dateFin,
+                "[musCod]"                  => $relation->owner->mus_cod
             ];
 
             $msg = $relation->seal->certificateText;
             foreach ($replaces as $k => $v)
                 $msg = str_replace($k, $v, $msg);
+            $msg = htmlspecialchars_decode(htmlentities($msg), ENT_NOQUOTES);
 
             include PLUGINS_PATH.$relation->seal->seal_model.'/printsealrelation.php';
 
@@ -117,7 +120,7 @@ abstract class SealModelTemplatePlugin extends \MapasCulturais\Plugin{
             $relation = $app->repo('SealRelation')->find($id);
             if ($relation->seal->seal_model == $data['name']){
                 $app->view->assetManager->publishAsset('img/' . $data['background']);
-                $app->view->enqueueStyle('app', $data-['name'], 'css/' . $data['css']);
+                $app->view->enqueueStyle('app', $data['name'], 'css/' . $data['css']);
             }
         });
     }
