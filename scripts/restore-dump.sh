@@ -7,10 +7,15 @@ DB="mapasculturais"
 USER=$(whoami)
 OWNER=$(whoami)
 FILE="dump.sql"
+CONFIRM=0
 
 for i in "$@"
 do
 case $i in
+    --noconfirm)
+            CONFIRM='sim'
+            shift
+    ;;
     -u=*|--user=*)
 	    USER="${i#*=}"
 	    shift # past argument=value
@@ -41,8 +46,10 @@ case $i in
 esac
 done
 
+echo $CONFIRM;
 
-echo "
+if [[ $CONFIRM != 'sim' ]]; then
+    echo "
 =========================================================================================
 =================================== ATENÇÃO - CUIDADO ===================================
 =========================================================================================
@@ -50,11 +57,13 @@ ESTA OPERAÇÃO APAGARÁ O BANCO DE DADOS ATUAL E RECUPERARÁ A VERSÃO DO ARQUI
 
 
 PARA CONTINUAR ESCREVA 'sim': "
-read confirm
+    read CONFIRM
+fi;
 
 
-if [[ $confirm == 'sim' ]]; then
+if [[ $CONFIRM == 'sim' ]]; then
 	sudo -u $USER dropdb $DB
 	sudo -u $USER createdb $DB --owner $OWNER
 	sudo -u $USER psql -d $DB < "$DIR/$FILE"
 fi;
+  
