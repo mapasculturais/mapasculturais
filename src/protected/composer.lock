@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c2975def1ba05350653696e4253fdbfd",
-    "content-hash": "a4ff4f65946aff2bb6ac21854c5c4493",
+    "hash": "2b5b534df6e5dd1456cdbfe8258aa7ca",
+    "content-hash": "7f2693ea5e1045174ae0072bcd76dfd4",
     "packages": [
         {
             "name": "creof/doctrine2-spatial",
@@ -972,23 +972,24 @@
         },
         {
             "name": "mustache/mustache",
-            "version": "v2.5.1",
+            "version": "v2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/mustache.php.git",
-                "reference": "996c944fa2ddedddfaf0d276b913809d6a32fd85"
+                "reference": "a3f6d55996dd28b58f3a909d474189a3c1aa693f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/996c944fa2ddedddfaf0d276b913809d6a32fd85",
-                "reference": "996c944fa2ddedddfaf0d276b913809d6a32fd85",
+                "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/a3f6d55996dd28b58f3a909d474189a3c1aa693f",
+                "reference": "a3f6d55996dd28b58f3a909d474189a3c1aa693f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "friendsofphp/php-cs-fixer": "~1.11",
+                "phpunit/phpunit": "~3.7|~4.0|~5.0"
             },
             "type": "library",
             "autoload": {
@@ -1013,7 +1014,7 @@
                 "mustache",
                 "templating"
             ],
-            "time": "2014-01-09 00:36:09"
+            "time": "2016-07-31 06:18:27"
         },
         {
             "name": "opauth/logincidadao",

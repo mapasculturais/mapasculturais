@@ -43,12 +43,17 @@ abstract class AuthProvider {
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
         $user = $this->_createUser($data);
         $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
+
+        $dataValue = ['name' => $user->profile->name];
+        $message = $app->renderMailerTemplate('welcome',$dataValue);
+
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
-            'subject' => "Bem-vindo(a) ao Mapas Culturais",
-            'body' => "Bem-vindo(a) ao Mapas Culturais {$user->profile->name}, comece a cadastrar seus agentes, espaços e eventos."
+            'subject' => $message['title'],
+            'body' => $message['body']
         ]);
+
         return $user;
     }
 

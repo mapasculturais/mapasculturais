@@ -72,7 +72,7 @@
             </span>
             <span ng-if="data.global.viewMode === 'map'" ng-show="spinnerCount===0 && (numResults(numEvents.events, 'event') === 0 || !showFilters('event')) && (numResults(numAgents, 'agent') === 0 || !showFilters('agent')) && (numResults(numSpaces, 'space') === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado
                     <span ng-if="resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event > 0" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}} <?php \MapasCulturais\i::_e("resultados sem localização");?>">
-                        ({{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}})
+                    (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}}</a>)
                     </span>
             </span>
 
