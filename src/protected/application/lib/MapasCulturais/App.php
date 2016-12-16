@@ -2343,9 +2343,13 @@ class App extends \Slim\Slim{
     /**************
      * GetText
      **************/
-
+    /* deprecated, use MapasCulturais\i::get_locale();
+     * 
+     * 
+     * 
+     */ 
     static function getCurrentLCode(){
-        return App::i()->_config['app.lcode'];
+        return \MapasCulturais\i::get_locale();
     }
 
 

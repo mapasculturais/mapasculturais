@@ -13,6 +13,8 @@ class i {
 
     static function get_locale() {
         $app = App::i();
+        if (!isset($app->config['app.lcode']) || empty($app->config['app.lcode']))
+            return 'pt_BR';
         return $app->config['app.lcode'];
     }
 
