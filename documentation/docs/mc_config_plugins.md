@@ -109,3 +109,20 @@ Em SO unix like, é utilizado o serviço do sendmail para que o envio de e-mails
 'mailer.from' => 'suporte@mapasculturais.org'
 ```
 Em SOs Unix like é possível ter o envio de mensagens avisando a necessidade de atualização de entidades configurando um script do Mailer no serviço Cron, configurando a execução da rotina da pasta scripts notifications.sh de acordo com a periodicidade desejada.
+
+### Botão de Denúncia e Sugestão
+Esse plugin é para configurar a funcionalidade de denúncia e/ou sugestões nos singles das entidades do Mapas Culturais. Habilita o botão *Denúncia* e *Contato* que serão exibidos na parte inferior direita do single da entidade:
+
+```
+'plugins' => array(
+  'CompliantSuggestion' => [
+    'namespace' => 'CompliantSuggestion',
+    'config' => [
+      'compliant' => true,
+      'suggestion' => true
+    ]
+  ]
+),
+```
+As chaves `compliant` e `suggestion` recebe um valor *boolean* habilitando ou desabilitando o botão da funcionalidade.
+IMPORTANTE: Esta funcionalidade trabalha em conjunto com o plugin [MAILER](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)
