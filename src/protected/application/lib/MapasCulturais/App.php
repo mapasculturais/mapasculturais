@@ -1268,14 +1268,19 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-
+    
+    /**
+     * Returns the current subsite ID, or null if current site is the main site
+     *
+     * @return (int|null) ID of the current site or Null for main site
+     */
     public function getCurrentSubsiteId(){
         // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
         if($this->_subsite){
             return $this->_subsite->id;
         }
 
-        return null;
+        return null; 
     }
 
     public function getCurrentSubsite(){
