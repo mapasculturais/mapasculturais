@@ -1316,6 +1316,9 @@ class Theme extends MapasCulturais\Theme {
             'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
+        $this->localizeScript('entityApp', [
+            'requestSent' =>  i::__('Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com sucesso.'),
+        ]);
 
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
