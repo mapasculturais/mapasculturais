@@ -28,6 +28,10 @@ class RoutesTest extends MapasCulturais_TestCase {
     function assertGet503($url, $message){
         return $this->assetStatus('get', 503, $url, $message);
     }
+    
+    function testThumbnailCreationAPI(){
+        $this->assertGet200('/api/agent/find?@select=id,name&@files=(avatar.galleryFull):url', 'assert that thumbnail is created without error (/api/agent/find?@select=id,name&@files=(avatar.galleryFull):url)');
+    }
 
     function testHome(){
         $this->user = null;
