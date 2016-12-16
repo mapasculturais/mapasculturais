@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use SwiftMailer\SwiftMailer;
+use Mustache\Mustache;
 
 /**
  * MapasCulturais Application class.
@@ -197,10 +198,10 @@ class App extends \Slim\Slim{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
             $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        
+
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
 
-        
+
         $this->_mscache->setNamespace(__DIR__);
 
         spl_autoload_register(function($class) use ($config){
@@ -369,7 +370,7 @@ class App extends \Slim\Slim{
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
         } else {
             $this->_cache->setNamespace($config['app.cache.namespace']);
-            
+
             $theme_class = $config['themes.active'] . '\Theme';
             $theme_instance = new $theme_class($config['themes.assetManager']);
         }
@@ -471,7 +472,7 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
-            
+
         //Load defaut translation textdomain
         i::load_default_textdomain();
 
@@ -2233,31 +2234,31 @@ class App extends \Slim\Slim{
      */
     function getMailer() {
         $transport = [];
-        
+
         // server
         $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
-        
+
         // default transport SMTP
         $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
-        
+
         // default port to 25
         $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
-        
+
         // default encryption protocol to ssl
         $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
-        
-        
+
+
         if ($transport_type == 'smtp' && false !== $server) {
-        
+
             $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
-            
+
             // Maybe add username and password
             if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
                 isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
-            
+
                 $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
             }
-        
+
         } elseif ($transport_type == 'sendmail' && false !== $server) {
             $transport = \Swift_SendmailTransport::newInstance($server);
         } elseif ($transport_type == 'mail') {
@@ -2283,6 +2284,10 @@ class App extends \Slim\Slim{
             $message->setFrom($this->_config['mailer.from']);
         }
 
+        $type = $message->getHeaders()->get('Content-Type');
+        $type->setValue('text/html');
+        $type->setParameter('charset', 'utf-8');
+
         foreach($args as $key => $value){
             $key = ucfirst($key);
             $method_name = 'set' . $key;
@@ -2298,10 +2303,10 @@ class App extends \Slim\Slim{
     function sendMailMessage(\Swift_Message $message){
         $failures = [];
         $mailer = $this->getMailer();
-        
+
         if (!is_object($mailer))
             return false;
-        
+
         try {
             $mailer->send($message,$failures);
             return true;
@@ -2316,6 +2321,24 @@ class App extends \Slim\Slim{
         return $this->sendMailMessage($message);
     }
 
+    function renderMustacheTemplate($template,$templateData) {
+        if(!is_array($templateData) && !is_object($templateData)) {
+
+        }
+        $templateData = (object) $templateData;
+        $file_name = $this->view->resolveFileName('templates',$template);
+        $mustache = new \Mustache_Engine();
+        $content = $mustache->render(file_get_contents($file_name),$templateData);
+        return $content;
+    }
+
+    function renderMailerTemplate($slug, $templateData = []) {
+        if(array_key_exists($slug,$this->_config['mailer.templates'])) {
+            $message = $this->_config['mailer.templates'][$slug];
+            $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
+        }
+        return $message;
+    }
 
     /**************
      * GetText

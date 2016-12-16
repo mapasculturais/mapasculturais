@@ -25,7 +25,7 @@ class Theme extends MapasCulturais\Theme {
     static function getThemeFolder() {
         return __DIR__;
     }
-    
+
     static function getDictGroups(){
         $groups = [
             'site' => [
@@ -57,7 +57,7 @@ class Theme extends MapasCulturais\Theme {
 //                'description' => 'Nomes da taxonomias utilizadas no site'
 //            ]
         ];
-        
+
         return $groups;
     }
 
@@ -112,7 +112,7 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Painel'), i::__('Painel de Controle'), i::__('Área Administrativa')],
                 'text' => i::__('Painel de Controle')
             ],
-            
+
             // TEXTOS DA HOME DO SITE
             'home: title' => [
                 'name' => i::__('título da mensagem de boas-vindas'),
@@ -163,7 +163,7 @@ class Theme extends MapasCulturais\Theme {
                 'description' => i::__(''),
                 'text' => i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/doc/api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.')
             ],
-            
+
             // TEXTOS UTILIZADOS NA PÁGINA DE BUSCA, MAPA
             'search: verified results' => [
                 'name' => i::__('resultados verifiados'),
@@ -183,8 +183,8 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('verificados'), i::__('certificados'), i::__('SMC'), i::__('SECULT')],
                 'text' => i::__('verificados')
             ],
-            
-            
+
+
             // NOMES DAS ENTIDADES
 
 // ======== Espaços
@@ -320,7 +320,7 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Espaços do agente'), i::__('Museus do agente'), i::__('Bibliotecas do agente')],
                 'text' => i::__('Espaços do agente')
             ],
-            
+
 
 
 
@@ -361,7 +361,7 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Sub-agentes'), i::__('Agentes Filhos'), i::__('Agentes')],
                 'text' => i::__('Agentes')
             ],
-            
+
 
 
 
@@ -396,7 +396,7 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('projetos encontrados')],
                 'text' => i::__('projetos encontrados')
             ],
-            
+
 
 
 
@@ -492,7 +492,7 @@ class Theme extends MapasCulturais\Theme {
                 'skip' => true, // não aparece na configuração do subsite
                 'text' => i::__('adicionar novo subsite')
             ],
-            
+
 
 
 
@@ -515,7 +515,7 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Meus selos'), i::__('Meus selos certificadores'), i::__('Minhas certificações')],
                 'text' => i::__('Meus selos')
             ],
-            
+
             'entities: Users and roles' => [
                 'name' => i::__('texto "Usuários e papéis"'),
                 'description' => i::__(''),
@@ -523,8 +523,8 @@ class Theme extends MapasCulturais\Theme {
                 'skip' => true,
                 'text' => i::__('Usuários e papéis')
             ],
-            
-            
+
+
             // Taxonomias
             'taxonomies:area: name' => [
                 'name' => i::__('Área de Atuação'),
@@ -547,8 +547,8 @@ class Theme extends MapasCulturais\Theme {
                 'skip' => true,
                 'text' => i::__('Selecione as áreas')
             ],
-            
-            
+
+
             // Mensagens de erro
             'error:403: title' => [
                 'name' => i::__('Permissão negada'),
@@ -592,9 +592,9 @@ class Theme extends MapasCulturais\Theme {
                 'skip' => true,
                 'text' => i::__('')
             ],
-            
-            
-            
+
+
+
             // Roles
             'roles: Super Administrator' => [
                 'name' => i::__('Super Administrador'),
@@ -825,11 +825,21 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
                 $user = $this->ownerUser;
+                $dataValue = [
+                    'name'          => $app->user->profile->name,
+                    'entityType'    => $this->entityTypeLabel,
+                    'entityName'    => $this->name,
+                    'url'           => $this->origin_site,
+                    'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
+                ];
+
+                $message = $app->renderMailerTemplate('new',$dataValue);
+
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
-                    'subject' => sprintf(i::__("Novo %s registrado"), $this->entityTypeLabel()),
-                    'body' => sprintf(i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel, $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
+                    'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
+                    'body' => $message['body']
                 ]);
             }
         });
@@ -902,34 +912,34 @@ class Theme extends MapasCulturais\Theme {
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
         });
-        
+
         $theme = $this;
         $app->hook("GET(site.address_by_postalcode)", function() use($app, $theme) {
-            
+
             $response = $theme->getAddressByPostalCode($app->request->get('postalcode'));
             if ($response['success'] === true) {
                 echo json_encode($response);
             } else {
                 $app->halt(403, $response['error_msg']);
             }
-            
+
         });
     }
-    
-    
+
+
     /*
      * This methods tries to fill the address fields using the postal code
-     * 
+     *
      * By default it relies on brazilian CEP, but you can override this methods
      * to use another API.
-     * 
+     *
      * It should return an Arrau with an item success set to true or false.
-     * 
+     *
      * If true, it has to return the following fields.
      * Note: lat & lon are optional, they are not beeing used yet but will probably be soon
-     * 
+     *
      * response example:
-     * 
+     *
      * [
      *    'success' => true,
      *      'lat' => $json->latitude,
@@ -939,8 +949,8 @@ class Theme extends MapasCulturais\Theme {
      *      'city' => $json->cidade,
      *      'state' => $json->estado
      * ]
-     * 
-     */ 
+     *
+     */
     function getAddressByPostalCode($postalCode) {
         $app = App::i();
         if ($app->config['cep.token']) {
@@ -956,7 +966,7 @@ class Theme extends MapasCulturais\Theme {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             $json = json_decode($output);
-            if (isset($json->logradouro)) { 
+            if (isset($json->logradouro)) {
                 $response = [
                     'success' => true,
                     'lat' => $json->latitude,
@@ -978,7 +988,7 @@ class Theme extends MapasCulturais\Theme {
                 'error_msg' => 'No token for CEP'
             ];
         }
-        
+
         return $response;
     }
 
@@ -1167,7 +1177,7 @@ class Theme extends MapasCulturais\Theme {
         ]);
 
         $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
-        
+
         // This replaces the default geocoder with the google geocoder
         if (App::i()->config['app.useGoogleGeocode'])
             $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
@@ -1178,8 +1188,8 @@ class Theme extends MapasCulturais\Theme {
         $this->localizeScript('moduleNotifications', [
             'error'    => i::__('There was an error'),
         ]);
-        
-        
+
+
         if ($this->isEditable())
             $this->includeEditableEntityAssets();
 
@@ -1216,7 +1226,7 @@ class Theme extends MapasCulturais\Theme {
             /* Translators: serach results. Eventos encontrados no espaço {nome do espaço} */
             'eventsFound'    => i::__('Eventos encontrados no espaço'),
         ]);
-        
+
         $this->enqueueScript('app', 'search.controller.spatial', 'js/ng.search.controller.spatial.js', array('ng-mapasculturais', 'map'));
         $this->localizeScript('controllerSpatial', [
             'tooltip.start' =>  i::__('Clique e arraste para desenhar o círculo'),
@@ -1227,8 +1237,8 @@ class Theme extends MapasCulturais\Theme {
             'radius' =>         i::__('Raio'),
             'currentLocation' =>i::__('Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de {{radius}}KM deste ponto.'),
         ]);
-        
-        
+
+
         $this->enqueueScript('app', 'search.app', 'js/ng.search.app.js', array('ng-mapasculturais', 'search.controller.spatial', 'search.controller.map', 'search.service.findOne', 'search.service.find'));
         $this->localizeScript('searchApp', [
             'all' => i::__('Todos'),
@@ -1318,7 +1328,7 @@ class Theme extends MapasCulturais\Theme {
             'cannotChangeOwner' =>  i::__('O proprietário da entidade não pode ser modificado'),
             'requestMessage' =>  i::__('Sua requisição para mudança de propriedade deste {{type}} para o agente {{recipient}} foi enviada.'),
         ]);
-        
+
         $this->enqueueScript('app', 'entity.module.project', 'js/ng.entity.module.project.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleProject', [
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
@@ -1357,20 +1367,20 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
         ]);
-        
+
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.module.subsite', 'js/ng.entity.module.subsite.js', array('ng-mapasculturais'));
-        
+
         $this->enqueueScript('app', 'entity.module.relatedAgents', 'js/ng.entity.module.relatedAgents.js', array('ng-mapasculturais'));
         $this->localizeScript('relatedAgents', [
             'requestSent' =>  i::__('Sua requisição para relacionar o agente {{agent}} foi enviada.'),
         ]);
-        
+
         $this->enqueueScript('app', 'entity.module.relatedSeals', 'js/ng.entity.module.relatedSeals.js', array('ng-mapasculturais'));
         $this->localizeScript('relatedSeals', [
             'requestSent' =>  i::__('Sua requisição para relacionar o selo {{seal}} foi enviada.'),
         ]);
-        
+
         $this->enqueueScript('app', 'entity.directive.editableMultiselect', 'js/ng.entity.directive.editableMultiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'entity.directive.editableSingleselect', 'js/ng.entity.directive.editableSingleselect.js', array('ng-mapasculturais'));
 
@@ -1651,9 +1661,9 @@ class Theme extends MapasCulturais\Theme {
                 ]
             ]
         ];
-        
+
         App::i()->applyHookBoundTo($this, 'search.filters', [&$filters]);
-        
+
         return $filters;
     }
 
@@ -1719,10 +1729,10 @@ class Theme extends MapasCulturais\Theme {
     	if (!$app->user->is('guest')) {
             $admins_roles = $app->repo('Role')->findBy(['name' => 'admin', 'subsiteId' => $subsite->id]);
             $super_admins_roles = $app->repo('Role')->findBy(['name' => 'superAdmin', 'subsiteId' => $subsite->id]);
-            
+
             $admins = [];
             $super_admins = [];
-            
+
             foreach($admins_roles as $role) {
                 $admins[] = $role->user;
 
@@ -1731,7 +1741,7 @@ class Theme extends MapasCulturais\Theme {
                 $super_admins[] = $role->user;
 
             }
-            
+
             $this->jsObject['entity']['admins'] = $admins;
             $this->jsObject['entity']['superAdmins'] = $super_admins;
         }

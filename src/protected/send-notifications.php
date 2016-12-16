@@ -50,12 +50,19 @@ foreach($userList as $reg) {
       $now = new \DateTime;
       $interval = date_diff($user->lastLoginTimestamp, $now);
       if($interval->format('%a') >= $app->config['notifications.user.access']) {
+        $dataValue = [
+            'name'                 => $user->profile->name,
+            'last_login_timestamp' => $user->lastLoginTimestamp->format('d/m/Y')
+        ];
+
+        $message = $app->renderMailerTemplate('last_login',$dataValue);
+
         // message to user about last access system
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
-            'subject' => "Acesse Mapas Culturais",
-            'body' => "Seu último acesso foi em <b>" . $user->lastLoginTimestamp->format('d/m/Y') . "</b>, atualize suas informações se necessário."
+            'subject' => $message['title'],
+            'body' => $message['body']
         ]);
       }
     }
@@ -66,12 +73,22 @@ foreach($userList as $reg) {
           $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
           $interval = date_diff($lastUpdateDate, $now);
           if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $dataValue = [
+                'name'          => $user->profile->name,
+                'entityType'    => $agent->entityTypeLabel(),
+                'entityName'    => $agent->name,
+                'url'           => $agent->singleUrl,
+                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+            ];
+
+            $message = $app->renderMailerTemplate('update_required',$dataValue);
+
             // message to user about old agent registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
                 'to' => $user->email,
-                'subject' => "Acesse Mapas Culturais",
-                'body' => "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário."
+                'subject' => $message['title'],
+                'body' => $message['body']
             ]);
           }
         }
@@ -80,12 +97,21 @@ foreach($userList as $reg) {
           $lastUpdateDate = $project->updateTimestamp ? $project->updateTimestamp: $project->createTimestamp;
           $interval = date_diff($lastUpdateDate, $now);
           if($project->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $dataValue = [
+                'name'          => $user->profile->name,
+                'entityType'    => $project->entityTypeLabel(),
+                'entityName'    => $project->name,
+                'url'           => $project->singleUrl,
+                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+            ];
+
+            $message = $app->renderMailerTemplate('update_required',$dataValue);
             // message to user about old project registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
                 'to' => $user->email,
-                'subject' => "Acesse Mapas Culturais",
-                'body' => "O projeto <b>" . $project->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário."
+                'subject' => $message['title'],
+                'body' => $message['body']
             ]);
           }
         }
@@ -94,12 +120,22 @@ foreach($userList as $reg) {
           $lastUpdateDate = $event->updateTimestamp ? $event->updateTimestamp: $event->createTimestamp;
           $interval = date_diff($lastUpdateDate, $now);
           if($interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $dataValue = [
+                'name'          => $user->profile->name,
+                'entityType'    => $event->entityTypeLabel(),
+                'entityName'    => $event->name,
+                'url'           => $event->singleUrl,
+                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+            ];
+
+            $message = $app->renderMailerTemplate('update_required',$dataValue);
+
             // message to user about old event registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
                 'to' => $user->email,
-                'subject' => "Acesse Mapas Culturais",
-                'body' => "O Evento <b>" . $event->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário."
+                'subject' => $message['title'],
+                'body' => $message['body']
             ]);
           }
         }
@@ -108,20 +144,40 @@ foreach($userList as $reg) {
           $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
           $interval = date_diff($lastUpdateDate, $now);
           if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $dataValue = [
+                'name'          => $user->profile->name,
+                'entityType'    => $space->entityTypeLabel(),
+                'entityName'    => $space->name,
+                'url'           => $space->singleUrl,
+                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+            ];
+
+            $message = $app->renderMailerTemplate('update_required',$dataValue);
             // message to user about old space registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
                 'to' => $user->email,
-                'subject' => "Acesse Mapas Culturais",
-                'body' => "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário."
+                'subject' => $message['title'],
+                'body' => $message['body']
             ]);
           }
         }
 
+        /* @TODO avaliar necessidade de notificar os registros de seloss
         foreach($user->seals as $seal) {
           $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
           $interval = date_diff($lastUpdateDate, $now);
           if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $dataValue = [
+                'name'          => $user->profile->name,
+                'entityType'    => $seal->entityTypeLabel(),
+                'entityName'    => $seal->name,
+                'url'           => $seal->singleUrl,
+                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+            ];
+
+            $message = $app->renderMailerTemplate('update_required',$dataValue);
+
             // message to user about old seal registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
@@ -130,7 +186,7 @@ foreach($userList as $reg) {
                 'body' => "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário."
             ]);
           }
-      }
+      }*/
     }
     $app->auth->logout();
 }

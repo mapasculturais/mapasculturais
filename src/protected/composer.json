@@ -15,7 +15,7 @@
         "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
-        "mustache/mustache": "v2.5.1",
+        "mustache/mustache": "^2.11",
         "phpoffice/phpword": "dev-master",
         "michelf/php-markdown": "1.4.1",
         "opauth/logincidadao" : "*",
