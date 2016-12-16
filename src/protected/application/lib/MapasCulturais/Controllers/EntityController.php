@@ -476,17 +476,31 @@ abstract class EntityController extends \MapasCulturais\Controller{
     public function POST_sendCompliantMessage() {
         $app = App::i();
         $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
-        $message = "";
         if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
-            $message = "Denúncia Anônima";
+            $person = \MapasCulturais\i::__("Anônimo");
+            $anonimous = \MapasCulturais\i::__("Anônima");
+            $person_email = \MapasCulturais\i::__("Anônimo");
         } else {
-            $message = "Denúncia feita por " . $this->data['name'] . " em " . date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME'])  ;
+            $person = $this->data['name'];
+            $anonimous = "";
+            $person_email = $this->data['email'];
         }
 
-        $message .= " Referente a página " . $entity->singleUrl;
-        $message .= " Mensagem: " . $this->data['message'];
+        $dataValue = [
+            'name'          => $app->user->profile->name,
+            'entityType'    => $entity->getEntityTypeLabel(),
+            'entityName'    => $entity->name,
+            'person'        => $person,
+            'email'         => $person_email,
+            'url'           => $entity->singleUrl,
+            'type'          => $this->data['type'],
+            'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+            'message'       => $this->data['message']
+        ];
 
-        if(in_array('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+        $message = $app->renderMailerTemplate('compliant',$dataValue);
+
+        if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
             $admins = $app->getAdmins();
 
             foreach($admins as $administrator) {
@@ -496,8 +510,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $administrator->user->email,
-                    'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
-                    'body' => $message
+                    'subject' => $message['title'],
+                    'body' => $message['body']
                 ]);
             }
         }
@@ -515,25 +529,11 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $email,
-                    'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
-                    'body' => $message
+                    'subject' => $message['title'],
+                    'body' => $message['body']
                 ]);
             }
         }
-
-        //$app->log->debug($agent->dump());//
-        //$app->log->debug($agent->user->dump());
-        /* message to user about last access system*/
-        /*$notification = new Notification;
-        $notification->user = $agent->user;
-        $app->log->debug("Classe chamada");
-        $app->log->debug($notification->entityClassName);
-        $app->log->debug("Classe chamada User");
-        $app->log->debug($notification->user->entityClassName);
-        $notification->message = $this->data['message'];
-        $notification->type = $this->data['type'];
-        $notification->savekkk();
-        $app->em->flush();*/
     }
 
     /*
@@ -544,16 +544,31 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
         $message = "";
         if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
-            $message = "Mensagem Anônima";
+            $person = \MapasCulturais\i::__("Anônimo");
+            $anonimous = \MapasCulturais\i::__("Anônima");
+            $person_email = \MapasCulturais\i::__("Anônimo");
         } else {
-            $message = "Mensagem enviada por " . $this->data['name'] . " em " . date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME'])  ;
+            $person = $this->data['name'];
+            $anonimous = "";
+            $person_email = $this->data['email'];
         }
 
-        $message .= " Referente a página " . $entity->singleUrl;
-        $message .= " Mensagem: " . $this->data['message'];
+        $dataValue = [
+            'name'          => $app->user->profile->name,
+            'entityType'    => $entity->getEntityTypeLabel(),
+            'entityName'    => $entity->name,
+            'person'        => $person,
+            'email'         => $person_email,
+            'url'           => $entity->singleUrl,
+            'type'          => $this->data['type'],
+            'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+            'message'       => $this->data['message']
+        ];
 
-        if(in_array('mailer.from',$app->config) && !empty($app->config['mailer.from'])) {
+        $message = $app->renderMailerTemplate('suggestion',$dataValue);
+        if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
             if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
+
                 $admins = $app->getAdmins();
 
                 foreach($admins as $administrator) {
@@ -563,8 +578,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $administrator->user->email,
-                        'subject' => "Denúncia - Mapas Culturais - " . $this->data['type'],
-                        'body' => $message
+                        'subject' => $message['title'],
+                        'body' => $message['body']
                     ]);
                 }
             }
@@ -581,8 +596,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $email,
-                    'subject' => $this->data['type'] . " - Mapas Culturais",
-                    'body' => $message
+                    'subject' => $message['title'],
+                    'body' => $message['body']
                 ]);
             }
         }
@@ -601,18 +616,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $email,
-                    'subject' => "Mensagem - Mapas Culturais - " . $this->data['type'],
-                    'body' => $message
+                    'subject' => $message['title'],
+                    'body' => $message['body']
                 ]);
             }
         }
-
-        /* message to user about last access system
-        $notification = new Notification;
-        $notification->user = $agent->user;
-        $notification->message = $this->data['message'];
-        $notification->type = $this->data['type'];
-        $notification->savekkk();
-        $app->em->flush();*/
     }
 }

@@ -31,7 +31,6 @@ class RequestSealRelation extends Request{
         $relation = $this->getSealRelation();
         if($relation){
         	$app = App::i();
-        	$app->log->debug("SealRelationId".$relation->id);
             $relation->status = SealRelation::STATUS_ENABLED;
             $relation->save(true);
         }

@@ -44,6 +44,15 @@ return array(
             'title' => "Acesse a Mapas Culturais",
             'template' => 'update_required.html'
         ],
+        'compliant' => [
+            'title' => "Denúncia - Mapas Culturais",
+            'template' => 'compliant.html'
+        ],
+        'suggestion' => [
+            'title' => "Mensagem - Mapas Culturais",
+            'template' => 'suggestion.html'
+        ]
+
     ],
 
     // sempre colocar a barra no final da url

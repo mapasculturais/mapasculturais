@@ -2339,10 +2339,16 @@ class App extends \Slim\Slim{
 
     function renderMustacheTemplate($template,$templateData) {
         if(!is_array($templateData) && !is_object($templateData)) {
-
+            throw new \Exception('Template data not object or array');
         }
+
         $templateData = (object) $templateData;
-        $file_name = $this->view->resolveFileName('templates',$template);
+        if(!($file_name = $this->view->resolveFileName('templates/' . \MapasCulturais\i::get_locale(),$template))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR',$template))) {
+                throw new \Exception('Email Template undefined');
+            }
+        }
+
         $mustache = new \Mustache_Engine();
         $content = $mustache->render(file_get_contents($file_name),$templateData);
         return $content;
