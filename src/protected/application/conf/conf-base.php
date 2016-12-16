@@ -27,6 +27,25 @@ return array(
     'mailer.port'   => '465',
     'mailer.from' => 'suporte@mapasculturais.org',
 
+    'mailer.templates' => [
+        'welcome' => [
+            'title' => "Bem-vindo(a) ao Mapas Culturais",
+            'template' => 'welcome.html'
+        ],
+        'last_login' => [
+            'title' => "Acesse a Mapas Culturais",
+            'template' => 'last_login.html'
+        ],
+        'new' => [
+            'title' => "Novo registro",
+            'template' => 'new.html'
+        ],
+        'update_required' => [
+            'title' => "Acesse a Mapas Culturais",
+            'template' => 'update_required.html'
+        ],
+    ],
+
     // sempre colocar a barra no final da url
     'base.url' => $base_url,
     'base.assetUrl' => $base_url . $asset_dir,
@@ -374,13 +393,13 @@ return array(
             'site'          => \MapasCulturais\i::__('Site'),
             'event'         => \MapasCulturais\i::__('Evento'),    'events'        => \MapasCulturais\i::__('Eventos'),
             'agent'         => \MapasCulturais\i::__('Agente'),    'agents'        => \MapasCulturais\i::__('Agentes'),
-            'space'         => \MapasCulturais\i::__('Espaço'),    'spaces'        => \MapasCulturais\i::__('Espaços'),            
+            'space'         => \MapasCulturais\i::__('Espaço'),    'spaces'        => \MapasCulturais\i::__('Espaços'),
             'project'       => \MapasCulturais\i::__('Projeto'),   'projects'      => \MapasCulturais\i::__('Projetos'),
             'registration'  => \MapasCulturais\i::__('Inscrição'), 'registrations' => \MapasCulturais\i::__('Inscrições'),
             'file'          => \MapasCulturais\i::__('Arquivo'),   'files'         => \MapasCulturais\i::__('Arquivos'),
             'seal'          => \MapasCulturais\i::__('Selo'),      'seals'         => \MapasCulturais\i::__('Selos'),
-            
-            'sealrelation'  => \MapasCulturais\i::__('Certificado'), 
+
+            'sealrelation'  => \MapasCulturais\i::__('Certificado'),
             //actions
             'subsite'       => \MapasCulturais\i::__('Subsite'),
             'list'          => \MapasCulturais\i::__('Listando'),
