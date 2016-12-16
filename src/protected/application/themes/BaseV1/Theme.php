@@ -1509,6 +1509,8 @@ class Theme extends MapasCulturais\Theme {
         } else {
         	$this->jsObject['allowedFields'] = false;
         }
+
+        $this->jsObject['notification_type'] = $app->getRegisteredMetadata('MapasCulturais\Entities\Notification');
     }
 
     protected function _getFilters(){
@@ -1759,7 +1761,7 @@ class Theme extends MapasCulturais\Theme {
     		$query['@permissions'] = '@control';
     	}
 
-    	$query['@files'] = '(avatar.avatarSmall):url';
+    	$query['@files'] = '(avatar.avatarSmall,avatar.avatarMedium):url';
     	$sealId = implode(',',array_unique($sealId));
 
     	if(count($sealId) > 0 && !empty($sealId)) {

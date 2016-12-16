@@ -1,389 +1,0 @@
-Script started on Seg 15 Ago 2016 15:02:02 BRT
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais]1;..apasculturais[0m[27m[24m[J[01;32m➜  [36mmapasculturais[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=scripts[1m/[0m[0m [?1l>
-]2;scripts]1;scripts[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;ls[0m[01;32mapigen.sh[0m              [01;32mdb-update.sh[0m         [01;32mdocker_entrypoint.sh[0m   [01;32minitial-configuration.sh[0m  [01;34mreport[0m
-[01;32mapt.postgresql.org.sh[0m  [01;32mdeploy-dev.sh[0m        dump-data-filtered.sh  [01;32minstall.sh[0m                [01;32mrestore-dump.sh[0m
-[01;32mcompile-sass.sh[0m        [01;32mdeploy.sh[0m            [01;32mdump.sh[0m                [01;32minstall_vagrant.sh[0m        [01;32mrun-tests.sh[0m
-[01;32mconfigure_vagrant.sh[0m   docker_apache2.conf  [01;32mgenerate-proxies.sh[0m    mapasculturais.vhost
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=../d .  //./  //./  //./  ../db-update.sh[1m [0m[0m [?1l>
-]2;./db-update.sh]1;./db-update.shAPPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-
-Applying db update "new random id generator":
--------------------------------------------------------------------------------------------------------
-APPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "migrate gender":
--------------------------------------------------------------------------------------------------------
-APPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "remove circular references again... ;)":
--------------------------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "create table user apps":
--------------------------------------------------------------------------------------------------------
-
-ERROR exception 'PDOException' with message 'SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "user_app" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:104
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(104): PDO->query('CREATE TABLE us...')
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('CREATE TABLE us...')
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(68): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE us...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
-Next exception 'Doctrine\DBAL\Driver\PDOException' with message 'SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "user_app" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:106
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('CREATE TABLE us...')
-#1 /home/anna/projects/mapasculturais/src/protected/db-updates.php(68): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE us...')
-#2 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#4 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#5 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#6 {main}
-
-Next exception 'Doctrine\DBAL\Exception\TableExistsException' with message 'An exception occurred while executing 'CREATE TABLE user_app (
-                                public_key character varying(64) NOT NULL,
-                                private_key character varying(128) NOT NULL,
-                                user_id integer NOT NULL,
-                                name text NOT NULL,
-                                status integer NOT NULL,
-                                create_timestamp timestamp NOT NULL
-                                );':
-
-SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "user_app" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php:78
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/DBALException.php(116): Doctrine\DBAL\Driver\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(836): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOPgSql\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'CREATE TABLE us...', Array)
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(68): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE us...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "create table user_meta":
--------------------------------------------------------------------------------------------------------
-TABLE user_meta ALREADY EXISTSAPPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "create seal tables":
--------------------------------------------------------------------------------------------------------
-APPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "resize entity meta key columns":
--------------------------------------------------------------------------------------------------------
-APPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "create registration field configuration table":
--------------------------------------------------------------------------------------------------------
-
-ERROR exception 'PDOException' with message 'SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "registration_field_configuration" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:104
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(104): PDO->query('CREATE TABLE re...')
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('CREATE TABLE re...')
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(137): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE re...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
-Next exception 'Doctrine\DBAL\Driver\PDOException' with message 'SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "registration_field_configuration" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:106
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('CREATE TABLE re...')
-#1 /home/anna/projects/mapasculturais/src/protected/db-updates.php(137): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE re...')
-#2 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#4 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#5 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#6 {main}
-
-Next exception 'Doctrine\DBAL\Exception\TableExistsException' with message 'An exception occurred while executing 'CREATE TABLE registration_field_configuration (id INT NOT NULL, project_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, categories TEXT DEFAULT NULL, required BOOLEAN NOT NULL, field_type VARCHAR(255) NOT NULL, field_options VARCHAR(255) NOT NULL, PRIMARY KEY(id));':
-
-SQLSTATE[42P07]: Duplicate table: 7 ERROR:  relation "registration_field_configuration" already exists' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php:78
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/DBALException.php(116): Doctrine\DBAL\Driver\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(836): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOPgSql\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'CREATE TABLE re...', Array)
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(137): Doctrine\DBAL\Connection->executeQuery('CREATE TABLE re...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "alter table registration_file_configuration add categories":
--------------------------------------------------------------------------------------------------------
-
-ERROR exception 'PDOException' with message 'SQLSTATE[42704]: Undefined object: 7 ERROR:  constraint "registration_meta_project_fk" of relation "registration_file_configuration" does not exist' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:104
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(104): PDO->query('ALTER TABLE reg...')
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('ALTER TABLE reg...')
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(145): Doctrine\DBAL\Connection->executeQuery('ALTER TABLE reg...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
-Next exception 'Doctrine\DBAL\Driver\PDOException' with message 'SQLSTATE[42704]: Undefined object: 7 ERROR:  constraint "registration_meta_project_fk" of relation "registration_file_configuration" does not exist' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:106
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(833): Doctrine\DBAL\Driver\PDOConnection->query('ALTER TABLE reg...')
-#1 /home/anna/projects/mapasculturais/src/protected/db-updates.php(145): Doctrine\DBAL\Connection->executeQuery('ALTER TABLE reg...')
-#2 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#4 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#5 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#6 {main}
-
-Next exception 'Doctrine\DBAL\Exception\DriverException' with message 'An exception occurred while executing 'ALTER TABLE registration_file_configuration DROP CONSTRAINT registration_meta_project_fk;':
-
-SQLSTATE[42704]: Undefined object: 7 ERROR:  constraint "registration_meta_project_fk" of relation "registration_file_configuration" does not exist' in /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php:91
-Stack trace:
-#0 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/DBALException.php(116): Doctrine\DBAL\Driver\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
-#1 /home/anna/projects/mapasculturais/src/protected/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(836): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOPgSql\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'ALTER TABLE reg...', Array)
-#2 /home/anna/projects/mapasculturais/src/protected/db-updates.php(145): Doctrine\DBAL\Connection->executeQuery('ALTER TABLE reg...')
-#3 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(474): MapasCulturais\App->MapasCulturais\{closure}()
-#4 /home/anna/projects/mapasculturais/src/protected/application/lib/MapasCulturais/App.php(410): MapasCulturais\App->_dbUpdates()
-#5 /home/anna/projects/mapasculturais/src/protected/application/bootstrap.php(27): MapasCulturais\App->init(Array)
-#6 /home/anna/projects/mapasculturais/src/protected/tools/apply-updates.php(8): require('/home/anna/proj...')
-#7 {main}
-
--------------------------------------------------------------------------------------------------------
-
-
-Applying db update "verified seal migration":
--------------------------------------------------------------------------------------------------------
-APPLY HOOK BOUND TO >> entity(DbUpdate).new
-APPLY HOOK BOUND TO >> entity(MapasCulturais\Entities\DbUpdate:).save:requests
-
--------------------------------------------------------------------------------------------------------
-
-
-=================================================
-db updates executed in 2.8109 seconds.
-=================================================
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ggit stt atus[?1l>
-]2;git status]1;gitOn branch master
-Your branch is up-to-date with 'origin/master'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	[31mmodified:   ../src/protected/application/lib/MapasCulturais/Controllers/Seal.php[m
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-	[31m../src/protected/application/themes/BaseV1/views/seal/anna.php[m
-	[31m../typescript[m
-
-no changes added to commit (use "git add" and/or "git commit -a")
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?1l>
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;ls[0m[01;32mapigen.sh[0m              [01;32mdb-update.sh[0m         [01;32mdocker_entrypoint.sh[0m   [01;32minitial-configuration.sh[0m  [01;34mreport[0m
-[01;32mapt.postgresql.org.sh[0m  [01;32mdeploy-dev.sh[0m        dump-data-filtered.sh  [01;32minstall.sh[0m                [01;32mrestore-dump.sh[0m
-[01;32mcompile-sass.sh[0m        [01;32mdeploy.sh[0m            [01;32mdump.sh[0m                [01;32minstall_vagrant.sh[0m        [01;32mrun-tests.sh[0m
-[01;32mconfigure_vagrant.sh[0m   docker_apache2.conf  [01;32mgenerate-proxies.sh[0m    mapasculturais.vhost
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/scripts]1;..urais/scripts[0m[27m[24m[J[01;32m➜  [36mscripts[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=...[?1l>
-]2;..]1;..[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais]1;..apasculturais[0m[27m[24m[J[01;32m➜  [36mmapasculturais[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=aappl
-[J[0mappletviewer  [Japplycal    [J[A[0m[27m[24m[33Cappl[K  a  lls[?1l>
-[J]2;ls --color=tty]1;ls[0m[01;34mcli[0m  [01;34mdb[0m  docker-compose.yml  Dockerfile  [01;34mdocumentation[0m  LICENSE  README.md  [01;34mscripts[0m  [01;34msrc[0m  [01;34mtests[0m  travisconfig.ini  typescript  Vagrantfile
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais]1;..apasculturais[0m[27m[24m[J[01;32m➜  [36mmapasculturais[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ppro
-[J[0mprofcheck  [Jprofiles   [Jproj       [Jprompt     [JPROMPT     [JPROMPT2    [JPROMPT3    [JPROMPT4    [Jprove      [Jproxy    [J[A[0m[27m[24m[33Cpro[K p  ssc
-[J[0mscanimage         schemagen         screendump        scriptreplay      scss-lint         sctp_test                         
-scanin            scp               SCREEN_NO         [1;31mscripts[0m/          sctp_darn                                         
-[Jsched             [Jscp-dbus-service  [Jscript            [Jscss              [Jsctp_status       [J                                [3A[0m[27m[24m[33Csc[Kr
-[J[J[0mscreendump    [JSCREEN_NO     [Jscript        [Jscriptreplay  [J[1;31mscripts[0m/    [J[A[0m[27m[24m[33Cscr[Kip
-[J[A[38Ct    s  sscripts[1m/[0m[0m/progenerate-proxies.sh[1m [0m[0m                          s  ssrc[1m/[0m[0m/protected[1m/[0m[0m/apl plication[1m/[0m[0m/ass   [?1l>
-[J]2;src/protected/application/]1;src/protected/application/[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application]1;..d/application[0m[27m[24m[J[01;32m➜  [36mapplication[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;lsbootstrap.php  [0m[01;34mconf[0m  [01;34mlib[0m  [01;34mplugins[0m  [01;34mthemes[0m  [01;34mtranslations[0m
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application]1;..d/application[0m[27m[24m[J[01;32m➜  [36mapplication[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=tthm emes[1m/[0m[0m [?1l>
-]2;themes]1;themes[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes]1;..cation/themes[0m[27m[24m[J[01;32m➜  [36mthemes[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;ls[0m[01;34mBaseV1[0m  [01;34mBlumenau[0m  [01;34mCeara[0m  [01;34mJoaoPessoa[0m  [01;34mRS[0m  [01;34mSantoAndre[0m  [01;34mSaoJose[0m  [01;34mSobral[0m  [01;34mSpCultura[0m  [01;34mTemplateV1[0m
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes]1;..cation/themes[0m[27m[24m[J[01;32m➜  [36mthemes[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=bbas
-[J[0mbase64    [Jbasename  [J[1;31mBaseV1[0m/   [Jbash      [Jbashbug [J[A[0m[27m[24m[25Cbas[Ke
-[J[J[0mbase64    [Jbasename  [J[1;31mBaseV1[0m/ [J[A[0m[27m[24m[25Cbase[KvB[3CV1[1m/[0m[0m [?1l>
-[J]2;BaseV1]1;BaseV1[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1]1;..themes/BaseV1[0m[27m[24m[J[01;32m➜  [36mBaseV1[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;ls[0m[01;34massets[0m  db-updates.php  [01;34mlayouts[0m  [01;34mpages[0m  [01;32mTheme.php[0m  [01;34mviews[0m
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1]1;..themes/BaseV1[0m[27m[24m[J[01;32m➜  [36mBaseV1[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=aass
-[J[1;31massets[0m/    [Jassistant[J[A[0m[27m[24m[25Cass[Kets[1m/[0m[0m/css[1m/[0m[0m [?1l>
-[J]2;assets/css]1;assets/css[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets/css]1;..V1/assets/css[0m[27m[24m[J[01;32m➜  [36mcss[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=lls[?1l>
-]2;ls --color=tty]1;lsmain.css  main.css.map  [0m[01;34msass[0m  staging.css
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets/css]1;..V1/assets/css[0m[27m[24m[J[01;32m➜  [36mcss[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=.../[?1l>
-]2;../]1;../[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ppw[?1l>
-]2;pw]1;pwzsh: command not found: pw
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;31m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ppwd[?1l>
-]2;pwd]1;pwd/home/anna/projects/mapasculturais/src/protected/application/themes/BaseV1/assets
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=.../../../../../../s
-[J[1;31mscripts[0m/  [J[1;31msrc[0m/    [J[A[0m[27m[24m[25C../../../../../../s[Kcripts[1m/[0m[0m/compile-sass.sh[1m [0m[0m local
-[J[A[72Chost[?1l>
-[J]2;../../../../../../scripts/compile-sass.sh localhost]1;../../../../../../scripts/compile-sass.shlocalhost
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-compilando main.css do tema BaseV1
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-compilando main.css do tema ativo /home/anna/projects/mapasculturais/src/protected/application/themes/BaseV1/assets//
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=../../../../../../scripts/compile-sass.sh localhost[?1l>
-]2;../../../../../../scripts/compile-sass.sh localhost]1;../../../../../../scripts/compile-sass.shlocalhost
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-compilando main.css do tema BaseV1
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-compilando main.css do tema ativo /home/anna/projects/mapasculturais/src/protected/application/themes/BaseV1/assets//
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=../../../../../../scripts/compile-sass.sh localhost[?1l>
-]2;../../../../../../scripts/compile-sass.sh localhost]1;../../../../../../scripts/compile-sass.shlocalhost
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-compilando main.css do tema BaseV1
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-compilando main.css do tema ativo /home/anna/projects/mapasculturais/src/protected/application/themes/BaseV1/assets//
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ggit stash[?1l>
-]2;git stash]1;gitSaved working directory and index state WIP on master: 736ceac Message to say the valid period when filled with 0 (zero), it will be infinite validate.
-HEAD is now at 736ceac Message to say the valid period when filled with 0 (zero), it will be infinite validate.
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=ggit checkout -b sas as-front master[1m [0m[0m [?1l>
-]2;git checkout -b saas-front master]1;gitSwitched to a new branch 'saas-front'
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31msaas-front[34m) [33m✗[00m [K[?1h=ggit stash apply[?1l>
-]2;git stash apply]1;gitOn branch saas-front
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	[31mmodified:   ../../../lib/MapasCulturais/Controllers/Seal.php[m
-	[31mmodified:   css/sass/application/_entity-details.scss[m
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-	[31m../views/seal/anna.php[m
-	[31m../../../../../../typescript[m
-
-no changes added to commit (use "git add" and/or "git commit -a")
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31msaas-front[34m) [33m✗[00m [K[?1h=git stash apply[11Dcheckout -b saas-front master[29Dstash                        [24D[9D../../../../../../scripts/compile-sass.sh localhost[?1l>
-]2;../../../../../../scripts/compile-sass.sh localhost]1;../../../../../../scripts/compile-sass.shlocalhost
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-compilando main.css do tema BaseV1
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-compilando main.css do tema ativo /home/anna/projects/mapasculturais/src/protected/application/themes/BaseV1/assets//
-DEPRECATION WARNING:
-Sass 3.5 will no longer support Ruby 1.9.3.
-Please upgrade to Ruby 2.0.0 or greater as soon as possible.
-
-[1m[7m%[27m[1m[0m                                                                                                                                               ]2;anna@anna-pc: ~/projects/mapasculturais/src/protected/application/themes/BaseV1/assets]1;..BaseV1/assets[0m[27m[24m[J[01;32m➜  [36massets[00m [01;34mgit:([31msaas-front[34m) [33m✗[00m [K[?1h=../../../../../../scripts/compile-sass.sh localhost[?1l>
-]2;../../../../../../scripts/compile-sass.sh localhost]1;../../../../../../scripts/compile-sass.shlocalhost
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(ProjectPhases\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(AgendaSingles\Plugin).init:after
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:before
-APPLY HOOK BOUND TO >> plugin(OriginSite\Plugin).init:after
-APPLY HOOK BOUND TO >> mapasculturais.init
-APPLY HOOK BOUND TO >> app.register
-APPLY HOOK BOUND TO >> theme.init:before
-APPLY HOOK BOUND TO >> theme.init:after
-compilando main.css do tema BaseV1
-DEPRECATION WARNING:
-Sass 3.5 will

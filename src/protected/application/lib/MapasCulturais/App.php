@@ -612,6 +612,13 @@ class App extends \Slim\Slim{
         }
         $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
 
+        if ($theme_notification_types = $this->view->resolveFilename('','notification-types.php')) {
+            $notification_types = include $theme_notification_types;
+        } else {
+            $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
+        }
+        $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
+
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
@@ -948,6 +955,15 @@ class App extends \Slim\Slim{
                 $metadata = new Definitions\Metadata($meta_key, $meta_config);
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
+        }
+
+        // register notification metadata
+        $entity_class = 'MapasCulturais\Entities\Notification';
+
+        // add notification metadata definition
+        foreach($notification_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
         }
 
         // register taxonomies
@@ -2357,7 +2373,6 @@ class App extends \Slim\Slim{
         return \MapasCulturais\i::get_locale();
     }
 
-
     static function getTranslations($lcode, $domain = null) {
         $app = App::i();
         $log = key_exists('app.log.translations', $app->_config) && $app->_config['app.log.translations'];
@@ -2429,6 +2444,11 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         }
         return null;
+    }
+
+    function getAdmins() {
+        $app = App::i();
+        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
     }
 
 }

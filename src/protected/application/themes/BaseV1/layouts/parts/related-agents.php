@@ -15,6 +15,9 @@ $this->addRelatedAgentsToJs($entity);
         <h3>{{group.name}}</h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="(i, relation) in group.relations" ng-class="{pending: relation.status < 0}">
+                <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">
+                    <img ng-src="{{avatarUrl(relation.agent)}}" />
+                </a>
                 <img ng-if="isEditable" ng-src="{{avatarUrl(relation.agent)}}" />
 
                 <div class="descricao-do-agente">
