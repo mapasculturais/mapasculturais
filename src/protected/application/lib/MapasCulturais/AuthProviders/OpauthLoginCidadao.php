@@ -11,7 +11,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
 
     protected function _init() {
         $app = App::i();
-
+        
         $url = $app->createUrl('auth');
         $config = array_merge([
             'timeout' => '24 hours',
@@ -21,6 +21,19 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             'cliente_id' => '',
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
         ], $this->_config);
+        
+        
+         $opauth_config = [
+            'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
+            'Strategy' => [
+                'logincidadao' => $config
+            ],
+            'security_salt' => $config['salt'],
+            'security_timeout' => $config['timeout'],
+            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
+            'path' => $config['path'],
+            'callback_url' => $app->createUrl('auth','response')
+        ];
         
         
         //  SaaS -- BEGIN
@@ -42,31 +55,19 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $app->registerMetadata($def, 'MapasCulturais\Entities\Subsite');
         }
         
-        $app->hook('subsite.applyConfigurations:before', function(&$app_config) use(&$config) {
+        if($subsite = $app->getCurrentSubsite()){
+
             
-            if($this->login_cidaddao__id && $this->login_cidaddao__secret && isset($app_config['auth.config'])){
-                $app_config['auth.config']['client_id'] = $this->login_cidaddao__id;
-                $app_config['auth.config']['client_secret'] = $this->login_cidaddao__secret;
-                
-                $config['client_id'] = $this->login_cidaddao__id;
-                $config['client_secret'] = $this->login_cidaddao__secret;
+            $login_cidaddao__id = $subsite->getMetadata('login_cidaddao__id');
+            $login_cidaddao__secret = $subsite->getMetadata('login_cidaddao__secret');
+            
+            if($login_cidaddao__id && $login_cidaddao__secret){
+                $opauth_config['Strategy']['logincidadao']['client_id'] = $login_cidaddao__id;
+                $opauth_config['Strategy']['logincidadao']['client_secret'] = $login_cidaddao__secret;
             }
-        });
+        }
         
         // SaaS -- END
-        
-        
-        $opauth_config = [
-            'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
-            'Strategy' => [
-                'logincidadao' => $config
-            ],
-            'security_salt' => $config['salt'],
-            'security_timeout' => $config['timeout'],
-            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
-            'path' => $config['path'],
-            'callback_url' => $app->createUrl('auth','response')
-        ];
 
         if(isset($config['onCreateRedirectUrl'])){
             $this->onCreateRedirectUrl = $config['onCreateRedirectUrl'];
