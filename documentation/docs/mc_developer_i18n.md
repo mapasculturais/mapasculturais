@@ -19,7 +19,7 @@ es_ES.mo
 Por padrão, Mapas Culturais roda em português. Para alterar o idioma, basta modificar a opção *app.lcode* no seu config. Por exemplo:
 
 ```
-    'app.lcode' => 'es_ES',
+'app.lcode' => 'es_ES',
 ```
 
 ## Funções de tradução
@@ -37,14 +37,12 @@ Imprime a string traduzida.
 Exemplos:
 
 ```PHP
-    <h1><?php \MapasCulturais\i::_e('Meu título'); ?></h1>
+<h1><?php \MapasCulturais\i::_e('Meu título'); ?></h1>
 ```
 
 ```PHP
-    <h1><?php \MapasCulturais\i::_e('Meu título', 'dominio-do-meu-plugin'); ?></h1>
+<h1><?php \MapasCulturais\i::_e('Meu título', 'dominio-do-meu-plugin'); ?></h1>
 ```
-
-(mais abaixo veremos como internacionalizar plugins e temas, usando o domínio)
 
 
 ### __($string, $domain = 'defalut')
@@ -54,7 +52,7 @@ Retorna a string traduzida.
 Exemplo:
 
 ```PHP
-    $title = \MapasCulturais\i::__('Meu título');
+$title = \MapasCulturais\i::__('Meu título');
 ```
 
 
@@ -65,9 +63,9 @@ Imprime a string traduzida e tratada com htmlspecialchars(). Útil para strings 
 Exemplo:
 
 ```PHP
-    <a href="#" title="<?php \MapasCulturais\i::esc_attr_e('Meu título'); ?>">
-        <?php \MapasCulturais\i::_e('Meu título'); ?>
-    </a>
+<a href="#" title="<?php \MapasCulturais\i::esc_attr_e('Meu título'); ?>">
+    <?php \MapasCulturais\i::_e('Meu título'); ?>
+</a>
 ```
 
 
@@ -78,10 +76,18 @@ Retorna a string traduzida e tratada com htmlspecialchars(). Útil para strings 
 Exemplo:
 
 ```PHP
-    $title = \MapasCulturais\i::esc_attr__('Meu título');
+$title = \MapasCulturais\i::esc_attr__('Meu título');
 ```
 
-TODO: Documentar as funções que lidam com singular e plural.
+
+### _n($stringSingular, $stringPlural, $numero, $domain = 'default')
+
+Retorna a string traduzida no singular ou no plural, dependendo do número.
+
+```PHP
+<?php echo \MapasCulturais\i::_n('E-mail enviado', 'E-mails enviados', $count_emails); ?></h1>
+```
+
 
 ## Traduzindo javascript
 
@@ -94,14 +100,14 @@ Exemplo:
 
 No seu Theme.php 
 ```PHP
-    $this->localizeScript('MeuGrupo', [
-        'Minha String' => \MapasCulturais\i::__('Meu título')
-    ]);
+$this->localizeScript('MeuGrupo', [
+    'Minha String' => \MapasCulturais\i::__('Meu título')
+]);
 ```
 
 E no seu arquivo Javascript
 ```Javascript
-    alert(MapasCulturais.gettext.MeuGrupo['Minha String']);
+alert(MapasCulturais.gettext.MeuGrupo['Minha String']);
 ```
 
 Dica: utilize um grupo para cada arquivo Javascript e faça a chamada do método localizeScript logo após o enqueueScript. Dessa maneira o código fica mais organizado.
@@ -122,7 +128,7 @@ No Theme.php do seu tema ou no Plugin.php chamar o método *load_textdomain()* p
 Este método recebe dois parâmetros. O nome do domínio e o caminho para a pasta onde ficam os arquivos .po e .mo do seu tema ou plugin.
 
 ```PHP
-    \MapasCulturais\i::load_textdomain( 'dominio-do-meu-plugin', __DIR__ . "/translations" );
+\MapasCulturais\i::load_textdomain( 'dominio-do-meu-plugin', __DIR__ . "/translations" );
 ```
 
 Neste caso, há uma pasta "translations" dentro da pasta do tema ou do plugin, onde ficam os arquivos de tradução seguindo os mesmos
@@ -131,7 +137,7 @@ padrões de nomenclatura dos arquivos principais.
 Após registrar seu domínio, basta passar o domínio como segundo parâmetro das funções de tradução;
 
 ```PHP
-    <h1><?php \MapasCulturais\i::_e('Meu título', 'dominio-do-meu-plugin'); ?></h1>
+<h1><?php \MapasCulturais\i::_e('Meu título', 'dominio-do-meu-plugin'); ?></h1>
 ```
 
 
@@ -150,7 +156,7 @@ Para isso, algumas dicas:
 Se você tem uma variável, um link, ou algum outro código no meio da string, você deve evitar situações como essa:
 
 ```PHP
-        <?php \MapasCulturais\i::_e('Você possui'); ?> <?php echo $number; ?>, <?php \MapasCulturais\i::_e('dias para resolver isso.'); ?>
+<?php \MapasCulturais\i::_e('Você possui'); ?> <?php echo $number; ?> <?php \MapasCulturais\i::_e('dias para resolver isso.'); ?>
 ```
 
 Se você fizer isso, as frases "Você possui" e "dias para resolver isso" ficarão totalmente independetes e desconectadas. Na hora de traduzir, o tradutor não saberá que isso
@@ -159,7 +165,7 @@ não faz parte de uma mesma sentença e elas parecerão frases sem sentido.
 Prefira usar uma frase só, utilizando as funções printf() e sprintf() do php. Veja como ficaria:
 
 ```PHP
-        <?php printf(\MapasCulturais\i::__('Você possui %s dias para resolver isso.'), $number); ?>
+<?php printf(\MapasCulturais\i::__('Você possui %s dias para resolver isso.'), $number); ?>
 ```
 
 
@@ -173,13 +179,14 @@ As vezes algumas palavras podem ser ambíguas e sem significados quando isoladas
 
 Por exemplo, "de" pode significar que é *de alguém*, ou pode significar *a partir de*.
 
-Se você quiser passar um contexto para o tradutor, pode usar um comentário PHP na linha acima da chamada php, assim:
+Se você quiser passar um contexto para o tradutor, pode usar um comentário PHP na linha acima da chamada php. Esses comentários
+aparecem para ele dentro do editor PoEdit. Faça assim:
 
 ```PHP
 <?php
 
-    // Translators: canto de um passáro, e não canto da mesa
-    $text = \MapasCulturais\i::__('Canto');
+// Translators: canto de um passáro, e não canto da mesa
+$text = \MapasCulturais\i::__('Canto');
 
 ?>
 ```
