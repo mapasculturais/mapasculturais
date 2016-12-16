@@ -174,6 +174,8 @@ trait ControllerAPI{
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
         $app = App::i();
+        
+        $__original_query_data = $qdata;
 
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
 
@@ -640,6 +642,12 @@ trait ControllerAPI{
                 }
                 return $entity;
             };
+            
+            if($findOne){
+                $hook_action = 'findOne';
+            } else {
+                $hook_action = 'find';
+            }
 
             if($findOne){
                 $query->setFirstResult(0)
@@ -671,6 +679,8 @@ trait ControllerAPI{
                     if($r)
                         $entity = $processEntity($r);
                 }
+                $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$entity, $hook_action]);
+
                 return $entity;
             }else{
 
@@ -745,6 +755,7 @@ trait ControllerAPI{
 
 
                 if ($counting) {
+                    $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$rs_count, $hook_action]);
                     return $rs_count;
                 }
 
@@ -755,7 +766,7 @@ trait ControllerAPI{
                     return $processEntity($entity);
                 }, $rs);
                 
-                $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result", [&$qdata, &$result]);
+                $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$result, $hook_action]);
 
                 return $result;
             }
