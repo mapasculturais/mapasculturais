@@ -2235,17 +2235,36 @@ class App extends \Slim\Slim{
     function getMailer() {
         $transport = [];
 
+        // server
+        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
 
-        if(isset($this->_config['mailer.user']) &&
-            isset($this->_config['mailer.psw']) &&
-            isset($this->_config['mailer.server']) &&
-            isset($this->_config['mailer.port']) &&
-            isset($this->_config['mailer.protocol'])) {
-            $transport = \Swift_SmtpTransport::newInstance($this->_config['mailer.server'],
-                                                            $this->_config['mailer.port'],
-                                                            $this->_config['mailer.protocol'])
-                                                            ->setUsername($this->_config['mailer.user'])
-                                                            ->setPassword($this->_config['mailer.psw']);
+        // default transport SMTP
+        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+
+        // default port to 25
+        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+
+        // default encryption protocol to ssl
+        $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
+
+
+        if ($transport_type == 'smtp' && false !== $server) {
+
+            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
+
+            // Maybe add username and password
+            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
+                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
+
+                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
+            }
+
+        } elseif ($transport_type == 'sendmail' && false !== $server) {
+            $transport = \Swift_SendmailTransport::newInstance($server);
+        } elseif ($transport_type == 'mail') {
+            $transport = \Swift_MailTransport::newInstance();
+        } else {
+            return false;
         }
 
         $instance = \Swift_Mailer::newInstance($transport);
@@ -2285,6 +2304,9 @@ class App extends \Slim\Slim{
         $failures = [];
         $mailer = $this->getMailer();
 
+        if (!is_object($mailer))
+            return false;
+
         try {
             $mailer->send($message,$failures);
             return true;
@@ -2296,7 +2318,7 @@ class App extends \Slim\Slim{
 
     function createAndSendMailMessage(array $args = []){
         $message = $this->createMailMessage($args);
-        $this->sendMailMessage($message);
+        return $this->sendMailMessage($message);
     }
 
     function renderMustacheTemplate($template,$templateData) {
