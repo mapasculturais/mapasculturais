@@ -829,7 +829,7 @@ class Theme extends MapasCulturais\Theme {
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
                     'subject' => sprintf(i::__("Novo %s registrado"), $this->entityTypeLabel()),
-                    'body' => sprintf(i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel(), $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
+                    'body' => sprintf(i::__("Criado(a) %s de nome %s pelo usuário %s na instalação %s em %s."), $this->entityTypeLabel, $this->name, $app->user->profile->name, $this->origin_site, $this->createTimestamp->format('d/m/Y - H:i'))
                 ]);
             }
         });
