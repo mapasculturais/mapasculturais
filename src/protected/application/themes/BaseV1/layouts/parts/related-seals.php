@@ -8,7 +8,7 @@ $this->addRelatedSealsToJs($entity);
 
 <?php if($this->controller->action == 'create'): ?>
 	<div class="widget">
-		<p class="alert info"><?php printf(\MapasCulturais\i::__("Para relacionar o selo ao %s, primeiro é preciso salvar o registro."), $entity->entityTypeLabel()); ?><span class="close"></span></p>
+		<p class="alert info"><?php printf(\MapasCulturais\i::__("Para relacionar o selo ao %s, primeiro é preciso salvar o registro."), $entity->entityTypeLabel); ?><span class="close"></span></p>
 	</div>
 <?php else: ?>
     <div class="selos-add" ng-controller="RelatedSealsController">

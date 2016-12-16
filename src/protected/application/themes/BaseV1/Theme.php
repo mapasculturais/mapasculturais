@@ -827,7 +827,7 @@ class Theme extends MapasCulturais\Theme {
                 $user = $this->ownerUser;
                 $dataValue = [
                     'name'          => $app->user->profile->name,
-                    'entityType'    => $this->entityTypeLabel(),
+                    'entityType'    => $this->entityTypeLabel,
                     'entityName'    => $this->name,
                     'url'           => $this->origin_site,
                     'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
@@ -838,7 +838,7 @@ class Theme extends MapasCulturais\Theme {
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $user->email,
-                    'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel())),
+                    'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
                     'body' => $message['body']
                 ]);
             }
@@ -1761,7 +1761,7 @@ class Theme extends MapasCulturais\Theme {
     		$query['@permissions'] = '@control';
     	}
 
-    	$query['@files'] = '(avatar.avatarSmall):url';
+    	$query['@files'] = '(avatar.avatarSmall,avatar.avatarMedium):url';
     	$sealId = implode(',',array_unique($sealId));
 
     	if(count($sealId) > 0 && !empty($sealId)) {
