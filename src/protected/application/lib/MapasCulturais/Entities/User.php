@@ -160,7 +160,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         else
             $this->checkPermission('addRole');
 
-        if(!$this->is($role_name)){
+        if(!$this->is($role_name, $subsite_id)){
             $role = new Role;
             $role->user = $this;
             $role->name = $role_name;
@@ -236,7 +236,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $user->is('saasSuperAdmin') && $user->id != $this->id;
     }
 
-    function is($role_name){
+    function is($role_name, $subsite_id = false){
         if($role_name === 'admin' && $this->is('superAdmin')){
             return true;
         }
@@ -254,7 +254,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
             $subsite_id = null;
         } else {
-            $subsite_id = $app->getCurrentSubsiteId();
+            if (false === $subsite_id) $app->getCurrentSubsiteId();
         }
 
 
