@@ -20,6 +20,6 @@ pages:
     - 'Opções de Geocoding e busca por código postal': 'mc_developer_geocoding.md'
     - 'Personalizando montagem do endereço': 'mc_developer_address.md'
     - 'Internacionalização': 'mc_developer_i18n.md'
-theme: 'flatly'
+theme: 'mkdocs'
 markdown_extensions:
     - fenced_code
