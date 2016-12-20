@@ -2,59 +2,322 @@
 
 namespace MapasCulturais;
 
+use Doctrine\ORM\Query;
+
 class ApiQuery {
 
     use Traits\MagicGetter;
 
-    protected $controller;
-    protected $className;
-    public $select = "";
-    public $joins = "";
-    public $where = "";
-    protected $params = [];
-    protected $queryParams = [];
+    /**
+     * Global counter used to name DQL alias
+     * @var int
+     */
+    protected $__counter = 0;
     
-    protected $_select = [];
-    protected $_selectProperties = [];
-    protected $_selectMetadata = [];
+    /**
+     * The Entity Controller
+     * @var MapasCulturais\Controllers\EntityController
+     */    
+    protected $controller;
+    
+    /**
+     * The Entity Class Name
+     * 
+     * @example "MapasCulturais\Entities\Agent"
+     * @var string 
+     */
+    protected $entityClassName;
+    
+    /**
+     * The Entity Metadata Class Name
+     * 
+     * @example "MapasCulturais\Entities\AgentMeta"
+     * @var string
+     */
+    protected $metadataClassName;
+    
+    
+    /**
+     * List of the entity properties
+     * 
+     * @var array
+     */
+    protected $entityProperties = [];
+    
+    
+    /**
+     * List of entity ralations
+     * 
+     * @var array
+     */
+    protected $entityRelations = [];
+    
+    /**
+     * List of registered metadata to the requested entity for this context (subsite?)
+     * @var array 
+     */
+    protected $registeredMetadata = [];
+    
+    /**
+     * List of the registered taxonomies for this context
+     * 
+     * @var array 
+     */
+    protected $registeredTaxonomies = [];
+    
+    /**
+     * the parameter of api query
+     * 
+     * @example ['@select' => 'id,name', '@order' => 'name ASC', 'id' => 'GT(10)', 'name' => 'ILIKE(fulano%)']
+     * @var array 
+     */
+    protected $apiParams = [];
+    
+    /**
+     * The SELECT part of the DQL that will be executed
+     * 
+     * @example "e.id, e.name"
+     * 
+     * @var string 
+     */
+    public $select = "";
+    
+    /**
+     * The JOINs fo the DQL that will be executed
+     * @var string 
+     */
+    public $joins = "";
+    
+    /**
+     * The WHERE part of the DQL that will be executed
+     * @example "e.id > 10"
+     * @var string 
+     */
+    public $where = "";
+    
+    /**
+     * List of expressions used to compose the where part of the DQL that will be executed
+     * @var array
+     */
+    protected $_whereDqls = [];
+    
+    /**
+     * Mapping of the api query params to dql params
+     * @var type 
+     */
+    protected $_keys = [];
+    
+    /**
+     * List of parameters that will be used to run the DQL
+     * @var array 
+     */
+    protected $_dqlParams = [];
+    
+    /**
+     * Fields that are being selected
+     * 
+     * @var type 
+     */
+    protected $_selecting = ['id'];
+    
+    /**
+     * Slice of the fields that are being selected that are properties of the entity
+     * 
+     * @var type 
+     */
+    protected $_selectingProperties = [];
+    
+    /**
+     * Slice of the fields that are being selected that are metadata of the entity
+     * 
+     * @var type 
+     */
+    protected $_selectingMetadata = [];
+    
+    /**
+     * Files that are being selected
+     * 
+     * @var type 
+     */
+    protected $_selectingFiles = [];
     
     protected $_subqueriesSelect = [];
+    
+    protected $_order = 'id ASC';
+    protected $_offset;
+    protected $_page;
+    protected $_limit;
+    protected $_keyword;
+    protected $_seals = [];
+    protected $_permissions;
+    protected $_op = ' AND ';
+    
+    protected $_templateJoinMetadata = "\n\t\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
+    protected $_templateJoinTerm = "\n\t\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
 
-    public function __construct(Controllers\EntityController $controller, $query_params) {
-        $this->queryParams = $params;
+    public function __construct(Controllers\EntityController $controller, $api_params) {
+        $this->apiParams = $api_params;
         $this->controller = $controller;
-        $this->className = $controller->entityClassName;
+        $this->entityClassName = $controller->entityClassName;
+
+        $this->initialize();
 
         $this->parseQueryParams();
     }
 
+    protected function initialize() {
+        $app = App::i();
+        $em = $app->em;
+        $class = $this->entityClassName;
+
+        if ($class::usesMetadata()) {
+            $this->metadataClassName = $class::getMetadataClassName();
+
+            foreach ($app->getRegisteredMetadata($class) as $meta) {
+                $this->registeredMetadata[] = $meta->key;
+            }
+        }
+
+        if ($class::usesTaxonomies()) {
+            foreach ($app->getRegisteredTaxonomies($class) as $obj) {
+                $this->registeredTaxonomies['term:' . $obj->slug] = $obj->id;
+            }
+        }
+        
+        $this->entityProperties = array_keys($em->getClassMetadata($class)->fieldMappings);
+        $this->entityRelations = $em->getClassMetadata($class)->associationMappings;
+    }
+    
+    public function getFindOneResult(){
+        $em = App::i()->em;
+        
+        $dql = $this->getFindDQL();
+        
+        $q = $em->createQuery($dql);
+        
+        $q->setMaxResults(1);
+        
+        $q->setParameters($this->_dqlParams);
+
+        $result = $q->getOneOrNullResult(Query::HYDRATE_ARRAY);
+        
+        return $result;
+    }
+    
+    public function getFindResult(){
+        $em = App::i()->em;
+        
+        $dql = $this->getFindDQL();
+        
+        $q = $em->createQuery($dql);
+        
+        if($offset = $this->getOffset()){
+            $q->setFirstResult($offset);
+        }
+        
+        if($limit = $this->getLimit()){
+            $q->setMaxResults($limit);
+        }
+        
+        $q->setParameters($this->_dqlParams);
+        
+        $result = $q->getResult(Query::HYDRATE_ARRAY);
+        
+        return $result;
+    }
+    
+    public function getCountResult(){
+        $em = App::i()->em;
+        
+        $dql = $this->getCountDQL();
+        
+        $q = $em->createQuery($dql);
+        
+        $q->setParameters($this->_dqlParams);
+        
+        $result = $q->getSingleScalarResult();
+        
+        return $result;
+    }
+
     public function getFindDQL() {
-        $dql = "SELECT\n\t{$this->select}\nFROM {$this->className} e {$this->joins}";
-        if ($this->where) {
-            $dql .= "\nWHERE\n\t{$this->where}";
+        $select = $this->generateSelect();
+        $where = $this->generateWhere();
+        $joins = $this->generateJoins();
+
+        $dql = "SELECT\n\t{$select}\nFROM {$this->entityClassName} e {$joins}";
+        if ($where) {
+            $dql .= "\nWHERE\n\t{$where}";
         }
 
         return $dql;
     }
 
     public function getCountDQL() {
-        $dql = "SELECT\n\tCOUNT(e.id)\nFROM {$this->className} e {$this->joins}";
-        if ($this->where) {
-            $dql .= "\nWHERE\n\t{$this->where}";
+        $where = $this->generateWhere();
+        $joins = $this->generateJoins();
+
+        $dql = "SELECT\n\tCOUNT(e.id)\nFROM {$this->entityClassName} e {$joins}";
+        if ($where) {
+            $dql .= "\nWHERE\n\t{$where}";
         }
 
         return $dql;
     }
 
     public function getSubDQL($prop = 'id') {
+        $where = $this->generateWhere();
+        $joins = $this->generateJoins();
+
         // @TODO: se estiver paginando, rodar a consulta pegando somente os ids e retornar uma lista de ids 
         $alias = 'e_' . uniqid();
-        $dql = "SELECT\n\t{$alias}.{$prop}\nFROM {$this->className} {$alias} {$this->joins}";
-        if ($this->where) {
-            $dql .= "\nWHERE\n\t{$this->where}";
+        $dql = "SELECT\n\t{$alias}.{$prop}\nFROM {$this->entityClassName} {$alias} {$joins}";
+        if ($where) {
+            $dql .= "\nWHERE\n\t{$where}";
         }
 
         return preg_replace('#([^a-z0-9_])e\.#i', "{$alias}.", $dql);
+    }
+    
+    function getLimit(){
+        return $this->_limit;
+    }
+    
+    function getOffset(){
+        if($this->_offset){
+            return $this->_offset;
+        } else if($this->_page && $this->page > 1 && $this->_limit){
+            return $this->_limit * ($this->_page - 1);
+        } else {
+            return 0;
+        }
+    }
+
+    protected function generateWhere() {
+        $where = $this->where;
+        $where_dqls = $this->_whereDqls;
+
+        $where .= implode(" $this->_op \n\t", $where_dqls);
+        
+        return $where;
+    }
+
+    protected function generateJoins() {
+        $joins = $this->joins;
+
+        return $joins;
+    }
+
+    protected function generateSelect() {
+        $select = $this->select;
+        
+        if (in_array('publicLocation', $this->entityProperties) && !in_array('publicLocation', $this->_selectingProperties)) {
+            $this->_selectingProperties[] = 'publicLocation';
+        }
+        
+        $select .= implode(', ' , array_map(function ($e) { return "e.{$e}"; }, $this->_selectingProperties));
+
+        return $select;
     }
 
     public function addMultipleParams(array $values) {
@@ -66,7 +329,7 @@ class ApiQuery {
         return $result;
     }
 
-    public function addSingleParam($values) {
+    public function addSingleParam($value) {
         $app = App::i();
         if (trim($value) === '@me') {
             $value = $app->user->is('guest') ? null : $app->user;
@@ -85,7 +348,7 @@ class ApiQuery {
         }
 
         $uid = uniqid('v');
-        $this->params[$uid] = $value;
+        $this->_dqlParams[$uid] = $value;
 
         $result = ':' . $uid;
 
@@ -115,7 +378,7 @@ class ApiQuery {
             } elseif ($operator == "IN") {
                 $values = $this->splitParam($value);
 
-                $values = $this->addSingleParam($values);
+                $values = $this->addMultipleParams($values);
 
                 if (count($values) < 1) {
                     throw new Exceptions\Api\InvalidArgument('expression IN expects at last one value');
@@ -132,7 +395,7 @@ class ApiQuery {
                     throw new Exceptions\Api\InvalidArgument('expression BET expects 2 string or integer arguments');
                 }
 
-                $values = $this->addSingleParam($values);
+                $values = $this->addMultipleParams($values);
 
                 $dql = $not ?
                         "$key NOT BETWEEN {$values[0]} AND {$values[1]}" :
@@ -251,200 +514,200 @@ class ApiQuery {
 
         return $results;
     }
-    
-    
-    
+
     protected function parseQueryParams() {
-        foreach ($this->queryParams as $key => $val) {
-            $val = trim($val);
+        foreach ($this->apiParams as $key => $value) {
+            $value = trim($value);
             if (strtolower($key) == '@select') {
-                $this->_parseSelect($val);
-                continue;
-                
-                
+                $this->_parseSelect($value);
             } elseif (strtolower($key) == '@order') {
-                $order = $val;
-                continue;
+                $this->_order = $value;
             } elseif (strtolower($key) == '@offset') {
-                $offset = $val;
-                continue;
+                $this->_offset = $value;
             } elseif (strtolower($key) == '@page') {
-                $page = $val;
-                continue;
+                $this->_page = $value;
             } elseif (strtolower($key) == '@limit') {
-                $limit = $val;
-                continue;
-                
-                
+                $this->_limit = $value;
             } elseif (strtolower($key) == '@keyword') {
-                $keyword = $val;
-                continue;
-                
-                
+                $this->_keyword = $value;
             } elseif (strtolower($key) == '@permissions') {
-                $permissions = explode(',', $val);
-                continue;
+                $this->_permissions = explode(',', $value);
             } elseif (strtolower($key) == '@seals') {
-                $seals = explode(',', $val);
-                continue;
+                $this->_seals = explode(',', $value);
             } elseif (strtolower($key) == '@verified') {
-                $seals = $app->config['app.verifiedSealsIds'];
-                continue;
-                
-                
+                $this->_seals = $app->config['app.verifiedSealsIds'];
             } elseif (strtolower($key) == '@or') {
-                $op = ' OR ';
-                continue;
-            } elseif (strtolower($key) == '@type') {
-                continue;
-            } elseif (strtolower($key) == '@files' && preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $val, $imatch)) {
-
-                if ($counting)
-                    continue;
-                // example:
-                // @files=(avatar.smallAvatar,header.header):name,url
-
-                $cfg = [
-                    'files' => explode(',', $imatch[1]),
-                    'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : ['url']
-                ];
-
-                $_join_in = [];
-
-                foreach ($cfg['files'] as $_f) {
-                    if (strpos($_f, '.') > 0) {
-                        list($_f_group, $_f_transformation) = explode('.', $_f);
-                        $_join_in[] = $_f_group;
-                        $_join_in[] = 'img:' . $_f_transformation;
-                    } else {
-                        $_join_in[] = $_f;
-                    }
-                }
-
-                $_join_in = array_unique($_join_in);
-
-                $dql_select[] = ", files, fparent";
-                $dql_select_joins[] = "
-                        LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "')
-                        LEFT JOIN files.parent fparent";
-
-                $extract_data_cb = function($file, $ipath, $props) {
-                    $result = [];
-                    if ($ipath) {
-                        $path = explode('.', $ipath);
-                        foreach ($path as $transformation) {
-                            $file = $file->transform($transformation);
-                        }
-                    }
-                    if (is_object($file)) {
-                        foreach ($props as $prop) {
-                            $result[$prop] = $file->$prop;
-                        }
-                    }
-
-                    return $result;
-                };
-
-                $append_files_cb = function(&$result, $entity) use($cfg, $extract_data_cb) {
-
-                    $files = $entity->files;
-
-                    foreach ($cfg['files'] as $im) {
-                        $im = trim($im);
-
-                        list($igroup, $ipath) = explode('.', $im, 2) + [null, null];
-
-                        if (!key_exists($igroup, $files))
-                            continue;
-
-                        if (is_array($files[$igroup])) {
-                            $result["@files:$im"] = [];
-                            foreach ($files[$igroup] as $file)
-                                $result["@files:$im"][] = $extract_data_cb($file, $ipath, $cfg['props']);
-                        } else {
-                            $result["@files:$im"] = $extract_data_cb($files[$igroup], $ipath, $cfg['props']);
-                        }
-                    }
-                };
-                continue;
-            }
-
-            if ($key === 'user' && $class::usesOwnerAgent()) {
-                $dql_joins .= ' LEFT JOIN e.owner __user_agent__';
-                $keys[$key] = '__user_agent__.user';
-            } elseif (key_exists($key, $entity_associations) && $entity_associations[$key]['isOwningSide']) {
-                $keys[$key] = 'e.' . $key;
-            } elseif (in_array($key, $entity_properties)) {
-                $keys[$key] = 'e.' . $key;
+                $this->_op = ' OR ';
+            } elseif (strtolower($key) == '@files') {
+                $this->_parseFiles($value);
+            } elseif ($key === 'user' && $class::usesOwnerAgent()) {
+                $this->_addFilterByOwnerUser();
+            } elseif (key_exists($key, $this->entityRelations) && $this->entityRelations[$key]['isOwningSide']) {
+                $this->_addFilterByEntityProperty($key, $value);
+            } elseif (in_array($key, $this->entityProperties)) {
+                $this->_addFilterByEntityProperty($key, $value);
             } elseif ($class::usesTypes() && $key === 'type') {
-                $keys[$key] = 'e._type';
-            } elseif ($class::usesTaxonomies() && in_array($key, $taxonomies)) {
-                $taxo_num++;
-                $tr_alias = "tr{$taxo_num}";
-                $t_alias = "t{$taxo_num}";
-                $taxonomy_id = $taxonomies_ids[$key];
-
-                $keys[$key] = "$t_alias.term";
-                $dql_joins .= str_replace('{ALIAS_TR}', $tr_alias, str_replace('{ALIAS_T}', $t_alias, str_replace('{TAXO}', $taxonomy_id, $dql_join_term_template)));
-            } elseif ($class::usesMetadata() && in_array($key, $entity_metadata)) {
-                $meta_num++;
-                $meta_alias = "m{$meta_num}";
-                $keys[$key] = "$meta_alias.value";
-                $dql_joins .= str_replace('{ALIAS}', $meta_alias, str_replace('{KEY}', $key, $dql_join_template));
+                $this->_addFilterByEntityProperty($key, $value, '_type');
+            } elseif ($class::usesTaxonomies() && isset($this->registeredTaxonomies[$key])) {
+                $this->_addFilterByTermTaxonomy($key, $value);
+            } elseif ($class::usesMetadata() && in_array($key, $this->registeredMetadata)) {
+                $this->_addFilterByMetadata($key, $value);
             } elseif ($key[0] != '_' && $key != 'callback') {
                 $this->apiErrorResponse("property $key does not exists");
-            } else {
-                continue;
-            }
-            $dqls[] = $this->_API_find_parseParam($keys[$key], $val);
+            } 
         }
+    }
+
+    protected function _addFilterByOwnerUser() {
+        $this->_keys['user'] = '__user_agent__.user';
+
+        $this->joins .= '\n\t\tLEFT JOIN e.owner __user_agent__';
+
+        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+    }
+
+    protected function _addFilterByEntityProperty($key, $value, $propery_name = null) {
+        $this->_keys[$key] = $propery_name ? "e.{$propery_name}" : "e.{$key}";
+
+        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+    }
+
+    protected function _addFilterByMetadata($key, $value) {
+        $count = $this->__counter++;
+        $meta_alias = "m{$count}";
+
+        $this->_keys[$key] = "$meta_alias.value";
+
+        $dql_joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $dql_join_template);
+
+        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+    }
+
+    protected function _addFilterByTermTaxonomy($key, $value) {
+        $count = $this->__counter++;
+        $tr_alias = "tr{$count}";
+        $t_alias = "t{$count}";
+        $taxonomy_id = $this->registeredTaxonomies[$key];
+
+        $this->_keys[$key] = "$t_alias.term";
+
+        $this->joins .= str_replace(['{ALIAS_TR}', '{ALIAS_T}', '{TAXO}'], [$tr_alias, $t_alias, $taxonomy_id], $this->_templateJoinTerm);
+
+        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
 
     protected function _parseSelect($select) {
         $select = str_replace(' ', '', $select);
-        
+
         // create subquery to format entity.* or entity.{id,name}
-        while(preg_match('#([^,\.]+)\.(\{[^\{\}]+\})#', $select, $matches)){
+        while (preg_match('#([^,\.]+)\.(\{[^\{\}]+\})#', $select, $matches)) {
             $_subquery_entity_class = $matches[1];
-            $_subquery_select = substr($matches[2],1,-1);
-            
+            $_subquery_select = substr($matches[2], 1, -1);
+
             $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select);
-            
+
             $select = str_replace($matches[0], $replacement, $select);
         }
-        
+
         // create subquery to format entity.id or entity.name        
-        while(preg_match('#([^,\.]+)\.([^,\.]+)#', $select, $matches)){
+        while (preg_match('#([^,\.]+)\.([^,\.]+)#', $select, $matches)) {
             $_subquery_entity_class = $matches[1];
             $_subquery_select = $matches[2];
-            
+
             $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select);
-            
+
             $select = str_replace($matches[0], $replacement, $select);
         }
-        
-        $this->_select = explode(',', $select);
 
-        foreach ($this->_select as $i => $prop) {
-            if (in_array($prop, $this->_entityProperties)) {
-                $this->_selectProperties[] = $prop;
-                
-            } elseif (in_array($prop, $this->_entityMetadata)) {
-                $this->_selectMetadata[] = $prop;
-                
+        $this->_selecting = explode(',', $select);
+
+        foreach ($this->_selecting as $i => $prop) {
+            if (in_array($prop, $this->entityProperties)) {
+                $this->_selectingProperties[] = $prop;
+            } elseif (in_array($prop, $this->registeredMetadata)) {
+                $this->_selectingMetadata[] = $prop;
             } elseif (in_array($prop, $this->_entityRelations)) {
-                $this->_select[$i] = $this->_preCreateSelectSubquery($prop, 'id');
-                
-            } 
+                $this->_selecting[$i] = $this->_preCreateSelectSubquery($prop, 'id');
+            }
         }
     }
-    
-    protected function _preCreateSelectSubquery($entity, $select){
+
+    protected function _preCreateSelectSubquery($entity, $select) {
         $uid = uniqid('#sq:');
-        
+
         $this->_subqueriesSelect[$uid] = [$entity, $select];
-        
+
         return $uid;
     }
 
+    protected function _parseFiles($value) {
+        if (preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $val, $imatch)) {
+            return;
+            // example:
+            // @files=(avatar.smallAvatar,header.header):name,url
+
+            $cfg = [
+                'files' => explode(',', $imatch[1]),
+                'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : ['url']
+            ];
+
+            $_join_in = [];
+
+            foreach ($cfg['files'] as $_f) {
+                if (strpos($_f, '.') > 0) {
+                    list($_f_group, $_f_transformation) = explode('.', $_f);
+                    $_join_in[] = $_f_group;
+                    $_join_in[] = 'img:' . $_f_transformation;
+                } else {
+                    $_join_in[] = $_f;
+                }
+            }
+
+            $_join_in = array_unique($_join_in);
+
+            $dql_select[] = ", files, fparent";
+            $dql_select_joins[] = "
+                        LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "')
+                        LEFT JOIN files.parent fparent";
+
+            $extract_data_cb = function($file, $ipath, $props) {
+                $result = [];
+                if ($ipath) {
+                    $path = explode('.', $ipath);
+                    foreach ($path as $transformation) {
+                        $file = $file->transform($transformation);
+                    }
+                }
+                if (is_object($file)) {
+                    foreach ($props as $prop) {
+                        $result[$prop] = $file->$prop;
+                    }
+                }
+
+                return $result;
+            };
+
+            $append_files_cb = function(&$result, $entity) use($cfg, $extract_data_cb) {
+
+                $files = $entity->files;
+
+                foreach ($cfg['files'] as $im) {
+                    $im = trim($im);
+
+                    list($igroup, $ipath) = explode('.', $im, 2) + [null, null];
+
+                    if (!key_exists($igroup, $files))
+                        continue;
+
+                    if (is_array($files[$igroup])) {
+                        $result["@files:$im"] = [];
+                        foreach ($files[$igroup] as $file)
+                            $result["@files:$im"][] = $extract_data_cb($file, $ipath, $cfg['props']);
+                    } else {
+                        $result["@files:$im"] = $extract_data_cb($files[$igroup], $ipath, $cfg['props']);
+                    }
+                }
+            };
+        }
+    }
 }
