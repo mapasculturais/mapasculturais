@@ -13,13 +13,7 @@ class ApiQuery {
      * @var int
      */
     protected $__counter = 0;
-    
-    /**
-     * The Entity Controller
-     * @var MapasCulturais\Controllers\EntityController
-     */    
-    protected $controller;
-    
+
     /**
      * The Entity Class Name
      * 
@@ -27,7 +21,7 @@ class ApiQuery {
      * @var string 
      */
     protected $entityClassName;
-    
+
     /**
      * The Entity Metadata Class Name
      * 
@@ -35,36 +29,34 @@ class ApiQuery {
      * @var string
      */
     protected $metadataClassName;
-    
-    
+
     /**
      * List of the entity properties
      * 
      * @var array
      */
     protected $entityProperties = [];
-    
-    
+
     /**
      * List of entity ralations
      * 
      * @var array
      */
     protected $entityRelations = [];
-    
+
     /**
      * List of registered metadata to the requested entity for this context (subsite?)
      * @var array 
      */
     protected $registeredMetadata = [];
-    
+
     /**
      * List of the registered taxonomies for this context
      * 
      * @var array 
      */
     protected $registeredTaxonomies = [];
-    
+
     /**
      * the parameter of api query
      * 
@@ -72,7 +64,7 @@ class ApiQuery {
      * @var array 
      */
     protected $apiParams = [];
-    
+
     /**
      * The SELECT part of the DQL that will be executed
      * 
@@ -81,68 +73,66 @@ class ApiQuery {
      * @var string 
      */
     public $select = "";
-    
+
     /**
      * The JOINs fo the DQL that will be executed
      * @var string 
      */
     public $joins = "";
-    
+
     /**
      * The WHERE part of the DQL that will be executed
      * @example "e.id > 10"
      * @var string 
      */
     public $where = "";
-    
+
     /**
      * List of expressions used to compose the where part of the DQL that will be executed
      * @var array
      */
     protected $_whereDqls = [];
-    
+
     /**
      * Mapping of the api query params to dql params
      * @var type 
      */
     protected $_keys = [];
-    
+
     /**
      * List of parameters that will be used to run the DQL
      * @var array 
      */
     protected $_dqlParams = [];
-    
+
     /**
      * Fields that are being selected
      * 
      * @var type 
      */
     protected $_selecting = ['id'];
-    
+
     /**
      * Slice of the fields that are being selected that are properties of the entity
      * 
      * @var type 
      */
     protected $_selectingProperties = [];
-    
+
     /**
      * Slice of the fields that are being selected that are metadata of the entity
      * 
      * @var type 
      */
     protected $_selectingMetadata = [];
-    
+
     /**
      * Files that are being selected
      * 
      * @var type 
      */
     protected $_selectingFiles = [];
-    
     protected $_subqueriesSelect = [];
-    
     protected $_order = 'id ASC';
     protected $_offset;
     protected $_page;
@@ -150,15 +140,14 @@ class ApiQuery {
     protected $_keyword;
     protected $_seals = [];
     protected $_permissions;
+    protected $_status = '> 0';
     protected $_op = ' AND ';
-    
-    protected $_templateJoinMetadata = "\n\t\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
-    protected $_templateJoinTerm = "\n\t\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
+    protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
+    protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
 
-    public function __construct(Controllers\EntityController $controller, $api_params) {
+    public function __construct($entity_class_name, $api_params) {
         $this->apiParams = $api_params;
-        $this->controller = $controller;
-        $this->entityClassName = $controller->entityClassName;
+        $this->entityClassName = $entity_class_name;
 
         $this->initialize();
 
@@ -183,60 +172,72 @@ class ApiQuery {
                 $this->registeredTaxonomies['term:' . $obj->slug] = $obj->id;
             }
         }
-        
+
         $this->entityProperties = array_keys($em->getClassMetadata($class)->fieldMappings);
         $this->entityRelations = $em->getClassMetadata($class)->associationMappings;
     }
-    
-    public function getFindOneResult(){
+
+    public function getFindOneResult() {
         $em = App::i()->em;
-        
+
         $dql = $this->getFindDQL();
-        
+
         $q = $em->createQuery($dql);
-        
+
+        if ($offset = $this->getOffset()) {
+            $q->setFirstResult($offset);
+        }
+
         $q->setMaxResults(1);
-        
+
         $q->setParameters($this->_dqlParams);
 
         $result = $q->getOneOrNullResult(Query::HYDRATE_ARRAY);
-        
+
+        if ($result) {
+            $_tmp = [&$result]; // php !!!!
+            $this->appendMetadata($_tmp);
+        }
+
         return $result;
     }
-    
-    public function getFindResult(){
+
+    public function getFindResult() {
         $em = App::i()->em;
-        
+
         $dql = $this->getFindDQL();
-        
+
         $q = $em->createQuery($dql);
-        
-        if($offset = $this->getOffset()){
+
+        if ($offset = $this->getOffset()) {
             $q->setFirstResult($offset);
         }
-        
-        if($limit = $this->getLimit()){
+
+        if ($limit = $this->getLimit()) {
             $q->setMaxResults($limit);
         }
-        
+
         $q->setParameters($this->_dqlParams);
-        
+
         $result = $q->getResult(Query::HYDRATE_ARRAY);
-        
+
+        $this->appendMetadata($result);
+        $this->appendRelations($result);
+
         return $result;
     }
-    
-    public function getCountResult(){
+
+    public function getCountResult() {
         $em = App::i()->em;
-        
+
         $dql = $this->getCountDQL();
-        
+
         $q = $em->createQuery($dql);
-        
+
         $q->setParameters($this->_dqlParams);
-        
+
         $result = $q->getSingleScalarResult();
-        
+
         return $result;
     }
 
@@ -244,10 +245,15 @@ class ApiQuery {
         $select = $this->generateSelect();
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
+        $order = $this->generateOrder();
 
         $dql = "SELECT\n\t{$select}\nFROM {$this->entityClassName} e {$joins}";
         if ($where) {
             $dql .= "\nWHERE\n\t{$where}";
+        }
+
+        if ($order) {
+            $dql .= "\nORDER BY {$order}";
         }
 
         return $dql;
@@ -269,24 +275,102 @@ class ApiQuery {
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
 
-        // @TODO: se estiver paginando, rodar a consulta pegando somente os ids e retornar uma lista de ids 
         $alias = 'e_' . uniqid();
         $dql = "SELECT\n\t{$alias}.{$prop}\nFROM {$this->entityClassName} {$alias} {$joins}";
         if ($where) {
             $dql .= "\nWHERE\n\t{$where}";
         }
 
-        return preg_replace('#([^a-z0-9_])e\.#i', "{$alias}.", $dql);
+        return preg_replace('#([^a-z0-9_])e\.#i', " {$alias}.", $dql);
     }
-    
-    function getLimit(){
+
+    protected function getSubqueryIdsIn(array $entities) {
+        if (count($entities) > 1000 && !$this->getOffset() && !$this->getLimit()) {
+            return $this->getSubDQL();
+        } else {
+            $ids = array_map(function ($e) {
+                return $e['id'];
+            }, $entities);
+
+            return implode(',', $ids);
+        }
+    }
+
+    protected function appendMetadata(array &$entities) {
+        if ($this->_selectingMetadata && count($entities) > 0) {
+            $meta_keys = [];
+            foreach ($this->_selectingMetadata as $meta) {
+                $meta_keys[uniqid('p')] = $meta;
+            }
+
+            $keys = ':' . implode(',:', array_keys($meta_keys));
+
+            $em = App::i()->em;
+            $count = $this->__counter++;
+
+            $in_entities_dql = $this->getSubqueryIdsIn($entities);
+
+            $dql = "SELECT e.key, e.value, IDENTITY(e.owner) AS objectId FROM {$this->metadataClassName} e WHERE e.owner IN ({$in_entities_dql}) AND e.key IN($keys)";
+
+            $q = $em->createQuery($dql);
+
+            $q->setParameters($meta_keys);
+
+            $metadata = [];
+            foreach ($q->getArrayResult() as $meta) {
+                if (!isset($metadata[$meta['objectId']])) {
+                    $metadata[$meta['objectId']] = [];
+                }
+
+                $metadata[$meta['objectId']][$meta['key']] = $meta['value'];
+            }
+        }
+
+        foreach ($entities as &$entity) {
+            if (isset($metadata[$entity['id']])) {
+                $entity += $metadata[$entity['id']];
+            }
+        }
+    }
+
+    protected function appendRelations(array &$entities) {
+        if ($this->_subqueriesSelect) {
+            eval(\psy\sh());
+            foreach ($this->_subqueriesSelect as $k => &$cfg) {
+                $mapping = $this->entityRelations[$cfg['property']];
+
+                // if this relation was not selected in the main query
+                if (!isset($cfg['selected_as'])) {
+
+                    $_select = $cfg['select'];
+                    $_target_class = $mapping['targetEntity'];
+                    $_target_property = $mapping['joinColumns']['referencedColumnName'];
+
+                    $query = new ApiQuery($_target_class, ['@select' => $_select]);
+                    // $query->where = 
+                    $cfg['query'] = $query;
+                }
+
+                foreach ($entities as &$entity) {
+                    if (isset($cfg['selected_as'])) {
+                        $entity[$cfg['property']] = ['id' => $entity[$cfg['selected_as']]];
+                        unset($entity[$cfg['selected_as']]);
+                    } else {
+                        // coloca os valores 
+                    }
+                }
+            }
+        }
+    }
+
+    function getLimit() {
         return $this->_limit;
     }
-    
-    function getOffset(){
-        if($this->_offset){
+
+    function getOffset() {
+        if ($this->_offset) {
             return $this->_offset;
-        } else if($this->_page && $this->page > 1 && $this->_limit){
+        } else if ($this->_page && $this->page > 1 && $this->_limit) {
             return $this->_limit * ($this->_page - 1);
         } else {
             return 0;
@@ -298,7 +382,10 @@ class ApiQuery {
         $where_dqls = $this->_whereDqls;
 
         $where .= implode(" $this->_op \n\t", $where_dqls);
-        
+
+
+        $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
+
         return $where;
     }
 
@@ -310,14 +397,51 @@ class ApiQuery {
 
     protected function generateSelect() {
         $select = $this->select;
-        
+
         if (in_array('publicLocation', $this->entityProperties) && !in_array('publicLocation', $this->_selectingProperties)) {
             $this->_selectingProperties[] = 'publicLocation';
         }
-        
-        $select .= implode(', ' , array_map(function ($e) { return "e.{$e}"; }, $this->_selectingProperties));
+
+        $select .= implode(', ', array_map(function ($e) {
+                    return "e.{$e}";
+                }, $this->_selectingProperties));
+
+        // to prevent new queries when selecting only the id of relations 
+        foreach ($this->_subqueriesSelect as $key => &$cfg) {
+            $prop = $cfg['property'];
+            $mapping = $this->entityRelations[$prop];
+            if ($mapping['isOwningSide'] && $cfg['select'] === 'id') {
+                $as = "_sq__{$prop}";
+                $select .= ", IDENTITY(e.{$prop}) AS {$as}";
+                $cfg['selected_as'] = $as;
+//                unset($this->_subqueriesSelect)
+            }
+        }
 
         return $select;
+    }
+
+    protected function generateOrder() {
+        if ($this->_order) {
+            $order = [];
+            foreach (explode(',', $this->_order) as $prop) {
+                $key = trim(preg_replace('#asc|desc#i', '', $prop));
+                if (key_exists($key, $this->_keys)) {
+                    $order[] = str_ireplace($key, $this->_keys[$key], $prop);
+                } elseif (in_array($key, $this->entityProperties)) {
+                    $order[] = str_ireplace($key, 'e.' . $key, $prop);
+                } elseif (in_array($key, $this->registeredMetadata)) {
+                    $meta_num = $this->__counter++;
+                    $meta_alias = "m{$meta_num}";
+                    $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
+
+                    $order[] = str_replace($key, "$meta_alias.value", $prop);
+                }
+            }
+            return implode(', ', $order);
+        } else {
+            return null;
+        }
     }
 
     public function addMultipleParams(array $values) {
@@ -516,6 +640,7 @@ class ApiQuery {
     }
 
     protected function parseQueryParams() {
+        $class = $this->entityClassName;
         foreach ($this->apiParams as $key => $value) {
             $value = trim($value);
             if (strtolower($key) == '@select') {
@@ -548,20 +673,22 @@ class ApiQuery {
                 $this->_addFilterByEntityProperty($key, $value);
             } elseif ($class::usesTypes() && $key === 'type') {
                 $this->_addFilterByEntityProperty($key, $value, '_type');
+            } elseif ($key[0] !== '_' && strpos($key, '.') > 0) {
+                $this->_addFilterByEntityRelation($key, $value);
             } elseif ($class::usesTaxonomies() && isset($this->registeredTaxonomies[$key])) {
                 $this->_addFilterByTermTaxonomy($key, $value);
             } elseif ($class::usesMetadata() && in_array($key, $this->registeredMetadata)) {
                 $this->_addFilterByMetadata($key, $value);
-            } elseif ($key[0] != '_' && $key != 'callback') {
+            } elseif ($key[0] !== '_' && $key != 'callback') {
                 $this->apiErrorResponse("property $key does not exists");
-            } 
+            }
         }
     }
 
     protected function _addFilterByOwnerUser() {
         $this->_keys['user'] = '__user_agent__.user';
 
-        $this->joins .= '\n\t\tLEFT JOIN e.owner __user_agent__';
+        $this->joins .= '\n\tLEFT JOIN e.owner __user_agent__';
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
@@ -572,13 +699,17 @@ class ApiQuery {
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
 
+    protected function _addFilterByEntityRelation($key, $value) {
+        // @TODO: implementar
+    }
+
     protected function _addFilterByMetadata($key, $value) {
         $count = $this->__counter++;
         $meta_alias = "m{$count}";
 
         $this->_keys[$key] = "$meta_alias.value";
 
-        $dql_joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $dql_join_template);
+        $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
@@ -601,20 +732,22 @@ class ApiQuery {
 
         // create subquery to format entity.* or entity.{id,name}
         while (preg_match('#([^,\.]+)\.(\{[^\{\}]+\})#', $select, $matches)) {
+            $_subquery_match = $matches[0];
             $_subquery_entity_class = $matches[1];
             $_subquery_select = substr($matches[2], 1, -1);
 
-            $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select);
+            $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select, $_subquery_match);
 
             $select = str_replace($matches[0], $replacement, $select);
         }
 
         // create subquery to format entity.id or entity.name        
         while (preg_match('#([^,\.]+)\.([^,\.]+)#', $select, $matches)) {
+            $_subquery_match = $matches[0];
             $_subquery_entity_class = $matches[1];
             $_subquery_select = $matches[2];
 
-            $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select);
+            $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select, $_subquery_match);
 
             $select = str_replace($matches[0], $replacement, $select);
         }
@@ -626,16 +759,36 @@ class ApiQuery {
                 $this->_selectingProperties[] = $prop;
             } elseif (in_array($prop, $this->registeredMetadata)) {
                 $this->_selectingMetadata[] = $prop;
-            } elseif (in_array($prop, $this->_entityRelations)) {
-                $this->_selecting[$i] = $this->_preCreateSelectSubquery($prop, 'id');
+            } elseif ($prop[0] != '_' && isset($this->entityRelations[$prop])) {
+                $this->_selecting[$i] = $this->_preCreateSelectSubquery($prop, 'id', $prop);
+            } elseif ($prop[0] != '_' && isset($this->entityRelations["_{$prop}"])) {
+                $this->_selecting[$i] = $this->_preCreateSelectSubquery("_{$prop}", 'id', $prop);
             }
         }
     }
 
-    protected function _preCreateSelectSubquery($entity, $select) {
+    protected function _preCreateSelectSubquery($prop, $_select, $_match) {
         $uid = uniqid('#sq:');
 
-        $this->_subqueriesSelect[$uid] = [$entity, $select];
+        $_select_properties = explode(',', $_select);
+
+        $select = array_map(function($property) use(&$_match) {
+            // if the property is a subsquery 
+            if (isset($this->_subqueriesSelect[$property])) {
+                $sq = $this->_subqueriesSelect[$property]['match'];
+                unset($this->_subqueriesSelect[$property]);
+                $_match = str_replace($property, $sq, $_match);
+                return $sq;
+            } else {
+                return $property;
+            }
+        }, explode(',', $_select));
+
+        $this->_subqueriesSelect[$uid] = [
+            'property' => $prop,
+            'select' => implode(',', $select),
+            'match' => $_match,
+        ];
 
         return $uid;
     }
@@ -710,4 +863,5 @@ class ApiQuery {
             };
         }
     }
+
 }
