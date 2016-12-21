@@ -98,7 +98,7 @@ $this->localizeScript('singleSubsite', [
 
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Parar configurar os administradores você deve primeiro salvar o subsite.<span class="close"></span></p>
+            <p class="alert info"><?php \MapasCulturais\i::_e('Parar configurar os administradores você deve primeiro salvar o subsite.'); ?><span class="close"></span></p>
         </div>
     <?php else: ?>
         <!-- Related Profile Agents BEGIN -->

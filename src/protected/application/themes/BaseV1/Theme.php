@@ -29,20 +29,20 @@ class Theme extends MapasCulturais\Theme {
     static function getDictGroups(){
         $groups = [
             'site' => [
-                'title' => 'Diversos',
-                'description' => 'Textos utilizados em diversos lugares do site'
+                'title' => i::__('Diversos'),
+                'description' => i::__('Textos utilizados em diversos lugares do site')
             ],
             'home' => [
-                'title' => 'Página Inicial',
-                'description' => 'Textos utilizados exclusivamente na home do site'
+                'title' => i::__('Página Inicial'),
+                'description' => i::__('Textos utilizados exclusivamente na home do site')
             ],
             'search' => [
-                'title' => 'Busca / Mapa',
-                'description' => 'Textos utilizados exclusivamente na página de busca do site'
+                'title' => i::__('Busca / Mapa'),
+                'description' => i::__('Textos utilizados exclusivamente na página de busca do site')
             ],
             'entities' => [
-                'title' => 'Nomes das entidades',
-                'description' => 'Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é interessante renomear as entidades, como por exemplo em uma instalação que só exibe museus é interessante chamar os espaços de museus.'
+                'title' => i::__('Nomes das entidades'),
+                'description' => i::__('Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é interessante renomear as entidades, como por exemplo em uma instalação que só exibe museus é interessante chamar os espaços de museus.')
             ],
 //            'error' => [
 //                'title' => 'Erros',

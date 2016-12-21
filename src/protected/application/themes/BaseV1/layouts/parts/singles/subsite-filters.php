@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $entityClass = $entity->getClassName();
 $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $viewModeString = $entityName !== 'project' ? '' : ',viewMode:list';
@@ -16,65 +17,65 @@ function printSubsiteFilter($property){
 ?>
 <div id="filtros" class="aba-content">
     <p class="alert info">
-        <?php \MapasCulturais\i::_e('Configure aqui os filtros que serão aplicados sobre os dados cadastrados na instalação principal. Deixe em branco os campos onde você não quer aplicar filtro algum, deixando aparecer todos os dados da instalação principal.'); ?>
+        <?php i::_e('Configure aqui os filtros que serão aplicados sobre os dados cadastrados na instalação principal. Deixe em branco os campos onde você não quer aplicar filtro algum, deixando aparecer todos os dados da instalação principal.'); ?>
     </p>
 
     <section class="filter-section">
-        <header><?php \MapasCulturais\i::_e('Agentes'); ?></header>
+        <header><?php i::_e('Agentes'); ?></header>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_term_area") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e('Área de Atuação do Agente:'); ?> </span>
-          <span class="js-editable" data-edit="filtro_agent_term_area" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Área de Atuação'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione a(s) área(s) de atuação'); ?>"><?php printSubsiteFilter($entity->filtro_agent_term_area) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_term_area") && $editEntity? 'required': '');?>"><?php i::_e('Área de Atuação do Agente:'); ?> </span>
+          <span class="js-editable" data-edit="filtro_agent_term_area" data-original-title="<?php i::esc_attr_e('Área de Atuação'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione a(s) área(s) de atuação'); ?>"><?php printSubsiteFilter($entity->filtro_agent_term_area) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Estado") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e('Estado(s):'); ?> </span>
-          <span class="js-editable" data-edit="filtro_agent_meta_En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Estado(s)'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione o(s) estado(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Estado) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Estado") && $editEntity? 'required': '');?>"><?php i::_e('Estado(s):'); ?> </span>
+          <span class="js-editable" data-edit="filtro_agent_meta_En_Estado" data-original-title="<?php i::esc_attr_e('Estado(s)'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) estado(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Estado) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Municipio") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e('Municipio(s):'); ?> </span>
-          <span class="js-editable" data-edit="filtro_agent_meta_En_Municipio" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Município'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione o(s) município(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Municipio) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Municipio") && $editEntity? 'required': '');?>"><?php i::_e('Municipio(s):'); ?> </span>
+          <span class="js-editable" data-edit="filtro_agent_meta_En_Municipio" data-original-title="<?php i::esc_attr_e('Município'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) município(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Municipio) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Bairro") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e('Bairro(s):'); ?> </span>
-          <span class="js-editable" data-edit="filtro_agent_meta_En_Bairro" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Bairro'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione o(s) bairro(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Bairro) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_meta_En_Bairro") && $editEntity? 'required': '');?>"><?php i::_e('Bairro(s):'); ?> </span>
+          <span class="js-editable" data-edit="filtro_agent_meta_En_Bairro" data-original-title="<?php i::esc_attr_e('Bairro'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) bairro(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_agent_meta_En_Bairro) ?></span>
         </p>
     </section>
 
     <section class="filter-section">
         <header>Espaços</header>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_term_area") && $editEntity? 'required': '');?>">Área de Atuação do Espaço: </span>
-          <span class="js-editable" data-edit="filtro_space_term_area" data-original-title="Área de Atuação" data-emptytext="Selecione a(s) área(s) de atuação"><?php printSubsiteFilter($entity->filtro_space_term_area) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_term_area") && $editEntity? 'required': '');?>"><?php i::_e('Área de Atuação do Espaço:'); ?> </span>
+          <span class="js-editable" data-edit="filtro_space_term_area" data-original-title="<?php i::esc_attr_e('Área de Atuação'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione a(s) área(s) de atuação'); ?>"><?php printSubsiteFilter($entity->filtro_space_term_area) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_type") && $editEntity? 'required': '');?>">Tipo de Espaço: </span>
-          <span class="js-editable" data-edit="filtro_space_meta_type" data-original-title="Tipo de Espaço" data-emptytext="Selecione o(s) tipo(s) de espaço(s)"><?php printSubsiteFilter($entity->filtro_space_meta_type) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_type") && $editEntity? 'required': '');?>"><?php i::_e('Tipo de Espaço:'); ?> </span>
+          <span class="js-editable" data-edit="filtro_space_meta_type" data-original-title="<?php i::esc_attr_e('Tipo de Espaço'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) tipo(s) de espaço(s)'); ?>"><?php printSubsiteFilter($entity->filtro_space_meta_type) ?></span>
         </p>
 
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Estado") && $editEntity? 'required': '');?>">Estado: </span>
-          <span class="js-editable" data-edit="filtro_space_meta_En_Estado" data-original-title="Estado" data-emptytext="Selecione o(s) estado(s) para o(s) Espaço(s)"><?php printSubsiteFilter($entity->filtro_space_meta_En_Estado) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Estado") && $editEntity? 'required': '');?>"><?php i::_e('Estado:'); ?> </span>
+          <span class="js-editable" data-edit="filtro_space_meta_En_Estado" data-original-title="<?php i::esc_attr_e('Estado'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) estado(s) para o(s) Espaço(s)'); ?>"><?php printSubsiteFilter($entity->filtro_space_meta_En_Estado) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Municipio") && $editEntity? 'required': '');?>">Municipio(s): </span>
-          <span class="js-editable" data-edit="filtro_space_meta_En_Municipio" data-original-title="Município" data-emptytext="Selecione o(s) município(s) para o(s) Agente(s)"><?php printSubsiteFilter($entity->filtro_space_meta_En_Municipio) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Municipio") && $editEntity? 'required': '');?>"><?php i::_e('Municipio(s):'); ?> </span>
+          <span class="js-editable" data-edit="filtro_space_meta_En_Municipio" data-original-title="<?php i::esc_attr_e('Município'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) município(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_space_meta_En_Municipio) ?></span>
         </p>
         <p>
-          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Bairro") && $editEntity? 'required': '');?>">Bairro(s): </span>
-          <span class="js-editable" data-edit="filtro_space_meta_En_Bairro" data-original-title="Bairro" data-emptytext="Selecione o(s) bairro(s) para o(s) Agente(s)"><?php printSubsiteFilter($entity->filtro_space_meta_En_Bairro) ?></span>
+          <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_meta_En_Bairro") && $editEntity? 'required': '');?>"><?php i::_e('Bairro(s):'); ?> </span>
+          <span class="js-editable" data-edit="filtro_space_meta_En_Bairro" data-original-title="<?php i::esc_attr_e('Bairro'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) bairro(s) para o(s) Agente(s)'); ?>"><?php printSubsiteFilter($entity->filtro_space_meta_En_Bairro) ?></span>
         </p>
     </section>
 
     <section class="filter-section">
         <header>Eventos</header>
         <p>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_event_term_linguagem") && $editEntity? 'required': '');?>">Linguagem: </span>
-            <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="Linguagem" data-emptytext="Selecione o(s) tipos(s) de linguagem"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
+            <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_event_term_linguagem") && $editEntity? 'required': '');?>"><?php i::_e('Linguagem:'); ?> </span>
+            <span class="js-editable" data-edit="filtro_event_term_linguagem" data-original-title="<?php i::esc_attr_e('Linguagem'); ?>" data-emptytext="<?php i::esc_attr_e('Selecione o(s) tipos(s) de linguagem'); ?>"><?php printSubsiteFilter($entity->filtro_event_term_linguagem) ?></span>
         </p>
     </section>
 
     <section class="filter-section">
         <header>Selos Verificadores</header>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity, "verifiedSeals") && $editEntity ? 'required' : ''); ?>">Selos: </span>
+            <span class="label <?php echo ($entity->isPropertyRequired($entity, "verifiedSeals") && $editEntity ? 'required' : ''); ?>"><?php i::_e('Selos:'); ?> </span>
         <div class="subsite-related-seal-configuration" ng-controller="SealsSubSiteController">
             <div class="selos-relacionados">
                 <input type="hidden" id="verifiedSeals" name="verifiedSeals" class="js-editable" data-edit="verifiedSeals" data-name="verifiedSeals" data-value="<?php printSubsiteFilter($entity->verifiedSeals) ?>">
