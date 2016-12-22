@@ -31,7 +31,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive;
+        Traits\EntityArchive,
+        Traits\EntityRevision;
 
 
     //
@@ -203,8 +204,8 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -217,14 +218,14 @@ class Space extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Espaços');
         else
             return \MapasCulturais\i::__('Espaço');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -239,10 +240,10 @@ class Space extends \MapasCulturais\Entity
             ]
         ];
     }
-    
-    
-    
-    
+
+
+
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
