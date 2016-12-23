@@ -30,7 +30,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive;
+        Traits\EntityArchive,
+        Traits\EntityRevision;
 
 
     /**
@@ -169,8 +170,8 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -179,14 +180,14 @@ class Event extends \MapasCulturais\Entity
     protected $_subsiteId;
 
     private $_newProject = false;
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Eventos');
         else
             return \MapasCulturais\i::__('Evento');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -201,7 +202,7 @@ class Event extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function publish($flush = false){
         $this->checkPermission('publish');
 
@@ -445,6 +446,27 @@ class Event extends \MapasCulturais\Entity
         }
 
         return false;
+    }
+
+    public function getRevisionData() {
+        $revisionData = [];
+        if(count($this->occurrences) > 0) {
+            foreach($this->occurrences as $ocurrence) {
+                $revisionData['occurrences'][] = [
+                    'id' => $ocurrence->id,
+                    'description' => $ocurrence->description,
+                    '_startsOn' => $ocurrence->_startsOn,
+                    '_endsOn' => $ocurrence->_endsOn,
+                    '_startsAt' => $ocurrence->_startsAt,
+                    '_endsAt' => $ocurrence->_endsAt,
+                    'frequency' => $ocurrence->frequency,
+                    'count' => $ocurrence->count,
+                    '_until' => $ocurrence->_until,
+                    'space' => $ocurrence->space
+                ];
+            }
+        }
+        return $revisionData;
     }
 
     //============================================================= //

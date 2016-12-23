@@ -14,4 +14,14 @@ class EntityRevision extends \MapasCulturais\Repository{
         $query->setMaxResults(1);
         return $query->getOneOrNullResult();
     }
+
+    public function findEntityRevisions($entity) {
+        $objectId = $entity->id;
+        $objectType = $entity->getClassName();
+        $query = $this->_em->createQuery("SELECT e
+                                            FROM MapasCulturais\Entities\EntityRevision e
+                                            WHERE e.objectId = {$objectId} AND e.objectType = '{$objectType}'
+                                            ORDER BY e.id DESC");
+        return $query->getResult();
+    }
 }

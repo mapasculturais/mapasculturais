@@ -110,7 +110,10 @@ trait EntityRevision{
         // }
 
         if(method_exists($this, 'getRevisionData')){
-            $revisionData += $this->getRevisionData();
+            $entity_data = $this->getRevisionData();
+            if(is_array($entity_data) && count($entity_data) > 0) {
+                $revisionData += $entity_data;
+            }
         }
         return $revisionData;
     }
@@ -169,5 +172,11 @@ trait EntityRevision{
         $app = App::i();
         $revision = $app->repo('EntityRevision')->findLastRevision($this);
         return $revision;
+    }
+
+    public function getRevisions() {
+        $app = App::i();
+        $revisions = $app->repo('EntityRevision')->findEntityRevisions($this);
+        return $revisions;
     }
 }

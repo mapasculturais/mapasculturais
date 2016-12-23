@@ -347,6 +347,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!-- Image Gallery BEGIN -->
             <?php $this->part('gallery.php', array('entity' => $entity)); ?>
             <!-- Image Gallery END -->
+
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre.aba-content -->
@@ -440,6 +441,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Link List BEGIN -->
     <?php $this->part('link-list.php', array('entity' => $entity)); ?>
     <!-- Link List END -->
+
+    <!-- History BEGIN -->
+        <?php $this->part('history.php', array('entity' => $entity)); ?>
+    <!-- History END -->
 </div>
 <?php if ($this->isEditable()): ?>
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
