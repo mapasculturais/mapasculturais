@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\EntityRevision as Revision;
 
 trait EntityRevision{
+    use RepositoryEntityRevision;
 
     /**
      * This entity uses Revision
