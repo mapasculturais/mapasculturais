@@ -23,21 +23,6 @@ class Agent extends EntityController {
         Traits\ControllerDraft,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
-    
-    function API_teste(){
-        $query = new \MapasCulturais\ApiQuery($this->entityClassName, $this->data);
-        
-        $queries = [
-            'find' => $query->getFindDQL(),
-            'count' => $query->getCountDQL(),
-            'sub' => $query->getSubDQL(),
-        ];
-        
-        var_dump($queries);
-        var_dump(json_decode(json_encode($query->getFindResult())));
-        
-        
-    }
 
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();
