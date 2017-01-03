@@ -157,7 +157,16 @@ Todos os templates utilizados devem se criado utilizando a notação HTML e arma
             'title' => "Acesse a Mapas Culturais",
             'template' => 'update_required.html'
         ],
+        'compliant' => [
+            'title' => "Denúncia - Mapas Culturais",
+            'template' => 'compliant.html'
+        ],
+        'suggestion' => [
+            'title' => "Mensagem - Mapas Culturais",
+            'template' => 'suggestion.html'
+        ]
     ],
 ```
+Os templates e e-mails sõ serão enviados se existir o template no array dentro do arquivo de configuração do Mapas. Para customizar templates por tema, é só criar a pasta _templates_ dentro da pasta do tema e incluir os arquivos de .html dos templates desejados.
 
 **IMPORTANTE**: Esta funcionalidade trabalha em conjunto com o plugin [Mailer](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)
