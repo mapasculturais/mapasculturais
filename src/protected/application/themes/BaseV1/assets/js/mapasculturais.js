@@ -166,15 +166,33 @@ $(function(){
 
     $('.js-submit-button.compliant-form').on('click', function(){
         if(MapasCulturais.compliant_ok) {
+            $(".js-compliant-form")[0].reset();
+            $('.compliant-type').val('');;
             $('.compliant-box').show();
             $('.js-submit-button.compliant-form').hide();
         }
     });
 
+    $('.close.compliant-form').on('click', function(){
+        if(MapasCulturais.compliant_ok) {
+            $('.compliant-box').hide();
+            $('.js-submit-button.compliant-form').show();
+        }
+    });
+
     $('.js-submit-button.suggestion-form').on('click', function(){
         if(MapasCulturais.suggestion_ok) {
+            $(".js-suggestion-form")[0].reset();
+            $('.suggestion-type').val('');;
             $('.suggestion-box').show();
             $('.js-submit-button.suggestion-form').hide();
+        }
+    });
+
+    $('.close.suggestion-form').on('click', function(){
+        if(MapasCulturais.suggestion_ok) {
+            $('.suggestion-box').hide();
+            $('.js-submit-button.suggestion-form').show();
         }
     });
 

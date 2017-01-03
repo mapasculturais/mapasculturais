@@ -31,7 +31,7 @@ if($this->controller->action === 'create')
     <?php endif;?>
     <p>
         <?php \MapasCulturais\i::_e("Tipo");?>:</br>
-        <select ng-model="data.type" ng-options="item for item in compliant_type"></select>
+        <select ng-model="data.type" ng-options="item for item in compliant_type" class="compliant-type"></select>
     </p>
     <p>
         <?php \MapasCulturais\i::_e("Mensagem");?>:<br />
@@ -49,13 +49,14 @@ if($this->controller->action === 'create')
         <button class="js-submit-button compliant-form" ng-click="send()"><?php \MapasCulturais\i::_e("Enviar Denúncia");?></button>
     </p>
     <div class="widget compliant-box" hidden="hidden">
-        <p class="alert sucess"><?php \MapasCulturais\i::_e("Enviado com Sucesso");?>.<span class="close"></span></p>
+        <p class="alert sucess"><?php \MapasCulturais\i::_e("Enviado com Sucesso");?>.<span class="close compliant-form"></span></p>
     </div>
 </form>
 <?php endif;?>
 
 <?php if($suggestion): ?>
 <form class="form-complaint-suggestion js-suggestion-form hidden" ng-controller="SuggestionController">
+    <?php if($user->is('guest')):?>
     <p>
         <?php \MapasCulturais\i::_e("Nome");?>:<br />
         <input ng-model="data.name" type="text" rows="5" name="name" class="input-name">
@@ -64,9 +65,10 @@ if($this->controller->action === 'create')
         <?php \MapasCulturais\i::_e("E-mail");?>:<br />
         <input ng-model="data.email" type="text" rows="5" name="email" class="input-email">
     </p>
+    <?php endif;?>
     <p>
         <?php \MapasCulturais\i::_e("Tipo");?>:</br>
-        <select ng-model="data.type" ng-options="item for item in suggestion_type"></select>
+        <select ng-model="data.type" ng-options="item for item in suggestion_type" class="suggestion-type"></select>
     </p>
     <p>
         <?php \MapasCulturais\i::_e("Mensagem");?>:<br />
@@ -88,7 +90,7 @@ if($this->controller->action === 'create')
         <button class="js-submit-button suggestion-form" ng-click="send()"><?php \MapasCulturais\i::_e("Enviar mensagem");?></button>
     </p>
     <div class="widget suggestion-box" hidden="hidden">
-        <p class="alert sucess"><?php \MapasCulturais\i::_e("Enviado com Sucesso");?>.<span class="close"></span></p>
+        <p class="alert sucess"><?php \MapasCulturais\i::_e("Enviado com Sucesso");?>.<span class="close suggestion-form"></span></p>
     </div>
 </form>
 <?php endif;?>
