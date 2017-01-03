@@ -11,9 +11,9 @@ function charCounter(obj){
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
-    
+
     var labels = MapasCulturais.gettext.mapas;
-    
+
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -165,13 +165,17 @@ $(function(){
     }
 
     $('.js-submit-button.compliant-form').on('click', function(){
-        $('.compliant-box').show();
-        $('.js-submit-button.compliant-form').hide();
+        if(MapasCulturais.compliant_ok) {
+            $('.compliant-box').show();
+            $('.js-submit-button.compliant-form').hide();
+        }
     });
 
     $('.js-submit-button.suggestion-form').on('click', function(){
-        $('.suggestion-box').show();
-        $('.js-submit-button.suggestion-form').hide();
+        if(MapasCulturais.suggestion_ok) {
+            $('.suggestion-box').show();
+            $('.js-submit-button.suggestion-form').hide();
+        }
     });
 
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
@@ -588,7 +592,7 @@ MapasCulturais.EditBox = {
     },
 
     initBoxes: function(selector){
-        
+
         var labels = MapasCulturais.gettext.mapas;
 
         $(selector).each(function(){
