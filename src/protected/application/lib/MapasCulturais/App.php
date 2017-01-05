@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use SwiftMailer\SwiftMailer;
+use Mustache\Mustache;
 
 /**
  * MapasCulturais Application class.
@@ -14,6 +16,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  * @property-read \Doctrine\ORM\EntityManager $em The Doctrine Entity Manager
  * @property-read \Slim\Log $log Slim Logger
  * @property-read \Doctrine\Common\Cache\CacheProvider $cache Cache Provider
+ * @property-read \Doctrine\Common\Cache\CacheProvider $mscache Multisite Cache Provider
  * @property-read \Doctrine\Common\Cache\ArrayCache $rcache Runtime Cache Provider
  * @property-read \MapasCulturais\AuthProvider $auth The Authentication Manager Component.
  * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
@@ -66,6 +69,12 @@ class App extends \Slim\Slim{
     protected $_cache = null;
 
     /**
+     * Cache Component
+     * @var \Doctrine\Common\Cache\CacheProvider
+     */
+    protected $_mscache = null;
+
+    /**
      * Runtime Cache
      * @var \Doctrine\Common\Cache\ArrayCache
      */
@@ -96,7 +105,7 @@ class App extends \Slim\Slim{
      * App Configuration.
      * @var array
      */
-    protected $_config = [];
+    public $_config = [];
 
     /**
      * The Application Registry.
@@ -137,6 +146,8 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
+
+    protected $_subsite = null;
 
     /**
      * Initializes the application instance.
@@ -181,16 +192,22 @@ class App extends \Slim\Slim{
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
+            $this->_mscache = clone $this->_cache;
+
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        $this->_cache->setNamespace($config['app.cache.namespace']);
 
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+
+        $this->_mscache->setNamespace(__DIR__);
 
         spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
-            if($config['app.useRegisteredAutoloadCache'] && $this->cache->contains($cache_id)){
-                $path = $this->cache->fetch($cache_id);
+            if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
+                $path = $this->_mscache->fetch($cache_id);
                 require_once $path;
                 return true;
             }
@@ -210,7 +227,7 @@ class App extends \Slim\Slim{
                     if(\file_exists($path)){
                         require_once $path;
                         if($config['app.useRegisteredAutoloadCache'])
-                            $this->cache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
+                            $this->_mscache->save($cache_id, $path, $config['app.registeredAutoloadCache.lifetime']);
                         return true;
                     }
                 }
@@ -243,43 +260,6 @@ class App extends \Slim\Slim{
 
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
-
-        $theme_class = $config['themes.active'].'\Theme';
-
-        parent::__construct([
-            'log.level' => $config['slim.log.level'],
-            'log.enabled' => $config['slim.log.enabled'],
-            'debug' => $config['slim.debug'],
-            'templates.path' => $this->_config['path.templates'],
-            'view' => new $theme_class($config['themes.assetManager']),
-            'mode' => $this->_config['app.mode']
-        ]);
-
-        foreach($config['plugins'] as $slug => $plugin){
-            $_namespace = $plugin['namespace'];
-            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
-            $plugin_class_name = "$_namespace\\$_class";
-
-            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
-
-            $slug = is_numeric($slug) ? $_namespace : $slug;
-
-            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
-        }
-
-        $config = $this->_config;
-
-        // custom log writer
-        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
-            $log = $this->getLog();
-            $log->setWriter($config['slim.log.writer']);
-        }
-
-
-        // creates runtime cache component
-        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
-
-        // ===================================== //
 
         // ========== BOOTSTRAPING DOCTRINE ========== //
         // annotation driver
@@ -335,9 +315,9 @@ class App extends \Slim\Slim{
         $doctrine_config->addCustomNumericFunction('st_dwithin', 'MapasCulturais\DoctrineMappings\Functions\STDWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
 
-        $doctrine_config->setMetadataCacheImpl($this->_cache);
-        $doctrine_config->setQueryCacheImpl($this->_cache);
-        $doctrine_config->setResultCacheImpl($this->_cache);
+        $doctrine_config->setMetadataCacheImpl($this->_mscache);
+        $doctrine_config->setQueryCacheImpl($this->_mscache);
+        $doctrine_config->setResultCacheImpl($this->_mscache);
 
 
         // obtaining the entity manager
@@ -358,6 +338,81 @@ class App extends \Slim\Slim{
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
+
+
+        // ===================================== //
+
+
+
+        $domain = @$_SERVER['HTTP_HOST'];
+
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+
+        // para permitir o db update rodar para criar a tabela do subsite
+        if(($pos = strpos($domain, ':')) !== false){
+            $domain = substr($domain, 0, $pos);
+        }
+        try{
+            $this->_subsite = $this->repo('Subsite')->findOneBy(['url' => $domain, 'status' => 1]);
+
+            if(!$this->_subsite){
+                $this->_subsite = $this->repo('Subsite')->findOneBy(['aliasUrl' => $domain, 'status' => 1]);
+            }
+        } catch ( \Exception $e) { }
+
+
+        if($this->_subsite){
+            $this->_cache->setNamespace($config['app.cache.namespace'] . ':' . $this->_subsite->id);
+
+            $theme_class = $this->_subsite->namespace . "\Theme";
+            $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
+        } else {
+            $this->_cache->setNamespace($config['app.cache.namespace']);
+
+            $theme_class = $config['themes.active'] . '\Theme';
+            $theme_instance = new $theme_class($config['themes.assetManager']);
+        }
+
+
+        parent::__construct([
+            'log.level' => $config['slim.log.level'],
+            'log.enabled' => $config['slim.log.enabled'],
+            'debug' => $config['slim.debug'],
+            'templates.path' => $this->_config['path.templates'],
+            'view' => $theme_instance,
+            'mode' => $this->_config['app.mode']
+        ]);
+
+        foreach($config['plugins'] as $slug => $plugin){
+            $_namespace = $plugin['namespace'];
+            $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
+            $plugin_class_name = "$_namespace\\$_class";
+
+            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+
+            $slug = is_numeric($slug) ? $_namespace : $slug;
+
+            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+        }
+
+        $config = $this->_config;
+        // ===================================== //
+
+        // custom log writer
+        if(isset($config['slim.log.writer']) && is_object($config['slim.log.writer']) && method_exists($config['slim.log.writer'], 'write')){
+            $log = $this->getLog();
+            $log->setWriter($config['slim.log.writer']);
+        }
+
+
+        // creates runtime cache component
+        $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
+
+        // ===================================== //
+
+
 
 
         // ============= STORAGE =============== //
@@ -407,8 +462,19 @@ class App extends \Slim\Slim{
         }
         // ===================================== //
 
+
+        if($this->_subsite){
+            // apply subsite filters
+            $this->_subsite->applyApiFilters();
+
+            $this->_subsite->applyConfigurations($this->_config);
+        }
+
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
+
+        //Load defaut translation textdomain
+        i::load_default_textdomain();
 
         return $this;
     }
@@ -531,12 +597,27 @@ class App extends \Slim\Slim{
         }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
+        // get types and metadata configurations
+        if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
+            $subsite_types = include $theme_subsite_types;
+        } else {
+            $subsite_types = include APPLICATION_PATH.'/conf/subsite-types.php';
+        }
+        $subsite_meta = key_exists('metadata', $subsite_types) && is_array($subsite_types['metadata']) ? $subsite_types['metadata'] : [];
+
         if ($theme_seal_types = $this->view->resolveFilename('','seal-types.php')) {
             $seal_types = include $theme_seal_types;
         } else {
             $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
         }
         $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
+
+        if ($theme_notification_types = $this->view->resolveFilename('','notification-types.php')) {
+            $notification_types = include $theme_notification_types;
+        } else {
+            $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
+        }
+        $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
 
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
@@ -558,6 +639,7 @@ class App extends \Slim\Slim{
         $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
         $this->registerController('space',   'MapasCulturais\Controllers\Space');
         $this->registerController('project', 'MapasCulturais\Controllers\Project');
+        $this->registerController('subsite',    'MapasCulturais\Controllers\Subsite');
 
 
         $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
@@ -583,50 +665,50 @@ class App extends \Slim\Slim{
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'textarea',
-            'name' => $this->txt('Textarea Field')
+            'name' => \MapasCulturais\i::__('Campo de texto (textarea)')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'text',
-            'name' => $this->txt('Text Field')
+            'name' => \MapasCulturais\i::__('Campo de texto simples')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'date',
-            'name' => $this->txt('Date Field')
+            'name' => \MapasCulturais\i::__('Campo de data')
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'url',
-            'name' => $this->txt('URL Field'),
+            'name' => \MapasCulturais\i::__('Campo de URL (link)'),
             'validations' => [
-                'v::url()' => $this->txt('The value is not a valid URL')
+                'v::url()' => \MapasCulturais\i::__('O valor não é uma URL válida')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'email',
-            'name' => $this->txt('Email Field'),
+            'name' => \MapasCulturais\i::__('Campo de email'),
             'validations' => [
-                'v::email()' => $this->txt('The value is not a valid email')
+                'v::email()' => \MapasCulturais\i::__('O valor não é um endereço de email válido')
             ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'select',
-            'name' => $this->txt('Select Field'),
+            'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
         ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',
-//            'name' => $this->txt('Radio Buttons Field'),
+//            'name' => \MapasCulturais\i::__('Seleção única (radio)'),
 //            'requireValuesConfiguration' => true
 //        ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
-            'name' => $this->txt('Check Boxes Field'),
+            'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
             'requireValuesConfiguration' => true,
             'serialize' => function (array $value) {
                 return json_encode($value);
@@ -643,11 +725,14 @@ class App extends \Slim\Slim{
         // all file groups
         $file_groups = [
             'downloads' => new Definitions\FileGroup('downloads'),
-            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', true),
-            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], 'The uploaded file is not a valid image.', false),
-            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], 'The uploaded file is not a valid document.', true),
-            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], 'The uploaded file is not a valid document.', true),
+            'avatar' => new Definitions\FileGroup('avatar', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'header' => new Definitions\FileGroup('header', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'gallery' => new Definitions\FileGroup('gallery', ['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), false),
+            'registrationFileConfiguration' => new Definitions\FileGroup('registrationFileTemplate', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
+            'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
+            'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
         ];
 
         // register file groups
@@ -679,6 +764,12 @@ class App extends \Slim\Slim{
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
 
+        $this->registerFileGroup('subsite',$file_groups['header']);
+        $this->registerFileGroup('subsite',$file_groups['avatar']);
+        $this->registerFileGroup('subsite',$file_groups['logo']);
+        $this->registerFileGroup('subsite',$file_groups['background']);
+        $this->registerFileGroup('subsite',$file_groups['institute']);
+
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
             $this->registerImageTransformation($name, $transformation);
@@ -708,7 +799,7 @@ class App extends \Slim\Slim{
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
             'videos' => new Definitions\MetaListGroup('videos',
@@ -719,12 +810,12 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
+                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório'),
                             "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
                         ]
                     ],
                 ],
-                'The uploaded file is not a valid image.',
+                \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),
                 true
             ),
         ];
@@ -838,6 +929,14 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
+        // register Subsite types and Subsite metadata
+        $entity_class = 'MapasCulturais\Entities\Subsite';
+
+        // add subsite metadata definition to event type
+        foreach($subsite_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
+        }
 
         // register seal time unit types
 		$entity_class = 'MapasCulturais\Entities\Seal';
@@ -855,6 +954,15 @@ class App extends \Slim\Slim{
                 $metadata = new Definitions\Metadata($meta_key, $meta_config);
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
+        }
+
+        // register notification metadata
+        $entity_class = 'MapasCulturais\Entities\Notification';
+
+        // add notification metadata definition
+        foreach($notification_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
         }
 
         // register taxonomies
@@ -1175,6 +1283,24 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
+    
+    /**
+     * Returns the current subsite ID, or null if current site is the main site
+     *
+     * @return (int|null) ID of the current site or Null for main site
+     */
+    public function getCurrentSubsiteId(){
+        // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
+        if($this->_subsite){
+            return $this->_subsite->id;
+        }
+
+        return null; 
+    }
+
+    public function getCurrentSubsite(){
+        return $this->_subsite;
+    }
 
     public function getMaxUploadSize($useSuffix=true){
         $MB = 1024;
@@ -1266,6 +1392,14 @@ class App extends \Slim\Slim{
      */
     public function getCache(){
         return $this->_cache;
+    }
+
+    /**
+     * Returns the Multisite Cache Component
+     * @return \Doctrine\Common\Cache\CacheProvider
+     */
+    public function getMsCache(){
+        return $this->_mscache;
     }
 
     /**
@@ -1384,6 +1518,7 @@ class App extends \Slim\Slim{
     function getRegistrationAgentsDefinitions(){
         $definitions =  ['owner' => $this->getRegistrationOwnerDefinition()];
         foreach ($this->getRegisteredRegistrationAgentRelations() as $groupName => $def){
+            App::i()->log->debug($groupName);
             $definitions[$groupName] = $def;
         }
         return $definitions;
@@ -1588,7 +1723,6 @@ class App extends \Slim\Slim{
             $entity = '\MapasCulturais\Entities\\' . $entity;
 
         $controller_class = preg_replace('#\\\Entities\\\([^\\\]+)$#', '\\Controllers\\\$1', $entity);
-
         return $this->getControllerByClass($controller_class);
     }
 
@@ -2061,6 +2195,45 @@ class App extends \Slim\Slim{
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
     }
 
+    /*************
+     * Utils
+     ************/
+
+    function slugify($text) {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
+
+
+    function detachRS($rs){
+        $em = $this->_em;
+
+        foreach($rs as $r){
+            $em->detach($r);
+        }
+    }
+
     /**************
      * Utils
      **************/
@@ -2074,14 +2247,136 @@ class App extends \Slim\Slim{
         return $entity;
     }
 
+    /**
+     * returns Swift_Mailer instance
+     *
+     * @return \Swift_Mailer Mailer object
+     */
+    function getMailer() {
+        $transport = [];
+
+        // server
+        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
+
+        // default transport SMTP
+        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+
+        // default port to 25
+        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+
+        // default encryption protocol to ssl
+        $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
+
+
+        if ($transport_type == 'smtp' && false !== $server) {
+
+            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
+
+            // Maybe add username and password
+            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
+                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
+
+                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
+            }
+
+        } elseif ($transport_type == 'sendmail' && false !== $server) {
+            $transport = \Swift_SendmailTransport::newInstance($server);
+        } elseif ($transport_type == 'mail') {
+            $transport = \Swift_MailTransport::newInstance();
+        } else {
+            return false;
+        }
+
+        $instance = \Swift_Mailer::newInstance($transport);
+
+        return $instance;
+    }
+
+    /**
+     *
+     * @param array $args
+     * @return \Swift_Message
+     */
+    function createMailMessage(array $args = []){
+        $message = \Swift_Message::newInstance();
+
+        if($this->_config['mailer.from']){
+            $message->setFrom($this->_config['mailer.from']);
+        }
+
+        $type = $message->getHeaders()->get('Content-Type');
+        $type->setValue('text/html');
+        $type->setParameter('charset', 'utf-8');
+
+        foreach($args as $key => $value){
+            $key = ucfirst($key);
+            $method_name = 'set' . $key;
+
+            if(method_exists($message, $method_name)){
+                $message->$method_name($value);
+            }
+        }
+
+        return $message;
+    }
+
+    function sendMailMessage(\Swift_Message $message){
+        $failures = [];
+        $mailer = $this->getMailer();
+
+        if (!is_object($mailer))
+            return false;
+
+        try {
+            $mailer->send($message,$failures);
+            return true;
+        } catch(\Swift_TransportException $exception) {
+            App::i()->log->debug($exception);
+            return false;
+        }
+    }
+
+    function createAndSendMailMessage(array $args = []){
+        $message = $this->createMailMessage($args);
+        return $this->sendMailMessage($message);
+    }
+
+    function renderMustacheTemplate($template,$templateData) {
+        if(!is_array($templateData) && !is_object($templateData)) {
+            throw new \Exception('Template data not object or array');
+        }
+
+        $templateData = (object) $templateData;
+        if(!($file_name = $this->view->resolveFileName('templates/' . \MapasCulturais\i::get_locale(),$template))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR',$template))) {
+                throw new \Exception('Email Template undefined');
+            }
+        }
+
+        $mustache = new \Mustache_Engine();
+        $content = $mustache->render(file_get_contents($file_name),$templateData);
+        return $content;
+    }
+
+    function renderMailerTemplate($slug, $templateData = []) {
+        if(array_key_exists($slug,$this->_config['mailer.templates'])) {
+            $message = $this->_config['mailer.templates'][$slug];
+            $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
+        }
+        return $message;
+    }
+
     /**************
      * GetText
      **************/
-
+    /* deprecated, use MapasCulturais\i::get_locale();
+     * 
+     * 
+     * 
+     */ 
     static function getCurrentLCode(){
-        return App::i()->_config['app.lcode'];
+        return \MapasCulturais\i::get_locale();
     }
-
 
     static function getTranslations($lcode, $domain = null) {
         $app = App::i();
@@ -2154,6 +2449,11 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         }
         return null;
+    }
+
+    function getAdmins() {
+        $app = App::i();
+        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
     }
 
 }

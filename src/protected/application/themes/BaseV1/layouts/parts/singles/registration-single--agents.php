@@ -1,5 +1,5 @@
 <div class="registration-fieldset">
-    <h4>Agentes (proponentes)</h4>
+    <h4><?php \MapasCulturais\i::_e("Agentes (proponentes)");?></h4>
     <!-- agentes relacionados a inscricao -->
     <ul class="registration-list">
         <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
@@ -8,12 +8,12 @@
             <div class="registration-description">{{def.description}}</div>
 
             <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
-                <p ng-if="def.relationStatus < 0" class="alert warning">Aguardando confirmação</p>
+                <p ng-if="def.relationStatus < 0" class="alert warning"><?php \MapasCulturais\i::_e("Aguardando confirmação");?></p>
                 <div class="clearfix">
                     <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
                     <div>
                         <a ng-if="def.agent" href="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
-                        <span ng-if="!def.agent">Não informado</span>
+                        <span ng-if="!def.agent"><?php \MapasCulturais\i::_e("Não informado");?></span>
                     </div>
                 </div>
                 <div class="registration-agent-details">

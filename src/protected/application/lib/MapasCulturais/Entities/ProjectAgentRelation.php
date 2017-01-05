@@ -57,7 +57,7 @@ class ProjectAgentRelation extends AgentRelation {
 
     function getGroup(){
         if($this->group == 'registration')
-            return App::txt("project registration");
+            return \MapasCulturais\i::__('Aprovados');
         else
             return $this->group;
 

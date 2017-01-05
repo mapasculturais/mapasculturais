@@ -69,7 +69,7 @@ class Plugin extends \MapasCulturais\Plugin {
                 "[sealOwner]"               => $relation->seal->agent->name,
                 "[sealShortDescription]"    => $relation->seal->shortDescription,
                 "[sealRelationLink]"        => $app->createUrl('seal','printsealrelation',[$relation->id]),
-                "[entityDefinition]"        => $relation->owner->entityType,
+                "[entityDefinition]"        => $relation->owner->entityTypeLabel(),
                 "[entityName]"              => '<span class="entity-name">'.$relation->owner->name.'</span>',
                 "[dateIni]"                 => $dateIni,
                 "[dateFin]"                 => $dateFin,
@@ -91,10 +91,10 @@ class Plugin extends \MapasCulturais\Plugin {
         $app = App::i();
 
         $conf = [
-            'label'     => $app->txt('Model template'),
+            'label'     => \MapasCulturais\i::__('Modelo de selo'),
             'type'      => 'select',
             'options'   => [
-                '' => 'Nenhum modelo Selecionado'
+                '' => \MapasCulturais\i::__('Nenhum modelo Selecionado')
             ]
         ];
 

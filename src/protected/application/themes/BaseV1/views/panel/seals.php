@@ -3,14 +3,15 @@ $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2>Meus selos</h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('seal', 'create'); ?>">Adicionar novo selo</a>
+		<h2><?php \MapasCulturais\i::_e("Meus selos");?></h2>
+		<a class="btn btn-default add" href="<?php echo $app->createUrl('seal', 'create'); ?>"><?php \MapasCulturais\i::_e("Adicionar novo selo");?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos (<?php echo count($app->user->enabledSeals);?>)</a></li>
-		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlSeals);?>)</a></li>
-        <li><a href="#rascunhos">Rascunhos (<?php echo count($app->user->draftSeals);?>)</a></li>
-        <li><a href="#lixeira">Lixeira (<?php echo count($app->user->trashedSeals);?>)</a></li>
+        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($app->user->enabledSeals);?>)</a></li>
+        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
+        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($app->user->draftSeals);?>)</a></li>
+        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($app->user->trashedSeals);?>)</a></li>
+        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>
@@ -23,7 +24,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-seal', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->draftSeals): ?>
-            <div class="alert info">Você não possui nenhum rascunho selo.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum rascunho selo.");?></div>
         <?php endif;?>
     </div>
     <!-- #lixeira-->
@@ -32,17 +33,27 @@ $this->layout = 'panel'
             <?php $this->part('panel-seal', array('entity' => $entity));?>
         <?php endforeach; ?>
         <?php if(!$user->trashedSeals):  ?>
-            <div class="alert info">Você não possui nenhum selo na lixeira.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum selo na lixeira.");?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+        <?php foreach($app->user->archivedSeals as $entity): ?>
+            <?php $this->part('panel-seal', array('entity' => $entity));?>
+        <?php endforeach; ?>
+        <?php if(!$user->archivedSeals):  ?>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum selo arquivado.");?></div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlSeals as $entity): ?>
 			<?php $this->part('panel-seal', array('entity' => $entity)); ?>
 		<?php endforeach; ?>
 		<?php if(!$app->user->hasControlSeals): ?>
-			<div class="alert info">Você não possui nenhum selo liberado.</div>
+			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum selo liberado.");?></div>
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->

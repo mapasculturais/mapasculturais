@@ -14,7 +14,7 @@ $proj = $registration->project;
     <?php endif; ?>
     <h1><a href="<?php echo $url; ?>"><?php echo $registration->number ?> - <?php echo $proj->name ?></a></h1>
     <div class="objeto-meta">
-        <div><span class="label">Responsável:</span> <?php echo $registration->owner->name ?></div>
+        <div><span class="label"<?php \MapasCulturais\i::esc_attr_e("Responsável:");?>></span> <?php echo $registration->owner->name ?></div>
         <?php
         foreach($app->getRegisteredRegistrationAgentRelations() as $def):
             if(isset($registration->relatedAgents[$def->agentRelationGroupName])):

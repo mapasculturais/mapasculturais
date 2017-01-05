@@ -9,17 +9,20 @@
 	"symfony/yaml": "2.*",
         "doctrine/orm": "2.*",
         "doctrine/dbal": "2.*",
+	"doctrine/annotations": "1.2.*",
         "opauth/openid": "*",
         "respect/validation": "*",
         "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "4.*",
         "creof/doctrine2-spatial": "dev-master",
-        "mustache/mustache": "v2.5.1",
+        "mustache/mustache": "^2.11",
         "phpoffice/phpword": "dev-master",
         "michelf/php-markdown": "1.4.1",
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
-        "firebase/php-jwt": "^2.2"
+        "firebase/php-jwt": "^2.2",
+        "pomo/pomo": "^1.2",
+        "swiftmailer/swiftmailer": "^5.4"
     },
     "require-dev": {
         "psy/psysh": "@stable"

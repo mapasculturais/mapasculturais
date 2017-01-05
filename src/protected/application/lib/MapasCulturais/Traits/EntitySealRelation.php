@@ -30,7 +30,7 @@ trait EntitySealRelation {
             return [];
 
         $statuses = $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED];
-        $seal_statuses = [Seal::STATUS_ENABLED, Seal::STATUS_INVITED, Seal::STATUS_RELATED];
+        $seal_statuses = [Seal::STATUS_ENABLED, Seal::STATUS_RELATED];
         $relations = [];
 
         $__relations = $this->_sealRelations;

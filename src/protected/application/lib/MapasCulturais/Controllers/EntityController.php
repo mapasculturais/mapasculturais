@@ -25,7 +25,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
      */
     protected $entityClassName;
 
-    
+
     protected $_requestedEntity = false;
 
 
@@ -75,7 +75,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if ($this->_requestedEntity !== false) {
             return $this->_requestedEntity;
         }
-        
+
         if (key_exists('id', $this->urlData)) {
             $this->_requestedEntity = $this->repository->find($this->urlData['id']);
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
@@ -83,7 +83,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         } else {
             $this->_requestedEntity = null;
         }
-        
+
         return $this->_requestedEntity;
     }
 
@@ -136,7 +136,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     protected function _finishRequest($entity, $isAjax = false){
         $app = App::i();
-        
+
         $status = 200;
         try{
             $entity->save(true);
@@ -149,13 +149,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             header('CreatedRequests: ' . json_encode($reqs));
         }
-        
+
         $this->finish($entity, $status, $isAjax);
     }
-    
+
     function finish($data, $status = 200, $isAjax = false){
         $app = App::i();
-        
+
         if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
         }elseif(isset($this->getData['redirectTo'])){
@@ -193,15 +193,22 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('thisControllerId');
      * </code>
      */
-    function POST_index(){
+    function POST_index($data = null) {
         $this->requireAuthentication();
 
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
+
         $entity = $this->getRequestedEntity();
-        
-        foreach($this->data as $field=>$value){
+
+        $app = App::i();
+        $app->applyHookBoundTo($this, "POST({$this->id}.index):data", ['data' => &$data]);
+
+        foreach($data as $field=>$value){
             $entity->$field = $value;
         }
-        
+
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
@@ -224,7 +231,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $this->requireAuthentication();
 
         $entity = $this->getRequestedEntity();
-        
+
         $class = $this->entityClassName;
 
         $entity->status = $class::STATUS_DRAFT;
@@ -327,10 +334,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * $url = $app->createUrl('agent', 'single', [$agent_id])
      * </code>
      */
-    function PUT_single(){
+    function PUT_single($data = null) {
         $this->requireAuthentication();
 
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
+
         $app = App::i();
+
+        $app->applyHookBoundTo($this, "PUT({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
 
@@ -338,7 +351,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $app->pass();
 
         //Atribui a propriedade editada
-        foreach($this->postData as $field=>$value){
+        foreach($data as $field => $value){
             $entity->$field = $value;
         }
 
@@ -350,10 +363,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
 
-    function PATCH_single(){
+    function PATCH_single($data = null) {
         $this->requireAuthentication();
 
+        if (is_null($data)) {
+            $data = $this->postData;
+        }
+
         $app = App::i();
+
+        $app->applyHookBoundTo($this, "PATCH({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
 
@@ -361,7 +380,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $app->pass();
 
         //Atribui a propriedade editada
-        foreach($this->postData as $field=>$value){
+        foreach($data as $field => $value){
             $entity->$field = $value;
         }
 
@@ -434,7 +453,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             $redirect_url = $app->request()->getReferer();
             if($redirect_url === $single_url)
                 $redirect_url = $app->createUrl ('panel');
-            
+
             $app->applyHookBoundTo($this, "DELETE({$this->id}):beforeRedirect", [$entity, &$redirect_url]);
 
             $app->redirect($redirect_url);
@@ -449,5 +468,158 @@ abstract class EntityController extends \MapasCulturais\Controller{
     public function GET_propertiesMetadata(){
         $class = $this->entityClassName;
         echo json_encode($class::getPropertiesMetadata());
+    }
+
+    /*
+     * Send compliant message (mail and notification)
+     */
+    public function POST_sendCompliantMessage() {
+        $app = App::i();
+        $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
+            $person = \MapasCulturais\i::__("Anônimo");
+            $anonimous = \MapasCulturais\i::__("Anônima");
+            $person_email = \MapasCulturais\i::__("Anônimo");
+        } else {
+            $person = $this->data['name'];
+            $anonimous = "";
+            $person_email = $this->data['email'];
+        }
+
+        $dataValue = [
+            'name'          => $app->user->profile->name,
+            'entityType'    => $entity->getEntityTypeLabel(),
+            'entityName'    => $entity->name,
+            'person'        => $person,
+            'email'         => $person_email,
+            'url'           => $entity->singleUrl,
+            'type'          => $this->data['type'],
+            'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+            'message'       => $this->data['message']
+        ];
+
+        $message = $app->renderMailerTemplate('compliant',$dataValue);
+
+        if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+            $admins = $app->getAdmins();
+
+            foreach($admins as $administrator) {
+                /*
+                * Envia e-mail para o administrador para instalação Mapas
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $administrator->user->email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+        }
+        if(array_key_exists('copy',$this->data) && $this->data['copy']) {
+            if(array_key_exists('email',$this->data) && !empty(trim($this->data['email']))) {
+                $email = $this->data['email'];
+            } else {
+                $email = $app->user->email;
+            }
+
+            if($email) {
+                /*
+                * Envia e-mail de cópia para o remetente da denúncia
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+        }
+    }
+
+    /*
+     *
+     */
+    public function POST_sendSuggestionMessage() {
+        $app = App::i();
+        $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
+        $message = "";
+        if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
+            $person = \MapasCulturais\i::__("Anônimo");
+            $anonimous = \MapasCulturais\i::__("Anônima");
+            $person_email = \MapasCulturais\i::__("Anônimo");
+        } else {
+            $person = $this->data['name'];
+            $anonimous = "";
+            $person_email = $this->data['email'];
+        }
+
+        $dataValue = [
+            'name'          => $app->user->profile->name,
+            'entityType'    => $entity->getEntityTypeLabel(),
+            'entityName'    => $entity->name,
+            'person'        => $person,
+            'email'         => $person_email,
+            'url'           => $entity->singleUrl,
+            'type'          => $this->data['type'],
+            'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+            'message'       => $this->data['message']
+        ];
+
+        $message = $app->renderMailerTemplate('suggestion',$dataValue);
+        if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+            if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
+
+                $admins = $app->getAdmins();
+
+                foreach($admins as $administrator) {
+                    /*
+                    * Envia e-mail para o administrador para instalação Mapas
+                    */
+                    $app->createAndSendMailMessage([
+                        'from' => $app->config['mailer.from'],
+                        'to' => $administrator->user->email,
+                        'subject' => $message['title'],
+                        'body' => $message['body']
+                    ]);
+                }
+            }
+
+            if(isset($agent->user->email) && !empty($agent->user->email)) {
+                if(in_array('anonimous',$this->data) && !$this->data['anonimous']) {
+                    $email = "<Anonimous>";
+                } else {
+                    $email = $agent->user->email;
+                }
+                /*
+                * Envio de E-mail ao responsável da entidade
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+        }
+
+        if(array_key_exists('copy',$this->data) && $this->data['copy']) {
+            if(array_key_exists('email',$this->data) && !empty(trim($this->data['email']))) {
+                $email = $this->data['email'];
+            } else {
+                $email = $app->user->email;
+            }
+
+            if($email) {
+                /*
+                * Envia e-mail de cópia para o remetente da denúncia
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+        }
     }
 }

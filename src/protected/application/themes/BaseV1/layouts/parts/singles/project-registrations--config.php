@@ -1,7 +1,7 @@
 <div ng-if="data.projectRegistrationsEnabled" id="inscricoes" class="aba-content">
     <?php if ($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
         <p ng-if="data.isEditable" class="alert info">
-            Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.
+            <?php \MapasCulturais\i::_e("Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.");?>
             <span class="close"></span>
         </p>
     <?php endif; ?>

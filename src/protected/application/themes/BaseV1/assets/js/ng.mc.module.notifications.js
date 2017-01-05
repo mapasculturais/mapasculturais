@@ -2,6 +2,8 @@
     "use strict";
 
     var module = angular.module('mc.module.notifications', []);
+    
+    var labels = MapasCulturais.gettext.moduleNotifications;
 
     module.factory('NotificationService', ['$log','$http', '$q', '$rootScope', function($log, $http, $q, $rootScope){
 
@@ -16,7 +18,7 @@
             ).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
-                deferred.reject('There was an error');
+                deferred.reject(label['error']);
             });
             return deferred.promise;
         };
@@ -27,7 +29,7 @@
             .success(function(data){
                 deferred.resolve(data);
             }).error(function(){
-                deferred.reject('There was an error');
+                deferred.reject(label['error']);
             });
             return deferred.promise;
         };

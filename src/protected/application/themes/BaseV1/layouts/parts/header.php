@@ -3,7 +3,7 @@ $site_name = $this->dict('site: name', false);
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR" dir="ltr">
+<html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">
     <head>
         <meta charset="UTF-8" />
         <title><?php echo $title == $site_name ? $title : "{$site_name} - {$title}"; ?></title>
@@ -24,7 +24,7 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
         </header>
         <section id="main-section" class="clearfix">
             <?php if ($this->isEditable()): ?>
-                <div id="ajax-response-errors" class="js-dialog" title="Corrija os erros abaixo e tente novamente.">
+                <div id="ajax-response-errors" class="js-dialog" title="<?php \MapasCulturais\i::esc_attr_e("Corrija os erros abaixo e tente novamente.");?>">
                     <div class="js-dialog-content"></div>
                 </div>
             <?php endif; ?>

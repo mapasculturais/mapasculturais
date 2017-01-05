@@ -16,6 +16,7 @@ return array(
     'Please inform all required fields.' => 'Por favor, informe todos os campos obrigatórios.',
 
     'The agent "%s" is required.' => 'O agente "%s" é obrigatório.',
+ // parei aqui
     'This agent is required.' => 'Este agente é obrigatório.',
     'The agent "%s" must be of type "%s".' => 'O agente "%s" deve ser do tipo "%s".',
     'This agent must be of type "%s".' => 'Este agente deve ser do tipo "%s".',

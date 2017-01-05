@@ -1,8 +1,8 @@
 $(function() {
     function setAgendaCount(){
-        var count = $('#agenda-count-hidden').val() || 'Nenhum';
+        var count = $('#agenda-count-hidden').val() || MapasCulturais.gettext.agendaSingles['none'];
         $('#agenda-count').text(count);
-        $('#agenda-count-plural').css('display', count == 1 || count == 'Nenhum' ? 'none' : 'inline');
+        $('#agenda-count-plural').css('display', count == 1 || count == MapasCulturais.gettext.agendaSingles['none'] ? 'none' : 'inline');
     }
     
     function submit(){
