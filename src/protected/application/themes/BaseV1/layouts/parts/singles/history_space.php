@@ -56,6 +56,8 @@ $action = "single";
             <!--.entity-type-->
             <?php $this->applyTemplateHook('type','after'); ?>
 
+            <?php /*$this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request])*/ ?>
+
             <?php $this->applyTemplateHook('name','before'); ?>
             <h2><span class="" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><?php echo $entity->name; ?></span></h2>
             <?php $this->applyTemplateHook('name','after'); ?>
@@ -84,42 +86,42 @@ $action = "single";
                 <p>
                     <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
+
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
+                <?php /*$this->part('singles/space-servico', ['entity' => $entity]);*/ ?>
+
+                <?php /*$this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]);*/ ?>
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+
+                    <?php if(isset($entity->acessibilidade)): ?>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Acessibilidade"><?php echo $entity->acessibilidade; ?></span></p>
+                    <?php endif; ?>
+
+                    <?php if(isset($entity->acessibilidade_fisica)): ?>
+                        <p>
+                            <span class="label"><?php \MapasCulturais\i::_e("Acessibilidade física");?>: </span>
+                            <editable-multiselect entity-property="acessibilidade_fisica" empty-label="Selecione" allow-other="true" box-title="Acessibilidade física:"></editable-multiselect>
+                        </p>
+                    <?php endif; ?>
+                    <?php $this->applyTemplateHook('acessibilidade','after'); ?>
+
+                    <?php if(isset($entity->capacidade)): ?>
+                        <p>
+                            <span class="label"><?php \MapasCulturais\i::_e("Capacidade");?>: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if(isset($entity->horario)): ?>
+                        <p>
+                            <span class="label"><?php \MapasCulturais\i::_e("Horário de funcionamento");?>: </span><span class="js-editable" data-edit="horario" data-original-title="Horário de Funcionamento" data-emptytext="Insira o horário de abertura e fechamento"><?php echo $entity->horario; ?></span>
+                        </p>
+                    <?php endif; ?>
 
                     <?php if(isset($entity->site)): ?>
                         <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
-
-                    <?php if(isset($entity->nomeCompleto)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Nome");?>:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira seu nome completo ou razão social");?>"><?php echo $entity->nomeCompleto; ?></span></p>
-                    <?php endif; ?>
-
-                    <?php if(isset($entity->documento)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
-                    <?php endif;?>
-
-                    <?php if(isset($entity->dataDeNascimento)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
-                            <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
-                                <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
-                            </span>
-                        </p>
-                    <?php endif;?>
-
-                    <?php if(isset($entity->genero)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Gênero");?>:</span> <span class="js-editable" data-edit="genero" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Gênero");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione o gênero se for pessoa física");?>"><?php echo $entity->genero; ?></span></p>
-                    <?php endif;?>
-
-                    <?php if(isset($entity->orientacaoSexual)):?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Orientação Sexual");?>:</span> <span class="js-editable" data-edit="orientacaoSexual" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Orientação Sexual"); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a orientação sexual se for pessoa física");?>"><?php echo $entity->orientacaoSexual; ?></span></p>
-                    <?php endif;?>
-
-                    <?php if(isset($entity->raca)):?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span> <span class="js-editable" data-edit="raca" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Raça/cor");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a raça/cor se for pessoa física");?>"><?php echo $entity->raca; ?></span></p>
-                    <?php endif;?>
 
                     <?php if(isset($entity->emailPrivado)): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
@@ -149,14 +151,11 @@ $action = "single";
             </div>
             <!--.ficha-spcultura-->
 
-            <?php if(isset($entity->longDescription)): ?>
-                <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Agente");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do agente");?>" ><?php echo nl2br($entity->longDescription); ?></span>
-            <?php endif; ?>
-            <!--.descricao-->
+            <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
+            <?php /*$this->part('singles/space-extra-info', ['entity' => $entity])*/ ?>
+            <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
+
             <!-- Video Gallery BEGIN -->
-
-
             <?php if (isset($entity->videos)): ?>
                 <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
                 <a name="video"></a>
@@ -211,6 +210,8 @@ $action = "single";
     <?php endif;?>
     <!-- Related Seals END -->
 
+    <?php /*$this->part('singles/space-public', ['entity' => $entity])*/ ?>
+
     <?php if(isset($entity->_terms) && isset($entity->_terms->area)):?>
         <div class="widget">
         <h3><?php $this->dict('taxonomies:area: name') ?></h3>
@@ -256,6 +257,9 @@ $action = "single";
     <?php endif;?>
     <!-- Related Agents END -->
 
+
+    <?php /*$this->part('singles/space-children', ['entity' => $entity]);*/ ?>
+
     <!-- Spaces BEGIN -->
     <?php if(isset($entities->_spaces)): ?>
         <div class="widget">
@@ -268,32 +272,6 @@ $action = "single";
         </div>
     <?php endif; ?>
     <!-- Spaces END -->
-
-    <!-- Projects BEGIN -->
-    <?php if(isset($entities->_projects)): ?>
-        <div class="widget">
-            <h3><?php $this->dict('entities: Projects of the agent'); ?></h3>
-            <ul class="widget-list js-slimScroll">
-                <?php foreach($entities->_projects as $project): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $project->name; ?></span></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
-    <!-- Projects END -->
-
-    <!-- Agents BEGIN -->
-    <?php if(isset($entities->_children)): ?>
-        <div class="widget">
-            <h3><?php $this->dict('entities: Agent children'); ?></h3>
-            <ul class="widget-list js-slimScroll">
-                <?php foreach($entities->_children as $agent): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $agent->name; ?></span></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
-    <!-- Agents END -->
 
     <!-- Link List BEGIN -->
     <?php if (isset($entity->links)): ?>
