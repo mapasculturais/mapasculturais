@@ -18,7 +18,11 @@ use \MapasCulturais\App;
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
  * @property-read array $tmpFile $_FILE
- * @ORM\Table(name="file")
+ * @ORM\Table(name="file",indexes={
+ *      @ORM\Index(name="file_owner_index", columns={"object_type", "object_id"}),
+ *      @ORM\Index(name="file_group_index", columns={"grp"}),
+ * })
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
@@ -77,6 +81,14 @@ abstract class File extends \MapasCulturais\Entity
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="string", length=1024, nullable=true)
+     */
+    protected $_path;
 
     /**
      * @var string
@@ -230,6 +242,7 @@ abstract class File extends \MapasCulturais\Entity
      * @return string the url to this file
      */
     public function getUrl(){
+    
         $app = App::i();
         $cache_id = "{$this}:url";
 
@@ -269,6 +282,14 @@ abstract class File extends \MapasCulturais\Entity
 
     public function getPath(){
         return App::i()->storage->getPath($this);
+    }
+    
+    public function getRelativePath($get_from_storage = true){
+        if(is_null($this->_path) && $get_from_storage){
+            $this->_path = App::i()->storage->getPath($this, true);
+        }
+        
+        return $this->_path;
     }
 
     public function transform($transformation_name){
