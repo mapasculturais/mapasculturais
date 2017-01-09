@@ -52,8 +52,8 @@ class EntityRevision extends \MapasCulturais\Repository{
                 $data = $dataRevision->value;
             }
 
-            if($dataRevision->key == 'location') { 
-                $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint($data->latitude,$data->longitude);
+            if($dataRevision->key == 'location' && $data->longitude != 0 && $data->latitude !=0) { 
+                $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint($data->longitude,$data->latitude);
             } else {
                 $attribute = $dataRevision->key;
                 $entityRevisioned->$attribute = $data;

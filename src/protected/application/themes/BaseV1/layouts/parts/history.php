@@ -1,4 +1,7 @@
 <?php
+if($this->controller->action == 'create')
+    return;
+
 $app = \MapasCulturais\App::i();
 $entityRevisions = $app->repo("EntityRevision")->findEntityRevisions($entity);
 ?>
